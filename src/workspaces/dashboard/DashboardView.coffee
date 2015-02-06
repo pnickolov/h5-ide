@@ -282,10 +282,13 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
         # render
         memCol = new MemberCollection({projectId: @model.scene.project.id})
         memCol.fetch().done () ->
-            that.renderLog('activity')
-            that.renderLog('audit')
+            emailMap = {}
+            _.each memCol.toJSON(), (member) ->
+                emailMap[member.username] = member.email
+            that.renderLog('activity', emailMap)
+            that.renderLog('audit', emailMap)
 
-    renderLog: (type) ->
+    renderLog: (type, emailMap) ->
 
         activityModels = @logCol.history()
         auditModels = @logCol.audit()
@@ -312,11 +315,12 @@ define [ "./DashboardTpl", "./ImportDialog", "./DashboardTplData", "constant", "
 
             try
 
-                email = Base64.decode(data.get('email'))?.email?.trim().toLowerCase() if data.get('email')
+                name = Base64.decode(data.get('usercode'))
+                email = emailMap[name]
                 avatar = "https://www.gravatar.com/avatar/#{CryptoJS.MD5(email).toString()}" if email
                 action = data.get('action')?.toLowerCase()
                 return {
-                    name: Base64.decode(data.get('usercode')),
+                    name: name,
                     action: renderMap(action),
                     type: data.get('type')?.toLowerCase(),
                     target: data.get('target'),

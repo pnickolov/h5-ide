@@ -94,9 +94,10 @@ define [ "./DashboardTpl",
       @updateGlobalResources()
       @model.fetchAwsResources()
       @initRegion()
+      self = @
       setInterval ()->
-        if not $("#RefreshResource").hasClass("reloading")
-          $("#RefreshResource").text(MC.intervalDate(self.lastUpdate/ 1000))
+        if not self.$el.find("#RefreshResource").hasClass("reloading")
+          self.$el.find("#RefreshResource").text(MC.intervalDate(self.lastUpdate/ 1000))
         return
       , 1000 * 60
 
@@ -126,11 +127,11 @@ define [ "./DashboardTpl",
 
     updateDemoView : ()->
       if not @model.scene.project.isDemoMode()
-        $("#dashboard-data-wrap").removeClass("demo")
-        $("#VisualizeVPC").removeAttr "disabled"
+        @$el.find("#dashboard-data-wrap").removeClass("demo")
+        @$el.find("#VisualizeVPC").removeAttr "disabled"
       else
-        $("#VisualizeVPC").attr "disabled", "disabled"
-        $("#dashboard-data-wrap").toggleClass("demo", true)
+        @$el.find("#VisualizeVPC").attr "disabled", "disabled"
+        @$el.find("#dashboard-data-wrap").toggleClass("demo", true)
       return
 
 
@@ -142,10 +143,10 @@ define [ "./DashboardTpl",
         @__globalLoading = false
         data = @model.getAwsResData()
 
-      $("#GlobalView").html( dataTemplate.globalResources( data ) )
+      @$el.find("#GlobalView").html( dataTemplate.globalResources( data ) )
       if @region is "global"
-        $("#GlobalView").show()
-        $("#RegionViewWrap").hide()
+        @$el.find("#GlobalView").show()
+        @$el.find("#RegionViewWrap").hide()
       return
 
     onGlobalResChanged: ()->
@@ -214,17 +215,17 @@ define [ "./DashboardTpl",
       if @region is "global"
         @updateGlobalResources()
         return
-      $(".dash-resource-wrap .js-toggle-dropdown span").text(constant.REGION_SHORT_LABEL[ @region ] || lang.IDE.DASH_BTN_GLOBAL)
+      @$el.find(".dash-resource-wrap .js-toggle-dropdown span").text(constant.REGION_SHORT_LABEL[ @region ] || lang.IDE.DASH_BTN_GLOBAL)
 
-      $("#RegionViewWrap" ).show()
-      $("#GlobalView" ).hide()
+      @$el.find("#RegionViewWrap" ).show()
+      @$el.find("#GlobalView" ).hide()
       @updateRegionTabCount()
       type = constant.RESTYPE[ @resourcesTab ]
       if not @model.isAwsResReady( @region, type )
         tpl = '<div class="dashboard-loading"><div class="loading-spinner"></div></div>'
       else
         tpl = dataTemplate["resource#{@resourcesTab}"]( @model.getAwsResData( @region, type ) )
-      $("#RegionResourceData").html( tpl )
+      @$el.find("#RegionResourceData").html( tpl )
 
     updateRegionAppStack : (updateType="stack", region)->
       if updateType not in ["stacks", "apps"]
@@ -244,19 +245,19 @@ define [ "./DashboardTpl",
       attr.region = data
       attr.projectId = self.model.scene.project.id
       attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
-      $("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+      @$el.find("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
       return
 
     updateRegionTabCount : ()->
       resourceCount = @model.getResourcesCount( @region )
-      $nav = $("#RegionResourceNav")
+      $nav = @$el.find("#RegionResourceNav")
       for r, count of resourceCount
         $nav.children(".#{r}").children(".count-bubble").text( if count is "" then "-" else count )
       return
 
 
     switchResource : ( evt )->
-      $("#RegionResourceNav").children().removeClass("on")
+      @$el.find("#RegionResourceNav").children().removeClass("on")
       @resourcesTab = $(evt.currentTarget).addClass("on").attr("data-type")
       @updateRegionResources()
       return

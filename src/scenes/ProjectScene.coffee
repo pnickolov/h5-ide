@@ -19,6 +19,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
       return Scene.call this, { pid : projectId, opsid : opsmodelId }
 
     initialize : ( attr )->
+      console.log "ProjectScene"
       self = @
       @__spaces     = []
       @__awakeSpace = null
@@ -26,7 +27,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
 
       @project = App.model.projects().get( attr.pid ) || App.model.getPrivateProject()
       @view    = new ProjectView { scene : @ }
-
+      console.log @view, "ProjectScene"
       @listenTo @view, "wsOrderChanged", ()->   @__updateSpaceOrder()
       @listenTo @view, "wsClicked",      (id)-> @awakeSpace( id )
       @listenTo @view, "wsClosed",       (id)-> @removeSpace( id )

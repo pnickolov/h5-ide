@@ -141,6 +141,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 _.delay ->
                     self.trigger "shown", @
                 , 300
+            _.delay -> self.resize()
+            , 400
             _.delay ->
                 self.nextOptions.forEach (option)->
                     new Modal(option)

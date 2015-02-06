@@ -72,7 +72,7 @@ define [
           width: '665px'
           compact: true
           confirm:
-            text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+            text: unless Design.instance().project().isDemoMode() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
             disabled: true
 
         @renderKpDropdown @modal, cloudType
@@ -101,8 +101,8 @@ define [
       self = @
       @modal.on 'confirm', ()=>
         @hideError()
-        if not Design.instance().credential()
-          App.showSettings App.showSettings.TAB.Credential
+        if Design.instance().project().isDemoMode()
+          App.loadUrl "/settings/#{Design.instance().project().get('id')}/credential"
           return false
         # setUsage
         appNameRepeated = @checkAppNameRepeat(appNameDom.val())

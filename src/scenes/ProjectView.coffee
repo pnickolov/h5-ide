@@ -135,9 +135,6 @@ define [ "ApiRequest",
 
   ProjectListPopup = HeaderPopup.extend {
 
-    events:
-      "click .create-new-project" : "createProject"
-
     render : ()->
       projects = []
       for p in App.model.projects().models
@@ -149,6 +146,8 @@ define [ "ApiRequest",
           private : p.isPrivate()
         }
       @$el.html ProjectTpl.projectList( projects )
+      @$el.find(".create-new-project").on "click", (_.bind @createProject, @)
+      @
 
     createProject : ()-> new ProjectCreation()
   }

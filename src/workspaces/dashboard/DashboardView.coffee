@@ -125,7 +125,7 @@ define [ "./DashboardTpl",
 
 
     updateDemoView : ()->
-      if @model.scene.project.hasCredential()
+      if not @model.scene.project.isDemoMode()
         $("#dashboard-data-wrap").removeClass("demo")
         $("#VisualizeVPC").removeAttr "disabled"
       else
@@ -524,9 +524,6 @@ define [ "./DashboardTpl",
           delete d.data[key]
 
       return dataTemplate.bubbleResourceInfo  d
-
-
-
 
     switchLog: (event) ->
 

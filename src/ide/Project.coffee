@@ -120,6 +120,7 @@ define [
         id      : attr.id
         name    : attr.name or "My Workspace"
         private : attr.id is App.user.id
+        billingState: attr.payment?.state
       }
 
       # Token
@@ -173,7 +174,7 @@ define [
 
     # Convenient Methods
     isPrivate        : ()-> @get("private")
-    hasCredential    : ()-> @get("credentials").length > 0
+    hasCredential    : ()-> console.log @get("credentials"); @get("credentials").length > 0
     credIdOfProvider : ( CredentialProvider )-> (@credOfProvider( CredentialProvider ) || {}).id
     credOfProvider   : ( CredentialProvider )->
       for cred in @get("credentials").models
@@ -182,7 +183,7 @@ define [
       return null
 
     # Project Payment
-    shouldPay       : ()-> @get("billingState") in ["active", "pastdue"]
+    shouldPay       : ()-> not (@get("billingState") in ["active", "pastdue"])
 
     amIAdmin    : ()-> @get("myRole") is MEMBERROLE.ADMIN or @isPrivate()
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER

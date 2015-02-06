@@ -113,6 +113,9 @@
           }, 300);
         }
         _.delay(function() {
+          return self.resize();
+        }, 300);
+        _.delay(function() {
           return self.nextOptions.forEach(function(option) {
             return new Modal(option);
           });

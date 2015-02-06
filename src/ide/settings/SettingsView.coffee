@@ -72,6 +72,7 @@ define [
             @renderSettings()
 
         renderProject: ( project, tab ) ->
+            console.log "SettingsView"
             if project and project.currentTarget # Load by dom event
                 projectId = $(project.currentTarget).data 'id'
                 project = @projects.get projectId

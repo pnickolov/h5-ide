@@ -47,7 +47,7 @@
 
 {{else}}
     {{#if isAdmin}}
-    <p{{i18n "DELETE_WORKSPACE_WILL_FORGOT_APPS"}}</p>
+    <p>{{i18n "DELETE_WORKSPACE_WILL_FORGOT_APPS"}}</p>
     <p>{{i18n "IMPORT_JSON_BEFORE_DELETE_WORKSPACE"}}</p>
     <button class="btn btn-red icon-delete" id="delete-project">{{i18n "DELETE_WORKSPACE"}}</button>
     {{/if}}

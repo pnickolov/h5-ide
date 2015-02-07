@@ -132,7 +132,6 @@
 
 
 <!--{{usageTable}}-->
-{{#if result.usageReport.length}}
 <table class="table-head">
     <thead>
     <tr>
@@ -154,10 +153,10 @@
             </tr>
             </thead>
             <tbody class="t-m-content">
-            {{#each result.usageReport}}
-                <tr class="item" data-id="{{@index}}">
-                    <td>{{instanceId}}</td>
-                    <td>{{started_at}}</td>
+            {{#each result.history_usage}}
+                <tr class="item" data-id="{{@key}}">
+                    <td>{{@key}}</td>
+                    <td>{{this}}</td>
                     <td>{{duration}}</td>
                 </tr>
             {{/each}}
@@ -165,12 +164,6 @@
         </table>
     </div>
 </div>
-{{else}}
-    <div class="full-space">
-        {{i18n "NO_USAGE_REPORT"}}
-    </div>
-{{/if}}
-
 
 <!--{{updatePayment}}-->
 <div class="update-payment-wrap">

@@ -1,4 +1,4 @@
-define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, template, ApiRequestR) ->
+define [ 'backbone', "../template/TplBilling", "ApiRequestR", 'i18n!/nls/lang.js' ], (Backbone, template, ApiRequestR, lang) ->
     Backbone.View.extend {
 
         events:
@@ -40,11 +40,15 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR" ], (Backbone, templ
         renderUsageData: (dateString)->
             self = @
             dateString ||= now = new Date()
-            self.$el.find(".full-space").html $(MC.template.loadingSpinner()).css({"margin": "80px auto"})
+            self.$el.find(".table-head-fix").html $(MC.template.loadingSpinner()).css({"margin": "80px auto"})
             self.$el.find(".usage-pagination button").prop("disabled", true)
             @getUsage(dateString).then (result)->
                 payment = self.model.get("payment")
-                self.$el.find(".full-space").replaceWith(template.usageTable {result})
+                if not _.isEmpty result?.history_usage
+                  elem = template.usageTable {result}
+                else
+                  elem = "<div class='full-space'>#{lang.IDE.NO_USAGE_REPORT}</div>"
+                self.$el.find(".table-head-fix").html elem
                 date = self.formatDate2(dateString)
                 self.$el.find(".usage-date").text(date.string).data("date", dateString)
                 isDisabled = self.getNewDate(1) > new Date()

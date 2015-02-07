@@ -761,7 +761,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
     # parameter could be uid or aws id
     # return uid and mid( memberId )
     getEffectiveId : ( instance_id ) ->
-      design = @design()
+      design = Design.instance()
 
       # The instance_id might be component uid or aws id
       if design.component( instance_id ) then return {uid:instance_id, mid:null}

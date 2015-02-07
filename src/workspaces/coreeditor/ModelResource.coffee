@@ -242,7 +242,7 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
 
     hasAppResource : ()->
       if not Design.instance().modeIsStack() and @.get("appId")
-        !!@get('appId') and CloudResources(Design.instance().credentialId(),@type,@design().region()).get(@get('appId'))
+        !!@get('appId') and CloudResources(@design().credentialId(),@type,@design().region()).get(@get('appId'))
       else
         true
 

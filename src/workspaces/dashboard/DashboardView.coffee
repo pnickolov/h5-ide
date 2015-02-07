@@ -8,8 +8,9 @@ define [ "./DashboardTpl",
          "UI.modalplus",
          "i18n!/nls/lang.js",
          "ide/submodels/ProjectLog",
+         "credentialFormView"
          "UI.bubble",
-         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog )->
+         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog, CredentialFormView )->
 
   Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
     ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
@@ -44,7 +45,7 @@ define [ "./DashboardTpl",
       'click .region-resource-list .stop-app'        : 'stopApp'
       'click .region-resource-list .terminate-app'   : 'terminateApp'
 
-
+      "click .show-credential" : "showCredential"
       "click .icon-detail"     : "showResourceDetail"
 
 
@@ -62,12 +63,11 @@ define [ "./DashboardTpl",
       @logCol.on('change add', @switchLog, this)
 
       @render()
-      @listenTo @model.scene.project, "update:stack", ()->
-        self.updateRegionAppStack("stacks", "global")
-      @listenTo @model.scene.project, "update:app", ()->
-        self.updateRegionAppStack("apps", "global")
-      @listenTo @model.scene.project, "update:credential", ()->
-        self.updateDemoView()
+      @listenTo @model.scene.project, "update:stack", ()-> self.updateRegionAppStack("stacks", "global")
+      @listenTo @model.scene.project, "update:app", ()-> self.updateRegionAppStack("apps", "global")
+      @listenTo @model.scene.project, "change:stack", ()-> self.updateRegionAppStack("stacks", "global")
+      @listenTo @model.scene.project, "change:app", ()-> self.updateRegionAppStack("apps", "global")
+      @listenTo @model.scene.project, "update:credential", ()-> self.updateDemoView()
 
       @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
       @credentialId = @model.scene.project.credIdOfProvider constant.PROVIDER.AWSGLOBAL
@@ -115,6 +115,9 @@ define [ "./DashboardTpl",
 
       @model.scene.loadSpace( opsModel )
       return
+
+    showCredential: ()->
+      new CredentialFormView({model: @model.scene.project}).render()
 
     importStack : ( evt )->
       new ImportDialog({

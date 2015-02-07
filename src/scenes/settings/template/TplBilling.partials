@@ -135,9 +135,8 @@
 <table class="table-head">
     <thead>
     <tr>
-        <th class="sortable desc-sort" data-row-type="string"   style="width:35%;">{{i18n "INSTANCE"}}</th>
-        <th class="sortable desc-sort" data-row-type="datetime" style="width:35%;">{{i18n "START_TIME"}}</th>
-        <th class="sortable desc-sort" data-row-type="number"   style="width:30%;">{{i18n "DURATION"}}</th>
+        <th class="sortable desc-sort" data-row-type="string" style="width:50%;">{{i18n "PAYMENT_INSTANCE_ID"}}</th>
+        <th class="sortable desc-sort" data-row-type="number" style="width:50%;">{{i18n "PAYMENT_INSTANT_HOUR"}}</th>
     </tr>
     </thead>
 </table>
@@ -147,9 +146,8 @@
         <table class="table">
             <thead>
             <tr>
-                <th style="width: 35%"><div class="th-inner"></div></th>
-                <th style="width: 35%"><div class="th-inner"></div></th>
-                <th style="width: 30%"><div class="th-inner"></div></th>
+                <th style="width: 50%"><div class="th-inner"></div></th>
+                <th style="width: 50%"><div class="th-inner"></div></th>
             </tr>
             </thead>
             <tbody class="t-m-content">
@@ -157,7 +155,6 @@
                 <tr class="item" data-id="{{@key}}">
                     <td>{{@key}}</td>
                     <td>{{this}}</td>
-                    <td>{{duration}}</td>
                 </tr>
             {{/each}}
             </tbody>

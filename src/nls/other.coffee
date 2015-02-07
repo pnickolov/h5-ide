@@ -2746,3 +2746,8 @@ into live resources, or import existing infrastructures."
     PROVIDE_CRED_TO_VISUALIZE:
       en: "Provide cloud credential to import existing VPC as app."
       zh: "提供云证书以将已有 VPC 导入为 App"
+
+    PAYMENT_INSTANCE_ID:
+      en: "Instance ID"
+      zh: "实例 ID"
+

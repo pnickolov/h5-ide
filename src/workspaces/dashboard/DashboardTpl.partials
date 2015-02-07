@@ -21,7 +21,7 @@
         </ul> </div>
       </div>
 
-      <button id="VisualizeVPC" class="btn btn-blue icon-visualize tooltip" data-analytics-plus="visualize_vpc" data-tooltip="PROVIDE_CRED_TO_VISUALIZE">{{i18n "DASH_VISUALIZE_VPC"}}</button>
+      <button id="VisualizeVPC" class="btn btn-blue icon-visualize tooltip" data-analytics-plus="visualize_vpc" data-tooltip="{{i18n "PROVIDE_CRED_TO_VISUALIZE"}}">{{i18n "DASH_VISUALIZE_VPC"}}</button>
     </div>
     <div class="observer-visible">As an observer in this project, you only have read access to stacks and apps.</div>
 
@@ -104,7 +104,7 @@
                       <div id="DashboardDemo">
                           <div class="enter-credential">
                               {{i18n "DASH_TPL_SAMPLE_INSTRUCTION"}}<br/>
-                              <a href="/settings/{{id}}/credential" class="route show-credential">{{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1"}}</a> {{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2"}}
+                              <a class="show-credential">{{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1"}}</a> {{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2"}}
                           </div>
                           <img src="/assets/images/ide/global-demo.png"/>
                       </div>

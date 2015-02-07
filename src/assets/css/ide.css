@@ -9685,14 +9685,14 @@ section.members-only {
       border: 1px solid #51568e;
       border-radius: 3px;
       margin-bottom: 20px;
-      color: #51568e;
+      color: #898dbc;
       background: transparent;
-      -webkit-transition: background-color 0.2s ease-in-out;
-      -o-transition: background-color 0.2s ease-in-out;
-      transition: background-color 0.2s ease-in-out; }
+      -webkit-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
       .fullpage-settings #settings-nav .back-settings:hover {
         background: #51568e;
-        color: #000; }
+        color: #fff; }
     .fullpage-settings #settings-nav > section {
       margin-bottom: 10px; }
       .fullpage-settings #settings-nav > section header, .fullpage-settings #settings-nav > section a {

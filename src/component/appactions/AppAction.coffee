@@ -124,7 +124,7 @@ define [
           self.modal.close()
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
           notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
-      @modal.listenTo App.user, 'change:credential', ->
+      @modal.listenTo Design.instance().project(), 'change:credential', ->
         if Design.instance().credential() and that.modal.isOpen()
           that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
       @modal.on 'close', ->

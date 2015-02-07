@@ -9,9 +9,24 @@ define [ "Scene", "backbone" ], ( Scene )->
       @__scenes      = []
       @__scenesById  = {}
       @__activeScene = null
-
-      @__lastActivateList = []
       @
+
+    __frontActivateList : ( scene )->
+      newList = [ scene ]
+      for s in @__scenes
+        if s isnt scene
+          newList.push s
+      @__scenes = newList
+      return
+    __endActivateList : ( scene )->
+      newList = []
+      for s in @__scenes
+        if s isnt scene
+          newList.push s
+      newList.push scene
+      @__scenes = newList
+      return
+
 
     scenes : ()->   @__scenes.slice 0
     get    : (id)-> @__scenesById[ id ]
@@ -20,7 +35,13 @@ define [ "Scene", "backbone" ], ( Scene )->
       if @__scenesById[ scene.id ] then return scene
 
       @__scenesById[ scene.id ] = scene
-      @__scenes.push scene
+
+      # Insert the scene to lastActivateList, so that even if the current
+      # scene is never activated, we can activated it automatically when
+      # the there's no activated scene.
+      # If the scene is already activated before adding, it should be inside the active list.
+      if @__activeScene isnt scene
+        @__frontActivateList( scene )
 
       if @__scenes.length is 1 then @activate( scene )
 
@@ -35,18 +56,10 @@ define [ "Scene", "backbone" ], ( Scene )->
       if @__activeScene then @__activeScene.becomeInactive()
 
       @__activeScene = scene
-
-      @__removefromlastActive( scene )
-      @__lastActivateList.push scene
+      @__endActivateList( scene )
 
       scene.becomeActive()
       scene
-
-    __removefromlastActive : ( scene )->
-      for as, idx in @__lastActivateList
-        if as is scene
-          @__lastActivateList.splice( idx, 1 )
-          break
 
     remove : ( scene, force )->
 
@@ -63,12 +76,11 @@ define [ "Scene", "backbone" ], ( Scene )->
       # Remove ref
       delete @__scenesById[scene.id]
       @__scenes.splice (@__scenes.indexOf scene), 1
-      @__removefromlastActive( scene )
 
       if @__activeScene is scene
         @__activeScene = null
-        if @__lastActivateList.length
-          @__lastActivateList[ @__lastActivateList.length - 1 ].activate()
+        if @__scenes.length
+          @__scenes[ @__scenes.length - 1 ].activate()
         else
           console.info "Creating default scene."
           (new (Scene.DefaultScene())()).activate()

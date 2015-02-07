@@ -467,6 +467,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         spec        : newJson
         app_id      : @get("id")
         fast_update : fastUpdate
+        key_id      : @credentialId()
       }).fail ( error )-> self.__updateAppDefer.reject( error )
 
       errorHandler = ( error )->

@@ -6329,8 +6329,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9803,9 +9802,22 @@ section.members-only {
       .fullpage-settings .setting-content .basic-settings > div.project-item p {
         padding: 0 8px; }
       .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone button {
-        margin-top: 10px;
+        margin-top: 30px;
         position: absolute;
-        left: 389px; }
+        left: 344px; }
+      .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action {
+        padding-top: 20px; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action #confirm-project-name {
+          margin-left: 8px;
+          width: 278px; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action #do-leave-project {
+          margin-left: 304px; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action button {
+          position: static;
+          margin-top: 0;
+          margin-left: 8px; }
+        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action a {
+          padding-left: 6px; }
       .fullpage-settings .setting-content .basic-settings > div.project-item #project-name {
         margin-left: 30px; }
       .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions {

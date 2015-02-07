@@ -187,9 +187,20 @@
                 }
 
                 .leave-project-zone button {
-                    margin-top: 10px;
+                    margin-top: 30px;
                     position: absolute;
-                    left: 389px;
+                    left: 344px;
+                }
+
+                .leave-project-zone .confirm-action {
+                    padding-top: 20px;
+                    #confirm-project-name {
+                        margin-left: 8px;
+                        width: 278px;
+                    }
+                    #do-leave-project { margin-left: 304px; }
+                    button { position: static; margin-top: 0; margin-left: 8px; }
+                    a { padding-left: 6px; }
                 }
 
                 #project-name {

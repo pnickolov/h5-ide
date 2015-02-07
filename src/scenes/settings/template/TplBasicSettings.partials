@@ -15,12 +15,7 @@
         {{#if isAdmin}}<button class="icon-edit edit-button"></button>{{/if}}
     </h3>
 </div>
-<!--
-<div class="project-item">
-    <h3>Project Email Notification <button class="icon-edit edit-notification"></button></h3>
-    <p>Do not send email notification for this project</p>
-</div>
--->
+
 <div class="project-item">
     <h3>{{#if displayDelete}}{{i18n "DELETE_WORKSPACE"}}{{else}}{{i18n "LEAVE_WORKSPACE"}}{{/if}}</h3>
     <div class="leave-project-zone">
@@ -29,12 +24,18 @@
 
 <!--{{confirmToDelete}}-->
 <p>{{i18n "THIS_ACTION_CANNOT_BE_REVERTED"}}<br/>{{i18n "TYPE_THE_WORKSPACE_NAME_TO_CONFIRM"}}</p>
-<input type="text" class="input" id="confirm-project-name"/>
-<button class="btn btn-red" id="do-delete-project" disabled>{{i18n "CONFIRM_TO_DELETE"}}</button>
+<div class="confirm-action">
+    <input type="text" class="input" id="confirm-project-name"/>
+    <button class="btn btn-red" id="do-delete-project" disabled>{{i18n "CONFIRM_TO_DELETE"}}</button>
+    <a class="cancel-confirm">Cancel</a>
+</div>
 
 <!--{{confirmToLeave}}-->
 <p>{{i18n "THIS_ACTION_CANNOT_BE_REVERTED"}}<br/>{{i18n "ARE_YOU_SURE_YOU_WANT_TO_LEAVE_THIS_WORKSPACE"}}</p>
-<button class="btn btn-red" id="do-leave-project">{{i18n "CONFIRM_TO_LEAVE"}}</button>
+<div class="confirm-action">
+    <button class="btn btn-red" id="do-leave-project">{{i18n "CONFIRM_TO_LEAVE"}}</button>
+    <a class="cancel-confirm">Cancel</a>
+</div>
 
 <!--{{loading}}-->
 <div class="loading-spinner"></div>

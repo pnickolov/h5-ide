@@ -19,6 +19,7 @@ define [
             'paste #confirm-project-name' : 'deferConfirmProjectName'
             'click #do-delete-project'    : 'doDelete'
             'click #do-leave-project'     : 'doLeave'
+            'click .cancel-confirm'       : 'cancelConfirm'
 
         className: 'basic-settings'
 
@@ -122,11 +123,6 @@ define [
                 notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
 
         confirmLeaveDelete: -> @renderLeaveZone null, true
-
-
-
-
-
-
+        cancelConfirm: -> @renderLeaveZone()
 
 

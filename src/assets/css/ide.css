@@ -9765,83 +9765,55 @@ section.members-only {
       cursor: pointer; }
       .fullpage-settings .setting-content .icon-edit:hover {
         color: #148BE6; }
-    .fullpage-settings .setting-content .icon-delete::before {
+    .fullpage-settings .setting-content .icon-delete:before {
       margin-right: 5px; }
-    .fullpage-settings .setting-content .basic-settings > div.project-item {
+    .fullpage-settings .setting-content .project-item {
       margin: 18px 0;
       position: relative;
       padding-bottom: 13px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item.project-name-zone {
-        height: 42px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item h3 {
+      .fullpage-settings .setting-content .project-item h3 {
         width: 500px;
         position: relative;
         vertical-align: top; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item h3 .icon-edit {
-          position: absolute;
-          top: 0;
-          right: 0;
-          line-height: 40px; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item h3 span {
-          color: white;
-          padding-left: 30px;
-          overflow: hidden;
-          max-width: 300px;
-          text-overflow: ellipsis;
-          display: inline-block; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item::after {
-        display: block;
-        border-bottom: 1px solid #979797;
-        content: '';
-        width: 500px;
-        height: 13px;
-        position: absolute;
-        bottom: 0; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item:last-child::after {
-        display: none; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item p {
+      .fullpage-settings .setting-content .project-item p {
         padding: 0 8px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone button {
+      .fullpage-settings .setting-content .project-item .leave-project-zone button {
         margin-top: 30px;
         position: absolute;
         left: 344px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action {
+      .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action {
         padding-top: 20px; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action #confirm-project-name {
+        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action #confirm-project-name {
           margin-left: 8px;
           width: 278px; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action #do-leave-project {
+        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action #do-leave-project {
           margin-left: 304px; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action button {
+        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action button {
           position: static;
           margin-top: 0;
           margin-left: 8px; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item .leave-project-zone .confirm-action a {
+        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action a {
           padding-left: 6px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item #project-name {
+      .fullpage-settings .setting-content .project-item #project-name {
         margin-left: 30px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions {
+      .fullpage-settings .setting-content .project-item .edit-actions {
         display: inline;
         margin-left: 8px; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions a, .fullpage-settings .setting-content .basic-settings > div.project-item .edit-actions button {
-          padding: 5px;
-          min-width: 80px;
-          font-size: 12px; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .edit-mode {
+      .fullpage-settings .setting-content .project-item .edit-mode {
         display: none; }
-        .fullpage-settings .setting-content .basic-settings > div.project-item .edit-mode .loading-spinner {
+        .fullpage-settings .setting-content .project-item .edit-mode .loading-spinner {
           height: 10px;
           width: 10px;
           margin: 0;
           position: static;
           display: inline-block; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item .normal-mode {
+      .fullpage-settings .setting-content .project-item .normal-mode {
         display: inline; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item.edit .edit-mode {
+      .fullpage-settings .setting-content .project-item.edit .edit-mode {
         display: inline; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item.edit .normal-mode {
+      .fullpage-settings .setting-content .project-item.edit .normal-mode {
         display: none; }
-      .fullpage-settings .setting-content .basic-settings > div.project-item.edit .icon-edit {
+      .fullpage-settings .setting-content .project-item.edit .icon-edit {
         display: none; }
     .fullpage-settings .setting-content .credential {
       padding: 0 8px; }

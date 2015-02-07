@@ -110,6 +110,7 @@
         }
 
         .avatar img { width: 80px; height: 80px; }
+        
         .change-photo {
             height: 91px;
             #change-photo {
@@ -132,54 +133,23 @@
         }
 
         .icon-edit {
-            color: #909091;
-            cursor: pointer;
+            color  : #909091;
+            cursor : pointer;
+
             &:hover { color: #148BE6; }
         }
 
-        .icon-delete { &::before { margin-right: 5px; } }
+        .icon-delete:before { margin-right: 5px; } 
 
-        .basic-settings {
-
-            & > div.project-item {
+        .project-item {
                 margin: 18px 0;
                 position: relative;
                 padding-bottom: 13px;
-
-                &.project-name-zone { height: 42px; }
 
                 h3 {
                     width: 500px;
                     position: relative;
                     vertical-align: top;
-
-                    .icon-edit {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        line-height: 40px;
-                    }
-                    span {
-                        color: white;
-                        padding-left: 30px;
-                        overflow: hidden;
-                        max-width: 300px;
-                        text-overflow: ellipsis;
-                        display: inline-block;
-                    }
-                }
-                &::after {
-                    display: block;
-                    border-bottom: 1px solid #979797;
-                    content: '';
-                    width: 500px;
-                    height: 13px;
-                    position: absolute;
-                    bottom: 0;
-                }
-
-                &:last-child::after {
-                    display: none;
                 }
 
                 p {
@@ -194,10 +164,12 @@
 
                 .leave-project-zone .confirm-action {
                     padding-top: 20px;
+
                     #confirm-project-name {
                         margin-left: 8px;
                         width: 278px;
                     }
+
                     #do-leave-project { margin-left: 304px; }
                     button { position: static; margin-top: 0; margin-left: 8px; }
                     a { padding-left: 6px; }
@@ -210,22 +182,17 @@
                 .edit-actions {
                     display: inline;
                     margin-left: 8px;
-
-                    a, button {
-                        padding: 5px;
-                        min-width: 80px;
-                        font-size: 12px;
-                    }
                 }
 
                 .edit-mode {
                     display: none;
+
                     .loading-spinner {
-                        height: 10px;
-                        width: 10px;
-                        margin: 0;
-                        position: static;
-                        display: inline-block;
+                        height   : 10px;
+                        width    : 10px;
+                        margin   : 0;
+                        position : static;
+                        display  : inline-block;
                     }
                 }
 
@@ -237,7 +204,6 @@
                     .icon-edit { display: none; }
                 }
             }
-        }
 
         .credential {
             padding: 0 8px;

@@ -12,17 +12,17 @@
 </nav>
 <section class="setting-content">
     <header>{{i18n "HEAD_LABEL_ACCOUNT"}}</header>
-    <dl class="dl-horizontal">
+    <dl class="project-item">
         <dt class="avatar"><img src="{{gravatar.image}}"></dt>
         <dd class="change-photo">
             <a id="change-photo" href="{{gravatar.profile}}" target="_blank" >{{i18n "CHANGE_PHOTO"}}</a>
         </dd>
     </dl>
-    <dl class="dl-horizontal">
+    <dl class="project-item">
         <dt>{{ i18n "HEAD_LABEL_ACCOUNT_USERNAME" }}</dt><dd>{{username}}</dd>
     </dl>
 
-    <dl class="dl-horizontal accountFullNameRO">
+    <dl class="project-item accountFullNameRO">
         <dt>{{ i18n "HEAD_LABEL_ACCOUNT_FULLNAME" }}</dt><dd> <span class="fullNameText">{{firstName}} {{lastName}} </span> <button class="icon-edit link-style tooltip" data-tooltip='{{ i18n "HEAD_LABEL_ACCOUNT_FULLNAME" }}' id="AccountFullName"></button></dd>
     </dl>
     <div id="AccountFullNameWrap" class="accountEditWrap">

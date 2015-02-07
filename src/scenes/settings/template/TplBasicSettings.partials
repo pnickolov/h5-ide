@@ -1,6 +1,7 @@
 <!--{{basicSettings}}-->
-<div class="project-item project-name-zone">
-    <h3>{{i18n "WORKSPACE_NAME"}}
+<dl class="project-item project-name-zone">
+    <dt>{{i18n "WORKSPACE_NAME"}}</dt>
+    <dd>
         <div class="normal-mode">
             <span class="project-name">{{name}}</span>
         </div>
@@ -8,19 +9,19 @@
             <input type="text" class="input" id="project-name" value="{{name}}">
             <div class="edit-actions">
                 <button class="btn btn-blue" id="update-name">{{i18n "SETTINGS_LABEL_ACCOUNT_UPDATE"}}</button>
-                <a id="cance-update-name" class="cancel-button">{{i18n "SETTINGS_LABEL_ACCOUNT_CANCEL"}}</a>
+                <a class="cancel-button">{{i18n "SETTINGS_LABEL_ACCOUNT_CANCEL"}}</a>
             </div>
             <div class="loading-spinner" style="display: none;"></div>
         </div>
         {{#if isAdmin}}<button class="icon-edit edit-button"></button>{{/if}}
-    </h3>
-</div>
+    </dd>
+</dl>
 
-<div class="project-item">
-    <h3>{{#if displayDelete}}{{i18n "DELETE_WORKSPACE"}}{{else}}{{i18n "LEAVE_WORKSPACE"}}{{/if}}</h3>
-    <div class="leave-project-zone">
-    </div>
-</div>
+<dl class="project-item">
+    <dt>{{#if displayDelete}}{{i18n "DELETE_WORKSPACE"}}{{else}}{{i18n "LEAVE_WORKSPACE"}}{{/if}}</dt>
+    <dd class="leave-project-zone">
+    </dd>
+</dl>
 
 <!--{{confirmToDelete}}-->
 <p>{{i18n "THIS_ACTION_CANNOT_BE_REVERTED"}}<br/>{{i18n "TYPE_THE_WORKSPACE_NAME_TO_CONFIRM"}}</p>

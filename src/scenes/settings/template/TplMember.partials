@@ -20,7 +20,7 @@
                 <tr>
                     {{#unless noCheckbox}}
                     {{#if admin}}
-                    <th>
+                    <th class="checkbox-row">
                         <div class="checkbox">
                             <input id="t-m-select-all" type="checkbox" value="None">
                             <label for="t-m-select-all"></label>

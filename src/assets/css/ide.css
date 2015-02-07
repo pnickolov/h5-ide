@@ -9921,9 +9921,13 @@ section.members-only {
     .fullpage-settings .setting-content .member-setting .table th, .fullpage-settings .setting-content .member-setting .table td {
       overflow: inherit; }
     .fullpage-settings .setting-content .member-setting .checkbox-row {
-      width: 20px; }
+      width: 20px;
+      position: relative; }
       .fullpage-settings .setting-content .member-setting .checkbox-row .checkbox {
-        margin-top: 15px; }
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -8px -8px; }
     .fullpage-settings .setting-content .member-setting .memlist-item td {
       text-align: center; }
     .fullpage-settings .setting-content .member-setting .memlist-item .t-m-content tr {

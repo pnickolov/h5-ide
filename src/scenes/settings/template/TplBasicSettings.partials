@@ -13,7 +13,7 @@
             </div>
             <div class="loading-spinner" style="display: none;"></div>
         </div>
-        {{#if isAdmin}}<button class="icon-edit edit-button"></button>{{/if}}
+        {{#if isAdmin}}{{#unless private}}<button class="icon-edit edit-button"></button>{{/unless}}{{/if}}
     </dd>
 </dl>
 

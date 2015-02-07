@@ -1,6 +1,29 @@
 
 
-define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace )->
+define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "i18n!/nls/lang.js"], ( Scene, ProjectView, ProjectTpl, Workspace, Modal, lang )->
+
+  SwitchConfirmView = Backbone.View.extend {
+    events :
+      "click .do-switch" : "switch"
+
+    initialize : ( attr )->
+      this.toOpenProject  = attr.project
+      this.toOpenOpsModel = attr.opsmodel
+
+      @modal = new Modal {
+        template      : ProjectTpl.switchConfirm()
+        title         : lang.IDE.SETTINGS_CREATE_PROJECT_TITLE
+        disableClose  : true
+        disableFooter : true
+        width         : "500px"
+      }
+      @setElement @modal.tpl
+
+    switch : ()->
+      (new ProjectScene(@toOpenProject, @toOpenOpsModel, {slient:true})).activate()
+      @modal.close()
+      return
+  }
 
   # The ProjectScene work with Workspace objects. It's a Workspace Manager itself.
 
@@ -8,7 +31,7 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
 
     type : "ProjectScene"
 
-    constructor : ( projectId, opsmodelId )->
+    constructor : ( projectId, opsmodelId, options )->
       ss = App.sceneManager.find( projectId )
 
       if ss
@@ -16,10 +39,34 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
         ss.loadSpace( opsmodelId )
         return ss
 
-      return Scene.call this, { pid : projectId, opsid : opsmodelId }
+      options = options || {}
+      # Before we can create a new project scene. We need to unload the project
+      # scene that is currently being used. If it has modified workspace, we
+      # need the user to confirm.
+      if not options.slient
+        if _.some App.sceneManager.scenes(), ((s)-> s.type is "ProjectScene" && !s.isRemovable())
+
+          # Once we decide not to launch the new project scene immediately, we should
+          # revert the url to the activated scene.
+          App.sceneManager.activeScene().updateUrl()
+
+          # Prompt a dialog to ask for confirmation.
+          new SwitchConfirmView({ project:projectId, opsmodel:opsmodelId })
+          return
+
+      # When we decide to create the project scene, we need to remove any other other project scenes.
+      # 1. Find all the project scenes ( Notice that, it should be exactly one project scene at a time )
+      scenes = App.sceneManager.scenes().filter (m)-> m.type is "ProjectScene"
+      # 2. Unload all the workspaces of the scenes ( The whole system is built with shit fundamentally at the very beginning, and we refactored that shit to become a real piece of software. By refactoring, there's limitation of the current system that there can be only one editor at a time. It means if we would want to create a new scene while other scenes exist, those existing scene should close their editors. )
+      scene.removeNotFixedSpaces() for scene in scenes
+      # 3. Create the new project scene to switch to, before we close other project scenes. ( SceneManager will try to load a default scene if the last scene is being closed. Thus we should first create the scene that we want )
+      Scene.call this, { pid : projectId, opsid : opsmodelId }
+      # 4. Remove all other project scenes
+      scene.remove() for scene in scenes
+
+      return this
 
     initialize : ( attr )->
-      console.log "ProjectScene"
       self = @
       @__spaces     = []
       @__awakeSpace = null
@@ -27,7 +74,6 @@ define ["Scene", "./ProjectView", "Workspace"], ( Scene, ProjectView, Workspace 
 
       @project = App.model.projects().get( attr.pid ) || App.model.getPrivateProject()
       @view    = new ProjectView { scene : @ }
-      console.log @view, "ProjectScene"
       @listenTo @view, "wsOrderChanged", ()->   @__updateSpaceOrder()
       @listenTo @view, "wsClicked",      (id)-> @awakeSpace( id )
       @listenTo @view, "wsClosed",       (id)-> @removeSpace( id )

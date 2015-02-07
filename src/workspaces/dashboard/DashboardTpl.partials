@@ -3,7 +3,7 @@
 <div>
 
   <header class="dashboard-header">
-    <button class="icon-refresh">{{i18n "DASH_TPL_JUST_NOW"}}</button>
+    <button class="icon-refresh refreshResource">{{i18n "DASH_TPL_JUST_NOW"}}</button>
 
     <div class="observer-hidden">
       <div class="hovermenu">

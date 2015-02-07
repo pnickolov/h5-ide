@@ -109,6 +109,12 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
       CloudResources(@credentialId, type, region ).get(id)
 
     getResourceData : ( region, type, id )-> CloudResources( @credentialId, type, region ).get( id )
+
+    clearVisualizeData : ()->
+      @set "visualizeData", []
+      @__visRequest = null
+      return
+
     getResourcesCount : ( region )->
       filter = { category : region }
       data = {

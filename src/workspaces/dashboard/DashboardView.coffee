@@ -47,6 +47,7 @@ define [ "./DashboardTpl",
 
       "click .show-credential" : "showCredential"
       "click .icon-detail"     : "showResourceDetail"
+      'click .refreshResource' : 'reloadResource'
 
 
     initialize : ()->
@@ -97,8 +98,8 @@ define [ "./DashboardTpl",
       @initRegion()
       self = @
       setInterval ()->
-        if not self.$el.find("#RefreshResource").hasClass("reloading")
-          self.$el.find("#RefreshResource").text(MC.intervalDate(self.lastUpdate/ 1000))
+        if not self.$el.find(".refreshResource").hasClass("reloading")
+          self.$el.find(".refreshResource").text(MC.intervalDate(self.lastUpdate/ 1000))
         return
       , 1000 * 60
 
@@ -295,6 +296,16 @@ define [ "./DashboardTpl",
       id = $( event.currentTarget ).closest("li").attr("data-id");
       (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp();
       false
+
+    reloadResource : ()->
+      if $(".refreshResource").hasClass("reloading")
+        return
+
+      $(".refreshResource").addClass("reloading").text("")
+      @model.clearVisualizeData()
+      CloudResources.invalidate().done ()->
+        $(".refreshResource").removeClass("reloading").text(lang.IDE.DASH_TPL_JUST_NOW)
+      return
 
     showResourceDetail : ( evt )->
       $tgt = $( evt.currentTarget )

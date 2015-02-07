@@ -46,9 +46,11 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
             Backbone.Collection.apply @
             @projectId = attr.projectId
 
-        model: MemberModel
+        model: MemberModel,
 
-        projectId: ''
+        projectId: '',
+
+        limit: 10,
 
         fetch: () ->
 
@@ -56,7 +58,9 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
 
             ApiRequest('project_list_member', {
                 project_id: that.projectId
-            }).then (members)->
+            }).then (data)->
+                that.limit = data[0]
+                members = data[1]
                 models = _.map members, (member) ->
                     userName = Base64.decode(member.username)
                     currentUserName = App.user.get('username')

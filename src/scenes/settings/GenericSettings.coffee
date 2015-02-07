@@ -33,8 +33,9 @@ define [
 
         initialize: ( attr, options ) ->
             if attr
-                tab = attr.tab?.toLowerCase()
                 @projectId = attr.projectId
+                tab = attr.tab?.toLowerCase()
+                if @projectId and not tab then tab = SettingsView.TAB.Project.BasicSettings
 
             @scene = options.scene
 

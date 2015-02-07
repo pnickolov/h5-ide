@@ -1,5 +1,5 @@
 <!--{{basicSettings}}-->
-<dl class="project-item project-name-zone">
+<dl class="settings-item project-name-zone project-item">
     <dt>{{i18n "WORKSPACE_NAME"}}</dt>
     <dd>
         <div class="normal-mode">
@@ -17,7 +17,7 @@
     </dd>
 </dl>
 
-<dl class="project-item">
+<dl class="settings-item project-item">
     <dt>{{#if displayDelete}}{{i18n "DELETE_WORKSPACE"}}{{else}}{{i18n "LEAVE_WORKSPACE"}}{{/if}}</dt>
     <dd class="leave-project-zone">
     </dd>

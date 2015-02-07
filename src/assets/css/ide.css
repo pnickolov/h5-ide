@@ -9657,6 +9657,105 @@ section.members-only {
   margin-left: 2px;
   font-size: 12px; }
 
+#settings-nav {
+  min-width: 220px;
+  width: 25%;
+  padding: 20px 2.5% 20px 2.5%;
+  background: rgba(37, 37, 76, 0.8);
+  overflow: auto; }
+  #settings-nav .back-settings {
+    font-size: 14px;
+    display: block;
+    width: 44px;
+    padding: 8px 12px;
+    border: 1px solid #51568e;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    color: #898dbc;
+    background: transparent;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
+    #settings-nav .back-settings:hover {
+      background: #51568e;
+      color: #fff; }
+  #settings-nav section {
+    margin-bottom: 10px; }
+    #settings-nav section header, #settings-nav section a {
+      max-width: 210px;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+    #settings-nav section header {
+      font-size: 18px;
+      color: #eee;
+      padding: 14px 0; }
+    #settings-nav section a {
+      display: block;
+      padding: 5px 0 5px 10px; }
+
+.settings-item {
+  position: relative;
+  padding: 0 0 26px 0;
+  border-bottom: 1px solid #1d1e29;
+  font-size: 16px;
+  line-height: 28px; }
+  .settings-item dt {
+    color: #999;
+    width: 16%;
+    min-width: 180px;
+    margin-right: 2%;
+    display: inline-block; }
+  .settings-item dd {
+    color: #eee;
+    display: inline-block;
+    width: 70%; }
+  .settings-item dt + dd {
+    margin-top: 10px; }
+  .settings-item .input {
+    width: 220px; }
+  .settings-item .edit-actions {
+    display: inline;
+    margin-left: 8px; }
+    .settings-item .edit-actions .cancel-button {
+      font-size: 14px;
+      margin-left: 4px;
+      cursor: pointer; }
+  .settings-item .edit-mode {
+    display: none; }
+    .settings-item .edit-mode .loading-spinner {
+      height: 10px;
+      width: 10px;
+      margin: 0;
+      position: static;
+      display: inline-block; }
+  .settings-item .normal-mode {
+    display: inline; }
+  .settings-item.edit .edit-mode {
+    display: inline; }
+  .settings-item.edit .normal-mode {
+    display: none; }
+  .settings-item.edit .icon-edit {
+    display: none; }
+
+.leave-project-zone button {
+  margin-top: 30px;
+  position: absolute;
+  left: 344px; }
+
+.leave-project-zone .confirm-action {
+  padding-top: 20px; }
+  .leave-project-zone .confirm-action #confirm-project-name {
+    margin-left: 8px;
+    width: 278px; }
+  .leave-project-zone .confirm-action #do-leave-project {
+    margin-left: 304px; }
+  .leave-project-zone .confirm-action button {
+    position: static;
+    margin-top: 0;
+    margin-left: 8px; }
+  .leave-project-zone .confirm-action a {
+    padding-left: 6px; }
+
 .fullpage-settings {
   display: flex;
   height: 100%;
@@ -9673,45 +9772,12 @@ section.members-only {
       border: 1px solid #51568e;
       border-radius: 4px;
       box-sizing: border-box; } }
-  .fullpage-settings #settings-nav {
-    min-width: 220px;
-    width: 25%;
-    padding: 20px 2.5% 20px 2.5%;
-    background: rgba(37, 37, 76, 0.8); }
-    .fullpage-settings #settings-nav .back-settings {
-      font-size: 14px;
-      display: block;
-      width: 44px;
-      padding: 8px 12px;
-      border: 1px solid #51568e;
-      border-radius: 3px;
-      margin-bottom: 20px;
-      color: #898dbc;
-      background: transparent;
-      -webkit-transition: all 0.2s ease-in-out;
-      -o-transition: all 0.2s ease-in-out;
-      transition: all 0.2s ease-in-out; }
-      .fullpage-settings #settings-nav .back-settings:hover {
-        background: #51568e;
-        color: #fff; }
-    .fullpage-settings #settings-nav > section {
-      margin-bottom: 10px; }
-      .fullpage-settings #settings-nav > section header, .fullpage-settings #settings-nav > section a {
-        max-width: 210px;
-        overflow: hidden;
-        text-overflow: ellipsis; }
-      .fullpage-settings #settings-nav > section header {
-        font-size: 18px;
-        color: white;
-        padding: 14px 0; }
-      .fullpage-settings #settings-nav > section a {
-        display: block;
-        padding: 5px 0 5px 10px; }
   .fullpage-settings .setting-content {
-    min-width: 600px;
+    min-width: 700px;
     width: 65%;
     padding: 20px 2.5% 20px 2.5%;
-    background: #2c2f4d; }
+    background: #2c2f4d;
+    overflow: auto; }
     .fullpage-settings .setting-content > header {
       color: #cce;
       padding-bottom: 15px;
@@ -9730,20 +9796,6 @@ section.members-only {
         padding: 0 5px;
         display: inline-block;
         overflow: hidden; }
-    .fullpage-settings .setting-content > article {
-      color: #999999; }
-      .fullpage-settings .setting-content > article h3 {
-        color: #999;
-        font-size: 16px; }
-    .fullpage-settings .setting-content dl {
-      line-height: 36px; }
-      .fullpage-settings .setting-content dl dt, .fullpage-settings .setting-content dl dd {
-        margin-top: 0; }
-      .fullpage-settings .setting-content dl dt {
-        float: left; }
-      .fullpage-settings .setting-content dl dd {
-        padding-left: 77px;
-        min-height: 36px; }
     .fullpage-settings .setting-content .avatar img {
       width: 80px;
       height: 80px; }
@@ -9768,54 +9820,6 @@ section.members-only {
         color: #148BE6; }
     .fullpage-settings .setting-content .icon-delete:before {
       margin-right: 5px; }
-    .fullpage-settings .setting-content .project-item {
-      margin: 18px 0;
-      position: relative;
-      padding-bottom: 13px; }
-      .fullpage-settings .setting-content .project-item h3 {
-        width: 500px;
-        position: relative;
-        vertical-align: top; }
-      .fullpage-settings .setting-content .project-item p {
-        padding: 0 8px; }
-      .fullpage-settings .setting-content .project-item .leave-project-zone button {
-        margin-top: 30px;
-        position: absolute;
-        left: 344px; }
-      .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action {
-        padding-top: 20px; }
-        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action #confirm-project-name {
-          margin-left: 8px;
-          width: 278px; }
-        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action #do-leave-project {
-          margin-left: 304px; }
-        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action button {
-          position: static;
-          margin-top: 0;
-          margin-left: 8px; }
-        .fullpage-settings .setting-content .project-item .leave-project-zone .confirm-action a {
-          padding-left: 6px; }
-      .fullpage-settings .setting-content .project-item #project-name {
-        margin-left: 30px; }
-      .fullpage-settings .setting-content .project-item .edit-actions {
-        display: inline;
-        margin-left: 8px; }
-      .fullpage-settings .setting-content .project-item .edit-mode {
-        display: none; }
-        .fullpage-settings .setting-content .project-item .edit-mode .loading-spinner {
-          height: 10px;
-          width: 10px;
-          margin: 0;
-          position: static;
-          display: inline-block; }
-      .fullpage-settings .setting-content .project-item .normal-mode {
-        display: inline; }
-      .fullpage-settings .setting-content .project-item.edit .edit-mode {
-        display: inline; }
-      .fullpage-settings .setting-content .project-item.edit .normal-mode {
-        display: none; }
-      .fullpage-settings .setting-content .project-item.edit .icon-edit {
-        display: none; }
     .fullpage-settings .setting-content .credential {
       padding: 0 8px; }
       .fullpage-settings .setting-content .credential .instruct {
@@ -9956,31 +9960,6 @@ section.members-only {
       overflow: hidden; }
     .fullpage-settings .setting-content .accountEditWrap {
       display: none; }
-      .fullpage-settings .setting-content .accountEditWrap .input {
-        width: 250px;
-        padding: 5px; }
-      .fullpage-settings .setting-content .accountEditWrap .dl-horizontal {
-        line-height: 36px; }
-    .fullpage-settings .setting-content #AccountInfo, .fullpage-settings .setting-content #AccountEmailInfo {
-      width: 360px;
-      font-size: 12px;
-      border-radius: 3px;
-      color: #ec3c38;
-      height: 30px;
-      line-height: 30px;
-      margin: 10px 0; }
-    .fullpage-settings .setting-content .accountPwdBtns {
-      padding-left: 130px; }
-    .fullpage-settings .setting-content #AccountUpdatePwd, .fullpage-settings .setting-content #AccountUpdateEmail, .fullpage-settings .setting-content #AccountUpdateFullName {
-      padding: 5px;
-      min-width: 80px;
-      font-size: 12px; }
-    .fullpage-settings .setting-content #AccountCancelPwd, .fullpage-settings .setting-content #AccountCancelEmail, .fullpage-settings .setting-content #AccountCancelFullName {
-      font-size: 12px;
-      color: #999;
-      padding: 3px;
-      display: inline-block;
-      vertical-align: middle; }
     .fullpage-settings .setting-content .current-usage-block {
       display: block;
       width: 180px;

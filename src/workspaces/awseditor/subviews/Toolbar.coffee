@@ -317,7 +317,7 @@ define [
             MC.Analytics.increase("app_to_stack")
             isNew = not (appToStackModal.tpl.find("input[name='save-stack-type']:checked").val() is "replace")
             if isNew
-                newOps = App.model.createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
+                newOps = @workspace.opsModel.project().createStackByJson( @workspace.design.serializeAsStack(appToStackModal.tpl.find('#modal-input-value').val()) )
                 appToStackModal.close()
                 App.loadUrl newOps.url()
                 return

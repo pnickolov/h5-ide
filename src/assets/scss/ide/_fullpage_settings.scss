@@ -304,6 +304,11 @@
                     margin: 5px;
                 }
             }
+            .limit-member-tip {
+                width: 480px;
+                float: left;
+                padding: 10px 0 20px 0;
+            }
             #invite {
                 margin: 15px 0 15px 0;
                 margin-left: 5px;
@@ -321,7 +326,7 @@
             .checkbox-row {
                 width: 20px;
                 position: relative;
-                
+
                 .checkbox {
                     position : absolute;
                     top      : 50%;

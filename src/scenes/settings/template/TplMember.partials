@@ -6,11 +6,17 @@
     <div class="title">{{i18n "SETTINGS_MEMBER_LABEL_MEMBER"}}(<span class="memlist-count"></span>)</div>
     {{#if admin}}
     <div class="operate">
+        {{#if limit}}
+        <div class="limit-member-tip">
+            {{i18n "SETTINGS_MEMBER_LABEL_LIMIT" number}} <a href="mailto:support@visualops.io" target="_top">support@visualops.io</a>
+        </div>
+        {{else}}
         <div class="invite">
             <input class="input" placeholder="{{i18n "SETTINGS_MEMBER_LABEL_INVITE_TIP"}}" id="mail">
             <div class="search"></div>
             <button class="btn btn-blue" id="invite">{{i18n "SETTINGS_MEMBER_LABEL_INVITE_CONFIRM"}}</button>
         </div>
+        {{/if}}
         <button class="btn btn-red" id="delete" disabled>{{i18n "SETTINGS_MEMBER_LABEL_REMOVE"}}</button>
     </div>
     {{/if}}

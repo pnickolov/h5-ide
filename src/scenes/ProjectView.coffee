@@ -46,14 +46,31 @@ define [ "ApiRequest",
       $cvv = modal.tpl.find(".new-project-cvv")
       valid = true
 
-      $expire.parsley 'custom', (val) ->
-        if val.indexOf('/') is -1
-          return lang.IDE.SETTINGS_CREATE_PROJECT_EXPIRE_FORMAT
+      # deal expire
+      $expire.parsley 'custom', (val) -> null
+      expire = $expire.val()
+      expireAry = expire.split('/')
+      if expire.match(/^\d\d\/\d\d$/g) # MM/YYYY -> MM/20YY
+        expire = "#{expireAry[0]}/20#{expireAry[1]}"
+      else if expire.match(/^\d\d\d\d$/g) # MM/YY -> MM/20YY
+        expire = "#{expire.substr(0,2)}/20#{expire.substr(2,2)}"
+      else if expire.match(/^\d\d\/\d\d\d\d$/g) # MM/YYYY -> MM/YYYY
+        expire = expire
+      else if expire.match(/^\d\d\d\d\d\d$/g) # MMYYYY -> MM/YYYY
+        expire = "#{expire.substr(0,2)}/#{expire.substr(2,4)}"
+      else if expire.match(/^\d\d\d$/g) # MYY -> 0M/20YY
+        expire = "0#{expire.substr(0,1)}/20#{expire.substr(1,2)}"
+      else
+        $expire.parsley 'custom', (val) ->
+          return lang.IDE.SETTINGS_CREATE_PROJECT_EXPIRE_FORMAT if val.indexOf('/') is -1
+          return null
 
       modal.tpl.find("input").each (idx, dom) ->
+        # if not $(dom).hasClass('new-project-cvv')
         if not $(dom).parsley('validate')
           valid = false
           return false
+
       if valid
         $create.prop 'disabled', true
         App.model.createProject({
@@ -63,7 +80,7 @@ define [ "ApiRequest",
           email     : $email.val()
           card      : {
             number : $number.val()
-            expire : $expire.val()
+            expire : expire
             cvv    : $cvv.val()
           }
         }).then ( project )->

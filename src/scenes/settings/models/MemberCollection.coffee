@@ -107,6 +107,10 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
                 username: App.user.get('username')
             })
 
+        isLimitInvite: () ->
+
+            return @models.length >= @limit
+
     })
 
     MemberCollection

@@ -6329,7 +6329,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9882,6 +9883,10 @@ section.members-only {
         margin: 10px; }
       .fullpage-settings .setting-content .member-setting .search .name, .fullpage-settings .setting-content .member-setting .search .mail {
         margin: 5px; }
+    .fullpage-settings .setting-content .member-setting .limit-member-tip {
+      width: 480px;
+      float: left;
+      padding: 10px 0 20px 0; }
     .fullpage-settings .setting-content .member-setting #invite {
       margin: 15px 0 15px 0;
       margin-left: 5px; }

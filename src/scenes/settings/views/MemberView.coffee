@@ -127,6 +127,8 @@ define ['backbone',
                     }
                 ])
             that.$el.html TplMember.main({
+                limit: that.memberCol.isLimitInvite(),
+                number: that.memberCol.limit,
                 columns: columns,
                 admin: that.isAdmin
             })

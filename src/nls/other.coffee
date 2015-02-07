@@ -2565,6 +2565,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Invite Member"
       zh: "邀请成员"
 
+    SETTINGS_MEMBER_LABEL_LIMIT:
+      en: "Your workspace has reached the standard limit of {{number}}. If you'd like invit more member to collaborate, contact us at"
+      zh: "该工作空间已经达到 %s 个成员的标准上限，如果你想要邀请更多协作成员，请联系："
+
     WORKSPACE_DEMO_TIP:
       en: "This workspace is currently in Demo mode. Set up your own cloud credential to run stack
 into live resources, or import existing infrastructures."

@@ -31,7 +31,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'project_remove'          : { type:'forge', url:'/project/',	method:'remove',	params:['username', 'session_id', 'project_id']   },
 		'project_list'            : { type:'forge', url:'/project/',	method:'list',	params:['username', 'session_id', 'project_ids']   },
 		'project_update_payment'  : { type:'forge', url:'/project/',	method:'update_payment',	params:['username', 'session_id', 'project_id', 'attributes']   },
-		'project_invite'          : { type:'forge', url:'/project/',	method:'invite',	params:['username', 'session_id', 'project_id', 'member_email', 'member_role', 'member_threshold']   },
+		'project_invite'          : { type:'forge', url:'/project/',	method:'invite',	params:['username', 'session_id', 'project_id', 'member_email', 'member_role']   },
 		'project_check_invitation' : { type:'forge', url:'/project/',	method:'check_invitation',	params:['session_id', 'key']   },
 		'project_cancel_invitation' : { type:'forge', url:'/project/',	method:'cancel_invitation',	params:['username', 'session_id', 'project_id', 'member_id']   },
 		'project_remove_members'  : { type:'forge', url:'/project/',	method:'remove_members',	params:['username', 'session_id', 'project_id', 'member_ids']   },

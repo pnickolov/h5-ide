@@ -320,6 +320,13 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         compact: ()->
             @tpl.find(".modal-body").css(padding: 0)
             @
+
+        setWidth: (width)->
+          body = @.tpl.find('.modal-body')
+          body.parent().css( width: width )
+          @.resize()
+          @
+
         animate: (animate)->
             @tpl.show()
             that = @

@@ -34,7 +34,7 @@ define [
   MC.template.resPanelAmiInfo = ( data )->
     if not data.region or not data.imageId then return
 
-    ami = CloudResources( data.credential, constant.RESTYPE.AMI, data.region ).get( data.imageId )
+    ami = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, data.region ).get( data.imageId )
     if not ami then return
 
     ami = ami.toJSON()

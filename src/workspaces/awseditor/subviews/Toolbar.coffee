@@ -417,7 +417,7 @@ define [
     checkDBinstance : (oldDBInstanceList)->
       checkDB = new Q.defer()
       if oldDBInstanceList.length
-        DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
+        DBInstances = CloudResources( @workspace.opsModel.credentialId() ,constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
         DBInstances.fetchForce().then ->
           checkDB.resolve(DBInstances)
       else
@@ -446,7 +446,7 @@ define [
       _.each components, (e)->
         dbInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
-      DBInstances = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
+      DBInstances = CloudResources(that.workspace.opsModel.credentialId(),constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal
         title: lang.IDE.HEAD_INFO_LOADING
         template: MC.template.loadingSpinner

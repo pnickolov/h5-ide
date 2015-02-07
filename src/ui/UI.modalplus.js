@@ -114,7 +114,7 @@
         }
         _.delay(function() {
           return self.resize();
-        }, 300);
+        }, 400);
         _.delay(function() {
           return self.nextOptions.forEach(function(option) {
             return new Modal(option);
@@ -159,10 +159,10 @@
           modal.trigger("closed", this);
           modal.pending = false;
           if (modals.length > 1) {
-            return modals.length = modals.length - number;
+            modals.length = modals.length - number;
           } else {
             modal.wrap.remove();
-            return modals = [];
+            modals = [];
           }
         }, modal.option.delay || 300);
         _.delay(function() {
@@ -202,7 +202,7 @@
         disableClose = false;
         _.each(modals, function(modal) {
           if (modal.option.disableClose) {
-            return disableClose = true;
+            disableClose = true;
           }
         });
         if (!disableClose) {
@@ -213,17 +213,15 @@
             }
           });
         }
-        $(window).resize((function(_this) {
-          return function() {
-            if (!self.isClosed) {
-              if (self === modals[modals.length - 1]) {
-                return self.resize();
-              } else {
-                return self.resize(-1);
-              }
+        $(window).resize(function() {
+          if (!self.isClosed) {
+            if (self === modals[modals.length - 1]) {
+              return self.resize();
+            } else {
+              return self.resize(-1);
             }
-          };
-        })(this));
+          }
+        });
         $(document).keyup(function(e) {
           if (e.which === 27 && !self.option.disableClose) {
             e.preventDefault();
@@ -249,7 +247,7 @@
             if (draggable) {
               originalLayout = modal.tpl.offset();
               diffX = originalLayout.left - e.clientX;
-              return diffY = originalLayout.top - e.clientY;
+              diffY = originalLayout.top - e.clientY;
             }
           });
           $(document).mousemove(function(e) {
@@ -295,7 +293,7 @@
               }, 100);
             }
             draggable = false;
-            return diffX = diffX = 0;
+            diffX = diffY = 0;
           });
         }
       };
@@ -387,6 +385,16 @@
         return this;
       };
 
+      Modal.prototype.setWidth = function(width) {
+        var body;
+        body = this.tpl.find('.modal-body');
+        body.parent().css({
+          width: width
+        });
+        this.resize();
+        return this;
+      };
+
       Modal.prototype.animate = function(animate) {
         var delayOption, left, offset, that, windowWidth;
         this.tpl.show();
@@ -415,9 +423,10 @@
         that.isMoving = true;
         this.tpl.animate({
           left: left
-        }, delayOption, function() {
-          return that.isMoving = false;
-        });
+        }, delayOption, (function() {
+          that.isMoving = false;
+          return false;
+        }));
         return this;
       };
 

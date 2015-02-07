@@ -141,7 +141,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 _.delay ->
                     self.trigger "shown", @
                 , 300
-            _.delay -> self.resize()
+            _.delay ->
+                self.resize()
             , 400
             _.delay ->
                 self.nextOptions.forEach (option)->
@@ -181,6 +182,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 else
                     modal.wrap.remove()
                     modals = []
+                return
             , modal.option.delay||300
             _.delay ->
                 modal.nextCloses.forEach (modalToClose)->
@@ -210,12 +212,13 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             _.each modals, (modal)->
                 if modal.option.disableClose
                     disableClose = true
+                    return
             if not disableClose
                 @wrap.off "click"
                 @wrap.on "click", (e)->
                     if e.target is e.currentTarget
                         self.close()
-            $(window).resize =>
+            $(window).resize ->
                 unless self.isClosed
                   if self is modals[modals.length-1]
                     self.resize()
@@ -241,6 +244,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                         originalLayout = modal.tpl.offset()
                         diffX = originalLayout.left - e.clientX
                         diffY = originalLayout.top - e.clientY
+                        return
                 $(document).mousemove (e)->
                     if draggable
                         modal.tpl.css
@@ -263,7 +267,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                         if left > maxRight then left = maxRight
                         modal.tpl.animate {top, left}, 100
                     draggable = false
-                    diffX = diffX = 0
+                    diffX = diffY = 0
+                    return
 
         resize: (isSlideIn)->
             self = @
@@ -347,7 +352,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if animate in ["fadeOut", "slideIn"]
                 left = +offset.left - windowWidth
             that.isMoving = true
-            @tpl.animate {left}, delayOption , -> that.isMoving = false
+            @tpl.animate {left}, delayOption ,(-> that.isMoving = false;false)
             @
         find: (selector)->
             @tpl.find(selector)

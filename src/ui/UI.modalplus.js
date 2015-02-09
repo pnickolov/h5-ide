@@ -83,6 +83,9 @@
           this.option.template = "";
         }
         this.tpl = $(MC.template.modalTemplate(this.option));
+        if (this.option.width) {
+          this.tpl.find(".modal-wrapper-fix").css("width", this.option.width);
+        }
         this.tpl.find(".modal-body").html(this.option.$template);
         this.setElement(this.tpl);
         if (modals.length && modals[modals.length - 1].isMoving) {

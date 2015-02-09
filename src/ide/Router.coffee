@@ -14,8 +14,8 @@ define [
 
     routes :
       ""                               : "openProject"
-      "team(/:project)"                : "openProject"
-      "team/:project/ops(/:ops)"       : "openProject"
+      "workspace(/:project)"                : "openProject"
+      "workspace/:project/ops(/:ops)"       : "openProject"
 
       "settings"                       : "openSettings"
       "settings/:projectId(/:tab)"     : "openSettings"
@@ -41,7 +41,7 @@ define [
 
       # Add additional routes here.
       # These routes are diabled when the IDE is loading.
-      @route "team/:project/unsaved(/:ops)", "openProject"
+      @route "workspace/:project/unsaved(/:ops)", "openProject"
       return
 
     onRouteClicked : ( evt )->

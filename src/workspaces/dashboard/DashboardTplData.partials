@@ -103,7 +103,7 @@
             <ul id="region-resource-app-wrap" class="region-resource-list clearfix">
                 {{#each apps}}
                     <li data-id="{{id}}">
-                        <a class="route" href="/team/{{../projectId}}/ops/{{id}}">{{#if progressing}}
+                        <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">{{#if progressing}}
                         <div class="thumbnail app-thumbnail"></div>
                         <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
                         <div class="region-resource-info truncate">
@@ -150,7 +150,7 @@
             <ul id="region-resource-stack-wrap" class="region-resource-list clearfix">
                 {{#each stacks}}
                     <li data-id="{{id}}">
-                        <a class="route" href="/team/{{../projectId}}/ops/{{id}}">
+                        <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">
                             <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
                             <div class="region-resource-info">
                                 <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>

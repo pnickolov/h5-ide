@@ -169,7 +169,7 @@ define [
 
     getOpsModel  : ( id )-> @get("stacks").get( id ) or @get("apps").get( id )
 
-    url : ()-> "team/" + @get("id")
+    url : ()-> "workspace/" + @get("id")
     showCredential: ()-> App.loadUrl "/settings/#{@get("id")}/credential"
 
 

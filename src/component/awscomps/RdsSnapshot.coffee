@@ -236,7 +236,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @switchAction 'processing'
             newName = @manager.$el.find('#property-snapshot-name').val()
             afterDuplicate = @afterDuplicate.bind @
-            accountNumber = App.user.attributes.account
+            accountNumber = Design.instance().credential().get("awsAccount")
             if not /^\d+$/.test accountNumber.split('-').join('')
               notification('error', lang.PROP.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
               return false

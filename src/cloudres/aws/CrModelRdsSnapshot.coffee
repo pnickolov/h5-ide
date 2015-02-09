@@ -95,7 +95,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
 
     copyTo : ( destRegion, newName, description )->
        self = @
-       source_id = "arn:aws:rds:#{@collection.region()}:#{App.user.attributes.account.split('-').join("")}:snapshot:#{@get('id')}"
+       source_id = "arn:aws:rds:#{@collection.region()}:#{Design.instance().credential().get("awsAccount").split('-').join("")}:snapshot:#{@get('id')}"
        @sendRequest("rds_snap_CopyDBSnapshot",{
          region_name     : destRegion
          source_id       : source_id
@@ -106,7 +106,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
          if not newSnapshot.DBSnapshotIdentifier
            throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot copied but aws returns invalid data." )
 
-         thatCln = CloudResources( self.collection.type, destRegion )
+         thatCln = CloudResources( self.collection.credential(), self.collection.type, destRegion )
          clones = newSnapshot
          clones.id = newSnapshot.DBSnapshotIdentifier
          clones.name = newName

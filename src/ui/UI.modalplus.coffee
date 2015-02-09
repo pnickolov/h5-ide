@@ -52,38 +52,39 @@
 #           width: "600px"
 #
 
-modals = []
-defaultOptions = {
-    title: ""
-    mode: "normal" # ["normal", "panel", "fullscreen"]
-    template: ""
-    width: 520
-    maxHeight: null
-    delay: 300
-    compact: false
-    disableClose: false
-    disableFooter: false
-    disableDrag: false
-    hideClose: false
-    hasScroll: false
-    hasHeader: true
-    hasFooter: true
-    cancel: {
-        text: ""
-        hide: false
-    }
-    confirm: {
-        text: ""
-        color: "blue" # ["blue", "red", "silver"]
-        disabled: false
-        hide: false
-    }
-    onClose: null
-    onConfirm: null
-    onShow: null
-}
-
 define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
+
+    modals = []
+    defaultOptions = {
+        title: ""
+        mode: "normal" # ["normal", "panel", "fullscreen"]
+        template: ""
+        width: 520
+        maxHeight: null
+        delay: 300
+        compact: false
+        disableClose: false
+        disableFooter: false
+        disableDrag: false
+        hideClose: false
+        hasScroll: false
+        hasHeader: true
+        hasFooter: true
+        cancel: {
+            text: ""
+            hide: false
+        }
+        confirm: {
+            text: ""
+            color: "blue" # ["blue", "red", "silver"]
+            disabled: false
+            hide: false
+        }
+        onClose: null
+        onConfirm: null
+        onShow: null
+    }
+
     class Modal extends Backbone.View
         events:
             "click .modal-confirm": "confirm"

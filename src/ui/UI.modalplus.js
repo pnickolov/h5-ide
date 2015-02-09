@@ -1,42 +1,39 @@
 (function() {
-  var defaultOptions, modals,
-    __hasProp = {}.hasOwnProperty,
+  var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  modals = [];
-
-  defaultOptions = {
-    title: "",
-    mode: "normal",
-    template: "",
-    width: 520,
-    maxHeight: null,
-    delay: 300,
-    compact: false,
-    disableClose: false,
-    disableFooter: false,
-    disableDrag: false,
-    hideClose: false,
-    hasScroll: false,
-    hasHeader: true,
-    hasFooter: true,
-    cancel: {
-      text: "",
-      hide: false
-    },
-    confirm: {
-      text: "",
-      color: "blue",
-      disabled: false,
-      hide: false
-    },
-    onClose: null,
-    onConfirm: null,
-    onShow: null
-  };
-
   define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
-    var Modal;
+    var Modal, defaultOptions, modals;
+    modals = [];
+    defaultOptions = {
+      title: "",
+      mode: "normal",
+      template: "",
+      width: 520,
+      maxHeight: null,
+      delay: 300,
+      compact: false,
+      disableClose: false,
+      disableFooter: false,
+      disableDrag: false,
+      hideClose: false,
+      hasScroll: false,
+      hasHeader: true,
+      hasFooter: true,
+      cancel: {
+        text: "",
+        hide: false
+      },
+      confirm: {
+        text: "",
+        color: "blue",
+        disabled: false,
+        hide: false
+      },
+      onClose: null,
+      onConfirm: null,
+      onShow: null
+    };
     Modal = (function(_super) {
       __extends(Modal, _super);
 

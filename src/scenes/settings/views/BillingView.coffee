@@ -123,6 +123,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
     updatePaymentEmail: ()->
       @$el.find(".billing-email-text>p,.editEmailBtn").hide()
       @$el.find(".editEmailControl,.billing-email-text>input").show()
+      @$el.find(".billing-email-text>input").val(@model.get("payment").email)
 
     updateEmailCancel: ()->
       @renderCache()

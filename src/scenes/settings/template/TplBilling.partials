@@ -11,10 +11,10 @@
             <p>{{or paymentUpdate.email "Email not set"}}</p>
             <button class="icon-edit tooltip editEmailBtn" data-tooltip="Click to edit billing email"></button>
             <input class="input hide" type="text"/>
-            <span class="editEmailControl hide edit-actions">
+            <div class="editEmailControl hide edit-actions">
                 <button class="btn btn-blue editEmailDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
                 <button class="btn btn-silver modal-close editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>
-            </span>
+            </div>
         </dd>
     </dl>
     <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>

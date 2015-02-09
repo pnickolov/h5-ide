@@ -153,7 +153,10 @@ define [
     saveStack : ( evt )-> @appAction.saveStack(evt.currentTarget, @)
 
     deleteStack    : ()-> @appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name"), @workspace )
-    createStack    : ()-> App.createOps( @workspace.opsModel.get("region") )
+    createStack    : ()->
+      newOps = @workspace.opsModel.project().createStack(@workspace.design.region())
+      App.loadUrl newOps.url()
+
     duplicateStack : ()->
       newOps = @workspace.opsModel.project().createStackByJson( @workspace.design.serialize({duplicateStack: true}) )
       App.loadUrl newOps.url()

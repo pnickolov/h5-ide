@@ -19,8 +19,8 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequ
             @$el.html MC.template.loadingSpinner()
             project_id = @model.get("id")
             ApiRequest("token_list", {project_id}).then (res)->
-              console.log res
-              self.$el.html template()
+              isAdmin = self.model.amIAdmin()
+              self.$el.html template({isAdmin})
               self.tokens = res[0].tokens
               self.updateTokenList()
 
@@ -131,7 +131,8 @@ define [ 'backbone', "../template/TplAccessToken", 'i18n!/nls/lang.js', "ApiRequ
             hasNoToken = @hasNoToken()
             @$el.find("#TokenManager").find(".token-table").toggleClass( "empty", hasNoToken )
             if not hasNoToken
-                @$el.find("#TokenList").html MC.template.accessTokenTable( tokens )
+                isAdmin = @model.amIAdmin()
+                @$el.find("#TokenList").html MC.template.accessTokenTable( {tokens, isAdmin} )
             else
                 @$el.find("#TokenList").empty()
             return

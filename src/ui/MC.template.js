@@ -1310,18 +1310,18 @@ TEMPLATE.headerNotifyItem=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.name), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.name), {hash:{},inverse:self.noop,fn:self.programWithDepth(2, program2, data, depth0),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;
   }
-function program2(depth0,data) {
+function program2(depth0,data,depth1) {
   
   var buffer = "", stack1;
   buffer += "\n    <li>\n        <input class=\"tokenName input\" value=\""
@@ -1330,17 +1330,26 @@ function program2(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_TIP_CLICK_TO_SELECT_ALL", {hash:{},data:data}))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n	<span class=\"tokenControl\">\n		<button class=\"tooltip icon-edit\" data-tooltip=\""
+    + "</span>\n        ";
+  stack1 = helpers['if'].call(depth0, (depth1 && depth1.isAdmin), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </li>\n";
+  return buffer;
+  }
+function program3(depth0,data) {
+  
+  var buffer = "";
+  buffer += "<span class=\"tokenControl\">\n            <button class=\"tooltip icon-edit\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "ACCESS_TOKEN_EDIT_TIP", {hash:{},data:data}))
-    + "\"></button>\n		<button class=\"tooltip icon-delete\" data-tooltip=\""
+    + "\"></button>\n            <button class=\"tooltip icon-delete\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "ACCESS_TOKEN_DELETE_TIP", {hash:{},data:data}))
-    + "\"></button>\n		<button class=\"btn btn-blue tokenDone\">"
+    + "\"></button>\n            <button class=\"btn btn-blue tokenDone\">"
     + escapeExpression(helpers.i18n.call(depth0, "HEAD_BTN_DONE", {hash:{},data:data}))
-    + "</button>\n	</span>\n    </li>\n";
+    + "</button>\n        </span>";
   return buffer;
   }
 
-  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.tokens), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { return stack1; }
   else { return ''; }
   };

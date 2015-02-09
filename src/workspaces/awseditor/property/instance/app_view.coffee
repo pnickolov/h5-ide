@@ -159,6 +159,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
 
             that = this
             ApiRequest("ins_GetConsoleOutput",{
+                key_id      : Design.instance().credentialId()
                 region_name : Design.instance().region()
                 instance_id : instanceId
             }).then ( data )->

@@ -556,16 +556,19 @@ define [ "./DashboardTpl",
         $btn.addClass('selected')
         if $btn.hasClass('dashboard-nav-activity')
             $sidebar.find('.dashboard-log-activity').removeClass('hide')
-            type = "activity"
         else
             $sidebar.find('.dashboard-log-audit').removeClass('hide')
-            type = "audit"
 
         # render
+        myRole = that.model.scene.project.get('myRole')
         App.model.fetchUserData(_.uniq(@logCol.pluck("usercode"))).then ( userDataSet )->
-          that.renderLog(type, userDataSet)
+          that.renderLog("activity", userDataSet)
+          if myRole is 'admin'
+            that.renderLog("audit", userDataSet)
+          else
+            that.renderLog("audit", [], true)
 
-    renderLog: (type, userDataSet) ->
+    renderLog: (type, userDataSet, empty) ->
 
         if type is 'activity'
             models = @logCol.history()
@@ -573,6 +576,13 @@ define [ "./DashboardTpl",
         else if type is 'audit'
             models = @logCol.audit()
             container = '.dashboard-log-audit'
+
+        $container = @$el.find('.dashboard-sidebar').find(container)
+
+        if empty
+
+            $container.html Template.noActivity()
+            return
 
         renderMap = ProjectLog.ACTION_MAP
 
@@ -588,8 +598,6 @@ define [ "./DashboardTpl",
               target : data.get('target')
               time   : MC.intervalDate(new Date(data.get('time')))
             }
-
-        $container = @$el.find('.dashboard-sidebar').find(container)
 
         if dataAry.length
             $container.html Template.activityList(dataAry)

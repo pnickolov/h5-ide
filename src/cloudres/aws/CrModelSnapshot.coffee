@@ -65,7 +65,7 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
         if not id
           throw McError( ApiRequest.Errors.InvalidAwsReturn, "Snapshot copied but aws returns invalid data." )
 
-        thatCln = CloudResources( self.collection.type, destRegion )
+        thatCln = CloudResources( self.collection.credential(), self.collection.type, destRegion )
         # The model is not saved, because we would w
         clones = self.toJSON()
         clones.name = newName

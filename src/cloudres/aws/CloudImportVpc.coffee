@@ -132,7 +132,7 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "DiffTree"], ( Cl
       iamComp = @iams[ arn ]
       if iamComp then return iamComp
 
-      reg_iam=/arn:aws:iam::.*:server-certificate\/.*/g
+      reg_iam = /arn:aws:iam::.*:server-certificate\/.*/g
       if not arn.match(reg_iam)
         console.error "[addIam] not a valid iam arn"
         return null

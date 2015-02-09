@@ -33,8 +33,10 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
             hasPaymentHistory = (_.keys paymentHistory).length
             paymentUpdate = that.model.get("payment")
             billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
-            that.$el.find("#PaymentBody").remove()
-            that.$el.find("#billing-status").append billingTemplate
+            that.$el.find(".billing-history").html $(billingTemplate).find(".billing-history").html()
+#            that.$el.find("#billing-status").append billingTemplate
+          , ()->
+            that.renderCache()
         else
           that.$el.find(".loading-spinner").remove()
           that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}

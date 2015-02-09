@@ -3271,11 +3271,11 @@ div.modal-text-highlight {
   right: 0; }
 
 aside.dashboard-sidebar {
-  width: 300px;
-  height: 100%;
+  width: 320px;
   position: absolute;
   right: 0;
   top: 0;
+  bottom: 0;
   background: white;
   border-left: 1px #ddd solid; }
   aside.dashboard-sidebar nav {
@@ -3355,7 +3355,7 @@ aside.dashboard-sidebar {
       font-size: 12px; }
 
 article.dashboard-content {
-  margin-right: 300px;
+  margin-right: 320px;
   height: 100%; }
 
 /*unmanaged-VPC-modal*/
@@ -3461,7 +3461,13 @@ article.dashboard-content {
 
   #global-region-status-widget {
     width: 100%;
-    position: static; } }
+    position: static; }
+
+  aside.dashboard-sidebar {
+    position: fixed;
+    z-index: 9999999999;
+    position: fixed;
+    top: 108px; } }
 #global-region-recent-list .empty-text {
   position: absolute;
   width: 100%;

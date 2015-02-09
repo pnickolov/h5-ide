@@ -54,7 +54,7 @@ define [
   MC.template.resPanelDbSnapshot = ( data )->
     if not data.region or not data.id then return
 
-    ss = CloudResources( data.credential, constant.RESTYPE.DBSNAP, data.region ).get( data.id )
+    ss = CloudResources( Design.instance().credentialId(), constant.RESTYPE.DBSNAP, data.region ).get( data.id )
     if not ss then return
 
     LeftPanelTpl.resourcePanelBubble( ss.toJSON() )
@@ -62,7 +62,7 @@ define [
   MC.template.resPanelSnapshot = ( data )->
     if not data.region or not data.id then return
 
-    ss = CloudResources( data.credential, constant.RESTYPE.SNAP, data.region ).get( data.id )
+    ss = CloudResources( Design.instance().credentialId(), constant.RESTYPE.SNAP, data.region ).get( data.id )
     if not ss then return
     newData = {}
     _.each ss.toJSON(), (value, key)->

@@ -274,7 +274,7 @@ define [
         app_id = Design.instance().get('id')
         data =
             'encoded_user': App.user.get('usercode')
-            'token':    App.user.get('defaultToken')
+            'token':    @workspace.opsModel.project().get('defaultToken')
         $.ajax
             url: API_URL + app_id
             method: "POST"
@@ -442,7 +442,6 @@ define [
         return @workspace.applyAppEdit()
 
       removes = differ.removedComps
-      console.log differ
       dbInstanceList = []
       console.log newJson
       components = newJson.component

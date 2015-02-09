@@ -8,8 +8,10 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
     init : ( uid ) ->
 
-        asg_comp = component = Design.instance().component( uid )
-
+        asg_comp = Design.instance().component( uid )
+        if asg_comp.type is "ExpandedAsg"
+          asg_comp = asg_comp.get("originalAsg")
+          asg_comp.set("uid", uid)
         data =
           uid        : uid
           name       : asg_comp.get 'name'
@@ -35,7 +37,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             @handleInstance asg_comp, asg_data
 
-        if not @isAppEdit
+        if not @isAppEdit and asg_comp.type is constant.RESTYPE.ASG
             if not asg_data
                 return false
             @set 'lcName',   asg_data.LaunchConfigurationName
@@ -49,7 +51,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
 
         else
-            data = component?.toJSON()
+            data = asg_comp?.toJSON()
             data.uid = uid
             @set data
             lc = asg_comp.getLc()
@@ -59,15 +61,15 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 return
 
             @set "has_elb", !!lc.connections("ElbAmiAsso").length
-            @set "isEC2HealthCheck", component.isEC2HealthCheckType()
+            @set "isEC2HealthCheck", asg_comp.isEC2HealthCheckType()
             @set 'detail_monitor', !!lc.get( 'monitoring' )
 
             # Notification
-            n = component.getNotification()
+            n = asg_comp.getNotification()
             @set "notification", n
             @set "has_notification", n.instanceLaunch or n.instanceLaunchError or n.instanceTerminate or n.instanceTerminateError or n.test
 
-            @notiObject = component.getNotiObject()
+            @notiObject = asg_comp.getNotiObject()
 
             # Policies
             @set "policies", _.map data.policies, ( p )->

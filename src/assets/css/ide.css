@@ -3341,7 +3341,7 @@ aside.dashboard-sidebar {
           color: #aaa;
           margin-top: 4px;
           font-size: 12px; }
-        aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info .target {
+        aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info a.target {
           color: #3970af;
           cursor: pointer; }
   aside.dashboard-sidebar .dashboard-log-empty {

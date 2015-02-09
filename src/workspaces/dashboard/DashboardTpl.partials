@@ -136,7 +136,7 @@
                 <span class="name">{{name}}</span>
                 <span class="action">{{action}}</span>
                 <span class="type">{{type}}</span>
-                <a class="target">{{target}}</a>
+                {{#if targetId}}<a class="target route" href="/team/{{projectId}}/ops/{{targetId}}">{{target}}</a>{{else}}<span class="target">{{target}}</span>{{/if}}
                 <span class="other">{{other}}</span>
             </div>
             <div class="time">{{time}}</div>

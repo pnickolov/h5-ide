@@ -549,18 +549,17 @@ define [ "./DashboardTpl",
         that = @
 
         # switch
-        if not event
-            $btn = @$el.find('.dashboard-sidebar .dashboard-nav-activity')
-        else
+        if event
+
             $btn = $(event.currentTarget)
-        $sidebar = $btn.parents('.dashboard-sidebar')
-        $sidebar.find('.dashboard-nav-log').removeClass('selected')
-        $sidebar.find('.dashboard-log').addClass('hide')
-        $btn.addClass('selected')
-        if $btn.hasClass('dashboard-nav-activity')
-            $sidebar.find('.dashboard-log-activity').removeClass('hide')
-        else
-            $sidebar.find('.dashboard-log-audit').removeClass('hide')
+            $sidebar = $btn.parents('.dashboard-sidebar')
+            $sidebar.find('.dashboard-nav-log').removeClass('selected')
+            $sidebar.find('.dashboard-log').addClass('hide')
+            $btn.addClass('selected')
+            if $btn.hasClass('dashboard-nav-activity')
+                $sidebar.find('.dashboard-log-activity').removeClass('hide')
+            else
+                $sidebar.find('.dashboard-log-audit').removeClass('hide')
 
         # render
         myRole = that.model.scene.project.get('myRole')
@@ -572,6 +571,8 @@ define [ "./DashboardTpl",
             that.renderLog("audit", [], true)
 
     renderLog: (type, userDataSet, empty) ->
+
+        that = @
 
         if type is 'activity'
             models = @logCol.history()
@@ -589,9 +590,13 @@ define [ "./DashboardTpl",
 
         renderMap = ProjectLog.ACTION_MAP
 
+        projectId = @model.scene.project.id
+
         dataAry = _.map models, (data) ->
             userdata = userDataSet[data.get("usercode")]
             action   = data.get('action')
+            targetId = data.get('targetId')
+            targetId = null if not that.model.scene.project.getOpsModel(targetId)
             {
               name   : data.get("username")
               email  : userdata.email
@@ -600,6 +605,8 @@ define [ "./DashboardTpl",
               type   : data.get('type').toLowerCase()
               target : data.get('target')
               time   : MC.intervalDate(new Date(data.get('time')))
+              projectId: projectId
+              targetId: targetId
             }
 
         if dataAry.length

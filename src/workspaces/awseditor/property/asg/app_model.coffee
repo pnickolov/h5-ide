@@ -75,9 +75,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 data.alarmData.period = Math.round( data.alarmData.period / 60 )
                 data
 
-
-
-
         null
 
     handleInstance: ( asg_comp, asg_data ) ->

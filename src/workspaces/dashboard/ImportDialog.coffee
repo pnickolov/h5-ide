@@ -92,7 +92,7 @@ define [
       opsModel = @project.createStackByJson( result )
       App.loadUrl( opsModel.url() )
 
-      @model.close()
+      @modal.close()
       @model = @project = @reader = null
       null
 

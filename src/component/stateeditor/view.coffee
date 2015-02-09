@@ -3379,6 +3379,7 @@ define [ 'component/stateeditor/model',
             else
                 reqApi = "ins_GetConsoleOutput" # for aws
                 ApiRequest(reqApi, {
+                    key_id     : Design.instance().credentialId()
                     region_name: region
                     instance_id: serverId
                 }).then (_.bind @refreshSysLog, @), (_.bind @refreshSysLog, @)

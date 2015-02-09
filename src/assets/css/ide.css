@@ -9722,6 +9722,8 @@ div.settings-item .edit-actions {
       font-size: 14px;
       margin-left: 4px;
       cursor: pointer; }
+    .settings-item .edit-actions.inline {
+      margin-left: 8px; }
   .settings-item .edit-mode {
     display: none; }
     .settings-item .edit-mode .loading-spinner {
@@ -9739,13 +9741,13 @@ div.settings-item .edit-actions {
   .settings-item.edit .icon-edit {
     display: none; }
 
-.leave-project-zone p:first-line {
+.leave-project-zone p:only-of-type:first-line {
   color: #ff9c00; }
 
 .confirm-action {
   margin-top: 4px; }
-  .confirm-action button {
-    margin-left: 8px; }
+  .confirm-action #confirm-project-name {
+    margin-right: 8px; }
   .confirm-action .cancel-confirm {
     margin-left: 4px; }
 
@@ -10110,20 +10112,9 @@ div.settings-item .edit-actions {
   margin-bottom: 20px;
   width: 397px; }
 
-.billing-email {
-  margin-bottom: 30px; }
-  .billing-email .billing-email-title {
-    width: 200px; }
-  .billing-email .billing-email-text {
-    width: 300px; }
-    .billing-email .billing-email-text p {
-      margin: 0; }
-    .billing-email .billing-email-text input {
-      width: 90%; }
-  .billing-email .editEmailControl button.btn {
-    min-width: 80px;
-    padding: 4px 0;
-    line-height: 20px; }
+.billing-email-text p {
+  display: inline-block;
+  margin: 0; }
 
 .update-payment-ctrl button.btn {
   min-width: 80px;

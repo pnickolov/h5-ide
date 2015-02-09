@@ -78,7 +78,6 @@ div.settings-item .edit-actions {
     .input { width: 220px;}
 
     .edit-actions {
-        // display: inline;
         margin-top: 8px;
 
         .cancel-button {
@@ -86,6 +85,8 @@ div.settings-item .edit-actions {
             margin-left : 4px;
             cursor      : pointer;
         }
+
+        &.inline {margin-left: 8px;}
     }
 
     .edit-mode {
@@ -110,7 +111,7 @@ div.settings-item .edit-actions {
 }
 
 .leave-project-zone {
-    p:first-line {
+    p:only-of-type:first-line {
         color: $orange;
     }
 }
@@ -118,8 +119,8 @@ div.settings-item .edit-actions {
 .confirm-action {
     margin-top: 4px;
 
-    button {
-        margin-left: 8px;
+    #confirm-project-name {
+        margin-right: 8px;
     }
 
     .cancel-confirm {
@@ -671,28 +672,11 @@ div.settings-item .edit-actions {
     width: 397px;
 }
 
-.billing-email{
-  margin-bottom: 30px;
-  .billing-email-title{
-    width: 200px;
-  }
-  .billing-email-text{
-    width: 300px;
-    p{
-      margin: 0;
-    }
-    input{
-      width: 90%;
-    }
-  }
-  .editEmailControl{
-    button.btn{
-      min-width: 80px;
-      padding: 4px 0;
-      line-height: 20px;
-    }
-  }
+.billing-email-text p {
+    display : inline-block;
+    margin  : 0;
 }
+
 .update-payment-ctrl{
   button.btn{
     min-width: 80px;

@@ -3,105 +3,100 @@
 </div>
 
 <!--{{billingTemplate}}-->
-<div class="tabContent" id="PaymentBody">
-    <section id="PaymentBillingTab">
-        <p class="warning-red hide"></p>
-        <h5 class="clearfix billing-email">
-            <span class="billing-email-title left">{{i18n "PAYMENT_BILLING_EMAIL"}}</span>
-            <span class="billing-email-text left">
-                <p>{{or paymentUpdate.email "Email not set"}}</p>
-                <input class="input hide" type="text"/>
+<div id="PaymentBody">
+    <p class="warning-red hide"></p>
+    <dl class="settings-item billing-email">
+        <dt class="billing-email-title">{{i18n "PAYMENT_BILLING_EMAIL"}}</dt>
+        <dd class="billing-email-text">
+            <p>{{or paymentUpdate.email "Email not set"}}</p>
+            <button class="icon-edit tooltip editEmailBtn" data-tooltip="Click to edit billing email"></button>
+            <input class="input hide" type="text"/>
+            <span class="editEmailControl hide edit-actions">
+                <button class="btn btn-blue editEmailDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
+                <button class="btn btn-silver modal-close editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>
             </span>
-            <span class="right">
-                <span class="editEmailControl hide">
-                    <button class="btn btn-blue editEmailDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
-                    <button class="btn btn-silver modal-close editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>
-                </span>
-                <button class="icon-edit tooltip editEmailBtn" data-tooltip="Click to edit your payment Email"></button>
-            </span>
-        </h5>
-        <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>
-        <div class="clearfix">
-            <div class="left clearfix">
-                <div class="payment-credit-middle left">
+        </dd>
+    </dl>
+    <h5>{{i18n "CREDIT_CARD_INFORMATION"}}</h5>
+    <div class="clearfix">
+        <div class="left clearfix">
+            <div class="payment-credit-middle left">
 
-                </div>
-                <div class="left">
-                    <p class="payment-number">{{#if paymentUpdate.cardNumber}}{{paymentUpdate.cardNumber}}{{else}}{{i18n "NO_CARD"}}{{/if}}</p>
-                    {{#if paymentUpdate.firstName}}<p class="payment-username">{{paymentUpdate.firstName}} {{paymentUpdate.lastName}}</p>{{/if}}
-                </div>
             </div>
-            <div class="right">
-                {{#if noSubscription}}<button class="btn btn-blue update-payment">{{i18n "PROVIDE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
-                {{else}}<button class="btn btn-blue update-payment">{{i18n "UPDATE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
-                {{/if}}
-                <div class="update-payment-ctrl hide">
-                    <button class="btn btn-blue update-payment-done">{{i18n "LBL_DONE"}}</button>
-                    <button class="btn btn-silver modal-close update-payment-cancel">{{i18n "LBL_CANCEL"}}</button>
-                </div>
+            <div class="left">
+                <p class="payment-number">{{#if paymentUpdate.cardNumber}}{{paymentUpdate.cardNumber}}{{else}}{{i18n "NO_CARD"}}{{/if}}</p>
+                {{#if paymentUpdate.firstName}}<p class="payment-username">{{paymentUpdate.firstName}} {{paymentUpdate.lastName}}</p>{{/if}}
             </div>
         </div>
-        {{#if noSubscription}}
-            <div class="billing-history"></div>
-        {{else}}
-            <div class="billing-history">
-                <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.nextPeriod "yyyy-MM-d"}}</span></h5>
-                <div class="table-head-fix">
-                    {{#if paymentHistory.length}}
-                        <table class="table-head">
-                            <thead>
-                            <tr>
-                                <th class="sortable desc-sort" data-row-type="datetime" style="width:25%;">{{i18n "DATE"}}</th>
-                                <th data-row-type="string" style="width:25%;">{{i18n "AMOUNT"}}</th>
-                                <th data-row-type="string" style="width:25%;">{{i18n "STATUS"}}</th>
-                                <th data-row-type="string" style="width:25%;">{{i18n "ACTION"}}</th>
-                            </tr>
-                            </thead>
-                        </table>
-                        <div class="scroll-wrap" style="max-height:200px;">
-                            <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-                            <div class="scroll-content">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th style="width: 25%">
-                                            <div class="th-inner"></div>
-                                        </th>
-                                        <th style="width: 25%">
-                                            <div class="th-inner"></div>
-                                        </th>
-                                        <th style="width: 25%">
-                                            <div class="th-inner"></div>
-                                        </th>
-                                        <th style="width: 25%">
-                                            <div class="th-inner"></div>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="t-m-content">
-                                    {{#each paymentHistory}}
-                                        <tr class="item" data-id="{{@index}}">
-                                            <td>{{formatTime updated_at "yyyy-MM-d"}}</td>
-                                            <td>$ {{or ending_balance total_balance}}</td>
-                                            <td>{{#if success}}{{i18n "PAYMENT_PAID"}}{{else}}<span class="link-red">{{i18n "PAYMENT_FAILED"}}</span>{{/if}}</td>
-                                            <td>
-                                                <a class="payment-receipt link-blue" href="#">{{i18n "PAYMENT_VIEW_RECEIPT"}}</a></td>
-                                        </tr>
-                                    {{/each}}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    {{else}}
-                        <div class="full-space">
-                            {{i18n "NO_BILLING_EVENT"}}
-                        </div>
-                    {{/if}}
-                </div>
+        <div class="right">
+            {{#if noSubscription}}<button class="btn btn-blue update-payment">{{i18n "PROVIDE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
+            {{else}}<button class="btn btn-blue update-payment">{{i18n "UPDATE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
+            {{/if}}
+            <div class="update-payment-ctrl hide">
+                <button class="btn btn-blue update-payment-done">{{i18n "LBL_DONE"}}</button>
+                <button class="btn btn-silver modal-close update-payment-cancel">{{i18n "LBL_CANCEL"}}</button>
             </div>
-        {{/if}}
-
-    </section>
+        </div>
+    </div>
+    {{#if noSubscription}}
+        <div class="billing-history"></div>
+    {{else}}
+        <div class="billing-history">
+            <h5>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.nextPeriod "yyyy-MM-d"}}</span></h5>
+            <div class="table-head-fix">
+                {{#if paymentHistory.length}}
+                    <table class="table-head">
+                        <thead>
+                        <tr>
+                            <th class="sortable desc-sort" data-row-type="datetime" style="width:25%;">{{i18n "DATE"}}</th>
+                            <th data-row-type="string" style="width:25%;">{{i18n "AMOUNT"}}</th>
+                            <th data-row-type="string" style="width:25%;">{{i18n "STATUS"}}</th>
+                            <th data-row-type="string" style="width:25%;">{{i18n "ACTION"}}</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-wrap" style="max-height:200px;">
+                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                        <div class="scroll-content">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="t-m-content">
+                                {{#each paymentHistory}}
+                                    <tr class="item" data-id="{{@index}}">
+                                        <td>{{formatTime updated_at "yyyy-MM-d"}}</td>
+                                        <td>$ {{or ending_balance total_balance}}</td>
+                                        <td>{{#if success}}{{i18n "PAYMENT_PAID"}}{{else}}<span class="link-red">{{i18n "PAYMENT_FAILED"}}</span>{{/if}}</td>
+                                        <td>
+                                            <a class="payment-receipt link-blue" href="#">{{i18n "PAYMENT_VIEW_RECEIPT"}}</a></td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="full-space">
+                        {{i18n "NO_BILLING_EVENT"}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
 </div>
 
 <!--{{usage}}-->

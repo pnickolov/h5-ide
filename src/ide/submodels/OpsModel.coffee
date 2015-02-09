@@ -588,7 +588,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           if not completed
             d = @__updateAppDefer
             @__updateAppDefer = null
-            d.reject McError( ApiRequest.Errors.OperationFailure, error )
+            d.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
           else
             # Grab new json from server after app update succeeded.
             @__jsonData = null
@@ -608,7 +608,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           if completed
             d.resolve()
           else
-            d.reject McError( ApiRequest.Errors.OperationFailure, error )
+            d.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
           return
 
       @attributes.opsActionError = if completed then "" else wsRequest.data

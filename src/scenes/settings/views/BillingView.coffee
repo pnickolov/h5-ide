@@ -34,14 +34,11 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
             paymentUpdate = that.model.get("payment")
             billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
             that.$el.find(".billing-history").html $(billingTemplate).find(".billing-history").html()
-#            that.$el.find("#billing-status").append billingTemplate
           , ()->
             that.renderCache()
         else
           that.$el.find(".loading-spinner").remove()
           that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
-          @updateUsage()
-          return @
       , (err)->
         if err.error is -404
           noSubscription = true 

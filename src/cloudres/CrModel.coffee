@@ -70,7 +70,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
         # If the region is empty, we DONT assign the empty region to region_name
         # Since ApiRequest will fill a region for us. In such case the region_name
         # is actually useless, but the backend needs it to bypass somekind of check.
-        params.region_name = @region()
+        params.region_name = @getCollection().region()
 
       ApiRequest( api, params )
 

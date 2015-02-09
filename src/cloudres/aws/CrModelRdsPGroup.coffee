@@ -16,7 +16,7 @@ define [ "../CrModel", "CloudResources", "constant" ], ( CrModel, CloudResources
 
     isDefault : ()-> (@get("DBParameterGroupName") || "").indexOf("default.") is 0
 
-    getParameters : ()-> CloudResources( constant.RESTYPE.DBPARAM, @id ).init( @ )
+    getParameters : ()-> CloudResources( @collection.credential(), constant.RESTYPE.DBPARAM, @id ).init( @ )
 
     doCreate : ()->
       self = @

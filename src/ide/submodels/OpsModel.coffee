@@ -274,7 +274,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return d.promise
 
       attr = {
-        region : @get("region")
+        region_name : @get("region")
         spec   : newJson
       }
 

@@ -34,8 +34,8 @@ define [ "./DashboardTpl",
       "click .dashboard-header .create-stack"   : "createStack"
       "click .dashboard-header .import-stack"   : "importStack"
       "click .dashboard-header .icon-visualize" : "importApp"
-      "click .dashboard-sidebar .dashboard-nav-log" : "switchLog"
-      "click .dashboard-sidebar nav buttton"    : "switchLog"
+      "click .dashboard-sidebar .dashboard-nav-log" : "updateLog"
+      "click .dashboard-sidebar nav buttton"    : "updateLog"
       'click #region-switch-list li'    : 'switchRegion'
       'click .resource-tab'             : 'switchResource'
 
@@ -61,7 +61,7 @@ define [ "./DashboardTpl",
       self = @
       # listen logs change
       @logCol = @model.scene.project.logs()
-      @logCol.on('change add', @switchLog, this)
+      @logCol.on('change add', @updateLog, this)
 
       @render()
       @listenTo @model.scene.project, "update:stack", ()-> self.updateRegionAppStack("stacks", "global")
@@ -100,11 +100,13 @@ define [ "./DashboardTpl",
       setInterval ()->
         if not self.$el.find(".refreshResource").hasClass("reloading")
           self.$el.find(".refreshResource").text(MC.intervalDate(self.lastUpdate/ 1000))
+        # Auto update logs (for time update)
+        self.updateLog()
         return
       , 1000 * 60
 
       @$el.toggleClass "observer", @model.isReadOnly()
-      @switchLog()
+
       return
 
     createStack : ( evt )->
@@ -541,7 +543,7 @@ define [ "./DashboardTpl",
 
       return dataTemplate.bubbleResourceInfo  d
 
-    switchLog: (event) ->
+    updateLog: (event) ->
 
         that = @
 

@@ -2493,7 +2493,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "离开"
 
     DELETE_WORKSPACE_WILL_FORGOT_APPS:
-      en: "Once the workspace is deleted, all stacks will be<br/>removed and all apps will be forgotten (Resources will be left as they are)."
+      en: "Once the workspace is deleted, all stacks will be removed and all apps will be forgotten (Resources will be left as they are)."
       zh: "工作空间一旦被删除，所有该工作空间下的 Stack 和 App 将被删除和释放（资源不会受到影响）。"
 
     IMPORT_JSON_BEFORE_DELETE_WORKSPACE:

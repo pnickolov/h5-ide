@@ -6329,8 +6329,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9693,29 +9692,31 @@ section.members-only {
       display: block;
       padding: 5px 0 5px 10px; }
 
+div.settings-item .edit-actions {
+  margin-left: 28%; }
+
 .settings-item {
   position: relative;
   padding: 0 0 26px 0;
   border-bottom: 1px solid #1d1e29;
   font-size: 16px;
-  line-height: 28px; }
+  line-height: 28px;
+  display: flex; }
   .settings-item dt {
     color: #999;
-    width: 16%;
+    width: 23%;
     min-width: 180px;
-    margin-right: 2%;
     display: inline-block; }
   .settings-item dd {
     color: #eee;
     display: inline-block;
     width: 70%; }
-  .settings-item dt + dd {
+  .settings-item dd + dt {
     margin-top: 10px; }
   .settings-item .input {
     width: 220px; }
   .settings-item .edit-actions {
-    display: inline;
-    margin-left: 8px; }
+    margin-top: 8px; }
     .settings-item .edit-actions .cancel-button {
       font-size: 14px;
       margin-left: 4px;
@@ -9737,24 +9738,15 @@ section.members-only {
   .settings-item.edit .icon-edit {
     display: none; }
 
-.leave-project-zone button {
-  margin-top: 30px;
-  position: absolute;
-  left: 344px; }
+.leave-project-zone p:first-line {
+  color: #ff9c00; }
 
-.leave-project-zone .confirm-action {
-  padding-top: 20px; }
-  .leave-project-zone .confirm-action #confirm-project-name {
-    margin-left: 8px;
-    width: 278px; }
-  .leave-project-zone .confirm-action #do-leave-project {
-    margin-left: 304px; }
-  .leave-project-zone .confirm-action button {
-    position: static;
-    margin-top: 0;
+.confirm-action {
+  margin-top: 4px; }
+  .confirm-action button {
     margin-left: 8px; }
-  .leave-project-zone .confirm-action a {
-    padding-left: 6px; }
+  .confirm-action .cancel-confirm {
+    margin-left: 4px; }
 
 .fullpage-settings {
   display: flex;
@@ -9946,7 +9938,7 @@ section.members-only {
     .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-edit-mode {
       display: block; }
     .fullpage-settings .setting-content .member-setting .memlist-item .memlist-pending {
-      color: #ff0; }
+      color: #ffbb0d; }
     .fullpage-settings .setting-content .member-setting .memlist-item .role {
       text-transform: uppercase; }
     .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .selection {

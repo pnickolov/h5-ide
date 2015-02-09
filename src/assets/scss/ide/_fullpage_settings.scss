@@ -28,9 +28,9 @@
         margin-bottom: 10px;
 
         header, a {
-            max-width: 210px;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            max-width     : 210px;
+            overflow      : hidden;
+            text-overflow : ellipsis;
         }
 
         header {
@@ -46,18 +46,22 @@
     }
 }
 
+div.settings-item .edit-actions {
+    margin-left: 28%;
+}
+
 .settings-item {
     position      : relative;
     padding       : 0 0 26px 0;
     border-bottom : 1px solid $dark-p-2;
     font-size     : 16px;
     line-height   : 28px;
+    display       : flex;
 
     dt {
         color        : #999;
-        width        : 16%;
+        width        : 23%;
         min-width    : 180px;
-        margin-right : 2%;
         display      : inline-block;
     }
 
@@ -67,15 +71,15 @@
         width   : 70%;
     }
 
-    dt + dd {
+    dd + dt {
         margin-top: 10px;
     }
 
     .input { width: 220px;}
 
     .edit-actions {
-        display: inline;
-        margin-left: 8px;
+        // display: inline;
+        margin-top: 8px;
 
         .cancel-button {
             font-size   : 14px;
@@ -105,23 +109,22 @@
     }
 }
 
-.leave-project-zone button {
-    margin-top: 30px;
-    position: absolute;
-    left: 344px;
+.leave-project-zone {
+    p:first-line {
+        color: $orange;
+    }
 }
 
-.leave-project-zone .confirm-action {
-    padding-top: 20px;
+.confirm-action {
+    margin-top: 4px;
 
-    #confirm-project-name {
+    button {
         margin-left: 8px;
-        width: 278px;
     }
 
-    #do-leave-project { margin-left: 304px; }
-    button { position: static; margin-top: 0; margin-left: 8px; }
-    a { padding-left: 6px; }
+    .cancel-confirm {
+        margin-left: 4px;
+    }
 }
 
 
@@ -395,7 +398,7 @@
                     }
                 }
                 .memlist-pending {
-                    color: #ff0;
+                    color: $yellow;
                 }
                 .role {
                     text-transform: uppercase;

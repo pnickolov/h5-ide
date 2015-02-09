@@ -34,6 +34,7 @@ define [
 
         initialize: ( options ) ->
             @settingsView = options.settingsView
+            @listenTo @model, 'change:name', @updateProjectName
 
         render: ( tab = 'basicsettings' ) ->
             @setElement $( TplProject _.extend @model.toJSON(), { tab: tab, admin:@model.amIAdmin() } )
@@ -75,4 +76,7 @@ define [
                 else
                     $(@).removeClass 'active'
 
+        updateProjectName: () ->
 
+            @$('.settings-nav-project-title').text @model.get 'name'
+            @$('.project-title').text @model.get 'name'

@@ -96,6 +96,7 @@ define [ "./DashboardTpl",
       @updateGlobalResources()
       @model.fetchAwsResources()
       @initRegion()
+      @updateLog()
       self = @
       setInterval ()->
         if not self.$el.find(".refreshResource").hasClass("reloading")

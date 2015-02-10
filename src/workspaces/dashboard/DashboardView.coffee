@@ -563,14 +563,14 @@ define [ "./DashboardTpl",
 
         # render
         myRole = that.model.scene.project.get('myRole')
-        App.model.fetchUserData(_.uniq(@logCol.pluck("usercode"))).then ( userDataSet )->
-          that.renderLog("activity", userDataSet)
-          if myRole is 'admin'
-            that.renderLog("audit", userDataSet)
-          else
-            that.renderLog("audit", [], true)
+        # App.model.fetchUserData(_.uniq(@logCol.pluck("usercode"))).then ( userDataSet )->
+        that.renderLog("activity")
+        if myRole is 'admin'
+          that.renderLog("audit")
+        else
+          that.renderLog("audit", true)
 
-    renderLog: (type, userDataSet, empty) ->
+    renderLog: (type, empty) ->
 
         that = @
 
@@ -593,14 +593,14 @@ define [ "./DashboardTpl",
         projectId = @model.scene.project.id
 
         dataAry = _.map models, (data) ->
-            userdata = userDataSet[data.get("usercode")]
+            # userdata = userDataSet[data.get("usercode")]
             action   = data.get('action')
             targetId = data.get('targetId')
             targetId = null if not that.model.scene.project.getOpsModel(targetId)
             {
               name   : data.get("username")
-              email  : userdata.email
-              avatar : userdata.avatar
+            #   email  : userdata.email
+            #   avatar : userdata.avatar
               action : renderMap[ action ] || action
               type   : data.get('type').toLowerCase()
               target : data.get('target')

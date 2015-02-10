@@ -2,9 +2,9 @@
   <dl class="dl-vertical">
     <dt>{{ i18n "PROP.CGW_APP_CGW_LBL_ID" }}</dt>
     <dd>{{customerGatewayId}}</dd>
+    {{#unless isEditable}}
     <dt>{{ i18n "PROP.NAME" }}</dt>
     <dd>{{emptyStr name}}</dd>
-    {{#unless isEditable}}
     <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
     <dd>{{emptyStr description}}</dd>
     {{/unless}}

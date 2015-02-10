@@ -17,11 +17,13 @@
     </dd>
 </dl>
 
+{{#if isAdmin}}
 <dl class="settings-item project-item">
     <dt>{{i18n "DELETE_WORKSPACE"}}</dt>
     <dd class="delete-project-zone">
     </dd>
 </dl>
+{{/if}}
 
 {{#unless private}}
 <dl class="settings-item project-item">

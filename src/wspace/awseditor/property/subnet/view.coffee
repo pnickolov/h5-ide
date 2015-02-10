@@ -53,6 +53,9 @@ define [ '../base/view',
             null
 
         onBlurCIDR : ( event ) ->
+
+            inputElem = $(event.currentTarget)
+
             # if blank
             cidrPrefix = $("#property-cidr-prefix").html()
             cidrSuffix = $("#property-cidr-block").val()
@@ -75,31 +78,37 @@ define [ '../base/view',
                         removeInfo = ""
 
             if mainContent
-                that = this
 
-                cidrModal = MC.template.setupCIDRConfirm({
-                    main_content   : mainContent
-                    desc_content   : descContent
-                    remove_content : removeInfo
-                })
+                if not @modal?.isOpen()
 
-                modal = new modalPlus {
-                    title: lang.IDE.SET_UP_CIDR_BLOCK
-                    width: 420
-                    template: cidrModal
-                    confirm: text: "OK", color: "blue"
-                    disableClose: true
-                    cancel: hide: true
-                }
+                    that = this
 
-                $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{removeInfo}</a>""")
-                .appendTo(modal.find(".modal-footer"))
+                    cidrModal = MC.template.setupCIDRConfirm({
+                        main_content   : mainContent
+                        desc_content   : descContent
+                        remove_content : removeInfo
+                    })
 
-                modal.on "confirm", ()-> modal.close()
-                modal.find("#cidr-removed").on "click", () ->
-                    Design.instance().component( that.model.get("uid") ).remove()
-                    that.disabledAllOperabilityArea(false)
-                    modal.close()
+                    @modal = new modalPlus {
+                        title: lang.IDE.SET_UP_CIDR_BLOCK
+                        width: 420
+                        template: cidrModal
+                        confirm: text: "OK", color: "blue"
+                        disableClose: true
+                        cancel: hide: true
+                    }
+
+                    modal = @modal
+
+                    $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{removeInfo}</a>""")
+                    .appendTo(modal.find(".modal-footer"))
+
+                    modal.on "close", () -> inputElem.focus()
+                    modal.on "confirm", ()-> modal.close()
+                    modal.find("#cidr-removed").on "click", () ->
+                        Design.instance().component( that.model.get("uid") ).remove()
+                        that.disabledAllOperabilityArea(false)
+                        modal.close()
 
             else
                 @model.setCidr subnetCIDR

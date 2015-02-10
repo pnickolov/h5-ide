@@ -84,34 +84,38 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
                 @disabledAllOperabilityArea( false )
                 return
 
-            dialog_template = MC.template.setupCIDRConfirm {
-                remove_content : lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY
-                main_content : mainContent
-                desc_content : descContent
-            }
+            if not @modal?.isOpen()
 
-            that = this
-            modal = new modalPlus {
-                template: dialog_template,
-                title: lang.IDE.SET_UP_CIDR_BLOCK
-                disableClose: true
-                width: 420
-                confirm: text: "OK", color: "blue"
-                cancel: hide: true
-            }
+                dialog_template = MC.template.setupCIDRConfirm {
+                    remove_content : lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY
+                    main_content : mainContent
+                    desc_content : descContent
+                }
 
-            $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY}</a>""")
-            .appendTo(modal.find(".modal-footer"))
-            modal.on "confirm", ()->
-                modal.close()
-            modal.on "close", ()->
-                $('#property-cgw-ip').focus()
-            modal.find("#cidr-removed").on "click",(e)->
-                e.preventDefault()
-                console.log "Not Work....."
-                Design.instance().component( that.model.get("uid") ).remove()
-                that.disabledAllOperabilityArea(false)
-                modal.close()
+                that = this
+                @modal = new modalPlus {
+                    template: dialog_template,
+                    title: lang.IDE.SET_UP_CIDR_BLOCK
+                    disableClose: true
+                    width: 420
+                    confirm: text: "OK", color: "blue"
+                    cancel: hide: true
+                }
+
+                modal = @modal
+
+                $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.CGW_REMOVE_CUSTOM_GATEWAY}</a>""")
+                .appendTo(modal.find(".modal-footer"))
+                modal.on "confirm", ()->
+                    modal.close()
+                modal.on "close", ()->
+                    $('#property-cgw-ip').focus()
+                modal.find("#cidr-removed").on "click",(e)->
+                    e.preventDefault()
+                    console.log "Not Work....."
+                    Design.instance().component( that.model.get("uid") ).remove()
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
 
     }
 

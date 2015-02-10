@@ -146,24 +146,28 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
 
             that = this
 
-            modal = new modalPlus {
-                title: lang.IDE.SET_UP_CIDR_BLOCK
-                width: 420
-                template: dialog_template
-                confirm: text: "OK", color: "blue"
-                disableClose: true
-                cancel: hide: true
-            }
+            if not @modal?.isOpen()
 
-            $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.REMOVE_ROUTE}</a>""")
-            .appendTo(modal.find(".modal-footer"))
+                @modal = new modalPlus {
+                    title: lang.IDE.SET_UP_CIDR_BLOCK
+                    width: 420
+                    template: dialog_template
+                    confirm: text: "OK", color: "blue"
+                    disableClose: true
+                    cancel: hide: true
+                }
 
-            modal.on "confirm", ()-> modal.close()
-            modal.on "close", () -> inputElem.focus()
-            modal.find("#cidr-removed").on "click", () ->
-                Design.instance().component( dataRef ).remove()
-                that.disabledAllOperabilityArea(false)
-                modal.close()
+                modal = @modal
+
+                $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.REMOVE_ROUTE}</a>""")
+                .appendTo(modal.find(".modal-footer"))
+
+                modal.on "confirm", ()-> modal.close()
+                modal.on "close", () -> inputElem.focus()
+                modal.find("#cidr-removed").on "click", () ->
+                    Design.instance().component( dataRef ).remove()
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
     }
 
     new RTBView()

@@ -111,7 +111,7 @@ define [
 
             @model.destroy().then ->
                 that.remove()
-                that.settingsView.backToSettings()
+                that.settingsView.backToDefaultProject()
             , ->
                 that.render()
                 notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
@@ -146,7 +146,7 @@ define [
             that = @
             that.model.leave().then ->
                 that.remove()
-                that.settingsView.backToSettings()
+                that.settingsView.backToDefaultProject()
             , ->
                 that.render()
                 notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE

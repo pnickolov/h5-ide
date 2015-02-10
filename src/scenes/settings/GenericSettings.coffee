@@ -72,6 +72,11 @@ define [
             @navigate()
             @renderSettings()
 
+        backToDefaultProject: ->
+            @modal.close()
+            privateProject = App.model.getPrivateProject()
+            Router.navigate "/workspace/#{privateProject.id}", trigger: true
+
         renderProject: ( project, tab ) ->
             console.log "SettingsView"
             if project and project.currentTarget # Load by dom event

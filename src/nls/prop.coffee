@@ -2876,7 +2876,7 @@ module.exports =
       zh: " 快照"
 
     DB_SNAPSHOT_EMPTY:
-      en: "There are no available DB snapshot here."
+      en: "There are no available DB instances here."
       zh: "尚无可用实例"
 
     DB_SNAPSHOT_ID:

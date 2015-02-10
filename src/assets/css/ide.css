@@ -10032,7 +10032,8 @@ div.settings-item .edit-actions {
       font-size: 12px;
       color: #898dbc;
       position: absolute;
-      right: 5%; }
+      right: 5%;
+      top: 10px; }
   .fullpage-settings .token-table {
     position: relative;
     background: rgba(0, 0, 0, 0.1);

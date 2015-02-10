@@ -319,6 +319,7 @@ require.config {
       "scenes/Settings"
       "scenes/StackStore"
       "scenes/Cheatsheet"
+      "Workspace"
     ]
 
     "wspace/dashboard/Dashboard"     : []

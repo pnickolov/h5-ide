@@ -164,11 +164,17 @@ define [ '../base/model',
 
         getPassword : ( key_data )->
             ApiRequest("ins_GetPasswordData", {
-                region      : Design.instance().region()
+                region_name : Design.instance().region()
                 instance_id : @get("instanceId")
                 key_id      : Design.instance().credentialId()
                 key_data    : key_data || undefined
-            }).then ( data )-> data.GetPasswordDataResponse.passwordData
+            }).then ( data )->
+                #data.GetPasswordDataResponse.passwordData
+                #will restore after appservice improve
+                ns = ""
+                if data["ns0:GetPasswordDataResponse"]
+                    ns = "ns0:"
+                data[ns+"GetPasswordDataResponse"][ns+"passwordData"]
 
         getEni : () ->
 

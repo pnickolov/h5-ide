@@ -111,9 +111,9 @@ div.settings-item .edit-actions {
 }
 
 .leave-project-zone {
-    p:only-of-type:first-line {
-        color: $orange;
-    }
+    // p:only-of-type:first-line {
+    //     color: $orange;
+    // }
 }
 
 .confirm-action {
@@ -182,7 +182,7 @@ div.settings-item .edit-actions {
         }
 
         .avatar img { width: 80px; height: 80px; }
-        
+
         .change-photo {
             height: 91px;
             #change-photo {
@@ -211,7 +211,7 @@ div.settings-item .edit-actions {
             &:hover { color: #148BE6; }
         }
 
-        .icon-delete:before { margin-right: 5px; } 
+        .icon-delete:before { margin-right: 5px; }
 
         .credential {
             padding: 0 8px;

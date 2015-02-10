@@ -2501,8 +2501,12 @@ VisualOps API. You cannot UNDO this action.'
       zh: "您可以在删除工作空间之前将 Stack 导出 JSON 文件。"
 
     LEAVING_WORKSPACE_WILL_NOT_ACCESS:
-      en: "By leaving this workspace, you won't have access to workspace assets any more."
-      zh: "离开工作空间后，就不能访问工作空间了。"
+      en: "By leaving this workspace, you won't have access to workspace assets any more. This workspace will be managed by other admin."
+      zh: "离开工作空间后，将不再有访问工作空间资源的权限，该工作空间将被其他管理员管理。"
+
+    LEAVING_WORKSPACE_WILL_ONLY_ONE_ADMIN:
+      en: "Oops, as the only admin of this workspace, you cannot leave it behind."
+      zh: "出错了，你是该工作空间中唯一的管理员，不可离开。"
 
     THIS_ACTION_CANNOT_BE_REVERTED:
       en: "This action CANNOT be reverted."

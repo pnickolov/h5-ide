@@ -2,29 +2,32 @@ define [
     'i18n!/nls/lang.js'
     '../template/TplBasicSettings'
     'UI.modalplus'
+    '../models/MemberCollection'
     'UI.notification'
     'backbone'
-], ( lang, TplBasicSettings, Modal ) ->
+], ( lang, TplBasicSettings, Modal, MemberCollection ) ->
 
     Backbone.View.extend
         events:
             'click .edit-button'        : 'edit'
             'click .cancel-button'      : 'cancelEdit'
             'click #update-name'        : 'updateName'
-            'click #delete-project'     : 'confirmLeaveDelete'
-            'click #leave-project'      : 'confirmLeaveDelete'
+            'click #delete-project'     : 'confirmDelete'
+            'click #leave-project'      : 'confirmLeave'
             'keyup #project-name'       : 'checkName'
 
             'keyup #confirm-project-name' : 'confirmProjectName'
             'paste #confirm-project-name' : 'deferConfirmProjectName'
             'click #do-delete-project'    : 'doDelete'
             'click #do-leave-project'     : 'doLeave'
-            'click .cancel-confirm'       : 'cancelConfirm'
+            'click .cancel-leave-confirm' : 'cancelLeaveConfirm'
+            'click .cancel-delete-confirm': 'cancelDeleteConfirm'
 
         className: 'basic-settings'
 
         initialize: ( options ) ->
             _.extend @, options
+            @memberCol = new MemberCollection({projectId: @model.id})
             @listenTo @model, 'change:name', @changeNameOnView
 
         getRenderData: ->
@@ -33,10 +36,6 @@ define [
             data.isMember = @model.amIMeber()
             data.isObserver = @model.amIObserver()
             data.failedToPay = @model.get("billingState")  is "failed"
-            if @model.isPrivate() or @model.amIAdmin()
-                data.displayDelete = true
-            else
-                data.displayDelete = false
 
             data
 
@@ -44,18 +43,23 @@ define [
             data = @getRenderData()
             @$el.html TplBasicSettings.basicSettings data
             @renderLeaveZone data
+            @renderDeleteZone(data) if data.isAdmin
             @
 
         renderLeaveZone: ( data = @getRenderData(), confirm = false ) ->
             if confirm
-                if data.isAdmin
-                    tpl = TplBasicSettings.confirmToDelete
-                else
-                    tpl = TplBasicSettings.confirmToLeave
+                tpl = TplBasicSettings.confirmToLeave
             else
-                tpl = TplBasicSettings.leaveOrDelete
-
+                tpl = TplBasicSettings.leave
             @$( '.leave-project-zone' ).html tpl data
+            @
+
+        renderDeleteZone: ( data = @getRenderData(), confirm = false ) ->
+            if confirm
+                tpl = TplBasicSettings.confirmToDelete
+            else
+                tpl = TplBasicSettings.delete
+            @$( '.delete-project-zone' ).html tpl data
             @
 
         renderLoading: ->
@@ -112,17 +116,46 @@ define [
                 that.render()
                 notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
         doLeave: ->
-            that = @
-            @renderLoading()
 
-            @model.leave().then ->
+            that = @
+            that.renderLoading()
+
+            # not admin, directly leave
+            if not that.model.amIAdmin()
+                that.toLeave()
+
+            # is admin, check if unique
+            else
+                that.memberCol.fetch().then () ->
+                    data = that.memberCol.toJSON()
+                    adminData = _.filter data, (member) ->
+                        if member.role is 'admin' and member.state is 'normal'
+                            return true
+                    currentMember = that.memberCol.getCurrentMember()
+                    if currentMember.get('role') is 'admin'
+                        if adminData.length > 1
+                            that.toLeave()
+                        else
+                            that.render()
+                            notification 'error', lang.IDE.LEAVING_WORKSPACE_WILL_ONLY_ONE_ADMIN
+                            # that.$el.find('.level-error-tip').removeClass('hide')
+                    else
+                        that.toLeave()
+                .fail (data) ->
+                    that.render()
+                    notification 'error', (data.result or data.msg)
+
+        toLeave: ->
+
+            that = @
+            that.model.leave().then ->
                 that.remove()
                 that.settingsView.backToSettings()
             , ->
                 that.render()
                 notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_LEAVE
 
-        confirmLeaveDelete: -> @renderLeaveZone null, true
-        cancelConfirm: -> @renderLeaveZone()
-
-
+        confirmLeave: -> @renderLeaveZone null, true
+        cancelLeaveConfirm: -> @renderLeaveZone()
+        confirmDelete: -> @renderDeleteZone null, true
+        cancelDeleteConfirm: -> @renderDeleteZone()

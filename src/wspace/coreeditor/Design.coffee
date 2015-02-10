@@ -432,18 +432,11 @@ define [
       }
 
 
-
       # At this point, we allow each visitors to have full privilege to modify
       # the component data. This is necessary for visitors that wants to work on
       # many components at once. ( One use-case is Subnet would like to assign IPs. )
       for visitor in @constructor.__serializeVisitors || []
         visitor( component_data, layout_data, options )
-
-
-      # Quick Fix for some other property
-      # 1. save canvas's size to layout
-      data.layout.size = data.canvasSize
-      delete data.canvasSize
 
       ###
       # NOTICE!

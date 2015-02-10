@@ -7,7 +7,7 @@ define [ "./DashboardTpl",
          "AppAction",
          "UI.modalplus",
          "i18n!/nls/lang.js",
-         "ide/submodels/ProjectLog",
+         "ProjectLog",
          "credentialFormView"
          "UI.bubble",
          "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog, CredentialFormView )->

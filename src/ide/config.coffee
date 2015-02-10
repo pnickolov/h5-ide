@@ -137,6 +137,7 @@ require.config {
     "Credential" : "ide/Credential"
     "Scene"      : "ide/Scene"
     "OpsModel"   : "ide/submodels/OpsModel"
+    "ProjectLog" : "ide/submodels/ProjectLog"
 
     #############################################
     # workspace                 # Merge in deploy
@@ -274,7 +275,14 @@ require.config {
     "component/StateStatus" : [ "state_status" ]
     "component/StateEditor" : [ "StateEditor", "StateEditorView" ]
 
-    "ide/AppBundle" : [ "ide/Application", "OpsModel" ]
+    "ide/AppBundle" : [
+      "ide/Application"
+      "OpsModel"
+      "Project"
+      "Credential"
+      "Scene"
+      "ProjectLog"
+    ]
 
     "component/ResDiff"   : [ "ResDiff", "DiffTree" ]
     "component/Common"    : [ "combo_dropdown", "toolbar_modal", "credentialFormView" ]

@@ -1,7 +1,7 @@
 
 define [
   "ApiRequest"
-  "ide/submodels/ProjectLog"
+  "ProjectLog"
   "ide/submodels/OpsCollection"
   "OpsModel"
   "Credential"

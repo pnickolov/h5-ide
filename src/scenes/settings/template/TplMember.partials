@@ -1,0 +1,149 @@
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+<!-- {{main}} -->
+<div class="hide content" data-bind="true">
+    <div class="title">{{i18n "SETTINGS_MEMBER_LABEL_MEMBER"}}(<span class="memlist-count"></span>)</div>
+    {{#if admin}}
+    <div class="operate">
+        {{#if limit}}
+        <div class="limit-member-tip">
+            {{i18n "SETTINGS_MEMBER_LABEL_LIMIT" number}} <a href="mailto:support@visualops.io" target="_top">support@visualops.io</a>
+        </div>
+        {{else}}
+        <div class="invite">
+            <input class="input" placeholder="{{i18n "SETTINGS_MEMBER_LABEL_INVITE_TIP"}}" id="mail">
+            <div class="search"></div>
+            <button class="btn btn-blue" id="invite">{{i18n "SETTINGS_MEMBER_LABEL_INVITE_CONFIRM"}}</button>
+        </div>
+        {{/if}}
+        <button class="btn btn-red" id="delete" disabled>{{i18n "SETTINGS_MEMBER_LABEL_REMOVE"}}</button>
+    </div>
+    {{/if}}
+    <div class="table-head-fix will-be-covered">
+        <table class="table-head">
+            <thead>
+                <tr>
+                    {{#unless noCheckbox}}
+                    {{#if admin}}
+                    <th class="checkbox-row">
+                        <div class="checkbox">
+                            <input id="t-m-select-all" type="checkbox" value="None">
+                            <label for="t-m-select-all"></label>
+                        </div>
+                    </th>
+                    {{/if}}
+                    {{/unless}}
+                    {{#each columns}}
+                    <th class="{{#if sortable}}sortable{{/if}}" data-row-type="{{#if rowType}}{{rowType}}{{else}}string{{/if}}" style="{{#if width}}width:{{width}};{{/if}}">{{name}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+        </table>
+        {{#unless useCustomScroll}}
+        <div>
+            {{else}}
+            <div class="scroll-wrap" {{#if height}}style="height: {{height}}px" {{/if}}>
+                <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
+                <div class="scroll-content" style="display:block;">
+                    {{/unless}}
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                {{#if admin}}{{#unless noCheckbox}}<th class="checkbox-row"><div class="th-inner"></div></th>{{/unless}}{{/if}}
+                                {{#each columns}}
+                                <th style="{{#if width}}width:{{width}};{{/if}}"><div class="th-inner"></div></th>
+                                {{/each}}
+                            </tr>
+                        </thead>
+                        <tbody class="t-m-content">
+                        </tbody>
+                    </table>
+                    {{#unless useCustomScroll}}
+                </div>
+                {{else}}
+            </div>
+        </div>
+        {{/unless}}
+    </div>
+</div>
+
+<!-- {{list}} -->
+{{#each memlist}}
+<tr class="item memlist-item" data-id="{{id}}">
+    {{#if ../admin}}
+    <td class="checkbox-row">
+        {{#unless me}}
+        <div class="checkbox">
+            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" class="one-cb">
+            <label for="sslcert-select-{{id}}"></label>
+        </div>
+        {{/unless}}
+    </td>
+    {{/if}}
+    <td>
+        <img class="avatar" src="{{avatar}}">
+        <div class="info">
+            <div class="name">{{username}}{{#if me}}<span class="you">({{i18n "SETTINGS_MEMBER_LABEL_YOU"}})</span>{{/if}}</div>
+            <div class="mail">{{email}}</div>
+        </div>
+    </td>
+    <td class="{{role}}">
+        <span class="memlist-view-mode role">
+            {{#ifCond role 'admin'}}{{i18n "SETTINGS_MEMBER_LABEL_ADMIN"}}{{/ifCond}}
+            {{#ifCond role 'collaborator'}}{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR"}}{{/ifCond}}
+            {{#ifCond role 'observer'}}{{i18n "SETTINGS_MEMBER_LABEL_OBSERVER"}}{{/ifCond}}
+        </span>
+        <div class="selectbox memlist-edit-mode memtype">
+            <div class="selection">
+                {{#ifCond role 'admin'}}{{i18n "SETTINGS_MEMBER_LABEL_ADMIN"}}{{/ifCond}}
+                {{#ifCond role 'collaborator'}}{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR"}}{{/ifCond}}
+                {{#ifCond role 'observer'}}{{i18n "SETTINGS_MEMBER_LABEL_OBSERVER"}}{{/ifCond}}
+            </div>
+            <ul class="dropdown">
+                <li data-id="admin" class="item {{#ifCond role 'admin'}}selected{{/ifCond}}">
+                    <div class="name">{{i18n "SETTINGS_MEMBER_LABEL_ADMIN"}}</div>
+                    <div class="desc">{{i18n "SETTINGS_MEMBER_LABEL_ADMIN_DESC"}}</div>
+                </li>
+                <li data-id="collaborator" class="item {{#ifCond role 'collaborator'}}selected{{/ifCond}}">
+                    <div class="name">{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR"}}</div>
+                    <div class="desc">{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC"}}</div>
+                </li>
+                <li data-id="observer" class="item {{#ifCond role 'observer'}}selected{{/ifCond}}">
+                    <div class="name">{{i18n "SETTINGS_MEMBER_LABEL_OBSERVER"}}</div>
+                    <div class="desc">{{i18n "SETTINGS_MEMBER_LABEL_OBSERVER_DESC"}}</div>
+                </li>
+            </ul>
+        </div>
+    </td>
+    <td class="memlist-status {{#ifCond state 'inactive'}}memlist-pending{{/ifCond}}">
+        {{#ifCond state 'normal'}}{{i18n "SETTINGS_MEMBER_LABEL_ACTIVE"}}{{/ifCond}}
+        {{#ifCond state 'inactive'}}{{i18n "SETTINGS_MEMBER_LABEL_PENDING"}}{{/ifCond}}
+    </td>
+    {{#if ../admin}}
+    <td>{{#ifCond state 'inactive'}}<button class="btn btn-red cancel">{{i18n "SETTINGS_MEMBER_LABEL_CANCEL_INVITE"}}</button>{{/ifCond}}</td>
+    <td>
+        <button class="btn btn-blue memlist-edit-mode done">{{i18n "SETTINGS_MEMBER_LABEL_DONE"}}</button>
+        {{#unless me}}<button class="icon-edit memlist-view-mode edit"></button>{{/unless}}
+    </td>
+    {{/if}}
+</tr>
+{{/each}}
+
+<!-- {{deletePopup}} -->
+<div class="info">{{i18n "SETTINGS_MEMBER_LABEL_REMOVE_CONFIRM" count}}</div>
+<div class="operate">
+    <button class="confirm btn btn-red">{{i18n "SETTINGS_MEMBER_LABEL_REMOVE"}}</button>
+</div>
+
+<!-- {{match}} -->
+<div class="name">{{name}}</div>
+<div class="mail">{{mail}}</div>
+
+<!-- {{nomatch}} -->
+<span>{{i18n "SETTINGS_MEMBER_LABEL_NO_USER"}} "{{name}}"</span>
+
+<!-- {{defaultProject}} -->
+<div>{{i18n "SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP1"}}.</div>
+<div>{{i18n "SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP2"}}, <a href="">{{i18n "SETTINGS_MEMBER_LABEL_CREATE_WORKSPACE"}}</a>.</div>

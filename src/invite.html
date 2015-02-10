@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>VisualOps - Reset password</title>
+	<meta charset="UTF-8" />
+	<link rel="shortcut icon" href="/assets/images/ide/favicon.ico">
+	<link rel="stylesheet" href="/assets/css/account.css"/>
+	<link rel="stylesheet" href="/assets/css/UI.component.css"/>
+	<!--[if lt IE 9]><script>for(var a=['section','article','nav','header','footer','aside','blockquote'],i=a.length-1;i>=0;--i){document.createElement(a[i]);}</script><![endif]-->
+</head>
+<body id="body">
+
+	<div id="container">
+
+		<header> <a id="logo-link" href="http://www.visualops.io/">VisualOps</a> </header>
+
+		<div id="main-body"></div>
+
+		<footer id="footer">
+			<p class="pad20">1st Floor, 795 Folsom Street, San Francisco, CA., USA 94107</p>
+			<p class="pad20">© MadeiraCloud 2014. <a href="http://www.visualops.io/terms-conditions-privacy-policy" alt="Terms, Conditions and Privacy Policy" title="Terms, Conditions and Privacy Policy">Terms, Conditions and Privacy Policy</a>.</p>
+            <div id="arn"></div>
+		</footer>
+
+        <script id="expire-template" type="text/x-handlebars-template">
+            <div id="reset-form-wrap" class="box-wrapper">
+                <p><i class="icon-deny"></i></p>
+                <p class="account-instruction-major">{{ i18n "invitiation_expired" }}</p>
+                <p class="account-instruction"><a href="/">{{ i18n "go_to_visualops_ide" }}</a></p>
+            </div>
+        </script>
+
+        <script id="loading-template" type="text/x-handlebars-template">
+            <div class="box-loading box-wrapper">
+                <div class="loading-spinner"></div>
+            </div>
+        </script>
+	</div>
+    <script type="text/javascript" src="/vender/jquery/jquery.1.0.js"></script>
+    <script type="text/javascript" src="/vender/jquery/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="/vender/handlebars/handlebars.js"></script>
+    <script type="text/javascript" src="/user/main.js"></script>
+</body>
+</html>

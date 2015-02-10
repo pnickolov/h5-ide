@@ -7,7 +7,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
   DbpgRes = Backbone.View.extend
     constructor: (model)->
       if model then @resModel = model
-      @collection = CloudResources constant.RESTYPE.DBPG, Design.instance().region()
+      @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBPG, Design.instance().region()
       @listenTo @collection, 'update', (@onUpdate.bind @)
       @listenTo @collection, 'change', (@onUpdate.bind @)
       @listenTo @collection, 'remove', (@onRemove.bind @)
@@ -49,7 +49,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @manager.on 'checked', @processReset, @
 
       @manager.render()
-      if not App.user.hasCredential()
+      if not Design.instance().credential()
         @manager?.render 'nocredential'
         return false
       @initManager()
@@ -136,7 +136,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
           data.selectedCount = checkedAmount
         @manager.setSlide tpl data
       'create':(tpl)->
-        @families = CloudResources constant.RESTYPE.DBENGINE, Design.instance().get("region")
+        @families = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBENGINE, Design.instance().get("region")
         that = @
         @families.fetch().then ->
             families = _.uniq _.pluck that.families.toJSON(), "DBParameterGroupFamily"
@@ -395,7 +395,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @dropdown.on 'change', (@setParameterGroup.bind @), @
       @dropdown
     initDropdown: ->
-      if App.user.hasCredential()
+      if Design.instance().credential()
         @renderDefault()
       else
         @renderNoCredential()
@@ -431,7 +431,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
       modelData  = @resModel.attributes
       regionName = Design.instance().region()
-      engineCol  = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+      engineCol  = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBENGINE, regionName)
       if engineCol
         defaultInfo  = engineCol.getDefaultByNameVersion regionName, modelData.engine, modelData.engineVersion
         targetFamily = defaultInfo.family

@@ -38,7 +38,7 @@ module.exports =
     STATE_TIP_VP_DISABLED:
       en: "VisualOps is disabled."
       zh: "VisualOps 已禁用"
-    
+
     STATE_TIP_NO_SE:
       en: "The component does'nt have state editor."
       zh: "该组件不支持 State 编辑器"
@@ -46,7 +46,7 @@ module.exports =
     STATE_TIP_GROUP:
       en: "View states and log by selecting individual instance."
       zh: "选择单独的 Instance 查看 State 及其日志"
-    
+
     STATE_TIP_DEFAULT:
       en: "No state editor here."
       zh: "不支持 State 编辑"
@@ -54,7 +54,7 @@ module.exports =
     STATE_TIP_GROUP_IN_APP:
       en: "View states and log by selecting individual instance."
       zh: "选择单独的 Instance 查看 State 及其日志"
-    
+
     STATE_TIP_IS_WINDOWS:
       en: "Editing state is only available for Linux platform."
       zh: "State 编辑仅限于 Linux 平台"
@@ -244,10 +244,6 @@ module.exports =
       en: "Delete the selected item"
       zh: "删除选中项"
 
-    KEY_SAVE_KEY_MAC:
-      en: "Command + S"
-      zh: "Command + S"
-
     KEY_SAVE_KEY_PC:
       en: "Ctrl + S"
       zh: "Ctrl + S"
@@ -257,8 +253,8 @@ module.exports =
       zh: "保存 Stack"
 
     KEY_SCRL_KEY_MAC:
-      en: "Command + drag"
-      zh: "Command + 拖拽"
+      en: "drag"
+      zh: "拖拽"
 
     KEY_SCRL_KEY_PC:
       en: "Ctrl + drag"
@@ -277,10 +273,6 @@ module.exports =
     KEY_TIT_STATE_GEN:
       en: "State Panel - General"
       zh: "State 面板 - 通用"
-
-    KEY_FOCUS_KEY:
-      en: "Up/Down"
-      zh: "Up/Down"
 
     KEY_FOCUS_ACTION:
       en: "Switch focus in the state list"
@@ -322,10 +314,6 @@ module.exports =
       en: "Shift + Tab"
       zh: "Shift + Tab"
 
-    KEY_CONTENT_EDITOR_MAC:
-      en: "Command + E"
-      zh: "Command + E"
-
     KEY_CONTENT_EDITOR_PC:
       en: "Ctrl + E"
       zh: "Ctrl + E"
@@ -338,10 +326,6 @@ module.exports =
       en: "Switch back to the previous input"
       zh: "切换回之前的输入框"
 
-    KEY_INFO_KEY_MAC:
-      en: "Command + I"
-      zh: "Command + I"
-
     KEY_INFO_KEY_PC:
       en: "Ctrl + I"
       zh: "Ctrl + I"
@@ -349,10 +333,6 @@ module.exports =
     KEY_INFO_ACTION:
       en: "Open/fold the help"
       zh: "打开/折叠帮助"
-
-    KEY_LOG_KEY_MAC:
-      en: "Command + L"
-      zh: "Command + L"
 
     KEY_LOG_KEY_PC:
       en: "Ctrl + L"
@@ -368,10 +348,6 @@ module.exports =
       en: "State Panel - Edit Mode"
       zh: "State 面板 - 编辑模式"
 
-    KEY_SELECT_ALL_KEY_MAC:
-      en: "Command + A"
-      zh: "Command + A"
-
     KEY_SELECT_ALL_KEY_PC:
       en: "Ctrl + A"
       zh: "Ctrl + A"
@@ -379,10 +355,6 @@ module.exports =
     KEY_SELECT_ALL_ACTION:
       en: "Select all states"
       zh: "选中所有 State"
-
-    KEY_DESELECT_KEY_MAC:
-      en: "Command + D"
-      zh: "Command + D"
 
     KEY_DESELECT_KEY_PC:
       en: "Ctrl + D"
@@ -392,10 +364,6 @@ module.exports =
       en: "Deselect all states"
       zh: "取消选中所有 State"
 
-    KEY_CREATE_KEY_MAC:
-      en: "Command + Enter"
-      zh: "Command + Enter"
-
     KEY_CREATE_KEY_PC:
       en: "Ctrl + Enter"
       zh: "Ctrl + Enter"
@@ -403,10 +371,6 @@ module.exports =
     KEY_CREATE_ACTION:
       en: "Add a new state"
       zh: "添加一条新 State"
-
-    KEY_DEL_STATE_KEY_MAC:
-      en: "Command + Delete"
-      zh: "Command + Delete"
 
     KEY_DEL_STATE_KEY_PC:
       en: "Ctrl + Delete"
@@ -416,21 +380,9 @@ module.exports =
       en: "Delete selected state(s)"
       zh: "删除选中 State"
 
-    KEY_MOVE_FOCUS_STATE_KEY_MAC:
-      en: "Command + Up/Down"
-      zh: "Command + Up/Down"
-
-    KEY_MOVE_FOCUS_STATE_KEY_PC:
-      en: "Ctrl + Up/Down"
-      zh: "Ctrl + Up/Down"
-
     KEY_MOVE_FOCUS_STATE_ACTION:
       en: "Move the focused state"
       zh: "移动处于焦点的 State"
-
-    KEY_COPY_STATE_KEY_MAC:
-      en: "Command + C"
-      zh: "Command + C"
 
     KEY_COPY_STATE_KEY_PC:
       en: "Ctrl + C"
@@ -440,10 +392,6 @@ module.exports =
       en: "Copy the selected state(s)"
       zh: "复制选中的 State"
 
-    KEY_PASTE_STATE_KEY_MAC:
-      en: "Command + V"
-      zh: "Command + V"
-
     KEY_PASTE_STATE_KEY_PC:
       en: "Ctrl + V"
       zh: "Ctrl + V"
@@ -452,10 +400,6 @@ module.exports =
       en: "Paste the copied state(s)"
       zh: "粘贴复制的 State"
 
-    KEY_UNDO_STATE_KEY_MAC:
-      en: "Command + Z"
-      zh: "Command + Z"
-
     KEY_UNDO_STATE_KEY_PC:
       en: "Ctrl + Z"
       zh: "Ctrl + Z"
@@ -463,10 +407,6 @@ module.exports =
     KEY_UNDO_STATE_ACTION:
       en: "Undo"
       zh: "撤销"
-
-    KEY_REDO_STATE_KEY_MAC:
-      en: "Command + Y"
-      zh: "Command + Y"
 
     KEY_REDO_STATE_KEY_PC:
       en: "Ctrl + Y"

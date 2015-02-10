@@ -1,5 +1,5 @@
 
-define [ "../CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, CloudResources, ApiRequest, constant )->
+define [ "../CrModel", "CloudResources", "constant" ], ( CrModel, CloudResources, constant )->
 
   CrModel.extend {
 
@@ -16,12 +16,11 @@ define [ "../CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, 
 
     isDefault : ()-> (@get("DBParameterGroupName") || "").indexOf("default.") is 0
 
-    getParameters : ()-> CloudResources( constant.RESTYPE.DBPARAM, @id ).init( @ )
+    getParameters : ()-> CloudResources( @collection.credential(), constant.RESTYPE.DBPARAM, @id ).init( @ )
 
     doCreate : ()->
       self = @
-      ApiRequest("rds_pg_CreateDBParameterGroup", {
-        region_name        : @getCollection().region()
+      @sendRequest("rds_pg_CreateDBParameterGroup", {
         param_group        : @get("DBParameterGroupName")
         param_group_family : @get("DBParameterGroupFamily")
         description        : @get("Description")
@@ -30,15 +29,11 @@ define [ "../CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, 
         self
 
     doDestroy : ()->
-      ApiRequest("rds_pg_DeleteDBParameterGroup", {
-        region_name : @collection.region()
-        param_group : @id
-      })
+      @sendRequest("rds_pg_DeleteDBParameterGroup", {param_group : @id})
 
     resetParams : ()->
       self = @
-      ApiRequest("rds_pg_ResetDBParameterGroup", {
-        region_name      : @collection.region()
+      @sendRequest("rds_pg_ResetDBParameterGroup", {
         param_group : @id
         reset_all   : true
       }).then ()-> self.getParameters().fetchForce()
@@ -60,14 +55,13 @@ define [ "../CrModel", "CloudResources", "ApiRequest", "constant" ], ( CrModel, 
 
       requests = []
       params = {
-        region_name : @collection.region()
         param_group : @id
         parameters  : []
       }
       i = 0
       while i < pArray.length
         params.parameters = pArray.slice(i, i+20)
-        requests.push ApiRequest("rds_pg_ModifyDBParameterGroup", params)
+        requests.push @sendRequest("rds_pg_ModifyDBParameterGroup", params)
         i+=20
 
       self = @

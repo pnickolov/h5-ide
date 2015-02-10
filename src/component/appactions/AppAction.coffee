@@ -8,6 +8,7 @@
 define [
   "backbone"
   "component/appactions/template"
+  "ThumbnailUtil"
   'i18n!/nls/lang.js'
   'CloudResources'
   'constant'
@@ -17,31 +18,76 @@ define [
   'OsKp'
   'TaGui'
   'OpsModel'
-], ( Backbone, AppTpl, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel)->
-  AppAction = Backbone.View.extend
+  "credentialFormView"
+], ( Backbone, AppTpl, Thumbnail, lang, CloudResources, constant, modalPlus, ApiRequest, AwsKp, OsKp, TA, OpsModel, CredentialFormView)->
 
-    runStack: (event, workspace)->
-      @workspace = workspace
+  Backbone.View.extend
+    initialize: ( options ) -> _.extend @, options
+
+    credentialId: ()->
+      if Design.instance()
+        Design.instance().credentialId()
+      else
+        @model.project().credIdOfProvider @model.get("provider")
+    saveStack : ( dom, self )->
+      workspace = @workspace
+      $( dom ).attr("disabled", "disabled")
+
+      self.__saving = true
+
+      newJson = workspace.design.serialize()
+      Thumbnail.generate( (self.parent||self).getSvgElement() ).catch( ()->
+        return null
+      ).then ( thumbnail )->
+          workspace.opsModel.save( newJson, thumbnail ).then ()->
+          self.__saving = false
+          $( dom ).removeAttr("disabled")
+          notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
+        , ( err )->
+          self.__saving = false
+          $( dom ).removeAttr("disabled")
+
+          if err.error is 252
+            message = lang.NOTIFY.ERR_SAVE_FAILED_NAME
+          else
+            message = sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
+          notification "error", message
+
+
+    runStack: ( paymentUpdate,paymentModal )->
       cloudType = @workspace.opsModel.type
       that = @
-      if $(event.currentTarget).attr('disabled')
-        return false
-      @modal = new modalPlus
-        title: lang.IDE.RUN_STACK_MODAL_TITLE
-        template: MC.template.modalRunStack
-        disableClose: true
-        width: '450px'
-        confirm:
-          text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
-          disabled: true
+      paymentState = App.user.get('paymentState')
+      if paymentModal
+        @modal = paymentModal
+        @modal.setTitle lang.IDE.RUN_STACK_MODAL_TITLE
+        .setWidth('665px')
+        .setContent MC.template.modalRunStack {paymentState, paymentUpdate}
+        .compact()
+        .find('.modal-footer').show()
+      else
+        @modal = new modalPlus
+          title: lang.IDE.RUN_STACK_MODAL_TITLE
+          template: MC.template.modalRunStack {paymentState}
+          disableClose: true
+          width: '665px'
+          compact: true
+          confirm:
+            text: unless Design.instance().project().isDemoMode() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+            disabled: true
+
+        @renderKpDropdown @modal, cloudType
+
       if cloudType is OpsModel.Type.OpenStack
         @modal.find(".estimate").hide()
         @modal.resize()
-      @renderKpDropdown(@modal, cloudType)
       cost = Design.instance().getCost()
-      @modal.tpl.find('.modal-input-value').val @workspace.opsModel.get("name")
-      currency = Design.instance().getCurrency()
-      @modal.tpl.find("#label-total-fee").find('b').text("#{currency + cost.totalFee}")
+      @modal.find('.modal-input-value').val @workspace.opsModel.get("name")
+      costString = "$#{cost.totalFee}"
+      if Design.instance().region() in ['cn-north-1']
+        costString = "￥#{cost.totalFee}"
+      @modal.find("#label-total-fee").find('b').text costString
+      @modal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
 
       # load TA
       TA.loadModule('stack').then ()=>
@@ -56,8 +102,11 @@ define [
       self = @
       @modal.on 'confirm', ()=>
         @hideError()
-        if not App.user.hasCredential()
-          App.showSettings App.showSettings.TAB.Credential
+        if Design.instance().project().isDemoMode()
+          if Design.instance().project().amIAdmin()
+            new CredentialFormView(model: Design.instance().project()).render()
+          else
+            self.modal.find(".modal-body .members-only").show()
           return false
         # setUsage
         appNameRepeated = @checkAppNameRepeat(appNameDom.val())
@@ -70,16 +119,16 @@ define [
         @json.name = appNameDom.val()
         @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
           self.modal.close()
-          App.openOps( ops )
+          App.loadUrl ops.url()
         , (err)->
           self.modal.close()
           error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
           notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
-      App.user.on 'change:credential', ->
-        if App.user.hasCredential() and that.modal.isOpen()
+      @modal.listenTo Design.instance().project(), 'change:credential', ->
+        if Design.instance().credential() and that.modal.isOpen()
           that.modal.find(".modal-confirm").text lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN
       @modal.on 'close', ->
-        App.user.off 'change:credential'
+        that.modal.stopListening(App.user)
 
     renderKpDropdown: (modal, cloudType)->
       if cloudType is OpsModel.Type.OpenStack
@@ -125,7 +174,7 @@ define [
       true
 
     checkAppNameRepeat: (nameVal)->
-      if App.model.appList().findWhere(name: nameVal)
+      if @workspace.opsModel.project().apps().findWhere(name: nameVal)
         @showError('appname', lang.PROP.MSG_WARN_REPEATED_APP_NAME)
         return true
       else if not nameVal
@@ -139,33 +188,40 @@ define [
         $("#runtime-error-#{id}").text(msg).show()
 
     deleteStack : ( id, name ) ->
-      name = name || App.model.stackList().get( id ).get( "name" )
-
-      modal AppTpl.removeStackConfirm {
-        msg : sprintf lang.TOOLBAR.POP_BODY_DELETE_STACK, name
-      }
-
-      $("#confirmRmStack").on "click", ()->
-        opsModel = App.model.stackList().get( id )
+      workspace = @workspace
+      name = name || @workspace?.opsModel.project().stacks().get( id ).get( "name" ) || @model.get("name")
+      self = @
+      modal = new modalPlus({
+        title: lang.TOOLBAR.TIP_DELETE_STACK
+        width: 390
+        confirm:
+          text: lang.TOOLBAR.POP_BTN_DELETE_STACK
+          color: "red"
+        template: AppTpl.removeStackConfirm {msg:  sprintf lang.TOOLBAR.POP_BODY_DELETE_STACK, name}
+      })
+      modal.on "confirm", ()->
+        modal.close()
+        opsModel = self.model || workspace.opsModel.project().stacks().get( id )
         p = opsModel.remove()
         if opsModel.isPersisted()
           p.then ()->
             notification "info", sprintf(lang.NOTIFY.ERR_DEL_STACK_SUCCESS, name)
           , ()->
             notification "error", sprintf(lang.NOTIFY.ERR_DEL_STACK_FAILED, name)
-      return
 
     duplicateStack : (id) ->
-      opsModel = App.model.stackList().get(id)
+      workspace = @workspace
+      opsModel = @model || workspace.opsModel.project().stacks().get(id)
       if not opsModel then return
       opsModel.fetchJsonData().then ()->
-        App.openOps( App.model.createStackByJson opsModel.getJsonData() )
+        App.loadUrl (opsModel.project() || workspace.opsModel.project()).createStackByJson( opsModel.getJsonData() ).url()
       , ()->
         notification "error", lang.NOTIFY.ERROR_CANT_DUPLICATE
       return
 
     startApp : ( id )->
-      app = App.model.appList().get(id)
+      workspace = @workspace
+      app = @model || workspace.opsModel.project().apps().get(id)
       startAppModal = new modalPlus {
         template: AppTpl.loading()
         title: lang.TOOLBAR.TIP_START_APP
@@ -186,7 +242,7 @@ define [
         startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
         startAppModal.on 'confirm', ->
           startAppModal.close()
-          App.model.appList().get( id ).start().fail ( err )->
+          workspace.opsModel.project().apps().get( id ).start().fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification 'error', sprintf(lang.NOTIFY.ERROR_FAILED_START , name, error)
             return
@@ -194,6 +250,8 @@ define [
         return
 
     checkBeforeStart: (app)->
+      self = @
+      workspace = @workspace
       comp = null
       cloudType = app.type
       defer = new Q.defer()
@@ -202,11 +260,12 @@ define [
         defer.resolve({})
       else
         ApiRequest("app_info", {
+          key_id      : @credentialId()
           region_name : app.get("region")
           app_ids     : [app.get("id")]
         }).then (ds)->  comp = ds[0].component
         .then ->
-          name = App.model.appList().get( app.get("id") ).get("name")
+          name = workspace.opsModel.project().apps().get( app.get("id") ).get("name")
           hasEC2Instance =!!( _.filter comp, (e)->
             e.type is constant.RESTYPE.INSTANCE).length
           hasDBInstance = !!(_.filter comp, (e)->
@@ -215,7 +274,7 @@ define [
             e.type is constant.RESTYPE.ASG).length
           dbInstance = _.filter comp, (e)->
             e.type is constant.RESTYPE.DBINSTANCE
-          snapshots = CloudResources(constant.RESTYPE.DBSNAP, app.get("region"))
+          snapshots = CloudResources self.credentialId(), constant.RESTYPE.DBSNAP, app.get("region")
           awsError = null
           snapshots.fetchForce().fail (error)->
             awsError = error.awsError
@@ -233,11 +292,11 @@ define [
         defer.resolve()
         return defer.promise
       else
-        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+        resourceList = CloudResources @credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
         resourceList.fetchForce()
 
     stopApp : ( id )->
-      app  = App.model.appList().get( id )
+      app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       that = this
       cloudType = app.type
@@ -260,7 +319,7 @@ define [
         console.log error
         if error.awsError then awsError = error.awsError
       .finally ()->
-        resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+        resourceList = CloudResources that.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
         if awsError and awsError isnt 403
           stopModal.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
@@ -284,7 +343,7 @@ define [
                 imageId = com.resource.ImageId
                 if imageId then toFetch[ imageId ] = true
             toFetchArray  = _.keys toFetch
-            amiRes = CloudResources( constant.RESTYPE.AMI, app.get("region") )
+            amiRes = CloudResources that.credentialId(), constant.RESTYPE.AMI, app.get("region")
             amiRes.fetchAmis( _.keys toFetch ).then ->
               hasInstanceStore = false
               amiRes.each (e)->
@@ -329,7 +388,7 @@ define [
 
     terminateApp : ( id )->
       self = @
-      app  = App.model.appList().get( id )
+      app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       terminateConfirm = new modalPlus(
@@ -349,7 +408,7 @@ define [
 
       terminateConfirm.tpl.find('.modal-footer').hide()
       # get Resource list
-      resourceList = CloudResources(constant.RESTYPE.DBINSTANCE, app.get("region"))
+      resourceList = CloudResources self.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
       resourceList.fetchForce().then (result)->
         self.__terminateApp(id, resourceList, terminateConfirm)
       .fail (error)->
@@ -360,7 +419,7 @@ define [
           return false
 
     __terminateApp: (id, resourceList, terminateConfirm)->
-      app  = App.model.appList().get( id )
+      app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       cloudType = app.type
@@ -414,7 +473,7 @@ define [
 
     forgetApp : ( id )->
       self = @
-      app  = App.model.appList().get( id )
+      app  = @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
       forgetConfirm = new modalPlus(
@@ -431,7 +490,7 @@ define [
       self.__forgetApp(id, forgetConfirm)
 
     __forgetApp: (id, forgetConfirm)->
-      app  = App.model.appList().get( id )
+      app  = @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
 
@@ -469,13 +528,13 @@ define [
         return
 
 
-    showPayment: (elem)->
+    showPayment: (elem, opsModel)->
       showPaymentDefer = Q.defer()
 
       # check should Show.
       paymentState = App.user.get("paymentState")
 
-      if not App.user.shouldPay()
+      if not opsModel.project().shouldPay()
         showPaymentDefer.resolve({})
       else
         result = {
@@ -494,16 +553,14 @@ define [
             template: updateDom
             disableClose: true
             confirm:
-              text: if App.user.hasCredential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+              text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
               disabled: true
           )
           paymentModal.find('.modal-footer').hide()
 
           paymentModal.listenTo App.user, "paymentUpdate", ()->
             if paymentModal.isClosed then return false
-            if not App.user.shouldPay()
+            if not opsModel.project().shouldPay()
               showPaymentDefer.resolve({result: result, modal: paymentModal})
       showPaymentDefer.promise
 
-
-  new AppAction()

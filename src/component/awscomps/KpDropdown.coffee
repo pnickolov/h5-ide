@@ -5,7 +5,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
     Backbone.View.extend {
 
         showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
+            Design.instance().project().showCredential()
 
         filter: ( keyword ) ->
             hitKeys = _.filter @getKey(), ( k ) ->
@@ -56,7 +56,9 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
 
         initialize: ( options ) ->
             @resModel = if options then options.resModel else null
-            @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+            credentialId = Design.instance().credentialId()
+
+            @collection = CloudResources(credentialId, constant.RESTYPE.KP, Design.instance().get("region"))
             @listenTo @collection, 'update', @renderKeys
             @listenTo @collection, 'change', @renderKeys
             if not @resModel
@@ -65,7 +67,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             @initDropdown()
 
         show: () ->
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 def = null
                 if not regions[Design.instance().get("region")] and @collection.isReady()
                     regions[Design.instance().get("region")] = true

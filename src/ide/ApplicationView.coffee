@@ -8,17 +8,11 @@
 define [
   "backbone"
   "./subviews/SessionDialog"
-  "./subviews/HeaderView"
-  "./subviews/WelcomeDialog"
-  "./subviews/SettingsDialog"
-  "./subviews/Navigation"
   "./subviews/AppTpl"
   "./subviews/FullnameSetup"
   'i18n!/nls/lang.js'
-  'CloudResources'
   'constant'
-  'UI.modalplus'
-], ( Backbone, SessionDialog, HeaderView, WelcomeDialog, SettingsDialog, Navigation, AppTpl, FullnameSetup, lang, CloudResources, constant, modalPlus )->
+], ( Backbone, SessionDialog, AppTpl, FullnameSetup, lang, constant )->
 
   Backbone.View.extend {
 
@@ -28,26 +22,15 @@ define [
       "click .click-select" : "selectText"
 
     initialize : ()->
-      @header = new HeaderView()
-
-      new Navigation()
-
-      @listenTo App.user, "change:state", @toggleWelcome
-
-      @listenTo App.model.appList(), "change:terminateFail", @askForForceTerminate
-
-      ### env:dev ###
-      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
-      ### env:dev:end ###
-      ### env:debug ###
-      require ["./ide/subviews/DebugTool"], (DT)-> new DT()
-      ### env:debug:end ###
-
       $(window).on "beforeunload", @checkUnload
       $(window).on 'keydown', @globalKeyEvent
+
+      if not App.user.fullnameNotSet() then new FullnameSetup()
       return
 
     checkUnload : ()-> if App.canQuit() then undefined else lang.IDE.BEFOREUNLOAD_MESSAGE
+
+    hideGlobalLoading : ()-> $("#GlobalLoading").hide()
 
     globalKeyEvent: (event) ->
       nodeName = event.target.nodeName.toLowerCase()
@@ -59,7 +42,7 @@ define [
           event.preventDefault()
           return
         when 191
-          modal MC.template.shortkey(), true
+          App.loadUrl( "/cheatsheet" )
           return false
 
       return
@@ -89,17 +72,7 @@ define [
             return
           return
 
-    toggleWelcome : ()->
-      if App.user.isFirstVisit()
-        new WelcomeDialog()
-      else if App.user.fullnameNotSet()
-        new FullnameSetup()
-      return
-
-    askForAwsCredential : ()-> new WelcomeDialog({ askForCredential : true })
-
-    showSessionDialog : ()->
-      (new SessionDialog()).promise()
+    showSessionDialog : ()-> (new SessionDialog()).promise()
 
     # This is use to select text when clicking on the text.
     selectText : ( event )->
@@ -115,21 +88,6 @@ define [
           window.getSelection().addRange range
           console.warn "Select text by document.createRange"
       return false
-
-
-    askForForceTerminate : ( model )->
-      if not model.get("terminateFail") then return
-
-      modal AppTpl.forceTerminateApp {
-        name : model.get("name")
-      }
-
-      $("#forceTerminateApp").on "click", ()->
-        model.terminate( true ).fail (err)->
-          error = if err.awsError then err.error + "." + err.awsError else err.error
-          notification sprintf lang.NOTIFY.ERROR_FAILED_TERMINATE, name, error
-        return
-      return
 
     notifyUnpay : ()->
       notification "error", "Failed to charge your account. Please update your billing info."

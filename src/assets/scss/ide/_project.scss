@@ -1,0 +1,427 @@
+
+#scenes {
+  width      : 100%;
+  height     : 100%;
+  overflow   : hidden;
+  background : #000;
+}
+
+.project-scene {
+  width    : 100%;
+  height   : 100%;
+  overflow : hidden;
+  position : relative;
+
+  .project-header {
+    background    : #36343c;
+    height        : 49px;
+    border-bottom : 1px solid #202020;
+    position      : relative;
+    z-index       : 5;
+
+    > nav {
+      position   : absolute;
+      top        : 0;
+      right      : 0;
+      width      : 273px;
+      height     : 100%;
+      background : #36343c;
+    }
+
+    .ph-nav-btn {
+      float       : left;
+      height      : 100%;
+      min-width   : 20px;
+      line-height : 50px;
+      color       : #ddd;
+      padding     : 0 20px;
+      text-align  : center;
+      border-left : 1px solid #202020;
+      box-sizing  : content-box;
+      cursor      : pointer;
+
+      &:hover {
+        color : $pink-p;
+        background : rgba(0,0,0,0.2);
+      }
+    }
+
+    .icon-support { width : 70px; }
+
+    .icon-support:before {
+      margin-right : 5px;
+    }
+
+    .user-menu {
+      width : 60px;
+    }
+
+    .asset-list:before {
+      font-size   : 24px;
+      line-height : 50px;
+    }
+
+    .project-list, .asset-list {
+      border-left  : none;
+      border-right : 1px solid #202020;
+      padding : 0 10px;
+    }
+
+    .project-list {
+      width : 144px; // The size of .project-list affects the margin of the .ws-tabbar
+      text-align: left;
+    }
+  }
+
+  .ws-content {
+    position : absolute;
+    top      : 50px;
+    bottom   : 0;
+    left     : 0;
+    right    : 0;
+    z-index  : 3;
+    &>div{
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+}
+
+.new-project-modal {
+  .new-project-name {
+      margin-left: 5px;
+      width: 350px;
+  }
+  .new-project-item {
+      display: block;
+      margin-top: 15px;
+      margin-right: 5px;
+      span {
+          display: block;
+          margin-bottom: 5px;
+      }
+  }
+  .new-project-item-owner {
+      input {
+          width: 80px;
+      }
+      input.new-project-fn {
+          margin-right: 5px;
+      }
+      display: inline-block;
+  }
+  .new-project-item-email {
+      display: inline-block;
+      input {
+          width: 200px;
+      }
+  }
+  .new-project-item-card {
+      display: inline-block;
+      input {
+          width: 195px;
+      }
+  }
+  .new-project-item-cvv {
+      display: inline-block;
+      input {
+          width: 50px;
+      }
+  }
+  .new-project-item-date {
+      display: inline-block;
+      input {
+          width: 115px;
+      }
+  }
+  .new-project-item-zip {
+      input{
+          width: 195px;
+      }
+  }
+  .new-project-support {
+      float: left;
+      margin-top: 5px;
+  }
+  .new-project-err {
+      background-color: red;
+      color: white;
+      border-radius: 3px;
+      padding: 5px;
+      margin-top: 10px;
+      display: none;
+  }
+  .new-project-info {
+    color: #bc7300;
+    border-radius: 3px;
+    padding: 5px;
+    border: 1px #bc7300 solid;
+    margin-top: 10px;
+    text-align: center;
+  }
+}
+
+.ws-tabbar {
+  margin-left : 205px;
+
+  padding     : 10px 0 0 10px;
+  width       : 10000px;
+  white-space : nowrap;
+  position    : relative;
+  height      : 39px;
+
+  > ul {
+    float : left;
+  }
+
+  > ul > li {
+    float       : left;
+    height      : 39px;
+    line-height : 39px;
+
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+    color : #8b8b8b;
+    background-color : #404040;
+    background-position : 4px 9px;
+
+    padding    : 0 0 0 32px;
+
+    border        : 1px solid #010101;
+    border-bottom : none;
+    border-left   : none;
+    cursor        : pointer;
+
+    -webkit-transition: background-color .2s, box-shadow .2s;
+    -moz-transition:    background-color .2s, box-shadow .2s;
+    -ms-transition:     background-color .2s, box-shadow .2s;
+    -o-transition:      background-color .2s, box-shadow .2s;
+    transition:         background-color .2s, box-shadow .2s;
+
+    &.active,
+    &.active:hover {
+      background-color : #202020;
+      color            : #fff;
+      font-weight      : bold;
+      box-shadow       : inset 0 3px 0 #9F62D1;
+    }
+
+    &.active, &:hover {
+      .icon-close { visibility: inherit; }
+    }
+
+    &:hover {
+      background-color: #494949;
+    }
+
+    .icon-close {
+      position    : absolute;
+      right       : 3px;
+      top         : 12px;
+      width       : 16px;
+      height      : 16px;
+      line-height : 16px;
+      float       : right;
+      visibility  : hidden;
+      color       : #999;
+      cursor      : pointer;
+
+      &:hover {
+        color : #F09595;
+      }
+    }
+
+    &[data-placeholder] {
+      background : none;
+      border     : none;
+    }
+  }
+
+  .truncate {
+    margin-right : 12px;
+  }
+
+  .ws-fixed-tabs { border-left : 1px solid #010101; }
+
+  .ws-tabs > li {
+    position : relative;
+    cursor   : pointer !important;
+
+    .truncate {
+      display : block;
+      margin-right : 22px;
+    }
+  }
+}
+
+.hp-popup-overlay {
+  position : absolute;
+  top      : 0;
+  left     : 0;
+  right    : 0;
+  bottom   : 0;
+  z-index  : 100;
+}
+
+.header-popup {
+  position   : absolute;
+  background : #36343C;
+  left       : 0;
+  top        : 49px;
+  z-index    : 100;
+
+  box-shadow : 0 2px 5px rgba(0, 0, 0, 0.5);
+  border     : none;
+  color      : #ddd;
+
+  font-size : 12px;
+
+  li > a.selected {
+    pointer-events:none;
+  }
+
+  li > a {
+    display : block;
+    padding : 0 16px;
+    width   : 132px;
+  }
+
+  li > a + a {
+    position    : absolute;
+    right       : 10px;
+    top         : 10px;
+    width       : 20px;
+    height      : 20px;
+    text-align  : center;
+    line-height : 26px;
+    padding     : 0;
+  }
+
+  > li {
+    padding       : 0;
+    line-height   : 39px;
+    height        : 40px;
+    border-bottom : 1px solid #202020;
+    cursor        : pointer;
+    position      : relative;
+  }
+
+  li:hover {
+    background : rgba(0,0,0,.2);
+  }
+
+  li.padding {
+    padding : 0 20px;
+  }
+}
+
+.hp-project-list {
+  border-right : 1px solid #202020;
+
+  .selected {
+    position: relative;
+
+    &:before {
+      content  : " ";
+      position : absolute;
+      top      : 16px;
+      left     : 6px;
+      display  : block;
+
+      width         : 6px;
+      height        : 6px;
+      border-radius : 50%;
+
+      background : $base-b;
+    }
+  }
+
+}
+
+.hp-asset-list {
+  width      : 210px;
+  background : #232224;
+  bottom     : 0;
+  box-shadow : 0 10px 10px rgba(0,0,0,.8);
+
+  > nav {
+    background : #111;
+    height     : 50px;
+    font-size  : 14px;
+  }
+
+  .hp-asset-list-wrap {
+    position   : absolute;
+    top        : 60px;
+    bottom     : 0;
+    width      : 100%;
+    overflow-y : auto;
+    overflow-x : hidden;
+  }
+
+  .off-canvas-tab {
+    float : left;
+    height: 100%;
+    width : 50%;
+    color : #ccc;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255,255,255,.02);
+      color     : #fff;
+    }
+
+    &.selected {
+      border-bottom: 3px solid $base-b;
+      color: $base-b;
+    }
+  }
+
+  .nav-empty {
+    margin        : 5px auto;
+    padding       : 15px;
+    width         : 200px;
+    color         : #AAA;
+    background    : #111;
+    border-radius : 5px;
+    font-size     : 12px;
+  }
+
+  ul > li:hover { background : none; }
+
+  .nav-group-title {
+    height      : 35px;
+    line-height : 35px;
+    color       : #999;
+    padding     : 0 17px;
+    font-size   : 14px;
+  }
+
+  .nav-item-list {
+    > a {
+      display     : block;
+      height      : 44px;
+      line-height : 44px;
+      display     : block;
+      padding     : 0 22px 0 48px;
+      color       : #ccc;
+      font-size   : 13px;
+      cursor      : pointer;
+
+      background-position : 18px 11px;
+
+      &:hover {
+        background-color: rgba(0,0,0,0.5);
+      }
+    }
+  }
+}
+
+.hp-usermenu {
+  left  : auto;
+  right : 0;
+  border-left : 1px solid #202020;
+}

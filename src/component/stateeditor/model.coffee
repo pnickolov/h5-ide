@@ -193,9 +193,9 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", "OpsModel",
 			isAWSAMI = false if resModel.type is constant.RESTYPE.OSSERVER
 
 			if isAWSAMI
-				imageObj = CloudResources(constant.RESTYPE.AMI, Design.instance().region()).get(imageId)
+				imageObj = CloudResources(Design.instance().credentialId(), constant.RESTYPE.AMI, Design.instance().region()).get(imageId)
 			else
-				imageObj = CloudResources(constant.RESTYPE.OSIMAGE, Design.instance().region()).get(imageId)
+				imageObj = CloudResources(Design.instance().credentialId(), constant.RESTYPE.OSIMAGE, Design.instance().region()).get(imageId)
 
 			osPlatform = null
 			osPlatformDistro = null
@@ -617,7 +617,7 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", "OpsModel",
 
 			if Design.instance().type() is OpsModel.Type.Amazon
 
-				resModel = CloudResources(constant.RESTYPE.INSTANCE, Design.instance().region()).get(resId)
+				resModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region()).get(resId)
 				resState = 'unknown'
 				if resModel
 					resState = resModel.get('instanceState')?.name
@@ -625,7 +625,7 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", "OpsModel",
 
 			else
 
-				resModel = CloudResources(constant.RESTYPE.OSSERVER, Design.instance().region()).get(resId)
+				resModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.OSSERVER, Design.instance().region()).get(resId)
 				resState = 'unknown'
 				if resModel
 					resState = resModel.get('status')
@@ -749,7 +749,7 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", "OpsModel",
 					if lsgUID is originCompUID
 
 						# find asg name's all instance
-						$.each CloudResources(constant.RESTYPE.ASG, Design.instance().region()).toJSON(), (idx, resObj) ->
+						$.each CloudResources(Design.instance().credentialId(), constant.RESTYPE.ASG, Design.instance().region()).toJSON(), (idx, resObj) ->
 							if resObj and resObj.AutoScalingGroupName and resObj.Instances
 								if resObj.AutoScalingGroupName is asgName
 									$.each resObj.Instances, (idx, instanceObj) ->

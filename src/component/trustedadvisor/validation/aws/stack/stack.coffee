@@ -145,7 +145,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', "CloudRes
 
 			# get ami info from aws
 			if amiAry.length
-				cr = CloudResources( constant.RESTYPE.AMI, MC.canvas_data.region )
+				cr = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, MC.canvas_data.region )
 
 				failure = ()-> callback(null)
 				success = ()->
@@ -210,7 +210,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', "CloudRes
 
 		tipInfoAry = []
 
-		amiCollection = CloudResources( constant.RESTYPE.AMI, MC.canvas_data.region )
+		amiCollection = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, MC.canvas_data.region )
 
 		_.each amiAry, (amiId) ->
 			if not amiCollection.get( amiId )

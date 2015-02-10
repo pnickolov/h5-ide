@@ -8,6 +8,14 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
         wrappedDict
 
+    PROVIDER =
+        AWSGLOBAL : "aws::global"
+        AWSCHINA  : "aws::china"
+
+    PROVIDER_NAME =
+        "aws::global": "AWS Global"
+        "aws::china": "AWS China"
+
     AWS_RESOURCE_KEY =
         "AWS.EC2.AvailabilityZone"                  : "ZoneName"
         "AWS.EC2.Instance"                          : "InstanceId"
@@ -347,20 +355,20 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     #private
     OPS_STATE =
-        OPS_STATE_PENDING   : "Pending"
-        OPS_STATE_INPROCESS : "InProcess"
-        OPS_STATE_DONE      : "Done"
-        OPS_STATE_ROLLBACK  : "Rollback"
-        OPS_STATE_FAILED    : "Failed"
+        PENDING   : "Pending"
+        INPROCESS : "InProcess"
+        DONE      : "Done"
+        ROLLBACK  : "Rollback"
+        FAILED    : "Failed"
 
     OPS_CODE_NAME =
-        "Forge.Stack.Run"        : "launch"
-        "Forge.App.Stop"         : "stop"
-        "Forge.App.Start"        : "start"
-        "Forge.App.Update"       : "update"
-        "Forge.App.State.Update" : "update"
-        "Forge.App.Terminate"    : "terminate"
-        "Forge.App.Save"         : "save"
+        LAUNCH       : "Forge.Stack.Run"
+        STOP         : "Forge.App.Stop"
+        START        : "Forge.App.Start"
+        UPDATE       : "Forge.App.Update"
+        STATE_UPDATE : "Forge.App.State.Update"
+        TERMINATE    : "Forge.App.Terminate"
+        APP_SAVE     : "Forge.App.Save"
 
     #private, recent items threshold
     DEMO_STACK_NAME_LIST = [ 'vpc-with-private-subnet-and-vpn', 'vpc-with-public-and-private-subnets-and-vpn', 'vpc-with-public-subnet-only', 'vpc-with-public-and-private-subnets' ]
@@ -432,6 +440,8 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 
     #public
+    PROVIDER                : PROVIDER
+    PROVIDER_NAME           : PROVIDER_NAME
     AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
     INSTANCE_STATES         : INSTANCE_STATES
 

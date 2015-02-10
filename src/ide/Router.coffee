@@ -1,5 +1,11 @@
 
-define ["backbone"], ()->
+define [
+  "scenes/ProjectScene"
+  "scenes/Settings"
+  "scenes/StackStore"
+  "scenes/Cheatsheet"
+  "backbone"
+], ( ProjectScene, Settings, StackStore, Cheatsheet )->
 
   ###########
   # Routers
@@ -7,51 +13,55 @@ define ["backbone"], ()->
   Backbone.Router.extend {
 
     routes :
-      "" : "openDashboard"
+      ""                               : "openProject"
+      "workspace(/:project)"                : "openProject"
+      "workspace/:project/ops(/:ops)"       : "openProject"
 
-    initialize : ()->
-      @route /^ops\/([^/]+$)/,   "openOps"
-      @route /^store\/([^/]+$)/, "openStore"
-      return
+      "settings"                       : "openSettings"
+      "settings/:projectId(/:tab)"     : "openSettings"
+      "store/:sampleId"                : "openStore"
 
-    openStore : ( id )->
-      opsModel = App.model.stackList().findWhere({sampleId:id})
-      if not opsModel
-        opsModel = App.model.createSampleOps( id )
-      Router.navigate( opsModel.url(), {replace:true} )
-      App.openOps( opsModel )
-      return
+      "cheatsheet"                     : "openCheatsheet"
 
-    openOps : ( id )->
-      if not App.openOps( id )
-        Router.navigate("/", {replace:true})
-      return
+    openStore : ( id )-> new StackStore({ id : id })
 
-    openDashboard : ()->
-      if window.Dashboard
-        window.Dashboard.activate()
+    openSettings : ( projectId, tab )-> new Settings { tab: tab, projectId: projectId }
+
+    openProject : ( projectId, opsModelId )-> new ProjectScene( projectId, opsModelId )
+
+    openCheatsheet : ()-> new Cheatsheet()
 
     start : ()->
       if not Backbone.history.start({pushState:true})
         console.warn "URL doesn't match any routes."
-        @navigate("/", {replace:true})
+        @navigate("/", {replace:true, trigger:true})
 
-      # Add one more route to handle local item after we started the router.
-      @route /^ops\/([^/]+)/, "openOps"
+      self = @
+      $( document ).on "click", "a.route", ( evt )-> self.onRouteClicked( evt )
+
+      # Add additional routes here.
+      # These routes are diabled when the IDE is loading.
+      @route "workspace/:project/unsaved(/:ops)", "openProject"
       return
 
-    execute : ()->
-      @__forceReplace = true
-      Backbone.Router.prototype.execute.apply this, arguments
-      @__forceReplace = false
-      return
+    onRouteClicked : ( evt )->
+      href = $(evt.currentTarget).attr("href")
 
-    navigate : ( fragment, options )->
-      if @__forceReplace
-        options = options || {}
-        options.replace = true
+      currentUrl = Backbone.history.fragment
 
-      $( document ).trigger "urlroute"
+      # Normalize href so that it won't contain trailling "/"
+      lastChar = href[ href.length - 1 ]
+      if lastChar is "/" or lastChar is "\\"
+        href = href.substring( 0, href.length - 1 )
 
-      Backbone.Router.prototype.navigate.apply this, arguments
+      result = @navigate href, { replace : true, trigger : true }
+
+      # The `result` can be true | false | undefined
+      if result is true
+        $( document ).trigger "urlroute"
+      else if result is false
+        console.log "URL doesn't match any routes."
+        @navigate currentUrl, { replace : true }
+
+      false
   }

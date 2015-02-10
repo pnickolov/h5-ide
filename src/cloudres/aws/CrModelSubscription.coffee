@@ -35,8 +35,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     doCreate  : ()->
       self = @
-      ApiRequest("sns_Subscribe", {
-        region_name : @getCollection().region()
+      @sendRequest("sns_Subscribe", {
         topic_arn   : @get("TopicArn")
         protocol    : @get("Protocol")
         endpoint    : @get("Endpoint")
@@ -59,10 +58,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     doDestroy : ()->
       if @isRemovable()
-        return ApiRequest("sns_Unsubscribe", {
-          region_name : @getCollection().region()
-          sub_arn     : @get("SubscriptionArn")
-        })
+        return @sendRequest("sns_Unsubscribe", {sub_arn : @get("SubscriptionArn") })
 
       defer = Q.defer()
       defer.resolve McError( ApiRequest.Errors.InvalidMethodCall, "Cannot unsubscribe pending subscription.", self )

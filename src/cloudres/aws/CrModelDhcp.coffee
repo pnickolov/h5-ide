@@ -41,10 +41,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     doCreate : ()->
       self = @
-      ApiRequest("dhcp_CreateDhcpOptions", {
-        region_name  : @getCollection().region()
-        dhcp_configs : @toAwsAttr()
-      }).then ( res )->
+      @sendRequest("dhcp_CreateDhcpOptions", {dhcp_configs:@toAwsAttr()}).then ( res )->
         try
           id = res.CreateDhcpOptionsResponse.dhcpOptions.dhcpOptionsId
         catch e
@@ -55,10 +52,6 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
         self
 
-    doDestroy : ()->
-      ApiRequest("dhcp_DeleteDhcpOptions", {
-        region_name : @getCollection().region()
-        dhcp_id : @get("id")
-      })
+    doDestroy : ()-> @sendRequest("dhcp_DeleteDhcpOptions", {dhcp_id : @get("id")})
 
   }

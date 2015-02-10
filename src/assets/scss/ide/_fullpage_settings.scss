@@ -1,0 +1,731 @@
+#settings-nav {
+    min-width  : 220px;
+    width      : 25%;
+    padding    : 20px 2.5% 20px 2.5%;
+    background : transparentize($dark-p,.2);
+    overflow   : auto;
+
+    .back-settings {
+        font-size     : 14px;
+        display       : block;
+        width         : 44px;
+        padding       : 8px 12px;
+        border        : 1px solid $light-p-2;
+        border-radius : 3px;
+        margin-bottom : 20px;
+        color         : lighten($light-p-2,20%);
+        background    : transparent;
+
+        @include transit($method:all, $dur:.2s);
+
+        &:hover {
+            background : $light-p-2;
+            color      : #fff;
+        }
+    }
+
+    section {
+        margin-bottom: 10px;
+
+        header, a {
+            max-width     : 210px;
+            overflow      : hidden;
+            text-overflow : ellipsis;
+        }
+
+        header {
+            font-size : 18px;
+            color     : #eee;
+            padding   : 14px 0;
+        }
+
+        a {
+            display: block;
+            padding: 5px 0 5px 10px;
+        }
+    }
+}
+
+div.settings-item .edit-actions {
+    margin-left: 29%;
+}
+
+.settings-item {
+    position      : relative;
+    padding       : 5px 0 21px 0;
+    border-bottom : 1px solid $dark-p-2;
+    font-size     : 16px;
+    line-height   : 28px;
+    display       : flex;
+
+    dt {
+        color        : #999;
+        width        : 23%;
+        // min-width    : 180px;
+        display      : inline-block;
+    }
+
+    dd {
+        color   : #eee;
+        display : inline-block;
+        width   : 70%;
+    }
+
+    dd + dt {
+        margin-top: 10px;
+    }
+
+    .input { width: 220px;}
+
+    .edit-actions {
+        margin-top: 8px;
+
+        .cancel-button {
+            font-size   : 14px;
+            margin-left : 4px;
+            cursor      : pointer;
+        }
+
+        &.inline {margin-left: 8px;}
+    }
+
+    .edit-mode {
+        display: none;
+
+        .loading-spinner {
+            height   : 10px;
+            width    : 10px;
+            margin   : 0;
+            position : static;
+            display  : inline-block;
+        }
+    }
+
+    .normal-mode { display: inline; }
+
+    &.edit {
+        .edit-mode { display: inline; }
+        .normal-mode { display: none; }
+        .icon-edit { display: none; }
+    }
+}
+
+.leave-project-zone {
+    p:only-of-type:first-line {
+        color: $orange;
+    }
+}
+
+.confirm-action {
+    margin-top: 4px;
+
+    #confirm-project-name {
+        margin-right: 8px;
+    }
+
+    .cancel-confirm {
+        margin-left: 4px;
+    }
+}
+
+
+.fullpage-settings {
+    a { cursor: pointer; }
+    a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
+
+    display  : flex;
+    height   : 100%;
+    width    : 100%;
+
+    @media ( min-width: 1280px ) {
+        max-width     : 1280px;
+        height        : 90vh;
+        margin        : 5vh auto;
+        border        : 1px solid $light-p-2;
+        border-radius : 4px;
+        box-sizing    : border-box;
+    }
+
+    .setting-content {
+        min-width  : 700px;
+        width      : 65%;
+        padding    : 20px 2.5% 20px 2.5%;
+        background : $dark-p-1;
+        overflow   : auto;
+
+        > header {
+            color          : #cce;
+            padding-bottom : 15px;
+            margin-bottom  : 20px;
+            font-size      : 22px;
+            border-bottom  : 1px solid #0c0c0d;
+
+            #title-project-name {
+                display       : inline-block;
+                max-width     : 350px;
+                overflow      : hidden;
+                text-overflow : ellipsis;
+                // font-size     : 18px;
+                color: #99c;
+
+                &:after {
+                    content: "/";
+                }
+
+            }
+
+            #title-tab-name {
+                padding: 0 5px;
+                display: inline-block;
+                overflow: hidden;
+            }
+        }
+
+        .avatar img { width: 80px; height: 80px; }
+        
+        .change-photo {
+            height: 91px;
+            #change-photo {
+                margin: 49px 0 0 0;
+                color: #148BE6;
+                display: inline-block;
+                &:hover { text-decoration: underline; }
+            }
+
+        }
+
+        #AccountEmail, #AccountFullName {
+            color : #148BE6;
+        }
+
+        #AccountPwd {
+            color       : #148BE6;
+            padding     : 3px 0;
+            margin-left : 0;
+        }
+
+        .icon-edit {
+            color  : #909091;
+            cursor : pointer;
+
+            &:hover { color: #148BE6; }
+        }
+
+        .icon-delete:before { margin-right: 5px; } 
+
+        .credential {
+            padding: 0 8px;
+
+            .instruct {
+                padding-bottom: 15px;
+            }
+
+            .setup-credential {
+                margin: 20px 0 0 180px;
+            }
+
+            .demo-note {
+                padding-top: 20px;
+            }
+
+            ul.credential-list {
+                > li {
+                    width: 500px;
+                    height: 80px;
+                    border: 1px solid #7c7c83;
+                    border-radius: 3px;
+                    position: relative;
+                    margin-bottom: 8px;
+
+                    &::selection { background: transparent; }
+
+                    &.aws-credential { border-left: 6px solid #59e5c5; }
+
+                    .credential-logo {
+                        position: absolute;
+                        left: 0;
+                        width: 80px;
+                        height: 80px;
+                        background: #f9af4e;
+                        &:before {
+                            content: "logo here";
+                            color: white;
+                        }
+                    }
+
+                    .credential-name {
+                        margin-left: 88px;
+                        color: white;
+                        font-size: 16px;
+                        padding: 13px 0 15px 0;
+                    }
+
+                    .credential-describe { margin-left: 88px; }
+
+                    .icon-caret-down {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        cursor: pointer;
+                    }
+
+                    .button-list {
+                        top: 6px;
+                        right: -92px;
+                        position: absolute;
+
+                        i {
+                            line-height: 30px;
+                            padding: 0 6px 0 8px;
+                        }
+                        li {
+                            width: 92px;
+                            line-height: 30px;
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+
+        .member-setting {
+            #mail {
+                width: 280px;
+            }
+            .search {
+                display: none;
+                position: absolute;
+                width: 308px;
+                border: 1px #333 solid;
+                z-index: 2;
+                background-color: #000;
+                /* padding: 10px; */
+                margin-top: -14px;
+                span {
+                    text-align: center;
+                    margin: 10px;
+                }
+                .name, .mail {
+                    margin: 5px;
+                }
+            }
+            .limit-member-tip {
+                width: 480px;
+                float: left;
+                padding: 10px 0 20px 0;
+            }
+            #invite {
+                margin: 15px 0 15px 0;
+                margin-left: 5px;
+            }
+            #delete {
+                float: right;
+                margin-top: 15px;
+            }
+            .invite {
+                float: left;
+            }
+            .table th, .table td {
+                overflow: inherit;
+            }
+            .checkbox-row {
+                width: 20px;
+                position: relative;
+
+                .checkbox {
+                    position : absolute;
+                    top      : 50%;
+                    left     : 50%;
+                    margin   : -8px -8px;
+                }
+            }
+            .memlist-item {
+                td {
+                    text-align: center;
+                }
+                .t-m-content tr {
+                    height: 60px;
+                }
+                .cancel, .done {
+                    margin-top: 8px;
+                }
+                .memtype {
+                    margin-top: 4px;
+                }
+                .avatar {
+                    width: 45px;
+                    color: #888;
+                    float: left;
+                }
+                .info {
+                    float: left;
+                    margin: 3px 0 0 8px;
+                    .name, .mail {
+                        // margin: 5px;
+                        width: 150px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        text-align: left;
+                    }
+                    .name {
+                        // float: left;
+                        text-align: left;
+                    }
+                    .mail {
+                        color: #888;
+                    }
+                    .you {
+                        color: #888;
+                        // float: left;
+                        margin-left: 5px;
+                    }
+                }
+                .memlist-edit-mode {
+                    display: none;
+                }
+                .memlist-view-mode, .memlist-status {
+                    line-height: 45px;
+                }
+                &.edit {
+                    .memlist-view-mode {
+                        display: none;
+                    }
+                    .memlist-edit-mode {
+                        display: block;
+                    }
+                }
+                .memlist-pending {
+                    color: $yellow;
+                }
+                .role {
+                    text-transform: uppercase;
+                }
+                .selectbox {
+                    .selection {
+                        text-transform: uppercase;
+                        .desc {
+                            display: none;
+                        }
+                    }
+                    .dropdown {
+                        width: 217px;
+                        text-align: left;
+                    }
+                    li {
+                        overflow: hidden;
+                    }
+                }
+            }
+        }
+
+        .accountEditWrap {
+            display    : none;
+        }
+
+        .current-usage-block{
+            display: block;
+            width: 180px;
+            padding: 10px 10px 5px 10px;
+            text-align: center;
+            background: #000;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            h3{
+                font-size: 36px;
+                color: #91D21E;
+            }
+        }
+        #UsageTab .table-head-fix{
+            background: #000;
+            height: 234px;
+            .table-head{
+                background: #363636;
+            }
+        }
+
+    }
+    .update-payment-wrap{
+        margin-top: 20px;
+        position: relative;
+        h5{
+            width: 100%;
+            span{
+                display: inline-block;
+                &.card-number{
+                    width: 230px;
+                }
+                &.cvv{
+                    width: 75px;
+                }
+                &.expiration{
+                    width: 100px;
+                }
+            }
+        }
+        .input{
+            width: 200px;
+            &.first-name, &.last-name{
+                width: 90px;
+            }
+            &.cvv{
+                width: 50px;
+            }
+            &.expiration{
+                width: 80px;
+            }
+        }
+
+    }
+
+    .settings-item.credit-card-info dd {
+        display   : flex;
+        flex-wrap : wrap;
+
+        .credit-meta {
+            font-size: 12px;
+            color: $dark-grey;
+
+            p {
+                margin  : 0;
+                padding : 0;
+                line-height: 24px;
+            }
+        }
+
+        .credit-update {
+            margin-top : 10px;
+            width      : 100%;
+        }
+    }
+
+    .token-table {
+        position   : relative;
+        background : rgba(0,0,0,.1);
+        font-size  : 12px;
+
+        &.empty {
+            > header { display : none; }
+        }
+
+        .tokenName, .tokenToken, .tokenControl {
+            margin      : 0 5px;
+            line-height : 20px;
+            padding     : 5px;
+            height      : 20px;
+            width       : 90px;
+            float       : left;
+        }
+
+        .tokenToken {
+            width : auto;
+            font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif;
+        }
+
+        .tokenControl {
+            position: absolute;
+            right:     0;
+            width      : 90px;
+            padding    : 0;
+            line-height: 30px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            button.tooltip {
+                cursor  : pointer;
+                padding : 0;
+                color   : #666;
+
+                &.icon-edit {
+                    margin-right: 12px;
+                }
+
+                &.icon-edit:hover {
+                    color: #148BE6;
+                }
+                &.icon-delete:hover {
+                    color: #ec3c38;
+                }
+            }
+        }
+
+        input.tokenName {
+            line-height : 18px;
+        }
+
+        input.tokenName[readonly] {
+            border : none;
+            background : none;
+        }
+
+        .tokenDone { display:none; }
+        .tokenDone {
+            min-width   : 80px;
+            padding     : 4px 0;
+            line-height : 20px;
+        }
+
+        // .tokenControl .tooltip:before {
+        //   cursor : pointer;
+        //   color  : #34A3F8;
+        // }
+
+        > .scroll-wrap {
+            height : 250px;
+        }
+    }
+
+    #TokenList {
+        &:empty {
+            height : 100%;
+            &:before {
+                content     : attr(data-empty);
+                width       : 100%;
+                text-align  : center;
+                height      : 20px;
+                line-height : 20px;
+                top         : 50%;
+                left        : 0;
+                position    : absolute;
+            }
+        }
+
+        > li {
+            clear  : both;
+            height : 30px;
+            &:hover{
+              background: #25262C;
+            }
+        }
+
+        > li {
+            &:hover, &.editing {
+                .tokenControl { display:block; }
+            }
+
+            &.editing {
+                .tooltip { display:none; }
+                .tokenDone { display:block; }
+            }
+        }
+
+        .tokenToken {
+            color: #eee;
+        }
+
+        .tokenName.input {
+            font-size: 12px;
+        }
+
+    }
+
+    #TokenRmConfirm {
+        h3 {
+            font-size     : 18px;
+            padding       : 10px 0;
+            color         : #eee;
+            margin-bottom : 10px;
+        }
+
+        p {
+            color : #ccc;
+        }
+
+    }
+
+    .cred-btn-wrap {
+        margin-top: 20px;
+    }
+
+}
+
+#CredSetupWrap {
+    .icon-label {
+        float        : right;
+        margin-right : 0;
+        color        : #25a4f4;
+        line-height  : 36px;
+    }
+
+    ul {
+        li:first-child {
+            border-bottom: 1px solid #41424c;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+    }
+
+    label {
+        display       : block;
+        float: left;
+        font-size     : 13px;
+        margin-bottom : 6px;
+        line-height   : 36px;
+        width: 128px;
+    }
+
+    .input {
+        width              : 300px;
+        -webkit-box-sizing : border-box;
+        -moz-box-sizing    : border-box;
+        box-sizing         : border-box;
+        height             : 36px;
+        padding            : 10px;
+        font-size          : 13px;
+        margin-bottom      : 6px;
+    }
+}
+
+.cred-setup-msg {
+    padding          : 15px;
+    background-color : #111;
+    border-radius    : 4px;
+    color            : #ec3c38;
+    margin-bottom    : 20px;
+    width: 397px;
+}
+
+.billing-email-text p {
+    display : inline-block;
+    margin  : 0;
+}
+
+.update-payment-ctrl{
+  button.btn{
+    min-width: 80px;
+    padding: 4px 0;
+    line-height: 20px;
+  }
+}
+.billing-history{
+  margin-top: 30px;
+}
+.usage-report-view{
+  position: relative;
+  .table-head-fix{
+    padding-top: 1px;
+  }
+  .full-space{
+    margin-top: -1px;
+  }
+  .usage-pagination{
+    position: absolute;
+    right: 0;
+    margin-top: -35px;
+    .usage-date{
+      display: inline-block;
+      padding: 0 8px;
+      text-align: center;
+    }
+    button{
+      padding: 8px 0;
+      min-width: 36px;
+    }
+  }
+}

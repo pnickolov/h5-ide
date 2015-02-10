@@ -73,11 +73,11 @@ module.exports =
 
     DASH_LBL_NO_APP:
       en: "There is no app launched yet.<br />You can launch an app from a stack."
-      zh: "该地区没有 App<br />你可以通过 Stack 启动 App"
+      zh: "目前没有 App<br />你可以通过 Stack 启动 App"
 
     DASH_LBL_NO_STACK:
-      en: "There is no stack in this region yet.<br />Create a new stack from here."
-      zh: "该地区还没有 Stack<br />点击这里创建 Stack"
+      en: "There is no stack created yet.<br />You can create a new stack in dashboard."
+      zh: "目前没有 Stack<br />你可以在仪表板创建 Stack"
 
     DASH_LBL_RUNNING_INSTANCE:
       en: "Running Instance"
@@ -679,22 +679,6 @@ module.exports =
     DASH_POP_BTN_RETRY:
       en: "Retry"
       zh: "重试"
-
-    DASH_POP_CREATE_STACK_CLASSIC:
-      en: "Classic"
-      zh: "传统模式"
-
-    DASH_POP_CREATE_STACK_CLASSIC_INTRO:
-      en: "Resources will be created into the Classic platform"
-      zh: "资源将被创建在传统的平台中"
-
-    DASH_POP_CREATE_STACK_VPC:
-      en: "VPC"
-      zh: "VPC模式"
-
-    DASH_POP_CREATE_STACK_VPC_INTRO:
-      en: "Resources will be created into a newly created VPC"
-      zh: "资源将被创建在新创建的VPC中"
 
     DASH_POP_CREATE_STACK_DEFAULT_VPC:
       en: "Default VPC"

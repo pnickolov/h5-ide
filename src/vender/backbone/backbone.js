@@ -1256,8 +1256,7 @@ define(['underscore', 'jquery'], function(){
 
     // Simple proxy to `Backbone.history` to save a fragment into the history.
     navigate: function(fragment, options) {
-      Backbone.history.navigate(fragment, options);
-      return this;
+      return Backbone.history.navigate(fragment, options);
     },
 
     // Bind all defined routes to `Backbone.history`. We have to reverse the
@@ -1470,6 +1469,13 @@ define(['underscore', 'jquery'], function(){
       if (!options || options === true) options = {trigger: options};
       fragment = this.getFragment(fragment || '');
       if (this.fragment === fragment) return;
+
+      // If we don't have a handler for a url. Return false without changing the url.
+      var handler = _.find(this.handlers, function(handler) { return handler.route.test(fragment); });
+      if ( !handler ) {
+        return false;
+      }
+
       this.fragment = fragment;
       var url = this.root + fragment;
 
@@ -1494,7 +1500,10 @@ define(['underscore', 'jquery'], function(){
       } else {
         return this.location.assign(url);
       }
-      if (options.trigger) this.loadUrl(fragment);
+      if (options.trigger) {
+        handler.callback(fragment);
+      }
+      return true;
     },
 
     // Update the hash location, either replacing the current entry, or adding

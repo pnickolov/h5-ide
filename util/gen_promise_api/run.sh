@@ -627,7 +627,7 @@ then
         cat ${LINE} | grep "method:" >> ${TGT_BASE_DIR}/service/forge.tmp
     done
     #cat ${TGT_BASE_DIR}/service/.tmp
-    sed '/session_set_credential/r out.tmp/service/forge.tmp' ${TGT_BASE_DIR}/service/session.js > ${TGT_BASE_DIR}/service/forge.rlt
+    sed '/logout/r out.tmp/service/forge.tmp' ${TGT_BASE_DIR}/service/session.js > ${TGT_BASE_DIR}/service/forge.rlt
     rm -rf ${TGT_BASE_DIR}/service/*.js
     mv ${TGT_BASE_DIR}/service/forge.rlt ${TGT_BASE_DIR}/service/forge.js
     rm -rf ${TGT_BASE_DIR}/service/*.tmp
@@ -665,6 +665,15 @@ fi
 echo "##############################################################"
 echo "generate ApiBundle.js"
 echo "define([ ${_DEFINE_} ],function(){})" > ${TGT_BASE_DIR}/ApiBundle.js
+echo
+echo "##############################################################"
+echo "copy new api define to target dir"
+\cp ${TGT_BASE_DIR}/service/forge.js ${SH_BASE_DIR}/../../src/api/define/forge.js
+\cp ${TGT_BASE_DIR}/service/aws/* ${SH_BASE_DIR}/../../src/api/define/aws/
+cd ${SH_BASE_DIR}/../../
+echo "current dir: `pwd`"
+echo
+echo "Use 'git status' or 'git diff' to see the change"
 echo
 echo "Done"
 echo

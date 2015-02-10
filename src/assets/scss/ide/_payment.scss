@@ -34,7 +34,6 @@ $navHeight : 38px;
 }
 
 .warning-red {
-  display       : block;
   text-align    : center;
   color         : #eee;
   background    : #a42b2b;;
@@ -55,7 +54,6 @@ $navHeight : 38px;
 
 
 #PaymentBody {
-  padding: 20px 15px 0px;
   min-height: 150px;
 
   .dl-horizontal {
@@ -103,6 +101,13 @@ $navHeight : 38px;
       width: 100%;
     }
   }
+}
+#billing-status .table-head-fix .full-space{
+  height: 234px;
+  display: inline-block;
+  line-height: 234px;
+  text-align: center;
+  width: 100%;
 }
 .no-payment-card-info{
   width: 400px;
@@ -302,6 +307,18 @@ h5.billing_usage_title{
   line-height    : 20px;
   margin         : 10px 0;
   color          : #eee;
+}
+
+section.members-only {
+  display: none;
+  border: 1px solid #5E5E5E;
+  padding: 10px;
+  margin: 10px;
+  margin-bottom: 0;
+  color: #CCCCCC;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 // .payment-wrapper > .scroll-wrap > .scroll-content{

@@ -12,8 +12,9 @@ define [ 'component/stateeditor/model',
          'ApiRequest'
          'ApiRequestOs'
          'OpsModel'
+         "UI.modalplus"
          'UI.errortip'
-], ( Model, ide_event, lang, template , validate, constant, Markdown, ApiRequest, ApiRequestOs, OpsModel) ->
+], ( Model, ide_event, lang, template , validate, constant, Markdown, ApiRequest, ApiRequestOs, OpsModel, modalPlus) ->
 
     StateClipboard = []
 
@@ -3374,23 +3375,26 @@ define [ 'component/stateeditor/model',
                 ApiRequestOs(reqApi, {
                     region: region
                     server_id: serverId
-                }).then @refreshSysLog, @refreshSysLog
+                }).then (_.bind @refreshSysLog, @), (_.bind @refreshSysLog, @)
             else
                 reqApi = "ins_GetConsoleOutput" # for aws
                 ApiRequest(reqApi, {
+                    key_id     : Design.instance().credentialId()
                     region_name: region
                     instance_id: serverId
-                }).then @refreshSysLog, @refreshSysLog
+                }).then (_.bind @refreshSysLog, @), (_.bind @refreshSysLog, @)
 
-            modal MC.template.modalInstanceSysLog {
-                instance_id: serverId,
-                log_content: ''
-            }, true
+            @sysLogModal = new modalPlus({
+                template:MC.template.modalInstanceSysLog {log_content: ''}
+                width: 900
+                title: lang.IDE.SYSTEM_LOG + serverId
+                confirm: hide: true
+            }).tpl.attr("id", "modal-instance-sys-log")
 
             false
 
         refreshSysLog : (result) ->
-
+            that = @
             $('#modal-instance-sys-log .instance-sys-log-loading').hide()
 
             if result
@@ -3406,12 +3410,12 @@ define [ 'component/stateeditor/model',
 
                     $contentElem.html MC.template.convertBreaklines({content:logContent})
                     $contentElem.show()
-                    modal.position()
+                    that.sysLogModal.resize()
                     return
 
             $('#modal-instance-sys-log .instance-sys-log-info').show()
 
-            modal.position()
+            @sysLogModal.resize()
 
         onStateLogDetailBtnClick: (event) ->
 
@@ -3422,10 +3426,14 @@ define [ 'component/stateeditor/model',
             if stateId
                 stateLogObj = that.stateIdLogContentMap[stateId]
                 if stateLogObj
-                    modal $.trim(template.stateLogDetailModal({
-                        number: stateLogObj.number
-                        content: stateLogObj.content
-                    })), true
+                    modal = new modalPlus {
+                        title: lang.IDE.STATE_LOG_DETAIL_MOD_TIT
+                        template: template.stateLogDetailModal {number: stateLogObj.number, content: stateLogObj.content}
+                        width: 900
+                        confirm: hide: true
+                    }
+                    modal.tpl.attr("id", "modal-state-log-detail")
+                    modal.resize()
 
         onTextParaExpandClick: (event) ->
 
@@ -3461,11 +3469,16 @@ define [ 'component/stateeditor/model',
             that = this
             textContent = originEditor.getValue()
 
-            modal $.trim(template.stateTextExpandModal({
-                cmd_name: cmdName,
-                para_name: paraName,
-                read_only: that.readOnlyMode
-            })), false
+            modal = new modalPlus {
+                title: "#{if that.readOnlyMode then lang.IDE.STATE_TEXT_VIEW else lang.IDE.STATE_TEXT_EDIT} #{cmdName} #{paraName}"
+                template: template.stateTextExpandModal()
+                width: 900
+                disableFooter: that.readOnlyMode
+                confirm: text: unless that.readOnlyMode then text: lang.IDE.STATE_TEXT_EXPAND_MODAL_SAVE_BTN
+                cancel: hide: true
+            }
+
+            modal.tpl.attr("id", "modal-state-text-expand")
 
             $('#modal-state-text-expand').data('origin-editor', originEditor)
 

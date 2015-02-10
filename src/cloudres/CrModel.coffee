@@ -60,6 +60,20 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
 
         throw err
 
+    # A convenient method to call ApiRequest
+    sendRequest : ( api, params )->
+      params = params || {}
+      if params.key_id is undefined
+        params.key_id = @getCollection().credential()
+
+      if params.region_name is undefined and @getCollection().region()
+        # If the region is empty, we DONT assign the empty region to region_name
+        # Since ApiRequest will fill a region for us. In such case the region_name
+        # is actually useless, but the backend needs it to bypass somekind of check.
+        params.region_name = @getCollection().region()
+
+      ApiRequest( api, params )
+
     # Subclass needs to override these method.
     ###
     dosave    : ()->
@@ -74,8 +88,7 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       if @taggable is false then return
 
       self = @
-      ApiRequest("ec2_CreateTags",{
-        region_name  : @getCollection().region()
+      @sendRequest("ec2_CreateTags",{
         resource_ids : [@get("id")]
         tags         : [{Name:"Created by",Value:App.user.get("username")}]
       }).then ()->
@@ -83,37 +96,5 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
         return
 
   }, {
-    ### env:dev ###
-    extend : ( protoProps, staticProps )->
-      ### jshint -W061 ###
-
-      parent = this
-
-      funcName = protoProps.ClassName || protoProps.type.split(".").pop()
-      childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
-
-      if protoProps and protoProps.hasOwnProperty "constructor"
-        cstr = protoProps.constructor
-      else
-        cstr = ()-> return parent.apply( this, arguments )
-
-      child = childSpawner( cstr )
-
-      _.extend(child, parent, staticProps)
-
-      funcName = "PROTO_" + funcName
-      prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
-
-      Surrogate = prototypeSpawner( child )
-      Surrogate.prototype = parent.prototype
-      child.prototype = new Surrogate()
-
-      if protoProps
-        _.extend(child.prototype, protoProps)
-
-      child.__super__ = parent.prototype
-      ### jshint +W061 ###
-
-      child
-    ### env:dev:end ###
+    extend : window.__detailExtend || Backbone.Model.extend
   }

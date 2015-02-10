@@ -1,0 +1,58 @@
+<!--{{basicSettings}}-->
+<dl class="settings-item project-name-zone project-item">
+    <dt>{{i18n "WORKSPACE_NAME"}}</dt>
+    <dd>
+        <div class="normal-mode">
+            <span class="project-name">{{name}}</span>
+        </div>
+        <div class="edit-mode">
+            <input type="text" class="input" id="project-name" value="{{name}}">
+            <div class="edit-actions">
+                <button class="btn btn-blue" id="update-name">{{i18n "SETTINGS_LABEL_ACCOUNT_UPDATE"}}</button>
+                <a class="cancel-button">{{i18n "SETTINGS_LABEL_ACCOUNT_CANCEL"}}</a>
+            </div>
+            <div class="loading-spinner" style="display: none;"></div>
+        </div>
+        {{#if isAdmin}}{{#unless private}}<button class="icon-edit edit-button"></button>{{/unless}}{{/if}}
+    </dd>
+</dl>
+
+<dl class="settings-item project-item">
+    <dt>{{#if displayDelete}}{{i18n "DELETE_WORKSPACE"}}{{else}}{{i18n "LEAVE_WORKSPACE"}}{{/if}}</dt>
+    <dd class="leave-project-zone">
+    </dd>
+</dl>
+
+<!--{{confirmToDelete}}-->
+<p>{{i18n "THIS_ACTION_CANNOT_BE_REVERTED"}}<br/>{{i18n "TYPE_THE_WORKSPACE_NAME_TO_CONFIRM"}}</p>
+<div class="confirm-action">
+    <input type="text" class="input" id="confirm-project-name"/>
+    <button class="btn btn-red" id="do-delete-project" disabled>{{i18n "CONFIRM_TO_DELETE"}}</button>
+    <a class="cancel-confirm">Cancel</a>
+</div>
+
+<!--{{confirmToLeave}}-->
+<p>{{i18n "THIS_ACTION_CANNOT_BE_REVERTED"}}<br/>{{i18n "ARE_YOU_SURE_YOU_WANT_TO_LEAVE_THIS_WORKSPACE"}}</p>
+<div class="confirm-action">
+    <button class="btn btn-red" id="do-leave-project">{{i18n "CONFIRM_TO_LEAVE"}}</button>
+    <a class="cancel-confirm">Cancel</a>
+</div>
+
+<!--{{loading}}-->
+<div class="loading-spinner"></div>
+
+<!--{{leaveOrDelete}}-->
+{{#if private}}
+<p>{{i18n "FREE_WORKSPACE_CAN_NOT_DELETE"}}</p>
+
+{{else}}
+    {{#if isAdmin}}
+    <p>{{i18n "DELETE_WORKSPACE_WILL_FORGOT_APPS"}}</p>
+    <p>{{i18n "IMPORT_JSON_BEFORE_DELETE_WORKSPACE"}}</p>
+    <button class="btn btn-red icon-delete" id="delete-project">{{i18n "DELETE_WORKSPACE"}}</button>
+    {{/if}}
+    {{#if isMember}}
+    <p>{{i18n "LEAVING_WORKSPACE_WILL_NOT_ACCESS"}}</p>
+    <button class="btn btn-red icon-delete" id="leave-project">{{i18n "LEAVE_WORKSPACE"}}</button>
+    {{/if}}
+{{/if}}

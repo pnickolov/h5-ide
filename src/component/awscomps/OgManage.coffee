@@ -72,7 +72,7 @@ define [
             unless @isAppEdit then return false
 
             appId = @ogModel.get 'appId'
-            appData = CloudResources(constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
+            appData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
 
             unless appData then return false
             appOptions = {}
@@ -112,7 +112,7 @@ define [
             @isCreate   = option.isCreate
             @dbInstance = option.dbInstance
 
-            optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
+            optionCol = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getOptionGroupsByEngine(Design.instance().region(), option.engine)
 
             @ogOptions = engineOptions[option.version] if engineOptions

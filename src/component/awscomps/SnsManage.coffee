@@ -6,8 +6,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
         initCol: ->
             region = Design.instance().region()
-            @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
-            @topicCol = CloudResources constant.RESTYPE.TOPIC, region
+            @subCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.SUBSCRIPTION, region
+            @topicCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.TOPIC, region
             @topicCol.on 'update', @processCol, @
             @subCol.on 'update', @processSubUpdate, @
 
@@ -133,7 +133,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
                     throw err
 
         fetch: ->
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @topicCol.fetch()
                 @subCol.fetch()
 
@@ -246,7 +246,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
         render: ->
             @modal.render()
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @processCol()
             else
                 @modal.render 'nocredential'
@@ -414,7 +414,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
 
         show: ->
-            if App.user.hasCredential()
+            if Design.instance().credential()
                 @topicCol.fetch()
                 @subCol.fetch()
                 @processCol()

@@ -248,16 +248,30 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
     parseFetchData : ( res )-> res
 
     # Destroy the collection. Most of the collection should not be destroy.
-    destroy : ()-> @trigger "destroy", @id
+    destroy : ()-> @trigger "destroy", @credential(), @id
 
-    # Returns a newly created model. The model is not saved to AWS yet, so there's not
-    # add event.
+    # Returns a newly created model. The model is not saved to AWS yet, so there's no add event.
     create : ( attributes )->
       m = new @model( attributes )
       m.__collection = @
       m
 
-    region : ()-> @category
+    region     : ()-> @category
+    credential : ()-> @__credential
+
+    # A convenient method to call ApiRequest
+    sendRequest : ( api, params )->
+      params = params || {}
+      if params.key_id is undefined
+        params.key_id = @credential()
+
+      if params.region_name is undefined and @region()
+        # If the region is empty, we DONT assign the empty region to region_name
+        # Since ApiRequest will fill a region for us. In such case the region_name
+        # is actually useless, but the backend needs it to bypass somekind of check.
+        params.region_name = @region()
+
+      ApiRequest( api, params )
 
     # Override Backbone.Collection.set
     ### env:dev ###

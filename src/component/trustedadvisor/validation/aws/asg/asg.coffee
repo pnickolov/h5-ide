@@ -89,7 +89,7 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
             return
 
         region = Design.instance().region()
-        topicCol = CloudResources constant.RESTYPE.TOPIC, region
+        topicCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.TOPIC, region
 
         result = []
         topicCol.fetchForce().fin ->

@@ -1,0 +1,1361 @@
+#############################
+#  View(UI logic) for design/property/dbinstacne
+#############################
+
+define [ 'ApiRequest'
+         'ResDiff'
+         '../base/view'
+         'og_dropdown'
+         './template/stack_instance'
+         './template/stack_replica'
+         './template/stack_component'
+         'i18n!/nls/lang.js'
+         'constant'
+         'CloudResources'
+         'rds_pg'
+         'UI.modalplus'
+         'jqtimepicker'
+         'jqdatetimepicker'
+], ( ApiRequest, ResDiff, PropertyView, OgDropdown, template_instance, template_replica, template_component, lang, constant, CloudResources, parameterGroup, Modal ) ->
+
+    noop = ()-> null
+
+    DBInstanceView = PropertyView.extend {
+
+        events:
+            'change #property-dbinstance-name': 'changeInstanceName'
+            'change #property-res-desc'       : 'onChangeDesc'
+            'change #property-dbinstance-mutil-az-check': 'changeMutilAZ'
+            'change #property-dbinstance-storage': 'changeAllocatedStorage'
+            'keyup #property-dbinstance-storage': 'inputAllocatedStorage'
+            'OPTION_CHANGE #property-dbinstance-storage-type': 'changeStorageType'
+            'change #property-dbinstance-iops-value': 'changeProvisionedIOPS'
+            'change #property-dbinstance-master-username': 'changeUserName'
+            'change #property-dbinstance-master-password': 'changePassWord'
+            'change #property-dbinstance-database-name': 'changeDatabaseName'
+            'change #property-dbinstance-database-port': 'changeDatabasePort'
+            'change #property-dbinstance-public-access-check': 'changePublicAccessCheck'
+            'change #property-dbinstance-version-update': 'changeVersionUpdate'
+            'change #property-dbinstance-auto-backup-check': 'changeAutoBackupCheck'
+            'change #property-dbinstance-backup-period': 'changeBackupPeriod'
+
+            'click #property-dbinstance-backup-window-select input': 'changeBackupOption'
+            'change #property-dbinstance-backup-window-start-time': 'changeBackupTime'
+            'OPTION_CHANGE #property-dbinstance-backup-window-duration': 'changeBackupTime'
+
+            'click #property-dbinstance-maintenance-window-select input': 'changeMaintenanceOption'
+            'OPTION_CHANGE #property-dbinstance-maintenance-window-start-day-select': 'changeMaintenanceTime'
+            'OPTION_CHANGE #property-dbinstance-maintenance-window-duration': 'changeMaintenanceTime'
+            'change #property-dbinstance-maintenance-window-start-time': 'changeMaintenanceTime'
+
+            'OPTION_CHANGE #property-dbinstance-engine-select': 'changeEngine'
+            'OPTION_CHANGE #property-dbinstance-license-select': 'changeLicense'
+            'OPTION_CHANGE #property-dbinstance-engine-version-select': 'changeVersion'
+            'OPTION_CHANGE #property-dbinstance-class-select': 'changeClass'
+            'OPTION_CHANGE #property-dbinstance-preferred-az': 'changeAZ'
+
+            'OPTION_CHANGE #property-dbinstance-charset-select': 'changeCharset'
+
+            #'change #property-dbinstance-apply-immediately': 'changeApplyImmediately'
+
+            'OPTION_CHANGE': 'checkChange'
+            'change *': 'checkChange'
+
+            'click #property-dbinstance-promote-replica': 'promoteReplica'
+            'click .property-btn-db-restore-config': 'openRestoreConfigModal'
+
+        promoteReplica: () ->
+
+            that = @
+
+            if @isPromoted()
+                @unsetPromote()
+                App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+            else
+
+                modal = new Modal({
+                    title        : lang.IDE.TITLE_CONFIRM_PROMOTE_READ_REPLICA
+                    template     : template_component.modalPromoteConfirm({})
+                    confirm      : {text : lang.PROP.DB_CONFIRM_PROMOTE}
+                    disableClose : true
+                    onConfirm : ()->
+                        that.setPromote()
+                        App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+                        modal.close()
+                })
+
+        openRestoreConfigModal: (defaultRes) ->
+
+            if not (defaultRes and defaultRes.type is constant.RESTYPE.DBINSTANCE)
+                defaultRes = @resModel
+
+            that = @
+
+            sourceDbModel = defaultRes.getSourceDBForRestore()
+            sourceDbAppModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(sourceDbModel.get('appId'))
+
+            if sourceDbAppModel
+
+                penddingObj = sourceDbAppModel.get('PendingModifiedValues')
+                noRestore = (not sourceDbAppModel.get('LatestRestorableTime')) or (sourceDbAppModel.get('BackupRetentionPeriod') is 0) or (penddingObj and penddingObj.BackupRetentionPeriod is 0)
+
+                if (new Date(sourceDbAppModel.get('LatestRestorableTime'))) == 'Invalid Date'
+                    noRestore = true
+
+            else
+
+                noRestore = true
+
+            if noRestore
+
+                modal = new Modal({
+                    title        : lang.IDE.TITLE_RESTORE_TO_POINT_IN_TIME_CONFIG
+                    template     : template_component.modalRestoreConfirm({
+                        noRestore: noRestore
+                    })
+                    confirm      : {hide: true}
+                    cancel       : {text: 'Close'}
+                    disableClose : true
+                    disableConfirm: true
+                    width        : "580"
+                    onCancel: () ->
+                        defaultRes.remove()
+                    onClose: () ->
+                        defaultRes.remove()
+                })
+
+            else
+
+                lastestRestoreTime = new Date(sourceDbAppModel.get('LatestRestorableTime'))
+
+                dbRestoreTime = defaultRes.get('dbRestoreTime')
+
+                if dbRestoreTime
+                    currentTime = new Date(dbRestoreTime)
+
+                else
+                    currentTime = lastestRestoreTime
+
+                lastestYear = lastestRestoreTime.getFullYear()
+                lastestMonth = lastestRestoreTime.getMonth() + 1
+                lastestDay = lastestRestoreTime.getDate()
+
+                customYear = currentTime.getFullYear()
+                customMonth = currentTime.getMonth() + 1
+                customDay = currentTime.getDate()
+
+                customYearStr = if String(customYear).length is 1 then "0#{customYear}" else customYear
+                customMonthStr = if String(customMonth).length is 1 then "0#{customMonth}" else customMonth
+                customDayStr = if String(customDay).length is 1 then "0#{customDay}" else customDay
+
+                timezone = -((new Date()).getTimezoneOffset() / 60)
+                if timezone > 0
+                    timezone = "+#{timezone}"
+                else
+                    timezone = "#{timezone}"
+
+                _getCurrentSelectedTime = () ->
+
+                    dateStr = $('.modal-db-instance-restore-config .datepicker').val()
+                    selectedDate = new Date(dateStr)
+                    hour = $('.modal-db-instance-restore-config .timepicker.hour').val()
+                    minute = $('.modal-db-instance-restore-config .timepicker.minute').val()
+                    second = $('.modal-db-instance-restore-config .timepicker.second').val()
+                    selectedDate.setHours(Number(hour))
+                    selectedDate.setMinutes(Number(minute))
+                    selectedDate.setSeconds(Number(second))
+                    return selectedDate
+
+                _setDefaultSelectedTime = (needMax) ->
+
+                    if needMax
+                        hourStr = String(lastestRestoreTime.getHours())
+                        minuteStr = String(lastestRestoreTime.getMinutes())
+                        secondStr = String(lastestRestoreTime.getSeconds())
+                    else
+                        hourStr = String(currentTime.getHours())
+                        minuteStr = String(currentTime.getMinutes())
+                        secondStr = String(currentTime.getSeconds())
+
+                    hour = if hourStr.length is 1 then "0#{hourStr}" else hourStr
+                    minute = if minuteStr.length is 1 then "0#{minuteStr}" else minuteStr
+                    second = if secondStr.length is 1 then "0#{secondStr}" else secondStr
+                    $('.modal-db-instance-restore-config .timepicker.hour').val(hour)
+                    $('.modal-db-instance-restore-config .timepicker.minute').val(minute)
+                    $('.modal-db-instance-restore-config .timepicker.second').val(second)
+
+                modal = new Modal({
+                    title        : lang.IDE.TITLE_RESTORE_TO_POINT_IN_TIME_CONFIG
+                    template     : template_component.modalRestoreConfirm({
+                        lastest: lastestRestoreTime.toString()
+                        custom: not dbRestoreTime
+                        timezone: timezone
+                        noRestore: noRestore
+                    })
+                    confirm      : {text : lang.PROP.RDS_RESTORE}
+                    disableClose : true
+                    width        : "580"
+                    onConfirm : ()->
+                        isCustomTime = $('#modal-db-instance-restore-radio-custom')[0].checked
+                        if isCustomTime
+                            selectedDate = _getCurrentSelectedTime()
+                            defaultRes.set('dbRestoreTime', selectedDate.toISOString())
+                        else
+                            defaultRes.set('dbRestoreTime', '')
+                        defaultRes.isRestored = true
+                        modal.close()
+                    onCancel: () ->
+                        if not defaultRes.isRestored
+                            defaultRes.remove()
+                    onClose: () ->
+                        if not defaultRes.isRestored
+                            defaultRes.remove()
+                })
+
+                _setDefaultSelectedTime()
+
+                # bind datetime picker event
+                dateLang = 'en'
+                dateLang = 'ch' if language is 'zh-cn'
+                $('.modal-db-instance-restore-config .datepicker').datetimepicker({
+                    timepicker: false,
+                    defaultDate: "#{customMonth}/#{customDay}/#{customYear}",
+                    maxDate: "#{lastestMonth}/#{lastestDay}/#{lastestYear}",
+                    closeOnDateSelect: true,
+                    format: 'm/d/Y',
+                    formatDate:'m/d/Y',
+                    value: "#{customMonthStr}/#{customDayStr}/#{customYearStr}",
+                    lang: dateLang,
+                    onSelectDate: () ->
+                        selectedDate = _getCurrentSelectedTime()
+                        if selectedDate > lastestRestoreTime
+                            _setDefaultSelectedTime(true)
+                })
+                $('.modal-db-instance-restore-config .datepicker, .modal-db-instance-restore-config .timepicker').on 'focus', (event) ->
+                    $('#modal-db-instance-restore-radio-custom').prop('checked', true)
+
+                $('.modal-db-instance-restore-config .timepicker').on 'change', (event) ->
+
+                    valStr = $(event.target).val()
+                    currentValue = Number(valStr)
+
+                    if $(event.target).hasClass('hour')
+                        maxValue = 23
+                        maxLatestValue = currentTime.getHours()
+
+                    else if $(event.target).hasClass('minute')
+                        maxValue = 59
+                        maxLatestValue = currentTime.getMinutes()
+
+                    else if $(event.target).hasClass('second')
+                        maxValue = 59
+                        maxLatestValue = currentTime.getSeconds()
+
+                    if currentValue > maxValue
+                        $(event.target).val(maxValue)
+                    else if not currentValue or currentValue < 0
+                        $(event.target).val('00')
+
+                    # check max time
+                    selectedDate = _getCurrentSelectedTime()
+                    if selectedDate > lastestRestoreTime
+                        _setDefaultSelectedTime()
+
+                    newValStr = $(event.target).val()
+                    if newValStr.length < 2
+                        newValStr = "0#{newValStr}"
+                        $(event.target).val(newValStr)
+
+            return false
+
+        checkChange: ( e ) ->
+
+            return unless @resModel.get 'appId'
+            that = @
+
+            diff = ( oldComp, newComp ) ->
+
+                comp = that.resModel.serialize()
+
+                differ = new ResDiff({
+                    old : component: that.originComp
+                    new : comp
+                })
+
+                # ignore name change
+                if differ.modifiedComps and _.keys(differ.addedComps).length is 0 and _.keys(differ.removedComps).length is 0
+                    keys = _.keys(differ.modifiedComps)
+                    if keys.length is 1 and keys[0] is 'name'
+                        return false
+
+                differ.getChangeInfo().hasResChange
+
+            if e
+                if not @isPromoted()
+                    _.defer () ->
+                        if diff()
+                            $( '.apply-immediately-section' ).show()
+                            $('.property-panel-wrapper').addClass('immediately')
+                        else
+                            $( '.apply-immediately-section' ).hide()
+                            $('.property-panel-wrapper').removeClass('immediately')
+            else
+                diff()
+
+        durationOpertions: [ 0.5, 1, 2, 2.5, 3 ]
+
+        genDuration: ( selectedValue ) ->
+            _.map @durationOpertions, ( value ) ->
+                value: value, selected: value is selectedValue
+
+
+        changeCharset: ( event, value ,data ) ->
+            @resModel.set 'characterSetName', value
+
+        changeApplyImmediately: (event) ->
+
+            value = event.target.checked
+            @resModel.set('applyImmediately', value)
+
+        changeEngine: ( event, value, data ) ->
+            @resModel.set 'engine', value
+            @resModel.setDefaultParameterGroup()
+            @resModel.setDefaultOptionGroup()
+            @renderOptionGroup()
+            @renderLVIA()
+
+        changeLicense: ( event, value, data ) ->
+            @resModel.set 'license', value
+            @renderLVIA()
+
+        changeVersion: ( event, value, data ) ->
+            origEngineVersion = @resModel.get 'engineVersion'
+            @resModel.set 'engineVersion', value
+            @resModel.setDefaultParameterGroup( origEngineVersion )
+            @resModel.setDefaultOptionGroup( origEngineVersion )
+            @renderOptionGroup()
+            @renderParameterGroup()
+            @renderLVIA()
+
+        changeClass: ( event, value, data ) ->
+            @resModel.set 'instanceClass', value
+            @setDefaultAllocatedStorage()
+            true
+
+        setDefaultAllocatedStorage: () ->
+
+            range = @resModel.getAllocatedRange()
+            currentValue = @resModel.get('allocatedStorage')
+
+            if range.min > currentValue or range.max < currentValue
+
+                defaultStorage = @resModel.getDefaultAllocatedStorage()
+                @resModel.set('allocatedStorage', defaultStorage)
+                $('#property-dbinstance-storage').val(defaultStorage)
+                @updateIOPSCheckStatus()
+
+        _getTimeData: (timeStr) ->
+
+            defaultValue = {
+                startHour: '00',
+                startMin: '00',
+                startTime: "00:00",
+                duration: 0.5,
+                startWeek: 'Mondey'
+            }
+
+            return defaultValue if not timeStr
+
+            try
+
+                _appendZero = (str) -> if str.length is 1 then return "0#{str}" else return str
+
+                timeAry = timeStr.split('-')
+                startTimeStr = timeAry[0]
+                endTimeStr = timeAry[1]
+
+                startTimeAry = startTimeStr.split(':')
+                endTimeAry = endTimeStr.split(':')
+
+                # for mon:hour:min
+                if startTimeAry.length is 3
+
+                    startWeekStr = startTimeAry[0]
+                    endWeekStr = endTimeAry[0]
+
+                    startTimeAry = startTimeAry.slice(1)
+                    endTimeAry = endTimeAry.slice(1)
+
+                startHour = Number(startTimeAry[0])
+                startMin = Number(startTimeAry[1])
+
+                endHour = Number(endTimeAry[0])
+                endMin = Number(endTimeAry[1])
+
+                # get duration
+                start = new Date()
+                end = new Date(start)
+                start.setHours(startHour)
+                start.setMinutes(startMin)
+                end.setHours(endHour)
+                end.setMinutes(endMin)
+
+                # duration is hour
+                duration = (end - start)/1000/60/60
+                if duration < 0
+                    duration = 24 + duration
+
+                startHourStr = _appendZero(String(startHour))
+                startMinStr = _appendZero(String(startMin))
+
+                return {
+                    startHour: startHourStr,
+                    startMin: startMinStr,
+                    startTime: "#{startHourStr}:#{startMinStr}",
+                    duration: duration,
+                    startWeek: startWeekStr
+                }
+
+            catch err
+
+                return defaultValue
+
+        _getTimeStr: (startTimeStr, duration, startWeek) ->
+
+            addZero = (num) ->
+
+                numStr = String(num)
+                if numStr.length is 1
+                    numStr = '0' + numStr
+                return numStr
+
+            try
+
+                startTime = startTimeStr.split(':')
+                startHour = Number(startTime[0])
+                startMin = Number(startTime[1])
+
+                start = new Date()
+                start.setHours(startHour)
+                start.setMinutes(startMin)
+                end = new Date(start.getTime() + 1000 * 60 * 60 * duration)
+                endHour = end.getHours()
+                endMin = end.getMinutes()
+
+                # add zero on number
+                startHour = addZero(startHour)
+                startMin = addZero(startMin)
+                endHour = addZero(endHour)
+                endMin = addZero(endMin)
+
+                startTimeStr = "#{startHour}:#{startMin}"
+                endTimeStr = "#{endHour}:#{endMin}"
+
+                if startWeek
+
+                    endWeek = startWeek
+
+                    # cross day
+                    weekAry = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+                    if start.getDay() isnt end.getDay()
+                        startWeekIdx = weekAry.indexOf(startWeek) + 1
+                        endWeekIdx = (startWeekIdx + 1) % 7
+                        endWeek = weekAry[endWeekIdx - 1]
+
+                    startTimeStr = "#{startWeek}:#{startTimeStr}"
+                    endTimeStr = "#{endWeek}:#{endTimeStr}"
+
+                return "#{startTimeStr}-#{endTimeStr}"
+
+            catch err
+
+                return ''
+
+        _setBackupTime: () ->
+
+            # hour = Number($('#property-dbinstance-backup-window-start-hour').val())
+            # min = Number($('#property-dbinstance-backup-window-start-minute').val())
+            startTime = $('#property-dbinstance-backup-window-start-time').val()
+            duration = Number($('#property-dbinstance-backup-window-duration .selection').text())
+            timeStr = @_getTimeStr(startTime, duration)
+            @resModel.set('backupWindow', timeStr)
+
+        _setMaintenanceTime: () ->
+
+            # hour = Number($('#property-dbinstance-maintenance-window-start-hour').val())
+            # min = Number($('#property-dbinstance-maintenance-window-start-minute').val())
+            startTime = $('#property-dbinstance-maintenance-window-start-time').val()
+            duration = Number($('#property-dbinstance-maintenance-window-duration .selection').text())
+            week = $('#property-dbinstance-maintenance-window-start-day-select').find('.item.selected').data('id')
+            timeStr = @_getTimeStr(startTime, duration, week)
+            @resModel.set('maintenanceWindow', timeStr)
+
+        getModelJSON: () ->
+
+            attr = @resModel.toJSON()
+
+            # for app edit
+            if @isAppEdit
+                attr.isAppEdit = @isAppEdit
+                _.extend attr, @appModel.toJSON() if @appModel
+                _.extend attr, @getOriginAttr()
+            attr.snapshotId = if attr.instanceId then '' else attr.snapshotId
+
+
+            attr.isCanPromote = @isCanPromote()
+            attr.isPromoted = @isPromoted()
+            attr.isPromote = @isCanPromote() or @isPromoted()
+            sourceDBForRestore = @resModel.getSourceDBForRestore()
+            if sourceDBForRestore
+                attr.isRestoreDB = true
+                attr.sourceDbIdForRestore = sourceDBForRestore.get('appId')
+
+            if @resModel.isMysql and @resModel.master() and @resModel.getMajorVersion() in ['5.1', '5.5']
+                attr.disableBackupForOldMySQL = true
+
+            attr
+
+        isPromoted: () ->
+
+            dbModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and not @resModel.master())
+            return false
+
+        isCanPromote: () ->
+
+            dbModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))
+            if dbModel
+                originReplicaId = dbModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                return (@isAppEdit and originReplicaId and @resModel.master())
+            return false
+
+        setPromote: () ->
+
+            @resModel.unsetMaster()
+            if not @resModel.autobackup()
+                @resModel.autobackup 1
+
+        unsetPromote: () ->
+
+            srcDBId = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get(@resModel.get('appId'))?.get('ReadReplicaSourceDBInstanceIdentifier')
+            if srcDBId
+                srcDBModel = Design.modelClassForType(constant.RESTYPE.DBINSTANCE).findWhere({appId: srcDBId})
+                @resModel.setMaster(srcDBModel) if srcDBModel
+
+        getOriginAttr: () ->
+
+
+            if @originComp and @appModel
+
+                allocatedStorage = @originComp.resource.AllocatedStorage
+                iops = @originComp.resource.Iops
+
+                return {
+                    originAllocatedStorage: allocatedStorage,
+                    originIOPS: iops
+                    originBackupWindow: @appModel.get 'PreferredBackupWindow'
+                    originMaintenanceWindow: @appModel.get 'PreferredMaintenanceWindow'
+                }
+
+            else
+
+                return null
+
+        render: () ->
+
+            attr = @getModelJSON()
+
+            backupTime = @_getTimeData(attr.backupWindow)
+            maintenanceTime = @_getTimeData(attr.maintenanceWindow)
+
+            attr.backup = backupTime
+            attr.maintenance = maintenanceTime
+            attr.backupDurations = @genDuration backupTime.duration
+            attr.maintenanceDurations = @genDuration maintenanceTime.duration
+
+            attr.hasSlave = !!@resModel.slaves().length
+            attr.engineType = @resModel.engineType()
+            attr.isChanged = @checkChange()
+
+            _.extend attr, {
+                isOracle: @resModel.isOracle()
+                isSqlserver: @resModel.isSqlserver()
+                isPostgresql: @resModel.isPostgresql()
+                isMysql: @resModel.isMysql()
+            }
+
+            if @resModel.master()
+                attr.sourceDbName = @resModel.master().get('name')
+
+            spec = @resModel.getSpecifications()
+            lvi = @resModel.getLVIA spec
+
+            attr.licenses = lvi[0]
+            attr.versions = lvi[1]
+            attr.classes  = lvi[2]
+
+            template = template_instance
+
+            # hide az config section if it has no item.
+            if @isAppEdit and @resModel.get('engine') not in [ 'sqlserver-ee', 'sqlserver-se' ]
+                attr.hideAZConfig = true
+
+            # if replica
+            if @resModel.master()
+                if @isAppEdit
+                    attr.hideAZConfig = true
+                else
+                    template = template_replica
+                attr.masterIops = @resModel.master().get 'iops'
+
+            # if snapshot
+            else if attr.snapshotId
+                template = template_instance
+                snapshotModel = @resModel.getSnapshotModel()
+                attr.snapshotSize = Number(snapshotModel?.get('AllocatedStorage') || @resModel.get("allocatedStorage"))
+
+            # if oracle
+            if @resModel.isOracle()
+                attr.isOracle = true
+                attr.oracleCharset = _.map Design.modelClassForType(constant.RESTYPE.DBINSTANCE).oracleCharset, (oc) ->
+                    charset: oc, selected: oc is attr.characterSetName
+
+            # iops info
+            if @resModel.isSqlserver()
+                attr.iopsInfo = lang.PROP.DBINSTANCE_STORAGE_REQUIRE_10_RATIO
+            else
+                attr.iopsInfo = lang.PROP.DBINSTANCE_STORAGE_IOPS_3_10_RATIO
+
+            # render
+            @$el.html template attr
+            checkChange = @checkChange.bind @
+            changeApplyImmediately = @changeApplyImmediately.bind @
+            @$el.find(".apply-immediately-section").insertAfter('header.property-sidebar-title').click changeApplyImmediately
+            .click checkChange
+            if @isAppEdit and not @isPromoted()
+                $('.property-panel-wrapper').toggleClass('immediately', checkChange())
+            @setTitle(attr.name)
+
+            @renderLVIA()
+            @renderOptionGroup()
+
+            # set Start Day week selection
+            weekStr = maintenanceTime?.startWeek
+            if weekStr
+                $select = $('#property-dbinstance-maintenance-window-start-day-select')
+                $item = $select.find(".item[data-id='#{weekStr}']").addClass('selected')
+                $select.find('.selection').text($item.text())
+
+            # set iops check status
+            @updateIOPSCheckStatus()
+
+            @pgDropdown = new parameterGroup(@resModel).renderDropdown()
+            $("#property-dbinstance-parameter-group-select").html(@pgDropdown.el)
+            @bindParsley()
+            $('#property-dbinstance-maintenance-window-start-time, #property-dbinstance-backup-window-start-time').timepicker({
+                'timeFormat': 'H:i'
+                'step': 1
+            })
+            @getInstanceStatus() if @isAppEdit
+
+            # listen change event
+            @resModel.on 'change:iops', (val) ->
+
+                if @isAppEdit
+                    originValue = that.getOriginAttr()
+                    $tipDom = @$el.find('.property-info-iops-adjust-tip')
+                    if originValue is val
+                        $tipDom.removeClass('hide')
+                    else
+                        $tipDom.addClass('hide')
+
+            attr.name
+
+            if @resModel.getSourceDBForRestore() and not @resModel.isRestored
+                @openRestoreConfigModal(@resModel)
+
+        bindParsley: ->
+
+            that = this
+
+            db = @resModel
+            validateStartTime = (val) ->
+                if not /^(([0-1]?[0-9])|(2?[0-3])):[0-5]?[0-9]$/.test val
+                        lang.PARSLEY.PROVIDE_VALID_TIME_VALUE
+
+            @$('#property-dbinstance-backup-window-start-time').parsley 'custom', validateStartTime
+            @$('#property-dbinstance-maintenance-window-start-time').parsley 'custom', validateStartTime
+
+            @$('#property-dbinstance-database-name').parsley 'custom', ( val ) ->
+                switch db.engineType()
+                    when 'mysql'
+                        if val.length > 64 then return lang.PARSLEY.MAX_LENGTH_IS_64
+                    when 'postgresql'
+                        if val.length > 63 then return lang.PARSLEY.MAX_LENGTH_IS_63
+                        if not /[a-z_]/.test val[0] then return lang.PARSLEY.MUST_BEGIN_WITH_LETTER_OR_UNDERSCORE
+                    when 'oracle'
+                        if val.length > 8 then return lang.PARSLEY.MAX_LENGTH_IS_8
+
+                null
+
+
+            @$('#property-dbinstance-storage').parsley 'custom', (val) ->
+
+                storage = Number(val)
+
+                originValue = that.getOriginAttr()
+
+                allocatedRange = that.resModel.getAllocatedRange()
+
+                min = allocatedRange.min
+                max = allocatedRange.max
+
+                if that.isAppEdit
+
+                    if originValue and (storage < originValue.originAllocatedStorage)
+                        return lang.PARSLEY.ALLOCATED_STORAGE_CANNOT_BE_REDUCED
+
+                    increaseSize = storage - originValue.originAllocatedStorage
+                    if increaseSize > 0
+                        minIncreaseSize = Math.ceil(originValue.originAllocatedStorage * 0.1)
+                        if increaseSize < minIncreaseSize
+                            return sprintf lang.PARSLEY.ALLOCATED_STORAGE_MUST_INCREASE_BY_AT_LEAST_10, originValue.originAllocatedStorage + minIncreaseSize
+
+                if not (storage >= min and storage <= max)
+                    return sprintf lang.PARSLEY.MUST_BE_AN_INTEGER_FROM_MIN_TO_MAX, min, max
+
+                source = that.resModel.source()
+                if source and storage < +source.get('AllocatedStorage')
+                    return lang.PARSLEY.SNAPSHOT_STORAGE_NEED_LARGE_THAN_ORIGINAL_VALUE
+
+            @$('#property-dbinstance-iops-value').parsley 'custom', (val) ->
+
+                fillValue = $('#property-dbinstance-storage').val()
+                originValue = that.resModel.get('allocatedStorage')
+                storage = Number(fillValue or originValue)
+
+                iopsRange = that._getIOPSRange(storage)
+
+                defaultIOPS = that._getDefaultIOPS(storage)
+
+                iops = Number(val)
+
+                if iops < 1000
+                    return lang.PARSLEY.REQUIRE_AT_LEAST_1000_IOPS
+
+                if that.resModel.isSqlserver() and ((iops % 1000) isnt 0 or (storage * 10) isnt iops)
+                    return lang.PARSLEY.SQLSERVER_IOPS_REQUIRES_A_MULTIPLE_OF_1000
+
+                if iops >= iopsRange.minIOPS and iops <= iopsRange.maxIOPS
+                    return null
+
+                return lang.PARSLEY.REQUIRE_IOPS_GB_RATIOS_BETWEEN_3_AND_10
+
+            @$('#property-dbinstance-master-password').parsley 'custom', ( val ) ->
+
+                if val.indexOf('/') isnt -1 or val.indexOf('"') isnt -1 or val.indexOf('@') isnt -1
+                    return lang.PARSLEY.CANNOT_CONTAIN_CHARACTER_SPLASH
+
+                if that.resModel.isMysql()
+                    min = 8
+                    max = 41
+                if that.resModel.isOracle()
+                    min = 8
+                    max = 30
+                if that.resModel.isSqlserver()
+                    min = 8
+                    max = 128
+                if that.resModel.isPostgresql()
+                    min = 8
+                    max = 128
+                if val.length >= min and val.length <= max
+                    return null
+
+                return sprintf lang.PARSLEY.MUST_CONTAIN_FROM_MIN_TO_MAX_CHARACTERS, min, max
+
+            @$('#property-dbinstance-database-port').parsley 'custom', ( val ) ->
+                if db.isSqlserver() and +val in [ 1434, 3389, 47001, 49152, 49153, 49154, 49155, 49156 ]
+                    return lang.PARSLEY.THIS_VALUE_CANNOT_BE_1434_3389_47001_49152_49156
+                null
+
+        renderOptionGroup: ->
+
+            # if can create custom og
+
+            regionName       = Design.instance().region()
+            attr             = @getModelJSON()
+            attr.canCustomOG = false
+            attr.ogName = @resModel.getOptionGroupName()
+            engineCol     = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBENGINE, regionName)
+            engineOptions = engineCol.getOptionGroupsByEngine(regionName, attr.engine)
+            ogOptions     = engineOptions[@resModel.getMajorVersion()] if engineOptions
+            defaultInfo = engineCol.getDefaultByNameVersion(regionName, attr.engine, attr.engineVersion)
+
+            if defaultInfo and defaultInfo.canCustomOG
+                attr.canCustomOG = defaultInfo.canCustomOG
+            else
+                attr.canCustomOG = true if engineOptions and ogOptions
+
+            @$el.find('.property-dbinstance-optiongroup').html template_component.optionGroupDropDown(attr)
+
+            # init option group dropdown
+            if attr.canCustomOG
+
+                $ogDropdown = @$el.find('.property-dbinstance-optiongroup-placeholder')
+                ogDropdown = new OgDropdown({
+                    el: $ogDropdown
+                    dbInstance: @resModel
+                })
+                $ogDropdown.html ogDropdown.render({
+                        engine: attr.engine
+                        engineVersion: attr.engineVersion
+                        majorVersion: @resModel.getMajorVersion()
+                    }).el
+
+            # else
+
+            #     @$el.find('.property-dbinstance-optiongroup').hide()
+
+        renderParameterGroup: ->
+            #update selection
+            @pgDropdown.setSelection(@resModel.get 'pgName')
+            null
+
+        # Render License, Version, InstanceClass and multi-AZ
+        renderLVIA: ->
+
+            spec = @resModel.getSpecifications()
+            lvi  = @resModel.getLVIA spec
+
+            data = {
+                licenses : lvi[0]
+                versions : lvi[1]
+                classes  : lvi[2]
+                azCapable: lvi[3]
+                engines: constant.DB_ENGINE_ARY[@resModel.engineType()]
+            }
+            attr = @getModelJSON()
+            attr.classInfo = @resModel.getInstanceClassDict()
+            _.extend data, attr
+
+            $('#lvia-container').html template_component.lvi(data)
+
+            spec = @resModel.getSpecifications()
+            lvi = @resModel.getLVIA spec
+            multiAZCapable = lvi[3]
+
+            # hack for SQL Server
+            engine = @resModel.get('engine')
+            disableMutilAZForMirror = false
+            disableMutilAZForMirror = true if (engine in ['sqlserver-ee', 'sqlserver-se'])
+
+            @resModel.set 'multiAz', '' unless multiAZCapable
+
+            # set az list
+
+            sgData = {
+                disableMutilAZForMirror: disableMutilAZForMirror
+                multiAZCapable: multiAZCapable
+            }
+            sgData = _.extend sgData, attr
+            subnetGroupModel = @resModel.parent()
+            sgData.subnetGroupName = subnetGroupModel.get('name')
+            connAry = subnetGroupModel.get('__connections')
+            azUsedMap = {}
+            _.each connAry, (subnetModel) ->
+                azName = subnetModel.getTarget(constant.RESTYPE.SUBNET).parent().get('name')
+                azUsedMap[azName] = true
+                null
+            usedAZCount = _.size(azUsedMap)
+
+            if Design.instance().region() in ['cn-north-1']
+                minAZCount = 1
+            else
+                minAZCount = 2
+            if usedAZCount < minAZCount
+                sgData.azNotEnough = true
+
+            if multiAZCapable
+                $('#property-dbinstance-mutil-az').html template_component.propertyDbinstanceMutilAZ(sgData)
+
+            @renderAZList()
+
+            @
+
+        renderAZList: () ->
+
+            spec = @resModel.getSpecifications()
+            lvi  = @resModel.getLVIA spec
+            optionalAzAry = lvi[4]
+            attr = @getModelJSON()
+
+            # set preferred AZ list
+            region = Design.instance().get('region')
+            dragAZs = Design.modelClassForType(constant.RESTYPE.AZ).allObjects()
+            dragAZs = _.map dragAZs, (azModel) ->
+                return azModel.get('name')
+            avaliableAZ = []
+            _.each optionalAzAry, (az) ->
+                avaliableAZ.push(az)
+                null
+            avaliableAZ = _.intersection(avaliableAZ, dragAZs)
+
+            # render
+            azData = _.map avaliableAZ, (az) ->
+                return {
+                    name: az
+                }
+            $('#property-dbinstance-preferred-az').html template_component.preferred_az(azData)
+            if attr.az and (attr.az in avaliableAZ)
+                selectedAZ = attr.az
+            else
+                selectedAZ = 'no'
+            $preferredAZSelect = $('#property-dbinstance-preferred-az')
+            $item = $preferredAZSelect.find(".item[data-id='#{selectedAZ}']").addClass('selected')
+            $preferredAZSelect.find('.selection').text($item.text())
+
+        changeInstanceName: (event) ->
+            that = @
+            $target = $ event.currentTarget
+
+            if MC.aws.aws.checkResName(@resModel.get('id'), $target, 'DBInstance')
+                value = $target.val().toLowerCase()
+                $target.parsley 'custom', ( val ) ->
+                    val = val.toLowerCase()
+
+                    if (val[val.length - 1]) is '-' or (val.indexOf('--') isnt -1)
+                        return errTip
+
+                    if that.resModel.isSqlserver()
+                        min = 1
+                        max = 10
+                    else
+                        min = 1
+                        max = 58
+                    errTip = sprintf lang.PARSLEY.MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS_HYPHEN, min, max
+                    if val.length < min or val.length > max
+                        return errTip
+
+                    if not MC.validate('letters', val[0])
+                        return errTip
+
+                if $target.parsley 'validate'
+
+                    @resModel.setName value
+                    @setTitle value
+                    # @resModel.set 'instanceId', value
+
+            null
+
+        onChangeDesc: (event) ->
+
+            @resModel.setDesc $(event.currentTarget).val()
+
+        changeMutilAZ: (event) ->
+
+            value = event.target.checked
+            $select = $('.property-dbinstance-preferred-az')
+            if value
+                $select.find('.item').remove('selected')
+                $item = $select.find(".item[data-id='no']").addClass('selected')
+                $select.find('.selection').text($item.text())
+                $select.hide()
+                @resModel.set 'az', ''
+                @renderAZList()
+            else
+                $select.show()
+
+            @resModel.set 'multiAz', value
+
+        changeAZ: ( event, name, data ) ->
+
+            if name is 'no'
+                @resModel.set 'az', ''
+            else
+                @resModel.set 'az', name
+
+            # @renderLVIA()
+
+        updateIOPSCheckStatus: (newStorage) ->
+
+            that = this
+
+            if newStorage
+                storge = newStorage
+            else
+                storge = that.resModel.get 'allocatedStorage'
+
+            if not (that.resModel.master() and not that.isAppEdit)
+
+                iops = that.resModel.get 'iops'
+
+                # check have enough storage for IOPS
+                iopsRange = @_getIOPSRange(storge)
+                if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
+                    if @resModel.isSqlserver() and @isAppEdit
+                        that._disableIOPSCheck(true) # disable
+                    else
+                        that._disableIOPSCheck(false) # enable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', '')
+                else
+                    iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS
+                    that._disableIOPSCheck(true) # disable
+                    $('.property-dbinstance-iops-check-tooltip').attr('data-tooltip', lang.PROP.VOLUME_DISABLE_IOPS_TOOLTIP)
+
+        _disableIOPSCheck: (isDisable) ->
+
+            _check = (id) ->
+
+                $('#property-dbinstance-storage-type').find('.item').removeClass('selected')
+                $selectedDom = $('#property-dbinstance-storage-type').find('.item[data-id="' + id + '"]')
+                $selectedDom.addClass('selected')
+                $('#property-dbinstance-storage-type').find('.selection').text($selectedDom.text())
+
+            _switch = (flag) ->
+
+                if flag
+                    _check('standard')
+                    $('.property-dbinstance-iops-value-section').hide()
+                else
+                    _check('io1')
+
+            _hide = (flag) ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                if flag
+                    $dom.hide()
+                    _switch(true) if _checked()
+                else
+                    $dom.show()
+
+            _checked = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                return $dom.hasClass('selected')
+
+            # if _checked()
+
+            if isDisable
+
+                _switch(true) if _checked()
+                _hide(true)
+                $('#property-dbinstance-iops-value').val('')
+                @resModel.setIops 0
+
+            else
+
+                _hide(false)
+                # _switch(false)
+
+        _getIOPSRange: (storage) ->
+
+            if @resModel.isSqlserver()
+                minIOPS = storage * 10
+                maxIOPS = storage * 10
+            else
+                minIOPS = storage * 3
+                maxIOPS = storage * 10
+
+            return {
+                minIOPS: minIOPS
+                maxIOPS: maxIOPS
+            }
+
+        _getDefaultIOPS: (storage) ->
+
+            base = 1000
+            count = 0
+            iopsRange = @_getIOPSRange(storage)
+
+            while ++count
+
+                value = base * count
+                if value >= iopsRange.minIOPS and value <= iopsRange.maxIOPS
+                    return value
+                if value > iopsRange.maxIOPS
+                    return null
+
+        changeAllocatedStorage: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = Number(target.val())
+
+            if target.parsley('validate') and that.changeProvisionedIOPS()
+                that.resModel.set 'allocatedStorage', value
+                that.updateIOPSCheckStatus()
+
+        inputAllocatedStorage: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = Number(target.val())
+
+            # if target.parsley('validate') and that.changeProvisionedIOPS()
+            that.updateIOPSCheckStatus(value)
+
+        changeStorageType: () ->
+
+            that = this
+
+            _checked = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                return $dom.hasClass('selected')
+
+            _value = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item.selected')
+                return $dom.attr('data-id')
+
+            value = _checked()
+
+            fillValue = $('#property-dbinstance-storage').val()
+            originValue = @resModel.get('allocatedStorage')
+            storage = Number(fillValue or originValue)
+            iopsRange = @_getIOPSRange(storage)
+
+            # for replica
+            if @resModel.master() and not @isAppEdit
+                if value
+                    @resModel.setIops @resModel.master().get('iops')
+                else
+                    @resModel.setIops 0
+            else
+                if value
+                    $('.property-dbinstance-iops-value-section').show()
+                    if iopsRange.minIOPS >= 1000 or iopsRange.maxIOPS >= 1000
+                        defaultIOPS = @_getDefaultIOPS(storage)
+                        if defaultIOPS
+                            $('#property-dbinstance-iops-value').val(defaultIOPS)
+                            that.changeProvisionedIOPS()
+                            # @resModel.setIops defaultIOPS
+                else
+                    $('.property-dbinstance-iops-value-section').hide()
+                    $('#property-dbinstance-iops-value').val('')
+                    @resModel.setIops 0
+
+            @resModel.set('storageType', _value())
+
+        changeProvisionedIOPS: (event) ->
+
+            that = this
+
+            _checked = () ->
+
+                $dom = $('#property-dbinstance-storage-type').find('.item[data-id="io1"]')
+                return $dom.hasClass('selected')
+
+            if _checked()
+
+                target = $('#property-dbinstance-iops-value')
+                value = target.val()
+                iops = Number(value)
+
+                fillValue = $('#property-dbinstance-storage').val()
+                originValue = @resModel.get('allocatedStorage')
+                storage = Number(fillValue or originValue)
+
+                if target.parsley 'validate'
+
+                    originValue = that.getOriginAttr()
+                    if originValue and originValue.originIOPS and (iops isnt originValue.originIOPS)
+                        $('.property-info-iops-adjust-tip').show()
+                    else
+                        $('.property-info-iops-adjust-tip').hide()
+
+                    that.resModel.setIops Number(iops)
+                    that.resModel.set 'allocatedStorage', storage
+                    return true
+
+                return false
+
+            else
+
+                return true
+
+        changeUserName: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = target.val()
+
+            target.parsley 'custom', (val) ->
+
+                if MC.validate('alphanum', val) and MC.validate('letters', val[0])
+                    if that.resModel.isMysql()
+                        min = 1
+                        max = 16
+                    if that.resModel.isOracle()
+                        min = 1
+                        max = 30
+                    if that.resModel.isSqlserver()
+                        min = 1
+                        max = 128
+                    if that.resModel.isPostgresql()
+                        min = 2
+                        max = 16
+                    if val.length >= min and val.length <= max
+                        return null
+                return sprintf lang.PARSLEY.MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS, min, max
+
+            if target.parsley 'validate'
+                @resModel.set 'username', value
+
+        changePassWord: (event) ->
+
+            that = this
+            target = $(event.target)
+            value = target.val()
+
+            if target.parsley 'validate'
+                @resModel.set 'password', value
+                # $('#property-dbinstance-master-password').attr('data-tooltip', "Current password: #{value}").removeClass('tooltip').addClass('tooltip')
+
+        changeDatabaseName: (event) ->
+            $target = $ event.currentTarget
+            if not $target.parsley 'validate' then return
+
+            @resModel.set 'dbName', $target.val()
+
+        changeDatabasePort: (event) ->
+            $target = $ event.currentTarget
+            if not $target.parsley 'validate' then return
+
+            @resModel.set 'port', $target.val()
+
+        changePublicAccessCheck: (event) ->
+
+            value = event.target.checked
+            @resModel.set 'accessible', value
+
+        changeVersionUpdate: (event) ->
+
+            value = event.target.checked
+            @resModel.set 'autoMinorVersionUpgrade', value
+
+        changeAutoBackupCheck: (event) ->
+
+            value = if event.target.checked then '1' else '0'
+            @changeBackupPeriod(null, value)
+
+        changeBackupPeriod: (event, value) ->
+
+            if event #trigger by event
+                $target = $ event.currentTarget
+                if not $target.parsley 'validate' then return
+                value = $target.val()
+            else if value
+                #invokie by manual
+                $("#property-dbinstance-backup-period").val( value ).parsley 'validate'
+            else
+                console.error "at least one value in event or value"
+                return null
+
+            #show/hide input
+            if value isnt '0'
+                $("#group-dbinstance-backup-period").removeClass('hide')
+                $('#property-dbinstance-auto-backup-group').removeClass('hide')
+            else
+                $("#group-dbinstance-backup-period").addClass('hide')
+                $('#property-dbinstance-auto-backup-group').addClass('hide')
+
+            #update model
+            @resModel.autobackup Number(value) #setter
+
+        changeBackupOption: (event) ->
+
+            $backupGroup = $('#property-dbinstance-backup-window-group')
+            selectedValue = $(event.currentTarget).val()
+            if selectedValue is 'window'
+                $backupGroup.show()
+                @changeBackupTime()
+            else
+                $backupGroup.hide()
+                @resModel.set('backupWindow', '')
+
+        changeMaintenanceOption: (event) ->
+
+            $maintenanceGroup = $('#property-dbinstance-maintenance-window-group')
+            selectedValue = $(event.currentTarget).val()
+            if selectedValue is 'window'
+                $maintenanceGroup.show()
+                @changeMaintenanceTime()
+            else
+                $maintenanceGroup.hide()
+                @resModel.set('maintenanceWindow', '')
+
+        changeBackupTime: (event) ->
+            if $('#property-dbinstance-backup-window-start-time').parsley 'validate'
+                @_setBackupTime()
+
+        changeMaintenanceTime: (event) ->
+            if $('#property-dbinstance-maintenance-window-start-time').parsley 'validate'
+                @_setMaintenanceTime()
+
+        getInstanceStatus: () ->
+
+            that = this
+
+            _setStatus = (showError) ->
+
+                $('.property-dbinstance-status-icon-warning').remove()
+                that.setTitle(that.appModel.get('name')) if that.appModel
+                if showError is true
+                    $('.db-status-loading').remove()
+                    $('.property-dbinstance-not-available-info').show()
+                    tip = '<i class="property-dbinstance-status-icon-warning icon-warning"></i>'
+                else if showError is false
+                    $('.db-status-loading').remove()
+                    tip = ''
+                else
+                    tip = '<div class="db-status-loading loading-spinner loading-spinner-small"></div>'
+                that.prependTitle tip
+
+            _setStatus()
+
+            region = Design.instance().region()
+
+            dbId = that.resModel.get('appId')
+
+            currentResModel = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, region).get(dbId)
+
+            if currentResModel
+
+                ApiRequest("rds_ins_DescribeDBInstances",{
+                    region_name: region
+                    id: dbId
+                }).then (data) ->
+
+                    data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
+                    dbData = if not _.isArray(data) then data else data[0]
+
+                    if dbData
+
+                        oldSrcId = currentResModel.get('ReadReplicaSourceDBInstanceIdentifier')
+                        newSrcId = dbData.ReadReplicaSourceDBInstanceIdentifier
+
+                        if oldSrcId isnt newSrcId
+
+                            currentResModel.set('ReadReplicaSourceDBInstanceIdentifier', newSrcId)
+                            App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+
+                        else
+
+                            dbStatus = dbData.DBInstanceStatus
+                            if dbStatus isnt 'available'
+                                _setStatus(true)
+                                return
+                            else
+                                that.$el.find('.property-dbinstance-promote-replica').show()
+
+                    _setStatus(false)
+
+                , () ->
+                    _setStatus(false)
+
+    }
+
+    new DBInstanceView()

@@ -2507,15 +2507,15 @@ if (LocalCollection._compileSelector = function(a) {
     if (c.moved)
         throw new Error("_diffQueryUnordered called with a moved observer!");
     _.each(b, function(b) {
-        if (_.has(a, b._id)) {
-            var d = a[b._id];
+        if (_.has(a, b._id.valueOf())) {
+            var d = a[b._id.valueOf()];
             c.changed && !EJSON.equals(d, b) && c.changed(b._id, LocalCollection._makeChangedFields(b, d))
         } else {
             var e = EJSON.clone(b);
             delete e._id, c.added && c.added(b._id, e)
         }
     }), c.removed && _.each(a, function(a) {
-        _.has(b, a._id) || c.removed(a._id)
+        _.has(b, a._id.valueOf()) || c.removed(a._id)
     })
 }, LocalCollection._diffQueryOrderedChanges = function(a, b, c) {
     var d = {};

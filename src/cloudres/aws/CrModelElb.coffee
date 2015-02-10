@@ -1,5 +1,5 @@
 
-define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
+define [ "../CrModel" ], ( CrModel )->
 
   CrModel.extend {
 
@@ -9,10 +9,12 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     initialize : ()->
       self = @
-      ApiRequest("elb_DescribeInstanceHealth", {
-        region_name : @get("category")
-        elb_name    : @get("Name")
-      }).then ( data )-> self.onInsHealthData( data )
+
+      # Needs to defer the fetch. Since the collection of this model is not defined
+      # when initailize() is called.
+      _.defer ()->
+        self.sendRequest("elb_DescribeInstanceHealth", {elb_name:self.get("Name")}).then ( data )->
+          self.onInsHealthData( data )
       return
 
     onInsHealthData : ( data )->

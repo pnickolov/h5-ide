@@ -3413,3 +3413,7 @@ module.exports =
     REMOVE_ROUTE:
       en: "Remove Route"
       zh: "删除路由"
+
+    REMOVE_SUBNET:
+      en: "Remove Subnet"
+      zh: "删除子网"

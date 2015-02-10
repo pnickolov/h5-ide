@@ -1,0 +1,176 @@
+<!--{{billingLoadingFrame}}-->
+<div id="billing-status" class="billing-frame">
+</div>
+
+<!--{{billingTemplate}}-->
+<div id="PaymentBody">
+    <p class="warning-red hide"></p>
+    <dl class="settings-item billing-email">
+        <dt class="billing-email-title">{{i18n "PAYMENT_BILLING_EMAIL"}}</dt>
+        <dd class="billing-email-text">
+            <p>{{or paymentUpdate.email "Email not set"}}</p>
+            <button class="icon-edit tooltip editEmailBtn" data-tooltip="Click to edit billing email"></button>
+            <input class="input hide" type="text"/>
+            <div class="editEmailControl hide edit-actions">
+                <button class="btn btn-blue editEmailDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
+                <button class="btn btn-silver modal-close editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>
+            </div>
+        </dd>
+    </dl>
+    <dl class="settings-item credit-card-info">
+        <dt>{{i18n "CREDIT_CARD_INFORMATION"}}</dt>
+        <dd>
+            <div class="payment-credit-middle">
+
+            </div>
+            <div class="credit-meta">
+                <p class="payment-number">{{#if paymentUpdate.cardNumber}}{{paymentUpdate.cardNumber}}{{else}}{{i18n "NO_CARD"}}{{/if}}</p>
+                {{#if paymentUpdate.firstName}}<p class="payment-username">{{paymentUpdate.firstName}} {{paymentUpdate.lastName}}</p>{{/if}}
+            </div>
+            <div class="credit-update">
+                {{#if noSubscription}}<button class="btn btn-blue update-payment">{{i18n "PROVIDE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
+                {{else}}<button class="btn btn-blue update-payment">{{i18n "UPDATE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
+                {{/if}}
+                <div class="update-payment-ctrl hide">
+                    <button class="btn btn-blue update-payment-done">{{i18n "LBL_DONE"}}</button>
+                    <button class="btn btn-silver modal-close update-payment-cancel">{{i18n "LBL_CANCEL"}}</button>
+                </div>
+            </div>
+        </dd>
+    </dl>
+    {{#if noSubscription}}
+        <dl class="billing-history settings-item"></dl>
+    {{else}}
+        <dl class="billing-history settings-item">
+            <dt>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.nextPeriod "yyyy-MM-d"}}</span></dt>
+            <div class="table-head-fix">
+                {{#if paymentHistory.length}}
+                    <table class="table-head">
+                        <thead>
+                        <tr>
+                            <th class="sortable desc-sort" data-row-type="datetime" style="width:25%;">{{i18n "DATE"}}</th>
+                            <th data-row-type="string" style="width:25%;">{{i18n "AMOUNT"}}</th>
+                            <th data-row-type="string" style="width:25%;">{{i18n "STATUS"}}</th>
+                            <th data-row-type="string" style="width:25%;">{{i18n "ACTION"}}</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-wrap" style="max-height:200px;">
+                        <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                        <div class="scroll-content">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                    <th style="width: 25%">
+                                        <div class="th-inner"></div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="t-m-content">
+                                {{#each paymentHistory}}
+                                    <tr class="item" data-id="{{@index}}">
+                                        <td>{{formatTime updated_at "yyyy-MM-d"}}</td>
+                                        <td>$ {{or ending_balance total_balance}}</td>
+                                        <td>{{#if success}}{{i18n "PAYMENT_PAID"}}{{else}}<span class="link-red">{{i18n "PAYMENT_FAILED"}}</span>{{/if}}</td>
+                                        <td>
+                                            <a class="payment-receipt link-blue" href="#">{{i18n "PAYMENT_VIEW_RECEIPT"}}</a></td>
+                                    </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {{else}}
+                    <div class="full-space">
+                        {{i18n "NO_BILLING_EVENT"}}
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+    {{/if}}
+</div>
+
+<!--{{usage}}-->
+<section id="UsageTab">
+    {{#if payment.failToCharge}}
+        <p class="warning-red">{{i18n "PAYMENT_ACCOUNT_IN_LIMITED_STATUS"}}</p>
+    {{/if}}
+    <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}</h5>
+    <div class="current-usage-block">
+        <h3>{{payment.currentQuota}}</h3>
+        <p>{{i18n "PAYMENT_INSTANT_HOUR"}}</p>
+    </div>
+    {{#if payment.isDefault}}
+        <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" payment.maxQuota payment.renewDays}}</p>
+    {{/if}}
+    <h5 class="billing_usage_title">{{i18n "PAYMENT_USAGE"}}</h5>
+    <div class="usage-pagination">
+        <button class="btn nav-left"><i class="icon-caret-left"></i></button>
+        <span class="usage-date" data-date="">{{i18n "PAYMENT_LOADING"}}</span>
+        <button class="btn nav-right"><i class="icon-caret-right"></i></button>
+    </div>
+    <div class="table-head-fix">
+            <div class="full-space">
+                {{i18n "NO_USAGE_REPORT"}}
+            </div>
+    </div>
+</section>
+
+
+<!--{{usageTable}}-->
+<table class="table-head">
+    <thead>
+    <tr>
+        <th class="sortable desc-sort" data-row-type="string" style="width:50%;">{{i18n "PAYMENT_INSTANCE_ID"}}</th>
+        <th class="sortable desc-sort" data-row-type="number" style="width:50%;">{{i18n "PAYMENT_INSTANT_HOUR"}}</th>
+    </tr>
+    </thead>
+</table>
+<div class="scroll-wrap" style="max-height:200px;">
+    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+    <div class="scroll-content">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 50%"><div class="th-inner"></div></th>
+                <th style="width: 50%"><div class="th-inner"></div></th>
+            </tr>
+            </thead>
+            <tbody class="t-m-content">
+            {{#each result.history_usage}}
+                <tr class="item" data-id="{{@key}}">
+                    <td>{{@key}}</td>
+                    <td>{{this}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--{{updatePayment}}-->
+<div class="update-payment-wrap">
+    <h5>Billing Owner</h5>
+    <input class="input first-name" placeholder="First Name" type="text"/>
+    <input class="input last-name" placeholder="Last Name" type="text"/>
+    <h5>
+        <span class="card-number">Card Number</span>
+        <span class="cvv">CVV</span>
+        <span class="expiration">Expiration Date</span>
+    </h5>
+    <div class="row">
+        <input class="input card-number" placeholder="" type="text"/>
+        <input class="input cvv" placeholder="" type="text"/>
+        <input class="input expiration" placeholder="MMYY" type="text"/>
+    </div>
+    <p><i class="icon-kp"></i>Secure Payment Powered by Chargify</p>
+</div>

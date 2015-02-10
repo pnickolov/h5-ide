@@ -1,5 +1,6 @@
 /* Light Purple */
 /* Base Purple */
+/* Pink Purple */
 /* Dark Purple */
 /* Background Purple */
 /* Base Blue */
@@ -166,15 +167,6 @@ li {
 p {
   margin: 0 0 10px;
   padding: 2px; }
-
-.clearfix {
-  *zoom: 1; }
-
-.clearfix:after {
-  content: "";
-  display: block;
-  height: 0;
-  clear: both; }
 
 .hide {
   display: none; }

@@ -1,4 +1,4 @@
-define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tplDiff, tplView, jsond )->
+define ["event", "./diff", "./view", "./JsonDiffLib", "UI.modalplus", "./jqUi" ], (ide_event, tplDiff, tplView, jsond, modalPlus )->
 
   componentData = null
   selectedComponetUid = "."
@@ -90,7 +90,7 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tp
 
     selectOptions = "<option value='.'>All</option><option value='selected' selected='selected'>Selected Component</option><option value='.'>----------</option>"
 
-    selectedComponetUid = App.workspaces.getAwakeSpace().getSelectedComponent()?.id or "."
+    selectedComponetUid = debug.selectedComp()?.id or "."
 
     for type in typeArr.sort()
       selectOptions += "<option value='#{type}'>#{type}</option>"
@@ -104,21 +104,26 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tp
 
   {
     showDiffDialog : ( json1, json2 )->
-      modal tplDiff()
+      modal = new modalPlus {
+        title: "JSON Diff"
+        compact: true,
+        template: tplDiff()
+      }
 
-      $("#modal-box").css({
+      modal.tpl.css({
         width  : "98%"
         height : "98%"
         top    : "1%"
         left   : "1%"
       })
+      modal.setWidth("100%")
 
       $("#diffTextarea1").val(JSON.stringify(json1))
       $("#diffTextarea2").val(JSON.stringify(json2))
 
       jsond.compare( json1, json2, "CanvasData", $("#jsondiffContainer")[0] )
 
-      $("#modal-box").on "click", "ul", ( e )->
+      modal.tpl.on "click", "ul", ( e )->
         if e.target.tagName and e.target.tagName.toUpperCase() is "UL"
           $(e.target).toggleClass("closed")
         false
@@ -171,12 +176,21 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tp
         $("#jsonViewer .modal-header").dblclick()
         return null
 
-      $( tplView() ).appendTo( "body" ).resizable().draggable({handle:".modal-header"})
-
-      w = localStorage.getItem "debug/jsonViewW"
-      h = localStorage.getItem "debug/jsonViewH"
-      if w and h
-        $("#jsonViewer").width(w).height(h)
+      #$( tplView() ).appendTo( "body" ).resizable().draggable({handle:".modal-header"})
+      modal = new modalPlus {
+        title: "Data View"
+        template: tplView()
+        width: "100%"
+        disableFooter: true
+        compact: true
+      }
+      modal.tpl.attr("id", "jsonViewer")
+      .css({
+        width  : "98%"
+        height : "98%"
+        top    : "1%"
+        left   : "1%"
+      })
 
       updateViewDialog( canvas_data )
 
@@ -186,11 +200,11 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tp
         false
 
       $("#jsonViewer").on "dblclick", ".modal-header", ()->
-        $wrap = $("#diffWrap")
+        $wrap = modal.$(".modal-body")
         if $wrap.is(":hidden")
           $("#jsonViewer").css({
-            "height" : $("#jsonViewer").attr("data-height") || "70%"
-            "width"  : $("#jsonViewer").attr("data-width")  || "50%"
+            "height" : $("#jsonViewer").attr("data-height") || "98%"
+            "width"  : $("#jsonViewer").attr("data-width")  || "98%"
             "min-width" : "540px"
           })
           $wrap.show()
@@ -200,12 +214,6 @@ define ["event", "./diff", "./view", "./JsonDiffLib", "./jqUi" ], (ide_event, tp
             "data-width"  : $("#jsonViewer").width()
           }).css({"height":"auto","width":"150px","min-width":"150px"})
           $wrap.hide()
-        null
-
-      $("#jsonViewer").on "click", ".modal-close", ()->
-        localStorage.setItem "debug/jsonViewW", $("#jsonViewer").width()
-        localStorage.setItem "debug/jsonViewH", $("#jsonViewer").height()
-        $("#jsonViewer").remove()
         null
 
       $("#diffRefresh").on "click", ()-> updateViewDialog( d().serialize() )

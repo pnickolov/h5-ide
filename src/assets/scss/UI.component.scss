@@ -358,7 +358,7 @@ textarea[readonly]  {
 	border: 1px solid transparent;
 }
 
- .input:hover {
+.input:hover {
 	background-color : #101010;
 }
 
@@ -455,21 +455,27 @@ textarea[readonly]  {
 
 /* Textarea */
 textarea {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	display: block;
-	width: 206px;
-	/*height: 80px;*/
-	padding: 5px;
-	/*border: 1px solid #999;*/
-	font-size: 14px;
-	line-height: 20px;
-	border-radius: 3px;
-	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-	/*color: #555;*/
-	vertical-align: middle;
-	overflow: auto;
-	outline: none;
-	resize: none;
+	font-family    : "Helvetica Neue", Helvetica, Arial, sans-serif;
+	display        : block;
+	font-size      : 14px;
+	line-height    : 20px;
+	border-radius  : 3px;
+	box-shadow     : 1px 1px 1px rgba(0, 0, 0, 0.1);
+	/*color        : #555;*/
+	vertical-align : middle;
+	overflow       : auto;
+	outline        : none;
+	resize         : none;
+    padding          : 7px;
+    border           : 1px solid #000000;
+    background-color : #1c1c1c;
+    color            : #D0D0D0;
+    height           : 60px;
+    overflow         : auto;
+
+	&:focus {
+		border           : 1px solid $base-b;
+	}
 }
 
 .property-wrap textarea {
@@ -1951,46 +1957,44 @@ input.parsley-error {
 
 
 /* Loading Gear */
-#GlobalLoading {
+.global-loading {
 	position   : fixed;
 	width      : 100%;
 	height     : 100%;
 	z-index    : 100000;
 	background : #030304;
-}
 
-#GlobalLoading:before,
-#GlobalLoading:after {
-	content  : " ";
-  position : absolute;
-  width    : 40px;
-  height   : 40px;
-  top      : 45%;
-  left     : 50%;
-  margin   : -40px 0 0 -40px;
+	&:before, &:after {
+		content  : " ";
+	  position : absolute;
+	  width    : 40px;
+	  height   : 40px;
+	  top      : 45%;
+	  left     : 50%;
+	  margin   : -40px 0 0 -40px;
 
-  opacity : .8;
-  background : url("../images/ide/gearbig.svg");
-  background-size : 100% 100%;
+	  opacity : .8;
+	  background : url("../images/ide/gearbig.svg");
+	  background-size : 100% 100%;
 
-  -webkit-animation : gear 2s linear infinite;
-     -moz-animation : gear 2s linear infinite;
-       -o-animation : gear 2s linear infinite;
-  		    animation : gear 2s linear infinite;
+	  -webkit-animation : gear 2s linear infinite;
+	     -moz-animation : gear 2s linear infinite;
+	       -o-animation : gear 2s linear infinite;
+	  		    animation : gear 2s linear infinite;
+	}
 
-}
+	&:after {
+		width     : 30px;
+	  height    : 30px;
+	  opacity   : .6;
+	  margin    : -11px 0 0 -11px;
+	  background-image : url("../images/ide/gearsmall.svg");
 
-#GlobalLoading:after {
-  width     : 30px;
-  height    : 30px;
-  opacity   : .6;
-  margin    : -11px 0 0 -11px;
-  background-image : url("../images/ide/gearsmall.svg");
-
-  -webkit-animation : smallgear 1.5s linear infinite;
-     -moz-animation : smallgear 1.5s linear infinite;
-       -o-animation : smallgear 1.5s linear infinite;
-          animation : smallgear 1.5s linear infinite;
+	  -webkit-animation : smallgear 1.5s linear infinite;
+	     -moz-animation : smallgear 1.5s linear infinite;
+	       -o-animation : smallgear 1.5s linear infinite;
+	          animation : smallgear 1.5s linear infinite;
+	}
 }
 
 @-webkit-keyframes gear {
@@ -2520,3 +2524,6 @@ position:relative;
 		background: none;
   	}
 }
+
+.dropdown-menu { display: none; }
+.open .dropdown-menu { display: block; }

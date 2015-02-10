@@ -268,3 +268,12 @@ module.exports =
     page_404_desc:
       en: "Sorry for the inconvenience. Why not try to <a href=\"http://www.visualops.io/\">visit our homepage</a>?"
       zh: "很抱歉给您带来的不便， <a href=\"http://www.visualops.io/\">点此返回首页</a>。"
+
+  INVITE:
+    invitiation_expired:
+      en: "Oops. The invitation link is invalid or has expired."
+      zh: "抱歉，邀请链接无效或已经过期。"
+
+    go_to_visualops_ide:
+      en: "Go to VisualOps IDE"
+      zh: "点此进入 VisualOps"

@@ -8978,7 +8978,63 @@ section.members-only {
   /* property component style */ }
   #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item {
     position: relative; }
+<<<<<<< Updated upstream
     #OpsEditor .OEPanelRight.property .panel-body .selection.item-list .hm-item.item .item-remove, #OpsEditor .OEPanelRight.config .panel-body .selection.item-list .hm-item.item .item-remove {
+=======
+    .fullpage-settings .update-payment-wrap h5 {
+      width: 100%; }
+      .fullpage-settings .update-payment-wrap h5 span {
+        display: inline-block; }
+        .fullpage-settings .update-payment-wrap h5 span.card-number {
+          width: 230px; }
+        .fullpage-settings .update-payment-wrap h5 span.cvv {
+          width: 75px; }
+        .fullpage-settings .update-payment-wrap h5 span.expiration {
+          width: 100px; }
+    .fullpage-settings .update-payment-wrap .input {
+      width: 200px; }
+      .fullpage-settings .update-payment-wrap .input.first-name, .fullpage-settings .update-payment-wrap .input.last-name {
+        width: 90px; }
+      .fullpage-settings .update-payment-wrap .input.cvv {
+        width: 50px; }
+      .fullpage-settings .update-payment-wrap .input.expiration {
+        width: 80px; }
+  .fullpage-settings .settings-item.credit-card-info dd {
+    display: flex;
+    flex-wrap: wrap; }
+    .fullpage-settings .settings-item.credit-card-info dd .credit-meta {
+      font-size: 12px;
+      color: #898dbc; }
+      .fullpage-settings .settings-item.credit-card-info dd .credit-meta p {
+        margin: 0;
+        padding: 0;
+        line-height: 24px; }
+    .fullpage-settings .settings-item.credit-card-info dd .credit-update {
+      margin-top: 10px;
+      width: 100%; }
+  .fullpage-settings .billing-history {
+    display: block; }
+    .fullpage-settings .billing-history dd {
+      margin: 10px auto;
+      width: 100%; }
+  .fullpage-settings .token-table {
+    position: relative;
+    background: rgba(0, 0, 0, 0.1);
+    font-size: 12px; }
+    .fullpage-settings .token-table.empty > header {
+      display: none; }
+    .fullpage-settings .token-table .tokenName, .fullpage-settings .token-table .tokenToken, .fullpage-settings .token-table .tokenControl {
+      margin: 0 5px;
+      line-height: 20px;
+      padding: 5px;
+      height: 20px;
+      width: 90px;
+      float: left; }
+    .fullpage-settings .token-table .tokenToken {
+      width: auto;
+      font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif; }
+    .fullpage-settings .token-table .tokenControl {
+>>>>>>> Stashed changes
       position: absolute;
       top: 16px;
       right: 20px; }
@@ -9028,6 +9084,7 @@ section.members-only {
     margin: -37px 1px -2px -3px;
     width: 30px;
     height: 30px; }
+<<<<<<< Updated upstream
   #OpsEditor .OEPanelRight.property .os-server-image-info, #OpsEditor .OEPanelRight.config .os-server-image-info {
     cursor: pointer; }
     #OpsEditor .OEPanelRight.property .os-server-image-info p.property-os-image-text, #OpsEditor .OEPanelRight.config .os-server-image-info p.property-os-image-text {
@@ -9066,6 +9123,102 @@ section.members-only {
   #OpsEditor .OEPanelRight.property .group, #OpsEditor .OEPanelRight.config .group {
     background-color: #27272b;
     font-size: 12px;
+=======
+    .fullpage-settings #TokenList > li:hover {
+      background: #25262C; }
+  .fullpage-settings #TokenList > li:hover .tokenControl, .fullpage-settings #TokenList > li.editing .tokenControl {
+    display: block; }
+  .fullpage-settings #TokenList > li.editing .tooltip {
+    display: none; }
+  .fullpage-settings #TokenList > li.editing .tokenDone {
+    display: block; }
+  .fullpage-settings #TokenList .tokenToken {
+    color: #eee; }
+  .fullpage-settings #TokenList .tokenName.input {
+    font-size: 12px; }
+  .fullpage-settings #TokenRmConfirm h3 {
+    font-size: 18px;
+    padding: 10px 0;
+    color: #eee;
+    margin-bottom: 10px; }
+  .fullpage-settings #TokenRmConfirm p {
+    color: #ccc; }
+  .fullpage-settings .cred-btn-wrap {
+    margin-top: 20px; }
+
+#CredSetupWrap .icon-label {
+  float: right;
+  margin-right: 0;
+  color: #25a4f4;
+  line-height: 36px; }
+#CredSetupWrap ul li:first-child {
+  border-bottom: 1px solid #41424c;
+  padding-bottom: 10px;
+  margin-bottom: 15px; }
+#CredSetupWrap label {
+  display: block;
+  float: left;
+  font-size: 13px;
+  margin-bottom: 6px;
+  line-height: 36px;
+  width: 128px; }
+#CredSetupWrap .input {
+  width: 300px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 36px;
+  padding: 10px;
+  font-size: 13px;
+  margin-bottom: 6px; }
+
+.cred-setup-msg {
+  padding: 15px;
+  background-color: #111;
+  border-radius: 4px;
+  color: #ec3c38;
+  margin-bottom: 20px;
+  width: 397px; }
+
+.update-payment-ctrl button.btn {
+  min-width: 80px;
+  padding: 4px 0;
+  line-height: 20px; }
+
+.usage-report-view {
+  position: relative; }
+  .usage-report-view .table-head-fix {
+    padding-top: 1px; }
+  .usage-report-view .full-space {
+    margin-top: -1px; }
+  .usage-report-view .usage-pagination {
+    position: absolute;
+    right: 0;
+    margin-top: -35px; }
+    .usage-report-view .usage-pagination .usage-date {
+      display: inline-block;
+      padding: 0 8px;
+      text-align: center; }
+    .usage-report-view .usage-pagination button {
+      padding: 8px 0;
+      min-width: 36px; }
+
+#scenes {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000; }
+
+.project-scene {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative; }
+  .project-scene .project-header {
+    background: #36343c;
+    height: 49px;
+    border-bottom: 1px solid #202020;
+>>>>>>> Stashed changes
     position: relative;
     border-bottom: 1px #000 solid;
     margin-bottom: 0; }

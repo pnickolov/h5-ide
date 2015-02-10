@@ -166,6 +166,7 @@ define [ '../base/model',
             ApiRequest("ins_GetPasswordData", {
                 region      : Design.instance().region()
                 instance_id : @get("instanceId")
+                key_id      : Design.instance().credentialId()
                 key_data    : key_data || undefined
             }).then ( data )-> data.GetPasswordDataResponse.passwordData
 

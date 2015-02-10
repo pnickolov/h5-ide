@@ -1,6 +1,6 @@
 
 define [
-  "workspaces/coreeditor/TplSvgDef"
+  "wspace/coreeditor/TplSvgDef"
   "CanvasElement"
   "CanvasManager"
   "Design"

@@ -146,23 +146,23 @@ require.config {
     #############################################
     # coreeditor                # Merge in deploy
     #############################################
-    "OpsEditor"         : "workspaces/coreeditor/OpsEditor"
-    'Design'            : 'workspaces/coreeditor/Design'
-    "ResourceModel"     : "workspaces/coreeditor/ModelResource"
-    "ComplexResModel"   : "workspaces/coreeditor/ModelComplex"
-    "ConnectionModel"   : "workspaces/coreeditor/ModelConnection"
-    "GroupModel"        : "workspaces/coreeditor/ModelGroup"
-    "CoreEditor"        : "workspaces/coreeditor/EditorCore"
-    "CoreEditorView"    : "workspaces/coreeditor/EditorView"
-    "CoreEditorApp"     : "workspaces/coreeditor/EditorCoreApp"
-    "CoreEditorViewApp" : "workspaces/coreeditor/EditorViewApp"
-    "ProgressViewer"    : "workspaces/coreeditor/ProgressViewer"
-    "CanvasElement"     : "workspaces/coreeditor/CanvasElement"
-    "CanvasLine"        : "workspaces/coreeditor/CanvasLine"
-    "CanvasView"        : "workspaces/coreeditor/CanvasView"
-    "CanvasViewLayout"  : "workspaces/coreeditor/CanvasViewLayout"
-    "CanvasManager"     : "workspaces/coreeditor/CanvasManager"
-    "CanvasPopup"       : "workspaces/coreeditor/CanvasPopup"
+    "OpsEditor"         : "wspace/coreeditor/OpsEditor"
+    'Design'            : 'wspace/coreeditor/Design'
+    "ResourceModel"     : "wspace/coreeditor/ModelResource"
+    "ComplexResModel"   : "wspace/coreeditor/ModelComplex"
+    "ConnectionModel"   : "wspace/coreeditor/ModelConnection"
+    "GroupModel"        : "wspace/coreeditor/ModelGroup"
+    "CoreEditor"        : "wspace/coreeditor/EditorCore"
+    "CoreEditorView"    : "wspace/coreeditor/EditorView"
+    "CoreEditorApp"     : "wspace/coreeditor/EditorCoreApp"
+    "CoreEditorViewApp" : "wspace/coreeditor/EditorViewApp"
+    "ProgressViewer"    : "wspace/coreeditor/ProgressViewer"
+    "CanvasElement"     : "wspace/coreeditor/CanvasElement"
+    "CanvasLine"        : "wspace/coreeditor/CanvasLine"
+    "CanvasView"        : "wspace/coreeditor/CanvasView"
+    "CanvasViewLayout"  : "wspace/coreeditor/CanvasViewLayout"
+    "CanvasManager"     : "wspace/coreeditor/CanvasManager"
+    "CanvasPopup"       : "wspace/coreeditor/CanvasPopup"
 
     #############################################
     # component                 # Merge in deploy
@@ -306,10 +306,10 @@ require.config {
 
     "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel" ]
 
-    "workspaces/dashboard/Dashboard"     : []
-    "workspaces/osdashboard/DashboardOs" : []
+    "wspace/dashboard/Dashboard"     : []
+    "wspace/osdashboard/DashboardOs" : []
 
-    "workspaces/coreeditor/CoreEditorBundle" : [
+    "wspace/coreeditor/CoreEditorBundle" : [
       "OpsEditor"
       "Design"
       "ResourceModel"
@@ -329,8 +329,8 @@ require.config {
       "CanvasPopup"
     ]
 
-    "workspaces/awseditor/EditorAws" : []
-    "workspaces/oseditor/EditorOs"  : []
+    "wspace/awseditor/EditorAws" : []
+    "wspace/oseditor/EditorOs"  : []
 
 
   bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
@@ -340,8 +340,8 @@ require.config {
     "component/OsComps"     : [ "Design", "OpsModel" ]
 
     "component/AppAction"                : [ "Design" ] # Workaround for messy deps
-    "workspaces/dashboard/Dashboard"     : [ "Design" ] # Workaround for messy deps
-    "workspaces/osdashboard/DashboardOs" : [ "Design" ] # Workaround for messy deps
+    "wspace/dashboard/Dashboard"     : [ "Design" ] # Workaround for messy deps
+    "wspace/osdashboard/DashboardOs" : [ "Design" ] # Workaround for messy deps
 
   ### env:prod:end ###
 }
@@ -408,10 +408,10 @@ require [
   'lib/aws'
 
   # Workspace deps here as plugin
-  "workspaces/dashboard/Dashboard"
-  "workspaces/progress/ProgressViewer"
-  "workspaces/awseditor/AwsEditorStack"
-  "workspaces/awseditor/AwsEditorApp"
+  "wspace/dashboard/Dashboard"
+  "wspace/progress/ProgressViewer"
+  "wspace/awseditor/AwsEditorStack"
+  "wspace/awseditor/AwsEditorApp"
 
 ], ( Application, CrBundle ) ->
 

@@ -6,7 +6,7 @@
 define [
   "Workspace"
   "CoreEditorView"
-  "workspaces/coreeditor/TplOpsEditor"
+  "wspace/coreeditor/TplOpsEditor"
   "ThumbnailUtil"
   "OpsModel"
   "Design"
@@ -14,7 +14,7 @@ define [
   "UI.modalplus"
   "i18n!/nls/lang.js"
 
-  "workspaces/coreeditor/EditorDeps"
+  "wspace/coreeditor/EditorDeps"
 ], ( Workspace, CoreEditorView, OpsEditorTpl, Thumbnail, OpsModel, Design, ApiRequest, Modal, lang )->
 
   # A view that used to show loading state of editor

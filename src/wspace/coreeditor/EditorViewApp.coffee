@@ -2,7 +2,7 @@
 define [
   "CoreEditorView"
   "OpsModel"
-  "workspaces/coreeditor/TplOpsEditor"
+  "wspace/coreeditor/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
   "AppAction"

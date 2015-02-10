@@ -91,11 +91,7 @@ define [
     constructor : ( opsModel )->
       @__opsModel = opsModel
       Backbone.Model.call this
-
       @use()
-      # Deserialize
-      json = opsModel.getJsonData()
-      @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
       return
 
     initialize : ( )->
@@ -107,7 +103,7 @@ define [
       canvas_data = @__opsModel.getJsonData()
 
       # Mode
-      if @__opsModel.testState( OpsModel.State.UnRun )
+      if @__opsModel.isStack()
         @__mode = Design.MODE.Stack
       else
         @__mode = Design.MODE.App
@@ -120,9 +116,11 @@ define [
 
       @attributes = $.extend true, { canvasSize : layout.size }, canvas_data
 
-      # Restore these two attr
-      canvas_data.component = component
-      canvas_data.layout    = layout
+      # Before we can deserialize, we need to make the design as current design.
+      oldDesign = Design.instance()
+      @use()
+      @deserialize( $.extend(true, {}, component), $.extend(true, {}, layout) )
+      if oldDesign then oldDesign.use()
       null
 
     deserialize : ( json_data, layout_data )->
@@ -236,18 +234,7 @@ define [
       @trigger = Backbone.Events.trigger
       null
 
-    reload : ()->
-      oldDesign = Design.instance()
-
-      @use()
-
-      @initialize()
-      json = @__opsModel.getJsonData()
-      @deserialize( $.extend(true, {}, json.component), $.extend(true, {}, json.layout) )
-
-      if oldDesign
-        oldDesign.use()
-      return
+    reload : ()-> @initialize()
 
     classCacheForCid : ( cid )->
       if @__classCache[ cid ]
@@ -423,11 +410,26 @@ define [
           console.error "Serializing an connection while one of the port is isRemoved() or null"
 
 
-      # Seems like some other place have call Design.instance().set("layout")
-      # So we assign component/layout at last to avoid overriden by the attributes.
-      data = $.extend true, {}, @attributes
-      data.component = component_data
-      data.layout    = layout_data
+      # Explicitly create the json. Since we don't really know what might
+      # exist in the `attributes`.
+      layout_data.size = @attributes.canvasSize
+
+      attr = @attributes
+      data = {
+        id            : @__opsModel.get("id")
+        provider      : @__opsModel.get("provider")
+        region        : @__opsModel.get("region")
+        revision      : @__opsModel.get("revision")
+        property      : attr.property || {}
+        description   : attr.description
+        resource_diff : attr.resource_diff
+        agent         : attr.agent
+        version       : OpsModel.LatestVersion
+        name          : attr.name
+        component     : component_data
+        layout        : layout_data
+        stack_id      : attr.stack_id
+      }
 
 
 
@@ -442,11 +444,6 @@ define [
       # 1. save canvas's size to layout
       data.layout.size = data.canvasSize
       delete data.canvasSize
-
-      # 2. property
-      data.property = @attributes.property || {}
-      data.state    = @__opsModel.getStateDesc() || "Enabled"
-      data.id       = @__opsModel.get("id")
 
       ###
       # NOTICE!
@@ -467,16 +464,8 @@ define [
 
     serializeAsStack : (new_name)->
       json = @serialize( { toStack : true } )
-
       json.name = new_name||json.name
-      json.state = "Enabled"
-      json.id = ""
-      json.owner = ""
-      json.usage = ""
-      delete json.history
       delete json.stack_id
-      delete json.owner
-      delete json.usage
       json
 
 
@@ -497,9 +486,6 @@ define [
     getCost : (stopped)-> { costList : [], totalFee : 0 }
 
   }, {
-    TYPE:
-      Vpc : "ec2-vpc"
-
     MODE:
       Stack   : "stack"
       App     : "app"

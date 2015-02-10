@@ -282,6 +282,8 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
     defer.promise
 
   saveThumbnail = ( id, $svg_element, size )->
+    if not $svg_element then return
+
     if typeof $svg_element is "string"
       saveThumbnailFinish {
         id    : id
@@ -293,7 +295,7 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
         size     : size
         onFinish : saveThumbnailFinish
       }
-    null
+    return
 
   getThumbnail = ( id )->
     localStorage.getItem "tn/#{id}"

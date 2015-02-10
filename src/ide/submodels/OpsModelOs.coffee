@@ -23,8 +23,8 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
           return comp.resource.id
       undefined
 
-    __createRawJson : ()->
-      json = OpsModel.prototype.__createRawJson.call this
+    __defaultJson : ()->
+      json = OpsModel.prototype.__defaultJson.call this
 
       layout =
         "NETWORK" :

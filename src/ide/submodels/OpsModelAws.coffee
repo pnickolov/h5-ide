@@ -23,8 +23,8 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
           return comp.resource.VpcId
       undefined
 
-    __createRawJson : ()->
-      json   = OpsModel.prototype.__createRawJson.call this
+    __defaultJson : ()->
+      json   = OpsModel.prototype.__defaultJson.call this
       vpcId  = MC.guid()
       vpcRef = "@{#{vpcId}.resource.VpcId}"
 

@@ -90,10 +90,7 @@ define [ "OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
 
     add : ( model )->
       if not @isNameAvailable( model.get("name") )
-        newName = @getNewName( model.get("name") )
-        model.attributes.name = newName
-        if model.__jsonData
-          model.__jsonData.name = newName
+        model.attributes.name = @getNewName( model.get("name") )
 
       Backbone.Collection.prototype.add.apply this, arguments
       model

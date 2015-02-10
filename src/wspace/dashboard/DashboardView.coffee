@@ -70,9 +70,11 @@ define [ "./DashboardTpl",
       @listenTo @model.scene.project, "change:stack", ()-> self.updateRegionAppStack("stacks", "global")
       @listenTo @model.scene.project, "change:app", ()-> self.updateRegionAppStack("apps", "global")
       @listenTo @model.scene.project, "update:credential", ()-> self.updateDemoView()
+      @listenTo @model.scene.project, "change:credential", ()-> self.updateDemoView()
 
       @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
       @credentialId = @model.scene.project.credIdOfProvider constant.PROVIDER.AWSGLOBAL
+      @credentialAccount = @model.scene.project.credOfProvider(constant.PROVIDER.AWSGLOBAL).get("awsAccount")
       @listenTo CloudResources(@credentialId, constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
       @listenTo CloudResources(@credentialId, constant.RESTYPE.EIP ), "update", @onGlobalResChanged
       @listenTo CloudResources(@credentialId, constant.RESTYPE.VOL ), "update", @onGlobalResChanged
@@ -137,9 +139,14 @@ define [ "./DashboardTpl",
     updateDemoView : ()->
       if not @model.scene.project.isDemoMode()
         @$el.find("#dashboard-data-wrap").removeClass("demo")
-        @$el.find("#VisualizeVPC").removeAttr "disabled"
+        @$el.find("#VisualizeVPC").removeAttr("disabled").removeClass("tooltip")
+        newCredentialAccount = @model.scene.project.credOfProvider(constant.PROVIDER.AWSGLOBAL).get("awsAccount")
+        if @credentialAccount isnt newCredentialAccount
+          @reloadResource()
+          @credentialAccount = newCredentialAccount
+
       else
-        @$el.find("#VisualizeVPC").attr "disabled", "disabled"
+        @$el.find("#VisualizeVPC").attr("disabled", "disabled").addClass("tooltip")
         @$el.find("#dashboard-data-wrap").toggleClass("demo", true)
       return
 

@@ -237,15 +237,15 @@ define [ '../base/view',
                 confirm         :
                     text: 'Done'
 
-            modalPlus = new modalPlus options
+            modal = new modalPlus options
             that = @
-            modalPlus.on 'confirm', () ->
+            modal.on 'confirm', () ->
 
                 result = $("#asg-termination-policy").parsley("validate")
                 if result is false
                     return false
                 that.onPolicyDone()
-                modalPlus.close()
+                modal.close()
 
             ,@
 

@@ -2,7 +2,7 @@ define [
   "constant"
   "ApiRequest"
   'Credential'
-  '../../scenes/settings/template/TplCredential'
+  'scenes/settings/template/TplCredential'
   'UI.modalplus'
   'i18n!/nls/lang.js'
   'backbone'

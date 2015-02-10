@@ -84,7 +84,7 @@ define [
   VisualOps.prototype.__createUser = ()->
     @user = new User()
     # The Websockets subscription will be lost if we have an invalid session.
-    @user.on "SessionUpdated", ()=> @WS.reconnect()
+    # @user.on "SessionUpdated", ()=> @WS.reconnect()
     return
 
   # This method will prompt a dialog to let user to re-acquire the session

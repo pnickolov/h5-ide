@@ -722,6 +722,10 @@ module.exports =
       en: " to see real data"
       zh: "以查看真实数据"
 
+    DASH_ASK_ADMIN_PROVIDE_CREDENTIAL:
+      en: "Request admin of workspace to set up AWS credential for real working data."
+      zh: "请工作空间的管理员设置 AWS 证书以获取真实数据。"
+
     DASH_TPL_NO_RECENT_APP:
       en: "No recently launched app in 30 days"
       zh: "没有 30 天内运行过的 App"

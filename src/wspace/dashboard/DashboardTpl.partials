@@ -104,7 +104,11 @@
                       <div id="DashboardDemo">
                           <div class="enter-credential">
                               {{i18n "DASH_TPL_SAMPLE_INSTRUCTION"}}<br/>
+                              {{#if isAdmin}}
                               <a class="show-credential">{{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1"}}</a> {{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2"}}
+                              {{else}}
+                              <p>{{i18n "DASH_ASK_ADMIN_PROVIDE_CREDENTIAL"}}</p>
+                              {{/if}}
                           </div>
                           <img src="/assets/images/ide/global-demo.png"/>
                       </div>

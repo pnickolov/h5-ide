@@ -56,6 +56,7 @@ define [ "./DashboardTpl",
       @setElement $( Template.main({
         providers : @model.supportedProviders()
         id: @model.scene.project.get("id")
+        isAdmin: @model.scene.project.amIAdmin()
       }) ).appendTo( @model.scene.spaceParentElement() )
 
       self = @

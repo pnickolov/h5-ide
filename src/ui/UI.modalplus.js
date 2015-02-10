@@ -85,7 +85,7 @@
         }
         this.tpl.find(".modal-body").html(this.option.$template);
         this.setElement(this.tpl);
-        if (modals.length && modals[modals.length - 1].isMoving) {
+        if (modals.length && modals[modals.length - 1].isMoving && this.option.force) {
           console.warn("Sorry, But we are moving...");
           modals[modals.length - 1].nextOptions.push(this.option);
           return this;

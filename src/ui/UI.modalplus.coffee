@@ -121,7 +121,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if @option.width then @tpl.find(".modal-wrapper-fix").css("width", @option.width)
             @tpl.find(".modal-body").html @option.$template
             @setElement @tpl
-            if modals.length and modals[modals.length - 1].isMoving
+            if modals.length and modals[modals.length - 1].isMoving and @option.force
                 console.warn "Sorry, But we are moving..."
                 modals[modals.length - 1].nextOptions.push @option
                 return @

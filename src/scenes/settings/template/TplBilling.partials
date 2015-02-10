@@ -42,8 +42,8 @@
         <dl class="billing-history settings-item"></dl>
     {{else}}
         <dl class="billing-history settings-item">
-            <dt>{{i18n "BILLING_HISTORY"}} <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.nextPeriod "yyyy-MM-d"}}</span></dt>
-            <div class="table-head-fix">
+            <dt>{{i18n "BILLING_HISTORY"}}</dt> <span class="payment-next-billing">{{i18n "NEXT_BILLING_ON"}} {{formatTime paymentUpdate.nextPeriod "yyyy-MM-d"}}</span>
+            <dd class="table-head-fix">
                 {{#if paymentHistory.length}}
                     <table class="table-head">
                         <thead>
@@ -88,7 +88,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </dd>
                 {{else}}
                     <div class="full-space">
                         {{i18n "NO_BILLING_EVENT"}}

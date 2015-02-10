@@ -503,6 +503,25 @@ div.settings-item .edit-actions {
         }
     }
 
+    .billing-email-text p {display: inline-block;}
+
+    .billing-history {
+        display: block;
+
+        dd {
+            width   : 90%;
+            display : block;
+            margin  : 10px auto;
+        }
+
+        .payment-next-billing {
+            font-size : 12px;
+            color     : $dark-grey;
+            position  : absolute;
+            right     : 5%;
+        }
+    }
+
     .token-table {
         position   : relative;
         background : rgba(0,0,0,.1);
@@ -691,11 +710,6 @@ div.settings-item .edit-actions {
     width: 397px;
 }
 
-.billing-email-text p {
-    display : inline-block;
-    margin  : 0;
-}
-
 .update-payment-ctrl{
   button.btn{
     min-width: 80px;
@@ -703,9 +717,7 @@ div.settings-item .edit-actions {
     line-height: 20px;
   }
 }
-.billing-history{
-  margin-top: 30px;
-}
+
 .usage-report-view{
   position: relative;
   .table-head-fix{

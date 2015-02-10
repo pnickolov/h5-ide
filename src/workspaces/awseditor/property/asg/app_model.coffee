@@ -11,7 +11,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         asg_comp = Design.instance().component( uid )
         if asg_comp.type is "ExpandedAsg"
           asg_comp = asg_comp.get("originalAsg")
-          asg_comp.set("uid", uid)
+          uid = asg_comp.get("id")
         data =
           uid        : uid
           name       : asg_comp.get 'name'

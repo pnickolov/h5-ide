@@ -1580,4 +1580,54 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 TEMPLATE.paymentUpdate=Handlebars.template(__TEMPLATE__);
 
 
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"loading-zone\">\n    <p>"
+    + escapeExpression(((stack1 = (depth0 && depth0.tip)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</p>\n    <div class=\"loading-spinner\"></div>\n</div>";
+  return buffer;
+  };
+TEMPLATE.credentialLoading=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+
+
+  buffer += "<div id=\"CredSetupWrap\">\n    <div id=\"CredSetupMsg\" class=\"cred-setup-msg empty-hide\"></div>\n    <ul>\n        <li>\n            <label>"
+    + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_ALIAS", {hash:{},data:data}))
+    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAlias\" type=\"text\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n        </li>\n        <li>\n            <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_ACCOUNTID", {hash:{},data:data}))
+    + "\"></i>\n            <label>"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_ACCOUNTID", {hash:{},data:data}))
+    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccount\" type=\"text\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.awsAccount)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n        </li>\n        <li>\n            <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_ACCESSKEY", {hash:{},data:data}))
+    + "\"></i>\n            <label>"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_ACCESSKEY", {hash:{},data:data}))
+    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccessKey\" type=\"text\" placeholder=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.awsAccessKey)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n        </li>\n        <li>\n            <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_SECRETKEY", {hash:{},data:data}))
+    + "\"></i>\n            <label>"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_SECRETKEY", {hash:{},data:data}))
+    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupSecretKey\" type=\"password\" placeholder=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.awsSecretKey)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n        </li>\n    </ul>\n    <p class=\"link-note\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_AUTHORIZE_NOTE", {hash:{},data:data}))
+    + "</p>\n</div>";
+  return buffer;
+  };
+TEMPLATE.credentialForm=Handlebars.template(__TEMPLATE__);
+
+
 return TEMPLATE; });

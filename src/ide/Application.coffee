@@ -14,7 +14,6 @@ define [
   "./ApplicationModel"
   "./User"
   "./SceneManager"
-  "./Router"
   "ApiRequest"
   "i18n!/nls/lang.js"
   "UI.notification"
@@ -22,7 +21,7 @@ define [
   # Extra depedencies
   "./submodels/OpsModelAws"
   "./submodels/OpsModelOs"
-], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, Router, ApiRequest, lang )->
+], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, ApiRequest, lang )->
 
 
   VisualOps = ()->
@@ -30,8 +29,7 @@ define [
       console.error "Application is already created."
       return
 
-    window.Router = new Router()
-    window.App    = this
+    window.App = this
     return
 
   # initialize returns a promise that will be resolve when the application is ready.
@@ -57,7 +55,6 @@ define [
 
     jobs.then ()->
       App.view.hideGlobalLoading()
-      window.Router.start()
     , ( err )->
 
       # If userdata/appdata fails to load

@@ -70,7 +70,7 @@ define [
 
         makeModalLoading: ( modal, action ) ->
             modal
-                .setContent( TplCredential.credentialLoading { tip: credentiaLoadingTips[ action ] } )
+                .setContent( MC.template.credentialLoading { tip: credentiaLoadingTips[ action ] } )
                 .toggleFooter false
             @
 

@@ -146,7 +146,6 @@ require.config {
     #############################################
     # coreeditor                # Merge in deploy
     #############################################
-    "OpsEditor"         : "wspace/coreeditor/OpsEditor"
     'Design'            : 'wspace/coreeditor/Design'
     "ResourceModel"     : "wspace/coreeditor/ModelResource"
     "ComplexResModel"   : "wspace/coreeditor/ModelComplex"
@@ -302,15 +301,22 @@ require.config {
       'OsSnapshot'
     ]
 
+    "ide/AppBundle" : [ "ide/Application", "OpsModel" ]
+
     "component/AppAction" : [ "AppAction" ]
 
-    "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel" ]
+    "scenes/Scenes" : [
+      "scenes/Router"
+      "scenes/ProjectScene"
+      "scenes/Settings"
+      "scenes/StackStore"
+      "scenes/Cheatsheet"
+    ]
 
     "wspace/dashboard/Dashboard"     : []
-    "wspace/osdashboard/DashboardOs" : []
+    "wspace/progress/ProgressViewer" : []
 
     "wspace/coreeditor/CoreEditorBundle" : [
-      "OpsEditor"
       "Design"
       "ResourceModel"
       "ComplexResModel"
@@ -320,7 +326,6 @@ require.config {
       "CoreEditorView"
       "CoreEditorApp"
       "CoreEditorViewApp"
-      "ProgressViewer"
       "CanvasElement"
       "CanvasLine"
       "CanvasView"
@@ -329,8 +334,10 @@ require.config {
       "CanvasPopup"
     ]
 
-    "wspace/awseditor/EditorAws" : []
-    "wspace/oseditor/EditorOs"  : []
+    "wspace/awseditor/EditorAws" : [
+      "wspace/awseditor/AwsEditorStack"
+      "wspace/awseditor/AwsEditorApp"
+    ]
 
 
   bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
@@ -403,6 +410,7 @@ window.__detailExtend = ( protoProps, staticProps )->
 
 require [
   'ide/Application'
+  "scenes/Router"
   "cloudres/CrBundle"
   "MC"
   'lib/aws'
@@ -413,9 +421,11 @@ require [
   "wspace/awseditor/AwsEditorStack"
   "wspace/awseditor/AwsEditorApp"
 
-], ( Application, CrBundle ) ->
+], ( Application, Router, CrBundle ) ->
 
-  (new Application()).initialize()
+  window.Router = new Router()
+
+  (new Application()).initialize().then ()-> window.Router.start()
 
   ### env:dev ###
   require ["./scenes/Debugger"], ()->

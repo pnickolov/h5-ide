@@ -2,11 +2,10 @@ define [
   "constant"
   "ApiRequest"
   'Credential'
-  'scenes/settings/template/TplCredential'
   'UI.modalplus'
   'i18n!/nls/lang.js'
   'backbone'
-], ( constant, ApiRequest, Credential, TplCredential, Modal, lang ) ->
+], ( constant, ApiRequest, Credential, Modal, lang ) ->
 
   credentialLoadingTips =
     add     : lang.IDE.SETTINGS_CRED_ADDING
@@ -31,7 +30,7 @@ define [
         title = lang.IDE.ADD_CLOUD_CREDENTIAL
         confirmText = lang.IDE.CFM_BTN_ADD
 
-      @$el.html TplCredential.credentialForm data
+      @$el.html MC.template.credentialForm data
 
       @modal = new Modal
         title: title
@@ -53,7 +52,7 @@ define [
     loading: ->
       @$( '#CredSetupWrap' ).hide()
       action =  if @credential then 'Update' else 'Add'
-      @$el.append( TplCredential.credentialLoading { tip: credentialLoadingTips[ action ] } )
+      @$el.append( MC.template.credentialLoading { tip: credentialLoadingTips[ action ] } )
       @modal.toggleFooter false
 
     loadingEnd: ->

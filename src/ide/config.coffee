@@ -274,8 +274,10 @@ require.config {
     "component/StateStatus" : [ "state_status" ]
     "component/StateEditor" : [ "StateEditor", "StateEditorView" ]
 
+    "ide/AppBundle" : [ "ide/Application", "OpsModel" ]
+
     "component/ResDiff"   : [ "ResDiff", "DiffTree" ]
-    "component/Common"    : [ "combo_dropdown", "toolbar_modal" ]
+    "component/Common"    : [ "combo_dropdown", "toolbar_modal", "credentialFormView" ]
 
     "component/AwsComps" : [
       'dhcp'
@@ -300,8 +302,6 @@ require.config {
       'OsKp'
       'OsSnapshot'
     ]
-
-    "ide/AppBundle" : [ "ide/Application", "OpsModel" ]
 
     "component/AppAction" : [ "AppAction" ]
 

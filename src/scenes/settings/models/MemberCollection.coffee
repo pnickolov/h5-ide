@@ -37,6 +37,23 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
             }).then () ->
                 that.collection?.remove(that)
 
+        isAdmin: () ->
+
+            return (@get('role') is 'admin')
+
+        isOnlyAdmin: () ->
+
+            that = @
+            data = that.collection.toJSON()
+            adminAry = []
+            _.each data, (member) ->
+                if member.role is 'admin' and member.state is 'normal'
+                    adminAry.push(member.username)
+                null
+            if adminAry.length is 1 and adminAry[0] is @get('username')
+                return true
+            return false
+
     })
 
     MemberCollection = Backbone.Collection.extend({

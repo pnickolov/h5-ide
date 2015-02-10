@@ -127,13 +127,9 @@ define [
             # is admin, check if unique
             else
                 that.memberCol.fetch().then () ->
-                    data = that.memberCol.toJSON()
-                    adminData = _.filter data, (member) ->
-                        if member.role is 'admin' and member.state is 'normal'
-                            return true
                     currentMember = that.memberCol.getCurrentMember()
-                    if currentMember.get('role') is 'admin'
-                        if adminData.length > 1
+                    if currentMember.isAdmin()
+                        if not currentMember.isOnlyAdmin()
                             that.toLeave()
                         else
                             that.render()

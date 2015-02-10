@@ -141,7 +141,7 @@ define ['backbone',
             currentMember = null
             currentUserName = App.user.get('username')
             @memberCol.fetch().then () ->
-                that.isAdmin = that.memberCol.getCurrentMember()?.get('role') is 'admin'
+                that.isAdmin = that.memberCol.getCurrentMember()?.isAdmin()
                 data = that.memberCol.toJSON()
             .fail (data) ->
                 notification 'error', (data.result or data.msg)
@@ -251,12 +251,24 @@ define ['backbone',
                 memId = $memItem.data('id')
                 newRole = $memItem.find('.memtype li.selected').data('id')
 
+                memberModel = that.memberCol.get(memId)
+                currentMember = that.memberCol.getCurrentMember()
+
+                # if current user is only admin in workspace, failed to change role
+                if memberModel is currentMember and
+                    currentMember.isAdmin() and
+                    newRole is 'collaborator' and
+                    currentMember.isOnlyAdmin()
+
+                        notification 'error', lang.IDE.SETTINGS_MEMBER_LABEL_ONLY_ONE_ADMIN
+                        $memItem.removeClass('edit')
+                        return
+
                 # change button state
                 originTxt = $done.text()
                 $done.prop 'disabled', true
                 $done.text("#{originTxt}...")
 
-                memberModel = that.memberCol.get(memId)
                 memberModel.updateRole(newRole).then ()->
                     that.loadMemList () ->
                         $done.text(originTxt)

@@ -2570,8 +2570,12 @@ VisualOps API. You cannot UNDO this action.'
       zh: "邀请成员"
 
     SETTINGS_MEMBER_LABEL_LIMIT:
-      en: "Your workspace has reached the standard limit of {{number}}. If you'd like invit more member to collaborate, contact us at"
+      en: "Your workspace has reached the standard limit of %s. If you'd like invite more member to collaborate, contact us at"
       zh: "该工作空间已经达到 %s 个成员的标准上限，如果你想要邀请更多协作成员，请联系："
+
+    SETTINGS_MEMBER_LABEL_ONLY_ONE_ADMIN:
+      en: "You are the only admin in this workspace. Cannot change your role to member."
+      zh: "你是该工作空间唯一的管理员，角色不可更改。"
 
     WORKSPACE_DEMO_TIP:
       en: "This workspace is currently in Demo mode. Set up your own cloud credential to run stack

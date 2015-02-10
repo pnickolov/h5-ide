@@ -264,6 +264,7 @@ define [
           provider   : ops.provider
           state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
           stoppable  : not (ops.property and ops.property.stoppable is false)
+          unlimited  : ops.before_charge
         }
       r
 

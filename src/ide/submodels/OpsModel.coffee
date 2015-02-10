@@ -110,7 +110,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     isImported : ()-> !!@attributes.importMsrId
 
     # Payment restricted
-    isPMRestricted : ()-> @get("version") >= "2014-11-11" and @isApp()
+    isPMRestricted : ()-> @isApp() and !@get("unlimited")
 
     testState : ( state )-> @attributes.state is state
     getStateDesc : ()-> OpsModelStateDesc[ @attributes.state ]

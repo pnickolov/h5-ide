@@ -104,7 +104,7 @@ define [
 
     __clearSubscription : ( removedModel, collection, options )->
       # Automatically remove all the subscription that is bound to this topic.
-      snss = CloudResources( constant.RESTYPE.SUBSCRIPTION, @region() )
+      snss = CloudResources( @credential(), constant.RESTYPE.SUBSCRIPTION, @region() )
       removes = []
       for sub in snss.models
         if sub.get("TopicArn") is removedModel.id
@@ -115,7 +115,7 @@ define [
 
     # Returns an array of topic which have no subscription.
     filterEmptySubs : ()->
-      snss = CloudResources( constant.RESTYPE.SUBSCRIPTION, @category )
+      snss = CloudResources( @credential(), constant.RESTYPE.SUBSCRIPTION, @category )
       topicMap = {}
       for i in snss.models
         topicMap[ i.get("TopicArn") ] = true

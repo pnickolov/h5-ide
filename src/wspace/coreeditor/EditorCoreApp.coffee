@@ -8,7 +8,7 @@ define [
   "CloudResources"
   "constant"
 
-  "workspaces/coreeditor/EditorDeps"
+  "wspace/coreeditor/EditorDeps"
 ], ( StackEditor, AppView, ResDiff, OpsModel, Design, CloudResources, constant )->
 
   StackEditor.extend {

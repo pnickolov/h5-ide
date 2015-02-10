@@ -409,6 +409,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       @attributes.progress = 0
       ApiRequest("app_start",{
         region_name : @get("region")
+        key_id      : @credentialId()
         app_id      : @get("id")
         app_name    : @get("name")
       }).fail ( err )->

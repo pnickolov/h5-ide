@@ -2760,5 +2760,5 @@ into live resources, or import existing infrastructures."
       zh: "实例 ID"
 
     CANT_DELETE_WORKSPACE:
-      en: "We were unable to charge the workspace’s credit card. This workspace is in limited status now. Please update your billing information. Once the workspace is back in normal, you may delete it."
+      en: "We were unable to charge the workspace's credit card. This workspace is in limited status now. Please update your billing information. Once the workspace is back in normal, you may delete it."
       zh: "我们没能在您的工作空间绑定的信用卡上成功扣款。此工作空间现处于受限模式。请更新您的账单信息。一旦工作空间恢复正常模式, 您就可以删除此工作空间。"

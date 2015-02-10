@@ -97,7 +97,7 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'compo
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @sslCertCol.fetch()
                 @processCol()
             else

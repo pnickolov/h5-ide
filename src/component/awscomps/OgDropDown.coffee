@@ -112,6 +112,10 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
+              @renderNoCredential()
+              return false
+
             # Close Parameter Group Dropdown when Option Group Dropdown is opening
             $('#property-dbinstance-parameter-group-select .selectbox').removeClass 'open'
             # render dropdown list only if no item there

@@ -154,7 +154,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       options = {} if not options
       @initModal()
       @modal.render()
-      if Design.instance().credential()
+      if Design.instance().credential() and not Design.instance().credential().isDemo()
         that = @
         @collection.fetch().then ->
           that.renderKeys()

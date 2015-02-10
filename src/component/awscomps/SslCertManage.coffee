@@ -76,7 +76,6 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
             @modal.on 'detail', @detail, @
 
         initialize: () ->
-            @initCol()
             @initModal()
 
         quickCreate: ->
@@ -228,7 +227,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
         render: ->
 
             @modal.render()
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @processCol()
             else
                 @modal.render 'nocredential'
@@ -318,7 +317,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
 
         show: ->
 
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @sslCertCol.fetch()
                 @processCol()
             else

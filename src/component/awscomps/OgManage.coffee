@@ -152,6 +152,9 @@ define [
             null
 
         render: ->
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
+              @renderNoCredential()
+              return false
             ogData = @ogModel.toJSON()
             ogData.isCreate = @isCreate
             ogData.isAppEdit = @isAppEdit

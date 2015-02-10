@@ -246,7 +246,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
         render: ->
             @modal.render()
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @processCol()
             else
                 @modal.render 'nocredential'
@@ -414,7 +414,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
 
         show: ->
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
                 @processCol()

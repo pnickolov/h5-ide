@@ -97,7 +97,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
                 if not @dropdown.$( '.item' ).length

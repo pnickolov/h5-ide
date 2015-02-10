@@ -67,7 +67,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             @initDropdown()
 
         show: () ->
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 def = null
                 if not regions[Design.instance().get("region")] and @collection.isReady()
                     regions[Design.instance().get("region")] = true

@@ -371,7 +371,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           name       : appName
           requestId  : res[0]
           state      : OpsModelState.Initializing
-          region     : region
+          region     : toRunJson.region
           provider   : toRunJson.provider
           usage      : toRunJson.usage
           updateTime : +(new Date())

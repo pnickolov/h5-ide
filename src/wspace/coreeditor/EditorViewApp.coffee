@@ -65,7 +65,7 @@ define [
           json.usage = $("#app-usage-selectbox").find(".item.selected").attr('data-value') || "testing"
           json.resource_diff = $("#MonitorImportApp").is(":checked")
 
-          self.workspace.opsModel.saveApp(json).then ()->
+          self.workspace.opsModel.importApp(json).then ()->
             design = self.workspace.design
 
             design.set "name", json.name

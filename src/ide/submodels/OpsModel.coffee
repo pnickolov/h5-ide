@@ -111,7 +111,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     credential   : ()-> @project().credOfProvider( @get("provider") )
     credentialId : ()-> (@credential() || {}).id
 
-    isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
+    isStack    : ()-> @attributes.state is OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
     isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importMsrId
 
@@ -179,7 +179,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Use this method to load the newest json.
     # Returns a promise that will be fulfilled when the json is loaded.
     # After that, use getJsonData() to retreive the json.
-    fetchJsonData : ()-> @__fdjLocalInit( @ ) || @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
+    fetchJsonData : ()-> @__fjdImport( @ ) || @__fdjLocalInit( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
 
     __fdjLocalInit : ()->
       # Always load the json from server if the ops has been saved to server.

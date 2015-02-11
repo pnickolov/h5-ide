@@ -116,7 +116,7 @@
         {{#ifCond state 'inactive'}}{{i18n "SETTINGS_MEMBER_LABEL_PENDING"}}{{/ifCond}}
     </td>
     {{#if ../admin}}
-    <td>{{#ifCond state 'inactive'}}<a class="cancel link-style">{{i18n "SETTINGS_MEMBER_LABEL_CANCEL_INVITE"}}</a>{{/ifCond}}</td>
+    <td>{{#ifCond state 'inactive'}}<button class="cancel link-style">{{i18n "SETTINGS_MEMBER_LABEL_CANCEL_INVITE"}}</button>{{/ifCond}}</td>
     <td>
         <button class="btn btn-blue memlist-edit-mode done">{{i18n "SETTINGS_MEMBER_LABEL_DONE"}}</button>
         <button class="icon-edit memlist-view-mode edit"></button>

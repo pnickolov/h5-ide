@@ -603,15 +603,18 @@ define [ "./DashboardTpl",
         dataAry = _.map models, (data) ->
             # userdata = userDataSet[data.get("usercode")]
             action   = data.get('action')
+            target   = data.get('target')
+            type     = data.get('type').toLowerCase()
             targetId = data.get('targetId')
             targetId = null if not that.model.scene.project.getOpsModel(targetId)
             {
               name   : data.get("username")
             #   email  : userdata.email
             #   avatar : userdata.avatar
+              action_type : (action + '_' + type).toLowerCase()
               action : renderMap[ action ] || action
-              type   : data.get('type').toLowerCase()
-              target : data.get('target')
+              type   : type
+              target : target
               time   : MC.intervalDate(new Date(data.get('time')))
               projectId: projectId
               targetId: targetId

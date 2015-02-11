@@ -321,14 +321,6 @@ define [
             @$('.slidebox').addClass 'show'
             @$('.slidebox .form').html template.og_slide_remove {}
 
-        processCol: () ->
-
-            @renderList({})
-
-        renderList: ( data ) ->
-
-            @modal.setContent( template.modal_list data )
-
         renderNoCredential: () ->
             @__modalplus.setContent(toolbar_modal_tpl.nocredential({resourceName: lang.PROP.RESOURCE_NAME_OPTION_GROUP}))
 

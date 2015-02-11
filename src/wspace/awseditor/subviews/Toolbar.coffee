@@ -18,20 +18,6 @@ define [
   "backbone"
 ], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction )->
 
-  location = window.location
-
-  if /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.exec( location.hostname )
-    # This is a ip address
-    console.error "VisualOps IDE can not be browsed with IP address."
-    return
-  hosts = location.hostname.split(".")
-  if hosts.length >= 3
-    API_HOST = hosts[ hosts.length - 2 ] + "." + hosts[ hosts.length - 1]
-  else
-    API_HOST = location.hostname
-
-  API_URL = window.location.protocol + "//api." + API_HOST + "/v1/apps/"
-
   Backbone.View.extend {
 
     events :
@@ -153,13 +139,8 @@ define [
     saveStack : ( evt )-> @appAction.saveStack(evt.currentTarget, @)
 
     deleteStack    : ()-> @appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name"), @workspace )
-    createStack    : ()->
-      newOps = @workspace.opsModel.project().createStack(@workspace.design.region())
-      App.loadUrl newOps.url()
-
-    duplicateStack : ()->
-      newOps = @workspace.opsModel.project().createStackByJson( @workspace.design.serialize({duplicateStack: true}) )
-      App.loadUrl newOps.url()
+    createStack    : ()-> App.loadUrl @workspace.scene.project.createStack(@workspace.design.region()).url()
+    duplicateStack : ()-> App.loadUrl @workspace.scene.project.createStackByJson( @workspace.design.serialize() ).url()
       return
 
     zoomIn  : ()-> @parent.canvas.zoomIn();  @updateZoomButtons()
@@ -276,7 +257,7 @@ define [
             'encoded_user': App.user.get('usercode')
             'token':    @workspace.opsModel.project().get('defaultToken')
         $.ajax
-            url: API_URL + app_id
+            url: window.MC_API_HOST + "/v1/apps/" + app_id
             method: "POST"
             data: JSON.stringify data
             dataType: 'json'
@@ -306,8 +287,7 @@ define [
       that = @
       if $(event.currentTarget).attr 'disabled'
         return false
-      opsModal = @workspace.opsModel
-      @appAction.showPayment(null ,opsModal).then ( result ) ->
+      @appAction.showPayment(null ,@workspace.opsModel).then ( result ) ->
         paymentUpdate = result.result
         paymentModal = result.modal
         that.appAction.runStack paymentUpdate, paymentModal, that.workspace

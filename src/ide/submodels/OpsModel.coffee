@@ -238,7 +238,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         json.agent = { enabled : false }
 
       if not json.agent.module or not json.agent.module.repo
-        json.module = {
+        json.agent.module = {
           repo : App.user.get("repo")
           tag  : App.user.get("tag")
         }

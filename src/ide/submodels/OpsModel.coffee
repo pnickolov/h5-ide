@@ -592,7 +592,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           toState = if completed then OpsModelState.Running else OpsModelState.Stopped
         when constant.OPS_CODE_NAME.TERMINATE
           toState = if completed then OpsModelState.Destroyed else OpsModelState.Stopped
-        when constant.OPS_CODE_NAME.UPDATE
+        when constant.OPS_CODE_NAME.UPDATE, constant.OPS_CODE_NAME.STATE_UPDATE
           if not @__updateAppDefer
             return console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
           if completed

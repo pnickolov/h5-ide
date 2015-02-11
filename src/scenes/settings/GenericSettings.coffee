@@ -123,7 +123,7 @@ define [
             $(".accountEmailRO").show()
             $("#AccountEmailWrap").hide()
             $("#AccountNewEmail, #AccountEmailPwd").val("")
-            $("#AccountEmailInfo").empty()
+            $("#SettingErrorInfo").empty()
             return
 
         showFullName: ()->
@@ -165,12 +165,18 @@ define [
             return
 
         updateEmailBtn : ()->
-            old_pwd = $("#AccountNewEmail").val() || ""
+            new_email = $("#AccountNewEmail").val() || ""
             new_pwd = $("#AccountEmailPwd").val() || ""
 
-            if old_pwd.length and new_pwd.length >= 6
+            regExp = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i
+            isValidEmail = regExp.test new_email
+            if new_email.length and new_pwd.length >= 6 and isValidEmail
                 $("#AccountUpdateEmail").removeAttr "disabled"
             else
+                if not isValidEmail
+                  $("#SettingErrorInfo").text(lang.IDE.SETTING_INVALID_EMAIL)
+                else
+                  $("#SettingErrorInfo").text("")
                 $("#AccountUpdateEmail").attr "disabled", "disabled"
             return
 
@@ -205,7 +211,7 @@ define [
             email = $("#AccountNewEmail").val() || ""
             pwd   = $("#AccountEmailPwd").val() || ""
 
-            $("#AccountEmailInfo").empty()
+            $("#SettingErrorInfo").empty()
             $("#AccountUpdateEmail").attr "disabled", "disabled"
 
             App.user.changeEmail( email, pwd ).then ()->
@@ -222,7 +228,7 @@ define [
                     else
                         text = lang.IDE.SETTINGS_UPDATE_EMAIL_FAIL1
 
-                $('#AccountEmailInfo').text text
+                $('#SettingErrorInfo').text text
                 $("#AccountUpdateEmail").removeAttr "disabled"
             return
 

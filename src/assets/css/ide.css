@@ -6350,8 +6350,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9838,6 +9837,9 @@ div.settings-item .edit-actions {
       color: #148BE6;
       padding: 3px 0;
       margin-left: 0; }
+    .fullpage-settings .setting-content #SettingErrorInfo {
+      color: #ec3c38;
+      font-size: 15px; }
     .fullpage-settings .setting-content .icon-edit {
       color: #909091;
       cursor: pointer; }

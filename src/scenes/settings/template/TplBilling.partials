@@ -11,6 +11,7 @@
             <p>{{or paymentUpdate.email "Email not set"}}</p>
             <button class="icon-edit tooltip editEmailBtn" data-tooltip="Click to edit billing email"></button>
             <input class="input hide" type="text"/>
+            <div id="SettingErrorInfo" class="empty-hide"></div>
             <div class="editEmailControl hide edit-actions">
                 <button class="btn btn-blue editEmailDone">{{ i18n 'HEAD_BTN_DONE' }}</button>
                 <button class="btn btn-silver modal-close editEmailCancel">{{ i18n 'HEAD_BTN_CANCEL' }}</button>

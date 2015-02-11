@@ -10,6 +10,8 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       "click .editEmailBtn"                 : "updatePaymentEmail"
       "click .editEmailDone"                : "updateEmailDone"
       "click .editEmailCancel"              : "updateEmailCancel"
+      "change .billing-email-text>input"    : "emailInputChange"
+      "keyup .billing-email-text>input"     : "emailInputChange"
 
     className: "billing-view"
 
@@ -88,6 +90,9 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
       @$el.find(".billing-history").replaceWith template.updatePayment()
       $(evt.currentTarget).hide()
 
+    emailInputChange: ()->
+      email = @$el.find(".billing-email-text input").val()
+      @isValidEmail(email)
 
     updatePaymentDone: ()->
       that = @
@@ -127,14 +132,26 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
     updateEmailCancel: ()->
       @renderCache()
 
+    isValidEmail: (email)->
+      regExp = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i
+      isValid = regExp.test(email)
+      if isValid
+        @$el.find("#SettingErrorInfo").empty()
+      else
+        @$el.find("#SettingErrorInfo").text lang.IDE.SETTING_INVALID_EMAIL
+      isValid
+
     updateEmailDone: ()->
       project_id = @model.get "id"
       that = @
+      email = @$el.find(".billing-email-text input").val()
+      unless @isValidEmail email
+        return false
+
       @$el.find(".editEmailControl button").attr("disabled", "disabled")
       @$el.find(".billing-email-text>input").attr("disabled", "disabled")
       @$el.find(".editEmailControl .editEmailDone").text(lang.IDE.LBL_SAVING)
       @$el.find(".editEmailControl .editEmailCancel").hide()
-      email = @$el.find(".billing-email-text input").val()
       attributes = {email}
       ApiRequest "project_update_payment", {project_id, attributes}
       .then ()->

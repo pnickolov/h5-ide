@@ -8,16 +8,18 @@
 
 /* Wrapper and header */
 .dashboard-header {
-  padding: 10px 0;
-  position: absolute;
-  z-index: 5;
-  background: rgba(42, 46, 49, .9);
-  box-shadow: 1px 5px 5px rgba(22, 22, 23, 0.1);
-  width: 100%;
-  height: 38px;
+  padding    : 10px 0;
+  position   : absolute;
+  z-index    : 5;
+  background : rgba(42, 46, 49, .9);
+  box-shadow : 1px 5px 5px rgba(22, 22, 23, 0.1);
+  width      : 100%;
+  height     : 38px;
 
   .hovermenu {
     height : 38px;
+
+    &:hover .dropdown-menu { display: block }
   }
 
   .btn.icon-visualize, .hovermenu {
@@ -48,10 +50,6 @@
       border-radius : 3px 0 0 3px;
       margin-right  : 10px;
     }
-  }
-
-  .hovermenu:hover .dropdown-menu {
-    display : block;
   }
 
   .dropdown-menu {
@@ -137,7 +135,7 @@
     margin-left : 16px;
   }
 
-  > li:first-child, li:last-child {
+  > li:first-child, > li:last-child {
     list-style  : none;
     margin-left : 0;
     font-size: 14px;
@@ -201,7 +199,9 @@
 }
 
 
-$dashboardSidebarWidth : 320px;
+/* Dashboard Layout */
+
+$dashboardSidebarWidth : 24vw;
 
 .dashboard-wrapper {
   position : absolute;
@@ -210,74 +210,70 @@ $dashboardSidebarWidth : 320px;
   left     : 0;
   right    : 0;
 }
+
 aside.dashboard-sidebar {
   width      : $dashboardSidebarWidth;
-  // height     : 100%;
   position   : absolute;
   right      : 0;
   top        : 0;
   bottom     : 0;
   background : white;
   border-left: 1px #ddd solid;
+
   nav {
-    overflow: auto;
-    background-color: #eee;
-    width: 100%;
-    display: inline-block;
-    border-bottom: 1px #ddd solid;
+    overflow      : auto;
+    background    : #eee;
+    width         : 100%;
+    display       : inline-block;
+    border-bottom : 1px #ddd solid;
   }
+
   .dashboard-log-wrap {
-        overflow: auto;
-        position: absolute;
-        bottom: 0;
-        top: 40px;
-        right: 0;
-        left: 0;
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    top: 40px;
+    right: 0;
+    left: 0;
   }
+
   .dashboard-nav-log {
-        float: left;
-        min-width: 100px;
-        text-align: center;
-        height: 38px;
-        line-height: 38px;
-        cursor: pointer;
-        position: relative;
-        padding: 0 10px;
-        font-size: 12px;
-    }
-  .dashboard-nav-log.selected:before {
-        position: absolute;
-        left: 0;
-        bottom: 0px;
-        content: '';
-        border-bottom: 2px solid #4A90E2;
+      float       : left;
+      text-align  : center;
+      height      : 38px;
+      line-height : 38px;
+      cursor      : pointer;
+      position    : relative;
+      padding     : 0 10px;
+      font-size   : 12px;
+      display     : inline-block;
+      max-width   : 50%;
+      width       : 50%;
+
+      &.selected {
+        border-bottom: 2px solid $base-b;
         width: 100%;
+      }
     }
+
   .dashboard-log {
-      margin-top: 15px;
+      
       .dashboard-log-item {
-        margin-bottom: 15px;
-        padding: 5px 10px 5px 10px;
+
+        margin-bottom : 15px;
+        padding       : 5px 10px 5px 10px;
+
         &:hover {
             background-color: #eee;
         }
+
         .avatar {
             display: inline-block;
             width: 40px;
             border-radius: 40px;
             float: left;
         }
-        .no-avatar {
-            width: 40px;
-            height: 40px;
-            float: left;
-            text-align: center;
-            border: 1px #ccc solid;
-            border-radius: 40px;
-            line-height: 38px;
-            font-size: 36px;
-            color: #bbb;
-        }
+
         .info {
             display: inline-block;
             max-width: 220px;
@@ -535,10 +531,10 @@ article.dashboard-content {
 
 /* AWS resources table */
 #dashboard-data-wrap {
-    max-width : 1280px;
-    margin    : 0 auto;
+    // max-width : 1280px;
+    margin    : 0 1vw;
     padding   : 15px 0 40px;
-    width     : 95%;
+    width     : (98 - $dashboardSidebarWidth);
 
     .resource-count {
       padding-left : 60px;
@@ -961,7 +957,9 @@ article.dashboard-content {
 
 #region-app-stack-wrap {
     position : relative;
-    height: 400px;
+    height   : 400px;
+    @include flexbox;
+
     .scroll-wrap {
       background : #fff;
       box-shadow : 1px 1px 5px rgba(0,0,0,0.1);
@@ -969,18 +967,35 @@ article.dashboard-content {
       max-height : 350px;
       height     : 350px;
     }
-    .dash-region-apps-wrap, .dash-region-stacks-wrap{
-      width: 50%;
-      position: relative;
-      float: left;
-      box-sizing: border-box;
+
+    .dash-region-apps-wrap, .dash-region-stacks-wrap {
+      width      : 49%;
+      position   : relative;
+      float      : left;
+      box-sizing : border-box;
     }
-    .dash-region-apps-wrap{
-      padding-right: 10px;
+
+    .dash-region-apps-wrap { margin-right: 2%; }
+
+    @media (max-width: 1280px) {
+      & {
+        max-height     : 820px;
+        display        : block;
+        padding-bottom : 10px;
+      }
+      
+      .dash-region-apps-wrap, .dash-region-stacks-wrap {
+        width      : 100%;
+        position   : relative;
+        float      : left;
+        box-sizing : border-box;
+      }
+
+      .scroll-wrap { height: auto; }
+
+
     }
-    .dash-region-stacks-wrap{
-      padding-left: 10px;
-    }
+
 }
 
 #region-switch-stack, #region-switch-app {

@@ -134,7 +134,7 @@
 <ul class="dashboard-log-list">
     {{#each this}}
     <li class="dashboard-log-item {{action_type}}">
-        {{#if avatar}}<img class="avatar" src="{{avatar}}" />{{else}}<div class="no-avatar">×</div>{{/if}}
+        {{#if avatar}}<img class="avatar" src="{{avatar}}" />{{else}}{{/if}}
         <div class="info">
             <div class="event">
                 <span class="name">{{name}}</span>

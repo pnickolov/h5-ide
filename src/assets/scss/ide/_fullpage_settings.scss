@@ -78,24 +78,6 @@
         .normal-mode { display: none; }
         .icon-edit { display: none; }
     }
-}
-
-div.settings-item {
-
-    h5 {
-        color     : #999;
-        width     : 100%;
-        display   : block;
-        font-size : 16px;
-    }
-
-    .edit-actions {
-        margin-left: 29%;
-    }
-}
-
-dl.settings-item {
-    @include flexbox;
 
     dt {
         color        : #999;
@@ -114,6 +96,24 @@ dl.settings-item {
     }
 
     .input { width: 220px;}
+}
+
+div.settings-item {
+
+    h5 {
+        color     : #999;
+        width     : 100%;
+        display   : block;
+        font-size : 16px;
+    }
+
+    .edit-actions {
+        margin-left: 29%;
+    }
+}
+
+dl.settings-item {
+    @include flexbox;
 }
 
 .leave-project-zone,

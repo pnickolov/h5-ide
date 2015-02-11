@@ -18,6 +18,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
                 manageBtnValue      : lang.PROP.INSTANCE_MANAGE_SNS
                 filterPlaceHolder   : lang.PROP.INSTANCE_FILTER_SNS
                 classList           : 'sns-dropdown'
+                resourceName        : lang.PROP.RESOURCE_NAME_SNS
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
@@ -32,7 +33,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
                 @selection = options.selection
             @initCol()
             @initDropdown()
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
 

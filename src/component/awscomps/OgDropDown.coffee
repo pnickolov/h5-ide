@@ -13,6 +13,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
                 manageBtnValue      : 'Create New Option Group ...'
                 filterPlaceHolder   : 'Filter by Option Group name'
                 noFilter            : true
+                resourceName        : lang.PROP.RESOURCE_NAME_OPTION_GROUP
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
@@ -112,7 +113,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
-            if Design.instance().credential() and not Design.instance().credential().isDemo()
+            unless Design.instance().credential() and not Design.instance().credential().isDemo()
               @renderNoCredential()
               return false
 

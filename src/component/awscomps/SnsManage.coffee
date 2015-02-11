@@ -134,7 +134,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
                     throw err
 
         fetch: ->
-            if Design.instance().credential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
 
@@ -142,7 +142,6 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
             @initCol()
             @initModal()
             @fetch()
-            window.M$ = @M$
 
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)

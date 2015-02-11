@@ -63,15 +63,15 @@ define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template
         __optionChange: ( event, name, data ) ->
             @trigger 'change', name, data
 
-        initialize: ( options ) ->
-            @$el.html template.frame options
+        initialize: ( @options ) ->
+            @$el.html template.frame @options
             @
 
 
         # ------ INTERFACE ------ #
 
         render: ( tpl ) ->
-            @$( '.combo-dd-content' ).html template[ tpl ] and template[ tpl ]() or tpl
+            @$( '.combo-dd-content' ).html template[ tpl ] and template[ tpl ](@options) or tpl
             @
 
         setSelection: ( dom ) ->

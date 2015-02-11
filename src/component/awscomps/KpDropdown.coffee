@@ -47,6 +47,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             options =
                 manageBtnValue      : lang.PROP.INSTANCE_MANAGE_KP
                 filterPlaceHolder   : lang.PROP.INSTANCE_FILTER_KP
+                resourceName        : lang.PROP.RESOURCE_NAME_KEYPAIR
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @

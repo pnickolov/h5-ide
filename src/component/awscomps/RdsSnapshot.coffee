@@ -25,6 +25,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         renderDropdown: ()->
             option =
                 filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_VOLUME
+                resourceName: lang.PROP.RESOURCE_NAME_RDS_SNAPSHOT
+
             @dropdown = new combo_dropdown(option)
             @instances = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()
             selection = lang.PROP.INSTANCE_SNAPSHOT_SELECT

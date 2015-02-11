@@ -30,6 +30,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             option =
                 manageBtnValue: lang.PROP.VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.PROP.VPC_FILTER_DHCP
+                resourceName: lang.PROP.RESOURCE_NAME_DHCP
             @dropdown = new comboDropdown option
             selection = template.selection
                 isDefault: false
@@ -287,7 +288,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
 
             title: sprintf lang.IDE.MANAGE_DHCP_IN_AREA, regionName
             slideable: true
-            resourceName:   lang.PROP.VPC_TIT_DHCP_OPTION
+            resourceName:   lang.PROP.RESOURCE_NAME_DHCP
             context: that
             buttons: [
                 {

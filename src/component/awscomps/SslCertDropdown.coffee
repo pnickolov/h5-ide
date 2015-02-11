@@ -13,6 +13,7 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'compo
             options =
                 manageBtnValue      : lang.PROP.INSTANCE_MANAGE_SSL_CERT
                 filterPlaceHolder   : lang.PROP.INSTANCE_FILTER_SSL_CERT
+                resourceName        : lang.PROP.RESOURCE_NAME_SSL
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @

@@ -77,6 +77,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
             @modal.on 'detail', @detail, @
 
         initialize: () ->
+            @initCol()
             @initModal()
 
         quickCreate: ->

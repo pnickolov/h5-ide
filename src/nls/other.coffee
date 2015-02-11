@@ -1457,8 +1457,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "您正在使用测试账号。"
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
-      en: "Provide AWS Credential <br/> to manage key pairs"
-      zh: "提供 AWS 证书来管理密钥对。"
+      en: "Provide AWS Credential <br/> to manage resources."
+      zh: "提供 AWS 证书来管理资源。"
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL_WITH_TYPE:
       en: "Provide AWS Credential <br/> to manage %s"

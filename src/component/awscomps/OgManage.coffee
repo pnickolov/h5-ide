@@ -1,13 +1,13 @@
 define [
     'constant'
     'CloudResources'
-    'toolbar_modal'
+    'component/common/toolbarModalTpl'
     'component/awscomps/OgTpl'
     'i18n!/nls/lang.js'
     'event'
     'UI.modalplus'
 
-], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
+], ( constant, CloudResources, toolbar_modal_tpl, template, lang, ide_event, modalplus ) ->
 
     valueInRange = ( start, end ) ->
         ( val ) ->
@@ -152,9 +152,6 @@ define [
             null
 
         render: ->
-            if Design.instance().credential() and not Design.instance().credential().isDemo()
-              @renderNoCredential()
-              return false
             ogData = @ogModel.toJSON()
             ogData.isCreate = @isCreate
             ogData.isAppEdit = @isAppEdit
@@ -164,6 +161,9 @@ define [
             @$el.html template.og_modal(ogData)
 
             @initModal @el
+            unless Design.instance().credential() and not Design.instance().credential().isDemo()
+                @renderNoCredential()
+                return false
             @renderOptionList()
             @__modalplus.resize()
             @
@@ -330,8 +330,7 @@ define [
             @modal.setContent( template.modal_list data )
 
         renderNoCredential: () ->
-
-            @modal.render('nocredential').toggleControls false
+            @__modalplus.setContent(toolbar_modal_tpl.nocredential({resourceName: lang.PROP.RESOURCE_NAME_OPTION_GROUP}))
 
         renderSlides: ( which, checked ) ->
 

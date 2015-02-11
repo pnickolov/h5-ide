@@ -44,6 +44,8 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         renderRegionDropdown: ()->
             option =
                 filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_REGION
+                resourceName     : lang.PROP.RESOURCE_NAME_SNAPSHOT
+
             @regionsDropdown = new combo_dropdown(option)
             @regions = _.keys constant.REGION_LABEL
             selection = lang.PROP.VOLUME_SNAPSHOT_SELECT_REGION

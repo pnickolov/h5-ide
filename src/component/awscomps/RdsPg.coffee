@@ -384,6 +384,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       option =
         manageBtnValue: lang.PROP.VPC_MANAGE_RDS_PG
         filterPlaceHolder: lang.PROP.VPC_FILTER_RDS_PG
+        resourceName: lang.PROP.RESOURCE_NAME_PARAMETER_GROUP
       @dropdown = new combo_dropdown option
       if @resModel and  not @resModel.attributes.pgName
         that.dropdown.setSelection "Please Select Parameter Group"

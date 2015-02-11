@@ -3442,3 +3442,10 @@ module.exports =
       en: "SSL"
       zh: "SSL"
 
+    RESOURCE_NAME_DHCP:
+      en: "DHCP"
+      zh: "DHCP"
+
+    RESOURCE_NAME_OPTION_GROUP:
+      en: "RDS Option Group"
+      zh: " RDS 选项组"

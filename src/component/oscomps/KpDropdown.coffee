@@ -107,6 +107,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
 
       title: "Manage Key Pairs in #{regionName}"
       slideable: _.bind that.denySlide, that
+      resourceName: lang.PROP.RESOURCE_NAME_KEYPAIR
       context: that
       buttons: [
         {

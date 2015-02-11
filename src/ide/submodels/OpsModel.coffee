@@ -408,8 +408,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if not @isApp() or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
 
       self = @
-      @set "state", OpsModelState.Stopping
       @attributes.progress = 0
+      @set "state", OpsModelState.Stopping
       ApiRequest("app_stop",{
         region_name : @get("region")
         key_id      : @credentialId()
@@ -423,8 +423,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     start : ()->
       if not @isApp() or @get("state") isnt OpsModelState.Stopped then return @__returnErrorPromise()
       self = @
-      @set "state", OpsModelState.Starting
       @attributes.progress = 0
+      @set "state", OpsModelState.Starting
       ApiRequest("app_start",{
         region_name : @get("region")
         key_id      : @credentialId()
@@ -440,8 +440,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if not @isApp() then return @__returnErrorPromise()
 
       oldState = @get("state")
-      @set("state", OpsModelState.Terminating)
       @attributes.progress = 0
+      @set("state", OpsModelState.Terminating)
       self = @
 
       options = $.extend {

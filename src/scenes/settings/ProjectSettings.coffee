@@ -24,7 +24,7 @@ define [
         accesstoken         : 'Access Token'
         billing             : 'Billing'
         member              : 'Member'
-        credential          : 'Provider Credential'
+        credential          : 'Cloud Access Credential'
         usagereport         : 'Usage Report'
     }
 

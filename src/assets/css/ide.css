@@ -9753,7 +9753,6 @@ dl.settings-item {
         max-width: 350px;
         color: #99c; }
       .fullpage-settings .setting-content > header #title-tab-name {
-        padding: 0 5px;
         display: inline-block;
         overflow: hidden; }
         .fullpage-settings .setting-content > header #title-tab-name:before {

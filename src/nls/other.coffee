@@ -2489,7 +2489,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "用量报告"
 
     PROVIDER_CREDENTIAL:
-      en: "Provider Credential"
+      en: "Cloud Access Credential"
       zh: "证书"
 
     LEAVE:
@@ -2591,7 +2591,7 @@ into live resources, or import existing infrastructures."
       zh: "当前工作空间处于测试模式，您需要设置证书才能运行 Stack 和导入已有资源。"
 
     CREDENTIAL_LINKED_TO_THIS_WORKSPACE:
-      en: "Following clouder provider credential is linked to this workspace:"
+      en: "Following Cloud Access Credential is linked to this workspace:"
       zh: "连接到此工作空间的证书："
 
     PARENTHESES_DEMO:
@@ -2607,7 +2607,7 @@ into live resources, or import existing infrastructures."
       zh: "注意：由于两种账号之间资源的差异， 当您设置了 AWS 证书后， 一些您在测试账号时创建的 Stack 可能会报错。"
 
     SET_UP_PROVIDER_CREDENTIAL:
-      en: "Set up Provider Credential"
+      en: "Set up Cloud Access Credential"
       zh: "设置证书"
 
     CREDENTIAL_ALIAS:

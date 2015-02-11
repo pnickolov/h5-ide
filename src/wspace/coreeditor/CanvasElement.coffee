@@ -255,6 +255,10 @@ define [
       width  = m.width()  * CanvasView.GRID_WIDTH
       height = m.height() * CanvasView.GRID_HEIGHT
 
+      resizerWidth  = Math.max(width  - 2*pad, 0)
+      resizerHeight = Math.max(height - 2*pad, 0)
+
+
       pad = 10
 
       svg = @canvas.svg
@@ -263,10 +267,10 @@ define [
       el.add([
         svg.rect(width, height).radius(5).classes("group")
 
-        svg.rect( width - 2*pad, pad  ).x(pad).classes("group-resizer top")
-        svg.rect( pad, height - 2*pad ).y(pad).classes("group-resizer left")
-        svg.rect( pad, height - 2*pad ).move(width - pad, pad).classes("group-resizer right")
-        svg.rect( width - 2*pad, pad  ).move(pad, height - pad).classes("group-resizer bottom")
+        svg.rect( resizerWidth, pad  ).x(pad).classes("group-resizer top")
+        svg.rect( pad, resizerHeight ).y(pad).classes("group-resizer left")
+        svg.rect( pad, resizerHeight ).move(width - pad, pad).classes("group-resizer right")
+        svg.rect( resizerWidth, pad  ).move(pad, height - pad).classes("group-resizer bottom")
 
         svg.rect( pad, pad ).classes("group-resizer top-left")
         svg.rect( pad, pad ).x(width - pad).classes('group-resizer top-right')

@@ -35,7 +35,7 @@ define [
             data.isAdmin = @model.amIAdmin()
             data.isMember = @model.amIMeber()
             data.isObserver = @model.amIObserver()
-            data.failedToPay = @model.get("billingState")  is "failed"
+            data.failedToPay = @model.shouldPay()
 
             data
 

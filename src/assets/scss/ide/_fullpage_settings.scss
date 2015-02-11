@@ -44,23 +44,34 @@
     }
 }
 
-
-div.settings-item .edit-actions {
-    margin-left: 29%;
-}
-
 .settings-item {
     position      : relative;
     padding       : 5px 0 21px 0;
     border-bottom : 1px solid $dark-p-2;
     font-size     : 16px;
     line-height   : 28px;
+}
+
+div.settings-item {
+
+    h5 {
+        color     : #999;
+        width     : 100%;
+        display   : block;
+        font-size : 16px;
+    }
+
+    .edit-actions {
+        margin-left: 29%;
+    }
+}
+
+dl.settings-item {
     @include flexbox();
 
     dt {
         color        : #999;
         width        : 23%;
-        // min-width    : 180px;
         display      : inline-block;
     }
 
@@ -110,6 +121,8 @@ div.settings-item .edit-actions {
     p:first-of-type {
         color: $orange;
     }
+
+    .cannot-delete { color: $light-r; margin-bottom: 8px;}
 }
 
 .confirm-action {
@@ -484,28 +497,6 @@ div.settings-item .edit-actions {
             display    : none;
         }
 
-        .current-usage-block{
-            display: block;
-            width: 180px;
-            padding: 10px 10px 5px 10px;
-            text-align: center;
-            background: #000;
-            -webkit-border-radius: 4px;
-            -moz-border-radius: 4px;
-            border-radius: 4px;
-            h3{
-                font-size: 36px;
-                color: #91D21E;
-            }
-        }
-        #UsageTab .table-head-fix{
-            background: #000;
-            height: 234px;
-            .table-head{
-                background: #363636;
-            }
-        }
-
     }
     .update-payment-wrap{
         margin-top: 20px;
@@ -779,26 +770,60 @@ div.settings-item .edit-actions {
   }
 }
 
-.usage-report-view{
-  position: relative;
-  .table-head-fix{
-    padding-top: 1px;
-  }
-  .full-space{
-    margin-top: -1px;
-  }
-  .usage-pagination{
+.usage-report-view {
+
+  .current-usage-block {
+    display       : block;
+    width         : 180px;
+    padding       : 10px 10px 5px 10px;
+    text-align    : center;
+    background    : #000;
+    border-radius : 4px;
+    margin-top    : 8px;
+
+    h3{
+            font-size: 36px;
+            color: #91D21E;
+        }
+    }
+
+  .usage-pagination {
     position: absolute;
     right: 0;
-    margin-top: -35px;
+    margin-top: -28px;
+
     .usage-date{
-      display: inline-block;
-      padding: 0 8px;
-      text-align: center;
+      display    : inline-block;
+      padding    : 0 8px;
+      text-align : center;
+      font-size  : 12px;
     }
-    button{
-      padding: 8px 0;
-      min-width: 36px;
+
+    button {
+      padding: 4px 0;
+      min-width: 28px;
     }
+
   }
+
+  .table-head-fix {
+        background    : #000;
+        height        : auto;
+        min-height    : 280px;
+        border-radius : 4px;
+        margin-top    : 8px;
+
+        .full-space {
+            text-align  : center;
+            line-height : 280px;
+            color       : #777;
+            font-size   : 14px;
+        }
+
+        .table-head{
+            background: #363636;
+        }
+    }
 }
+
+

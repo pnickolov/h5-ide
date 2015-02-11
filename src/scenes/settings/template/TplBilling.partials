@@ -105,24 +105,28 @@
     {{#if payment.failToCharge}}
         <p class="warning-red">{{i18n "PAYMENT_ACCOUNT_IN_LIMITED_STATUS"}}</p>
     {{/if}}
-    <h5 class="billing_usage_title">{{i18n "PAYMENT_CURRENT_USAGE"}}</h5>
-    <div class="current-usage-block">
-        <h3>{{payment.currentQuota}}</h3>
-        <p>{{i18n "PAYMENT_INSTANT_HOUR"}}</p>
+    <div class="settings-item">
+        <h5>{{i18n "PAYMENT_CURRENT_USAGE"}}</h5>
+        <div class="current-usage-block">
+            <h3>{{payment.currentQuota}}</h3>
+            <p>{{i18n "PAYMENT_INSTANT_HOUR"}}</p>
+        </div>
+        {{#if payment.isDefault}}
+            <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" payment.maxQuota payment.renewDays}}</p>
+        {{/if}}
     </div>
-    {{#if payment.isDefault}}
-        <p class="renew-points">{{i18n "PAYMENT_RENEW_FREE_INFO" payment.maxQuota payment.renewDays}}</p>
-    {{/if}}
-    <h5 class="billing_usage_title">{{i18n "PAYMENT_USAGE"}}</h5>
-    <div class="usage-pagination">
-        <button class="btn nav-left"><i class="icon-caret-left"></i></button>
-        <span class="usage-date" data-date="">{{i18n "PAYMENT_LOADING"}}</span>
-        <button class="btn nav-right"><i class="icon-caret-right"></i></button>
-    </div>
-    <div class="table-head-fix">
-            <div class="full-space">
-                {{i18n "NO_USAGE_REPORT"}}
-            </div>
+    <div class="settings-item">
+        <h5>{{i18n "PAYMENT_USAGE"}}</h5>
+        <div class="usage-pagination">
+            <button class="btn nav-left"><i class="icon-caret-left"></i></button>
+            <span class="usage-date" data-date="">{{i18n "PAYMENT_LOADING"}}</span>
+            <button class="btn nav-right"><i class="icon-caret-right"></i></button>
+        </div>
+        <div class="table-head-fix">
+                <div class="full-space">
+                    {{i18n "NO_USAGE_REPORT"}}
+                </div>
+        </div>
     </div>
 </section>
 

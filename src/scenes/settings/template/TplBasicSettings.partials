@@ -56,11 +56,13 @@
 <p>{{i18n "FREE_WORKSPACE_CAN_NOT_DELETE"}}</p>
 {{else}}
     {{#if failedToPay}}
-        <p class="warning-red">{{i18n "CANT_DELETE_WORKSPACE"}}</p>
+        <div class="cannot-delete">{{i18n "CANT_DELETE_WORKSPACE"}}</div>
+        {{else}}
+            <p>{{i18n "DELETE_WORKSPACE_WILL_FORGOT_APPS"}}</p>
+            <p>{{i18n "IMPORT_JSON_BEFORE_DELETE_WORKSPACE"}}</p>
     {{/if}}
-    <p>{{i18n "DELETE_WORKSPACE_WILL_FORGOT_APPS"}}</p>
-    <p>{{i18n "IMPORT_JSON_BEFORE_DELETE_WORKSPACE"}}</p>
     <button class="btn btn-red icon-delete" id="delete-project" {{#if failedToPay}}disabled="disabled"{{/if}}>{{i18n "DELETE_WORKSPACE"}}</button>
+
 {{/if}}
 
 <!--{{leave}}-->

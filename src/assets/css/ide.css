@@ -6349,8 +6349,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -8475,22 +8474,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     margin: 0 10px; }
   #PaymentBody .t-m-content tr.item {
     font-size: 12px; }
-  #PaymentBody .table-head-fix {
-    height: 234px;
-    background: #131313; }
-    #PaymentBody .table-head-fix .full-space {
-      height: 234px;
-      display: inline-block;
-      line-height: 234px;
-      text-align: center;
-      width: 100%; }
-
-#billing-status .table-head-fix .full-space {
-  height: 234px;
-  display: inline-block;
-  line-height: 234px;
-  text-align: center;
-  width: 100%; }
 
 .no-payment-card-info {
   width: 400px;
@@ -8513,19 +8496,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
     .payment-credit-middle {
       background-image: url("../images/ide/creditcard-normal@2x.png"); } }
-
-.usage-wrapper {
-  overflow: visible;
-  margin: 0 auto;
-  position: relative;
-  padding-bottom: 20px;
-  background: #0c0c0c; }
-
-h5.billing_usage_title {
-  color: #EEE;
-  line-height: 32px;
-  margin-bottom: 4px;
-  position: relative; }
 
 .billing_start_from {
   position: absolute;
@@ -8555,43 +8525,6 @@ h5.billing_usage_title {
 .renew-points {
   margin-top: 10px;
   font-size: 12px; }
-
-.usage-block {
-  position: relative;
-  height: 55px; }
-  .usage-block div {
-    display: block;
-    position: absolute;
-    height: 12px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    width: 250px;
-    background: #32bc00;
-    left: 20px;
-    top: 20px;
-    -webkit-transition: width 0.3s;
-    -moz-transition: width 0.3s;
-    -ms-transition: width 0.3s;
-    -o-transition: width 0.3s;
-    transition: width 0.3s; }
-    .usage-block div.freeze {
-      -webkit-transition: all 0s;
-      -moz-transition: all 0s;
-      -ms-transition: all 0s;
-      -o-transition: all 0s;
-      transition: all 0s; }
-  .usage-block .free-usage {
-    background: #597557; }
-  .usage-block .current-usage {
-    width: 0px; }
-  .usage-block .billable-usage {
-    background: #4d508e;
-    width: 250px; }
-  .usage-block.error .billable-usage {
-    background: #851512; }
-  .usage-block.error .current-usage {
-    background: #fd0d00; }
 
 .table.payment-table {
   color: #a3a7d5; }
@@ -9713,56 +9646,67 @@ section.members-only {
       display: block;
       padding: 5px 0 5px 10px; }
 
-div.settings-item .edit-actions {
-  margin-left: 29%; }
-
 .settings-item {
   position: relative;
   padding: 5px 0 21px 0;
   border-bottom: 1px solid #1d1e29;
   font-size: 16px;
-  line-height: 28px;
+  line-height: 28px; }
+
+div.settings-item h5 {
+  color: #999;
+  width: 100%;
+  display: block;
+  font-size: 16px; }
+div.settings-item .edit-actions {
+  margin-left: 29%; }
+
+dl.settings-item {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex; }
-  .settings-item dt {
+  dl.settings-item dt {
     color: #999;
     width: 23%;
     display: inline-block; }
-  .settings-item dd {
+  dl.settings-item dd {
     color: #eee;
     display: inline-block;
     width: 70%; }
-  .settings-item dd + dt {
+  dl.settings-item dd + dt {
     margin-top: 10px; }
-  .settings-item .input {
+  dl.settings-item .input {
     width: 220px; }
-  .settings-item .edit-actions {
+  dl.settings-item .edit-actions {
     margin-top: 8px; }
-    .settings-item .edit-actions .cancel-button {
+    dl.settings-item .edit-actions .cancel-button {
       font-size: 14px;
       margin-left: 4px;
       cursor: pointer; }
-    .settings-item .edit-actions.inline {
+    dl.settings-item .edit-actions.inline {
       margin-left: 8px; }
-  .settings-item .edit-mode {
+  dl.settings-item .edit-mode {
     display: none; }
-    .settings-item .edit-mode .loading-spinner {
+    dl.settings-item .edit-mode .loading-spinner {
       display: inline-block; }
-  .settings-item .normal-mode {
+  dl.settings-item .normal-mode {
     display: inline; }
-  .settings-item.edit .edit-mode {
+  dl.settings-item.edit .edit-mode {
     display: inline; }
-  .settings-item.edit .normal-mode {
+  dl.settings-item.edit .normal-mode {
     display: none; }
-  .settings-item.edit .icon-edit {
+  dl.settings-item.edit .icon-edit {
     display: none; }
 
 .leave-project-zone p:first-of-type,
 .delete-project-zone p:first-of-type {
   color: #ff9c00; }
+.leave-project-zone .cannot-delete,
+.delete-project-zone .cannot-delete {
+  color: #ea5d5d;
+  margin-bottom: 8px; }
 
 .confirm-action {
   margin-top: 4px; }
@@ -10018,23 +9962,6 @@ div.settings-item .edit-actions {
       overflow: hidden; }
     .fullpage-settings .setting-content .accountEditWrap {
       display: none; }
-    .fullpage-settings .setting-content .current-usage-block {
-      display: block;
-      width: 180px;
-      padding: 10px 10px 5px 10px;
-      text-align: center;
-      background: #000;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      border-radius: 4px; }
-      .fullpage-settings .setting-content .current-usage-block h3 {
-        font-size: 36px;
-        color: #91D21E; }
-    .fullpage-settings .setting-content #UsageTab .table-head-fix {
-      background: #000;
-      height: 234px; }
-      .fullpage-settings .setting-content #UsageTab .table-head-fix .table-head {
-        background: #363636; }
   .fullpage-settings .update-payment-wrap {
     margin-top: 20px;
     position: relative; }
@@ -10215,23 +10142,42 @@ div.settings-item .edit-actions {
   padding: 4px 0;
   line-height: 20px; }
 
-.usage-report-view {
-  position: relative; }
-  .usage-report-view .table-head-fix {
-    padding-top: 1px; }
-  .usage-report-view .full-space {
-    margin-top: -1px; }
-  .usage-report-view .usage-pagination {
-    position: absolute;
-    right: 0;
-    margin-top: -35px; }
-    .usage-report-view .usage-pagination .usage-date {
-      display: inline-block;
-      padding: 0 8px;
-      text-align: center; }
-    .usage-report-view .usage-pagination button {
-      padding: 8px 0;
-      min-width: 36px; }
+.usage-report-view .current-usage-block {
+  display: block;
+  width: 180px;
+  padding: 10px 10px 5px 10px;
+  text-align: center;
+  background: #000;
+  border-radius: 4px;
+  margin-top: 8px; }
+  .usage-report-view .current-usage-block h3 {
+    font-size: 36px;
+    color: #91D21E; }
+.usage-report-view .usage-pagination {
+  position: absolute;
+  right: 0;
+  margin-top: -28px; }
+  .usage-report-view .usage-pagination .usage-date {
+    display: inline-block;
+    padding: 0 8px;
+    text-align: center;
+    font-size: 12px; }
+  .usage-report-view .usage-pagination button {
+    padding: 4px 0;
+    min-width: 28px; }
+.usage-report-view .table-head-fix {
+  background: #000;
+  height: auto;
+  min-height: 280px;
+  border-radius: 4px;
+  margin-top: 8px; }
+  .usage-report-view .table-head-fix .full-space {
+    text-align: center;
+    line-height: 280px;
+    color: #777;
+    font-size: 14px; }
+  .usage-report-view .table-head-fix .table-head {
+    background: #363636; }
 
 #scenes {
   width: 100%;

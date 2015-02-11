@@ -91,25 +91,9 @@ $navHeight : 38px;
   .t-m-content tr.item{
     font-size: 12px;
   }
-  .table-head-fix{
-    height: 234px;
-    background: #131313;
-    .full-space{
-      height: 234px;
-      display: inline-block;
-      line-height: 234px;
-      text-align: center;
-      width: 100%;
-    }
-  }
+  
 }
-#billing-status .table-head-fix .full-space{
-  height: 234px;
-  display: inline-block;
-  line-height: 234px;
-  text-align: center;
-  width: 100%;
-}
+
 .no-payment-card-info{
   width: 400px;
   margin-bottom: 30px;
@@ -136,20 +120,6 @@ $navHeight : 38px;
     }
 }
 
-.usage-wrapper {
-  overflow: visible;
-  margin: 0 auto;
-  position: relative;
-  padding-bottom: 20px;
-  background: #0c0c0c;
-}
-
-h5.billing_usage_title{
-  color: #EEE;
-  line-height: 32px;
-  margin-bottom: 4px;
-  position: relative;
-}
 .billing_start_from{
   position: absolute;
   top: 3px;
@@ -186,50 +156,6 @@ h5.billing_usage_title{
   font-size: 12px;
 }
 
-.usage-block{
-  position: relative;
-  height: 55px;
-  div{
-    display: block;
-    position: absolute;
-    height: 12px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    width: 250px;
-    background: #32bc00;
-    left: 20px;
-    top: 20px;
-    -webkit-transition: width 0.3s;
-    -moz-transition: width 0.3s;
-    -ms-transition: width 0.3s;
-    -o-transition: width 0.3s;
-    transition: width 0.3s;
-    &.freeze{
-      -webkit-transition: all 0s;
-      -moz-transition: all 0s;
-      -ms-transition: all 0s;
-      -o-transition: all 0s;
-      transition: all 0s;
-    }
-  }
-  .free-usage{
-    background: #597557;
-  }
-  .current-usage{
-    width: 0px;
-  }
-  .billable-usage{
-    background: #4d508e;
-    width: 250px;
-  }
-  &.error .billable-usage{
-    background: #851512;
-  }
-  &.error .current-usage {
-    background: #fd0d00;
-  }
-}
 
 .table.payment-table {
     color : lighten($base-p,40%);

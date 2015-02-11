@@ -172,6 +172,7 @@ define [
             isValidEmail = regExp.test new_email
             if new_email.length and new_pwd.length >= 6 and isValidEmail
                 $("#AccountUpdateEmail").removeAttr "disabled"
+                $("#SettingErrorInfo").text("")
             else
                 if not isValidEmail
                   $("#SettingErrorInfo").text(lang.IDE.SETTING_INVALID_EMAIL)

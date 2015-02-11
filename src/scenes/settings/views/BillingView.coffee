@@ -1,6 +1,5 @@
 #./BillingDialogTpl", 'i18n!/nls/lang.js', "ApiRequest", "UI.modalplus", "ApiRequestR", "backbone"
-define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
-        "ApiRequestR"], (Backbone, template, lang, ApiRequest, ApiRequestR) ->
+define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest","ApiRequestR", "scenes/ProjectTpl", "UI.parsley"], (Backbone, template, lang, ApiRequest, ApiRequestR, projectTpl) ->
   Backbone.View.extend {
     events:
       'click #PaymentBody a.payment-receipt': "viewPaymentReceipt"
@@ -87,7 +86,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
 
     showUpdatePayment: (evt)->
       $(".update-payment-ctrl").show()
-      @$el.find(".billing-history").replaceWith template.updatePayment()
+      @$el.find(".billing-history").replaceWith projectTpl.updateProject()
       $(evt.currentTarget).hide()
 
     emailInputChange: ()->
@@ -96,29 +95,71 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
 
     updatePaymentDone: ()->
       that = @
-      $wrap = @$el.find(".update-payment-wrap")
-      attributes = {
-        first_name      : $wrap.find(".first-name").val()
-        last_name       : $wrap.find(".last-name").val()
-        full_number     : $wrap.find("input.card-number").val()
-        expiration_month: $wrap.find("input.expiration").val().slice(0, 2)
-        expiration_year : $wrap.find("input.expiration").val().slice(2, 4)
-        cvv             : $wrap.find("input.cvv").val()
-      }
-      @$el.find(".update-payment-wrap").html MC.template.loadingSpinner()
-      @$el.find(".update-payment-done").text(lang.IDE.LBL_SAVING)
-      @$el.find(".update-payment-ctrl button").attr("disabled", "disabled")
-      project_id = @model.get("id")
-      ApiRequest "project_update_payment", {project_id, attributes}
-      .then ()->
-        that.model.set("payment", null)
-        that.model.set("paymentHistory", null)
-        that.render()
-      , (err)->
-        console.warn err
-        notification "error", "Error while updating user payment info, please try again later."
-        that.renderCache()
+      wrap = @$el.find(".update-payment-wrap")
+      wrap.find(".new-project-err").hide()
 
+      $updateBtn = that.$el.find(".update-payment-done")
+
+      $firstname = wrap.find(".new-project-fn")
+      $lastname = wrap.find(".new-project-ln")
+      $number = wrap.find(".new-project-card")
+      $expire = wrap.find(".new-project-date")
+      $cvv = wrap.find(".new-project-cvv")
+      valid = true
+
+      # deal expire
+      $expire.parsley 'custom', (val) -> null
+      expire = $expire.val()
+      expireAry = expire.split('/')
+      if expire.match(/^\d\d\/\d\d$/g) # MM/YYYY -> MM/20YY
+        expire = "#{expireAry[0]}/20#{expireAry[1]}"
+      else if expire.match(/^\d\d\d\d$/g) # MM/YY -> MM/20YY
+        expire = "#{expire.substr(0,2)}/20#{expire.substr(2,2)}"
+      else if expire.match(/^\d\d\/\d\d\d\d$/g) # MM/YYYY -> MM/YYYY
+        expire = expire
+      else if expire.match(/^\d\d\d\d\d\d$/g) # MMYYYY -> MM/YYYY
+        expire = "#{expire.substr(0,2)}/#{expire.substr(2,4)}"
+      else if expire.match(/^\d\d\d$/g) # MYY -> 0M/20YY
+        expire = "0#{expire.substr(0,1)}/20#{expire.substr(1,2)}"
+      else
+        $expire.parsley 'custom', (val) ->
+          return lang.IDE.SETTINGS_CREATE_PROJECT_EXPIRE_FORMAT if val.indexOf('/') is -1
+          return null
+
+      wrap.find("input").each (idx, dom) ->
+        # if not $(dom).hasClass('new-project-cvv')
+        if not $(dom).parsley('validate')
+          valid = false
+          return false
+
+      if valid
+        $updateBtn.prop 'disabled', true
+        wrap.find("input").attr("disabled", "disabled")
+        project_id = that.model.get("id")
+        attributes = {
+          first_name: $firstname.val()
+          last_name : $lastname.val()
+          fullnumber: $number.val()
+          expiration_month: expire.split("/")[0]
+          expiration_year : expire.split("/")[1]
+          cvv:              $cvv.val()
+        }
+
+        ApiRequest "project_update_payment", {project_id, attributes}
+        .then ->
+          that.render()
+        .fail ( error )->
+          wrap.find("input").prop("disabled", false)
+          try
+            msgObj = JSON.parse(error.result)
+            if _.isArray(msgObj.errors)
+              wrap.find(".update-payment-err").show().html msgObj.errors.join('<br/>')
+          catch err
+            notification 'error', error.result
+          # modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
+          return
+        .done () ->
+          $updateBtn.prop 'disabled', false
 
     updatePaymentCancel: ()->
       @renderCache()

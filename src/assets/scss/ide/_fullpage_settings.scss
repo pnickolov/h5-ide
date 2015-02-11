@@ -515,19 +515,6 @@ dl.settings-item {
                 }
             }
         }
-        .input{
-            width: 200px;
-            &.first-name, &.last-name{
-                width: 90px;
-            }
-            &.cvv{
-                width: 50px;
-            }
-            &.expiration{
-                width: 80px;
-            }
-        }
-
     }
 
     .settings-item.credit-card-info dd {

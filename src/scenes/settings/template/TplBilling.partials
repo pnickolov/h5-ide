@@ -157,21 +157,3 @@
     {{/each}}
     </tbody>
 </table>
-
-<!--{{updatePayment}}-->
-<div class="update-payment-wrap">
-    <h5>Billing Owner</h5>
-    <input class="input first-name" placeholder="First Name" type="text"/>
-    <input class="input last-name" placeholder="Last Name" type="text"/>
-    <h5>
-        <span class="card-number">Card Number</span>
-        <span class="cvv">CVV</span>
-        <span class="expiration">Expiration Date</span>
-    </h5>
-    <div class="row">
-        <input class="input card-number" placeholder="" type="text"/>
-        <input class="input cvv" placeholder="" type="text"/>
-        <input class="input expiration" placeholder="MMYY" type="text"/>
-    </div>
-    <p><i class="icon-kp"></i>Secure Payment Powered by Chargify</p>
-</div>

@@ -9974,14 +9974,6 @@ dl.settings-item {
           width: 75px; }
         .fullpage-settings .update-payment-wrap h5 span.expiration {
           width: 100px; }
-    .fullpage-settings .update-payment-wrap .input {
-      width: 200px; }
-      .fullpage-settings .update-payment-wrap .input.first-name, .fullpage-settings .update-payment-wrap .input.last-name {
-        width: 90px; }
-      .fullpage-settings .update-payment-wrap .input.cvv {
-        width: 50px; }
-      .fullpage-settings .update-payment-wrap .input.expiration {
-        width: 80px; }
   .fullpage-settings .settings-item.credit-card-info dd {
     display: -webkit-box;
     display: -moz-box;
@@ -10243,51 +10235,51 @@ dl.settings-item {
       width: 100%;
       height: 100%; }
 
-.new-project-modal .new-project-name {
+.new-project-modal .new-project-name, .update-payment-wrap .new-project-name {
   margin-left: 5px;
   width: 350px; }
-.new-project-modal .new-project-item {
+.new-project-modal .new-project-item, .update-payment-wrap .new-project-item {
   display: block;
   margin-top: 15px;
   margin-right: 5px; }
-  .new-project-modal .new-project-item span {
+  .new-project-modal .new-project-item span, .update-payment-wrap .new-project-item span {
     display: block;
     margin-bottom: 5px; }
-.new-project-modal .new-project-item-owner {
+.new-project-modal .new-project-item-owner, .update-payment-wrap .new-project-item-owner {
   display: inline-block; }
-  .new-project-modal .new-project-item-owner input {
+  .new-project-modal .new-project-item-owner input, .update-payment-wrap .new-project-item-owner input {
     width: 80px; }
-  .new-project-modal .new-project-item-owner input.new-project-fn {
+  .new-project-modal .new-project-item-owner input.new-project-fn, .update-payment-wrap .new-project-item-owner input.new-project-fn {
     margin-right: 5px; }
-.new-project-modal .new-project-item-email {
+.new-project-modal .new-project-item-email, .update-payment-wrap .new-project-item-email {
   display: inline-block; }
-  .new-project-modal .new-project-item-email input {
+  .new-project-modal .new-project-item-email input, .update-payment-wrap .new-project-item-email input {
     width: 200px; }
-.new-project-modal .new-project-item-card {
+.new-project-modal .new-project-item-card, .update-payment-wrap .new-project-item-card {
   display: inline-block; }
-  .new-project-modal .new-project-item-card input {
+  .new-project-modal .new-project-item-card input, .update-payment-wrap .new-project-item-card input {
     width: 195px; }
-.new-project-modal .new-project-item-cvv {
+.new-project-modal .new-project-item-cvv, .update-payment-wrap .new-project-item-cvv {
   display: inline-block; }
-  .new-project-modal .new-project-item-cvv input {
+  .new-project-modal .new-project-item-cvv input, .update-payment-wrap .new-project-item-cvv input {
     width: 50px; }
-.new-project-modal .new-project-item-date {
+.new-project-modal .new-project-item-date, .update-payment-wrap .new-project-item-date {
   display: inline-block; }
-  .new-project-modal .new-project-item-date input {
+  .new-project-modal .new-project-item-date input, .update-payment-wrap .new-project-item-date input {
     width: 115px; }
-.new-project-modal .new-project-item-zip input {
+.new-project-modal .new-project-item-zip input, .update-payment-wrap .new-project-item-zip input {
   width: 195px; }
-.new-project-modal .new-project-support {
+.new-project-modal .new-project-support, .update-payment-wrap .new-project-support {
   float: left;
   margin-top: 5px; }
-.new-project-modal .new-project-err {
+.new-project-modal .new-project-err, .update-payment-wrap .new-project-err {
   background-color: red;
   color: white;
   border-radius: 3px;
   padding: 5px;
   margin-top: 10px;
   display: none; }
-.new-project-modal .new-project-info {
+.new-project-modal .new-project-info, .update-payment-wrap .new-project-info {
   color: #bc7300;
   border-radius: 3px;
   padding: 5px;

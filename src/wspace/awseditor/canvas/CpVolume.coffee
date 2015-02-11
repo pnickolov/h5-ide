@@ -6,6 +6,7 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
     type : "VolumePopup" # Only one popup of each type allowed.
     events :
       "mousedown li" : "clickVolume"
+      "click li" : "selectedVolume"
 
     closeOnBlur : true
 
@@ -61,7 +62,7 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
       TplPopup.volume data
 
     clickVolume : ( evt )->
-      if @selected is evt.currentTarget then return
+    #   if @selected is evt.currentTarget then return
 
       $vol = $( evt.currentTarget ).addClass("selected")
       volId = $vol.attr("data-id")
@@ -80,6 +81,12 @@ define [ "CanvasPopup", "./TplPopup", "constant", "CloudResources" ], ( CanvasPo
         })
 
       false
+
+    selectedVolume : ( evt ) ->
+
+      $vol = $( evt.currentTarget ).addClass("selected")
+      volId = $vol.attr("data-id")
+      @canvas.selectVolume( volId )
 
     remove : ()->
       @canvas.selectVolume( null )

@@ -118,12 +118,12 @@ define ['backbone',
                 columns = columns.concat([
                     {
                         sortable: false
-                        width: "20%"
+                        width: "14%"
                         name: ""
                     },
                     {
                         sortable: false
-                        width: "100px"
+                        width: "80px"
                         name: lang.IDE.SETTINGS_MEMBER_COLUMN_EDIT
                     }
                 ])

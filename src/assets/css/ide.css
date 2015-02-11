@@ -9813,8 +9813,6 @@ div.settings-item .edit-actions {
         overflow: hidden;
         text-overflow: ellipsis;
         color: #99c; }
-        .fullpage-settings .setting-content > header #title-project-name:after {
-          content: "/"; }
       .fullpage-settings .setting-content > header #title-tab-name {
         padding: 0 5px;
         display: inline-block;

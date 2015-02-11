@@ -169,10 +169,14 @@ div.settings-item .edit-actions {
                 // font-size     : 18px;
                 color: #99c;
 
-                &:after {
-                    content: "/";
-                }
+                // &:after {
+                //     content: "/";
+                // }
 
+            }
+
+            .title-split {
+                
             }
 
             #title-tab-name {
@@ -300,7 +304,7 @@ div.settings-item .edit-actions {
                 color       : #999;
             }
 
-            .memlist-count { 
+            .memlist-count {
                 font-size   : 12px;
                 margin-left : 4px;
                 color       : $dark-grey;
@@ -370,7 +374,7 @@ div.settings-item .edit-actions {
             }
 
             .memlist-item {
-                
+
                 .t-m-content tr {
                     height: 60px;
                 }
@@ -384,7 +388,7 @@ div.settings-item .edit-actions {
                     margin-top : 8px;
                     min-width  : 50px;
                 }
-                
+
                 .memtype {
                     margin-top: 4px;
                 }
@@ -398,7 +402,7 @@ div.settings-item .edit-actions {
                     // border        : 1px solid $light-p-1;
 
                     &:before {
-                        
+
                     }
 
                 }

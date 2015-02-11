@@ -79,4 +79,4 @@ define [
         updateProjectName: () ->
 
             @$('.settings-nav-project-title').text @model.get 'name'
-            @$('.project-title').text @model.get 'name'
+            @$( '#title-project-name' ).text @model.get 'name'

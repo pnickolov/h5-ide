@@ -198,7 +198,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           stack_id    : @get("duplicateTarget")
           new_name    : @collection.getNewName()
         }).then ( json )->
-          self.__setJsonData( @__defaultJson )
+          self.__setJsonData( json )
           self.set {
             id : json.id
             duplicateTarget : undefined

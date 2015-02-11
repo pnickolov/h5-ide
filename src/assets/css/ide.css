@@ -9917,16 +9917,22 @@ div.settings-item .edit-actions {
       display: none;
       position: absolute;
       width: 308px;
-      border: 1px #333 solid;
+      border: 1px #000 solid;
       z-index: 2;
-      background-color: #000;
-      /* padding: 10px; */
-      margin-top: -14px; }
+      background-color: #202027;
+      padding: 10px;
+      margin-top: -14px;
+      box-sizing: border-box;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+      font-size: 12px;
+      color: #898dbc; }
       .fullpage-settings .setting-content .member-setting .search span {
         text-align: center;
-        margin: 10px; }
-      .fullpage-settings .setting-content .member-setting .search .name, .fullpage-settings .setting-content .member-setting .search .mail {
-        margin: 5px; }
+        display: inline-block;
+        width: 100%; }
+      .fullpage-settings .setting-content .member-setting .search .name {
+        font-size: 14px;
+        color: #ccc; }
     .fullpage-settings .setting-content .member-setting .limit-member-tip {
       width: 480px;
       float: left;

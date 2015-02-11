@@ -316,22 +316,29 @@ div.settings-item .edit-actions {
                 width: 280px;
             }
             .search {
-                display: none;
-                position: absolute;
-                width: 308px;
-                border: 1px #333 solid;
-                z-index: 2;
-                background-color: #000;
-                /* padding: 10px; */
-                margin-top: -14px;
+                display          : none;
+                position         : absolute;
+                width            : 308px;
+                border           : 1px #000 solid;
+                z-index          : 2;
+                background-color : $bg-p;
+                padding          : 10px;
+                margin-top       : -14px;
+                box-sizing       : border-box;
+                box-shadow       : 0 0 5px rgba(0,0,0,.6);
+
+                font-size: 12px;
+                color: $dark-grey;
+
                 span {
-                    text-align: center;
-                    margin: 10px;
+                    text-align : center;
+                    display    : inline-block;
+                    width      : 100%;
                 }
-                .name, .mail {
-                    margin: 5px;
-                }
+
+                .name { font-size: 14px; color: #ccc;}
             }
+            
             .limit-member-tip {
                 width: 480px;
                 float: left;

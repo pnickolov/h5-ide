@@ -271,11 +271,11 @@ module.exports =
 
   INVITE:
     invitiation_expired:
-      en: "Oops. The invitation link is invalid or has expired."
+      en: "Oops, the invitation link is invalid or has expired."
       zh: "抱歉，邀请链接无效或已经过期。"
 
     invitiation_for_other:
-      en: "Oops. It seems the invitation is for another user."
+      en: "Oops, it seems the invitation is for another user."
       zh: "抱歉，该邀请链接可能是发给其他用户的。"
 
     go_to_visualops_ide:

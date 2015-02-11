@@ -56,7 +56,7 @@ div.settings-item .edit-actions {
     border-bottom : 1px solid $dark-p-2;
     font-size     : 16px;
     line-height   : 28px;
-    display       : flex;
+    @include flexbox();
 
     dt {
         color        : #999;
@@ -134,7 +134,7 @@ div.settings-item .edit-actions {
     a { cursor: pointer; }
     a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
 
-    display  : flex;
+    @include flexbox();
     height   : 100%;
     width    : 100%;
 
@@ -300,6 +300,15 @@ div.settings-item .edit-actions {
                 color       : #999;
             }
 
+            .memlist-count { 
+                font-size   : 12px;
+                margin-left : 4px;
+                color       : $dark-grey;
+
+                &:before { content: "("}
+                &:after {content: ")"}
+            }
+
             #mail {
                 width: 280px;
             }
@@ -365,16 +374,31 @@ div.settings-item .edit-actions {
                 .t-m-content tr {
                     height: 60px;
                 }
-                .cancel, .done {
+
+                .cancel.link-style {
+                    color       : $light-r;
+                    line-height : 40px;
+                }
+
+                .done {
                     margin-top: 8px;
                 }
                 .memtype {
                     margin-top: 4px;
                 }
                 .avatar {
-                    width: 45px;
-                    color: #888;
-                    float: left;
+                    width            : 44px;
+                    height           : 44px;
+                    border-radius    : 50%;
+                    float            : left;
+                    background-color : $light-p-1;
+                    background-size  : contain;
+                    // border        : 1px solid $light-p-1;
+
+                    &:before {
+                        
+                    }
+
                 }
                 .info {
                     float: left;
@@ -404,7 +428,7 @@ div.settings-item .edit-actions {
                     display: none;
                 }
                 .memlist-view-mode, .memlist-status {
-                    line-height: 45px;
+                    line-height: 40px;
                 }
                 &.edit {
                     .memlist-view-mode {
@@ -499,8 +523,10 @@ div.settings-item .edit-actions {
     }
 
     .settings-item.credit-card-info dd {
-        display   : flex;
-        flex-wrap : wrap;
+        @include flexbox();
+        // flex-wrap : wrap;
+        @include flex-wrap($values:wrap);
+
 
         .credit-meta {
             font-size: 12px;

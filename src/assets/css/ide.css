@@ -6350,8 +6350,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -9725,6 +9724,10 @@ div.settings-item .edit-actions {
   border-bottom: 1px solid #1d1e29;
   font-size: 16px;
   line-height: 28px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex; }
   .settings-item dt {
     color: #999;
@@ -9772,6 +9775,10 @@ div.settings-item .edit-actions {
     margin-left: 4px; }
 
 .fullpage-settings {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   height: 100%;
   width: 100%; }
@@ -9890,6 +9897,14 @@ div.settings-item .edit-actions {
       font-size: 16px;
       line-height: 28px;
       color: #999; }
+    .fullpage-settings .setting-content .member-setting .memlist-count {
+      font-size: 12px;
+      margin-left: 4px;
+      color: #898dbc; }
+      .fullpage-settings .setting-content .member-setting .memlist-count:before {
+        content: "("; }
+      .fullpage-settings .setting-content .member-setting .memlist-count:after {
+        content: ")"; }
     .fullpage-settings .setting-content .member-setting #mail {
       width: 280px; }
     .fullpage-settings .setting-content .member-setting .search {
@@ -9934,14 +9949,20 @@ div.settings-item .edit-actions {
         text-align: center; }
     .fullpage-settings .setting-content .member-setting .memlist-item .t-m-content tr {
       height: 60px; }
-    .fullpage-settings .setting-content .member-setting .memlist-item .cancel, .fullpage-settings .setting-content .member-setting .memlist-item .done {
+    .fullpage-settings .setting-content .member-setting .memlist-item .cancel.link-style {
+      color: #be4444;
+      line-height: 40px; }
+    .fullpage-settings .setting-content .member-setting .memlist-item .done {
       margin-top: 8px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .memtype {
       margin-top: 4px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .avatar {
-      width: 45px;
-      color: #888;
-      float: left; }
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      float: left;
+      background-color: #75789d;
+      background-size: contain; }
     .fullpage-settings .setting-content .member-setting .memlist-item .info {
       float: left;
       margin: 3px 0 0 8px; }
@@ -9961,7 +9982,7 @@ div.settings-item .edit-actions {
     .fullpage-settings .setting-content .member-setting .memlist-item .memlist-edit-mode {
       display: none; }
     .fullpage-settings .setting-content .member-setting .memlist-item .memlist-view-mode, .fullpage-settings .setting-content .member-setting .memlist-item .memlist-status {
-      line-height: 45px; }
+      line-height: 40px; }
     .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-view-mode {
       display: none; }
     .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-edit-mode {
@@ -10020,7 +10041,15 @@ div.settings-item .edit-actions {
       .fullpage-settings .update-payment-wrap .input.expiration {
         width: 80px; }
   .fullpage-settings .settings-item.credit-card-info dd {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
+    -webkit-box-flex-wrap: wrap;
+    -moz-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap; }
     .fullpage-settings .settings-item.credit-card-info dd .credit-meta {
       font-size: 12px;

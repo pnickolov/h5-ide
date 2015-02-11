@@ -231,18 +231,20 @@ define [
     onRegionChange : ()->
       if not @hasKpParam then return
 
+      credId = @project.credIdOfProvider( "aws::global" )
+
       # Always do a thourough fetch for one region. If the user wants to refresh keypair
       # of one region serverial time, he needs to close and reopen import dialog
       currentRegion = $("#import-cf-region").find(".selected").attr("data-id")
       if not @regionForceFetchMap[ currentRegion ]
         @regionForceFetchMap[ currentRegion ] = true
-        CloudResources( constant.RESTYPE.KP, currentRegion ).fetchForce()
+        CloudResources( credId, constant.RESTYPE.KP, currentRegion ).fetchForce()
 
       self = @
       $("#import-cf-form .loader").show()
-      CloudResources( constant.RESTYPE.KP, currentRegion ).fetch().then ()->
+      CloudResources( credId, constant.RESTYPE.KP, currentRegion ).fetch().then ()->
         $("#import-cf-form .loader").hide()
-        self.currentRegionKps = CloudResources( constant.RESTYPE.KP, currentRegion ).pluck("id")
+        self.currentRegionKps = CloudResources( credId, constant.RESTYPE.KP, currentRegion ).pluck("id")
 
         $inputs = $("#import-cf-params").children()
         for param in self.parameters
@@ -364,20 +366,21 @@ define [
 
       region = $("#import-cf-region").find(".selected").attr("data-id")
 
-      CloudResources( constant.RESTYPE.AZ, region ).fetch().then ()->
+      credId = @project.credIdOfProvider("aws::global")
+      CloudResources( credId, constant.RESTYPE.AZ, region ).fetch().then ()->
 
         ApiRequest("stack_import_cloudformation", {
           region_name : $("#import-cf-region").find(".selected").attr("data-id")
           cf_template : self.cfJson
           parameters  : {
-            az : _.pluck CloudResources( constant.RESTYPE.AZ, region ).where({category:region}), "id"
+            az : _.pluck CloudResources( credId, constant.RESTYPE.AZ, region ).where({category:region}), "id"
           }
         }).then ( data )->
           self.modal.close()
           data.provider = "aws::global"
           if self.filename
             data.name = self.filename
-          App.importJson( data, true )
+          App.loadUrl self.project.createStackByJson( data, true ).url()
         , ()->
           self.modal.close()
           notification 'error', sprintf lang.IDE.POP_IMPORT_CFM_ERROR

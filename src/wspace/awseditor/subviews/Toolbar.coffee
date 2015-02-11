@@ -141,7 +141,6 @@ define [
     deleteStack    : ()-> @appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name"), @workspace )
     createStack    : ()-> App.loadUrl @workspace.scene.project.createStack(@workspace.design.region()).url()
     duplicateStack : ()-> App.loadUrl @workspace.scene.project.createStackByJson( @workspace.design.serialize() ).url()
-      return
 
     zoomIn  : ()-> @parent.canvas.zoomIn();  @updateZoomButtons()
     zoomOut : ()-> @parent.canvas.zoomOut(); @updateZoomButtons()

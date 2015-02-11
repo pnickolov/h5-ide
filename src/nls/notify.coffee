@@ -340,3 +340,7 @@ module.exports =
     PARSE_SAMPLE_FAIL:
       en : "The sample stack is malformed. Please contact us for further support."
       zh : "指定的模板格式不正确，无法加载。"
+
+    INFO_PROJECT_REMOVED:
+      en : "You no longer have access to the workspace '%s'."
+      zh : "You no longer have access to the workspace '%s'."

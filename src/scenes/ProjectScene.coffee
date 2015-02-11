@@ -1,6 +1,6 @@
 
 
-define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "i18n!/nls/lang.js"], ( Scene, ProjectView, ProjectTpl, Workspace, Modal, lang )->
+define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "i18n!/nls/lang.js", "UI.notification"], ( Scene, ProjectView, ProjectTpl, Workspace, Modal, lang )->
 
   SwitchConfirmView = Backbone.View.extend {
     events :
@@ -78,6 +78,8 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
       @listenTo @view, "wsClicked",      (id)-> @awakeSpace( id )
       @listenTo @view, "wsClosed",       (id)-> @removeSpace( id )
 
+      @listenTo @project, "destroy", @onProjectDestroy
+
       @activate()
       self.loadDashboard()
       self.loadSpace( attr.opsid )
@@ -112,6 +114,11 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
 
       basic.replace /\/+$/, ""
 
+    onProjectDestroy : ( p, c, options )->
+      if not options.manualAction
+        notification "error", sprintf(lang.NOTIFY.INFO_PROJECT_REMOVED, p.get("name"))
+      @remove()
+      return
 
     ### -------------------------------
     # Funtions to manage the workspaces.

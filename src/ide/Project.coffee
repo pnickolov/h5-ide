@@ -19,11 +19,11 @@ define [
 
     App.WS.collection.project.find().observe {
       # added : ()-> # Ignored
-      changed : ( newDocument, oldDocument )-> App.model.projects().get( newDocument.id ).updateWithWsData( newDocument )
+      changed : ( newDocument, oldDocument )-> App.model.projects().get( newDocument.id )?.updateWithWsData( newDocument )
       removed : ( oldDocument )->
         if not oldDocument then return
         console.info "Project has been removed", oldDocument
-        App.model.projects().get( oldDocument.id ).cleanup()
+        App.model.projects().get( oldDocument.id )?.cleanup()
         return
     }
 
@@ -200,25 +200,35 @@ define [
         model.set 'name', name
         res
 
-    destroy: ( options ) ->
+    destroy: () ->
       self = @
-      ApiRequest( "project_remove", { project_id: @id } ).then ( res )-> self.cleanup( options ); res
+      @__manualDestroy = true
+      ApiRequest( "project_remove", { project_id: @id } ).then ( res )->
+        self.cleanup()
+        res
+      , ( err )->
+        self.__manualDestroy = false
+        throw err
 
-    cleanup : ( options )->
+    cleanup : ()->
       if @__isRemoved then return
       @__isRemoved = true
-      @trigger "destroy", @, @collection, options
+      @trigger "destroy", @, @collection, { manualAction : !!@__manualDestroy }
       App.WS.unsubscribe( @id )
       return
 
     leave: ->
       that = @
+      @__manualDestroy = true
       ApiRequest( "project_remove_members", {
         project_id: @id
         member_ids: [ App.user.id ]
       }).then ( res ) ->
         that.cleanup()
         res
+      , ( err )->
+        self.__manualDestroy = false
+        throw err
 
     # OpsModel Related.
 

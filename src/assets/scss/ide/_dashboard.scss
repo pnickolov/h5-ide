@@ -983,16 +983,23 @@ article.dashboard-content {
     }
 }
 
-#region-switch-stack, #region-switch-app{
-  height: 40px;
-  padding: 5px 20px;
-  color: #bfc0cb;
-  font-size: 16px;
-  padding-right: 5px;
-  .dash-region-navigation.open &{
+#region-switch-stack, #region-switch-app {
+  height        : 40px;
+  padding       : 5px 20px;
+  color         : #bfc0cb;
+  font-size     : 16px;
+  padding-right : 5px;
+  cursor        : pointer;
+
+  &:hover {
+    background: rgba(0,0,0,0.03);
+  }
+
+  .dash-region-navigation.open & {
     background: #ddd;
     color: #686968;
   }
+
 }
 
 .dash-region-navigation{

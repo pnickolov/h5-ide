@@ -2804,7 +2804,8 @@ div.modal-text-highlight {
   overflow: auto;
   padding: 10px 20px;
   height: 500px;
-  color: #0f0; }
+  color: #0f0;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
 
 #modal-instance-sys-log .instance-sys-log-content::selection {
   background: #148BE6;
@@ -3887,7 +3888,10 @@ article.dashboard-content {
   padding: 5px 20px;
   color: #bfc0cb;
   font-size: 16px;
-  padding-right: 5px; }
+  padding-right: 5px;
+  cursor: pointer; }
+  #region-switch-stack:hover, #region-switch-app:hover {
+    background: rgba(0, 0, 0, 0.03); }
   .dash-region-navigation.open #region-switch-stack, .dash-region-navigation.open #region-switch-app {
     background: #ddd;
     color: #686968; }
@@ -9763,7 +9767,8 @@ div.settings-item .edit-actions {
   margin-top: 4px; }
   .confirm-action #confirm-project-name {
     margin-right: 8px; }
-  .confirm-action .cancel-confirm {
+  .confirm-action .cancel-delete-confirm,
+  .confirm-action .cancel-leave-confirm {
     margin-left: 4px; }
 
 .fullpage-settings {
@@ -9881,6 +9886,10 @@ div.settings-item .edit-actions {
             width: 92px;
             line-height: 30px;
             cursor: pointer; }
+    .fullpage-settings .setting-content .member-setting .title {
+      font-size: 16px;
+      line-height: 28px;
+      color: #999; }
     .fullpage-settings .setting-content .member-setting #mail {
       width: 280px; }
     .fullpage-settings .setting-content .member-setting .search {
@@ -9919,8 +9928,10 @@ div.settings-item .edit-actions {
         top: 50%;
         left: 50%;
         margin: -8px -8px; }
-    .fullpage-settings .setting-content .member-setting .memlist-item td {
-      text-align: center; }
+    .fullpage-settings .setting-content .member-setting table {
+      font-size: 12px; }
+      .fullpage-settings .setting-content .member-setting table.table tbody td:last-of-type, .fullpage-settings .setting-content .member-setting table.table-head thead th:last-of-type {
+        text-align: center; }
     .fullpage-settings .setting-content .member-setting .memlist-item .t-m-content tr {
       height: 60px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .cancel, .fullpage-settings .setting-content .member-setting .memlist-item .done {
@@ -10402,7 +10413,7 @@ div.settings-item .edit-actions {
   .header-popup li:hover {
     background: rgba(0, 0, 0, 0.2); }
   .header-popup li.padding {
-    padding: 0 20px; }
+    padding: 0 16px; }
 
 .hp-project-list {
   border-right: 1px solid #202020; }
@@ -10499,7 +10510,8 @@ div.settings-item .edit-actions {
     background: #888;
     color: #E5E4E0;
     border-radius: 50%;
-    text-shadow: none; }
+    text-shadow: none;
+    cursor: pointer; }
     .cheatsheet .icon-close-circle:hover {
       background: #555; }
     .cheatsheet .icon-close-circle:before {

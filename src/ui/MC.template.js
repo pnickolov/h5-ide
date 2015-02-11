@@ -1143,7 +1143,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<section class=\"instance-sys-log-loading loading-spinner\"></section>\n<div class=\"instance-sys-log-content font-mono\">"
+  buffer += "<section class=\"instance-sys-log-loading loading-spinner\"></section>\n<div class=\"instance-sys-log-content\">"
     + escapeExpression(((stack1 = (depth0 && depth0.log_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"instance-sys-log-info modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG_NOT_READY", {hash:{},data:data}))

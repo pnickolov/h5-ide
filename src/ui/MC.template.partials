@@ -695,7 +695,7 @@ Additional Notes and Questions
 
 <!-- {{modalInstanceSysLog}} -->
 <section class="instance-sys-log-loading loading-spinner"></section>
-<div class="instance-sys-log-content font-mono">{{log_content}}</div>
+<div class="instance-sys-log-content">{{log_content}}</div>
 <div class="instance-sys-log-info modal-text-minor">{{i18n "SYSTEM_LOG_NOT_READY"}}</div>
 
 <!-- {{NodeStateRemoveConfirmation}} -->

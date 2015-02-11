@@ -123,7 +123,8 @@ div.settings-item .edit-actions {
         margin-right: 8px;
     }
 
-    .cancel-confirm {
+    .cancel-delete-confirm,
+    .cancel-leave-confirm {
         margin-left: 4px;
     }
 }
@@ -292,6 +293,13 @@ div.settings-item .edit-actions {
         }
 
         .member-setting {
+
+            .title {
+                font-size   : 16px;
+                line-height : 28px;
+                color       : #999;
+            }
+
             #mail {
                 width: 280px;
             }
@@ -342,10 +350,18 @@ div.settings-item .edit-actions {
                     margin   : -8px -8px;
                 }
             }
-            .memlist-item {
-                td {
+
+            table {
+                font-size: 12px;
+
+                &.table tbody td:last-of-type,
+                &.table-head thead th:last-of-type {
                     text-align: center;
                 }
+            }
+
+            .memlist-item {
+                
                 .t-m-content tr {
                     height: 60px;
                 }

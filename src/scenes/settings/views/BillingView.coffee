@@ -162,6 +162,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
           $updateBtn.prop 'disabled', false
 
     updatePaymentCancel: ()->
+      $(".parsley-error-list").remove()
       @renderCache()
 
 

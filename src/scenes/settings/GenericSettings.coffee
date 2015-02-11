@@ -217,7 +217,7 @@ define [
             App.user.changeEmail( email, pwd ).then ()->
                 notification 'info', lang.NOTIFY.SETTINGS_UPDATE_EMAIL_SUCCESS
                 $("#AccountCancelEmail").click()
-                $(".accountEmailRO").children("span").text( App.user.get("email") )
+                $(".accountEmailRO").find(".email-view").text( App.user.get("email") )
                 return
             , ( err )->
                 switch err.error

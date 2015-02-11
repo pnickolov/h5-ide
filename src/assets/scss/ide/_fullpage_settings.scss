@@ -381,8 +381,10 @@ div.settings-item .edit-actions {
                 }
 
                 .done {
-                    margin-top: 8px;
+                    margin-top : 8px;
+                    min-width  : 50px;
                 }
+                
                 .memtype {
                     margin-top: 4px;
                 }

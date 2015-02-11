@@ -9953,7 +9953,8 @@ div.settings-item .edit-actions {
       color: #be4444;
       line-height: 40px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .done {
-      margin-top: 8px; }
+      margin-top: 8px;
+      min-width: 50px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .memtype {
       margin-top: 4px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .avatar {

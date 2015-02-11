@@ -50,42 +50,6 @@
     border-bottom : 1px solid $dark-p-2;
     font-size     : 16px;
     line-height   : 28px;
-}
-
-div.settings-item {
-
-    h5 {
-        color     : #999;
-        width     : 100%;
-        display   : block;
-        font-size : 16px;
-    }
-
-    .edit-actions {
-        margin-left: 29%;
-    }
-}
-
-dl.settings-item {
-    @include flexbox();
-
-    dt {
-        color        : #999;
-        width        : 23%;
-        display      : inline-block;
-    }
-
-    dd {
-        color   : #eee;
-        display : inline-block;
-        width   : 70%;
-    }
-
-    dd + dt {
-        margin-top: 10px;
-    }
-
-    .input { width: 220px;}
 
     .edit-actions {
         margin-top: 8px;
@@ -114,6 +78,42 @@ dl.settings-item {
         .normal-mode { display: none; }
         .icon-edit { display: none; }
     }
+}
+
+div.settings-item {
+
+    h5 {
+        color     : #999;
+        width     : 100%;
+        display   : block;
+        font-size : 16px;
+    }
+
+    .edit-actions {
+        margin-left: 29%;
+    }
+}
+
+dl.settings-item {
+    @include flexbox;
+
+    dt {
+        color        : #999;
+        width        : 23%;
+        display      : inline-block;
+    }
+
+    dd {
+        color   : #eee;
+        display : inline-block;
+        width   : 70%;
+    }
+
+    dd + dt {
+        margin-top: 10px;
+    }
+
+    .input { width: 220px;}
 }
 
 .leave-project-zone,

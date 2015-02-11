@@ -2687,7 +2687,7 @@ into live resources, or import existing infrastructures."
       zh: "要邀请成员并与其他用户协作"
 
     SETTINGS_MEMBER_LABEL_CREATE_WORKSPACE:
-      en: "please create a new workspace"
+      en: "create a new workspace"
       zh: "请创建新的工作空间"
 
     SETTINGS_MEMBER_LABEL_REMOVE_CONFIRM:

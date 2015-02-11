@@ -9652,6 +9652,26 @@ section.members-only {
   border-bottom: 1px solid #1d1e29;
   font-size: 16px;
   line-height: 28px; }
+  .settings-item .edit-actions {
+    margin-top: 8px; }
+    .settings-item .edit-actions .cancel-button {
+      font-size: 14px;
+      margin-left: 4px;
+      cursor: pointer; }
+    .settings-item .edit-actions.inline {
+      margin-left: 8px; }
+  .settings-item .edit-mode {
+    display: none; }
+    .settings-item .edit-mode .loading-spinner {
+      display: inline-block; }
+  .settings-item .normal-mode {
+    display: inline; }
+  .settings-item.edit .edit-mode {
+    display: inline; }
+  .settings-item.edit .normal-mode {
+    display: none; }
+  .settings-item.edit .icon-edit {
+    display: none; }
 
 div.settings-item h5 {
   color: #999;
@@ -9679,26 +9699,6 @@ dl.settings-item {
     margin-top: 10px; }
   dl.settings-item .input {
     width: 220px; }
-  dl.settings-item .edit-actions {
-    margin-top: 8px; }
-    dl.settings-item .edit-actions .cancel-button {
-      font-size: 14px;
-      margin-left: 4px;
-      cursor: pointer; }
-    dl.settings-item .edit-actions.inline {
-      margin-left: 8px; }
-  dl.settings-item .edit-mode {
-    display: none; }
-    dl.settings-item .edit-mode .loading-spinner {
-      display: inline-block; }
-  dl.settings-item .normal-mode {
-    display: inline; }
-  dl.settings-item.edit .edit-mode {
-    display: inline; }
-  dl.settings-item.edit .normal-mode {
-    display: none; }
-  dl.settings-item.edit .icon-edit {
-    display: none; }
 
 .leave-project-zone p:first-of-type,
 .delete-project-zone p:first-of-type {
@@ -10382,8 +10382,8 @@ dl.settings-item {
     pointer-events: none; }
   .header-popup li > a {
     display: block;
-    padding: 0 16px;
-    width: 132px; }
+    padding: 0 30px 0 16px;
+    width: 118px; }
   .header-popup li > a + a {
     position: absolute;
     right: 10px;

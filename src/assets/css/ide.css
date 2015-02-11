@@ -9892,6 +9892,9 @@ div.settings-item .edit-actions {
             width: 92px;
             line-height: 30px;
             cursor: pointer; }
+    .fullpage-settings .setting-content .member-setting .operate {
+      position: relative;
+      height: 60px; }
     .fullpage-settings .setting-content .member-setting .title {
       font-size: 16px;
       line-height: 28px;
@@ -9931,7 +9934,8 @@ div.settings-item .edit-actions {
       float: right;
       margin-top: 15px; }
     .fullpage-settings .setting-content .member-setting .invite {
-      float: left; }
+      float: left;
+      position: absolute; }
     .fullpage-settings .setting-content .member-setting .table th, .fullpage-settings .setting-content .member-setting .table td {
       overflow: inherit; }
     .fullpage-settings .setting-content .member-setting .checkbox-row {

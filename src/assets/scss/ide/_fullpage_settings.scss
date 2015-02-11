@@ -176,7 +176,7 @@ div.settings-item .edit-actions {
             }
 
             .title-split {
-                
+
             }
 
             #title-tab-name {
@@ -298,6 +298,11 @@ div.settings-item .edit-actions {
 
         .member-setting {
 
+            .operate {
+                position: relative;
+                height: 60px;
+            }
+
             .title {
                 font-size   : 16px;
                 line-height : 28px;
@@ -348,6 +353,7 @@ div.settings-item .edit-actions {
             }
             .invite {
                 float: left;
+                position: absolute;
             }
             .table th, .table td {
                 overflow: inherit;

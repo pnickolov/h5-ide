@@ -13,6 +13,8 @@ define ['backbone',
 
     Backbone.View.extend
 
+        className: 'member-setting'
+
         events:
 
             'change #t-m-select-all': '__checkAll'
@@ -66,8 +68,6 @@ define ['backbone',
         keypressMail: (event) ->
 
             @$el.find('#invite').click() if event.keyCode is 13
-
-        className: 'member-setting'
 
         initialize: () ->
 

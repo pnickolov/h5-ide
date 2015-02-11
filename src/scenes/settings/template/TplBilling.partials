@@ -123,9 +123,9 @@
             <button class="btn nav-right"><i class="icon-caret-right"></i></button>
         </div>
         <div class="table-head-fix">
-                <div class="full-space">
-                    {{i18n "NO_USAGE_REPORT"}}
-                </div>
+            <div class="full-space">
+                {{i18n "NO_USAGE_REPORT"}}
+            </div>
         </div>
     </div>
 </section>
@@ -140,27 +140,23 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap" style="max-height:200px;">
-    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="scroll-content">
-        <table class="table">
-            <thead>
-            <tr>
-                <th style="width: 50%"><div class="th-inner"></div></th>
-                <th style="width: 50%"><div class="th-inner"></div></th>
-            </tr>
-            </thead>
-            <tbody class="t-m-content">
-            {{#each result.history_usage}}
-                <tr class="item" data-id="{{@key}}">
-                    <td>{{@key}}</td>
-                    <td>{{this}}</td>
-                </tr>
-            {{/each}}
-            </tbody>
-        </table>
-    </div>
-</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th style="width: 50%"><div class="th-inner"></div></th>
+        <th style="width: 50%"><div class="th-inner"></div></th>
+    </tr>
+    </thead>
+    <tbody class="t-m-content">
+    {{#each result.history_usage}}
+        <tr class="item" data-id="{{@key}}">
+            <td>{{@key}}</td>
+            <td>{{this}}</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
 
 <!--{{updatePayment}}-->
 <div class="update-payment-wrap">

@@ -133,9 +133,9 @@ i18n = (str) ->
     langsrc[deepth][str]
 
 # render template
-render = (tempName)->
+render = (tempName, data)->
     template = Handlebars.compile $(tempName).html()
-    $("#main-body").html template()
+    $("#main-body").html template(data)
 
 # init function
 init = ->

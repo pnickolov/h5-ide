@@ -49,14 +49,15 @@ define ['backbone',
                 ApiRequest('account_get_userinfo', {
                     user_email: mail
                 }).then (data)->
-                    $search.html TplMember.match({
-                        name: Base64.decode(data.username),
-                        mail: Base64.decode(data.email)
-                    })
-                .fail () ->
-                    $search.html TplMember.nomatch({
-                        name: mail
-                    })
+                    if data
+                        $search.html TplMember.match({
+                            name: Base64.decode(data.username),
+                            mail: Base64.decode(data.email)
+                        })
+                    else
+                        $search.html TplMember.nomatch({
+                            name: mail
+                        })
                 .done () ->
                     $search.show()
             else

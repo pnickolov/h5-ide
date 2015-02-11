@@ -810,7 +810,7 @@ Additional Notes and Questions
     </table>
     <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">{{i18n "PRICING_IN_DETAIL"}}</a>
     <div class="payment-modal-wrap">
-        <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "PROVIDE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a></div>
+        <a href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "PROVIDE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a>
         <p>
             {{i18n "WILL_OPEN_CHARGIFY"}}
         </p>
@@ -825,7 +825,7 @@ Additional Notes and Questions
 <p class="modal-text-minor payment-text">{{i18n "FAILED_TO_CHARGE_YOUR_CREDIT_CARD"}}</p>
 
 <div class="payment-modal-wrap">
-    <div class="payment-modal-btn-wraper"><a target="_blank" href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "UPDATE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a></div>
+    <a href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "UPDATE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a>
     <p>
         {{i18n "WILL_OPEN_CHARGIFY"}}
     </p>

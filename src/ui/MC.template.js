@@ -1548,11 +1548,11 @@ function program1(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_INSTANT_HOUR", {hash:{},data:data}))
     + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">"
     + escapeExpression(helpers.i18n.call(depth0, "PRICING_IN_DETAIL", {hash:{},data:data}))
-    + "</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+    + "</a>\n    <div class=\"payment-modal-wrap\">\n        <a href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROVIDE_BILLING_INFORMATION", {hash:{},data:data}))
-    + " <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            "
+    + " <i class=\"icon-caret-right\"></i></a>\n        <p>\n            "
     + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
     + "\n        </p>\n    </div>\n</div>";
   return buffer;
@@ -1568,11 +1568,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">"
     + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD", {hash:{},data:data}))
-    + "</p>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+    + "</p>\n\n<div class=\"payment-modal-wrap\">\n    <a href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">"
     + escapeExpression(helpers.i18n.call(depth0, "UPDATE_BILLING_INFORMATION", {hash:{},data:data}))
-    + " <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        "
+    + " <i class=\"icon-caret-right\"></i></a>\n    <p>\n        "
     + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
     + "\n    </p>\n</div>";
   return buffer;

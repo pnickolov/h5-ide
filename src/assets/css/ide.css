@@ -3913,7 +3913,6 @@ article.dashboard-content {
   position: relative;
   text-align: center;
   background: #F3F3F3;
-  cursor: pointer;
   font-size: 21px;
   color: #666;
   background: url('/assets/images/ide/global-region-app-stack-m.png') 10px top no-repeat; }

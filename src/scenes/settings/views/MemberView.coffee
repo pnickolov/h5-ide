@@ -265,6 +265,11 @@ define ['backbone',
                         $memItem.removeClass('edit')
                         return
 
+                # if no change
+                if memberModel.get('role') is newRole
+                    $memItem.removeClass('edit')
+                    return
+
                 # change button state
                 originTxt = $done.text()
                 $done.prop 'disabled', true

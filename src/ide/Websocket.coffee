@@ -37,6 +37,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       imports : new Meteor.Collection "imports",  opts
       request : new Meteor.Collection "request",  opts
       status  : new Meteor.Collection "status",   opts
+      app     : new Meteor.Collection "app",      opts
+      stack   : new Meteor.Collection "stack",    opts
 
     # Trigger an event when connection state changed.
     Deps.autorun ()=> @statusChanged()
@@ -110,6 +112,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       }
       @connection.subscribe "request", usercode, session, projectId, ()-> self.projects[ projectId ]?.ready = true; return
       @connection.subscribe "status",  usercode, session, projectId
+      @connection.subscribe "stack",   usercode, session, projectId
+      @connection.subscribe "app",     usercode, session, projectId
     ]
     return
 

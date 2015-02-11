@@ -64,7 +64,7 @@ define [
     # Project Related.
     getOpsModelById : ( opsModelId )->
       for p in @get("projects").models
-        ops = p.getOpsMOdel( opsModelId )
+        ops = p.getOpsModel( opsModelId )
         if ops then return ops
       return null
 

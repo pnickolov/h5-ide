@@ -255,11 +255,10 @@ define [
       width  = m.width()  * CanvasView.GRID_WIDTH
       height = m.height() * CanvasView.GRID_HEIGHT
 
+      pad = 10
+
       resizerWidth  = Math.max(width  - 2*pad, 0)
       resizerHeight = Math.max(height - 2*pad, 0)
-
-
-      pad = 10
 
       svg = @canvas.svg
       el  = svg.group()

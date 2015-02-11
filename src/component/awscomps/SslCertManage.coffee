@@ -20,6 +20,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
             title: sprintf lang.IDE.MANAGE_SSL_CERT_IN_AREA, regionName
             classList: 'sslcert-manage'
             #slideable: _.bind that.denySlide, that
+            resourceName: lang.PROP.RESOURCE_NAME_SSL
             context: that
             buttons: [
                 {

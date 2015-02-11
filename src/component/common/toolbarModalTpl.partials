@@ -86,20 +86,17 @@
 <!-- {{loading}} -->
 <div class="loading-spinner"></div>
 
-<!-- {{nocredential}} -->
-<div class="kp-no-credential tac">
-    <p>{{i18n "IDE.COMBO_DROPDOWN_DEMO_AWS_ACCOUNT"}}</p>
-    <a class="show-credential">{{i18n "COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL"}}</a>
-</div>
-
 <!-- {{tr_detail}} -->
 <tr class="table tr-detail">
-    <td colspan="{{columnCount}}">
-    </td>
+    <td colspan="{{columnCount}}"></td>
 </tr>
 
 <!-- {{nocredential}} -->
 <div class="no-credential tac">
     <p>{{i18n "COMBO_DROPDOWN_DEMO_AWS_ACCOUNT"}}</p>
-    <a class="show-credential">{{i18n "COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL"}}</a>
+    {{#if resourceName}}
+        <a class="show-credential">{{i18n "COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL_WITH_TYPE" resourceName}}</a>
+    {{else}}
+        <a class="show-credential">{{i18n "COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL"}}</a>
+    {{/if}}
 </div>

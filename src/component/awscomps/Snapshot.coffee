@@ -275,6 +275,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
             title: sprintf lang.IDE.MANAGE_SNAPSHOT_IN_AREA, regionName
             slideable: true
+            resourceName: lang.PROP.RESOURCE_NAME_SNAPSHOT
             context: that
             buttons: [
                 {

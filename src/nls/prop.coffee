@@ -3417,3 +3417,28 @@ module.exports =
     REMOVE_SUBNET:
       en: "Remove Subnet"
       zh: "删除子网"
+
+    RESOURCE_NAME_KEYPAIR:
+      en: "keypair"
+      zh: "密钥对"
+
+    RESOURCE_NAME_PARAMETER_GROUP:
+      en: "RDS Parameter Group"
+      zh: "数据库参数组"
+
+    RESOURCE_NAME_RDS_SNAPSHOT:
+      en: "RDS Snapshot"
+      zh: "数据库快照"
+
+    RESOURCE_NAME_SNAPSHOT:
+      en: "Snapshot"
+      zh: "快照"
+
+    RESOURCE_NAME_SNS:
+      en: "SNS Subscription"
+      zh: " SNS 订阅"
+
+    RESOURCE_NAME_SSL:
+      en: "SSL"
+      zh: "SSL"
+

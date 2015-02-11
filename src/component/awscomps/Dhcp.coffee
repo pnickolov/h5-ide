@@ -287,6 +287,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
 
             title: sprintf lang.IDE.MANAGE_DHCP_IN_AREA, regionName
             slideable: true
+            resourceName:   lang.PROP.VPC_TIT_DHCP_OPTION
             context: that
             buttons: [
                 {

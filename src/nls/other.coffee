@@ -1460,6 +1460,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Provide AWS Credential <br/> to manage key pairs"
       zh: "提供 AWS 证书来管理密钥对。"
 
+    COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL_WITH_TYPE:
+      en: "Provide AWS Credential <br/> to manage %s"
+      zh: "提供 AWS 证书来管理%s。"
+
     PAYMENT_PAYMENT_NEEDED:
       en: "Upgrade your account"
       zh: "升级账户"

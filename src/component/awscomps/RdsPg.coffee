@@ -465,6 +465,7 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
 
       title: sprintf(lang.IDE.COMPONENT_RDS_PG_MANAGER_TITLE, regionName)#"Manage DB Parameter Group in #{regionName}"
       slideable: true
+      resourceName: lang.PROP.RESOURCE_NAME_PARAMETER_GROUP
       context: that
       buttons: [
         {

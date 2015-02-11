@@ -33,6 +33,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
             title: sprintf lang.IDE.MANAGE_SNS_IN_AREA, regionName
             classList: 'sns-manage'
+            resourceName: lang.IDE.RESOURCE_NAME_SNS
             #slideable: _.bind that.denySlide, that
             context: that
             buttons: [

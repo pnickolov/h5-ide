@@ -282,6 +282,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
             title: "Manage Snapshots in #{regionName}"
             slideable: true
+            resourceName: lang.PROP.RESOURCE_NAME_SNAPSHOT
             context: that
             buttons: [
                 {

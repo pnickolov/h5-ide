@@ -237,7 +237,8 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
             if _.isString refresh
                 tpl = refresh
-                @$( '.content-wrap' ).html template[ tpl ] and template[ tpl ]() or tpl
+
+                @$( '.content-wrap' ).html template[ tpl ] and template[ tpl ](@options) or tpl
             else
                 @renderLoading()
 

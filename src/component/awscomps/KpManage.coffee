@@ -44,6 +44,7 @@ define [
 
             title:  sprintf lang.IDE.MANAGE_KP_IN_AREA, regionName
             slideable: _.bind that.denySlide, that
+            resourceName: lang.PROP.RESOURCE_NAME_KEYPAIR
             context: that
             buttons: [
                 {

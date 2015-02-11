@@ -73,7 +73,8 @@ $yellow: #FFBB0D;
 
 /* Red */
 $base-r: #A42B2B;
-$light-r: desaturate(lighten($base-r, 10%), 10%);
+// $light-r: desaturate(lighten($base-r, 10%), 10%);
+$light-r: #EA5D5D;
 $dark-r: saturate(darken($base-r, 20%), 20%);
 
 /* Grey */

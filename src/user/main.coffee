@@ -171,15 +171,16 @@ init = ->
             unless hashTarget is 'member' then return
 
             checkInviteKey( hashArray[ 1 ] ).then ( result ) ->
-                if result.result[ 0 ] isnt 0
-                    render '#expire-template'
-                else
+                retCode = result.result[0]
+                if retCode is 0
                     projectId = atob( hashArray[ 1 ] ).split( '&' )[ 0 ]
                     location.href = "/workspace/#{projectId}"
+                else if retCode is 120 # is for other user
+                    render '#expire-template', {other_user: true}
+                else # expired link (110)
+                    render '#expire-template'
             , () ->
                 render '#expire-template'
-
-
 
         "reset": (pathArray, hashArray)->
             deepth = 'RESET'

@@ -25,10 +25,10 @@
         <script id="expire-template" type="text/x-handlebars-template">
             <div id="reset-form-wrap" class="box-wrapper">
                 <p><i class="icon-deny"></i></p>
-                {{#if expired}}
-				<p class="account-instruction-major">{{ i18n "invitiation_expired" }}</p>
-				{{else}}
+                {{#if other_user}}
 				<p class="account-instruction-major">{{ i18n "invitiation_for_other" }}</p>
+				{{else}}
+				<p class="account-instruction-major">{{ i18n "invitiation_expired" }}</p>
 				{{/if}}
                 <p class="account-instruction"><a href="/">{{ i18n "go_to_visualops_ide" }}</a></p>
             </div>

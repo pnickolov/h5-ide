@@ -2057,6 +2057,9 @@ a.btn-primary {
   text-decoration: underline;
   background: none; }
 
+.warning-text {
+  color: #ffbb0d; }
+
 .link-red {
   color: #D64442; }
 

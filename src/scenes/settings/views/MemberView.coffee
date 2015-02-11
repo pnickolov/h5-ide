@@ -123,7 +123,7 @@ define ['backbone',
                     },
                     {
                         sortable: false
-                        width: "80px"
+                        width: "55px"
                         name: lang.IDE.SETTINGS_MEMBER_COLUMN_EDIT
                     }
                 ])

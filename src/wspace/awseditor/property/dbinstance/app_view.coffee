@@ -99,6 +99,7 @@ define [
 
         ApiRequest( 'rds_DescribeEvents', {
             region_name: @resModel.design().region()
+            key_id: Design.instance().credentialId()
             source_id: @resModel.get( 'appId' )
             source_type: 'db-instance'
             event_categories: null
@@ -119,6 +120,7 @@ define [
         ApiRequest( 'rds_DescribeDBLogFiles', {
             db_identifier: @resModel.get( 'appId' )
             region_name: @resModel.design().region()
+            key_id: Design.instance().credentialId()
         }).then ( ( result ) ->
             logList = result?.DescribeDBLogFilesResponse?.DescribeDBLogFilesResult?.DescribeDBLogFiles?.DescribeDBLogFilesDetails or null
             logList = [ logList ] if logList and not _.isArray( logList )

@@ -2581,6 +2581,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "You are the only admin in this workspace. Cannot change your role to member."
       zh: "你是该工作空间唯一的管理员，角色不可更改。"
 
+    SETTING_MEMBER_LABEL_NO_USER:
+      en: "There is no user \"%s\""
+      zh: "未找到用户 “%s”"
+
     WORKSPACE_DEMO_TIP:
       en: "This workspace is currently in Demo mode. Set up your own cloud credential to run stack
 into live resources, or import existing infrastructures."

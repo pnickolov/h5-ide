@@ -197,7 +197,7 @@ define ['backbone',
                         $invite.prop 'disabled', false
                 .fail (data) ->
                     if data.error is ApiRequest.Errors.UserNoUser
-                        notification 'error', 'User Not Found'
+                        notification 'error', sprintf(lang.IDE.SETTING_MEMBER_LABEL_NO_USER, mail)
                     else
                         notification 'error', data.result
                     $invite.text(originTxt)

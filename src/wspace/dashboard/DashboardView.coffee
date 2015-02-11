@@ -287,7 +287,7 @@ define [ "./DashboardTpl",
     duplicateStack : (event)->
       event.preventDefault();
       id = $( event.currentTarget ).closest("li").attr("data-id");
-      (new AppAction({model: @model.scene.project.getOpsModel(id)})).duplicateStack();
+      App.loadUrl @model.scene.project.stacks().get(id).duplicate().url()
       false
 
     startApp       : (event)->

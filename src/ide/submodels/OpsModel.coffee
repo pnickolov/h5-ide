@@ -56,6 +56,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       progress       : 0      # The progress of current action on the app.
       opsActionError : ""     # The failure of the lastest action.
 
+      # duplicateTarget : ""  # Use internally.
+
 
     constructor : ( attr, opts )->
       attr = attr || {}
@@ -183,15 +185,29 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       # Always load the json from server if the ops has been saved to server.
       if @isPersisted() then return
 
-      if not @__jsonData
-        @__setJsonData( @__defaultJson() )
-
       if @get("__________itsshitdontsave")
         d = Q.defer()
         d.resolve @
-        d.promise
-      else
-        @save()
+        return d.promise
+
+      if @get("duplicateTarget")
+        # The stack is duplication from other stack.
+        self = @
+        return ApiRequest("stack_save_as",{
+          region_name : @get("region")
+          stack_id    : @get("duplicateTarget")
+          new_name    : @collection.getNewName()
+        }).then ( json )->
+          self.__setJsonData( @__defaultJson )
+          self.set {
+            id : json.id
+            duplicateTarget : undefined
+          }
+
+      if not @__jsonData
+        @__setJsonData( @__defaultJson() )
+
+      @save()
 
     __fjdImport : ( self )->
       if not @isImported() then return
@@ -378,27 +394,14 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         })
 
     # Duplicate the stack
-    duplicate : ( name )->
+    duplicate : ()->
       if @isApp() then return
 
-      collection = @collection
-      thumbnail  = ThumbUtil.fetch(@get("id"))
-
-      attr       = $.extend true, {}, @attributes, {
-        name       : name || collection.getNewName()
-        updateTime : +(new Date())
-        provider   : @get("provider")
-      }
-
-      ApiRequest("stack_save_as",{
-        region_name : @get("region")
-        stack_id    : @get("id")
-        new_name    : attr.name
-      }).then ( id )->
-        ThumbUtil.save(id, thumbnail)
-
-        attr.id = id
-        collection.add( new OpsModel(attr) )
+      @collection.add new OpsModel({
+        duplicateTarget : @get("id")
+        provider        : @get("provider")
+        region          : @get("region")
+      })
 
     # Stop the app, returns a promise
     stop : ()->

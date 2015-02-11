@@ -225,6 +225,8 @@ define [ 'event' ], ( ide_event )->
 
     # Class methods. They're used by design/property/main.
     PropertyModule.load  = ( componentType, componentUid, tab_type, restore ) ->
+        if componentType is "ExpandedAsg" and tab_type is "Stack"
+            tab_type = "AppEdit"
         property   = __getProperty( componentType, componentUid, tab_type )
         loadResult = __loadProperty( property, componentType, componentUid, tab_type, restore )
 

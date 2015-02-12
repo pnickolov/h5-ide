@@ -131,13 +131,7 @@
     <li class="dashboard-log-item {{action_type}}">
         {{#if avatar}}<img class="avatar" src="{{avatar}}" />{{else}}{{/if}}
         <div class="info">
-            <div class="event">
-                <span class="name">{{name}}</span>
-                <span class="action">{{action}}</span>
-                <span class="type">{{type}}</span>
-                {{#if targetId}}<a class="target route" href="/workspace/{{projectId}}/ops/{{targetId}}">{{target}}</a>{{else}}<span class="target">{{target}}</span>{{/if}}
-                <span class="other">{{other}}</span>
-            </div>
+            <div class="event">{{{event}}}</div>
             <div class="time">{{time}}</div>
         </div>
     </li>

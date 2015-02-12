@@ -571,28 +571,30 @@ define [ "./DashboardTpl",
             $container.html Template.noActivity()
             return
 
-        renderMap = ProjectLog.ACTION_MAP
-
         projectId = @model.scene.project.id
 
         dataAry = _.map models, (data) ->
-            # userdata = userDataSet[data.get("usercode")]
+
             action   = data.get('action')
             target   = data.get('target')
             type     = data.get('type').toLowerCase()
             targetId = data.get('targetId')
             targetId = null if not that.model.scene.project.getOpsModel(targetId)
+
+            _name = '<span class="name">' + data.get("username") + '</span>'
+            if targetId
+                _target = '<a class="target route" href="/workspace/' + projectId + '/ops/' + targetId + '">' + target + '</a>'
+            else
+                _target = '<span class="target">' + target + ' </span>'
+
+            eventStr = lang.IDE["DASHBOARD_LOGS_#{type.toUpperCase()}_#{action.toUpperCase()}"]
+            if eventStr
+                event = sprintf(eventStr, _name, _target, '')
+
             {
-              name   : data.get("username")
-            #   email  : userdata.email
-            #   avatar : userdata.avatar
               action_type : (action + '_' + type).toLowerCase()
-              action : renderMap[ action ] || action
-              type   : type
-              target : target
-              time   : MC.intervalDate(new Date(data.get('time')))
-              projectId: projectId
-              targetId: targetId
+              event       : event or ("#{_name} #{action} #{type} #{_target}")
+              time        : MC.intervalDate(new Date(data.get('time')))
             }
 
         if dataAry.length

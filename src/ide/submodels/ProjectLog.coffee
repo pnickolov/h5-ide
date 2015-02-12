@@ -45,56 +45,6 @@ define [ "constant", "backbone" ], ( constant )->
       CREDENTIAL : "Credential"
       TOKEN      : "Token"
     }
-    ACTION : {
-      CREATE    : "Create"
-      UDPATE    : "Update"
-      RENAME    : "Rename"
-      REMOVE    : "Remove"
-      SAVE      : "Save"
-
-      TERMINATE : "Terminate"
-      START     : "Start"
-      STOP      : "Stop"
-      REBOOT    : "Reboot"
-      SAVEAS    : "SaveAs"
-      CLONE     : "Clone"
-      NOTIFY    : "Notify"
-      RENDER    : "Render"
-      GETKEY    : "GetKey"
-      IMPORT    : "Import"
-
-      RUN       : "Run"
-
-      INVITE    : "Invite"
-
-      ADD       : "Add"
-
-    }
-    ACTION_MAP : {
-      "Create":     "created"
-      "Update":     "updated"
-      "Rename":     "renamed"
-      "Remove":     "removed"
-      "Save":       "saved"
-
-      "Terminate":  "terminated"
-      "Start":      "started"
-      "Stop":       "stopped"
-      "Reboot":     "rebooted"
-      "SaveAs":     "saved as"
-      "Clone":      "cloned"
-      "Notify":     "notified"
-      "Render":     "rendered"
-      "GetKey":     "got key"
-      "Import":     "imported"
-
-      "Run":        "ran"
-
-      "Invite":     "invited"
-
-      "Add":        "added"
-
-    }
   }
 
   AuditType = {}

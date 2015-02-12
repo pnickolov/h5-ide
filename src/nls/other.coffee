@@ -2806,3 +2806,103 @@ into live resources, or import existing infrastructures."
     CONTENT_OPS_CONFLICT:
       en: "Cannot save stack since another user has applied changes to this stack. <br/> You can save your changes by duplicate this stack."
       zh: "其他组员在这你之前修改了这个模板，因此无法保存。<br/>你可以通过复制模板来保存当前的改动。"
+
+    # Dashboard logs
+
+    # Stack
+    DASHBOARD_LOGS_STACK_CREATE:
+      en: "%s created stack %s"
+      zh: ""
+
+    DASHBOARD_LOGS_STACK_REMOVE:
+      en: "%s deleted stack %s"
+      zh: ""
+
+    DASHBOARD_LOGS_STACK_RENAME:
+      en: "%s renamed stack %s"
+      zh: ""
+
+    DASHBOARD_LOGS_STACK_SAVE:
+      en: "%s saved stack %s"
+      zh: ""
+
+    DASHBOARD_LOGS_STACK_SAVEAS:
+      en: "%s duplicated stack %s"
+      zh: ""
+
+    DASHBOARD_LOGS_STACK_RUN:
+      en: "%s ran stack %s into app %s"
+      zh: ""
+
+    # App
+    DASHBOARD_LOGS_APP_START:
+      en: "%s started app %s"
+      zh: ""
+
+    DASHBOARD_LOGS_APP_STOP:
+      en: "%s stopped app %s"
+      zh: ""
+
+    DASHBOARD_LOGS_APP_TERMINATE:
+      en: "%s terminated app %s"
+      zh: ""
+
+    DASHBOARD_LOGS_APP_IMPORT:
+      en: "%s imported VPC as app %s"
+      zh: ""
+
+    DASHBOARD_LOGS_APP_SAVE:
+      en: "%s saved external change to app %s"
+      zh: ""
+
+    DASHBOARD_LOGS_APP_UPDATE:
+      en: "%s updated app %s"
+      zh: ""
+
+    DASHBOARD_LOGS_APP_FORGET:
+      en: "%s made app %s forgotten"
+      zh: ""
+
+    # Project
+    DASHBOARD_LOGS_PROJECT_CREATE:
+      en: "%s created workspace %s"
+      zh: ""
+
+    DASHBOARD_LOGS_PROJECT_RENAME:
+      en: "%s renamed workspace %s"
+      zh: ""
+
+    # Payment
+    DASHBOARD_LOGS_PAYMENT_ADD:
+      en: "%s added billing information"
+      zh: ""
+
+    DASHBOARD_LOGS_PAYMENT_UPDATE:
+      en: "%s updated billing information"
+      zh: ""
+
+    # CREDENTIAL
+    DASHBOARD_LOGS_CREDENTIAL_ADD:
+      en: "%s added cloud access credential"
+      zh: ""
+
+    DASHBOARD_LOGS_CREDENTIAL_REMOVE:
+      en: "%s removed cloud access credential"
+      zh: ""
+
+    DASHBOARD_LOGS_CREDENTIAL_UPDATE:
+      en: "%s updated cloud access credential"
+      zh: ""
+
+    # TOKEN
+    DASHBOARD_LOGS_TOKEN_ADD:
+      en: "%s added access token %s"
+      zh: ""
+
+    DASHBOARD_LOGS_TOKEN_REMOVE:
+      en: "%s removed access token %s"
+      zh: ""
+
+    DASHBOARD_LOGS_TOKEN_RENAME:
+      en: "%s renamed access token %s"
+      zh: ""

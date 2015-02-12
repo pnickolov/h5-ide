@@ -85,7 +85,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
         onShow: null
     }
 
-    class Modal extends Backbone.View
+    Modal = Backbone.View.extend
         events:
             "click .modal-confirm": "confirm"
             "click .btn.modal-close": "cancel"

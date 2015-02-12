@@ -134,6 +134,7 @@ define ['backbone',
                 admin: that.isAdmin
             })
             that.memList = that.$el.find('.t-m-content')
+            return
 
         loadMemList: (callback) ->
 
@@ -144,6 +145,7 @@ define ['backbone',
             @memberCol.fetch().then () ->
                 that.isAdmin = that.memberCol.getCurrentMember()?.isAdmin()
                 data = that.memberCol.toJSON()
+                return
             .fail (data) ->
                 notification 'error', (data.result or data.msg)
                 that.$el.find('.loading-spinner').addClass('hide')

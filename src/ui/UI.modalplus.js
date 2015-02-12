@@ -1,7 +1,4 @@
 (function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
   define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
     var Modal, defaultOptions, modals;
     modals = [];
@@ -34,16 +31,13 @@
       onConfirm: null,
       onShow: null
     };
-    Modal = (function(_super) {
-      __extends(Modal, _super);
-
-      Modal.prototype.events = {
+    Modal = Backbone.View.extend({
+      events: {
         "click .modal-confirm": "confirm",
         "click .btn.modal-close": "cancel",
         "click i.modal-close": "close"
-      };
-
-      function Modal(option) {
+      },
+      constructor: function(option) {
         var _base, _base1;
         this.nextOptions = [];
         this.nextCloses = [];
@@ -69,10 +63,9 @@
         this.option = $.extend(true, {}, defaultOptions, option);
         (_base = this.option.cancel).text || (_base.text = lang.IDE.POP_LBL_CANCEL);
         (_base1 = this.option.confirm).text || (_base1.text = lang.IDE.LBL_SUBMIT);
-        this.render();
-      }
-
-      Modal.prototype.render = function() {
+        return this.render();
+      },
+      render: function() {
         var self, _base;
         self = this;
         if (typeof this.option.template === "object") {
@@ -122,9 +115,8 @@
         }, (this.option.delay || 300) + 10);
         this.bindEvent();
         return this;
-      };
-
-      Modal.prototype.close = function(number) {
+      },
+      close: function(number) {
         var modal, nextModal, _base;
         modal = modals[modals.length - 1];
         if (modal != null ? modal.pending : void 0) {
@@ -172,9 +164,8 @@
         }, (modal.option.delay || 300) + 10);
         modal.isClosed = true;
         return this;
-      };
-
-      Modal.prototype.confirm = function(evt) {
+      },
+      confirm: function(evt) {
         var _base;
         if ($(evt.currentTarget).is(":disabled")) {
           return false;
@@ -184,9 +175,8 @@
           _base.onConfirm();
         }
         return this;
-      };
-
-      Modal.prototype.cancel = function() {
+      },
+      cancel: function() {
         var _base;
         this.trigger("cancel", this);
         this.close();
@@ -194,9 +184,8 @@
           _base.onCancel(this);
         }
         return this;
-      };
-
-      Modal.prototype.bindEvent = function() {
+      },
+      bindEvent: function() {
         var diffX, diffY, disableClose, draggable, modal, self;
         self = this;
         disableClose = false;
@@ -296,9 +285,8 @@
             diffX = diffY = 0;
           });
         }
-      };
-
-      Modal.prototype.resize = function(isSlideIn) {
+      },
+      resize: function(isSlideIn) {
         var height, left, self, top, width, windowHeight, windowWidth;
         self = this;
         if (!isSlideIn) {
@@ -342,31 +330,26 @@
           left: left
         });
         return this;
-      };
-
-      Modal.prototype.isOpen = function() {
+      },
+      isOpen: function() {
         return !this.isClosed;
-      };
-
-      Modal.prototype.next = function(option) {
+      },
+      next: function(option) {
         var newModal;
         newModal = new Modal(option);
         this.trigger("next", newModal);
         newModal;
         return this;
-      };
-
-      Modal.prototype.toggleConfirm = function(disabled) {
+      },
+      toggleConfirm: function(disabled) {
         this.tpl.find(".modal-confirm").attr("disabled", !!disabled);
         return this;
-      };
-
-      Modal.prototype.toggleFooter = function(visible) {
+      },
+      toggleFooter: function(visible) {
         this.tpl.find(".modal-footer").toggle(!!visible);
         return this;
-      };
-
-      Modal.prototype.setContent = function(content) {
+      },
+      setContent: function(content) {
         var selector;
         if (this.option.maxHeight || this.option.hasScroll) {
           selector = ".scroll-content";
@@ -376,16 +359,14 @@
         this.tpl.find(selector).html(content);
         this.resize();
         return this;
-      };
-
-      Modal.prototype.compact = function() {
+      },
+      compact: function() {
         this.tpl.find(".modal-body").css({
           padding: 0
         });
         return this;
-      };
-
-      Modal.prototype.setWidth = function(width) {
+      },
+      setWidth: function(width) {
         var body;
         body = this.tpl.find('.modal-body');
         body.parent().css({
@@ -393,9 +374,8 @@
         });
         this.resize();
         return this;
-      };
-
-      Modal.prototype.animate = function(animate) {
+      },
+      animate: function(animate) {
         var delayOption, left, offset, that, windowWidth;
         this.tpl.show();
         that = this;
@@ -428,29 +408,22 @@
           return false;
         }));
         return this;
-      };
-
-      Modal.prototype.find = function(selector) {
+      },
+      find: function(selector) {
         return this.tpl.find(selector);
-      };
-
-      Modal.prototype.$ = function(selector) {
+      },
+      $: function(selector) {
         return this.tpl.find(selector);
-      };
-
-      Modal.prototype.setTitle = function(title) {
+      },
+      setTitle: function(title) {
         this.tpl.find(".modal-header h3").text(title);
         return this;
-      };
-
-      Modal.prototype.abnormal = function() {
+      },
+      abnormal: function() {
         var _ref;
         return (_ref = this.option.mode) === "panel" || _ref === "fullscreen";
-      };
-
-      return Modal;
-
-    })(Backbone.View);
+      }
+    });
     return Modal;
   });
 

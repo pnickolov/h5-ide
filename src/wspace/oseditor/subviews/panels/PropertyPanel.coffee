@@ -36,6 +36,7 @@ define [
         @viewClass ?= OsPropertyView.getClass( @mode, 'default' )
 
         @validationClass = ValidationBase.getClass( @type )
+        return
 
     resourceInexist: ->
         if @mode is 'stack' then return false

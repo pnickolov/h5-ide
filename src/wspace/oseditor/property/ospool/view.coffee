@@ -13,6 +13,7 @@ define [
         initialize: ->
             @memConn = @model.connections 'OsPoolMembership'
             @hmlistView = @reg new HmlistView targetModel: @model
+            return
 
         render: ->
             @$el.html template @getRenderData()

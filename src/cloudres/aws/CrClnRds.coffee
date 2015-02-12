@@ -132,6 +132,7 @@ define [
         _.each self.engineDict[regionName][d.EngineName], (item, key) ->
           if key.indexOf( d.MajorEngineVersion ) is 0
             item.canCustomOG = true
+          return
 
       @optionGroupData[regionName][engineName] = optionData
       return
@@ -159,6 +160,7 @@ define [
       @camelToPascal data
       _.each data, (dataItem) ->
         dataItem.id  = dataItem.DBSubnetGroupName
+        return
       data
   }
 

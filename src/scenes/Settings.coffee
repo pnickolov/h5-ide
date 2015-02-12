@@ -27,3 +27,5 @@ define ["Scene", "./settings/GenericSettings"], ( Scene, SettingsView )->
 
     # Override this method so that we can locate a particular scene. The info can be anything.
     isWorkingOn : ( info )-> info is "AppSettings"
+
+  Settings

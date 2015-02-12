@@ -13,6 +13,7 @@ define [
 
         initialize: ->
             @sgListView = @reg new SgListView targetModel: null
+            return
 
         render: ->
             template = switch

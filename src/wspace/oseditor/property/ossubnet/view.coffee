@@ -30,6 +30,7 @@ define [
                     template.option({
                         value: item.text
                     })
+            return
 
         render: ->
 

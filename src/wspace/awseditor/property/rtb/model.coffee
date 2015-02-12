@@ -118,6 +118,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
       else
 
         @set 'main', 'No'
+      return
 
     setPropagation : ( propagate ) ->
 

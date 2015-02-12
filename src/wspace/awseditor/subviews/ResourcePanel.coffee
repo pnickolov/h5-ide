@@ -68,6 +68,7 @@ define [
     _.each ss.toJSON(), (value, key)->
       newKey = lang.IDE["DASH_BUB_"+ key.toUpperCase()] || key
       newData[newKey] = value
+      return
     LeftPanelTpl.resourcePanelBubble( newData )
 
 
@@ -517,7 +518,7 @@ define [
         eventPrefix  : if type is constant.RESTYPE.VOL then "addVol_" else "addItem_"
         onDragStart  : ( data )->
           if type is constant.RESTYPE.AZ
-            data.shadow.children(".res-name").text( $tgt.data("option")["name"] )
+            data.shadow.children(".res-name").text( $tgt.data("option").name )
           else if type is constant.RESTYPE.ASG
             data.shadow.text( "ASG" )
       })

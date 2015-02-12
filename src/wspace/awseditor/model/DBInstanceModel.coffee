@@ -142,7 +142,7 @@ define [
         if @slaveIndependentAttr.indexOf( k ) < 0
           needSync[ k ] = v
 
-      delete needSync['iops'] if needSync['iops']
+      delete needSync.iops if needSync.iops
 
       @set needSync
 

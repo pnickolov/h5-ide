@@ -62,6 +62,7 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
 
             Backbone.Collection.apply @
             @projectId = attr.projectId
+            return
 
         model: MemberModel,
 

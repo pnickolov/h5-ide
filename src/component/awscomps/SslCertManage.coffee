@@ -203,7 +203,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
             sslCertData = @sslCertCol.get(sslCertId).toJSON()
             sslCertData.Expiration = MC.dateFormat(new Date(sslCertData.Expiration), 'yyyy-MM-dd hh:mm:ss')
 
-            detailTpl = template['detail_info']
+            detailTpl = template.detail_info
             @modal.setDetail($tr, detailTpl(sslCertData))
 
         refresh: ->

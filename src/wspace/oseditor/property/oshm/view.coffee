@@ -16,6 +16,7 @@ define [
         initialize: ( options ) ->
             @isApp = options.isApp
             @modelData = options.modelData if @isApp
+            return
 
         setTitle: ( title ) -> @$( 'h1' ).text title
 

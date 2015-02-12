@@ -42,7 +42,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
           that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
       , (err)->
         if err.error is -404
-          noSubscription = true 
+          noSubscription = true
           billingTemplate = template.billingTemplate {noSubscription}
           that.$el.find("#billing-status").html billingTemplate
         else

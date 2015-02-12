@@ -168,30 +168,30 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       if not tagSet
         return {}
 
-      if tagSet['Created by'] and tagSet['app'] and tagSet['app-id'] and tagSet['name'] and tagSet['Name']
+      if tagSet['Created by'] and tagSet.app and tagSet['app-id'] and tagSet.name and tagSet.Name
         #old tag format
         visopsTag = jQuery.extend(true, {}, tagSet)
-        visopsTag['isOwner'] = App.user.get('username') is tagSet['Created by']
+        visopsTag.isOwner = App.user.get('username') is tagSet['Created by']
 
-      else if tagSet['visualops'] and tagSet['Name']
+      else if tagSet.visualops and tagSet.Name
         #new tag format
         visopsTag = {}
         #1.
-        visualops = tagSet['visualops']
+        visualops = tagSet.visualops
         if visualops.indexOf('app-name=') is 0 and visualops.indexOf('app-id=') > 0 and visualops.indexOf('created-by=') > 0
           for item in visualops.split(' ')
             data = item.split('=')
             switch data[0]
-              when 'app-name'   then visopsTag['app']        = data[1]
+              when 'app-name'   then visopsTag.app           = data[1]
               when 'app-id'     then visopsTag['app-id']     = data[1]
               when 'created-by' then visopsTag['Created by'] = data[1]
             null
         #2.
-        visopsTag['name'] = tagSet['Name']
-        if visopsTag['Created by'] and visopsTag['app'] and visopsTag['app-id'] and visopsTag['name']
+        visopsTag.name = tagSet.Name
+        if visopsTag['Created by'] and visopsTag.app and visopsTag['app-id'] and visopsTag.name
           #3.
-          visopsTag['Name'] = visopsTag['app'] + '-' + visopsTag['name']
-          visopsTag['isOwner'] = App.user.get('username') is visopsTag['Created by']
+          visopsTag.Name = visopsTag.app + '-' + visopsTag.name
+          visopsTag.isOwner = App.user.get('username') is visopsTag['Created by']
 
       visopsTag
 

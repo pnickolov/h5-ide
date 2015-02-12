@@ -80,7 +80,7 @@ define ["backbone"], ()->
 
   _.extend Scene.prototype, Backbone.Events
 
-  Scene.SetDefaultScene = (s)-> DefaultSceneClass = s
+  Scene.SetDefaultScene = (s)-> DefaultSceneClass = s; return
   Scene.DefaultScene = ()-> DefaultSceneClass
 
   Scene

@@ -49,6 +49,7 @@ define [
                         memberCount: sgModel.getMemberList().length,
                         description: sgModel.get('description')
                     })
+            return
 
         # getAttachSGForApp: () ->
         #
@@ -89,7 +90,6 @@ define [
                     name: sgName,
                     uid: sgUID,
                     id: sgModel.id,
-                    name: sgModel.get('name'),
                     ruleCount: sgModel.get('rules').length,
                     memberCount: sgModel.getMemberList().length,
                     description: sgModel.get('description')
@@ -166,6 +166,7 @@ define [
 
             attr = $target.data 'target'
             value = $target.getValue()
+            return
 
         addItem: (event, value) ->
 

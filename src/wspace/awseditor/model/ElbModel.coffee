@@ -137,6 +137,8 @@ define [ "Design",
         sslCertData = sslCertCol.get(sslCertId)
         listeners[idx].sslCert = SslCertModel.createNew(sslCertData)
 
+      return
+
     removeSSLCert : ( idx ) ->
 
       listeners = @get("listeners")

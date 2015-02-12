@@ -69,6 +69,7 @@ define [
       else
         # If there's service error. I think we need to logout, because I guess it's because the session is not right.
         App.logout()
+      return
 
   VisualOps.prototype.__createWebsocket = ()->
     @WS = new Websocket()

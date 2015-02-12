@@ -196,7 +196,7 @@ define ["CloudResources", "cloudres/CrCollection", "constant", "DiffTree"], ( Cl
       for uid, comp of originalJson.component
         key = constant.AWS_RESOURCE_KEY[ comp.type ]
 
-        if not comp.resource then continue;
+        if not comp.resource then continue
 
         if not key then continue
 

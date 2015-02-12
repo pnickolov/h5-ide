@@ -17,5 +17,6 @@ define [
             @model = @appModel = Design.instance()
 
             @viewClass  = OsPropertyView.getClass @mode, @type
+            return
 
 

@@ -42,3 +42,5 @@ define ["./CheatsheetTpl", "Scene", "i18n!/nls/lang.js" ], ( CheatsheetTpl, Scen
       # scene haven't changed.
       App.sceneManager.activeScene().updateUrl()
       return
+
+  Cheatsheet

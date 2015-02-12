@@ -56,3 +56,5 @@ define [ "ApiRequest", "Scene", "i18n!/nls/lang.js", "backbone", "UI.notificatio
     onParseError : ()->
       notification "error", lang.NOTIFY.PARSE_SAMPLE_FAIL
       @remove()
+
+  StackStore

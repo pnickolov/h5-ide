@@ -53,7 +53,7 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR", 'i18n!/nls/lang.js
                 self.$el.find(".usage-date").text(date.string).data("date", dateString)
                 isDisabled = self.getNewDate(1) > new Date()
                 self.$el.find(".nav-left").prop("disabled", false)
-                self.$el.find(".nav-right").prop('disabled', isDisabled);
+                self.$el.find(".nav-right").prop('disabled', isDisabled)
             ,()->
                 notification 'error', "Error while getting user payment info, please try again later."
             @
@@ -70,7 +70,7 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR", 'i18n!/nls/lang.js
 
 
         formatDate2: (date)->
-            date = new Date(date);
+            date = new Date(date)
             months = ["January"	,"February"	,"March" ,"April"	,"May" ,"June" ,"July" ,"August" ,"September" ,"October" ,"November" ,"December"]
             month = months[date.getMonth()%12]
             year = date.getFullYear()

@@ -16,6 +16,7 @@ define [
                 CloudResources( constant.RESTYPE.OSHM, region ).get id
 
             @hmlistView = @reg new HmlistView targetModel: @hmList, isApp: true
+            return
 
         render: ->
             @$el.html template @getRenderData()

@@ -59,6 +59,7 @@ define [
                 ipTipTpl: () ->
 
                     return template.sgIPInputTip()
+            return
 
         render: ->
 

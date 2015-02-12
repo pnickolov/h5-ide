@@ -24,6 +24,7 @@ define [
             panel: @panel,
             targetModel: @model.embedPort()
         }
+        return
 
     render: ->
 

@@ -133,6 +133,7 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           _.each dumpObj, (e,k)->
             if k in favIds
               e.faved = true
+            return
           result.ami.result = dumpObj
           result
 

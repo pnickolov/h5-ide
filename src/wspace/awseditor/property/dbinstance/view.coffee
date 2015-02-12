@@ -83,6 +83,7 @@ define [ 'ApiRequest'
                         App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
                         modal.close()
                 })
+            return
 
         openRestoreConfigModal: (defaultRes) ->
 

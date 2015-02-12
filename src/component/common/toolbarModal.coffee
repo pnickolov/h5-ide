@@ -12,7 +12,7 @@ Refer to kpView.coffee
 
 ###
 
-define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', 'UI.notification' ], ( template, Backbone, $, modalplus ) ->
+define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', "credentialFormView", 'UI.notification' ], ( template, Backbone, $, modalplus, CredentialFormView ) ->
 
 
     Backbone.View.extend
@@ -46,7 +46,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             null
 
         __showCredential: ->
-            Design.instance()?.project().showCredential()
+            new CredentialFormView({model: Design.instance().project()}).render()
 
         __sort: ->
             # detail tr will disturb the sort, so details must be removed when sort trigger

@@ -1523,20 +1523,10 @@ TEMPLATE.modalTemplate=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
-function program1(depth0,data) {
-  
-  var buffer = "";
-  buffer += "<div class=\"warning-red no-change\">"
-    + escapeExpression(helpers.i18n.call(depth0, "YOUR_ACCOUNT_IN_LIMITED_STATUS", {hash:{},data:data}))
-    + "</div>";
-  return buffer;
-  }
 
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.shouldPay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">"
+  buffer += "<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\"></div>\n    <p class=\"modal-text-minor payment-text\">"
     + escapeExpression(helpers.i18n.call(depth0, "WHILE_ENJOYING_PROVIDE_CARD", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
     + "</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_PER_MONTH", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
@@ -1557,24 +1547,41 @@ function program1(depth0,data) {
     + "\n        </p>\n    </div>\n</div>";
   return buffer;
   };
-TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
+TEMPLATE.providePayment=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
-
-  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">"
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <p class=\"modal-text-minor payment-text\">"
     + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD", {hash:{},data:data}))
-    + "</p>\n\n<div class=\"payment-modal-wrap\">\n    <a href=\""
+    + "</p>\n    <div class=\"payment-modal-wrap\">\n        <a href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">"
+    + "\" class=\"btn btn-blue btn-xlarge route\">"
     + escapeExpression(helpers.i18n.call(depth0, "UPDATE_BILLING_INFORMATION", {hash:{},data:data}))
-    + " <i class=\"icon-caret-right\"></i></a>\n    <p>\n        "
-    + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
-    + "\n    </p>\n</div>";
+    + " <i class=\"icon-caret-right\"></i></a>\n    </div>\n";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "";
+  buffer += "\n    <p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD_MEMBER", {hash:{},data:data}))
+    + "</p>\n    <p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "WAIT_FOR_ADMIN_UPDATE_PAYMENT_MODAL", {hash:{},data:data}))
+    + "</p>\n";
+  return buffer;
+  }
+
+  buffer += "<div class=\"payment-credit-card payment-failed\"></div>\n";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isAdmin), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   return buffer;
   };
 TEMPLATE.paymentUpdate=Handlebars.template(__TEMPLATE__);

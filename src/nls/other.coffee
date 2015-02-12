@@ -1470,7 +1470,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_INVALID_BILLING:
       en: "Your Billing Information is Invalid"
-      zh: "您的账单信息无效。"
+      zh: "您的账单信息无效"
 
     PAYMENT_LOADING:
       en: "Loading..."
@@ -1925,8 +1925,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "估计 AWS 费用"
 
     PAYMENT_WARNNING_IN_MODAL:
-      en: "There was an issue to process payment in your account. Please update your <a target=\"_blank\" href=\"%s\">payment information</a>"
-      zh: "您的账户付费遇到问题，请更新您的 <a target=\"_blank\" href=\"%s\">付费信息</a>。"
+      en: "There was an issue to process payment in your account. Please update your <a class=\"route\" href=\"%s\">payment information</a>"
+      zh: "您的账户付费遇到问题，请更新您的 <a class=\"route\" href=\"%s\">付费信息</a>。"
 
     PER_MONTH:
       en: "/ month"
@@ -2165,8 +2165,16 @@ VisualOps API. You cannot UNDO this action.'
       zh: "详细价格"
 
     FAILED_TO_CHARGE_YOUR_CREDIT_CARD:
-      en: "We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update your payment information to continue managing apps with VisualOps."
-      zh: "我们无法从您的信用卡扣费。 App 操作和 VPC 导入已经对您禁用， 请更新您的付费信息以继续使用 VisualOps 管理您的 App。"
+      en: "We were unable to charge the project’s credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. Update payment information as soon as possible to continue managing apps with VisualOps. "
+      zh: "我们无法从此项目绑定的信用卡中扣费。此项目现已处于受限状态。导入 VPC，App 操作，监控和 state ensuring 功能已被禁用。请尽快更新您的付款信息以继续用 VisualOps 管理资源。"
+
+    FAILED_TO_CHARGE_YOUR_CREDIT_CARD_MEMBER:
+      en: "We were unable to charge the project’s credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. "
+      zh: "我们无法从此项目绑定的信用卡中扣费。此项目现已处于受限状态。导入 VPC，App 操作，监控和 state ensuring 功能已被禁用。"
+
+    WAIT_FOR_ADMIN_UPDATE_PAYMENT_MODAL:
+      en: "Please wait admin of this project to update payment information before you can continue managing apps with VisualOps. "
+      zh: "请等待此项目管理员更新付费信息以能继续用 VisualOps 管理资源。"
 
     WILL_OPEN_CHARGIFY:
       en: "This will open a new window with Chargify.<br/>Meanwhile please keep this page open."

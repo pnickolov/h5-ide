@@ -54,10 +54,10 @@ define [
           notification "error", message
 
 
-    runStack: ( paymentUpdate,paymentModal )->
+    runStack: ( paymentUpdate, paymentModal )->
       cloudType = @workspace.opsModel.type
       that = @
-      paymentState = App.user.get('paymentState')
+      paymentState = @workspace.opsModel.project().get("billingState")
       if paymentModal
         @modal = paymentModal
         @modal.setTitle lang.IDE.RUN_STACK_MODAL_TITLE
@@ -68,7 +68,7 @@ define [
       else
         @modal = new modalPlus
           title: lang.IDE.RUN_STACK_MODAL_TITLE
-          template: MC.template.modalRunStack {paymentState}
+          template: MC.template.modalRunStack {paymentState, paymentUpdate}
           disableClose: true
           width: '665px'
           compact: true
@@ -529,38 +529,46 @@ define [
 
 
     showPayment: (elem, opsModel)->
+      project_id = opsModel.project().get("id")
       showPaymentDefer = Q.defer()
-
-      # check should Show.
-      paymentState = App.user.get("paymentState")
-
+      url = "/settings/#{project_id}/billing"
       if not opsModel.project().shouldPay()
-        showPaymentDefer.resolve({})
+        showPaymentDefer.resolve({result: {url: url}})
       else
         result = {
-          first_name: App.user.get("firstName")
-          last_name: App.user.get("lastName")
-          url: App.user.get("paymentUrl")
-          card: App.user.get("creditCard")
+          isAdmin: opsModel.project().amIAdmin()
+          url: url
+          freePointsPerMonth: 3600
         }
-        updateDom = MC.template.paymentUpdate  result
         if elem
-          $(elem).html updateDom
+          $(elem).html MC.template.loadingSpinner()
           $(elem).trigger 'paymentRendered'
         else
           paymentModal = new modalPlus(
-            title: lang.IDE.PAYMENT_INVALID_BILLING
-            template: updateDom
+            title: lang.PROP.LBL_LOADING
+            template: MC.template.loadingSpinner()
             disableClose: true
             confirm:
               text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
               disabled: true
           )
           paymentModal.find('.modal-footer').hide()
+        opsModel.project().getPaymentState().then ()->
+          if opsModel.project().get("payment")?.cardNumber
+            updateDom = MC.template.paymentUpdate  result
+          else
+            updateDom = MC.template.providePayment result
+          if elem
+            elem.html updateDom
+            $(elem).trigger 'paymentRendered'
+          else
+            paymentModal.setContent(updateDom)
+            paymentModal.setTitle lang.IDE.PAYMENT_INVALID_BILLING
+            paymentModal.setContent updateDom
 
-          paymentModal.listenTo App.user, "paymentUpdate", ()->
-            if paymentModal.isClosed then return false
-            if not opsModel.project().shouldPay()
-              showPaymentDefer.resolve({result: result, modal: paymentModal})
+            paymentModal.listenTo opsModel.project(), "change:billingState", ()->
+              if paymentModal.isClosed then return false
+              if not opsModel.project().shouldPay()
+                showPaymentDefer.resolve({result: result, modal: paymentModal})
       showPaymentDefer.promise
 

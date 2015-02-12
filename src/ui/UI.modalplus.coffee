@@ -184,7 +184,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 else
                     modal.wrap.remove()
                     modals = []
-                return
+                modals[modals.length - 1]?.resize()
             , modal.option.delay||300
             _.delay ->
                 modal.nextCloses.forEach (modalToClose)->

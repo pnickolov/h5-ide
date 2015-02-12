@@ -790,11 +790,9 @@ Additional Notes and Questions
     </div>
 </div>
 
-<!--{{paymentSubscribe}}-->
-{{#if shouldPay}}<div class="warning-red no-change">{{i18n "YOUR_ACCOUNT_IN_LIMITED_STATUS"}}</div>{{/if}}
+<!--{{providePayment}}-->
 <div class="payment-no-card-wrapper">
-    <div class="payment-credit-card">
-    </div>
+    <div class="payment-credit-card"></div>
     <p class="modal-text-minor payment-text">{{i18n "WHILE_ENJOYING_PROVIDE_CARD" freePointsPerMonth}}</p>
     <table class="table payment-table">
         <tbody>
@@ -820,16 +818,17 @@ Additional Notes and Questions
 
 
 <!--{{paymentUpdate}}-->
-<div class="payment-credit-card payment-failed">
-</div>
-<p class="modal-text-minor payment-text">{{i18n "FAILED_TO_CHARGE_YOUR_CREDIT_CARD"}}</p>
+<div class="payment-credit-card payment-failed"></div>
+{{#if isAdmin}}
+    <p class="modal-text-minor payment-text">{{i18n "FAILED_TO_CHARGE_YOUR_CREDIT_CARD"}}</p>
+    <div class="payment-modal-wrap">
+        <a href="{{url}}" class="btn btn-blue btn-xlarge route">{{i18n "UPDATE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a>
+    </div>
+{{else}}
+    <p class="modal-text-minor payment-text">{{i18n "FAILED_TO_CHARGE_YOUR_CREDIT_CARD_MEMBER"}}</p>
+    <p class="modal-text-minor payment-text">{{i18n "WAIT_FOR_ADMIN_UPDATE_PAYMENT_MODAL"}}</p>
+{{/if}}
 
-<div class="payment-modal-wrap">
-    <a href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "UPDATE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a>
-    <p>
-        {{i18n "WILL_OPEN_CHARGIFY"}}
-    </p>
-</div>
 
 <!--{{credentialLoading}}-->
 <div class="loading-zone">

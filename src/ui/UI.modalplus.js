@@ -147,6 +147,7 @@
           modal.tpl.removeClass("bounce");
         }
         _.delay(function() {
+          var _ref;
           modal.tpl.remove();
           modal.trigger("closed", this);
           modal.pending = false;
@@ -156,6 +157,7 @@
             modal.wrap.remove();
             modals = [];
           }
+          return (_ref = modals[modals.length - 1]) != null ? _ref.resize() : void 0;
         }, modal.option.delay || 300);
         _.delay(function() {
           return modal.nextCloses.forEach(function(modalToClose) {

@@ -3766,7 +3766,11 @@ article.dashboard-content {
   position: absolute;
   top: 5px;
   right: 5px; }
-@media (max-width: 1030px) {
+@media (max-width: 1280px) {
+  .region-resource-list > li {
+    width: 48%;
+    margin-left: 2%; } }
+@media (max-width: 1024px) {
   .region-resource-list > li {
     width: 22.5%;
     margin-left: 2%; }
@@ -3852,7 +3856,7 @@ article.dashboard-content {
 
 #region-app-stack-wrap {
   position: relative;
-  height: 400px;
+  max-height: 400px;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -3863,7 +3867,7 @@ article.dashboard-content {
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
     border: 1px solid #bbb;
     max-height: 350px;
-    height: 350px; }
+    height: auto; }
   #region-app-stack-wrap .dash-region-apps-wrap, #region-app-stack-wrap .dash-region-stacks-wrap {
     width: 49%;
     position: relative;
@@ -3871,7 +3875,7 @@ article.dashboard-content {
     box-sizing: border-box; }
   #region-app-stack-wrap .dash-region-apps-wrap {
     margin-right: 2%; }
-  @media (max-width: 1280px) {
+  @media (max-width: 1024px) {
     #region-app-stack-wrap {
       max-height: 820px;
       display: block;

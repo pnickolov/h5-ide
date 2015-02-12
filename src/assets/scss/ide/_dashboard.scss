@@ -845,11 +845,19 @@ article.dashboard-content {
       right    : 5px;
     }
 
-    @media (max-width: 1030px) {
+    @media (max-width: 1280px) {
+      > li {
+        width       : 48%;
+        margin-left : 2%;
+      }
+    }
+
+    @media (max-width: 1024px) {
       > li {
         width : 22.5%;
         margin-left : 2%;
       }
+    
 
       .blank-widget {
         padding  : 14.55% 0 27px 0;
@@ -957,7 +965,7 @@ article.dashboard-content {
 
 #region-app-stack-wrap {
     position : relative;
-    height   : 400px;
+    max-height   : 400px;
     @include flexbox;
 
     .scroll-wrap {
@@ -965,7 +973,7 @@ article.dashboard-content {
       box-shadow : 1px 1px 5px rgba(0,0,0,0.1);
       border     : 1px solid #bbb;
       max-height : 350px;
-      height     : 350px;
+      height     : auto;
     }
 
     .dash-region-apps-wrap, .dash-region-stacks-wrap {
@@ -977,7 +985,7 @@ article.dashboard-content {
 
     .dash-region-apps-wrap { margin-right: 2%; }
 
-    @media (max-width: 1280px) {
+    @media (max-width: 1024px) {
       & {
         max-height     : 820px;
         display        : block;

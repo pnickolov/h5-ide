@@ -417,18 +417,19 @@ define [
       attr = @attributes
       data = {
         id            : @__opsModel.get("id")
-        provider      : @__opsModel.get("provider")
         region        : @__opsModel.get("region")
-        revision      : @__opsModel.get("revision")
+        provider      : @__opsModel.get("provider")
+        time_update   : @__opsModel.get("updateTime")
+        usage         : @__opsModel.get("usage")
+        version       : OpsModel.LatestVersion
         property      : attr.property || {}
         description   : attr.description
         resource_diff : attr.resource_diff
         agent         : attr.agent
-        version       : OpsModel.LatestVersion
         name          : attr.name
+        stack_id      : attr.stack_id
         component     : component_data
         layout        : layout_data
-        stack_id      : attr.stack_id
       }
 
 
@@ -437,17 +438,6 @@ define [
       # many components at once. ( One use-case is Subnet would like to assign IPs. )
       for visitor in @constructor.__serializeVisitors || []
         visitor( component_data, layout_data, options )
-
-      ###
-      # NOTICE!
-      # Git blame shows the following line of code is written by me, but it's not.
-      # It's the production of a branch merge.
-      # This obscure/ridicious if statement can't be deleted until every app launched before
-      # 2014-11-11 is terminated, because of some kind of weird feature and weird solution.
-      # Anyway, the if statement should never ever exist!!
-      ###
-      if options and options.toStack or @modeIsStack()
-        data.version = OpsModel.LatestVersion
 
       if currentDesignObj
         currentDesignObj.use()

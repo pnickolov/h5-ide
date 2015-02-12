@@ -45,7 +45,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       provider    : ""
       region      : ""
       description : ""
-      revision    : 0         # The current revision of the ops
       usage       : ""        # An attr bound to app
 
       unlimited   : false     # Indicate if this is an app launch before 2014-11-11
@@ -165,7 +164,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         usage       : @get("usage")
         provider    : @get("provider")
         version     : @get("version")
-        revision    : @get("revision")
+        time_update : @get("updateTime")
         description : @get("description")
         property    : { stoppable : @get("stoppable") }
 
@@ -299,10 +298,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       @set {
         name        : json.name     || @get("name")
         version     : json.version  || OpsModelLastestVersion
-        revision    : json.revision || 0
         stoppable   : stoppable
         description : json.description
         usage       : json.usage
+        updateTime  : json.time_update
       }
 
       @
@@ -334,9 +333,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.__setJsonData( res )
 
         self.set {
-          state      : OpsModelState.UnRun
-          updateTime : +(new Date())
-          id         : res.id  # if opsmodel's id is not empty, it should be equal to res.id
+          state : OpsModelState.UnRun
+          id    : res.id  # if opsmodel's id is not empty, it should be equal to res.id
         }
 
         ThumbUtil.save( res.id, thumbnail )
@@ -437,6 +435,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     terminate : ( force = false , extraOption )->
       if not @isApp() then return @__returnErrorPromise()
 
+      if @get("state") isnt OpsModelState.Stopped or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+
       oldState = @get("state")
       @attributes.progress = 0
       @set("state", OpsModelState.Terminating)
@@ -463,13 +463,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     update : ( newJson, fastUpdate )->
       if not @isApp() then return @__returnErrorPromise()
 
+      if @get("state") isnt OpsModelState.Stopped or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+
       if @__updateAppDefer
         console.error "The app is already updating!"
         return @__updateAppDefer.promise
 
       oldState = @get("state")
-      @set("state", OpsModelState.Updating)
       @attributes.progress = 0
+      @set("state", OpsModelState.Updating)
 
       @__updateAppDefer = Q.defer()
 
@@ -516,18 +518,21 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     # This method doesn't trigger an app update.
     syncAppJson : ( newJson )->
-      if not @isApp() then return @__returnErrorPromise()
+      if not @isApp() or @get("state") isnt OpsModelState.Stopped or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+
       if @__saveAppDefer
         console.error "The app is already saving!"
         return @__saveAppDefer.promise
 
       oldState = @get("state")
-      @set("state", OpsModelState.Saving)
       @attributes.progress = 0
+      @set("state", OpsModelState.Saving)
 
       @__saveAppDefer = Q.defer()
 
       self = @
+
+      newJson.time_update = @get("updateTime")
 
       # Send Request
       ApiRequest("app_save_info", {spec:newJson, key_id: self.credentialId()}).then (res)->
@@ -643,7 +648,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     __returnErrorPromise : ()->
       d = Q.defer()
-      d.resolve McError( ApiRequest.Errors.InvalidMethodCall, "The method is not supported by this model." )
+      d.resolve McError( ApiRequest.Errors.InvalidMethodCall, "Currently, the specific action can not be performed on the stack/app." )
       d.promise
 
     # This method init a json for a newly created stack.

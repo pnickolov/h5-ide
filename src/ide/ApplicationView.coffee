@@ -25,7 +25,8 @@ define [
       $(window).on "beforeunload", @checkUnload
       $(window).on 'keydown', @globalKeyEvent
 
-      if not App.user.fullnameNotSet() then new FullnameSetup()
+    init: ()->
+      if App.user.fullnameNotSet() then new FullnameSetup()
       return
 
     checkUnload : ()-> if App.canQuit() then undefined else lang.IDE.BEFOREUNLOAD_MESSAGE

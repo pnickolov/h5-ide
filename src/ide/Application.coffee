@@ -55,6 +55,7 @@ define [
 
     jobs.then ()->
       App.view.hideGlobalLoading()
+      App.view.init()
     , ( err )->
 
       # If userdata/appdata fails to load

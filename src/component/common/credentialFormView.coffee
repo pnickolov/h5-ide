@@ -35,6 +35,7 @@ define [
       @modal = new Modal
         title: title
         template: @el
+        width: 480
         confirm:
           text: confirmText
           disabled: true

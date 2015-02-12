@@ -45,6 +45,11 @@ define [ 'backbone', "../template/TplBilling", "ApiRequestR", 'i18n!/nls/lang.js
             @getUsage(dateString).then (result)->
                 payment = self.model.get("payment")
                 if not _.isEmpty result?.history_usage
+                  project_id = self.model.get("id")
+                  _.each result.history_usage, (value, key)->
+                    delete result.history_usage[key]
+                    key = key.replace("-"+project_id, "").replace("RDS-", "")
+                    result.history_usage[key] = value
                   elem = template.usageTable {result}
                 else
                   elem = "<div class='full-space'>#{lang.IDE.NO_USAGE_REPORT}</div>"

@@ -84,8 +84,7 @@ define [ "ApiRequest",
             cvv    : $cvv.val()
           }
         }).then ( project )->
-          modal.close()
-          App.loadUrl( project.url() )
+          modal.close -> App.loadUrl( project.url() )
         .fail ( error )->
           try
             msgObj = JSON.parse(error.result)

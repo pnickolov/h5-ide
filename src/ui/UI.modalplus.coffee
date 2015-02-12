@@ -159,6 +159,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 modal.nextCloses.push @
                 return false
             if not number or typeof number isnt "number"
+                if typeof number is "function"
+                  cb = number
                 number = 1
             if @isClosed then return false
             nextModal = modals[modals.length - (1+number)]
@@ -185,6 +187,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     modal.wrap.remove()
                     modals = []
                 modals[modals.length - 1]?.resize()
+                cb?()
             , modal.option.delay||300
             _.delay ->
                 modal.nextCloses.forEach (modalToClose)->

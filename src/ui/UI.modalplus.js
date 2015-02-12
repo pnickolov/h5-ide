@@ -117,13 +117,16 @@
         return this;
       },
       close: function(number) {
-        var modal, nextModal, _base;
+        var cb, modal, nextModal, _base;
         modal = modals[modals.length - 1];
         if (modal != null ? modal.pending : void 0) {
           modal.nextCloses.push(this);
           return false;
         }
         if (!number || typeof number !== "number") {
+          if (typeof number === "function") {
+            cb = number;
+          }
           number = 1;
         }
         if (this.isClosed) {
@@ -157,7 +160,10 @@
             modal.wrap.remove();
             modals = [];
           }
-          return (_ref = modals[modals.length - 1]) != null ? _ref.resize() : void 0;
+          if ((_ref = modals[modals.length - 1]) != null) {
+            _ref.resize();
+          }
+          return typeof cb === "function" ? cb() : void 0;
         }, modal.option.delay || 300);
         _.delay(function() {
           return modal.nextCloses.forEach(function(modalToClose) {

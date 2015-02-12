@@ -394,7 +394,7 @@
 
 /* Sidebar */
 
-$dashSideWidth: 24vw;
+$dashSideWidth: 20vw;
 
 .dashboard-wrapper {
   position : relative;
@@ -518,14 +518,20 @@ $bp-2: 1280px;
   margin-top : 20px;
 
   > div {
-    width      : 48%;
+    width      : 48.5%;
     height     : auto;
     max-height : $dashWrapHeight + 60;
     margin     : 0 1%;
     position   : relative;
 
+    &:first-of-type { margin-right: 0.5%; }
+    &:last-of-type { margin-left: 0.5%; }
+
     @media (max-width: $bp-1) {
       width: 98%;
+
+      &:first-of-type { margin-right: 1%; }
+      &:last-of-type { margin-left: 1%; }
     }
 
   }

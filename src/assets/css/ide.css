@@ -3424,13 +3424,13 @@ div.modal-text-highlight {
   display: flex; }
 
 article.dashboard-content {
-  width: 76vw;
+  width: 80vw;
   background: #f0f0f0;
   overflow-x: hidden;
   overflow-y: auto; }
 
 aside.dashboard-sidebar {
-  width: 24vw;
+  width: 20vw;
   background: #fff;
   border-left: 1px #ddd solid; }
   aside.dashboard-sidebar nav {
@@ -3508,14 +3508,22 @@ aside.dashboard-sidebar {
   width: 100%;
   margin-top: 20px; }
   #region-app-stack-wrap > div {
-    width: 48%;
+    width: 48.5%;
     height: auto;
     max-height: 370px;
     margin: 0 1%;
     position: relative; }
+    #region-app-stack-wrap > div:first-of-type {
+      margin-right: 0.5%; }
+    #region-app-stack-wrap > div:last-of-type {
+      margin-left: 0.5%; }
     @media (max-width: 1024px) {
       #region-app-stack-wrap > div {
-        width: 98%; } }
+        width: 98%; }
+        #region-app-stack-wrap > div:first-of-type {
+          margin-right: 1%; }
+        #region-app-stack-wrap > div:last-of-type {
+          margin-left: 1%; } }
   #region-app-stack-wrap #region-resource-stack-wrap,
   #region-app-stack-wrap #region-resource-app-wrap {
     overflow-x: hidden;

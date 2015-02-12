@@ -91,7 +91,7 @@ define [ "ApiRequest",
             if _.isArray(msgObj.errors)
               modal.tpl.find(".new-project-err").show().html msgObj.errors.join('<br/>')
           catch err
-            notification 'error', error.result
+            notification 'error', error.result or error.msg
           # modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
           return
         .done () ->

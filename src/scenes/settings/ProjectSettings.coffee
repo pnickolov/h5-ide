@@ -29,12 +29,16 @@ define [
     }
 
     Backbone.View.extend
+
         events:
             'click .function-list a'    : 'loadSub'
 
         initialize: ( options ) ->
+
+            that = @
             @settingsView = options.settingsView
             @listenTo @model, 'change:name', @updateProjectName
+            @listenTo @model, 'change:myRole', @refresh, @
 
         render: ( tab = 'basicsettings' ) ->
             @setElement $( TplProject _.extend @model.toJSON(), { tab: tab, admin:@model.amIAdmin() } )
@@ -48,6 +52,10 @@ define [
             if delegate isnt false then this.delegateEvents()
             @
 
+        refresh: () ->
+
+            tab = @$('.function-list a.active').data('id')
+            @settingsView.renderProject @model, tab
 
         loadSub: ( e ) ->
             tab = $(e.currentTarget).data('id')

@@ -149,14 +149,14 @@ define ['backbone',
                 data = that.memberCol.toJSON()
                 data = _.sortBy data, (a, b) ->
                     return false if currentUsername is a.username
-                    return (a.state isnt 'normal' or a.role isnt 'admin')
+                    return (a.state isnt 'normal' || a.role isnt 'admin')
                 return
             .fail (data) ->
                 notification 'error', (data.result or data.msg)
                 that.$el.find('.loading-spinner').addClass('hide')
             .done () ->
-                # refresh project model
                 that.renderMain()
+                # refresh project model
                 that.$el.find('.content').removeClass('hide')
                 that.$el.find('.loading-spinner').addClass('hide')
                 that.renderList(data)

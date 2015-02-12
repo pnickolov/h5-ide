@@ -2165,11 +2165,11 @@ VisualOps API. You cannot UNDO this action.'
       zh: "详细价格"
 
     FAILED_TO_CHARGE_YOUR_CREDIT_CARD:
-      en: "We were unable to charge the project’s credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. Update payment information as soon as possible to continue managing apps with VisualOps. "
+      en: "We were unable to charge the project's credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. Update payment information as soon as possible to continue managing apps with VisualOps. "
       zh: "我们无法从此项目绑定的信用卡中扣费。此项目现已处于受限状态。导入 VPC，App 操作，监控和 state ensuring 功能已被禁用。请尽快更新您的付款信息以继续用 VisualOps 管理资源。"
 
     FAILED_TO_CHARGE_YOUR_CREDIT_CARD_MEMBER:
-      en: "We were unable to charge the project’s credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. "
+      en: "We were unable to charge the project's credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. "
       zh: "我们无法从此项目绑定的信用卡中扣费。此项目现已处于受限状态。导入 VPC，App 操作，监控和 state ensuring 功能已被禁用。"
 
     WAIT_FOR_ADMIN_UPDATE_PAYMENT_MODAL:

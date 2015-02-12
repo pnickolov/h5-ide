@@ -174,45 +174,42 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scroll-content">
-  <table class="table">
-      <thead>
-          <tr>
-              <th></th>
-              <th style="width: 10%"></th>
-              <th style="width: 18%"></th>
-              <th style="width: 15%"></th>
-              <th style="width: 11%"></th>
-              <th style="width: 14%"></th>
-              <th style="width: 11%"></th>
-              <th style="width: 40px"></th>
-          </tr>
-      </thead>
-    <tbody> {{#each this}}{{#with attributes}}<tr>
-        <td>
-        {{#doubleIf visopsTag visopsTag.app }}
-          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
-        {{else}}
-          <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
-        {{/doubleIf}}
-          <div>{{#if visopsTag}}{{or visopsTag.name visopsTag.Name}}{{/if}}<span class="resource-id">( {{id}} )</span></div>
-        </td>
-        <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
-        <td>{{simpleTime launchTime}}</td>
-        <td>
-          <img src="/assets/images/ide/ami/{{#awsAmiIcon ../collection.__credential imageId category}}{{/awsAmiIcon}}">
-          <span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{imageId}}&quot;}">{{ imageId }}</span></td>
-        <td>{{instanceType}}</td>
-        <td {{#awsIsEip ../collection.__credential ipAddress category}}class="dashboard-eip tooltip" data-tooltip="{{i18n "DASH_LBL_ELASTIC_IP"}}"{{/awsIsEip}}>{{ipAddress}}</td>
-        <td>{{placement.availabilityZone}}</td>
-        <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
-      </tr>{{/with}}
+<table class="table">
+  <thead>
+      <tr>
+          <th></th>
+          <th style="width: 10%"></th>
+          <th style="width: 18%"></th>
+          <th style="width: 15%"></th>
+          <th style="width: 11%"></th>
+          <th style="width: 14%"></th>
+          <th style="width: 11%"></th>
+          <th style="width: 40px"></th>
+      </tr>
+  </thead>
+<tbody> {{#each this}}{{#with attributes}}<tr>
+    <td>
+    {{#doubleIf visopsTag visopsTag.app }}
+      <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
     {{else}}
-      <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
-    {{/each}} </tbody>
-  </table>
-</div></div>
+      <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
+    {{/doubleIf}}
+      <div>{{#if visopsTag}}{{or visopsTag.name visopsTag.Name}}{{/if}}<span class="resource-id">( {{id}} )</span></div>
+    </td>
+    <td><i class="status status-{{instanceState.name}} icon-label"></i>{{ instanceState.name }}</td>
+    <td>{{simpleTime launchTime}}</td>
+    <td>
+      <img src="/assets/images/ide/ami/{{#awsAmiIcon ../collection.__credential imageId category}}{{/awsAmiIcon}}">
+      <span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;AMI&quot;,&quot;id&quot;:&quot;{{imageId}}&quot;}">{{ imageId }}</span></td>
+    <td>{{instanceType}}</td>
+    <td {{#awsIsEip ../collection.__credential ipAddress category}}class="dashboard-eip tooltip" data-tooltip="{{i18n "DASH_LBL_ELASTIC_IP"}}"{{/awsIsEip}}>{{ipAddress}}</td>
+    <td>{{placement.availabilityZone}}</td>
+    <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
+  </tr>{{/with}}
+{{else}}
+  <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+{{/each}} </tbody>
+</table>
 
 <!-- {{resourceEIP}} -->
 <table class="table-head">
@@ -224,31 +221,28 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scroll-content">
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+    <tr>
+        <th style="width:40%"></th>
+        <th></th>
+        <th style="width:40px"></th>
+    </tr>
+    </thead>
+    <tbody>{{#each this}}{{#with attributes}}
         <tr>
-            <th style="width:40%"></th>
-            <th></th>
-            <th style="width:40px"></th>
-        </tr>
-        </thead>
-        <tbody>{{#each this}}{{#with attributes}}
-            <tr>
-                <td>{{ publicIp }}</td>
-                <td>{{ instanceId }}</td>
-                <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
-            </tr>{{/with}}
-        {{else}}
-            <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_ELASTIC_IP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
-                .
-            </div>
-        {{/each}}
-        </tbody>
-    </table>
-</div>
-</div>
+            <td>{{ publicIp }}</td>
+            <td>{{ instanceId }}</td>
+            <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
+        </tr>{{/with}}
+    {{else}}
+        <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_ELASTIC_IP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
+            .
+        </div>
+    {{/each}}
+    </tbody>
+</table>
+
 
 <!-- {{resourceVOL}} -->
 <table class="table-head">
@@ -264,51 +258,47 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scroll-content">
-    <table class="table">
-        <thead>
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+        <th style="width: 15%"></th>
+        <th style="width: 20%"></th>
+        <th style="width: 18%"></th>
+        <th style="width: 12%"></th>
+        <th style="width: 15%"></th>
+        <th style="width:40px"></th>
+    </tr>
+    </thead>
+    <tbody>{{#each this}}{{#with attributes}}
         <tr>
-            <th></th>
-            <th style="width: 15%"></th>
-            <th style="width: 20%"></th>
-            <th style="width: 18%"></th>
-            <th style="width: 12%"></th>
-            <th style="width: 15%"></th>
-            <th style="width:40px"></th>
-        </tr>
-        </thead>
-        <tbody>{{#each this}}{{#with attributes}}
-            <tr>
-                <td>
-                    {{#doubleIf visopsTag visopsTag.app }}
-                        <div class="table-app-link-wrap"><span
-                                class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip"
-                                data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}"
-                                data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
-                    {{else}}
-                        <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
-                    {{/doubleIf}}
-                    <div>{{id}}</div>
-                </td>
-                <td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
-                <td>{{ simpleTime createTime }}</td>
-                <td>{{device}}</td>
-                <td>{{size}} GiB</td>
-                <td>
-                    <i class="status {{#if attachmentStatus}}status-in-use{{else}}status-available{{/if}} icon-label"></i>{{#if attachmentStatus}}
-                    attached{{else}}not-attached{{/if}}</td>
-                <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
-            </tr>{{/with}}
-        {{else}}
-            <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VOLUME"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
-                .
-            </div>
-        {{/each}}
-        </tbody>
-    </table>
-</div>
-</div>
+            <td>
+                {{#doubleIf visopsTag visopsTag.app }}
+                    <div class="table-app-link-wrap"><span
+                            class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip"
+                            data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}"
+                            data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
+                {{else}}
+                    <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
+                {{/doubleIf}}
+                <div>{{id}}</div>
+            </td>
+            <td><i class="status status-{{ status }} icon-label"></i>{{ status }}</td>
+            <td>{{ simpleTime createTime }}</td>
+            <td>{{device}}</td>
+            <td>{{size}} GiB</td>
+            <td>
+                <i class="status {{#if attachmentStatus}}status-in-use{{else}}status-available{{/if}} icon-label"></i>{{#if attachmentStatus}}
+                attached{{else}}not-attached{{/if}}</td>
+            <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
+        </tr>{{/with}}
+    {{else}}
+        <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VOLUME"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
+            .
+        </div>
+    {{/each}}
+    </tbody>
+</table>
 
 <!-- {{resourceVPC}} -->
 <table class="table-head">
@@ -322,40 +312,37 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scroll-content">
-  <table class="table">
-      <thead>
-      <tr>
-          <th></th>
-          <th style="width:20%"></th>
-          <th style="width:25%"></th>
-          <th style="width:20%"></th>
-          <th style="width:40px"></th>
-      </tr>
-      </thead>
-    <tbody>{{#each this}}{{#with attributes}} <tr>
-        <td>
-        {{#doubleIf visopsTag visopsTag.app }}
-          <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
-        {{else}}
-          <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
-        {{/doubleIf}}
-        <div>{{id}}</div>
-        </td>
-        <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
-        <td>{{ cidrBlock }}</td>
-        <td>{{#if dhcpOptionsId}}<span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;DHCP&quot;,&quot;id&quot;:&quot;{{dhcpOptionsId}}&quot;}">{{ dhcpOptionsId }}</span>{{else}}None{{/if}}</td>
-        <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
-      </tr>{{/with}}
-      {{else}}
-      <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPC"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
-      {{/each}}
-
-    </tbody>
+<table class="table">
+  <thead>
+  <tr>
+      <th></th>
+      <th style="width:20%"></th>
+      <th style="width:25%"></th>
+      <th style="width:20%"></th>
+      <th style="width:40px"></th>
+  </tr>
+  </thead>
+  <tbody>{{#each this}}{{#with attributes}} <tr>
+    <td>
+    {{#doubleIf visopsTag visopsTag.app }}
+      <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
+    {{else}}
+      <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
+    {{/doubleIf}}
+    <div>{{id}}</div>
+    </td>
+    <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+    <td>{{ cidrBlock }}</td>
+    <td>{{#if dhcpOptionsId}}<span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;DHCP&quot;,&quot;id&quot;:&quot;{{dhcpOptionsId}}&quot;}">{{ dhcpOptionsId }}</span>{{else}}None{{/if}}</td>
+    <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
+  </tr>{{/with}}
+  {{else}}
+  <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPC"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+  {{/each}}
+  
+  </tbody>
 </table>
-</div>
-</div>
+
 
 <!-- {{resourceVPN}} -->
 <table class="table-head">
@@ -369,40 +356,36 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scroll-content">
-    <table class="table">
-        <thead>
-        <tr>
-            <th></th>
-            <th style="width: 20%"></th>
-            <th style="width: 25%"></th>
-            <th style="width: 20%"></th>
-            <th style="width: 40px"></th>
-        </tr>
-        </thead>
-    <tbody>{{#each this}}{{#with attributes}}
-      <tr>
-        <td>
-          {{#doubleIf visopsTag visopsTag.app }}
-            <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
-          {{else}}
-            <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
-          {{/doubleIf}}
-          <div>{{id}}</div>
-        </td>
-        <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
-        <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;VGW&quot;,&quot;id&quot;:&quot;{{vpnGatewayId}}&quot;}">{{ vpnGatewayId }}</span></td>
-        <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;CGW&quot;,&quot;id&quot;:&quot;{{customerGatewayId}}&quot;}">{{ customerGatewayId }}</span></td>
-        <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id='{{id}}'></i></td>
-      </tr>{{/with}}
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+        <th style="width: 20%"></th>
+        <th style="width: 25%"></th>
+        <th style="width: 20%"></th>
+        <th style="width: 40px"></th>
+    </tr>
+    </thead>
+<tbody>{{#each this}}{{#with attributes}}
+  <tr>
+    <td>
+      {{#doubleIf visopsTag visopsTag.app }}
+        <div class="table-app-link-wrap"><span class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip" data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}" data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
       {{else}}
-      <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPN"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
-      {{/each}}
-    </tbody>
-  </table>
-</div>
-</div>
+        <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
+      {{/doubleIf}}
+      <div>{{id}}</div>
+    </td>
+    <td><i class="status status-{{ state }} icon-label"></i>{{ state }}</td>
+    <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;VGW&quot;,&quot;id&quot;:&quot;{{vpnGatewayId}}&quot;}">{{ vpnGatewayId }}</span></td>
+    <td><span class="bubble" data-bubble-template="dashboardBubble" data-bubble-data="{&quot;type&quot;:&quot;CGW&quot;,&quot;id&quot;:&quot;{{customerGatewayId}}&quot;}">{{ customerGatewayId }}</span></td>
+    <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id='{{id}}'></i></td>
+  </tr>{{/with}}
+  {{else}}
+  <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPN"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+  {{/each}}
+</tbody>
+</table>
 
 <!-- {{resourceELB}} -->
 <table class="table-head">
@@ -416,35 +399,32 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-<div class="scroll-content">
-    <table class="table">
-        <thead>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+        <th style="width: 20%"></th>
+        <th style="width: 25%"></th>
+        <th style="width: 20%"></th>
+        <th style="width: 40px"></th>
+    </tr>
+    </thead>
+    <tbody>{{#each this}}{{#with attributes}}
         <tr>
-            <th></th>
-            <th style="width: 20%"></th>
-            <th style="width: 25%"></th>
-            <th style="width: 20%"></th>
-            <th style="width: 40px"></th>
-        </tr>
-        </thead>
-        <tbody>{{#each this}}{{#with attributes}}
-            <tr>
-                <td>{{ DNSName }}</td>
-                <td>{{ simpleTime CreatedTime }}</td>
-                <td>{{ AvailabilityZones }}</td>
-                <td>{{ state }}</td>
-                <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
-            </tr>{{/with}}
-        {{else}}
-            <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_LOAD_BALANCER"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
-                .
-            </div>
-        {{/each}}
-        </tbody>
-    </table>
-</div>
-</div>
+            <td>{{ DNSName }}</td>
+            <td>{{ simpleTime CreatedTime }}</td>
+            <td>{{ AvailabilityZones }}</td>
+            <td>{{ state }}</td>
+            <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
+        </tr>{{/with}}
+    {{else}}
+        <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_LOAD_BALANCER"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
+            .
+        </div>
+    {{/each}}
+    </tbody>
+</table>
 
 <!-- {{resourceASG}} -->
 <table class="table-head">
@@ -457,43 +437,40 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="scroll-content">
-        <table class="table">
-            <thead>
-            <tr>
-                <th></th>
-                <th style="width: 50%"></th>
-                <th style="width: 20%"></th>
-                <th style="width:40px"></th>
-            </tr>
-            </thead>
-            <tbody> {{#each this}}{{#with attributes}}
-                <tr>
-                    <td>
-                        {{#doubleIf visopsTag visopsTag.app }}
-                            <div class="table-app-link-wrap"><span
-                                    class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip"
-                                    data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}"
-                                    data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
-                        {{else}}
-                            <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
-                        {{/doubleIf}}
-                        <div>{{AutoScalingGroupName}}</div>
-                    </td>
-                    <td>{{last_activity}}</td>
-                    <td>{{activity_state}}</td>
-                    <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i>
-                    </td>
-                </tr>{{/with}}
-            {{else}}
-                <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
-                </div>
-            {{/each}}
-            </tbody>
-        </table>
-    </div>
-</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th></th>
+        <th style="width: 50%"></th>
+        <th style="width: 20%"></th>
+        <th style="width:40px"></th>
+    </tr>
+    </thead>
+    <tbody> {{#each this}}{{#with attributes}}
+        <tr>
+            <td>
+                {{#doubleIf visopsTag visopsTag.app }}
+                    <div class="table-app-link-wrap"><span
+                            class="{{#if visopsTag.isOwner}}table-app-link link-style{{/if}} truncate tooltip"
+                            data-tooltip="{{i18n 'DASH_TIP_APP_CREATED_BY'}}{{getInvalidKey visopsTag 'Created by'}}"
+                            data-id="{{visopsTag.app-id}}">[{{visopsTag.app}}]</span></div>
+                {{else}}
+                    <div>{{ i18n "DASH_LBL_UNMANAGED" }}</div>
+                {{/doubleIf}}
+                <div>{{AutoScalingGroupName}}</div>
+            </td>
+            <td>{{last_activity}}</td>
+            <td>{{activity_state}}</td>
+            <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i>
+            </td>
+        </tr>{{/with}}
+    {{else}}
+        <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}
+        </div>
+    {{/each}}
+    </tbody>
+</table>
 
 <!-- {{resourceCW}} -->
 <table class="table-head">
@@ -507,33 +484,29 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="scroll-content">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th style="width: 30%"></th>
-                    <th style="width: 30%"></th>
-                    <th style="width: 10%"></th>
-                    <th style="width:40px"></th>
-                </tr>
-            </thead>
-          <tbody>{{#each this}}{{#with attributes}}
-            <tr>
-              <td>{{Name}}</td>
-              <td>{{#doubleIf Dimensions Dimensions.member.length}}{{Dimensions.member.[0].Name}}:{{Dimensions.member.[0].Value}}{{/doubleIf}}</td>
-              <td>{{MetricName}} {{ComparisonOperator}} {{Threshold}} for {{Period}} seconds</td>
-              <td><i class="status {{#ifCond StateValue "OK"}}status-green{{else}}{{#ifCond StateValue "ALARM"}}status-yellow{{else}}status-grey{{/ifCond}}{{/ifCond}} icon-label"></i>{{StateValue}}</td>
-              <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
-            </tr>{{/with}}
-            {{else}}
-            <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
-            {{/each}}
-          </tbody>
-        </table>
-    </div>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th style="width: 30%"></th>
+            <th style="width: 30%"></th>
+            <th style="width: 10%"></th>
+            <th style="width:40px"></th>
+        </tr>
+    </thead>
+  <tbody>{{#each this}}{{#with attributes}}
+    <tr>
+      <td>{{Name}}</td>
+      <td>{{#doubleIf Dimensions Dimensions.member.length}}{{Dimensions.member.[0].Name}}:{{Dimensions.member.[0].Value}}{{/doubleIf}}</td>
+      <td>{{MetricName}} {{ComparisonOperator}} {{Threshold}} for {{Period}} seconds</td>
+      <td><i class="status {{#ifCond StateValue "OK"}}status-green{{else}}{{#ifCond StateValue "ALARM"}}status-yellow{{else}}status-grey{{/ifCond}}{{/ifCond}} icon-label"></i>{{StateValue}}</td>
+      <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
+    </tr>{{/with}}
+    {{else}}
+    <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+    {{/each}}
+  </tbody>
+</table>
 
 <!-- {{resourceSUBSCRIPTION}} -->
 <table class="table-head">
@@ -546,35 +519,32 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="scroll-content">
-        <table class="table">
-            <thead>
-            <tr>
-                <th style="width:20%"></th>
-                <th></th>
-                <th style="width:30%"></th>
-                <th style="width:40px"></th>
-            </tr>
-            </thead>
-            <tbody> {{#each this}}{{#with attributes}}
-                <tr>
-                    <td>{{TopicName}}</td>
-                    <td>{{Protocol}}: {{Endpoint}}</td>
-                    {{#ifCond SubscriptionArn "PendingConfirmation"}}
-                        <td><i class="status status-red icon-label"></i>{{i18n "DASH_TPL_PENDING_CONFIRMATION"}}</td>
-                    {{else}}
-                        <td><i class="status status-green icon-label"></i>{{i18n "PROP.LBL_SUCCESS"}}</td>
-                    {{/ifCond}}
-                    <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i>
-                    </td>
-                </tr>{{/with}}
+<table class="table">
+    <thead>
+    <tr>
+        <th style="width:20%"></th>
+        <th></th>
+        <th style="width:30%"></th>
+        <th style="width:40px"></th>
+    </tr>
+    </thead>
+    <tbody> {{#each this}}{{#with attributes}}
+        <tr>
+            <td>{{TopicName}}</td>
+            <td>{{Protocol}}: {{Endpoint}}</td>
+            {{#ifCond SubscriptionArn "PendingConfirmation"}}
+                <td><i class="status status-red icon-label"></i>{{i18n "DASH_TPL_PENDING_CONFIRMATION"}}</td>
             {{else}}
-                <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}</div>
-            {{/each}}
-            </tbody>
-        </table>
-    </div>
+                <td><i class="status status-green icon-label"></i>{{i18n "PROP.LBL_SUCCESS"}}</td>
+            {{/ifCond}}
+            <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i>
+            </td>
+        </tr>{{/with}}
+    {{else}}
+        <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}</div>
+    {{/each}}
+    </tbody>
+</table>
 
 
     <!-- {{resourceDBINSTANCE}} -->
@@ -590,35 +560,31 @@
     </tr>
     </thead>
 </table>
-<div class="scroll-wrap"><div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-    <div class="scroll-content">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th style="width: 18%"></th>
-                    <th style="width: 21%"></th>
-                    <th style="width: 15%"></th>
-                    <th style="width: 15%"></th>
-                    <th style="width: 40px"></th>
-                </tr>
-            </thead>
-            <tbody> {{#each this}}{{#with attributes}}<tr>
-                <td>
-                    <div>{{DBInstanceIdentifier}}</div>
-                </td>
-                <td><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}} icon-label"></i>{{ DBInstanceStatus }}</td>
-                <td>{{Engine}} {{EngineVersion}}</td>
-                <td>{{DBInstanceClass}}</td>
-                <td>{{AllocatedStorage}} GB</td>
-                <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
-            </tr>{{/with}}
-            {{else}}
-                <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
-            {{/each}} </tbody>
-        </table>
-    </div>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th style="width: 18%"></th>
+            <th style="width: 21%"></th>
+            <th style="width: 15%"></th>
+            <th style="width: 15%"></th>
+            <th style="width: 40px"></th>
+        </tr>
+    </thead>
+    <tbody> {{#each this}}{{#with attributes}}<tr>
+        <td>
+            <div>{{DBInstanceIdentifier}}</div>
+        </td>
+        <td><i class="status status-{{#ifCond DBInstanceStatus 'available'}}green{{else}}yellow{{/ifCond}} icon-label"></i>{{ DBInstanceStatus }}</td>
+        <td>{{Engine}} {{EngineVersion}}</td>
+        <td>{{DBInstanceClass}}</td>
+        <td>{{AllocatedStorage}} GB</td>
+        <td><i title="{{i18n 'DASH_TIT_VIEW_RESOURCE_DETAIL'}}" class="icon-detail" data-id="{{id}}"></i></td>
+    </tr>{{/with}}
+    {{else}}
+        <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_INSTANCE"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
+    {{/each}} </tbody>
+</table>
 
 
 

@@ -2627,12 +2627,20 @@ into live resources, or import existing infrastructures."
       zh: "注意：此证书最少必须有读取 AWS EC2 资源的权限，否则 VisualOps 会产生错误。"
 
     ARE_YOU_SURE_YOU_WANT_TO_REMOVE_XXX:
-      en: "Are you sure you want to remove %s."
+      en: "Are you sure you want to remove %s?"
       zh: "确定要删除 %s 吗？"
 
     REMOVE_CREDENTIAL_CONFIRM_TIPS:
       en: "Apps managed under this credential will be forgotten. You will not be able to run stack or import VPC. If you provide a credential later with access to different AWS resources, previous stacks may not work properly."
       zh: "与此证书关联的 App 将被释放，且您将无法运行 Stack 和 导入 VPC 。如果您以后添加一个不同的证书，先前的 Stack 可能无法工作。"
+
+    REMOVE_CREDENTIAL_CONFIRM_BTN:
+      en: "Remove Credential"
+      zh: "移除证书"
+
+    REMOVE_CREDENTIAL_CONFIRM_TITLE:
+      en: 'Delete Cloud Credential'
+      zh: "删除云证书"
 
     SETTINGS_MEMBER_LABEL_REMOVE:
       en: "Delete"

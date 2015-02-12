@@ -107,10 +107,11 @@ define [
 
             @removeConfirmView?.close()
             @removeConfirmView = new Modal {
-                title: 'Delete Cloud Credential'
+                title: lang.IDE.REMOVE_CREDENTIAL_CONFIRM_TITLE
                 template: TplCredential.removeConfirm name: credName
                 confirm:
-                    text: 'Remove Credential'
+                    text: lang.IDE.REMOVE_CREDENTIAL_CONFIRM_BTN
+                    color: "red"
             }
 
             @removeConfirmView.on 'confirm', () ->

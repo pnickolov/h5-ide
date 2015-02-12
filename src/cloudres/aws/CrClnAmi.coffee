@@ -83,8 +83,10 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     __selfParseData : true
 
+    localStorageKey : ()-> "ivla/" + @credential() + "_" + @region()
+
     initialize : ()->
-      invalidAmi = localStorage.getItem("invalidAmi/" + @region())
+      invalidAmi = localStorage.getItem( @localStorageKey() )
       @__markedIds = {}
 
       if invalidAmi
@@ -94,7 +96,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     doFetch : ()->
       # This method is used for CloudResources to invalid the cache.
-      localStorage.setItem("invalidAmi/" + @region(), "")
+      localStorage.setItem( @localStorageKey(), "")
       @__markedIds = {}
       d = Q.defer()
       d.resolve([])
@@ -113,7 +115,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       for amiId, value of @__markedIds
         if value then amis.push amiId
 
-      localStorage.setItem("invalidAmi/" + @region(), amis.join(",") )
+      localStorage.setItem( @localStorageKey(), amis.join(",") )
 
     fetchAmi : ( ami )->
       if not ami then return
@@ -220,9 +222,6 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
     fetchForce : ()->
       @__models = []
       CrCollection.prototype.fetchForce.call this
-
-
-
   }
 
   ### This Collection is used to fetch quickstart ami ###
@@ -310,8 +309,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
   }
 
 
-
-
+  UserFavAmis = {}
   ### This Collection is used to fetch favorite ami ###
   SpecificAmiCollection.extend {
     ### env:dev ###
@@ -321,59 +319,65 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
     type  : "FavoriteAmi"
 
     doFetch : ()->
-      @sendRequest("favorite_info", {
-        provider    : "AWS"
-        service     : "EC2"
-        resource    : "AMI"
-      })
+      region = @region()
 
-    parseFetchData : ( data )->
-      # OpsResource doesn't return anything, Instead, it injects the data to other collection.
-      savedAmis = []
-      favAmiId  = []
-      for ami in data
-        if $.isEmptyObject( ami.blockDeviceMapping )
-          ami.blockDeviceMapping = null
+      if UserFavAmis[ region ]
+        d = Q.defer()
+        d.resolve()
+        p = d.promise()
+      else
+        p = ApiRequest("favorite_info", {
+          region_name : region
+          provider    : "AWS"
+          service     : "EC2"
+          resource    : "AMI"
+        }).then ( res )-> UserFavAmis[ region ] = res || []; return
 
-        savedAmis.push ami
-        favAmiId.push ami.id
+      self = @
+      p.then ()->
+        CloudResources( self.credential(), constant.RESTYPE.AMI, self.region() ).fetchAmis( UserFavAmis[ region ] )
 
-      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add savedAmis
-      @__models = favAmiId
-      return
+    parseFetchData : ( data )-> return
+
+    getModels : ()->
+      ms = []
+      col = CloudResources( @credential(), constant.RESTYPE.AMI, @region() )
+      for id in UserFavAmis[ @region() ] || []
+        m = col.get( id )
+        if m then ms.push m
+      ms
 
     unfav : ( id )->
       self = @
-      idx = @__models.indexOf id
+      idx = (UserFavAmis[@region()]||[]).indexOf id
       if idx is -1
         d = Q.defer()
         d.resolve()
         return d.promise
 
-      @sendRequest("favorite_remove", {
+      ApiRequest("favorite_remove", {
+        region_name  : @region()
         resource_ids : [id]
       }).then ()->
-        idx = self.__models.indexOf id
-        self.__models.splice idx, 1
+        ms = UserFavAmis[@region()]
+        ms.splice ms.indexOf(id), 1
         self.trigger "update"
         self
 
-    fav : ( ami )->
-      if _.isString( ami )
-        imageId = ami
-        ami = ""
-      else
-        ami = $.extend {}, ami
-        imageId = ami.id
+    fav   : ( ami )->
+      if not ami.id then return null
+
+      imageId = ami.id
 
       self = @
-      @sendRequest("favorite_add", {
-        resource : { id: imageId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
+      ApiRequest("favorite_add", {
+        region_name : @region()
+        resource    : { id: ami.id, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
       }).then ()->
-        self.__models.push imageId
+        ms = UserFavAmis[ self.region() ] || (UserFavAmis[ self.region() ] = [])
+        ms.push ami.id
 
-        if ami
-          CloudResources( self.credential(), constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
+        CloudResources( self.credential(), constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
 
         self.trigger "update"
         self

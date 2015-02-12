@@ -39,12 +39,11 @@ define [
         @view.confirmImport()
         return
 
-      # if App.user.shouldPay() and @opsModel.isPMRestricted()
-      #   @view.showUnpayUI()
-      # else
-      #   @diff()
-      # @view.listenToPayment()
-      @diff()
+      if @scene.project.shouldPay() and @opsModel.isPMRestricted()
+         @view.showUnpayUI()
+      else
+         @diff()
+      @view.listenToPayment()
       return
 
     diff : ()->

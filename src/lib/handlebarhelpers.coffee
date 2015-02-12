@@ -108,7 +108,7 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
 
   Handlebars.registerHelper 'formatTime', (dateStr, format)->
-
+    utc = false
     date = new Date(dateStr)
     MMMM = lang.IDE.DATE_FORMAT_MONTHS.split(', ')
     MMM = lang.IDE.DATE_FORMAT_MON.split(', ')

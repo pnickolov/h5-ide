@@ -529,6 +529,8 @@ define [
 
 
     showPayment: (elem, opsModel)->
+      if not opsModel
+        opsModel = @workspace.opsModel
       project_id = opsModel.project().get("id")
       showPaymentDefer = Q.defer()
       url = "/settings/#{project_id}/billing"
@@ -559,7 +561,7 @@ define [
           else
             updateDom = MC.template.providePayment result
           if elem
-            elem.html updateDom
+            $(elem).html updateDom
             $(elem).trigger 'paymentRendered'
           else
             paymentModal.setContent(updateDom)

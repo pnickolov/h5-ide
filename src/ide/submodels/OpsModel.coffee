@@ -435,7 +435,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     terminate : ( force = false , extraOption )->
       if not @isApp() then return @__returnErrorPromise()
 
-      if @get("state") isnt OpsModelState.Stopped or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+      if @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
 
       oldState = @get("state")
       @attributes.progress = 0
@@ -463,7 +463,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     update : ( newJson, fastUpdate )->
       if not @isApp() then return @__returnErrorPromise()
 
-      if @get("state") isnt OpsModelState.Stopped or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+      if @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
 
       if @__updateAppDefer
         console.error "The app is already updating!"
@@ -518,7 +518,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     # This method doesn't trigger an app update.
     syncAppJson : ( newJson )->
-      if not @isApp() or @get("state") isnt OpsModelState.Stopped or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+      if not @isApp() or ( @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running ) then return @__returnErrorPromise()
 
       if @__saveAppDefer
         console.error "The app is already saving!"

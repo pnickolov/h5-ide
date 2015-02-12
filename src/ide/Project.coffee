@@ -196,7 +196,7 @@ define [
 
     updateName: ( name ) ->
       model = @
-      ApiRequest( "project_save", { project_id: @id, spec: { name: name } } ).then ( res ) ->
+      ApiRequest( "project_rename", { project_id: @id, spec: { name: name } } ).then ( res ) ->
         model.set 'name', name
         res
 

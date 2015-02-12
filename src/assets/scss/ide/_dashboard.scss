@@ -419,9 +419,10 @@ article.dashboard-content {
 }
 
 aside.dashboard-sidebar {
-  width      : $dashSideWidth;
-  background : #fff;
-  border-left: 1px #ddd solid;
+  width       : $dashSideWidth;
+  background  : #fff;
+  border-left : 1px #ddd solid;
+  height      : 100%;
 
   nav {
     overflow      : auto;
@@ -449,6 +450,11 @@ aside.dashboard-sidebar {
         border-bottom: 2px solid $base-b;
         width: 100%;
       }
+    }
+
+  .dashboard-log-wrap {
+      @include v-scroll;
+      height : 100%;
     }
 
   .dashboard-log {

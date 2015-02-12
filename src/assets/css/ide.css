@@ -3438,7 +3438,8 @@ article.dashboard-content {
 aside.dashboard-sidebar {
   width: 20vw;
   background: #fff;
-  border-left: 1px #ddd solid; }
+  border-left: 1px #ddd solid;
+  height: 100%; }
   aside.dashboard-sidebar nav {
     overflow: auto;
     background: #eee;
@@ -3463,6 +3464,10 @@ aside.dashboard-sidebar {
     aside.dashboard-sidebar .dashboard-nav-log.selected {
       border-bottom: 2px solid #4a90e2;
       width: 100%; }
+  aside.dashboard-sidebar .dashboard-log-wrap {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%; }
   aside.dashboard-sidebar .dashboard-log .dashboard-log-item {
     padding: 15px 10px;
     cursor: default; }

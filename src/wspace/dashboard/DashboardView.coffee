@@ -133,8 +133,9 @@ define [ "./DashboardTpl",
       })
       false
 
-    importApp : ()-> new VisualizeDialog({model:@model.scene.project})
-
+    importApp : ()->
+      new AppAction({project: @model.scene.project}).showPayment().then (result)=>
+        new VisualizeDialog({model:@model.scene.project, dialog: result?.modal})
 
     updateDemoView : ()->
       if not @model.scene.project.isDemoMode()
@@ -171,43 +172,6 @@ define [ "./DashboardTpl",
 
     onRegionResChanged: ()->
       @updateRegionResources()
-
-    dashboardBubbleSub: (data)->
-      renderData = {}
-      formattedData = {}
-      _.each data, (value, key)->
-        newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
-        formattedData[newKey] = value
-      renderData.data = formattedData
-      renderData.title = data.id || data.name || data._title
-      delete renderData.data._title
-      return dataTemplate.bubbleResourceSub renderData
-
-
-    dashboardBubble : ( data )->
-      # get Resource Data
-      resourceData = @model.getAwsResDataById( @region, constant.RESTYPE[data.type], data.id )?.toJSON()
-      formattedData = {}
-      _.each resourceData, (value, key)->
-        newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
-        formattedData[newKey] = value
-      d = {
-        id   : data.id
-        data : formattedData
-      }
-
-      # Make Boolean to String to show in handlebars.js
-      _.each d.data, (e,key)->
-        if _.isBoolean e
-          d.data[key] = e.toString()
-        if e == ""
-          d.data[key] = "None"
-        if (_.isArray e) and e.length is 0
-          d.data[key] = ['None']
-        if (_.isObject e) and (not _.isArray e)
-          delete d.data[key]
-
-      return dataTemplate.bubbleResourceInfo  d
 
     initRegion : ( )->
       @updateRegionAppStack("stacks", "global")
@@ -522,6 +486,7 @@ define [ "./DashboardTpl",
       _.each data, (value, key)->
         newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
         formattedData[newKey] = value
+        return
       renderData.data = formattedData
       renderData.title = data.id || data.name || data._title
       delete renderData.data._title
@@ -534,6 +499,7 @@ define [ "./DashboardTpl",
       _.each resourceData, (value, key)->
         newKey = lang.IDE["BUBBLE_"+key.toUpperCase().split("-").join("_")] || key
         formattedData[newKey] = value
+        return
       d = {
         id   : data.id
         data : formattedData

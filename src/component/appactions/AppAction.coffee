@@ -530,15 +530,16 @@ define [
 
     showPayment: (elem, opsModel)->
       if not opsModel
-        opsModel = @workspace.opsModel
-      project_id = opsModel.project().get("id")
+        opsModel = @workspace?.opsModel
+      project = opsModel?.project() || @project
+      project_id = project.get("id")
       showPaymentDefer = Q.defer()
       url = "/settings/#{project_id}/billing"
-      if not opsModel.project().shouldPay()
+      if not project.shouldPay()
         showPaymentDefer.resolve({result: {url: url}})
       else
         result = {
-          isAdmin: opsModel.project().amIAdmin()
+          isAdmin: project.amIAdmin()
           url: url
           freePointsPerMonth: 3600
         }
@@ -555,8 +556,8 @@ define [
               disabled: true
           )
           paymentModal.find('.modal-footer').hide()
-        opsModel.project().getPaymentState().then ()->
-          if opsModel.project().get("payment")?.cardNumber
+        project.getPaymentState().then ()->
+          if project.get("payment")?.cardNumber
             updateDom = MC.template.paymentUpdate  result
           else
             updateDom = MC.template.providePayment result
@@ -568,9 +569,9 @@ define [
             paymentModal.setTitle lang.IDE.PAYMENT_INVALID_BILLING
             paymentModal.setContent updateDom
 
-            paymentModal.listenTo opsModel.project(), "change:billingState", ()->
+            paymentModal.listenTo project, "change:billingState", ()->
               if paymentModal.isClosed then return false
-              if not opsModel.project().shouldPay()
+              if not project.shouldPay()
                 showPaymentDefer.resolve({result: result, modal: paymentModal})
       showPaymentDefer.promise
 

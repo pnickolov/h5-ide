@@ -150,7 +150,7 @@ define [
 
     listenToPayment: ()->
       self = @
-      @workspace.listenTo App.user, "paymentUpdate", ->
+      @workspace.listenTo @workspace.scene.project, "change:billingState", ->
         if not $(".ops-apppm-wrapper").size()
           if self.workspace.scene.project.shouldPay()
             self.showUnpayUI()

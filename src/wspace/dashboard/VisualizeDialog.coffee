@@ -27,15 +27,19 @@ define [
       "click #VisualizeReload"   : "sendRequest"
       "click .visualize-vpc-btn" : "importVpc"
 
-    initialize : ()->
-
-      @dialog = new Modal {
+    initialize : (attr)->
+      @model = attr.model
+      @dialog = attr.dialog
+      @dialog ||= new Modal {
         title         : lang.IDE.DASH_IMPORT_VPC_AS_APP
-        width         : "770px"
-        template      : VisualizeTpl.frame()
-        disableFooter : true
-        compact       : true
       }
+
+      @dialog.setTitle(lang.IDE.DASH_IMPORT_VPC_AS_APP)
+      .setWidth(770)
+      .setContent(VisualizeTpl.frame())
+      .toggleFooter()
+      .compact()
+      .resize()
 
       self = @
       @dialog.on "close", -> self.remove()

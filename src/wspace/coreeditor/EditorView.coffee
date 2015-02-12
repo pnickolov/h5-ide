@@ -201,25 +201,23 @@ define [
       name = @workspace.design.get('name')
       self = @
       modal = new Modal {
-        title    : sprintf lang.IDE.TITLE_CONFIRM_TO_CLOSE, name
-        width    : "420"
-        disableClose: true
-        template : OpsEditorTpl.modal.onClose(name)
-        confirm  : {text:lang.TOOLBAR.TIT_CLOSE_TAB, color:"red"}
-        onConfirm  : ()->
-          modal.close()
-          self.workspace.remove()
-          return
+        title         : sprintf lang.IDE.TITLE_CONFIRM_TO_CLOSE, name
+        width         : "420"
+        disableClose  : true
+        disableFooter : true
+        template      : OpsEditorTpl.modal.onClose(name)
       }
-      $(OpsEditorTpl.modal.saveAndCloseBtn()).prependTo(modal.$(".modal-footer")).click ()->
-        saveIcon = $("#OpsEditor .icon-save")
-        modal.setContent(MC.template.loadingSpinner()).setTitle(lang.IDE.SAVING_STACK)
-        .$(".modal-footer").hide().end()
-        .find(".modal-header .modal-close")
-        .off("click")
-        new AppAction( workspace: self.workspace ).saveStack(saveIcon, self).then ()->
+      modal.tpl.on "click", ".tar .modal-close", ()-> modal.close()
+      modal.tpl.on "click", ".tar .confirm", ()->
+        modal.close()
+        self.workspace.remove()
+      modal.tpl.on "click", ".tar .save", ()->
+        self.workspace.saveStack().then ()->
           modal.close()
           self.workspace.remove()
+        , ( e )->
+          notification "error", e.msg
+          modal.close()
       return
 
     getSvgElement : ()->

@@ -29,30 +29,6 @@ define [
         Design.instance().credentialId()
       else
         @model.project().credIdOfProvider @model.get("provider")
-    saveStack : ( dom, self )->
-      workspace = @workspace
-      $( dom ).attr("disabled", "disabled")
-
-      self.__saving = true
-
-      newJson = workspace.design.serialize()
-      Thumbnail.generate( (self.parent||self).getSvgElement() ).catch( ()->
-        return null
-      ).then ( thumbnail )->
-          workspace.opsModel.save( newJson, thumbnail ).then ()->
-          self.__saving = false
-          $( dom ).removeAttr("disabled")
-          notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, newJson.name)
-        , ( err )->
-          self.__saving = false
-          $( dom ).removeAttr("disabled")
-
-          if err.error is 252
-            message = lang.NOTIFY.ERR_SAVE_FAILED_NAME
-          else
-            message = sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
-          notification "error", message
-
 
     runStack: ( paymentUpdate, paymentModal )->
       cloudType = @workspace.opsModel.type
@@ -193,7 +169,7 @@ define [
       self = @
       modal = new modalPlus({
         title: lang.TOOLBAR.TIP_DELETE_STACK
-        width: 390
+        width: 420
         confirm:
           text: lang.TOOLBAR.POP_BTN_DELETE_STACK
           color: "red"

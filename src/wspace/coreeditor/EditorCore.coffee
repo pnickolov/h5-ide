@@ -222,6 +222,22 @@ define [
 
       @view.showCloseConfirm()
       false
+
+    ###
+    # OpsModel related action
+    ###
+    saveStack : ()->
+      newJson = @design.serialize()
+      self    = @
+      Thumbnail.generate( @view.getSvgElement() ).then ( thumbnail )->
+        self.opsModel.save( newJson, thumbnail ).fail ( e )->
+          if e.error is ApiRequest.Errors.StackRepeatedStack
+            e.msg = lang.NOTIFY.ERR_SAVE_FAILED_NAME
+          else if e.error is ApiRequest.Errors.StackConflict
+            e.msg = lang.NOTIFY.ERR_SAVE_FAILED_CONFLICT
+          else
+            e.msg = sprintf(lang.NOTIFY.ERR_SAVE_FAILED, newJson.name)
+          throw e
   }, {
     canHandle : ()-> false
   }

@@ -112,7 +112,11 @@ module.exports =
 
     ERR_SAVE_FAILED_NAME:
       en: "The stack name has already been used. Please change to a new one."
-      zh: "已存在相同名字的模块，请输入一个新的名字后重新保存。"
+      zh: "已存在相同名字的模板，请输入一个新的名字后重新保存。"
+
+    ERR_SAVE_FAILED_CONFLICT:
+      en: "Cannot save stack since another user has applied changes to this stack."
+      zh: "其他组员在这你之前修改了这个模板，因此无法保存。"
 
     ERR_SAVE_SUCCESS:
       en: "Save stack %s successfully."

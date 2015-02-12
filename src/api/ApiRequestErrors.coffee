@@ -78,6 +78,7 @@ define [], ()->
     StackIsRemoved        : 254 # Stack {0} is already removed
     StackIsDisabled       : 255 # Stack {0} is already disabled
     StackVerifyFailed     : 256 # Verify stack {0} exception {1}
+    StackConflict         : 258 # The updateTime is not the same as the server
     StateErrorModule      : 260 # The version of this stack is no longer supported, please contact with our support for details
     UserInvalidCredentia  : 293 # Invalid credential
 

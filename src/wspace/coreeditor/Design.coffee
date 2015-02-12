@@ -67,9 +67,6 @@ define [
     # use() :
         description : make the design object to be Design.instance()
 
-    # save( component_data, layout_data ) :
-        description : save the data, so that isModified() will use the saved data.
-
     # isModified() : Boolean
         description : returns true if the stack is modified since last save.
 

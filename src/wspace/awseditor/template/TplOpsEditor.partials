@@ -122,6 +122,13 @@
     </div>
 </div>
 
+<!-- {{modal.confliction}} -->
+<div class="modal-text-wrapper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "IDE.CONTENT_OPS_CONFLICT"}}</div>
+    </div>
+</div>
+
 <!-- {{saveAppToStack}} -->
 <p class="modal-text-major">{{ i18n 'TOOLBAR.POP_INTRO_1' }}</p>
 <p class="modal-text-minor">{{ i18n 'TOOLBAR.POP_INTRO_2' }}</p>

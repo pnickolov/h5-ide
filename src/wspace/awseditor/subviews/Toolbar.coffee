@@ -75,6 +75,8 @@ define [
       , 1000)
 
       @updateZoomButtons()
+
+      @listenTo @workspace.opsModel, "change:state", @updateTbBtns
       return
 
     updateTbBtns : ()->
@@ -112,7 +114,7 @@ define [
           hasState = _.find( ami, (comp)-> comp and (comp.attributes.state?.length>0) )
           @$el.find('.reload-states').toggle(!!hasState)
 
-      if @__saving
+      if @workspace.opsModel.testState( OpsModel.State.Saving )
         @$el.children(".icon-save").attr("disabled", "disabled")
       else
         @$el.children(".icon-save").removeAttr("disabled")
@@ -136,7 +138,25 @@ define [
       @parent.canvas.toggleSgLine( show )
       return
 
-    saveStack : ( evt )-> @appAction.saveStack(evt.currentTarget, @)
+    saveStack : ( evt )->
+      self = @
+      @workspace.saveStack().then ()->
+        notification "info", sprintf(lang.NOTIFY.ERR_SAVE_SUCCESS, self.workspace.opsModel.get("name"))
+      , ( e )->
+        if e.error is ApiRequest.Errors.StackConflict
+          # There's another user already modified the stack before us.
+          modal = new Modal {
+            title         : lang.IDE.TITLE_OPS_CONFLICT
+            width         : "420"
+            disableClose  : true
+            template      : OpsEditorTpl.modal.confliction()
+            cancel        : {hide:true}
+            confirm       : {color:"blue",text:lang.IDE.HEAD_BTN_DONE}
+            onConfirm     : ()-> modal.close()
+          }
+        else
+          notification "error", e.msg
+      return
 
     deleteStack    : ()-> @appAction.deleteStack( @workspace.opsModel.cid, @workspace.opsModel.get("name"), @workspace )
     createStack    : ()-> App.loadUrl @workspace.scene.project.createStack(@workspace.design.region()).url()

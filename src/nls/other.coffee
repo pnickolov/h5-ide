@@ -2794,3 +2794,11 @@ into live resources, or import existing infrastructures."
     SETTING_INVALID_EMAIL:
       en: "This email is invalid. Please enter a valid email."
       zh: "此电子邮件无效, 请输入有效的电子邮件。"
+
+    TITLE_OPS_CONFLICT:
+      en: "Confliction Detected"
+      zh: "版本冲突"
+
+    CONTENT_OPS_CONFLICT:
+      en: "Cannot save stack since another user has applied changes to this stack. <br/> You can save your changes by duplicate this stack."
+      zh: "其他组员在这你之前修改了这个模板，因此无法保存。<br/>你可以通过复制模板来保存当前的改动。"

@@ -28,15 +28,15 @@
 </div>
 
 <!-- {{modal.onClose}} -->
-<div class="modal-text-wraper">
-    <div class="modal-center-align-helper">
-        <div class="modal-text-major">{{this}} {{i18n "TOOLBAR.HAS_UNSAVED_CHANGES"}}</div>
-        <div class="modal-text-major">{{i18n "TOOLBAR.CLOSE_CONFIRM"}}</div>
-    </div>
+<div style="min-height:100px;">
+  <div class="modal-text-major">{{this}} {{i18n "TOOLBAR.HAS_UNSAVED_CHANGES"}}</div>
+  <div class="modal-text-major">{{i18n "TOOLBAR.CLOSE_CONFIRM"}}</div>
 </div>
-
-<!-- {{ modal.saveAndCloseBtn }} -->
-<button id="saveAndCloseBtn" data-pending="{{i18n "TOOLBAR.SAVING_BTN"}}" class="btn btn-blue">{{i18n "TOOLBAR.SAVE_AND_CLOSE_BTN"}}</button>
+<div class="tar">
+  <button class="btn save btn-blue">{{i18n "IDE.SAVING_STACK"}}</button>
+  <button class="btn confirm btn-red">{{i18n "TOOLBAR.TIT_CLOSE_TAB"}}</button>
+  <button class="btn modal-close btn-silver">{{i18n "IDE.POP_LBL_CANCEL"}}</button>
+</div>
 
 <!-- {{modal.confirmRemoveApp}} -->
 <p class="modal-text-major">{{i18n "TOOLBAR.VPC_REMOVED_OUTSIDE_VISUALOPS"}}</p>

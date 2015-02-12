@@ -251,42 +251,46 @@ dl.settings-item {
 
             ul.credential-list {
                 > li {
-                    width: 500px;
-                    height: 80px;
-                    border: 1px solid $light-p-1;
-                    border-radius: 3px;
-                    position: relative;
-                    margin-bottom: 8px;
-                    background: $base-p;
+                    width         : 400px;
+                    height        : 80px;
+                    border        : 1px solid $light-p-1;
+                    border-radius : 3px;
+                    position      : relative;
+                    margin-bottom : 8px;
+                    background    : $base-p;
+                    padding       : 15px 20px;
+                    box-sizing    : border-box;
 
                     &::selection { background: transparent; }
 
-                    .credential-logo {
-                        position: absolute;
-                        left: 0;
-                        width: 80px;
-                        height: 80px;
-                        background: #f9af4e;
-                        &:before {
-                            content: "logo here";
-                            color: white;
-                        }
-                    }
+                    // .credential-logo {
+                    //     position: absolute;
+                    //     left: 0;
+                    //     width: 80px;
+                    //     height: 80px;
+                    //     background: #f9af4e;
+                    //     &:before {
+                    //         content: "logo here";
+                    //         color: white;
+                    //     }
+                    // }
 
-                    .credential-name {
-                        margin-left: 88px;
-                        color: white;
-                        font-size: 16px;
-                        padding: 13px 0 15px 0;
+                    .credential-name {  
+                        color       : white;
+                        font-size   : 16px;
+                        line-height : 28px;
                     }
-
-                    .credential-describe { margin-left: 88px; }
 
                     .icon-caret-down {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        cursor: pointer;
+                        position : absolute;
+                        top      : 0;
+                        right    : 0;
+                        cursor   : pointer;
+                        color    : #ccc;
+
+                        &:hover {
+                            color: $base-b;
+                        }
                     }
 
                     .button-list {

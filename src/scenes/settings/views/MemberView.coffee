@@ -118,7 +118,7 @@ define ['backbone',
                 columns = columns.concat([
                     {
                         sortable: false
-                        width: "14%"
+                        width: "103px"
                         name: ""
                     },
                     {

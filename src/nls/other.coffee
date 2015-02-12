@@ -313,6 +313,10 @@ module.exports =
       en: "Delete"
       zh: "删除"
 
+    CFM_BTN_REMOVE:
+      en: "Delete"
+      zh: "删除"
+
     CFM_BTN_CANCEL:
       en: "Cancel"
       zh: "取消"
@@ -2628,7 +2632,7 @@ into live resources, or import existing infrastructures."
 
     ARE_YOU_SURE_YOU_WANT_TO_REMOVE_XXX:
       en: "Are you sure you want to remove %s?"
-      zh: "确定要删除 %s 吗？"
+      zh: "确定要移除 %s 吗？"
 
     REMOVE_CREDENTIAL_CONFIRM_TIPS:
       en: "Apps managed under this credential will be forgotten. You will not be able to run stack or import VPC. If you provide a credential later with access to different AWS resources, previous stacks may not work properly."
@@ -2639,8 +2643,8 @@ into live resources, or import existing infrastructures."
       zh: "移除证书"
 
     REMOVE_CREDENTIAL_CONFIRM_TITLE:
-      en: 'Delete Cloud Credential'
-      zh: "删除云证书"
+      en: 'Remove Cloud Credential'
+      zh: "移除云证书"
 
     SETTINGS_MEMBER_LABEL_REMOVE:
       en: "Remove"

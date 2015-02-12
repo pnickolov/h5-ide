@@ -9638,36 +9638,29 @@ dl.settings-item {
     .fullpage-settings .setting-content .credential .demo-note {
       padding-top: 20px; }
     .fullpage-settings .setting-content .credential ul.credential-list > li {
-      width: 500px;
+      width: 400px;
       height: 80px;
       border: 1px solid #75789d;
       border-radius: 3px;
       position: relative;
       margin-bottom: 8px;
-      background: #363b76; }
+      background: #363b76;
+      padding: 15px 20px;
+      box-sizing: border-box; }
       .fullpage-settings .setting-content .credential ul.credential-list > li::selection {
         background: transparent; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo {
-        position: absolute;
-        left: 0;
-        width: 80px;
-        height: 80px;
-        background: #f9af4e; }
-        .fullpage-settings .setting-content .credential ul.credential-list > li .credential-logo:before {
-          content: "logo here";
-          color: white; }
       .fullpage-settings .setting-content .credential ul.credential-list > li .credential-name {
-        margin-left: 88px;
         color: white;
         font-size: 16px;
-        padding: 13px 0 15px 0; }
-      .fullpage-settings .setting-content .credential ul.credential-list > li .credential-describe {
-        margin-left: 88px; }
+        line-height: 28px; }
       .fullpage-settings .setting-content .credential ul.credential-list > li .icon-caret-down {
         position: absolute;
         top: 0;
         right: 0;
-        cursor: pointer; }
+        cursor: pointer;
+        color: #ccc; }
+        .fullpage-settings .setting-content .credential ul.credential-list > li .icon-caret-down:hover {
+          color: #4a90e2; }
       .fullpage-settings .setting-content .credential ul.credential-list > li .button-list {
         top: 6px;
         right: -92px;

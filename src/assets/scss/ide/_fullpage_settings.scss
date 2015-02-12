@@ -234,10 +234,11 @@ dl.settings-item {
         .icon-delete:before { margin-right: 5px; }
 
         .credential {
-            padding: 0 8px;
 
             .instruct {
-                padding-bottom: 15px;
+                font-size     : 16px;
+                color         : $base-grey;
+                margin-bottom : 20px;
             }
 
             .setup-credential {
@@ -252,14 +253,13 @@ dl.settings-item {
                 > li {
                     width: 500px;
                     height: 80px;
-                    border: 1px solid #7c7c83;
+                    border: 1px solid $light-p-1;
                     border-radius: 3px;
                     position: relative;
                     margin-bottom: 8px;
+                    background: $base-p;
 
                     &::selection { background: transparent; }
-
-                    &.aws-credential { border-left: 6px solid #59e5c5; }
 
                     .credential-logo {
                         position: absolute;

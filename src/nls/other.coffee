@@ -2489,8 +2489,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "基本设置"
 
     MEMBER:
-      en: "Member"
-      zh: "成员"
+      en: "Team"
+      zh: "团队成员"
 
     USAGE_REPORT:
       en: "Usage Report"
@@ -2570,16 +2570,16 @@ VisualOps API. You cannot UNDO this action.'
       zh: "编辑"
 
     SETTINGS_MEMBER_LABEL_MEMBER:
-      en: "Member"
-      zh: "成员"
+      en: "Team"
+      zh: "团队成员"
 
     SETTINGS_MEMBER_LABEL_INVITE_TIP:
       en: "Invite by email address or username..."
       zh: "通过电子邮箱或用户名邀请..."
 
     SETTINGS_MEMBER_LABEL_INVITE_CONFIRM:
-      en: "Invite Member"
-      zh: "邀请成员"
+      en: "Invite"
+      zh: "邀请"
 
     SETTINGS_MEMBER_LABEL_LIMIT:
       en: "Your workspace has reached the standard limit of %s. If you'd like invite more member to collaborate, contact us at"
@@ -2643,8 +2643,8 @@ into live resources, or import existing infrastructures."
       zh: "删除云证书"
 
     SETTINGS_MEMBER_LABEL_REMOVE:
-      en: "Delete"
-      zh: "删除"
+      en: "Remove"
+      zh: "移除"
 
     SETTINGS_MEMBER_LABEL_YOU:
       en: "YOU"
@@ -2655,16 +2655,16 @@ into live resources, or import existing infrastructures."
       zh: "管理员"
 
     SETTINGS_MEMBER_LABEL_COLLABORATOR:
-      en: "COLLABORATOR"
-      zh: "协作者"
+      en: "MEMBER"
+      zh: "成员"
 
     SETTINGS_MEMBER_LABEL_OBSERVER:
       en: "OBSERVER"
       zh: "查看者"
 
     SETTINGS_MEMBER_LABEL_ADMIN_DESC:
-      en: "%explain what an admin can do.can docan do cando %"
-      zh: "..."
+      en: ""
+      zh: ""
 
     SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC:
       en: ""
@@ -2707,8 +2707,8 @@ into live resources, or import existing infrastructures."
       zh: "请创建新的工作空间"
 
     SETTINGS_MEMBER_LABEL_REMOVE_CONFIRM:
-      en: "Do you confirm to delete selected %s user(s)?"
-      zh: "确定要删除选中的 %s 个用户?"
+      en: "Do you confirm to remove selected %s user(s)?"
+      zh: "确定要移除选中的 %s 个用户?"
 
     ADD_CLOUD_CREDENTIAL:
       en: "Add Cloud Credential"
@@ -2725,7 +2725,7 @@ into live resources, or import existing infrastructures."
 
     SETTINGS_CREATE_PROJECT_BILLING:
       en: "Workspace Billing"
-      zh: "工作空间支付"
+      zh: "工作空间付费"
 
     SETTINGS_CREATE_PROJECT_BILLING_TIP:
       en: "Provide billing information to create a collaborative workspace. <br/>You will only be charged when instance hour is comsumed in this workspace."

@@ -48,6 +48,7 @@ define [ "./DashboardTpl",
       "click .show-credential" : "showCredential"
       "click .icon-detail"     : "showResourceDetail"
       'click .refreshResource' : 'reloadResource'
+      "click .global-resource-li": "switchGlobalResource"
 
 
     initialize : ()->
@@ -191,11 +192,19 @@ define [ "./DashboardTpl",
           @region = region
           @updateRegionResources()
 
+    switchGlobalResource: (evt)->
+      console.log(evt)
+      $elem = $(evt.currentTarget)
+      region = $elem.data("region")
+      type = $elem.parent().parent().data("type")
+      $(".dash-resource-wrap").find("#region-switch-list").find("li[data-region=#{region}]").click()
+      $("#RegionViewWrap").find("nav>div[data-type='#{type}']").click()
+
     updateRegionResources : ()->
+      @$el.find(".dash-resource-wrap .js-toggle-dropdown span").text(constant.REGION_SHORT_LABEL[ @region ] || lang.IDE.DASH_BTN_GLOBAL)
       if @region is "global"
         @updateGlobalResources()
         return
-      @$el.find(".dash-resource-wrap .js-toggle-dropdown span").text(constant.REGION_SHORT_LABEL[ @region ] || lang.IDE.DASH_BTN_GLOBAL)
 
       @$el.find("#RegionViewWrap" ).show()
       @$el.find("#GlobalView" ).hide()

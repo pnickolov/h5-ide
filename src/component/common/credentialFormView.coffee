@@ -126,7 +126,7 @@ define [
       if not @credential then return false
       @loading()
       newData = @getData()
-      @credential.save( newData, forceUpdate ).then () ->
+      @credential.save( newData, forceUpdate, true ).then () ->
         that.updateConfirmView?.close()
         that.remove()
       , ( error ) ->

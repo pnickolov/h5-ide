@@ -23,7 +23,7 @@ define [
         basicsettings       : 'Basic Settings'
         accesstoken         : 'Access Token'
         billing             : 'Billing'
-        member              : 'Member'
+        member              : 'Team'
         credential          : 'Cloud Access Credential'
         usagereport         : 'Usage Report'
     }

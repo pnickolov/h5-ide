@@ -28,3 +28,8 @@
     background-size: $width $height;
   }
 }
+
+@mixin v-scroll {
+    overflow-x : hidden;
+    overflow-y : auto;
+}

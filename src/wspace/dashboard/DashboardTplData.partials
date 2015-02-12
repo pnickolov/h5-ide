@@ -84,11 +84,11 @@
 
 <!-- {{region_apps}} -->
 <div class="dash-region-apps-wrap">
-    <label class="region-resource-tab clearfix">
+    <label class="region-resource-tab">
         <span>{{apps.length}} <small>{{i18n "DASH_LBL_APP"}}</small></span>
     </label>
     <nav class="dash-region-navigation" data-type="apps">
-        <button id="region-switch-app" class="js-toggle-dropdown">
+        <button class="js-toggle-dropdown">
             <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
         </button>
         <ul id="region-switch-list" class="dropdown-menu">
@@ -97,44 +97,40 @@
                 <li data-region="{{id}}">{{shortName}}</li>{{/each}}
         </ul>
     </nav>
-    <div class="scroll-wrap">
-        <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-        <div class="scroll-content">
-            <ul id="region-resource-app-wrap" class="region-resource-list clearfix">
-                {{#each apps}}
-                    <li data-id="{{id}}">
-                        <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">{{#if progressing}}
-                        <div class="thumbnail app-thumbnail"></div>
-                        <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
-                        <div class="region-resource-info truncate">
-                            <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
-                        </div>
-                    {{else}}
-                        {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
-                        <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
-                        <div class="region-resource-info">
-                            <i class="icon-terminate terminate-app"></i>
-                            {{#if stoppable}}
-                                {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
-                            {{/if}}
-                            <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
-                        </div>
-                        {{/if}}
-                        </a></li>
-                {{else}}
-                    <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
-                {{/each}}
-            </ul>
-        </div>
-    </div>
-</div>
+    
+    <ul id="region-resource-app-wrap" class="region-resource-list">
+        {{#each apps}}
+            <li data-id="{{id}}">
+                <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">{{#if progressing}}
+                <div class="thumbnail app-thumbnail"></div>
+                <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
+                <div class="region-resource-info truncate">
+                    <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
+                </div>
+            {{else}}
+                {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
+                <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
+                <div class="region-resource-info">
+                    <i class="icon-terminate terminate-app"></i>
+                    {{#if stoppable}}
+                        {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
+                    {{/if}}
+                    <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
+                </div>
+                {{/if}}
+                </a></li>
+        {{else}}
+            <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
+        {{/each}}
+    </ul>
+ 
 <!--{{region_stacks}}-->
 <div class="dash-region-stacks-wrap">
-    <label class="region-resource-tab clearfix">
+    <label class="region-resource-tab">
         <span class="stack">{{stacks.length}} <small>{{i18n "DASH_LBL_STACK"}}</small></span>
     </label>
     <nav class="dash-region-navigation" data-type="stacks">
-        <button id="region-switch-stack" class="js-toggle-dropdown">
+        <button class="js-toggle-dropdown">
             <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
         </button>
 
@@ -144,28 +140,24 @@
                 <li data-region="{{id}}">{{shortName}}</li>{{/each}}
         </ul>
     </nav>
-    <div class="scroll-wrap">
-        <div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-        <div class="scroll-content">
-            <ul id="region-resource-stack-wrap" class="region-resource-list clearfix">
-                {{#each stacks}}
-                    <li data-id="{{id}}">
-                        <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">
-                            <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
-                            <div class="region-resource-info">
-                                <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
-                                <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
-                                <span class="truncate">{{name}}</span>
-                            </div>
-                        </a>
-                    </li>
-                {{else}}
-                    <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>
-                {{/each}}
-            </ul>
-        </div>
-    </div>
+    <ul id="region-resource-stack-wrap" class="region-resource-list">
+        {{#each stacks}}
+            <li data-id="{{id}}">
+                <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">
+                    <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
+                    <div class="region-resource-info">
+                        <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
+                        <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
+                        <span class="truncate">{{name}}</span>
+                    </div>
+                </a>
+            </li>
+        {{else}}
+            <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_STACK"}}</div></div>
+        {{/each}}
+    </ul>
 </div>
+
 
 <!-- {{resourceINSTANCE}} -->
 <table class="table-head">

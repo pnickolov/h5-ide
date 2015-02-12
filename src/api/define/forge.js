@@ -27,7 +27,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'opsbackend_update_status' : { type:'forge', url:'/opsbackend/',	method:'update_status',	params:['app_id', 'instance_id', 'recipe_version', 'timestamp', 'statuses', 'waiting', 'agent_status', 'token']   },
 		'opsbackend_verify'       : { type:'forge', url:'/opsbackend/',	method:'verify',	params:['username', 'token']   },
 		'project_create'          : { type:'forge', url:'/project/',	method:'create',	params:['username', 'session_id', 'project_name', 'email', 'first_name', 'last_name', 'credit_card']   },
-		'project_save'            : { type:'forge', url:'/project/',	method:'save',	params:['username', 'session_id', 'project_id', 'spec']   },
+		'project_rename'          : { type:'forge', url:'/project/',	method:'rename',	params:['username', 'session_id', 'project_id', 'spec']   },
 		'project_remove'          : { type:'forge', url:'/project/',	method:'remove',	params:['username', 'session_id', 'project_id']   },
 		'project_list'            : { type:'forge', url:'/project/',	method:'list',	params:['username', 'session_id', 'project_ids']   },
 		'project_update_payment'  : { type:'forge', url:'/project/',	method:'update_payment',	params:['username', 'session_id', 'project_id', 'attributes']   },

@@ -279,33 +279,33 @@ define [ "./DashboardTpl",
       return
 
     deleteStack    : (event)->
-      event.preventDefault();
-      id = $( event.currentTarget ).closest("li").attr("data-id");
-      (new AppAction({model: @model.scene.project.getOpsModel(id)})).deleteStack();
+      event.preventDefault()
+      id = $( event.currentTarget ).closest("li").attr("data-id")
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).deleteStack()
       false
 
     duplicateStack : (event)->
-      event.preventDefault();
-      id = $( event.currentTarget ).closest("li").attr("data-id");
+      event.preventDefault()
+      id = $( event.currentTarget ).closest("li").attr("data-id")
       App.loadUrl @model.scene.project.stacks().get(id).duplicate().url()
       false
 
     startApp       : (event)->
-      event.preventDefault();
-      id = $( event.currentTarget ).closest("li").attr("data-id");
-      (new AppAction({model: @model.scene.project.getOpsModel(id)})).startApp();
+      event.preventDefault()
+      id = $( event.currentTarget ).closest("li").attr("data-id")
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).startApp()
       false
 
     stopApp        : (event)->
-      event.preventDefault();
-      id = $( event.currentTarget ).closest("li").attr("data-id");
-      (new AppAction({model: @model.scene.project.getOpsModel(id)})).stopApp();
+      event.preventDefault()
+      id = $( event.currentTarget ).closest("li").attr("data-id")
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).stopApp()
       false
 
     terminateApp   : (event)->
-      event.preventDefault();
-      id = $( event.currentTarget ).closest("li").attr("data-id");
-      (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp();
+      event.preventDefault()
+      id = $( event.currentTarget ).closest("li").attr("data-id")
+      (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp()
       false
 
     reloadResource : ()->

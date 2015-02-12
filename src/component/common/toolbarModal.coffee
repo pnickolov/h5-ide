@@ -304,7 +304,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             context = context or @
 
             for key, method of events
-                if (!_.isFunction(method)) then method = context[events[key]];
+                if (!_.isFunction(method)) then method = context[events[key]]
                 if not method then continue
 
                 match = key.match /^(\S+)\s*(.*)$/

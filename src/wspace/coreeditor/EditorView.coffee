@@ -112,11 +112,13 @@ define [
         workspace : @workspace
         parent    : @
 
+      ### jshint -W056 ###
       @toolbar       = new (this.TopPanel    || Backbone.View)(opt)
       @propertyPanel = new (this.RightPanel  || Backbone.View)(opt)
       @resourcePanel = new (this.LeftPanel   || Backbone.View)(opt)
       @statusbar     = new (this.BottomPanel || Backbone.View)(opt)
       @canvas        = new this.CanvasView(opt)
+      ### jshint +W103 ###
 
       @listenTo @canvas, "itemSelected", @onItemSelected
       @listenTo @canvas, "doubleclick",  @onCanvasDoubleClick

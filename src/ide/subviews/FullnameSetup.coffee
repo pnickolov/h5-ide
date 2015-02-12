@@ -6,8 +6,8 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
       "click #submitFullName": "submit"
       "change #complete-firstname": "changeInput"
       "change #complete-lastname" : "changeInput"
-      "keyup #complete-lastname" : "changeInput"
-      "keyup #complete-lastname" : "changeInput"
+      "keyup #complete-firstname" : "changeInput"
+      "keyup #complete-lastname"  : "changeInput"
 
     initialize: ()->
       @modal = new Modal {

@@ -13,8 +13,8 @@ define ["ApiRequestOs", "../CrCollection", "constant", "CloudResources"], ( ApiR
     doFetch        : ()-> ApiRequest("os_network_List", {region : @region()})
     parseFetchData : (data)->
       for network in data.networks
-        network['physical_network'] = network['provider:physical_network']
-        network['external'] = network['router:external']
+        network.physical_network = network['provider:physical_network']
+        network.external = network['router:external']
         delete network['provider:physical_network']
         delete network['router:external']
       data.networks

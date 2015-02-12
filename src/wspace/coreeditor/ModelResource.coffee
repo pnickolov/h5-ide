@@ -472,6 +472,7 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
       args = [].slice.call arguments
       args.unshift @allObjects()
       _[ method ].apply _, args
+    return
 
 
   ResourceModel.where = ( attrs, first ) ->

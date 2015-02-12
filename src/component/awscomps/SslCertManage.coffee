@@ -290,7 +290,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
                 data = {}
 
                 if checkedAmount is 1
-                    data.selecteKeyName = checked[ 0 ].data[ 'name' ]
+                    data.selecteKeyName = checked[ 0 ].data.name
                 else
                     data.selectedCount = checkedAmount
 

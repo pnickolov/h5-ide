@@ -429,7 +429,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         key_id      : @credentialId()
         app_id      : @get("id")
         app_name    : @get("name")
-        key_id      : @credentialId()
       }).fail ( err )->
         self.set "state", OpsModelState.Stopped
         throw err

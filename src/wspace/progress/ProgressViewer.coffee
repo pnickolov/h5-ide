@@ -111,7 +111,6 @@ define [
     constructor : ( attr )->
       if not attr.opsModel
         throw new Error("Cannot find opsmodel while openning workspace.")
-        return
 
       if attr.opsModel.testState( OpsModel.State.Saving ) or attr.opsModel.testState( OpsModel.State.Terminating )
         console.warn "Avoiding opening a saving/terminating OpsModel."

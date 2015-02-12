@@ -155,7 +155,7 @@ define ["CloudResources", 'constant','combo_dropdown', 'UI.modalplus', 'toolbar_
             that = this
             dhcpId = data.id
             dhcpData = @collection.get(dhcpId).toJSON()
-            detailTpl = template['detail_info']
+            detailTpl = template.detail_info
             @manager.setDetail($tr, detailTpl(dhcpData))
 
         getSlides: ->

@@ -151,7 +151,7 @@ define [
               eni     : resourceMap resources["AWS|VPC|NetworkInterface"]
               eip     : resourceMap resources["AWS|EC2|EIP"]
               elb     : resourceMap resources["AWS|ELB"]
-              username: if resources['username'] then Base64.decode(resources['username']) else undefined
+              username: if resources.username then Base64.decode(resources.username) else undefined
 
             obj.disabled = obj.eni.length > 300
             vpcs.push obj

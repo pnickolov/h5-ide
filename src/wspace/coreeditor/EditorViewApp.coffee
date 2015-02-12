@@ -159,11 +159,10 @@ define [
             self.reopenApp()
 
     reopenApp: ()->
-      appId = @workspace.opsModel.get("id")
-      index = @workspace.index()
+      appUrl = @workspace.opsModel.url()
       @workspace.remove()
       _.defer ->
-        App.openOps(appId).setIndex index
+        App.loadUrl(appUrl)
         notification "info", "User payment status change detected, reloading app resource."
 
   }

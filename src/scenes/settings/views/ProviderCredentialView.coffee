@@ -100,20 +100,6 @@ define [
                 that.stopModalLoading that.removeConfirmView, TplCredential.removeConfirm name: credName
                 that.showModalError that.removeConfirmView, lang.IDE.SETTINGS_ERR_CRED_REMOVE
 
-        showUpdateConfirmModel: ( credential, newData ) ->
-            @updateConfirmView?.close()
-            @updateConfirmView = new Modal {
-                title: 'Update Cloud Credential'
-                template: TplCredential.updateConfirm
-                confirm:
-                    text: 'Confirm to Update'
-                    color: 'red'
-            }
-
-            @updateConfirmView.on 'confirm', ->
-                @updateCredential credential, newData, true
-            , @
-
         showRemoveConfirmModel: ( e ) ->
             credentialId = $( e.currentTarget ).data 'id'
             credential = @getCredentialById credentialId
@@ -140,4 +126,3 @@ define [
             @updateConfirmView?.close()
             @removeConfirmView?.close()
             Backbone.View.prototype.remove.apply @, arguments
-

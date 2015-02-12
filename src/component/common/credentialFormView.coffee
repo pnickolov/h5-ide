@@ -107,13 +107,27 @@ define [
         that.loadingEnd()
         that.showModalError msg
 
-    updateCredential: () ->
+    showUpdateConfirmModel: () ->
+        @updateConfirmView?.close()
+        @updateConfirmView = new Modal {
+            title: 'Update Cloud Credential'
+            template: MC.template.updateCredentialConfirm
+            confirm:
+                text: 'Confirm to Update'
+                color: 'red'
+        }
+
+        @updateConfirmView.on 'confirm', ->
+            @updateCredential(true)
+        , @
+
+    updateCredential: (forceUpdate = false) ->
       that = @
       if not @credential then return false
       @loading()
       newData = @getData()
-      @credential.save( newData ).then () ->
-        #that.updateConfirmView?.close()
+      @credential.save( newData, forceUpdate ).then () ->
+        that.updateConfirmView?.close()
         that.remove()
       , ( error ) ->
         that.loadingEnd()
@@ -121,7 +135,7 @@ define [
         if error.error is ApiRequest.Errors.UserInvalidCredentia
           msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
         else if error.error is ApiRequest.Errors.ChangeCredConfirm
-          that.showUpdateConfirmModel credential, newData
+          that.showUpdateConfirmModel()
         else
           msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
 

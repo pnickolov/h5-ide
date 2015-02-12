@@ -1637,4 +1637,20 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 TEMPLATE.credentialForm=Handlebars.template(__TEMPLATE__);
 
 
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"cred-setup-msg empty-hide\"></div>\n<div>\n	"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_CRED_UPDATE_CONFIRM_TIT", {hash:{},data:data}))
+    + "\n	<p>\n		"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_CRED_UPDATE_CONFIRM_TEXT", {hash:{},data:data}))
+    + "\n	</p>\n</div>";
+  return buffer;
+  };
+TEMPLATE.updateCredentialConfirm=Handlebars.template(__TEMPLATE__);
+
+
 return TEMPLATE; });

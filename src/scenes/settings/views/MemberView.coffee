@@ -143,8 +143,13 @@ define ['backbone',
             currentMember = null
             currentUserName = App.user.get('username')
             @memberCol.fetch().then () ->
-                that.isAdmin = that.memberCol.getCurrentMember()?.isAdmin()
+                currentMember = that.memberCol.getCurrentMember()
+                that.isAdmin = currentMember?.isAdmin()
+                currentUsername = currentMember?.get('username')
                 data = that.memberCol.toJSON()
+                data = _.sortBy data, (a, b) ->
+                    return false if currentUsername is a.username
+                    return (a.state isnt 'normal' || a.role isnt 'admin')
                 return
             .fail (data) ->
                 notification 'error', (data.result or data.msg)

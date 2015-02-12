@@ -115,7 +115,7 @@
     <aside class="dashboard-sidebar">
       <nav>
         <button class="dashboard-nav-log dashboard-nav-activity selected" data-id="activity">Activity</button>
-        <button class="dashboard-nav-log dashboard-nav-audit" data-id="audit">Audit Log</button>
+        {{#if isAdmin}}<button class="dashboard-nav-log dashboard-nav-audit" data-id="audit">Audit Log</button>{{/if}}
       </nav>
       <div class="dashboard-log-wrap">
           <div class="dashboard-log dashboard-log-activity"><div class="loading-spinner"></div></div>

@@ -139,7 +139,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
         attributes = {
           first_name: $firstname.val()
           last_name : $lastname.val()
-          fullnumber: $number.val()
+          full_number: $number.val()
           expiration_month: expire.split("/")[0]
           expiration_year : expire.split("/")[1]
           cvv:              $cvv.val()

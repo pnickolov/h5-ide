@@ -10106,7 +10106,7 @@ dl.settings-item {
 .new-project-modal .new-project-support, .update-payment-wrap .new-project-support {
   float: left;
   margin-top: 5px; }
-.new-project-modal .new-project-err, .update-payment-wrap .new-project-err {
+.new-project-modal .new-project-err, .new-project-modal .update-payment-err, .update-payment-wrap .new-project-err, .update-payment-wrap .update-payment-err {
   display: none;
   text-align: left; }
 .new-project-modal .new-project-info, .update-payment-wrap .new-project-info {

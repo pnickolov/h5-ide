@@ -96,7 +96,7 @@
 
 <!-- {{updateProject}} -->
 <section class="update-payment-wrap" data-bind="true">
-    <div class="update-payment-err"></div>
+    <div class="update-payment-err warning-red"></div>
     <div class="new-project-item new-project-item-owner" style="display: block">
         <span>{{i18n "SETTINGS_CREATE_PROJECT_BILLING_OWNER"}}</span>
         <input class="input new-project-fn" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_FIRST_NAME"}}" data-required="true">

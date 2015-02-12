@@ -36,8 +36,8 @@ define [ "./DashboardTpl",
       "click .dashboard-header .icon-visualize" : "importApp"
       "click .dashboard-sidebar .dashboard-nav-log" : "updateLog"
       "click .dashboard-sidebar nav buttton"    : "updateLog"
-      'click #region-switch-list li'    : 'switchRegion'
-      'click .resource-tab'             : 'switchResource'
+      'click #region-switch-list li'            : 'switchRegion'
+      'click .resource-tab'                     : 'switchResource'
 
       "click .region-resource-list .delete-stack"    : "deleteStack"
       'click .region-resource-list .duplicate-stack' : 'duplicateStack'

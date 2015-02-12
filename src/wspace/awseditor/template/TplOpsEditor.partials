@@ -123,7 +123,7 @@
 </div>
 
 <!-- {{saveAppToStack}} -->
-<p class="modal-text-minor">{{ i18n 'TOOLBAR.POP_INTRO_1' }}</p>
+<p class="modal-text-major">{{ i18n 'TOOLBAR.POP_INTRO_1' }}</p>
 <p class="modal-text-minor">{{ i18n 'TOOLBAR.POP_INTRO_2' }}</p>
 <div class="modal-center-align-helper">
     <div class="modal-control-group">

@@ -2667,12 +2667,12 @@ into live resources, or import existing infrastructures."
       zh: "..."
 
     SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC:
-      en: "%explain what an admin can do.can docan do cando %"
-      zh: "..."
+      en: ""
+      zh: ""
 
     SETTINGS_MEMBER_LABEL_OBSERVER_DESC:
-      en: "%explain what an admin can do.can docan do cando %"
-      zh: "..."
+      en: ""
+      zh: ""
 
     SETTINGS_MEMBER_LABEL_ACTIVE:
       en: "Active"

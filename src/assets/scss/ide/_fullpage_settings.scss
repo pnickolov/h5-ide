@@ -64,10 +64,14 @@
     }
 
     .edit-mode {
-        display: none;
+        display  : none;
+        position : relative;
 
         .loading-spinner {
             display  : inline-block;
+            position : absolute;
+            right    : -30px;
+            top      : -48px;
         }
     }
 

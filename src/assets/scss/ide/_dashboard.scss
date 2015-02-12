@@ -325,6 +325,13 @@
 
 /* Dashboard Common Elements */
 
+.blank-widget {
+    margin-top : 14px;
+    text-align : center;
+    padding    : 70px 0;
+    color      : #999;
+}
+
 .dash-region-navigation {
   text-align : right;
   position   : absolute;
@@ -448,11 +455,11 @@ aside.dashboard-sidebar {
       
       .dashboard-log-item {
 
-        margin-bottom : 15px;
-        padding       : 5px 10px 5px 10px;
+        padding       : 15px 10px;
+        cursor        : default;
 
         &:hover {
-            background-color: #eee;
+            background-color: transparentize($light-b, .95);
         }
 
         .avatar {
@@ -476,8 +483,10 @@ aside.dashboard-sidebar {
                 font-size  : 12px;
             }
             a.target {
-                color  : $dark-b;
-                cursor : pointer;
+                color  : $base-b;
+                cursor : pointer; 
+                
+                &:hover {color: $dark-b;}
             }
         }
       }
@@ -509,18 +518,18 @@ $bp-2: 1280px;
   @include flex-wrap($values:wrap);
 
   align-items: stretch;
-  -webkit-align-items: -webkit-stretch;
+  -webkit-align-items: stretch;
 
   height     : auto;
-  // max-height : $dashWrapHeight + 60;
+  max-height : $dashWrapHeight + 60;
 
   width      : 100%;
   margin-top : 20px;
 
   > div {
     width      : 48.5%;
-    height     : auto;
-    max-height : $dashWrapHeight + 60;
+    // height     : auto;
+    height : $dashWrapHeight + 60;
     margin     : 0 1%;
     position   : relative;
 
@@ -540,8 +549,8 @@ $bp-2: 1280px;
   #region-resource-app-wrap {
     @include v-scroll;
 
-    height     : auto;
-    max-height : $dashWrapHeight;
+    // height     : auto;
+    height : $dashWrapHeight;
     // padding    : 10px;
     box-sizing : border-box;
     background : #fff;
@@ -573,7 +582,7 @@ $bp-2: 1280px;
     @include flex-wrap($values:wrap);
 
     align-items: flex-start;
-    -webkit-align-items: -webkit-flex-start;
+    -webkit-align-items: flex-start;
 
     > li {
       margin-left   : 1.6%;

@@ -3358,6 +3358,12 @@ div.modal-text-highlight {
     font-variant: small-caps; }
 
 /* Dashboard Common Elements */
+.blank-widget {
+  margin-top: 14px;
+  text-align: center;
+  padding: 70px 0;
+  color: #999; }
+
 .dash-region-navigation {
   text-align: right;
   position: absolute;
@@ -3458,10 +3464,10 @@ aside.dashboard-sidebar {
       border-bottom: 2px solid #4a90e2;
       width: 100%; }
   aside.dashboard-sidebar .dashboard-log .dashboard-log-item {
-    margin-bottom: 15px;
-    padding: 5px 10px 5px 10px; }
+    padding: 15px 10px;
+    cursor: default; }
     aside.dashboard-sidebar .dashboard-log .dashboard-log-item:hover {
-      background-color: #eee; }
+      background-color: rgba(126, 172, 225, 0.05); }
     aside.dashboard-sidebar .dashboard-log .dashboard-log-item .avatar {
       display: inline-block;
       width: 40px;
@@ -3478,8 +3484,10 @@ aside.dashboard-sidebar {
         margin-top: 4px;
         font-size: 12px; }
       aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info a.target {
-        color: #3970af;
+        color: #4a90e2;
         cursor: pointer; }
+        aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info a.target:hover {
+          color: #3970af; }
   aside.dashboard-sidebar .dashboard-log-empty {
     text-align: center;
     padding: 15px;
@@ -3503,14 +3511,14 @@ aside.dashboard-sidebar {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   align-items: stretch;
-  -webkit-align-items: -webkit-stretch;
+  -webkit-align-items: stretch;
   height: auto;
+  max-height: 370px;
   width: 100%;
   margin-top: 20px; }
   #region-app-stack-wrap > div {
     width: 48.5%;
-    height: auto;
-    max-height: 370px;
+    height: 370px;
     margin: 0 1%;
     position: relative; }
     #region-app-stack-wrap > div:first-of-type {
@@ -3528,8 +3536,7 @@ aside.dashboard-sidebar {
   #region-app-stack-wrap #region-resource-app-wrap {
     overflow-x: hidden;
     overflow-y: auto;
-    height: auto;
-    max-height: 310px;
+    height: 310px;
     box-sizing: border-box;
     background: #fff;
     border: 1px solid #ccc;
@@ -3559,7 +3566,7 @@ aside.dashboard-sidebar {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   align-items: flex-start;
-  -webkit-align-items: -webkit-flex-start; }
+  -webkit-align-items: flex-start; }
   .region-resource-list > li {
     margin-left: 1.6%;
     margin-top: 10px;
@@ -9458,9 +9465,13 @@ section.members-only {
     .settings-item .edit-actions.inline {
       margin-left: 8px; }
   .settings-item .edit-mode {
-    display: none; }
+    display: none;
+    position: relative; }
     .settings-item .edit-mode .loading-spinner {
-      display: inline-block; }
+      display: inline-block;
+      position: absolute;
+      right: -30px;
+      top: -48px; }
   .settings-item .normal-mode {
     display: inline; }
   .settings-item.edit .edit-mode {

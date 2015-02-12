@@ -328,7 +328,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       if UserFavAmis[ region ]
         d = Q.defer()
         d.resolve()
-        p = d.promise()
+        p = d.promise
       else
         p = ApiRequest("favorite_info", {
           region_name : region

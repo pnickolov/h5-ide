@@ -253,7 +253,8 @@ define [
         $target.toggleClass('disabled').html($target.attr('data-disabled'))
         app_id = Design.instance().get('id')
         data =
-            'encoded_user': App.user.get('usercode')
+            #'encoded_user': App.user.get('usercode')
+            'user':     @workspace.opsModel.project().get("id")
             'token':    @workspace.opsModel.project().get('defaultToken')
         $.ajax
             url: window.MC_API_HOST + "/v1/apps/" + app_id

@@ -70,7 +70,7 @@ define [ 'ApiRequest'
 
             if @isPromoted()
                 @unsetPromote()
-                App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+                that.refreshProperty()
             else
 
                 modal = new Modal({
@@ -80,10 +80,14 @@ define [ 'ApiRequest'
                     disableClose : true
                     onConfirm : ()->
                         that.setPromote()
-                        App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+                        that.refreshProperty()
                         modal.close()
                 })
             return
+
+        refreshProperty: () ->
+
+            @_render() if @_render
 
         openRestoreConfigModal: (defaultRes) ->
 
@@ -1341,7 +1345,7 @@ define [ 'ApiRequest'
                         if oldSrcId isnt newSrcId
 
                             currentResModel.set('ReadReplicaSourceDBInstanceIdentifier', newSrcId)
-                            App.workspaces.getAwakeSpace().view.propertyPanel.refresh()
+                            that.refreshProperty()
 
                         else
 

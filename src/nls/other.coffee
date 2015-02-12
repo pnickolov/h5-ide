@@ -2831,7 +2831,8 @@ into live resources, or import existing infrastructures."
       zh: ""
 
     DASHBOARD_LOGS_STACK_RUN:
-      en: "%s ran stack %s into app %s"
+    #   en: "%s ran stack %s into app %s"
+      en: "%s ran stack %s"
       zh: ""
 
     # App

@@ -55,6 +55,7 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
         if Design.instance().type() isnt OpsModel.Type.OpenStack
 
+            # need to update
             _getSelectedASGModelByLC = () ->
 
                 $asgDom = $('#OpsEditor g.AWS-AutoScaling-LaunchConfiguration.selected').parent('g.AWS-AutoScaling-Group')

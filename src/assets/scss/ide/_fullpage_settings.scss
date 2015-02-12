@@ -242,11 +242,12 @@ dl.settings-item {
             }
 
             .setup-credential {
-                margin: 20px 0 0 180px;
+                margin  : 20px auto;
+                display : block;
             }
 
             .demo-note {
-                padding-top: 20px;
+                color: $yellow;
             }
 
             ul.credential-list {
@@ -256,7 +257,7 @@ dl.settings-item {
                     border        : 1px solid $light-p-1;
                     border-radius : 3px;
                     position      : relative;
-                    margin-bottom : 8px;
+                    margin        : 4px auto;
                     background    : $base-p;
                     padding       : 15px 20px;
                     box-sizing    : border-box;
@@ -282,30 +283,53 @@ dl.settings-item {
                     }
 
                     .icon-caret-down {
-                        position : absolute;
-                        top      : 0;
-                        right    : 0;
-                        cursor   : pointer;
-                        color    : #ccc;
+                        position    : absolute;
+                        top         : 4px;
+                        right       : 4px;
+                        cursor      : pointer;
+                        color       : #ccc;
+                        width       : 18px;
+                        height      : 18px;
+                        line-height : 18px;
+                        text-align  : center;
+
+                        border-radius : 2px;
+                        border        : 1px solid $light-p-2;
+
 
                         &:hover {
-                            color: $base-b;
+                            color: #fff;
+                            background: $dark-p-2;
                         }
                     }
 
                     .button-list {
-                        top: 6px;
-                        right: -92px;
-                        position: absolute;
+                        top           : 26px;
+                        left          : 300px;
+                        position      : absolute;
+                        border        : 1px solid #000;
+                        background    : $bg-p;
+                        border-radius : 2px;
 
-                        i {
-                            line-height: 30px;
-                            padding: 0 6px 0 8px;
-                        }
                         li {
-                            width: 92px;
-                            line-height: 30px;
-                            cursor: pointer;
+                            width       : 80px;
+                            line-height : 30px;
+                            cursor      : pointer;
+                            color       : $base-b;
+                            font-size   : 14px !important;
+                            padding     : 0 5px;
+
+                            &:before { 
+                                display      : inline-block;
+                                width        : 16px;
+                                margin-right : 5px;
+                            }
+
+                            &.icon-delete { color: $light-r; }
+
+                            &:hover {
+                                background: #000;
+                            }
                         }
                     }
                 }

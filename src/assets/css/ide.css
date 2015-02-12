@@ -9634,16 +9634,17 @@ dl.settings-item {
       color: #eeeef0;
       margin-bottom: 20px; }
     .fullpage-settings .setting-content .credential .setup-credential {
-      margin: 20px 0 0 180px; }
+      margin: 20px auto;
+      display: block; }
     .fullpage-settings .setting-content .credential .demo-note {
-      padding-top: 20px; }
+      color: #ffbb0d; }
     .fullpage-settings .setting-content .credential ul.credential-list > li {
       width: 400px;
       height: 80px;
       border: 1px solid #75789d;
       border-radius: 3px;
       position: relative;
-      margin-bottom: 8px;
+      margin: 4px auto;
       background: #363b76;
       padding: 15px 20px;
       box-sizing: border-box; }
@@ -9655,23 +9656,41 @@ dl.settings-item {
         line-height: 28px; }
       .fullpage-settings .setting-content .credential ul.credential-list > li .icon-caret-down {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 4px;
+        right: 4px;
         cursor: pointer;
-        color: #ccc; }
+        color: #ccc;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+        border-radius: 2px;
+        border: 1px solid #51568e; }
         .fullpage-settings .setting-content .credential ul.credential-list > li .icon-caret-down:hover {
-          color: #4a90e2; }
+          color: #fff;
+          background: #1d1e29; }
       .fullpage-settings .setting-content .credential ul.credential-list > li .button-list {
-        top: 6px;
-        right: -92px;
-        position: absolute; }
-        .fullpage-settings .setting-content .credential ul.credential-list > li .button-list i {
-          line-height: 30px;
-          padding: 0 6px 0 8px; }
+        top: 26px;
+        left: 300px;
+        position: absolute;
+        border: 1px solid #000;
+        background: #202027;
+        border-radius: 2px; }
         .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li {
-          width: 92px;
+          width: 80px;
           line-height: 30px;
-          cursor: pointer; }
+          cursor: pointer;
+          color: #4a90e2;
+          font-size: 14px !important;
+          padding: 0 5px; }
+          .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li:before {
+            display: inline-block;
+            width: 16px;
+            margin-right: 5px; }
+          .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li.icon-delete {
+            color: #ea5d5d; }
+          .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li:hover {
+            background: #000; }
     .fullpage-settings .setting-content .member-setting .operate {
       position: relative;
       height: 60px; }

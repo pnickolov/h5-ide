@@ -96,7 +96,9 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     doFetch : ()->
       # This method is used for CloudResources to invalid the cache.
-      localStorage.setItem( @localStorageKey(), "")
+      if localStorage.getItem( @localStorageKey() )
+        localStorage.setItem( @localStorageKey(), "")
+
       @__markedIds = {}
       d = Q.defer()
       d.resolve([])
@@ -115,7 +117,9 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       for amiId, value of @__markedIds
         if value then amis.push amiId
 
-      localStorage.setItem( @localStorageKey(), amis.join(",") )
+      if amis.length
+        localStorage.setItem( @localStorageKey(), amis.join(",") )
+      return
 
     fetchAmi : ( ami )->
       if not ami then return
@@ -195,10 +199,10 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
         toFetch.splice( toFetch.indexOf(invalidId), 1 )
         self.markId( invalidId, true )
-        __markedIds = @__markedIds
-        @__markedIds = {}
+        __markedIds = self.__markedIds
+        self.__markedIds = {}
         p = self.fetchAmis( toFetch )
-        @__markedIds = __markedIds
+        self.__markedIds = __markedIds
         return p
   }
 

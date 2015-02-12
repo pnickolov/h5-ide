@@ -85,14 +85,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     localStorageKey : ()-> "ivla/" + @credential() + "_" + @region()
 
-    initialize : ()->
-      invalidAmi = localStorage.getItem( @localStorageKey() )
-      @__markedIds = {}
-
-      if invalidAmi
-        for id in invalidAmi.split(",")
-          @__markedIds[ id ] = true
-      return
+    initialize : ()-> @__markedIds = {}; return
 
     doFetch : ()->
       # This method is used for CloudResources to invalid the cache.
@@ -105,10 +98,17 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       @trigger "update"
       return d.promise
 
-    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid; return
-    isIdMarked : ( amiId )-> @__markedIds.hasOwnProperty( amiId )
+    initWithCache : ()->
+      if @__markedIdInited then return
 
-    isInvalidAmiId : ( amiId )-> @__markedIds[ amiId ]
+      @__markedIdInited = true
+      for id in (localStorage.getItem( @localStorageKey() )||"").split(",")
+        @__markedIds[ id ] = true
+
+    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid; return
+    isIdMarked : ( amiId )-> @initWithCache(); @__markedIds.hasOwnProperty( amiId )
+
+    isInvalidAmiId : ( amiId )-> @initWithCache(); @__markedIds[ amiId ]
 
     getOSFamily : ( amiId )-> getOSFamily( @get( amiId ) )
 
@@ -363,7 +363,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         region_name  : @region()
         resource_ids : [id]
       }).then ()->
-        ms = UserFavAmis[@region()]
+        ms = UserFavAmis[self.region()]
         ms.splice ms.indexOf(id), 1
         self.trigger "update"
         self

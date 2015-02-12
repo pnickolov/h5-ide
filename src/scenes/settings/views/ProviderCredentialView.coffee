@@ -51,8 +51,8 @@ define [
             data.credentials = _.map credentials, ( c ) ->
                 json = c.toJSON()
                 json.isAdmin = data.isAdmin
-                json.provider = constant.PROVIDER_NAME[json.provider]
-                json.name = json.alias || json.provider
+                json.providerName = constant.PROVIDER_NAME[json.provider]
+                json.name = json.alias || json.providerName
                 json.needed = applist.some ( app ) -> app?.get( 'provider' ) is json.provider
 
                 if json.isDemo then data.hasDemo = true

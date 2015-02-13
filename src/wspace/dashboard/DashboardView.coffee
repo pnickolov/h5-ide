@@ -579,10 +579,10 @@ define [ "./DashboardTpl",
 
         dataAry = _.map models, (data) ->
 
-            action   = data.get('action')
-            target   = data.get('target')
-            type     = data.get('type').toLowerCase()
-            targetId = data.get('targetId')
+            action   = data.get('action') or ''
+            target   = data.get('target') or ''
+            type     = (data.get('type') or '').toLowerCase()
+            targetId = data.get('targetId') or ''
             targetId = null if not that.model.scene.project.getOpsModel(targetId)
 
             _name = '<span class="name">' + data.get("username") + '</span>'

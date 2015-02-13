@@ -1,5 +1,5 @@
 define ['backbone',
-    '../template/TplMember',
+    '../template/TplTeam',
     'i18n!/nls/lang.js',
     'UI.bubblepopup',
     'ApiRequest',
@@ -9,7 +9,7 @@ define ['backbone',
     'UI.errortip',
     'UI.table',
     'MC.validate'
-], (Backbone, TplMember, lang, bubblePopup, ApiRequest, MemberCollection) ->
+], (Backbone, TplTeam, lang, bubblePopup, ApiRequest, MemberCollection) ->
 
     Backbone.View.extend
 
@@ -52,12 +52,12 @@ define ['backbone',
                     user_email: mail
                 }).then (data)->
                     if data
-                        $search.html TplMember.match({
+                        $search.html TplTeam.match({
                             name: Base64.decode(data.username),
                             mail: Base64.decode(data.email)
                         })
                     else
-                        $search.html TplMember.nomatch({
+                        $search.html TplTeam.nomatch({
                             name: mail
                         })
                 .done () ->
@@ -85,11 +85,11 @@ define ['backbone',
 
             if isPrivateProject
 
-                @$el.html TplMember.defaultProject()
+                @$el.html TplTeam.defaultProject()
 
             else
 
-                @$el.html TplMember.loading()
+                @$el.html TplTeam.loading()
                 @loadMemList()
 
             @
@@ -127,7 +127,7 @@ define ['backbone',
                         name: lang.IDE.SETTINGS_MEMBER_COLUMN_EDIT
                     }
                 ])
-            that.$el.html TplMember.main({
+            that.$el.html TplTeam.main({
                 limit: that.memberCol.isLimitInvite(),
                 number: that.memberCol.limit,
                 columns: columns,
@@ -166,7 +166,7 @@ define ['backbone',
         renderList: (data) ->
 
             that = @
-            @memList.html TplMember.list({
+            @memList.html TplTeam.list({
                 admin: that.isAdmin,
                 memlist: data
             })
@@ -221,7 +221,7 @@ define ['backbone',
                     memId = $(item).data('id')
                     memList.push(memId)
 
-                bubblePopup $delete, TplMember.deletePopup({
+                bubblePopup $delete, TplTeam.deletePopup({
                     count: memList.length
                 }), {
                     '.confirm': () ->

@@ -268,7 +268,7 @@ define [
             BasicSettings: 'basicsettings'
             AccessToken: 'accesstoken'
             Billing: 'billing'
-            Member: 'member'
+            Team: 'team'
             ProviderCredential: 'credential'
             UsageReport: 'usagereport'
 

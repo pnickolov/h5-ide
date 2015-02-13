@@ -4,26 +4,26 @@ define [
     './views/BasicSettingsView'
     './views/AccessTokenView'
     './views/BillingView'
-    './views/MemberView'
+    './views/TeamView'
     './views/ProviderCredentialView'
     './views/UsageReportView'
     'backbone'
-], ( lang, TplProject, BasicSettingsView, AccessTokenView, BillingView, MemberView, ProviderCredentialView, UsageReportView ) ->
+], ( lang, TplProject, BasicSettingsView, AccessTokenView, BillingView, TeamView, ProviderCredentialView, UsageReportView ) ->
 
     subViewMap = {
         basicsettings       : BasicSettingsView
         accesstoken         : AccessTokenView
         billing             : BillingView
-        member              : MemberView
+        team                : TeamView
         credential          : ProviderCredentialView
         usagereport         : UsageReportView
     }
 
     subViewNameMap = {
         basicsettings       : 'Basic Settings'
-        accesstoken         : 'Access Token'
+        accesstoken         : 'API Token'
         billing             : 'Billing'
-        member              : 'Team'
+        team                : 'Team'
         credential          : 'Cloud Access Credential'
         usagereport         : 'Usage Report'
     }

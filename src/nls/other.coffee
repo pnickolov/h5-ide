@@ -515,12 +515,12 @@ module.exports =
       zh: "更新"
 
     SETTINGS_LABEL_ACCESSTOKEN:
-      en: "Access Token"
-      zh: "访问令牌"
+      en: "API Token"
+      zh: "API令牌"
 
     SETTINGS_INFO_TOKEN:
       en: "Use token within API calls to initiate automatic states update. "
-      zh: "使用 API 接口的访问令牌可用初始化自动 state 更新。"
+      zh: "使用 API 接口的令牌以初始化自动 state 更新。"
 
     SETTINGS_BTN_TOKEN_CREATE:
       en: "Generate Token"
@@ -547,8 +547,8 @@ module.exports =
       zh: "令牌名称"
 
     SETTINGS_LABEL_TOKENTABLE_TOKEN:
-      en: "Access Token"
-      zh: "访问令牌"
+      en: "API Token"
+      zh: "API令牌"
 
     SETTINGS_CONFIRM_TOKEN_RM:
       en: 'Any applications or scripts using this token will no longer be able to access the
@@ -2496,7 +2496,7 @@ VisualOps API. You cannot UNDO this action.'
       en: "Basic Settings"
       zh: "基本设置"
 
-    MEMBER:
+    TEAM:
       en: "Team"
       zh: "团队成员"
 
@@ -2905,13 +2905,13 @@ into live resources, or import existing infrastructures."
 
     # TOKEN
     DASHBOARD_LOGS_TOKEN_ADD:
-      en: "%s added access token %s"
-      zh: "%s 添加访问令牌 %s"
+      en: "%s added api token %s"
+      zh: "%s 添加API令牌 %s"
 
     DASHBOARD_LOGS_TOKEN_REMOVE:
-      en: "%s removed access token %s"
-      zh: "%s 删除访问令牌 %s"
+      en: "%s removed api token %s"
+      zh: "%s 删除API令牌 %s"
 
     DASHBOARD_LOGS_TOKEN_RENAME:
-      en: "%s renamed access token %s"
-      zh: "%s 重命名访问令牌 %s"
+      en: "%s renamed api token %s"
+      zh: "%s 重命名API令牌 %s"

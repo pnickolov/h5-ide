@@ -295,6 +295,7 @@ require.config {
       'kp_upload'
       'sns_dropdown'
       'sns_manage'
+      'dhcp_manage'
       'snapshotManager'
       'rds_pg'
       'rds_snapshot'

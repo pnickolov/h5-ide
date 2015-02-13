@@ -96,11 +96,11 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
 
       $updateBtn = that.$el.find(".update-payment-done")
 
-      $firstname = wrap.find(".new-project-fn")
-      $lastname = wrap.find(".new-project-ln")
-      $number = wrap.find(".new-project-card")
-      $expire = wrap.find(".new-project-date")
-      $cvv = wrap.find(".new-project-cvv")
+      $firstname = wrap.find("#new-project-fn")
+      $lastname = wrap.find("#new-project-ln")
+      $number = wrap.find("#new-project-card")
+      $expire = wrap.find("#new-project-date")
+      $cvv = wrap.find("#new-project-cvv")
       valid = true
 
       # deal expire

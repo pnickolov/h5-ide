@@ -3474,7 +3474,7 @@ define [ 'component/stateeditor/model',
                 template: template.stateTextExpandModal()
                 width: 900
                 disableFooter: that.readOnlyMode
-                confirm: text: unless that.readOnlyMode then text: lang.IDE.STATE_TEXT_EXPAND_MODAL_SAVE_BTN
+                confirm: unless that.readOnlyMode then lang.IDE.STATE_TEXT_EXPAND_MODAL_SAVE_BTN
                 cancel: hide: true
             }
 

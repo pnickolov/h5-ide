@@ -53,19 +53,19 @@ define [
     tenSecCheck = ( col, attr, wsdata, retry )->
       res = isOpsExist( col, attr, wsdata )
       if res is 1
-        console.info "The stack is created by us, ignore"
+        console.log "[WS Add] The ops already exist, ignoring.", wsdata
         return
 
       if res is 0
-        console.info "The stack is not created by us. add"
+        console.log "[WS Add] The ops doesn't exist, add to collection", wsdata, col
         col.add( new OpsModel( wsdata ) )
         return
 
       if retry is 5
-        console.warn "Theres a stack added event which is ignore after timeout."
+        console.warn "[WS Add] Fail to determine the ops after 5 reties, ignoring.", wsdata
         return
 
-      console.info "Can't determine, retry in 3 sec."
+      console.log "[WS Add] Cannot determine the ops, retry in 2 sec.", wsdata
       setTimeout (()-> tenSecCheck( col, attr, wsdata, retry + 1 )), 2000
       return
 
@@ -78,12 +78,16 @@ define [
           return
 
         wsdata = project.__parseListRes([newDocument])[0]
-        tenSecCheck( project.stacks(), {
-          name     : wsdata.name
-          provider : wsdata.provider
-          region   : wsdata.region
-          state    : OpsModel.State.Saving
-        }, wsdata, 0 )
+        # Set time 1sec timeout to reduce the check time.
+        # Since the first check will always fail.
+        setTimeout ()->
+          tenSecCheck( project.stacks(), {
+            name     : wsdata.name
+            provider : wsdata.provider
+            region   : wsdata.region
+            state    : OpsModel.State.Saving
+          }, wsdata, 0 )
+        , 1000
         return
       removed : ( newDocument )->
         if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
@@ -102,11 +106,20 @@ define [
         if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
         project = App.model.projects().get( newDocument.project_id )
         if not project
-          console.log "There's an stack that is not related to any project, ignored.", newDocument
+          console.log "There's an app that is not related to any project, ignored.", newDocument
           return
 
-        if not project.apps().get( newDocument.id )
-          project.apps().add( new OpsModel( project.__parseListRes([newDocument])[0] ) )
+        wsdata = project.__parseListRes([newDocument])[0]
+        # Set time 1sec timeout to reduce the check time.
+        # Since the first check will always fail.
+        setTimeout ()->
+          tenSecCheck( project.apps(), {
+            name     : wsdata.name
+            provider : wsdata.provider
+            region   : wsdata.region
+            state    : OpsModel.State.Initializing
+          }, wsdata, 0 )
+        , 1000
         return
     }
 

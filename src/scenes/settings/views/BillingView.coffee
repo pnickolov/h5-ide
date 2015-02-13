@@ -29,17 +29,13 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
         billingTemplate = template.billingTemplate {paymentUpdate}
         that.$el.find("#billing-status").html billingTemplate
         that.$el.find(".table-head-fix").replaceWith MC.template.loadingSpinner()
-        if paymentUpdate.cardNumber and paymentUpdate.currentQuota < paymentUpdate.maxQuota and paymentUpdate.paymentState is "active" or "pastdue"
-          that.getPaymentHistory().then (paymentHistory)->
-            hasPaymentHistory = (_.keys paymentHistory).length
-            paymentUpdate = that.model.get("payment")
-            billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
-            that.$el.find(".billing-history").html $(billingTemplate).find(".billing-history").html()
-          , ()->
-            that.renderCache()
-        else
-          that.$el.find(".loading-spinner").remove()
-          that.$el.find("#billing-status").append template.billingTemplate {needUpdatePayment: true}
+        that.getPaymentHistory().then (paymentHistory)->
+          hasPaymentHistory = (_.keys paymentHistory).length
+          paymentUpdate = that.model.get("payment")
+          billingTemplate = template.billingTemplate {paymentUpdate, paymentHistory, hasPaymentHistory}
+          that.$el.find(".billing-history").html $(billingTemplate).find(".billing-history").html()
+        , ()->
+          that.renderCache()
       , (err)->
         if err.error is -404
           noSubscription = true

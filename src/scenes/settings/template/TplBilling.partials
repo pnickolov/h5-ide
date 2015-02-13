@@ -4,7 +4,9 @@
 
 <!--{{billingTemplate}}-->
 <div id="PaymentBody">
-    <p class="warning-red hide"></p>
+    {{#if paymentUpdate.failToCharge}}
+        <p class="warning-red">{{i18n "PAYMENT_ACCOUNT_IN_LIMITED_STATUS"}}</p>
+    {{/if}}
     <dl class="settings-item billing-email">
         <dt class="billing-email-title">{{i18n "PAYMENT_BILLING_EMAIL"}}</dt>
         <dd class="billing-email-text">

@@ -38,7 +38,7 @@
         "click i.modal-close": "close"
       },
       constructor: function(option) {
-        var _base, _base1;
+        var _base, _base1, _ref;
         this.nextOptions = [];
         this.nextCloses = [];
         if (typeof option.cancel === "string") {
@@ -56,6 +56,9 @@
           option.disableFooter = true;
         }
         option.hasFooter = !option.disableFooter;
+        if ((_ref = option.mode) === 'fullscreen' || _ref === 'panel') {
+          option.disableDrag = true;
+        }
         this.wrap = $("#modal-wrap");
         if (this.wrap.size() === 0) {
           this.wrap = $("<div id='modal-wrap'></div>").appendTo($("body"));
@@ -226,7 +229,9 @@
           }
         });
         modal = modals[modals.length - 1];
-        if (!this.option.disableDrag || this.option.mode !== "normal" && modal) {
+        if (this.option.disableDrag) {
+          return false;
+        } else if (modal) {
           diffX = 0;
           diffY = 0;
           draggable = false;
@@ -240,7 +245,6 @@
             } else if (e.button && e.button === 2) {
               draggable = false;
             }
-            console.log(draggable);
             if (draggable) {
               originalLayout = modal.tpl.offset();
               diffX = originalLayout.left - e.clientX;

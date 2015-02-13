@@ -103,6 +103,9 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 option.disableFooter = true
             option.hasFooter = !option.disableFooter
 
+            if option.mode in ['fullscreen', 'panel']
+              option.disableDrag = true
+
             @wrap = $("#modal-wrap")
             if @wrap.size() is 0
                 @wrap = $("<div id='modal-wrap'></div>").appendTo $("body")
@@ -235,7 +238,9 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     e.preventDefault()
                     self.close()
             modal = modals[modals.length - 1]
-            if not @option.disableDrag or @option.mode isnt "normal" and modal
+            if @option.disableDrag
+                return false
+            else if modal
                 diffX = 0
                 diffY = 0
                 draggable = false
@@ -244,7 +249,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     if e.which
                         if e.which is 3 then draggable = false
                     else if e.button and e.button is 2 then draggable = false
-                    console.log draggable
                     if draggable
                         originalLayout = modal.tpl.offset()
                         diffX = originalLayout.left - e.clientX

@@ -10003,6 +10003,13 @@ dl.settings-item {
   min-height: 280px;
   border-radius: 4px;
   margin-top: 8px; }
+  .usage-report-view .table-head-fix:before {
+    display: block;
+    position: relative;
+    content: " ";
+    margin: -1px;
+    padding-top: 1px;
+    z-index: -1; }
   .usage-report-view .table-head-fix .full-space {
     text-align: center;
     line-height: 280px;

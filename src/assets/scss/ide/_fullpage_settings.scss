@@ -802,21 +802,30 @@ dl.settings-item {
   }
 
   .table-head-fix {
-        background    : #000;
-        height        : auto;
-        min-height    : 280px;
-        border-radius : 4px;
-        margin-top    : 8px;
+    &:before {
+      display: block;
+      position: relative;
+      content: " ";
+      margin: -1px;
+      padding-top: 1px;
+      z-index: -1;
+    }
 
-        .full-space {
-            text-align  : center;
-            line-height : 280px;
-            color       : #777;
-            font-size   : 14px;
-        }
+    background    : #000;
+    height        : auto;
+    min-height    : 280px;
+    border-radius : 4px;
+    margin-top    : 8px;
 
-        .table-head{
-            background: #363636;
-        }
+    .full-space {
+      text-align  : center;
+      line-height : 280px;
+      color       : #777;
+      font-size   : 14px;
+    }
+
+    .table-head{
+      background: #363636;
+    }
     }
 }

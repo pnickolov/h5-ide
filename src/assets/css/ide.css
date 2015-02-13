@@ -70,6 +70,9 @@ pre {
 .bd3 {
   border-radius: 3px; }
 
+.mgt-10px {
+  margin-top: 10px; }
+
 /* CSS reset */
 article,
 footer,
@@ -3550,10 +3553,10 @@ aside.dashboard-sidebar {
   max-width: 55px; }
   @media (min-width: 1024px) and (max-width: 1280px) {
     #region-resource-app-wrap.region-resource-list .region-resource-info > span {
-      max-width: 98px; } }
+      max-width: 90px; } }
   @media (min-width: 1660px) {
     #region-resource-app-wrap.region-resource-list .region-resource-info > span {
-      max-width: 98px; } }
+      max-width: 90px; } }
   @media (max-width: 960px) {
     #region-resource-app-wrap.region-resource-list .region-resource-info > span {
       max-width: 112px; } }
@@ -9946,38 +9949,17 @@ dl.settings-item {
     margin-top: 20px; }
 
 #CredSetupWrap .icon-label {
-  float: right;
-  margin-right: 0;
-  color: #25a4f4;
+  position: absolute;
+  right: -8px;
+  top: 13px;
+  color: #4a90e2;
   line-height: 36px; }
-#CredSetupWrap ul li:first-child {
-  border-bottom: 1px solid #41424c;
-  padding-bottom: 10px;
-  margin-bottom: 15px; }
-#CredSetupWrap label {
-  display: block;
-  float: left;
-  font-size: 13px;
-  margin-bottom: 6px;
-  line-height: 36px;
-  width: 128px; }
-#CredSetupWrap .input {
-  width: 300px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 36px;
-  padding: 10px;
-  font-size: 13px;
-  margin-bottom: 6px; }
-
-.cred-setup-msg {
-  padding: 15px;
-  background-color: #111;
-  border-radius: 4px;
-  color: #ec3c38;
-  margin-bottom: 20px;
-  width: 397px; }
+#CredSetupWrap .modal-control-group {
+  position: relative; }
+  #CredSetupWrap .modal-control-group .input {
+    width: 260px; }
+  #CredSetupMsg + #CredSetupWrap .modal-control-group {
+    bacground: #202027; }
 
 .update-payment-ctrl button.btn {
   min-width: 80px;

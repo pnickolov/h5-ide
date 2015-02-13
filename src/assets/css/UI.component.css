@@ -71,6 +71,9 @@ pre {
 .bd3 {
   border-radius: 3px; }
 
+.mgt-10px {
+  margin-top: 10px; }
+
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }

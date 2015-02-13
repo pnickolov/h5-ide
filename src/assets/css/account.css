@@ -70,6 +70,9 @@ pre {
 .bd3 {
   border-radius: 3px; }
 
+.mgt-10px {
+  margin-top: 10px; }
+
 /* CSS reset */
 article,
 footer,

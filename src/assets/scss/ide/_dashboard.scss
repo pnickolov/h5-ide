@@ -569,11 +569,11 @@ $bp-2: 1280px;
   max-width: 55px;
 
     @media (min-width: $bp-1) and (max-width: $bp-2) {
-      max-width: 98px; 
+      max-width: 90px; 
     }
 
     @media (min-width: 1660px) {
-       max-width: 98px; 
+       max-width: 90px; 
     }
 
     @media (max-width: 960px) {

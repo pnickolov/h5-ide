@@ -1607,29 +1607,29 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div id=\"CredSetupWrap\">\n    <div id=\"CredSetupMsg\" class=\"cred-setup-msg empty-hide\"></div>\n    <ul>\n        <li>\n            <label>"
+  buffer += "<div id=\"CredSetupWrap\">\n    <div id=\"CredSetupMsg\" class=\"warning-red empty-hide\"></div>\n    <div class=\"modal-control-group\">\n        <label for=\"CredSetupAlias\">"
     + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_ALIAS", {hash:{},data:data}))
-    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAlias\" type=\"text\" value=\""
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAlias\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n        </li>\n        <li>\n            <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + "\">\n    </div>\n    <div class=\"modal-control-group\">\n        <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_ACCOUNTID", {hash:{},data:data}))
-    + "\"></i>\n            <label>"
+    + "\"></i>\n        <label for=\"CredSetupAccount\">"
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_ACCOUNTID", {hash:{},data:data}))
-    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccount\" type=\"text\" value=\""
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccount\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.awsAccount)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n        </li>\n        <li>\n            <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + "\">\n    </div>\n    <div class=\"modal-control-group\">\n        <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_ACCESSKEY", {hash:{},data:data}))
-    + "\"></i>\n            <label>"
+    + "\"></i>\n        <label for=\"CredSetupAccessKey\">"
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_ACCESSKEY", {hash:{},data:data}))
-    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccessKey\" type=\"text\" placeholder=\""
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccessKey\" type=\"text\" placeholder=\""
     + escapeExpression(((stack1 = (depth0 && depth0.awsAccessKey)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n        </li>\n        <li>\n            <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + "\">\n    </div>\n    <div class=\"modal-control-group\">\n        <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_SECRETKEY", {hash:{},data:data}))
-    + "\"></i>\n            <label>"
+    + "\"></i>\n        <label for=\"CredSetupSecretKey\">"
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_SECRETKEY", {hash:{},data:data}))
-    + "</label>\n            <input autocomplete=\"off\" class=\"input\" id=\"CredSetupSecretKey\" type=\"password\" placeholder=\""
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupSecretKey\" type=\"password\" placeholder=\""
     + escapeExpression(((stack1 = (depth0 && depth0.awsSecretKey)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n        </li>\n    </ul>\n    <p class=\"link-note\">"
+    + "\">\n    </div>\n    <p class=\"link-note\">"
     + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_AUTHORIZE_NOTE", {hash:{},data:data}))
     + "</p>\n</div>";
   return buffer;

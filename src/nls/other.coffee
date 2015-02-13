@@ -584,28 +584,28 @@ VisualOps API. You cannot UNDO this action.'
       zh : "正在刷新资源..."
 
     SETTINGS_ERR_CRED_VALIDATE:
-      en : "Fail to validate your credential."
-      zh : "您的证书验证失败。"
+      en : "Failed to validate the credential. Make sure it is correct and at least has read access to AWS."
+      zh : "您的证书验证失败。请保证其正确性，并至少拥有 AWS 的读权限。"
 
     SETTINGS_ERR_CRED_UPDATE:
-      en : "Fail to update your credential, please retry."
-      zh : "更新证书失败，请重试。"
+      en : "Failed to update credential."
+      zh : "更新证书失败。"
 
     SETTINGS_ERR_CRED_REMOVE:
-      en : "Fail to remove your credential, please retry."
-      zh : "移除证书失败，请重试。"
+      en : "Failed to remove credential."
+      zh : "移除证书失败。"
 
     SETTINGS_ERR_PROJECT_REMOVE:
-      en : "Fail to remove your project, please retry."
-      zh : "删除项目失败，请重试。"
+      en : "Failed to remove the workspace."
+      zh : "删除项目失败。"
 
     SETTINGS_ERR_PROJECT_RENAME:
-      en : "Fail to rename your project, please retry."
-      zh : "项目改名失败，请重试。"
+      en : "Failed to rename the workspace."
+      zh : "项目改名失败。"
 
     SETTINGS_ERR_PROJECT_LEAVE:
-      en : "Fail to leave the project, please retry."
-      zh : "离开项目失败，请重试。"
+      en : "Failed to leave the workspace."
+      zh : "离开项目失败。"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
       en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
@@ -2586,7 +2586,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "邀请"
 
     SETTINGS_MEMBER_LABEL_LIMIT:
-      en: "Your workspace has reached the standard limit of %s. If you'd like invite more member to collaborate, contact us at"
+      en: "Your workspace has reached the limit of %s. If you'd like invite more members to collaborate, contact us at"
       zh: "该工作空间已经达到 %s 个成员的标准上限，如果你想要邀请更多协作成员，请联系："
 
     SETTINGS_MEMBER_LABEL_ONLY_ONE_ADMIN:

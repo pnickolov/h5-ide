@@ -12,7 +12,7 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
 
       @modal = new Modal {
         template      : ProjectTpl.switchConfirm()
-        title         : lang.IDE.SETTINGS_CREATE_PROJECT_TITLE
+        title         : lang.IDE.SWITCH_WORKSPACE_UNSAVED_CHANGES
         disableClose  : true
         disableFooter : true
         width         : "500px"

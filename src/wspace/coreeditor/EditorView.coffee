@@ -211,7 +211,8 @@ define [
       modal.tpl.on "click", ".tar .confirm", ()->
         modal.close()
         self.workspace.remove()
-      modal.tpl.on "click", ".tar .save", ()->
+      modal.tpl.on "click", ".tar .save", (evt)->
+        $(evt.currentTarget).prop("disabled", true).text(lang.IDE.SAVING_STACK)
         self.workspace.saveStack().then ()->
           modal.close()
           self.workspace.remove()

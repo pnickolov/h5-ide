@@ -2460,6 +2460,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Drop %s,"
       zh: "拖拽%s到此，"
 
+    SAVE_STACK:
+      en: "Save stack"
+      zh: "保存模板"
+
     SAVING_STACK:
       en: "Saving stack..."
       zh: "正在保存模板..."
@@ -2770,6 +2774,10 @@ into live resources, or import existing infrastructures."
     SETTINGS_CREATE_PROJECT_TITLE:
       en: "Create new workspace"
       zh: "创建新工作空间"
+
+    SWITCH_WORKSPACE_UNSAVED_CHANGES:
+      en: "Unsaved Changes"
+      zh: "未保存的修改"
 
     SETTINGS_CREATE_PROJECT_EXPIRE_FORMAT:
       en: "Require format MM/YYYY"

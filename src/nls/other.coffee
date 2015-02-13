@@ -612,8 +612,8 @@ VisualOps API. You cannot UNDO this action.'
       zh : "<span>系统中存在正在运行或已经停止的 App。</span>确定要更新 AWS 证书吗？"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
-      en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
-      zh : "继续操作，会导致现存的 App 失去管理。如果这个新 AWS 证书 没有足够的权限管理现存的 App，我们强烈建议您先终结掉这些存在的 App。"
+      en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to FORGET or TERMINATE existing apps first."
+      zh : "继续操作，会导致现存的 App 失去管理。如果这个新 AWS 证书 没有足够的权限管理现存的 App，我们强烈建议您先移除或终结掉这些存在的 App。"
 
     SETTINGS_LABEL_UPDATE_CONFIRM:
       en: "Confirm to update"
@@ -2812,8 +2812,8 @@ into live resources, or import existing infrastructures."
       zh: "版本冲突"
 
     CONTENT_OPS_CONFLICT:
-      en: "Cannot save stack since another user has applied changes to this stack. <br/> You can save your changes by duplicate this stack."
-      zh: "其他组员在这你之前修改了这个模板，因此无法保存。<br/>你可以通过复制模板来保存当前的改动。"
+      en: "Cannot save stack since another user has applied changes to this stack. <br/><br/> You can save your changes by duplicate this stack."
+      zh: "其他组员在这你之前修改了这个模板，因此无法保存。<br/><br/>你可以通过复制模板来保存当前的改动。"
 
     # Dashboard logs
 

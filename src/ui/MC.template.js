@@ -1629,7 +1629,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_SECRETKEY", {hash:{},data:data}))
     + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupSecretKey\" type=\"password\" placeholder=\""
     + escapeExpression(((stack1 = (depth0 && depth0.awsSecretKey)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n    </div>\n    <p class=\"link-note\">"
+    + "\">\n    </div>\n    <p class=\"warning-text\">"
     + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_AUTHORIZE_NOTE", {hash:{},data:data}))
     + "</p>\n</div>";
   return buffer;
@@ -1643,9 +1643,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"cred-setup-msg empty-hide\"></div>\n<div>\n	"
+  buffer += "<div class=\"cred-setup-msg empty-hide warning-red\"></div>\n<div class=\"modal-text-major\">\n	"
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_CRED_UPDATE_CONFIRM_TIT", {hash:{},data:data}))
-    + "\n	<p>\n		"
+    + "\n	<p class=\"modal-text-major\">\n		"
     + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_CRED_UPDATE_CONFIRM_TEXT", {hash:{},data:data}))
     + "\n	</p>\n</div>";
   return buffer;

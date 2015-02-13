@@ -554,11 +554,12 @@ $bp-2: 1280px;
   #region-resource-app-wrap {
     @include v-scroll;
 
-    // height     : auto;
-    height : $dashWrapHeight;
-    // padding    : 10px;
-    box-sizing : border-box;
-    background : #fff;
+    // height         : auto;
+    height            : $dashWrapHeight;
+    // padding        : 10px;
+    box-sizing        : border-box;
+    background        : #fff;
+    -webkit-transform : translate3d(0,0,0);
 
     border        : 1px solid #ccc;
     border-radius : 3px;

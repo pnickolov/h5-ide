@@ -122,9 +122,10 @@
 
 <!-- {{switchConfirm}} -->
 <section>
-  <p>You have unsaved changes in this project. Switching projects will cause your chages to lose.</p> <p>Do you confirm to switch project anyway?</p>
+  <p class="modal-text-major">You have unsaved changes in current workspace. Switching to another workspace will cause your chages to lose.</p> 
+  <p class="modal-text-major">Do you confirm to switch project anyway?</p>
   <div class="modal-footer">
-    <button class="btn do-switch btn-silver">Switch and discard changes</button>
+    <button class="btn do-switch btn-red">Switch and discard changes</button>
     <button class="btn btn-blue modal-close">Do not switch</button>
   </div>
 </section>

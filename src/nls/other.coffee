@@ -2812,98 +2812,98 @@ into live resources, or import existing infrastructures."
     # Stack
     DASHBOARD_LOGS_STACK_CREATE:
       en: "%s created stack %s"
-      zh: ""
+      zh: "%s 创建 Stack %s"
 
     DASHBOARD_LOGS_STACK_REMOVE:
       en: "%s deleted stack %s"
-      zh: ""
+      zh: "%s 删除 Stack %s"
 
     DASHBOARD_LOGS_STACK_RENAME:
       en: "%s renamed stack %s"
-      zh: ""
+      zh: "%s 重命名 Stack %s"
 
     DASHBOARD_LOGS_STACK_SAVE:
       en: "%s saved stack %s"
-      zh: ""
+      zh: "%s 保存 Stack %s"
 
     DASHBOARD_LOGS_STACK_SAVEAS:
       en: "%s duplicated stack %s"
-      zh: ""
+      zh: "%s 复制 Stack %s"
 
     DASHBOARD_LOGS_STACK_RUN:
     #   en: "%s ran stack %s into app %s"
       en: "%s ran stack %s"
-      zh: ""
+      zh: "%s 运行 Stack %s"
 
     # App
     DASHBOARD_LOGS_APP_START:
       en: "%s started app %s"
-      zh: ""
+      zh: "%s 恢复 App %s"
 
     DASHBOARD_LOGS_APP_STOP:
       en: "%s stopped app %s"
-      zh: ""
+      zh: "%s 暂停 App %s"
 
     DASHBOARD_LOGS_APP_TERMINATE:
       en: "%s terminated app %s"
-      zh: ""
+      zh: "%s 终结 App %s"
 
     DASHBOARD_LOGS_APP_IMPORT:
       en: "%s imported VPC as app %s"
-      zh: ""
+      zh: "%s 导入 VPC 为 App %s"
 
     DASHBOARD_LOGS_APP_SAVE:
       en: "%s saved external change to app %s"
-      zh: ""
+      zh: "%s 保存外部改变到 App %s"
 
     DASHBOARD_LOGS_APP_UPDATE:
       en: "%s updated app %s"
-      zh: ""
+      zh: "%s 更新 App %s"
 
     DASHBOARD_LOGS_APP_FORGET:
       en: "%s made app %s forgotten"
-      zh: ""
+      zh: "%s 释放 App %s"
 
     # Project
     DASHBOARD_LOGS_PROJECT_CREATE:
       en: "%s created workspace %s"
-      zh: ""
+      zh: "%s 创建工作空间 %s"
 
     DASHBOARD_LOGS_PROJECT_RENAME:
       en: "%s renamed workspace %s"
-      zh: ""
+      zh: "%s 重命名工作空间 %s"
 
     # Payment
     DASHBOARD_LOGS_PAYMENT_ADD:
       en: "%s added billing information"
-      zh: ""
+      zh: "%s 添加账单信息"
 
     DASHBOARD_LOGS_PAYMENT_UPDATE:
       en: "%s updated billing information"
-      zh: ""
+      zh: "%s 更新账单信息"
 
     # CREDENTIAL
     DASHBOARD_LOGS_CREDENTIAL_ADD:
       en: "%s added cloud access credential"
-      zh: ""
+      zh: "%s 添加证书"
 
     DASHBOARD_LOGS_CREDENTIAL_REMOVE:
       en: "%s removed cloud access credential"
-      zh: ""
+      zh: "%s 删除证书"
 
     DASHBOARD_LOGS_CREDENTIAL_UPDATE:
       en: "%s updated cloud access credential"
-      zh: ""
+      zh: "%s 更新证书"
 
     # TOKEN
     DASHBOARD_LOGS_TOKEN_ADD:
       en: "%s added access token %s"
-      zh: ""
+      zh: "%s 添加访问令牌 %s"
 
     DASHBOARD_LOGS_TOKEN_REMOVE:
       en: "%s removed access token %s"
-      zh: ""
+      zh: "%s 删除访问令牌 %s"
 
     DASHBOARD_LOGS_TOKEN_RENAME:
       en: "%s renamed access token %s"
-      zh: ""
+      zh: "%s 重命名访问令牌 %s"

@@ -37,13 +37,13 @@ define [ "ApiRequest",
 
       $create = modal.tpl.find(".new-project-create")
 
-      $name = modal.tpl.find(".new-project-name")
-      $firstname = modal.tpl.find(".new-project-fn")
-      $lastname = modal.tpl.find(".new-project-ln")
-      $email = modal.tpl.find(".new-project-email")
-      $number = modal.tpl.find(".new-project-card")
-      $expire = modal.tpl.find(".new-project-date")
-      $cvv = modal.tpl.find(".new-project-cvv")
+      $name = modal.tpl.find("#new-project-name")
+      $firstname = modal.tpl.find("#new-project-fn")
+      $lastname = modal.tpl.find("#new-project-ln")
+      $email = modal.tpl.find("#new-project-email")
+      $number = modal.tpl.find("#new-project-card")
+      $expire = modal.tpl.find("#new-project-date")
+      $cvv = modal.tpl.find("#new-project-cvv")
       valid = true
 
       # deal expire

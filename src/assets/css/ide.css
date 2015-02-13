@@ -8429,13 +8429,13 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   margin: 10px 0;
   color: #eee; }
 
-section.members-only {
+.members-only {
   display: none;
-  border: 1px solid #5E5E5E;
+  border: 1px solid #ffbb0d;
   padding: 10px;
   margin: 10px;
   margin-bottom: 0;
-  color: #CCCCCC;
+  color: #ffbb0d;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px; }
@@ -10069,9 +10069,19 @@ dl.settings-item {
       width: 100%;
       height: 100%; }
 
-.new-project-modal .new-project-name, .update-payment-wrap .new-project-name {
-  margin-left: 5px;
-  width: 350px; }
+.new-project-modal .new-project-name-wrap, .update-payment-wrap .new-project-name-wrap {
+  padding: 20px 10px;
+  border-bottom: 1px solid #40446C;
+  border-radius: 0; }
+.new-project-modal .new-project-billing-wrap, .update-payment-wrap .new-project-billing-wrap {
+  padding: 20px 10px; }
+  .new-project-modal .new-project-billing-wrap h4, .update-payment-wrap .new-project-billing-wrap h4 {
+    font-size: 16px; }
+.new-project-modal .new-project-info, .update-payment-wrap .new-project-info {
+  font-size: 12px;
+  color: #ffbb0d; }
+.new-project-modal #new-project-name, .update-payment-wrap #new-project-name {
+  width: 292px; }
 .new-project-modal .new-project-item, .update-payment-wrap .new-project-item {
   display: block;
   margin-top: 15px;
@@ -10109,13 +10119,6 @@ dl.settings-item {
 .new-project-modal .new-project-err, .new-project-modal .update-payment-err, .update-payment-wrap .new-project-err, .update-payment-wrap .update-payment-err {
   display: none;
   text-align: left; }
-.new-project-modal .new-project-info, .update-payment-wrap .new-project-info {
-  color: #bc7300;
-  border-radius: 3px;
-  padding: 5px;
-  border: 1px #bc7300 solid;
-  margin-top: 10px;
-  text-align: center; }
 
 .ws-tabbar {
   margin-left: 205px;

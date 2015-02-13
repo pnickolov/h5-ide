@@ -89,9 +89,26 @@
 }
 
 .new-project-modal, .update-payment-wrap {
-  .new-project-name {
-      margin-left: 5px;
-      width: 350px;
+
+  .new-project-name-wrap {
+    padding: 20px 10px;
+    border-bottom: 1px solid #40446C;
+    border-radius: 0;
+  }
+  
+  .new-project-billing-wrap {
+    padding: 20px 10px;
+
+    h4 { font-size: 16px; }
+  }
+
+  .new-project-info {
+    font-size : 12px;
+    color     : $yellow;
+  }
+
+  #new-project-name {
+      width: 292px;
   }
   .new-project-item {
       display: block;
@@ -147,14 +164,6 @@
   .new-project-err,.update-payment-err{
       display    : none;
       text-align : left;
-  }
-  .new-project-info {
-    color: #bc7300;
-    border-radius: 3px;
-    padding: 5px;
-    border: 1px #bc7300 solid;
-    margin-top: 10px;
-    text-align: center;
   }
 }
 

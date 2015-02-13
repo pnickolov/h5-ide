@@ -102,11 +102,11 @@
             <ul class="dropdown">
                 <li data-id="admin" class="item {{#ifCond role 'admin'}}selected{{/ifCond}}">
                     <div class="name">{{i18n "SETTINGS_MEMBER_LABEL_ADMIN"}}</div>
-                    <div class="desc">{{i18n "SETTINGS_MEMBER_LABEL_ADMIN_DESC"}}</div>
+                   
                 </li>
                 <li data-id="collaborator" class="item {{#ifCond role 'collaborator'}}selected{{/ifCond}}">
                     <div class="name">{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR"}}</div>
-                    <div class="desc">{{i18n "SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC"}}</div>
+                    
                 </li>
             </ul>
         </div>

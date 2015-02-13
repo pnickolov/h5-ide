@@ -12,13 +12,13 @@
   display: flex;
 }
 
-// @mixin flex-wrap($values) {
-//   -webkit-box-flex-wrap: $values;
-//   -moz-box-flex-wrap:  $values;
-//   -webkit-flex-wrap:  $values;
-//   -ms-flex-wrap:  $values;
-//   flex-wrap:  $values;
-// }
+@mixin vo-flex-wrap($values) {
+  -webkit-box-flex-wrap: $values;
+  -moz-box-flex-wrap:  $values;
+  -webkit-flex-wrap:  $values;
+  -ms-flex-wrap:  $values;
+  flex-wrap:  $values;
+}
 
 @mixin flex($values) {
   -webkit-box-flex: $values;

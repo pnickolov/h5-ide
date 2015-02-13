@@ -551,8 +551,7 @@ dl.settings-item {
 
     .settings-item.credit-card-info dd {
         @include displayflex;
-        // flex-wrap : wrap;
-        @include flex-wrap(wrap);
+        @include vo-flex-wrap(wrap);
 
 
         .credit-meta {

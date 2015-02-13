@@ -219,9 +219,9 @@ $navHeight : 38px;
 }
 
 #modal-run-stack, #app-apply-update {
-  display        : flex;
-  flex-wrap      : wrap;
+  @include displayflex;
   flex-direction : row;
+  @include vo-flex-wrap(wrap);
 }
 
 .payment-wrapper{

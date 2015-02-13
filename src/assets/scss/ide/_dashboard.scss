@@ -521,7 +521,7 @@ $bp-2: 1280px;
 
 #region-app-stack-wrap {
   @include displayflex;
-  @include flex-wrap(wrap);
+  @include vo-flex-wrap(wrap);
 
   align-items: stretch;
   -webkit-align-items: stretch;
@@ -585,7 +585,7 @@ $bp-2: 1280px;
 .region-resource-list {
 
     @include displayflex;
-    @include flex-wrap(wrap);
+    @include vo-flex-wrap(wrap);
 
 
     align-items: flex-start;

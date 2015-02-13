@@ -104,7 +104,7 @@
                 <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">{{#if progressing}}
                 <div class="thumbnail app-thumbnail"></div>
                 <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
-                <div class="region-resource-info truncate">
+                <div class="region-resource-info truncate" title="{{name}}">
                     <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
                 </div>
             {{else}}
@@ -115,7 +115,7 @@
                     {{#if stoppable}}
                         {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
                     {{/if}}
-                    <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
+                    <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate" title="{{name}}">{{name}}</span>
                 </div>
                 {{/if}}
                 </a></li>

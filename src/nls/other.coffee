@@ -2755,9 +2755,17 @@ into live resources, or import existing infrastructures."
       en: "Last Name"
       zh: "名"
 
+    SETTINGS_CREATE_PROJECT_PL_EMAIL:
+      en: "example@email.com"
+      zh: "example@email.com"
+
     SETTINGS_CREATE_PROJECT_CARD_NAME:
       en: "CARD NUMBER"
       zh: "卡号"
+
+    SETTINGS_CREATE_PROJECT_PL_CARD_NAME:
+      en: "XXXX XXXX XXXX XXXX"
+      zh: "XXXX XXXX XXXX XXXX"
 
     SETTINGS_CREATE_PROJECT_CARD_CVV:
       en: "CVV"
@@ -2768,8 +2776,12 @@ into live resources, or import existing infrastructures."
       zh: "过期日期"
 
     SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT:
-      en: "Secure Payment Powered by Chargify"
-      zh: "安全支付由Chargify驱动"
+      en: "Secure Payment"
+      zh: "安全支付"
+
+    SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT_TIT:
+      en: "Powered by Chargify"
+      zh: "由Chargify驱动"
 
     SETTINGS_CREATE_PROJECT_TITLE:
       en: "Create new workspace"

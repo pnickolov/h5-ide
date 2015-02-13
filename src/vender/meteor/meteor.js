@@ -1623,8 +1623,23 @@ _.extend(Meteor._DdpClientStream.prototype, {on: function(a, b) {
             return b.RETRY_MIN_TIMEOUT;
         var c = Math.min(b.RETRY_MAX_TIMEOUT, b.RETRY_BASE_TIMEOUT * Math.pow(b.RETRY_EXPONENT, a));
         return c *= Random.fraction() * b.RETRY_FUZZ + (1 - b.RETRY_FUZZ / 2)
+    }, disconnect: function () {
+        var self = this;
+        self._cleanup();
+        if (self.retryTimer) {
+          clearTimeout(self.retryTimer);
+          self.retryTimer = null;
+        }
+        self.currentStatus = {
+          status: "offline",
+          connected: false,
+          retryCount: 0
+        };
+        self.statusChanged();
     },_online: function() {
-        this.reconnect()
+        // if we've requested to be offline by disconnecting, don't reconnect.
+        if (this.currentStatus.status != "offline")
+            this.reconnect();
     },_retryLater: function() {
         var a = this, b = a._retryTimeout(a.currentStatus.retryCount);
         a.retryTimer && clearTimeout(a.retryTimer), a.retryTimer = setTimeout(_.bind(a._retryNow, a), b), a.currentStatus.status = "waiting", a.currentStatus.connected = !1, a.currentStatus.retryTime = (new Date).getTime() + b, a.statusChanged()

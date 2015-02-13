@@ -30,6 +30,8 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     opts =
       connection : @connection
 
+    @__sessionExpire = false
+
     @collection =
       project : new Meteor.Collection "project",  opts
       history : new Meteor.Collection "project_history",  opts
@@ -39,6 +41,10 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       status  : new Meteor.Collection "status",   opts
       app     : new Meteor.Collection "app",      opts
       stack   : new Meteor.Collection "stack",    opts
+
+    @collection.user.find().observe {
+      removed : ( e )-> App.WS.onUserSubError( e )
+    }
 
     # Trigger an event when connection state changed.
     Deps.autorun ()=> @statusChanged()
@@ -58,12 +64,20 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   # isReady is only true for a project, when its request subscription is ready.
   Websocket.prototype.isReady = ( projectId )-> @projects[projectId]?.ready
   Websocket.prototype.onUserSubError = ( e )->
-    console.log e
+    console.log "[Websocket Error]", e
+
+    if @__sessionExpire then return
+
+    @__sessionExpire = true
+
+    # Disconnect from websocket
+    @connection._stream.disconnect()
+
     @trigger "Disconnected"
     return
 
   Websocket.prototype.statusChanged = ()->
-    status = @connection.status().connected
+    status = @connection.status().connected or @__sessionExpire
 
     if status
       @shouldNotify = true
@@ -94,7 +108,6 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       onError : (e)-> singleton.onUserSubError(e)
     }
     @connection.subscribe "imports", App.user.get("usercode"), App.user.get("session")
-
 
   # Watch changes of a project, keep track of the subscribtion
   # Auto-subscribe when connection lost.

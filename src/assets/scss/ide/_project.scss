@@ -97,11 +97,74 @@
       margin-bottom : 4px;
       display       : block;
     }
-    
+
     .update-payment-err{
       display    : none;
       text-align : left;
     }
+
+    .new-project-support {
+      position   : absolute;
+      top        : 17px;
+      right      : 0;
+
+      text-align : right;
+      color      : $base-g;
+
+      &.icon-password { font-size: 12px !important; }
+    }
+
+  .new-project-item {
+        display : inline-block;
+        margin  : 5px 0;
+    }
+
+  .new-project-item-owner {
+      width    : 49.5%;
+
+      input {
+          width: 35%;
+      }
+
+      input:first-of-type {
+          margin-right: 2%;
+      }
+  }
+
+  .new-project-item-email {
+      width: 49.5%;
+
+      input {
+          width: 200px;
+      }
+  }
+  .new-project-item-card {
+      width: 49.5%;
+
+      input {
+          width: 200px;
+      }
+  }
+  .new-project-item-cvv {
+      width: 17%;
+
+      input {
+          width: 50px;
+      }
+  }
+  .new-project-item-date {
+      width: 32%;
+
+      input {
+          width: 118px;
+      }
+  }
+
+}
+
+.update-payment-wrap {
+  max-width: 500px;
+  
 }
 
 .new-project-modal  {
@@ -151,6 +214,7 @@
       line-height : 28px;
 
     }
+
   }
 
   .new-project-info {
@@ -166,66 +230,6 @@
     margin         : 6px 0;
   }
   
-  .new-project-item {
-      display : inline-block;
-      margin  : 5px 0;
-  }
-
-  .new-project-item-owner {
-      width    : 49.5%;
-
-      input {
-          width: 35%;
-      }
-
-      input:first-of-type {
-          margin-right: 2%;
-      }
-  }
-
-  .new-project-item-email {
-      width: 49.5%;
-
-      input {
-          width: 200px;
-      }
-  }
-  .new-project-item-card {
-      width: 49.5%;
-
-      input {
-          width: 200px;
-      }
-  }
-  .new-project-item-cvv {
-      width: 17%;
-
-      input {
-          width: 50px;
-      }
-  }
-  .new-project-item-date {
-      width: 32%;
-
-      input {
-          width: 118px;
-      }
-  }
-  .new-project-item-zip {
-      input{
-          width: 195px;
-      }
-  }
-  .new-project-support {
-      position   : absolute;
-      top        : 17px;
-      right      : 0;
-
-      text-align : right;
-      color      : $base-g;
-
-      &.icon-password { font-size: 12px !important; }
-  }
   .new-project-err {
       display    : none;
       text-align : left;

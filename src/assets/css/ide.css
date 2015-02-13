@@ -10093,6 +10093,56 @@ dl.settings-item {
 .new-project-billing-wrap .update-payment-err {
   display: none;
   text-align: left; }
+.update-payment-wrap .new-project-support,
+.new-project-billing-wrap .new-project-support {
+  position: absolute;
+  top: 17px;
+  right: 0;
+  text-align: right;
+  color: #11c568; }
+  .update-payment-wrap .new-project-support.icon-password,
+  .new-project-billing-wrap .new-project-support.icon-password {
+    font-size: 12px !important; }
+.update-payment-wrap .new-project-item,
+.new-project-billing-wrap .new-project-item {
+  display: inline-block;
+  margin: 5px 0; }
+.update-payment-wrap .new-project-item-owner,
+.new-project-billing-wrap .new-project-item-owner {
+  width: 49.5%; }
+  .update-payment-wrap .new-project-item-owner input,
+  .new-project-billing-wrap .new-project-item-owner input {
+    width: 35%; }
+  .update-payment-wrap .new-project-item-owner input:first-of-type,
+  .new-project-billing-wrap .new-project-item-owner input:first-of-type {
+    margin-right: 2%; }
+.update-payment-wrap .new-project-item-email,
+.new-project-billing-wrap .new-project-item-email {
+  width: 49.5%; }
+  .update-payment-wrap .new-project-item-email input,
+  .new-project-billing-wrap .new-project-item-email input {
+    width: 200px; }
+.update-payment-wrap .new-project-item-card,
+.new-project-billing-wrap .new-project-item-card {
+  width: 49.5%; }
+  .update-payment-wrap .new-project-item-card input,
+  .new-project-billing-wrap .new-project-item-card input {
+    width: 200px; }
+.update-payment-wrap .new-project-item-cvv,
+.new-project-billing-wrap .new-project-item-cvv {
+  width: 17%; }
+  .update-payment-wrap .new-project-item-cvv input,
+  .new-project-billing-wrap .new-project-item-cvv input {
+    width: 50px; }
+.update-payment-wrap .new-project-item-date,
+.new-project-billing-wrap .new-project-item-date {
+  width: 32%; }
+  .update-payment-wrap .new-project-item-date input,
+  .new-project-billing-wrap .new-project-item-date input {
+    width: 118px; }
+
+.update-payment-wrap {
+  max-width: 500px; }
 
 .new-project-modal .modal-footer {
   padding: 24px 0 5px 0; }
@@ -10139,41 +10189,6 @@ dl.settings-item {
   padding: 4px 6px;
   border-radius: 4px;
   margin: 6px 0; }
-.new-project-modal .new-project-item {
-  display: inline-block;
-  margin: 5px 0; }
-.new-project-modal .new-project-item-owner {
-  width: 49.5%; }
-  .new-project-modal .new-project-item-owner input {
-    width: 35%; }
-  .new-project-modal .new-project-item-owner input:first-of-type {
-    margin-right: 2%; }
-.new-project-modal .new-project-item-email {
-  width: 49.5%; }
-  .new-project-modal .new-project-item-email input {
-    width: 200px; }
-.new-project-modal .new-project-item-card {
-  width: 49.5%; }
-  .new-project-modal .new-project-item-card input {
-    width: 200px; }
-.new-project-modal .new-project-item-cvv {
-  width: 17%; }
-  .new-project-modal .new-project-item-cvv input {
-    width: 50px; }
-.new-project-modal .new-project-item-date {
-  width: 32%; }
-  .new-project-modal .new-project-item-date input {
-    width: 118px; }
-.new-project-modal .new-project-item-zip input {
-  width: 195px; }
-.new-project-modal .new-project-support {
-  position: absolute;
-  top: 17px;
-  right: 0;
-  text-align: right;
-  color: #11c568; }
-  .new-project-modal .new-project-support.icon-password {
-    font-size: 12px !important; }
 .new-project-modal .new-project-err {
   display: none;
   text-align: left; }

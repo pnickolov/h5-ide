@@ -637,6 +637,7 @@ define [ 'ApiRequest'
             @$el.html template attr
             checkChange = @checkChange.bind @
             changeApplyImmediately = @changeApplyImmediately.bind @
+            $('header.property-sidebar-title').siblings('.apply-immediately-section').remove()
             @$el.find(".apply-immediately-section").insertAfter('header.property-sidebar-title').click changeApplyImmediately
             .click checkChange
             if @isAppEdit and not @isPromoted()
@@ -1330,6 +1331,7 @@ define [ 'ApiRequest'
             if currentResModel
 
                 ApiRequest("rds_ins_DescribeDBInstances",{
+                    key_id: Design.instance().credentialId()
                     region_name: region
                     id: dbId
                 }).then (data) ->

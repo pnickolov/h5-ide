@@ -141,14 +141,13 @@ define [ "./DashboardTpl",
     updateDemoView : ()->
       if not @model.scene.project.isDemoMode()
         @$el.find("#dashboard-data-wrap").removeClass("demo")
-        @$el.find("#VisualizeVPC").removeAttr("disabled").removeClass("tooltip")
+        @$el.find("#VisualizeVPC").removeAttr("disabled").removeClass("tooltip").removeAttr("title")
         newCredentialAccount = @model.scene.project.credOfProvider(constant.PROVIDER.AWSGLOBAL).get("awsAccount")
         if @credentialAccount isnt newCredentialAccount
           @reloadResource()
           @credentialAccount = newCredentialAccount
-
       else
-        @$el.find("#VisualizeVPC").attr("disabled", "disabled").addClass("tooltip")
+        @$el.find("#VisualizeVPC").attr("disabled", "disabled").addClass("tooltip").attr("title", lang.IDE.PROVIDE_CRED_TO_VISUALIZE)
         @$el.find("#dashboard-data-wrap").toggleClass("demo", true)
       return
 

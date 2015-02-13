@@ -20,7 +20,7 @@
         </ul> </div>
       </div>
 
-      <button id="VisualizeVPC" class="btn btn-blue icon-visualize tooltip" data-analytics-plus="visualize_vpc" data-tooltip="{{i18n "PROVIDE_CRED_TO_VISUALIZE"}}">{{i18n "DASH_VISUALIZE_VPC"}}</button>
+      <button id="VisualizeVPC" class="btn btn-blue icon-visualize tooltip" data-analytics-plus="visualize_vpc" title="{{i18n "PROVIDE_CRED_TO_VISUALIZE"}}" data-tooltip="{{i18n "PROVIDE_CRED_TO_VISUALIZE"}}">{{i18n "DASH_VISUALIZE_VPC"}}</button>
 
   </header>
 

@@ -377,7 +377,7 @@ define [
           nextPeriod  : result.next_assessment_at
           paymentState: result.state
         }
-        formattedResult.renewDays = (Math.round (new Date(formattedResult.nextPeriod) - new Date())/(24*3600*100))/10
+        formattedResult.renewDays = (Math.round (new Date(formattedResult.nextPeriod) - new Date())/(24*3600*1000))
         formattedResult.isDefault = that.isPrivate()
         formattedResult.failToCharge = that.shouldPay()
         that.set("payment", formattedResult)

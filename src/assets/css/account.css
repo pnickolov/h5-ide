@@ -16,26 +16,23 @@
   font-style: normal;
   font-weight: 400;
   src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
   src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
-
 body {
   font-family: Lato, "Helvetica Neue", "Helvetica", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   color: #acacc6;
   font-size: 14px; }
 
 a {
-  color: #4a90e2;
+  color: #4A90E2;
   text-decoration: none; }
   a:hover {
     color: #a2d3f0; }
@@ -264,7 +261,7 @@ body {
 
 #body {
   color: #222;
-  background: black url("../images/login/bg.jpeg");
+  background: #000 url("../images/login/bg.jpeg");
   background-size: cover; }
 
 a {

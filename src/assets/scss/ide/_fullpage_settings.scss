@@ -117,7 +117,7 @@ div.settings-item {
 }
 
 dl.settings-item {
-    @include flexbox;
+    @include displayflex;
 }
 
 .leave-project-zone,
@@ -147,7 +147,7 @@ dl.settings-item {
     a { cursor: pointer; }
     a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
 
-    @include flexbox();
+    @include displayflex;
     height   : 100%;
     width    : 100%;
 
@@ -276,7 +276,7 @@ dl.settings-item {
                     //     }
                     // }
 
-                    .credential-name {  
+                    .credential-name {
                         color       : white;
                         font-size   : 16px;
                         line-height : 28px;
@@ -319,7 +319,7 @@ dl.settings-item {
                             font-size   : 14px !important;
                             padding     : 0 5px;
 
-                            &:before { 
+                            &:before {
                                 display      : inline-block;
                                 width        : 16px;
                                 margin-right : 5px;
@@ -550,9 +550,9 @@ dl.settings-item {
     }
 
     .settings-item.credit-card-info dd {
-        @include flexbox();
+        @include displayflex;
         // flex-wrap : wrap;
-        @include flex-wrap($values:wrap);
+        @include flex-wrap(wrap);
 
 
         .credit-meta {
@@ -751,7 +751,7 @@ dl.settings-item {
         .input { width: 260px; }
 
         #CredSetupMsg + & {
-            bacground: $bg-p;
+            background: $bg-p;
         }
     }
 

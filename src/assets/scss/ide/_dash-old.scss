@@ -257,7 +257,7 @@ aside.dashboard-sidebar {
     }
 
   .dashboard-log {
-      
+
       .dashboard-log-item {
 
         margin-bottom : 15px;
@@ -852,7 +852,7 @@ article.dashboard-content {
         width : 22.5%;
         margin-left : 2%;
       }
-    
+
 
       .blank-widget {
         padding  : 14.55% 0 27px 0;
@@ -961,7 +961,7 @@ article.dashboard-content {
 #region-app-stack-wrap {
     position : relative;
     max-height   : 400px;
-    @include flexbox;
+    @include displayflex;
 
     .scroll-wrap {
       background : #fff;
@@ -986,7 +986,7 @@ article.dashboard-content {
         display        : block;
         padding-bottom : 10px;
       }
-      
+
       .dash-region-apps-wrap, .dash-region-stacks-wrap {
         width      : 100%;
         position   : relative;

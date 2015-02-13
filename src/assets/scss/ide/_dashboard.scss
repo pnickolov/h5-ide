@@ -337,7 +337,7 @@
   position   : absolute;
   right      : 0;
   top        : 4px;
-  
+
   button {
     height        : 40px;
     padding       : 5px 20px;
@@ -408,7 +408,7 @@ $dashSideWidth: 20vw;
   top      : 58px;
   height   : 100%;
 
-  @include flexbox;
+  @include displayflex;
 }
 
 article.dashboard-content {
@@ -430,7 +430,7 @@ aside.dashboard-sidebar {
     width         : 100%;
     border-bottom : 1px #ddd solid;
 
-    @include flexbox;
+    @include displayflex;
 
   }
 
@@ -458,7 +458,7 @@ aside.dashboard-sidebar {
     }
 
   .dashboard-log {
-      
+
       .dashboard-log-item {
 
         padding       : 15px 10px;
@@ -490,8 +490,8 @@ aside.dashboard-sidebar {
             }
             a.target {
                 color  : $base-b;
-                cursor : pointer; 
-                
+                cursor : pointer;
+
                 &:hover {color: $dark-b;}
             }
         }
@@ -520,8 +520,8 @@ $bp-1: 1024px;
 $bp-2: 1280px;
 
 #region-app-stack-wrap {
-  @include flexbox;
-  @include flex-wrap($values:wrap);
+  @include displayflex;
+  @include flex-wrap(wrap);
 
   align-items: stretch;
   -webkit-align-items: stretch;
@@ -570,11 +570,11 @@ $bp-2: 1280px;
   max-width: 55px;
 
     @media (min-width: $bp-1) and (max-width: $bp-2) {
-      max-width: 90px; 
+      max-width: 90px;
     }
 
     @media (min-width: 1660px) {
-       max-width: 90px; 
+       max-width: 90px;
     }
 
     @media (max-width: 960px) {
@@ -583,9 +583,10 @@ $bp-2: 1280px;
 }
 
 .region-resource-list {
-    
-    @include flexbox;
-    @include flex-wrap($values:wrap);
+
+    @include displayflex;
+    @include flex-wrap(wrap);
+
 
     align-items: flex-start;
     -webkit-align-items: flex-start;
@@ -656,7 +657,7 @@ $bp-2: 1280px;
       top      : 5px;
       right    : 5px;
     }
-    
+
     @media (max-width: 960px) {
       > li {
         width: 31%;
@@ -673,7 +674,7 @@ $bp-2: 1280px;
       > li {
         width : 22.5%;
       }
-    
+
       .blank-widget {
         padding  : 14.55% 0 27px 0;
       }
@@ -762,11 +763,11 @@ $bp-2: 1280px;
         max-width : 67px;
 
         @media (min-width: $bp-1) and (max-width: $bp-2) {
-          max-width: 110px; 
+          max-width: 110px;
         }
 
         @media (min-width: 1660px) {
-           max-width: 110px; 
+           max-width: 110px;
         }
 
         @media (max-width: 960px) {
@@ -840,8 +841,8 @@ $bp-2: 1280px;
 }
 
 #GlobalView {
-  
-  @include flexbox;
+
+  @include displayflex;
 
     .dashboard-loading {
       background : #fff;
@@ -927,7 +928,7 @@ $bp-2: 1280px;
     margin-bottom : -1px;
     background    : #fcfcfc;
 
-    @include flexbox;
+    @include displayflex;
 
     > .resource-tab {
       position : relative;

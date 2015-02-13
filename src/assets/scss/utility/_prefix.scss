@@ -4,7 +4,7 @@
 	transition: $method $dur ease-in-out;
 }
 
-@mixin flexbox {
+@mixin displayflex {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -12,13 +12,13 @@
   display: flex;
 }
 
-@mixin flex-wrap($values) {
-  -webkit-box-flex-wrap: $values;
-  -moz-box-flex-wrap:  $values;
-  -webkit-flex-wrap:  $values;
-  -ms-flex-wrap:  $values;
-  flex-wrap:  $values;
-}
+// @mixin flex-wrap($values) {
+//   -webkit-box-flex-wrap: $values;
+//   -moz-box-flex-wrap:  $values;
+//   -webkit-flex-wrap:  $values;
+//   -ms-flex-wrap:  $values;
+//   flex-wrap:  $values;
+// }
 
 @mixin flex($values) {
   -webkit-box-flex: $values;

@@ -2732,7 +2732,7 @@ into live resources, or import existing infrastructures."
       zh: "工作空间名称"
 
     SETTINGS_CREATE_PROJECT_BILLING:
-      en: "Workspace Billing"
+      en: "WORKSPACE BILLING"
       zh: "工作空间付费"
 
     SETTINGS_CREATE_PROJECT_BILLING_TIP:
@@ -2740,11 +2740,11 @@ into live resources, or import existing infrastructures."
       zh: "提供支付信息以创建一个可协作的工作空间.<br/>在此工作空间你将只需要为超出额度时间的实例付费"
 
     SETTINGS_CREATE_PROJECT_BILLING_OWNER:
-      en: "Billing Owner"
+      en: "BILLING OWNER"
       zh: "账单拥有者"
 
     SETTINGS_CREATE_PROJECT_BILLING_EMAIL:
-      en: "Billing Email"
+      en: "BILLING EMAIL"
       zh: "账单邮箱"
 
     SETTINGS_CREATE_PROJECT_FIRST_NAME:
@@ -2756,7 +2756,7 @@ into live resources, or import existing infrastructures."
       zh: "名"
 
     SETTINGS_CREATE_PROJECT_CARD_NAME:
-      en: "Card Number"
+      en: "CARD NUMBER"
       zh: "卡号"
 
     SETTINGS_CREATE_PROJECT_CARD_CVV:
@@ -2764,7 +2764,7 @@ into live resources, or import existing infrastructures."
       zh: "CVV"
 
     SETTINGS_CREATE_PROJECT_EXPRIATION:
-      en: "Expriation Date"
+      en: "EXPIRATION DATE"
       zh: "过期日期"
 
     SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT:

@@ -60,10 +60,8 @@
 
 <!-- {{newProject}} -->
 <section class="new-project-modal" data-bind="true">
-  <div class="modal-control-group new-project-name-wrap">
-    <label for="new-project-name">{{i18n "SETTINGS_CREATE_PROJECT_NAME"}}</label>
-    <input type="text" class="input" id="new-project-name" data-required="true">
-  </div>
+  <label for="new-project-name">{{i18n "SETTINGS_CREATE_PROJECT_NAME"}}</label>
+  <input type="text" class="input" id="new-project-name" data-required="true" required>
   <div class="new-project-billing-wrap">
     <h4>{{i18n "SETTINGS_CREATE_PROJECT_BILLING"}}</h4>
     <div class="new-project-info">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_TIP"}}</div>

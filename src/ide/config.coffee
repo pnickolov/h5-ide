@@ -194,6 +194,7 @@ require.config {
     'kp_upload'        : 'component/awscomps/KpUpload'
     'sns_dropdown'     : 'component/awscomps/SnsDropdown'
     'sns_manage'       : 'component/awscomps/SnsManage'
+    'dhcp_manage'       : 'component/awscomps/DhcpManage'
     'snapshotManager'  : 'component/awscomps/Snapshot'
     'rds_pg'           : 'component/awscomps/RdsPg'
     'rds_snapshot'     : 'component/awscomps/RdsSnapshot'

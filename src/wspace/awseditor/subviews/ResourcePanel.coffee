@@ -4,7 +4,7 @@ define [
   "Design"
   "../template/TplLeftPanel"
   "constant"
-  'dhcp'
+  'dhcp_manage'
   'snapshotManager'
   'rds_snapshot'
   'sslcert_manage'
@@ -492,10 +492,7 @@ define [
         when 'rdssnapshot'
           manager = rdsSnapshot
 
-      if manager is dhcpManager
-        new manager( workspace: @workspace ).manageDhcp()
-      else
-        new manager( workspace: @workspace ).render()
+      new manager( workspace: @workspace ).render()
 
     startDrag : ( evt )->
       if evt.button isnt 0 then return false

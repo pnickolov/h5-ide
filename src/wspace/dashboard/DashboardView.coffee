@@ -163,7 +163,7 @@ define [ "./DashboardTpl",
 
       @$el.find("#GlobalView").html( dataTemplate.globalResources( data ) )
       if @region is "global"
-        @$el.find("#GlobalView").show()
+        @$el.find("#GlobalView").removeAttr("style")
         @$el.find("#RegionViewWrap").hide()
       return
 

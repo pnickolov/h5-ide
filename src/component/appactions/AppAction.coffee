@@ -218,7 +218,7 @@ define [
         startAppModal.tpl.find('.modal-body').html AppTpl.startAppConfirm {hasEC2Instance, hasDBInstance, hasASG, lostDBSnapshot}
         startAppModal.on 'confirm', ->
           startAppModal.close()
-          workspace.opsModel.project().apps().get( id ).start().fail ( err )->
+          app.start().fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification 'error', sprintf(lang.NOTIFY.ERROR_FAILED_START , name, error)
             return
@@ -227,7 +227,6 @@ define [
 
     checkBeforeStart: (app)->
       self = @
-      workspace = @workspace
       comp = null
       cloudType = app.type
       defer = new Q.defer()
@@ -241,7 +240,6 @@ define [
           app_ids     : [app.get("id")]
         }).then (ds)->  comp = ds[0].component
         .then ->
-          name = workspace.opsModel.project().apps().get( app.get("id") ).get("name")
           hasEC2Instance =!!( _.filter comp, (e)->
             e.type is constant.RESTYPE.INSTANCE).length
           hasDBInstance = !!(_.filter comp, (e)->

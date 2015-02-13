@@ -136,13 +136,20 @@ define [
         if error.error is ApiRequest.Errors.UserInvalidCredentia
           msg = lang.IDE.SETTINGS_ERR_CRED_VALIDATE
         else if error.error is ApiRequest.Errors.ChangeCredConfirm
+          that.hideModalError()
           that.showUpdateConfirmModel()
         else
           msg = lang.IDE.SETTINGS_ERR_CRED_UPDATE
 
         msg and that.showModalError msg
 
-    showModalError: ( message ) -> @$el.find( '.cred-setup-msg' ).text message
+    showModalError: ( message ) ->
+
+        @$el.find( '.cred-setup-msg' ).show().text message
+
+    hideModalError: () ->
+
+        @$el.find( '.cred-setup-msg' ).hide()
 
     getData: ->
       that = @

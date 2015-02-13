@@ -577,6 +577,10 @@ define [ "./DashboardTpl",
 
         projectId = @model.scene.project.id
 
+        # filter only success log
+        dataAry = _.filter models, (data) ->
+            return data.get('success')
+
         dataAry = _.map models, (data) ->
 
             action   = data.get('action') or ''

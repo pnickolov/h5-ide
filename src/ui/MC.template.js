@@ -1607,7 +1607,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div id=\"CredSetupWrap\">\n    <div id=\"CredSetupMsg\" class=\"warning-red empty-hide\"></div>\n    <div class=\"modal-control-group\">\n        <label for=\"CredSetupAlias\">"
+  buffer += "<div id=\"CredSetupWrap\">\n    <div id=\"CredSetupMsg\" class=\"cred-setup-msg empty-hide warning-red\"></div>\n    <div class=\"modal-control-group\">\n        <label for=\"CredSetupAlias\">"
     + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_ALIAS", {hash:{},data:data}))
     + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAlias\" type=\"text\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

@@ -838,7 +838,7 @@ Additional Notes and Questions
 
 <!--{{credentialForm}}-->
 <div id="CredSetupWrap">
-    <div id="CredSetupMsg" class="warning-red empty-hide"></div>
+    <div id="CredSetupMsg" class="cred-setup-msg empty-hide warning-red"></div>
     <div class="modal-control-group">
         <label for="CredSetupAlias">{{i18n "CREDENTIAL_ALIAS"}}</label>
         <input autocomplete="off" class="input" id="CredSetupAlias" type="text" value="{{alias}}">

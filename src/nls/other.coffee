@@ -2856,7 +2856,7 @@ into live resources, or import existing infrastructures."
       en: "%s terminated app %s"
       zh: "%s 终结 App %s"
 
-    DASHBOARD_LOGS_APP_IMPORT:
+    DASHBOARD_LOGS_APP_SAVEIMPORT:
       en: "%s imported VPC as app %s"
       zh: "%s 导入 VPC 为 App %s"
 
@@ -2880,6 +2880,19 @@ into live resources, or import existing infrastructures."
     DASHBOARD_LOGS_PROJECT_RENAME:
       en: "%s renamed workspace %s"
       zh: "%s 重命名工作空间 %s"
+
+    # Member
+    DASHBOARD_LOGS_MEMBER_CREATE:
+      en: "%s created member %s"
+      zh: "%s 创建成员 %s"
+
+    DASHBOARD_LOGS_MEMBER_UPDATE:
+      en: "%s updated member %s"
+      zh: "%s 更新成员 %s"
+
+    DASHBOARD_LOGS_MEMBER_REMOVE:
+      en: "%s removed member %s"
+      zh: "%s 删除成员 %s"
 
     # Payment
     DASHBOARD_LOGS_PAYMENT_ADD:
@@ -2905,13 +2918,13 @@ into live resources, or import existing infrastructures."
 
     # TOKEN
     DASHBOARD_LOGS_TOKEN_ADD:
-      en: "%s added api token %s"
+      en: "%s added API token %s"
       zh: "%s 添加API令牌 %s"
 
     DASHBOARD_LOGS_TOKEN_REMOVE:
-      en: "%s removed api token %s"
+      en: "%s removed API token %s"
       zh: "%s 删除API令牌 %s"
 
     DASHBOARD_LOGS_TOKEN_RENAME:
-      en: "%s renamed api token %s"
+      en: "%s renamed API token %s"
       zh: "%s 重命名API令牌 %s"

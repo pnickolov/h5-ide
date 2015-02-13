@@ -245,7 +245,7 @@ module.exports =
 
     TIT_CLOSE_TAB:
       en: "Close Tab"
-      zh: "关闭标签"
+      zh: "关闭"
 
     POP_TIT_DUPLICATE_STACK:
       en: "Duplicate Stack"

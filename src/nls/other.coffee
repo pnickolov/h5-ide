@@ -2461,8 +2461,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "拖拽%s到此，"
 
     SAVE_STACK:
-      en: "Save stack"
-      zh: "保存模板"
+      en: "Save & Close"
+      zh: "保存并关闭"
 
     SAVING_STACK:
       en: "Saving stack..."

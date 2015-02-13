@@ -776,11 +776,11 @@ module.exports =
 
     DASH_INVALID_SESSION:
       en: "Invalid Session"
-      zh: "登录信息已失效"
+      zh: "登录已失效"
 
     DASH_INVALID_SESSION_ERROR:
-      en: "Your account has signed in from other location or you last login has timed out."
-      zh: "您已在其他地方登录或者您的登录信息已失效。"
+      en: "Your last login has timed out or your account has signed in from other location."
+      zh: "您的登录已失效或者您已在其他地方登录。"
 
     DASH_INVALID_SESSION_ACTION:
       en: "Would you like to reconnect this session or close it?"

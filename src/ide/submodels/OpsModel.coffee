@@ -363,7 +363,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ApiRequest("stack_remove",{
         region_name : @get("region")
         stack_id    : @get("id")
-      }).fail ()->
+      }).fail ( e )->
+        if e.error is ApiRequest.Errors.StackInvalidId
+          # The stack is not found in the server. We simply ignore this error
+          # so that the stack will be remove in local.
+          return
+
         self.set "state", OpsModelState.UnRun
         # If we cannot delete the stack, we just add it back to the stackList.
         collection.add self
@@ -631,7 +636,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     destroy : ()->
       console.info "OpsModel's destroy() doesn't do anything. You probably want to call remove(), stop() or terminate()"
 
-    __destroy : ()->
+    __destroy : (options)->
       if @attributes.state is OpsModelState.Destroyed
         return
 
@@ -644,7 +649,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # Directly modify the attr to avoid sending an event, because destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed
-      @trigger 'destroy', @, @collection
+      @trigger 'destroy', @, @collection, options
 
     __returnErrorPromise : ()->
       d = Q.defer()

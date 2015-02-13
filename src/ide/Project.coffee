@@ -42,6 +42,74 @@ define [
       # removed : ()-> # Ignored
     }
 
+    isOpsExist = ( col, attr, wsdata )->
+      # The stack already exist. Ignore.
+      if col.get( wsdata.id ) then return 1
+      # There's no sign of the model, we determine that this model is created by other
+      if not col.findWhere( attr ) then return 0
+      # Cannot determine if the ops exists
+      -1
+
+    tenSecCheck = ( col, attr, wsdata, retry )->
+      res = isOpsExist( col, attr, wsdata )
+      if res is 1
+        console.info "The stack is created by us, ignore"
+        return
+
+      if res is 0
+        console.info "The stack is not created by us. add"
+        col.add( new OpsModel( wsdata ) )
+        return
+
+      if retry is 5
+        console.warn "Theres a stack added event which is ignore after timeout."
+        return
+
+      console.info "Can't determine, retry in 3 sec."
+      setTimeout (()-> tenSecCheck( col, attr, wsdata, retry + 1 )), 2000
+      return
+
+    App.WS.collection.stack.find().observe {
+      added : ( newDocument )->
+        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        project = App.model.projects().get( newDocument.project_id )
+        if not project
+          console.log "Adding a stack that is not related to any project, ignored.", newDocument
+          return
+
+        wsdata = project.__parseListRes([newDocument])[0]
+        tenSecCheck( project.stacks(), {
+          name     : wsdata.name
+          provider : wsdata.provider
+          region   : wsdata.region
+          state    : OpsModel.State.Saving
+        }, wsdata, 0 )
+        return
+      removed : ( newDocument )->
+        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        project = App.model.projects().get( newDocument.project_id )
+        if not project
+          console.log "Removing a stack that is not related to any project, ignored.", newDocument
+          return
+
+        # Use private api to destroy the stack directly.
+        project.stacks().get( newDocument.id )?.__destroy({externalAction:true})
+        return
+    }
+
+    App.WS.collection.app.find().observe {
+      added : ( newDocument )->
+        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        project = App.model.projects().get( newDocument.project_id )
+        if not project
+          console.log "There's an stack that is not related to any project, ignored.", newDocument
+          return
+
+        if not project.apps().get( newDocument.id )
+          project.apps().add( new OpsModel( project.__parseListRes([newDocument])[0] ) )
+        return
+    }
+
     handleRequest = ( req )->
       if not req.project_id or req.state is constant.OPS_STATE.PENDING then return
 

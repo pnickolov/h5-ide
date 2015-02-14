@@ -18,7 +18,7 @@ define [
     OneTimeWsInit = ()-> return
 
     App.WS.collection.project.find().observe {
-      # added : ()-> # Ignored
+      # added   : ()-> # Ignored. Server doesn't return add event.
       changed : ( newDocument, oldDocument )-> App.model.projects().get( newDocument.id )?.updateWithWsData( newDocument )
       removed : ( oldDocument )->
         if not oldDocument then return
@@ -52,10 +52,7 @@ define [
 
     tenSecCheck = ( col, attr, wsdata, retry )->
       res = isOpsExist( col, attr, wsdata )
-      if res is 1
-        console.log "[WS Add] The ops already exist, ignoring.", wsdata
-        return
-
+      if res is 1 then return
       if res is 0
         console.log "[WS Add] The ops doesn't exist, add to collection", wsdata, col
         col.add( new OpsModel( wsdata ) )
@@ -78,7 +75,7 @@ define [
           return
 
         wsdata = project.__parseListRes([newDocument])[0]
-        # Set time 1sec timeout to reduce the check time.
+        # Set 1sec timeout to reduce the check time.
         # Since the first check will always fail.
         setTimeout ()->
           tenSecCheck( project.stacks(), {
@@ -121,6 +118,16 @@ define [
           }, wsdata, 0 )
         , 1000
         return
+
+      removed : (newDocument)->
+        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        project = App.model.projects().get( newDocument.project_id )
+        if not project
+          console.log "There's an app that is not related to any project that is removed. ignored.", newDocument
+          return
+
+        wsdata = project.__parseListRes([newDocument])[0]
+        project.apps().get( newDocument.id )?.__destroy({externalAction:true})
     }
 
     handleRequest = ( req )->

@@ -526,12 +526,12 @@ define [
             template: MC.template.loadingSpinner()
             disableClose: true
             confirm:
-              text: if Design.instance().credential() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
+              text: if not project.isDemoMode() then lang.IDE.RUN_STACK_MODAL_CONFIRM_BTN else lang.IDE.RUN_STACK_MODAL_NEED_CREDENTIAL
               disabled: true
           )
           paymentModal.find('.modal-footer').hide()
         project.getPaymentState().then ()->
-          if project.get("payment")?.cardNumber
+          if project.get("payment")?.cardNumber or not project.isPrivate()
             updateDom = MC.template.paymentUpdate  result
           else
             updateDom = MC.template.providePayment result

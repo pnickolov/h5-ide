@@ -3463,7 +3463,8 @@ aside.dashboard-sidebar {
   width: 20vw;
   background: #fff;
   border-left: 1px #ddd solid;
-  height: 100%; }
+  height: 100%;
+  position: relative; }
   aside.dashboard-sidebar nav {
     overflow: auto;
     background: #eee;
@@ -3489,9 +3490,13 @@ aside.dashboard-sidebar {
       border-bottom: 2px solid #4a90e2;
       width: 100%; }
   aside.dashboard-sidebar .dashboard-log-wrap {
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: 100%; }
+    bottom: 58px;
+    top: 40px;
+    right: 0;
+    width: 100%;
+    left: 0;
+    overflow: auto;
+    position: absolute; }
   aside.dashboard-sidebar .dashboard-log .dashboard-log-item {
     padding: 15px 10px;
     cursor: default; }
@@ -6213,7 +6218,8 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

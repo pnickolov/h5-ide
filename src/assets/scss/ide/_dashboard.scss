@@ -423,7 +423,7 @@ aside.dashboard-sidebar {
   background  : #fff;
   border-left : 1px #ddd solid;
   height      : 100%;
-
+  position: relative;
   nav {
     overflow      : auto;
     background    : #eee;
@@ -453,8 +453,15 @@ aside.dashboard-sidebar {
     }
 
   .dashboard-log-wrap {
-      @include v-scroll;
-      height : 100%;
+    //   @include v-scroll;
+    //   height : 100%;
+    bottom: 58px;
+    top: 40px;
+    right: 0;
+    width: 100%;
+    left: 0;
+    overflow: auto;
+    position: absolute;
     }
 
   .dashboard-log {

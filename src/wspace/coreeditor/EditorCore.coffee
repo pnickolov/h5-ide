@@ -76,11 +76,13 @@ define [
         return null
       @view.canvas.getSelectedComp()
 
-    onOpsModelStateChanged : ()-> if @opsModel.get("state") is OpsModel.State.Destroyed then @remove()
-    onOpsModelDestroyed    : (o,c,options)->
-      if options && options.externalAction
-        notification "info", "The stack/app has been removed by other team."
-      @remove()
+    onOpsModelStateChanged : ()->
+      if @opsModel.testState( OpsModel.State.Destroyed )
+        if not @opsModel.isLastActionTriggerByUser()
+          notification "info", "The stack has been removed by other team."
+
+        @remove()
+      return
 
     ###
       Internal methods.
@@ -98,7 +100,7 @@ define [
       @opsModel = attr.opsModel
       # OpsModel's State
       # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
-      @listenTo @opsModel, "destroy",      @onOpsModelDestroyed
+      @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
       @listenTo @opsModel, "change:state", @onOpsModelStateChanged
       @listenTo @opsModel, "change:name",  @updateTab
       @listenTo @opsModel, "change:id",    @onModelIdChange

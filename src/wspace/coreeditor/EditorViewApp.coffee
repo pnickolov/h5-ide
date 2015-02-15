@@ -5,8 +5,9 @@ define [
   "wspace/coreeditor/TplOpsEditor"
   "UI.modalplus"
   "i18n!/nls/lang.js"
+  "ApiRequest"
   "AppAction"
-], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, AppAction )->
+], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, ApiRequest, AppAction )->
 
   StackView.extend {
 
@@ -77,8 +78,14 @@ define [
 
             modal.close()
           , ( err )->
-            notification "error", err.msg
-            modal.tpl.find(".modal-confirm").removeAttr("disabled")
+
+            if err.error is ApiRequest.Errors.AppAlreadyImported
+              notification "error", "The vpc `#{self.workspace.opsModel.getMsrId()}` has alreay been imported by other user."
+              modal.close()
+              self.workspace.remove()
+            else
+              notification "error", msg
+              modal.tpl.find(".modal-confirm").removeAttr("disabled")
             return
       })
       return

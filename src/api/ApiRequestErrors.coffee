@@ -61,6 +61,7 @@ define [], ()->
     AppIsStopped          : 216 # {0} is currently stopped
     AppNotStoppable       : 217 # {0} is not stoppable
     FavoriteId            : 217 # {0} is not stoppable
+    AppAlreadyImported    : 218
     AppConflict           : 219
     GuestErrorGuest       : 230 # Guest {0} missing {1}
     GuestInvalidId        : 231 # Invalid guest id {0}

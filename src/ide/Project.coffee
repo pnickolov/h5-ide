@@ -141,7 +141,7 @@ define [
         return
 
       removed : ( newDocument )->
-        if not newDocument or not App.WS.isSubReady( newDocument.project_id ) then return
+        if not newDocument or not App.WS.isSubReady( newDocument.project_id, "app" ) then return
         project = App.model.projects().get( newDocument.project_id )
         if not project
           console.log "There's an app that is not related to any project that is removed. ignored.", newDocument

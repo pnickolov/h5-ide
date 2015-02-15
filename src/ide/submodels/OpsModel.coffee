@@ -80,6 +80,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if options and options.jsonData
         @__setJsonData options.jsonData
 
+      @__userTriggerAppProgress = false
+
       ### env:dev ###
       @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
       ### env:dev:end ###
@@ -359,6 +361,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       self = @
       collection = @collection
 
+      @__userTriggerAppProgress = true
       @__destroy()
 
       if not @isPersisted()
@@ -375,6 +378,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           # so that the stack will be remove in local.
           return
 
+        self.__userTriggerAppProgress = false
         self.set "state", OpsModelState.UnRun
         # If we cannot delete the stack, we just add it back to the stackList.
         collection.add self
@@ -419,26 +423,33 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       self = @
       @attributes.progress = 0
       @set "state", OpsModelState.Stopping
+      @__userTriggerAppProgress = true
+
       ApiRequest("app_stop",{
         region_name : @get("region")
         key_id      : @credentialId()
         app_id      : @get("id")
         app_name    : @get("name")
       }).fail ( err )->
+        self.__userTriggerAppProgress = false
         self.set "state", OpsModelState.Running
         throw err
 
     start : ()->
       if not @isApp() or @get("state") isnt OpsModelState.Stopped then return @__returnErrorPromise()
+
       self = @
       @attributes.progress = 0
       @set "state", OpsModelState.Starting
+      @__userTriggerAppProgress = true
+
       ApiRequest("app_start",{
         region_name : @get("region")
         key_id      : @credentialId()
         app_id      : @get("id")
         app_name    : @get("name")
       }).fail ( err )->
+        self.__userTriggerAppProgress = false
         self.set "state", OpsModelState.Stopped
         throw err
 
@@ -448,10 +459,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       if @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
 
+      self = @
       oldState = @get("state")
       @attributes.progress = 0
       @set("state", OpsModelState.Terminating)
-      self = @
+      @__userTriggerAppProgress = true
 
       options = $.extend {
         region_name     : @get("region")
@@ -467,6 +479,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         if force then self.__destroy()
         return
       , ( err )->
+        self.__userTriggerAppProgress = false
         self.set "state", oldState
         throw err
 
@@ -483,6 +496,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       oldState = @get("state")
       @attributes.progress = 0
       @set("state", OpsModelState.Updating)
+      @__userTriggerAppProgress = true
 
       @__updateAppDefer = Q.defer()
 
@@ -495,7 +509,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         app_id      : @get("id")
         fast_update : fastUpdate
         key_id      : @credentialId()
-      }).fail ( error )-> self.__updateAppDefer.reject( error )
+      }).fail ( error )->
+        self.__userTriggerAppProgress = false
+        self.__updateAppDefer.reject( error )
 
       errorHandler = ( error )->
         self.__updateAppDefer = null
@@ -538,6 +554,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       oldState = @get("state")
       @attributes.progress = 0
       @set("state", OpsModelState.Saving)
+      @__userTriggerAppProgress = true
 
       @__saveAppDefer = Q.defer()
 
@@ -552,6 +569,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.attributes.importMsrId = undefined
         return
       , ( error )->
+        self.__userTriggerAppProgress = false
         self.__saveAppDefer.reject( error )
 
       # The real promise
@@ -575,6 +593,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     isProcessing : ()->
       state = @attributes.state
       state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving
+
+    isLastActionTriggerByUser : ()-> @__userTriggerAppProgress
 
     updateWithWSEvent : ( wsRequest )->
       # 1. Processing
@@ -625,6 +645,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
             @__saveAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
           return
 
+      # 3. Clear the useraction flag if the state changes from DONE state to another state.
+      if not @isProcessing() and @get("state") isnt toState
+        @__userTriggerAppProgress = false
+
       @attributes.opsActionError = if completed then "" else wsRequest.data
       if toState is OpsModelState.Destroyed
         @__destroy()
@@ -642,7 +666,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     destroy : ()->
       console.info "OpsModel's destroy() doesn't do anything. You probably want to call remove(), stop() or terminate()"
 
-    __destroy : (options)->
+    __destroy : ()->
       if @attributes.state is OpsModelState.Destroyed
         return
 
@@ -655,7 +679,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # Directly modify the attr to avoid sending an event, because destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed
-      @trigger 'destroy', @, @collection, options
+      @trigger 'destroy', @, @collection
 
     __returnErrorPromise : ()->
       d = Q.defer()

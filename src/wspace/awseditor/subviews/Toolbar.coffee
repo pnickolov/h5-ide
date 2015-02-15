@@ -75,6 +75,7 @@ define [
       , 1000)
 
       @updateZoomButtons()
+      @updateTbBtns()
 
       @listenTo @workspace.opsModel, "change:state", @updateTbBtns
       return

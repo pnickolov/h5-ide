@@ -572,7 +572,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ApiRequest("app_save_info", {spec:newJson, key_id: self.credentialId()}).then (res)->
         if not self.id
           self.attributes.requestId = res[0]
+
         self.attributes.importMsrId = undefined
+        newJson.time_update = res[3]
         return
       , ( error )->
         self.__userTriggerAppProgress = false

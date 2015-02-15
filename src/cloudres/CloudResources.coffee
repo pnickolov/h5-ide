@@ -33,8 +33,7 @@ define ["cloudres/CrCollection"], ( CrCollection )->
     c
 
   onCollectionDestroy = (credential, id)->
-    if CachedCollections[credential][id]
-      console.info "CloudResource collection is destroyed:", CachedCollections[credential][id]
+    console.info "CloudResource collection is destroyed:", CachedCollections[credential][id]
     delete CachedCollections[ credential ][ id ]
     return
 
@@ -60,8 +59,10 @@ define ["cloudres/CrCollection"], ( CrCollection )->
       realCate   = Collection.category( category )
 
       if cln.category is realCate
-        console.log "Removing CloudResources:", cln[find](detect)
-        cln.remove( cln[find](detect) )
+        list = cln[find](detect)
+        if list.length
+          console.log "Removing CloudResources:", list
+          cln.remove( cln[find](detect) )
     return
 
   CloudResources

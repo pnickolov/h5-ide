@@ -83,10 +83,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       @__userTriggerAppProgress = false
 
       ### env:dev ###
-      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project().get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
       ### env:dev:end ###
       ### env:debug ###
-      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project().get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
       ### env:debug:end ###
       return
 
@@ -498,8 +498,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       oldState = @get("state")
       @attributes.progress = 0
-      @set("state", OpsModelState.Updating)
       @__userTriggerAppProgress = true
+      @set("state", OpsModelState.Updating)
 
       @__updateAppDefer = Q.defer()
 
@@ -559,8 +559,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       oldState = @get("state")
       @attributes.progress = 0
-      @set("state", OpsModelState.Saving)
       @__userTriggerAppProgress = true
+      @set("state", OpsModelState.Saving)
 
       @__saveAppDefer = Q.defer()
 

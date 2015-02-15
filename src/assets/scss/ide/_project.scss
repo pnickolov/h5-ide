@@ -173,8 +173,10 @@
   max-width: 500px;
   
   .new-project-support {
-    bottom: 17px !important;
+    bottom: 17px;
     right: 19px;
+    top: inherit;
+    top: initial;
   }
 
 }

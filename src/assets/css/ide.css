@@ -6218,8 +6218,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10180,8 +10179,10 @@ dl.settings-item {
 .update-payment-wrap {
   max-width: 500px; }
   .update-payment-wrap .new-project-support {
-    bottom: 17px !important;
-    right: 19px; }
+    bottom: 17px;
+    right: 19px;
+    top: inherit;
+    top: initial; }
 
 .new-project-modal .modal-footer {
   padding: 24px 0 5px 0; }

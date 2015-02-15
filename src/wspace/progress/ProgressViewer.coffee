@@ -103,7 +103,7 @@ define [
 
     type : "ProgressViewer"
 
-    isWorkingOn : ( data )-> @opsModel is data.opsModel
+    isWorkingOn : ( data )-> @opsModel() is data.opsModel
     tabClass    : ()-> "icon-app-pending"
     title       : ()-> @opsModel().get("name") + " - app"
     url         : ()-> @opsModel().relativeUrl()

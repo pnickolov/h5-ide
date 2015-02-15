@@ -42,6 +42,9 @@
 <p class="modal-text-major">{{i18n "TOOLBAR.VPC_REMOVED_OUTSIDE_VISUALOPS"}}</p>
 <p class="modal-text-major">{{i18n "TOOLBAR.CONFIRM_REMOVE_APP"}}</p>
 
+<!-- {{modal.AECC}} -->
+<p class="modal-text-major">This app is being operating by another user. Sorry that you need to close this tab.</p>
+
 <!-- {{modal.confirmImport}} -->
 <p class="modal-text-major">{{i18n "TOOLBAR.IMPORT_SUCCESSFULLY_WELL_DONE" name}}</p>
 <p class="modal-text-major">{{i18n "TOOLBAR.NAME_IMPORTED_APP"}}</p>

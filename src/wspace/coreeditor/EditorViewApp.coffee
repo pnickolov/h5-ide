@@ -164,4 +164,26 @@ define [
         App.loadUrl(appUrl)
         notification "info", "User payment status change detected, reloading app resource."
 
+    showAEConflictConfirm : ()->
+      if @__showingAECC then return
+      @__showingAECC = true
+
+      self = @
+      modal = new Modal({
+        title        : "App is operated by another user"
+        template     : OpsEditorTpl.modal.AECC()
+        confirm      : { text : "Save Current App to Stack" }
+        cancel       : { text : "Close Tab", color : "red" }
+        disableClose : true
+        hideClose    : true
+        onCancel     : ()-> self.workspace.remove(); return
+        onConfirm    : ()->
+          json = self.workspace.design.serializeAsStack()
+          json.name += "-" + MC.dateFormat(new Date(),"MMddyyyy")
+          App.loadUrl( self.workspace.scene.project.createStackByJson( json ).url() )
+          self.workspace.remove()
+          modal.close()
+          return
+      })
+
   }

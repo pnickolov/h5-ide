@@ -204,6 +204,7 @@ define [
         if @opsModel.isLastActionTriggerByUser()
           @view.toggleProcessing()
         else
+          @view.showAEConflictConfirm()
           return
       else
         # When we are not in app edit mode, editor only have react as the opsmodel state changes.

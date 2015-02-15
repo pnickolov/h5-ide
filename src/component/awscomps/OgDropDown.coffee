@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component/awscomps/OgTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, OgManage, template, lang ) ->
+define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component/awscomps/OgTpl', 'i18n!/nls/lang.js',"credentialFormView" ], ( constant, CloudResources, comboDropdown, OgManage, template, lang, CredentialFormView ) ->
 
     Backbone.View.extend
 
@@ -6,6 +6,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
 
         events:
             'click .icon-edit' : 'editClicked'
+            "click .combo-dd-no-data .create-one": "showCredential"
 
         initDropdown: ->
 
@@ -153,4 +154,5 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
             return false
 
         setSelection: -> @dropdown.setSelection.apply @, arguments
-
+        showCredential: ->
+          new CredentialFormView(model: Design.instance().project()).render()

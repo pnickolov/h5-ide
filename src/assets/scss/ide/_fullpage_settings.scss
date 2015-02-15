@@ -575,6 +575,10 @@ dl.settings-item {
 
     .billing-history {
         display: block;
+        
+        &:empty {
+            border: none;
+        }
 
         dd {
             width   : 90%;

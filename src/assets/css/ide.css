@@ -9887,6 +9887,8 @@ dl.settings-item {
     display: inline-block; }
   .fullpage-settings .billing-history {
     display: block; }
+    .fullpage-settings .billing-history:empty {
+      border: none; }
     .fullpage-settings .billing-history dd {
       width: 90%;
       display: block;
@@ -10172,6 +10174,9 @@ dl.settings-item {
 
 .update-payment-wrap {
   max-width: 500px; }
+  .update-payment-wrap .new-project-support {
+    bottom: 17px;
+    right: 19px; }
 
 .new-project-modal .modal-footer {
   padding: 24px 0 5px 0; }

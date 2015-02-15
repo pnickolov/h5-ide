@@ -83,10 +83,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       @__userTriggerAppProgress = false
 
       ### env:dev ###
-      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project().get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project()?.get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
       ### env:dev:end ###
       ### env:debug ###
-      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project().get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project()?.get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
       ### env:debug:end ###
       return
 
@@ -622,7 +622,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return
 
       # 2. Starting / Completed / Failed
-      console.info "OpsModel's state changes due to WS event:", [@project().get("name"), @get("name"), @, wsRequest]
+      console.info "OpsModel's state changes due to WS event:", [@project()?.get("name"), @get("name"), @, wsRequest]
       if wsRequest.state is constant.OPS_STATE.INPROCESS
         toStateIndex = 0
       else if wsRequest.state is constant.OPS_STATE.DONE

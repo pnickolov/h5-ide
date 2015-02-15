@@ -3549,23 +3549,18 @@ aside.dashboard-sidebar {
       height: 71vw; } }
   @media (min-width: 1280px) {
     #region-app-stack-wrap {
-      height: 26.33333vw; } }
+      height: 24.63333vw; } }
   #region-app-stack-wrap > div {
     width: 38.5vw;
-    height: 30.5vw;
     margin: 0 1vw;
     position: relative; }
     #region-app-stack-wrap > div:first-of-type {
       margin-right: .5vw; }
     #region-app-stack-wrap > div:last-of-type {
       margin-left: .5vw; }
-    @media (min-width: 1280px) {
-      #region-app-stack-wrap > div {
-        height: 20.33333vw; } }
     @media (max-width: 1024px) {
       #region-app-stack-wrap > div {
-        width: 78vw;
-        height: 30.5vw; }
+        width: 78vw; }
         #region-app-stack-wrap > div:first-of-type {
           margin-right: 1vw; }
         #region-app-stack-wrap > div:last-of-type {
@@ -3583,7 +3578,7 @@ aside.dashboard-sidebar {
     @media (min-width: 1280px) {
       #region-app-stack-wrap #region-resource-stack-wrap,
       #region-app-stack-wrap #region-resource-app-wrap {
-        height: 20.33333vw; } }
+        height: 20.63333vw; } }
 
 #region-resource-app-wrap.region-resource-list .region-resource-info > span {
   max-width: 55px; }
@@ -6223,8 +6218,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10336,6 +10330,13 @@ dl.settings-item {
     background: rgba(0, 0, 0, 0.2); }
   .header-popup li.padding {
     padding: 0 16px; }
+  .header-popup .create-new-project {
+    color: #4a90e2;
+    font-size: 14px; }
+    .header-popup .create-new-project:hover {
+      color: #7eace1; }
+    .header-popup .create-new-project:before {
+      margin-right: 4px; }
 
 .hp-project-list {
   border-right: 1px solid #202020; }

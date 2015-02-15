@@ -536,26 +536,26 @@ $bp-2: 1280px;
   }
 
   @media (min-width: $bp-2) {
-      height: $dashWrapHeight/3*2 +6;
+      height: $dashWrapHeight/3*2 + 4.3;
   }
 
   > div {
     width     : 38.5vw;
     // height : auto;
-    height    : $dashWrapHeight;
+    // height    : $dashWrapHeight;
     margin    : 0 1vw;
     position  : relative;
 
     &:first-of-type { margin-right: .5vw; }
     &:last-of-type { margin-left: .5vw; }
 
-    @media (min-width: $bp-2) {
-      height: $dashWrapHeight/3*2;
-    }
+    // @media (min-width: $bp-2) {
+    //   height: $dashWrapHeight/3*2 +.2;
+    // }
 
     @media (max-width: $bp-1) {
       width: 78vw;
-      height: $dashWrapHeight;
+      // height: $dashWrapHeight;
 
       &:first-of-type { margin-right: 1vw; }
       &:last-of-type { margin-left: 1vw; }
@@ -578,7 +578,7 @@ $bp-2: 1280px;
     border-radius : 3px;
 
     @media (min-width: $bp-2) {
-      height: $dashWrapHeight/3*2;
+      height: $dashWrapHeight/3*2 + .3;
     }
   }
 }

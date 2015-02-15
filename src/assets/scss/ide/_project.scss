@@ -390,6 +390,20 @@
   li.padding {
     padding : 0 16px;
   }
+
+  .create-new-project {
+    color     : $base-b;
+    font-size : 14px;
+
+    &:hover {
+      color: $light-b;
+    }
+
+    &:before {
+      margin-right: 4px;
+    }
+  }
+
 }
 
 .hp-project-list {

@@ -86,6 +86,15 @@ define [
           }, wsdata, 0 )
         , 1000
         return
+      changed : ( newDocument )->
+        if not newDocument or not App.WS.isSubReady( newDocument.project_id, "stack" ) then return
+        project = App.model.projects().get( newDocument.project_id )
+        if not project
+          console.log "Changing a stack that is not related to any project, ignored.", newDocument
+
+        project.stacks().get( newDocument.id )?.set( "name", newDocument.name )
+        return
+
       removed : ( newDocument )->
         if not newDocument or not App.WS.isSubReady( newDocument.project_id, "stack" ) then return
         project = App.model.projects().get( newDocument.project_id )
@@ -119,7 +128,19 @@ define [
         , 1000
         return
 
-      removed : (newDocument)->
+      changed : ( newDocument )->
+        if not newDocument or not App.WS.isSubReady( newDocument.project_id, "app" ) then return
+        project = App.model.projects().get( newDocument.project_id )
+        if not project
+          console.log "There's an app that is not related to any project that is changed, ignored.", newDocument
+          return
+
+        # Do not update app's state when app subscription changed.
+        # Because the app's state is handled via request subscription.
+        project.apps().get( newDocument.id )?.set("name", newDocument.name)
+        return
+
+      removed : ( newDocument )->
         if not newDocument or not App.WS.isSubReady( newDocument.project_id ) then return
         project = App.model.projects().get( newDocument.project_id )
         if not project

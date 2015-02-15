@@ -1527,7 +1527,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
 
   buffer += "<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\"></div>\n    <p class=\"modal-text-minor payment-text\">"
-    + escapeExpression(helpers.i18n.call(depth0, "WHILE_ENJOYING_PROVIDE_CARD", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
+    + escapeExpression(helpers.i18n.call(depth0, "YOUR_FREE_POINTS_USED_UP", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
     + "</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_PER_MONTH", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
     + "</td>\n            <td class=\"align-right\">"
@@ -1542,9 +1542,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROVIDE_BILLING_INFORMATION", {hash:{},data:data}))
-    + " <i class=\"icon-caret-right\"></i></a>\n        <p>\n            "
-    + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
-    + "\n        </p>\n    </div>\n</div>";
+    + " <i class=\"icon-caret-right\"></i></a>\n    </div>\n</div>";
   return buffer;
   };
 TEMPLATE.providePayment=Handlebars.template(__TEMPLATE__);

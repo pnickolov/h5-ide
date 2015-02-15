@@ -191,7 +191,7 @@ define [
         return
 
       if @opsModel.testState( OpsModel.State.Terminating )
-        notification "info", "The app is being processing."
+        notification "info", "The app is being processed."
         @remove()
         return
 

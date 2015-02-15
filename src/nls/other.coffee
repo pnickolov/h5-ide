@@ -2144,9 +2144,9 @@ VisualOps API. You cannot UNDO this action.'
       en: "Provide Billing Information"
       zh: "提供账单信息"
 
-    WHILE_ENJOYING_PROVIDE_CARD:
-      en: "While enjoying your free %s instance hours each month, provide billing information in case of running out of quota."
-      zh: "享受您的 %s 个免费实例*时的同时，请提供账单信息以防免费额度用尽。"
+    YOUR_FREE_POINTS_USED_UP:
+      en: "Your free points are used up. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. To make sure your enjoy the full feature of VisualOps, please join the paid plan as soon as possible."
+      zh: "您的免费点数已经用尽，此项目已处于受限状态。导入 VPC，App 操作，监控和 state ensuring 功能已被禁用。为确保您能享受 VisualOps 的完整功能，请尽快加入付费计划。"
 
     YOUR_ACCOUNT_IN_LIMITED_STATUS:
       en: "Your account is in limited status now. <br>Import VPC, app operation, monitoring and state ensuring are disabled."

@@ -159,7 +159,7 @@ define [
     handleRequest = ( req )->
       if not req.project_id or req.state is constant.OPS_STATE.PENDING then return
 
-      if req.state is constant.OPS_STATE.DONE and req.code is constant.OPS_CODE_NAME.APP_SAVE
+      if req.state is constant.OPS_STATE.DONE and ( req.code is constant.OPS_CODE_NAME.APP_SAVE or req.code is constant.OPS_CODE_NAME.APP_IMPORT )
         targetId = req.data
       else
         targetId = if req.dag and req.dag.spec then req.dag.spec.id else req.rid

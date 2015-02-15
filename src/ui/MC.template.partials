@@ -793,7 +793,7 @@ Additional Notes and Questions
 <!--{{providePayment}}-->
 <div class="payment-no-card-wrapper">
     <div class="payment-credit-card"></div>
-    <p class="modal-text-minor payment-text">{{i18n "WHILE_ENJOYING_PROVIDE_CARD" freePointsPerMonth}}</p>
+    <p class="modal-text-minor payment-text">{{i18n "YOUR_FREE_POINTS_USED_UP" freePointsPerMonth}}</p>
     <table class="table payment-table">
         <tbody>
         <tr>
@@ -809,9 +809,6 @@ Additional Notes and Questions
     <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">{{i18n "PRICING_IN_DETAIL"}}</a>
     <div class="payment-modal-wrap">
         <a href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "PROVIDE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a>
-        <p>
-            {{i18n "WILL_OPEN_CHARGIFY"}}
-        </p>
     </div>
 </div>
 

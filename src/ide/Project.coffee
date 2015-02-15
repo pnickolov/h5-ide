@@ -264,7 +264,6 @@ define [
       @listenTo @stacks(), "remove",   (o)-> clearTenSecCheck(o.id); @trigger "update:stack"
 
       @listenTo @apps(), "change", ()-> @trigger "change:app"
-      @listenTo @apps(), "change:progress", ()-> @trigger "change:app"
       @listenTo @apps(), "add",    ()-> @trigger "update:app"
       @listenTo @apps(), "remove", (o)-> clearTenSecCheck(o.id); @trigger "update:app"
 

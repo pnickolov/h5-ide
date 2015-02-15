@@ -144,5 +144,9 @@ define [
   }, {
     canHandle : ( data )->
       if not data.opsModel then return false
+      if data.opsModel.testState( OpsModel.State.Saving ) or data.opsModel.testState( OpsModel.State.Terminating )
+        console.warn "Avoide opening a saving/terminating OpsModel."
+        return false
+
       return data.opsModel.isApp() and data.opsModel.isProcessing()
   }

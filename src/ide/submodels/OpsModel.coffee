@@ -652,7 +652,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
           toState = [ OMS.Updating, OMS.Running, OMS.Stopped ]
 
-        when constant.OPS_CODE_NAME.APP_SAVE # This is saving app.
+        when constant.OPS_CODE_NAME.APP_SAVE, constant.OPS_CODE_NAME.APP_IMPORT # This is saving app.
           if @__saveAppDefer
             if toStateIndex is 1
               @__saveAppDefer.resolve()

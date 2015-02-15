@@ -192,7 +192,7 @@ define ['backbone',
                 # change button state
                 originTxt = $invite.text()
                 $invite.prop 'disabled', true
-                $invite.text("#{originTxt}...")
+                $invite.text("#{originTxt}")
 
                 @memberCol.inviteMember(mail).then ()->
                     $mail.val('')
@@ -228,7 +228,7 @@ define ['backbone',
                         # change button state
                         originTxt = $delete.text()
                         $delete.prop 'disabled', true
-                        $delete.text("#{originTxt}...")
+                        $delete.text("#{originTxt}")
 
                         that.memberCol.removeMember(memList).then ()->
                             that.loadMemList () ->
@@ -277,7 +277,7 @@ define ['backbone',
                 # change button state
                 originTxt = $done.text()
                 $done.prop 'disabled', true
-                $done.text("#{originTxt}...")
+                $done.text("#{originTxt}")
 
                 memberModel.updateRole(newRole).then ()->
                     that.loadMemList () ->
@@ -304,7 +304,7 @@ define ['backbone',
                 # change button state
                 originTxt = $cancel.text()
                 $cancel.prop 'disabled', true
-                $cancel.text("#{originTxt}...")
+                $cancel.text("#{originTxt}")
 
                 memberModel = that.memberCol.get(memId)
                 memberModel.cancelInvite().then ()->

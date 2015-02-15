@@ -628,7 +628,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           toState = if completed then OpsModelState.Destroyed else OpsModelState.Stopped
         when constant.OPS_CODE_NAME.UPDATE, constant.OPS_CODE_NAME.STATE_UPDATE
           if not @__updateAppDefer
-            return console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
+            if @isLastActionTriggerByUser()
+              console.warn "The update action seems to caused by user, but UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
+            return
           if completed
             @__updateAppDefer.resolve()
           else
@@ -637,8 +639,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
         when constant.OPS_CODE_NAME.APP_SAVE # This is saving app.
           if not @__saveAppDefer
-            return console.warn "SaveAppDefer is null when setStatusWithWSEvent with `save` event."
-
+            if @isLastActionTriggerByUser()
+              console.warn "The save app action seems to caused by user, but SaveAppDefer is null when setStatusWithWSEvent with `save` event."
+            return
           if completed
             @__saveAppDefer.resolve()
           else

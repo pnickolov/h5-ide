@@ -305,7 +305,7 @@ define [
     amIMeber    : ()-> @get("myRole") is MEMBERROLE.MEMBER
     amIObserver : ()-> @get("myRole") is MEMBERROLE.OBSERVER
 
-    isDemoMode: ( provider = constant.PROVIDER.AWSGLOBAL ) ->
+    isDemoMode: ( provider = Credential.PROVIDER.AWSGLOBAL ) ->
       cred = @credentials().findWhere provider: provider
       cred and cred.isDemo() or false
 

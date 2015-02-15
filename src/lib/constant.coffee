@@ -8,14 +8,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
         wrappedDict
 
-    PROVIDER =
-        AWSGLOBAL : "aws::global"
-        AWSCHINA  : "aws::china"
-
-    PROVIDER_NAME =
-        "aws::global": "AWS Global"
-        "aws::china": "AWS China"
-
     AWS_RESOURCE_KEY =
         "AWS.EC2.AvailabilityZone"                  : "ZoneName"
         "AWS.EC2.Instance"                          : "InstanceId"
@@ -441,8 +433,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
 
     #public
-    PROVIDER                : PROVIDER
-    PROVIDER_NAME           : PROVIDER_NAME
     AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
     INSTANCE_STATES         : INSTANCE_STATES
 

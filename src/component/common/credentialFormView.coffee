@@ -80,7 +80,7 @@ define [
       that = @
       data = @getData()
       # Temporary
-      provider = constant.PROVIDER.AWSGLOBAL
+      provider = Credential.PROVIDER.AWSGLOBAL
 
       # Find credential has same provider, only update the credential, not add
       credential = @model.credentials().findWhere provider: provider
@@ -94,7 +94,7 @@ define [
           access_key: data.awsAccessKey
           secret_key: data.awsSecretKey
         }
-        credentialData.provider = data.provider or constant.PROVIDER.AWSGLOBAL
+        credentialData.provider = data.provider or Credential.PROVIDER.AWSGLOBAL
         credential = new Credential credentialData, { project: @model }
       @loading()
       credential.save().then () ->

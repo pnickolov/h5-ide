@@ -33,7 +33,8 @@ define ["cloudres/CrCollection"], ( CrCollection )->
     c
 
   onCollectionDestroy = (credential, id)->
-    console.info "CloudResource collection is destroyed:", CachedCollections[credential][id]
+    if CachedCollections[credential][id]
+      console.info "CloudResource collection is destroyed:", CachedCollections[credential][id]
     delete CachedCollections[ credential ][ id ]
     return
 

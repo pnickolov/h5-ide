@@ -8,9 +8,10 @@ define [ "./DashboardTpl",
          "UI.modalplus",
          "i18n!/nls/lang.js",
          "ProjectLog",
+         "Credential"
          "credentialFormView"
          "UI.bubble",
-         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog, CredentialFormView )->
+         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog, Credential, CredentialFormView )->
 
   Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
     ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
@@ -79,21 +80,23 @@ define [ "./DashboardTpl",
       @listenTo @model.scene.project.stacks(), "change:progress", ( ops )-> self.updateAppStackProgress( ops )
 
       @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
-      @credentialId = @model.scene.project.credIdOfProvider constant.PROVIDER.AWSGLOBAL
-      @credentialAccount = @model.scene.project.credOfProvider(constant.PROVIDER.AWSGLOBAL).get("awsAccount")
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.EIP ), "update", @onGlobalResChanged
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.VOL ), "update", @onGlobalResChanged
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.ELB ), "update", @onGlobalResChanged
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.VPN ), "update", @onGlobalResChanged
 
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.VPC ), "update", @onRegionResChanged
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.ASG ), "update", @onRegionResChanged
-      @listenTo CloudResources(@credentialId, constant.RESTYPE.CW ),  "update", @onRegionResChanged
+      credentialId       = @model.scene.project.credIdOfProvider Credential.PROVIDER.AWSGLOBAL
+      @credentialAccount = @model.scene.project.credOfProvider(Credential.PROVIDER.AWSGLOBAL).get("awsAccount")
+
+      @listenTo CloudResources(credentialId, constant.RESTYPE.INSTANCE ), "update", @onGlobalResChanged
+      @listenTo CloudResources(credentialId, constant.RESTYPE.EIP ), "update", @onGlobalResChanged
+      @listenTo CloudResources(credentialId, constant.RESTYPE.VOL ), "update", @onGlobalResChanged
+      @listenTo CloudResources(credentialId, constant.RESTYPE.ELB ), "update", @onGlobalResChanged
+      @listenTo CloudResources(credentialId, constant.RESTYPE.VPN ), "update", @onGlobalResChanged
+
+      @listenTo CloudResources(credentialId, constant.RESTYPE.VPC ), "update", @onRegionResChanged
+      @listenTo CloudResources(credentialId, constant.RESTYPE.ASG ), "update", @onRegionResChanged
+      @listenTo CloudResources(credentialId, constant.RESTYPE.CW ),  "update", @onRegionResChanged
 
       for region in constant.REGION_KEYS
-        @listenTo CloudResources(@credentialId, constant.RESTYPE.SUBSCRIPTION, region ), "update", @onRegionResChanged
-        @listenTo CloudResources(@credentialId, constant.RESTYPE.DBINSTANCE, region ),  "update", @onGlobalResChanged
+        @listenTo CloudResources(credentialId, constant.RESTYPE.SUBSCRIPTION, region ), "update", @onRegionResChanged
+        @listenTo CloudResources(credentialId, constant.RESTYPE.DBINSTANCE, region ),  "update", @onGlobalResChanged
 
       MC.template.dashboardBubble = _.bind @dashboardBubble, @
       MC.template.dashboardBubbleSub = _.bind @dashboardBubbleSub, @
@@ -147,7 +150,7 @@ define [ "./DashboardTpl",
       if not @model.scene.project.isDemoMode()
         @$el.find("#dashboard-data-wrap").removeClass("demo")
         @$el.find("#VisualizeVPC").removeAttr("disabled").removeClass("tooltip").removeAttr("title")
-        newCredentialAccount = @model.scene.project.credOfProvider(constant.PROVIDER.AWSGLOBAL).get("awsAccount")
+        newCredentialAccount = @model.scene.project.credOfProvider(Credential.PROVIDER.AWSGLOBAL).get("awsAccount")
         if @credentialAccount isnt newCredentialAccount
           @reloadResource()
           @credentialAccount = newCredentialAccount

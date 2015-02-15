@@ -16,7 +16,9 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
     AWSGLOBAL : "aws::global"
     AWSCHINA  : "aws::china"
 
-
+  PROVIDER_NAME =
+    "aws::global" : "AWS Global"
+    "aws::china"  : "AWS China"
 
   Credential = Backbone.Model.extend {
 
@@ -143,6 +145,8 @@ define [ "ApiRequest", "backbone" ], ( ApiRequest )->
         awsAccessKey: __maskString(@attributes.awsAccessKey)
         awsSecretKey: __maskString(@attributes.awsSecretKey)
       }
+
+    getProviderName : ()-> PROVIDER_NAME[ @get("provider") ]
 
   }, {
     PROVIDER : PROVIDER

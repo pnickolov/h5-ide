@@ -51,7 +51,7 @@ define [
             data.credentials = _.map credentials, ( c ) ->
                 json = c.toJSON()
                 json.isAdmin = data.isAdmin
-                json.providerName = constant.PROVIDER_NAME[json.provider]
+                json.providerName = c.getProviderName()
                 json.name = json.alias || json.providerName
                 json.needed = applist.some ( app ) -> app?.get( 'provider' ) is json.provider
 
@@ -97,14 +97,14 @@ define [
             credential.destroy().then () ->
                 that.removeConfirmView?.close()
             , ( error ) ->
-                credName = constant.PROVIDER_NAME[credential.get 'provider']
+                credName = credential.getProviderName()
                 that.stopModalLoading that.removeConfirmView, TplCredential.removeConfirm name: credName
                 that.showModalError that.removeConfirmView, lang.IDE.SETTINGS_ERR_CRED_REMOVE
 
         showRemoveConfirmModel: ( e ) ->
             credentialId = $( e.currentTarget ).data 'id'
             credential = @getCredentialById credentialId
-            credName = constant.PROVIDER_NAME[credential.get 'provider']
+            credName = credential.getProviderName()
 
             @removeConfirmView?.close()
             @removeConfirmView = new Modal {

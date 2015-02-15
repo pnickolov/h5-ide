@@ -122,6 +122,8 @@ define [
       true
 
     applyAppEdit : ( newJson, fastUpdate )->
+      console.assert( @isAppEditMode(), "Cannot apply app update while it's not in app edit mode." )
+
       if not newJson
         @design.setMode( Design.MODE.App )
         return

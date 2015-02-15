@@ -66,7 +66,7 @@ define({
         else
             platform = "openstack"
 
-        @[ key ]?[ platform ] or @[ key ]['aws']
+        @[ key ]?[ platform ] or @[ key ].aws
 
 
 })

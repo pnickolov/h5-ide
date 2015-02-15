@@ -6,13 +6,14 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'compo
 
         initCol: ->
             region = Design.instance().region()
-            @sslCertCol = CloudResources constant.RESTYPE.IAM, region
+            @sslCertCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.IAM, region
             @sslCertCol.on 'update', @processCol, @
 
         initDropdown: ->
             options =
                 manageBtnValue      : lang.PROP.INSTANCE_MANAGE_SSL_CERT
                 filterPlaceHolder   : lang.PROP.INSTANCE_FILTER_SSL_CERT
+                resourceName        : lang.PROP.RESOURCE_NAME_SSL
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
@@ -23,7 +24,13 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'compo
 
         initialize: () ->
             @initCol()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @initDropdown()
+
+        credChanged: ->
+            @dropdown?.render("loading")
+            @sslCertCol.fetchForce()
 
         quickCreate: () ->
             new sslCertManage().render().quickCreate()
@@ -97,7 +104,7 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'compo
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @sslCertCol.fetch()
                 @processCol()
             else

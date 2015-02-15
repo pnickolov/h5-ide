@@ -6,8 +6,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
 
         initCol: ->
             region = Design.instance().region()
-            @sslCertCol = CloudResources constant.RESTYPE.IAM, region
-            if App.user.hasCredential()
+            @sslCertCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.IAM, region
+            if Design.instance().credential()
                 @sslCertCol.fetch()
             @sslCertCol.on 'update', @processCol, @
             @sslCertCol.on 'change', @processCol, @
@@ -20,6 +20,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
             title: sprintf lang.IDE.MANAGE_SSL_CERT_IN_AREA, regionName
             classList: 'sslcert-manage'
             #slideable: _.bind that.denySlide, that
+            resourceName: lang.PROP.RESOURCE_NAME_SSL
             context: that
             buttons: [
                 {
@@ -78,6 +79,13 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
         initialize: () ->
             @initCol()
             @initModal()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
+
+        credChanged: ()->
+            @sslCertCol.fetchForce()
+            @modal?.renderLoading()
+            @modal and @refresh()
 
         quickCreate: ->
             @modal.triggerSlide 'create'
@@ -202,7 +210,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
             sslCertData = @sslCertCol.get(sslCertId).toJSON()
             sslCertData.Expiration = MC.dateFormat(new Date(sslCertData.Expiration), 'yyyy-MM-dd hh:mm:ss')
 
-            detailTpl = template['detail_info']
+            detailTpl = template.detail_info
             @modal.setDetail($tr, detailTpl(sslCertData))
 
         refresh: ->
@@ -228,7 +236,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
         render: ->
 
             @modal.render()
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @processCol()
             else
                 @modal.render 'nocredential'
@@ -289,7 +297,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
                 data = {}
 
                 if checkedAmount is 1
-                    data.selecteKeyName = checked[ 0 ].data[ 'name' ]
+                    data.selecteKeyName = checked[ 0 ].data.name
                 else
                     data.selectedCount = checkedAmount
 
@@ -318,7 +326,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
 
         show: ->
 
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @sslCertCol.fetch()
                 @processCol()
             else

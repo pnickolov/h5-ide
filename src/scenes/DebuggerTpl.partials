@@ -1,0 +1,39 @@
+
+<!-- {{Toolbar}} -->
+<div id="DebugTool" class="debugToolBg">
+  <ul>
+    <li id="DtDiff" class="icon-toolbar-diff tooltip" data-tooltip="Json Diff"></li>
+    <li id="DtView" class="icon-toolbar-cloudformation tooltip" data-tooltip="Json View"></li>
+    <li id="DtApi" class="tooltip debugToolBg" data-tooltip="Debug Api"></li>
+    <li id="DtSession" class="icon-user tooltip" data-tooltip="Share Session"></li>
+    <li id="DtClearStack" class="icon-delete tooltip" data-tooltip="Clear Stacks"></li>
+    <li id="DtClearApp" class="icon-terminate tooltip" data-tooltip="Terminate Apps"></li>
+  </ul>
+  <div id="DebugTooltip">console输入man查看快捷debug</div>
+</div>
+
+
+<!-- {{Question}} -->
+<section id="DebugQuestion">
+  <article>
+    <p>{{{content}}}</p>
+    <div class="clearfix">
+      {{#each buttons}}<button data-id="{{id}}">{{text}}</button>{{/each}}
+      <button data-id="debug_q_close">取消</button>
+    </div>
+  </article>
+</section>
+
+
+<!-- {{ApiDebugger}} -->
+<section id="ApiDebuggerScene">
+  <div id="ApiDebuggerClose"></div>
+  <div id="ApiDebuggerLeft">
+    <label id="ApiDebuggerLabel">Api : </label>
+    <select id="ApiSelect" data-placeholder="Select an api"></select>
+    <label>Parameters :</label>
+    <section id="ApiParamsWrap" class="clearfix"></section>
+    <button class="btn btn-blue" id="ApiDebugSend">Send Request</button>
+  </div>
+  <div id="ApiDebuggerRight"><label>Result :</label><pre id="ApiResult"></pre></div>
+</section>

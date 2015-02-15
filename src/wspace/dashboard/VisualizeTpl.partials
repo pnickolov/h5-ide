@@ -1,0 +1,37 @@
+<!-- {{frame}} -->
+<div class="scroll-wrap scrollbar-auto-hide" style="height:500px;">
+	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+	<section id="VisualizeVpcDialog" class="scroll-content"></section>
+</div>
+
+<!-- {{loading}} -->
+<div class="loading-spinner"></div>
+
+<!-- {{failure}} -->
+<div class="unmanaged-vpc-empty">{{i18n "DASH_TPL_LOADING_VPC_FAILED"}}
+	<button class="btn btn-blue" id="VisualizeReload">{{i18n "DASH_POP_BTN_RETRY"}}</button>
+</div>
+
+<!-- {{content}} -->
+{{#each this}}{{#if vpcs.length}}<section>
+	<header class="region-header"><span class="region-name">{{name}}</span>{{subname}}<span class="vpc-count">{{vpcs.length}}</span></header>
+
+	<ul class="region-group clearfix" data-region="{{id}}">
+		{{#each vpcs}}
+		<li class="visualize-vpc {{#if disabled}} disabled tooltip{{/if}}"
+			{{#if disabled}} data-tooltip="{{i18n 'IDE_TIP_VISUALIZE_MORE_THAN_100_ENI'}}"{{/if}}>
+			<h5>{{#if name}}{{name}} <span>({{id}})</span>{{else}}{{id}}{{/if}}</h5>
+			<ol class="tac">
+				<li class="visualize-res"><div class="vis-res-num">{{subnet.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_SUBNETS"}}</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{ami.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_RUNNING_INSTANCE"}}</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{stopped.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_STOPPED_INSTANCE"}}</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{eni.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_NETWORK_INTERFACE"}}</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{eip.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_ELASTIC_IP"}}</span></li>
+				<li class="visualize-res"><div class="vis-res-num">{{elb.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span></li>
+			</ol>
+			<button class="btn btn-blue visualize-vpc-btn{{#if imported}} tooltip disabled{{/if}}" data-vpcid="{{id}}">{{#if imported}}{{i18n "DASH_TPL_ALREADY_IMPORTED"}}{{else}}{{i18n "DASH_TPL_TO_IMPORT"}}{{/if}}</button>
+		</li>
+		{{/each}}
+	</ul>
+</section>{{/if}}
+{{else}}<div class="unmanaged-vpc-empty">{{i18n "DASH_TPL_NO_VPC_TO_IMPORT"}}</div>{{/each}}

@@ -145,16 +145,13 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', "CloudRes
 
 			# get ami info from aws
 			if amiAry.length
-				cr = CloudResources( constant.RESTYPE.AMI, MC.canvas_data.region )
+				cr = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, MC.canvas_data.region )
 
 				failure = ()-> callback(null)
-				success = ()->
-					invalids = []
-					for id in amiAry
-						if cr.isInvalidAmiId( id )
-							invalids.push id
+				success = (invalidAmiAry)->
 
-					if not invalids.length then return callback(null)
+					validIds = _.pluck(invalidAmiAry or [], 'id')
+					invalids = _.difference(amiAry, validIds)
 
 					for amiId in invalids
 						for instanceUID in instanceAMIMap[ amiId ] || []
@@ -179,7 +176,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', "CloudRes
 					else
 						callback(null)
 
-				cr.fetchAmis( amiAry ).then success, failure
+				cr.fetchAmis( amiAry, true ).then success, failure
 				return
 
 			else
@@ -210,7 +207,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', "CloudRes
 
 		tipInfoAry = []
 
-		amiCollection = CloudResources( constant.RESTYPE.AMI, MC.canvas_data.region )
+		amiCollection = CloudResources( Design.instance().credentialId(), constant.RESTYPE.AMI, MC.canvas_data.region )
 
 		_.each amiAry, (amiId) ->
 			if not amiCollection.get( amiId )

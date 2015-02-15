@@ -1,13 +1,13 @@
 define [
     'constant'
     'CloudResources'
-    'toolbar_modal'
+    'component/common/toolbarModalTpl'
     'component/awscomps/OgTpl'
     'i18n!/nls/lang.js'
     'event'
     'UI.modalplus'
 
-], ( constant, CloudResources, toolbar_modal, template, lang, ide_event, modalplus ) ->
+], ( constant, CloudResources, toolbar_modal_tpl, template, lang, ide_event, modalplus ) ->
 
     valueInRange = ( start, end ) ->
         ( val ) ->
@@ -72,7 +72,7 @@ define [
             unless @isAppEdit then return false
 
             appId = @ogModel.get 'appId'
-            appData = CloudResources(constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
+            appData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
 
             unless appData then return false
             appOptions = {}
@@ -112,7 +112,7 @@ define [
             @isCreate   = option.isCreate
             @dbInstance = option.dbInstance
 
-            optionCol = CloudResources(constant.RESTYPE.DBENGINE, Design.instance().region())
+            optionCol = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBENGINE, Design.instance().region())
             engineOptions = optionCol.getOptionGroupsByEngine(Design.instance().region(), option.engine)
 
             @ogOptions = engineOptions[option.version] if engineOptions
@@ -161,6 +161,9 @@ define [
             @$el.html template.og_modal(ogData)
 
             @initModal @el
+            unless Design.instance().credential() and not Design.instance().credential().isDemo()
+                @renderNoCredential()
+                return false
             @renderOptionList()
             @__modalplus.resize()
             @
@@ -318,17 +321,8 @@ define [
             @$('.slidebox').addClass 'show'
             @$('.slidebox .form').html template.og_slide_remove {}
 
-        processCol: () ->
-
-            @renderList({})
-
-        renderList: ( data ) ->
-
-            @modal.setContent( template.modal_list data )
-
         renderNoCredential: () ->
-
-            @modal.render('nocredential').toggleControls false
+            @__modalplus.setContent(toolbar_modal_tpl.nocredential({resourceName: lang.PROP.RESOURCE_NAME_OPTION_GROUP}))
 
         renderSlides: ( which, checked ) ->
 

@@ -3,8 +3,7 @@ define [
     'MC'
     'i18n!/nls/lang.js'
     'TaHelper'
-    'CloudResources'
-    ], ( constant, MC, lang, Helper, CloudResources ) ->
+    ], ( constant, MC, lang, Helper ) ->
 
         i18n = Helper.i18n.short()
 

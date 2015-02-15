@@ -121,7 +121,7 @@ define [
         unless backupWindow and maintenanceWindow then return null
 
         if appId
-            appData = CloudResources(constant.RESTYPE.DBINSTANCE, Design.instance().region()).get appId
+            appData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()).get appId
             backupWindow = backupWindow or appData.get 'PreferredBackupWindow'
             maintenanceWindow = maintenanceWindow or appData.get 'PreferredMaintenanceWindow'
 

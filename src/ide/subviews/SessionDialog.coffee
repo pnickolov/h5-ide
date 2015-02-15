@@ -1,15 +1,11 @@
 
-define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "backbone" ], ( lang, template ) ->
+define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "UI.modalplus", "backbone" ], ( lang, template, modalPlus ) ->
 
   CurrentSessionDialog = null
 
   SessionDialogView = Backbone.View.extend {
 
     events :
-      'click #SessionReconnect' : 'showReconnect'
-      'click #SessionClose'     : 'closeSession'
-      'click #SessionClose2'    : 'closeSession'
-      'click #SessionConnect'   : 'connect'
       'keyup #SessionPassword'  : 'passwordChanged'
 
     constructor : ()->
@@ -19,8 +15,20 @@ define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "backbone" ], ( lang, templa
       CurrentSessionDialog = this
 
       @defer = Q.defer()
+      self = @
+      @modal = new modalPlus {
+        title: lang.IDE.DASH_INVALID_SESSION
+        width: 400
+        template: template()
+        disableClose: true
+        hideClose: true
+        confirm: text: lang.IDE.DASH_LBL_CONNECT
+        cancel: text: lang.IDE.DASH_LBL_CLOSE_SESSION, color: "red"
+      }
+      @modal.on "confirm", -> self.showReconnect()
+      @modal.on "cancel",  -> self.closeSession()
+      @modal.on "close",   -> self.closeSession()
 
-      modal template(), false
       @setElement $('#modal-wrap')
 
 
@@ -29,20 +37,26 @@ define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "backbone" ], ( lang, templa
     showReconnect : ()->
       $(".invalid-session .confirmSession").hide()
       $(".invalid-session .reconnectSession").show()
+      @modal.find(".modal-confirm").text(lang.IDE.DASH_LBL_CONNECT).attr("disabled", "disabled")
+      @modal.off "confirm"
+      @modal.on "confirm", _.bind @connect, @
       return
 
     closeSession : ()-> App.logout()
 
     connect : ()->
-      if $("#SessionConnect").is(":disabled") then return
+      if @modal.find(".modal-confirm").is(":disabled") then return
 
-      $("#SessionConnect").attr "disabled", "disabled"
+      @modal.find(".modal-confirm").attr "disabled", "disabled"
       App.user.acquireSession( $("#SessionPassword").val() ).then ()=>
         @remove()
         @defer.resolve()
+
+        App.ignoreChangesWhenQuit()
+        window.location.reload()
         return
       , ( error )->
-        $("#SessionConnect").removeAttr "disabled"
+        @modal.find(".modal-confirm").removeAttr "disabled"
         notification 'error', lang.NOTIFY.WARN_AUTH_FAILED
         $("#SessionPassword").toggleClass "parsley-error", true
         return
@@ -50,9 +64,9 @@ define [ 'i18n!/nls/lang.js', "./SessionDialogTpl", "backbone" ], ( lang, templa
     passwordChanged : ( evt )->
       $("#SessionPassword").toggleClass "parsley-error", false
       if ($("#SessionPassword").val() || "").length >= 6
-        $("#SessionConnect").removeAttr "disabled"
+        @modal.find(".modal-confirm").removeAttr "disabled"
       else
-        $("#SessionConnect").attr "disabled", "disabled"
+        @modal.find(".modal-confirm").attr "disabled", "disabled"
 
       if evt.which is 13 then @connect()
       return

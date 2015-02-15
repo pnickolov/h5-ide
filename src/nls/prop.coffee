@@ -2876,7 +2876,7 @@ module.exports =
       zh: " 快照"
 
     DB_SNAPSHOT_EMPTY:
-      en: "There are no available DB snapshot here."
+      en: "There are no available DB instances here."
       zh: "尚无可用实例"
 
     DB_SNAPSHOT_ID:
@@ -3413,3 +3413,39 @@ module.exports =
     REMOVE_ROUTE:
       en: "Remove Route"
       zh: "删除路由"
+
+    REMOVE_SUBNET:
+      en: "Remove Subnet"
+      zh: "删除子网"
+
+    RESOURCE_NAME_KEYPAIR:
+      en: "keypair"
+      zh: "密钥对"
+
+    RESOURCE_NAME_PARAMETER_GROUP:
+      en: "RDS Parameter Group"
+      zh: "数据库参数组"
+
+    RESOURCE_NAME_RDS_SNAPSHOT:
+      en: "RDS Snapshot"
+      zh: "数据库快照"
+
+    RESOURCE_NAME_SNAPSHOT:
+      en: "Snapshot"
+      zh: "快照"
+
+    RESOURCE_NAME_SNS:
+      en: "SNS Subscription"
+      zh: " SNS 订阅"
+
+    RESOURCE_NAME_SSL:
+      en: "SSL"
+      zh: "SSL"
+
+    RESOURCE_NAME_DHCP:
+      en: "DHCP"
+      zh: "DHCP"
+
+    RESOURCE_NAME_OPTION_GROUP:
+      en: "RDS Option Group"
+      zh: " RDS 选项组"

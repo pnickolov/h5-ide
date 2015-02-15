@@ -1,4 +1,4 @@
-define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component/awscomps/OgTpl', 'i18n!/nls/lang.js' ], ( constant, CloudResources, comboDropdown, OgManage, template, lang ) ->
+define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component/awscomps/OgTpl', 'i18n!/nls/lang.js',"credentialFormView" ], ( constant, CloudResources, comboDropdown, OgManage, template, lang, CredentialFormView ) ->
 
     Backbone.View.extend
 
@@ -6,6 +6,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
 
         events:
             'click .icon-edit' : 'editClicked'
+            "click .combo-dd-no-data .create-one": "showCredential"
 
         initDropdown: ->
 
@@ -13,6 +14,7 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
                 manageBtnValue      : 'Create New Option Group ...'
                 filterPlaceHolder   : 'Filter by Option Group name'
                 noFilter            : true
+                resourceName        : lang.PROP.RESOURCE_NAME_OPTION_GROUP
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
@@ -24,6 +26,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
         initialize: (option) ->
 
             @initDropdown()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @dbInstance = option.dbInstance
 
         render: (option) ->
@@ -41,11 +45,15 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
 
             @
 
+        credChanged: ()->
+            @dropdown?.render("loading")
+            @refresh()
+
         refresh: () ->
 
             that = this
             regionName = Design.instance().region()
-            engineCol  = CloudResources(constant.RESTYPE.DBENGINE, regionName)
+            engineCol  = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBENGINE, regionName
             ogComps    = Design.modelClassForType(constant.RESTYPE.DBOG).allObjects()
 
             # only show default og from aws and custom og from stack
@@ -112,6 +120,10 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
+            unless Design.instance().credential() and not Design.instance().credential().isDemo()
+              @renderNoCredential()
+              return false
+
             # Close Parameter Group Dropdown when Option Group Dropdown is opening
             $('#property-dbinstance-parameter-group-select .selectbox').removeClass 'open'
             # render dropdown list only if no item there
@@ -142,4 +154,5 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
             return false
 
         setSelection: -> @dropdown.setSelection.apply @, arguments
-
+        showCredential: ->
+          new CredentialFormView(model: Design.instance().project()).render()

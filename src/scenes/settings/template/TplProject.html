@@ -1,0 +1,21 @@
+<nav id="settings-nav">
+    <a class="back-settings">&lt; {{i18n "HEAD_BTN_BACK"}}</a>
+    <section class="function-list">
+        <header class="settings-nav-project-title truncate">{{name}}</header>
+        <a data-id="basicsettings">{{i18n "BASIC_SETTINGS"}}</a>
+        <a data-id="team">{{i18n "TEAM"}}</a>
+        <a data-id="usagereport">{{i18n "USAGE_REPORT"}}</a>
+        {{#if admin}}
+        <a data-id="billing">{{i18n "PAYMENT_BILLING_TAB"}}</a>
+        <a data-id="credential">{{i18n "PROVIDER_CREDENTIAL"}}</a>
+        {{/if}}
+        <a data-id="accesstoken">{{i18n "SETTINGS_LABEL_ACCESSTOKEN"}}</a>
+    </section>
+</nav>
+<section class="setting-content">
+    <header class="project-title">
+        <span id="title-project-name" class="truncate"></span>
+        <span id="title-tab-name"></span>
+    </header>
+    <article class="project-subview"></article>
+</section>

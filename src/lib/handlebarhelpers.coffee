@@ -107,90 +107,77 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
   Handlebars.registerHelper "firstOfSplit", ( content, splitter )-> content.split("-")[0]
 
 
-  Handlebars.registerHelper 'formatTime', (timeStr, formatStr)->
+  Handlebars.registerHelper 'formatTime', (dateStr, format)->
+    utc = false
+    date = new Date(dateStr)
+    MMMM = lang.IDE.DATE_FORMAT_MONTHS.split(', ')
+    MMM = lang.IDE.DATE_FORMAT_MON.split(', ')
+    dddd = lang.IDE.DATE_FORMAT_WEEK.split(', ')
+    ddd = lang.IDE.DATE_FORMAT_WEK.split(', ')
+    daySuffix = lang.IDE.DATE_FORMAT_DAY
+    yearSuffix = lang.IDE.DATE_FORMAT_YEAR
+    monthSuffix = lang.IDE.DATE_FORMAT_MONTH
+    y = if utc then date.getUTCFullYear() else date.getFullYear()
 
-     `function formatDate (dateStr, format, utc){
-        var date = new Date(dateStr);
-        var MMMM = lang.IDE.DATE_FORMAT_MONTHS.split(", ");
-        var MMM  = lang.IDE.DATE_FORMAT_MON.split(", ");
-        var dddd = lang.IDE.DATE_FORMAT_WEEK.split(", ");
-        var ddd  = lang.IDE.DATE_FORMAT_WEK.split(", ");
-        var daySuffix = lang.IDE.DATE_FORMAT_DAY;
-        var yearSuffix = lang.IDE.DATE_FORMAT_YEAR;
-        var monthSuffix = lang.IDE.DATE_FORMAT_MONTH;
-        function ii(i, len) { var s = i + ""; len = len || 2; while (s.length < len) s = "0" + s; return s; }
+    ii = (i, len) ->
+      s = i + ''
+      len = len or 2
+      while s.length < len
+        s = '0' + s
+      s
 
-        var y = utc ? date.getUTCFullYear() : date.getFullYear();
-        format = format.replace(/(^|[^\\])yyyy+/g, "$1" + y + yearSuffix);
-        format = format.replace(/(^|[^\\])yy/g, "$1" + y.toString().substr(2, 2));
-        format = format.replace(/(^|[^\\])y/g, "$1" + y + yearSuffix);
-
-        var M = (utc ? date.getUTCMonth() : date.getMonth()) + 1;
-        format = format.replace(/(^|[^\\])MMMM+/g, "$1" + MMMM[0]);
-        format = format.replace(/(^|[^\\])MMM/g, "$1" + MMM[0]);
-        format = format.replace(/(^|[^\\])MM/g, "$1" + ii(M) + monthSuffix);
-        format = format.replace(/(^|[^\\])M/g, "$1" + M + monthSuffix);
-
-        var d = utc ? date.getUTCDate() : date.getDate();
-        format = format.replace(/(^|[^\\])dddd+/g, "$1" + dddd[0]);
-        format = format.replace(/(^|[^\\])ddd/g, "$1" + ddd[0]);
-        format = format.replace(/(^|[^\\])dd/g, "$1" + ii(d) + daySuffix);
-        format = format.replace(/(^|[^\\])d/g, "$1" + d + daySuffix);
-
-        var H = utc ? date.getUTCHours() : date.getHours();
-        format = format.replace(/(^|[^\\])HH+/g, "$1" + ii(H));
-        format = format.replace(/(^|[^\\])H/g, "$1" + H);
-
-        var h = H > 12 ? H - 12 : H == 0 ? 12 : H;
-        format = format.replace(/(^|[^\\])hh+/g, "$1" + ii(h));
-        format = format.replace(/(^|[^\\])h/g, "$1" + h);
-
-        var m = utc ? date.getUTCMinutes() : date.getMinutes();
-        format = format.replace(/(^|[^\\])mm+/g, "$1" + ii(m));
-        format = format.replace(/(^|[^\\])m/g, "$1" + m);
-
-        var s = utc ? date.getUTCSeconds() : date.getSeconds();
-        format = format.replace(/(^|[^\\])ss+/g, "$1" + ii(s));
-        format = format.replace(/(^|[^\\])s/g, "$1" + s);
-
-        var f = utc ? date.getUTCMilliseconds() : date.getMilliseconds();
-        format = format.replace(/(^|[^\\])fff+/g, "$1" + ii(f, 3));
-        f = Math.round(f / 10);
-        format = format.replace(/(^|[^\\])ff/g, "$1" + ii(f));
-        f = Math.round(f / 10);
-        format = format.replace(/(^|[^\\])f/g, "$1" + f);
-
-        var T = H < 12 ? lang.IDE.DATE_FORMAT_AM : lang.IDE.DATE_FORMAT_PM;
-        format = format.replace(/(^|[^\\])TT+/g, "$1" + T);
-        format = format.replace(/(^|[^\\])T/g, "$1" + T.charAt(0));
-
-        var t = T.toLowerCase();
-        format = format.replace(/(^|[^\\])tt+/g, "$1" + t);
-        format = format.replace(/(^|[^\\])t/g, "$1" + t.charAt(0));
-
-        var tz = -date.getTimezoneOffset();
-        var K = utc || !tz ? "Z" : tz > 0 ? "+" : "-";
-        if (!utc)
-        {
-            tz = Math.abs(tz);
-            var tzHrs = Math.floor(tz / 60);
-            var tzMin = tz % 60;
-            K += ii(tzHrs) + ":" + ii(tzMin);
-        }
-        format = format.replace(/(^|[^\\])K/g, "$1" + K);
-
-        var day = (utc ? date.getUTCDay() : date.getDay()) + 1;
-        format = format.replace(new RegExp(dddd[0], "g"), dddd[day]);
-        format = format.replace(new RegExp(ddd[0], "g"), ddd[day]);
-
-        format = format.replace(new RegExp(MMMM[0], "g"), MMMM[M]);
-        format = format.replace(new RegExp(MMM[0], "g"), MMM[M]);
-
-        format = format.replace(/\\(.)/g, "$1");
-
-        return format;
-     }`
-     formatDate(timeStr, formatStr)
+    format = format.replace(/(^|[^\\])yyyy+/g, '$1' + y + yearSuffix)
+    format = format.replace(/(^|[^\\])yy/g, '$1' + y.toString().substr(2, 2))
+    format = format.replace(/(^|[^\\])y/g, '$1' + y + yearSuffix)
+    M = (if utc then date.getUTCMonth() else date.getMonth()) + 1
+    format = format.replace(/(^|[^\\])MMMM+/g, '$1' + MMMM[0])
+    format = format.replace(/(^|[^\\])MMM/g, '$1' + MMM[0])
+    format = format.replace(/(^|[^\\])MM/g, '$1' + ii(M) + monthSuffix)
+    format = format.replace(/(^|[^\\])M/g, '$1' + M + monthSuffix)
+    d = if utc then date.getUTCDate() else date.getDate()
+    format = format.replace(/(^|[^\\])dddd+/g, '$1' + dddd[0])
+    format = format.replace(/(^|[^\\])ddd/g, '$1' + ddd[0])
+    format = format.replace(/(^|[^\\])dd/g, '$1' + ii(d) + daySuffix)
+    format = format.replace(/(^|[^\\])d/g, '$1' + d + daySuffix)
+    H = if utc then date.getUTCHours() else date.getHours()
+    format = format.replace(/(^|[^\\])HH+/g, '$1' + ii(H))
+    format = format.replace(/(^|[^\\])H/g, '$1' + H)
+    h = if H > 12 then H - 12 else if H == 0 then 12 else H
+    format = format.replace(/(^|[^\\])hh+/g, '$1' + ii(h))
+    format = format.replace(/(^|[^\\])h/g, '$1' + h)
+    m = if utc then date.getUTCMinutes() else date.getMinutes()
+    format = format.replace(/(^|[^\\])mm+/g, '$1' + ii(m))
+    format = format.replace(/(^|[^\\])m/g, '$1' + m)
+    s = if utc then date.getUTCSeconds() else date.getSeconds()
+    format = format.replace(/(^|[^\\])ss+/g, '$1' + ii(s))
+    format = format.replace(/(^|[^\\])s/g, '$1' + s)
+    f = if utc then date.getUTCMilliseconds() else date.getMilliseconds()
+    format = format.replace(/(^|[^\\])fff+/g, '$1' + ii(f, 3))
+    f = Math.round(f / 10)
+    format = format.replace(/(^|[^\\])ff/g, '$1' + ii(f))
+    f = Math.round(f / 10)
+    format = format.replace(/(^|[^\\])f/g, '$1' + f)
+    T = if H < 12 then lang.IDE.DATE_FORMAT_AM else lang.IDE.DATE_FORMAT_PM
+    format = format.replace(/(^|[^\\])TT+/g, '$1' + T)
+    format = format.replace(/(^|[^\\])T/g, '$1' + T.charAt(0))
+    t = T.toLowerCase()
+    format = format.replace(/(^|[^\\])tt+/g, '$1' + t)
+    format = format.replace(/(^|[^\\])t/g, '$1' + t.charAt(0))
+    tz = -date.getTimezoneOffset()
+    K = if utc or !tz then 'Z' else if tz > 0 then '+' else '-'
+    if !utc
+      tz = Math.abs(tz)
+      tzHrs = Math.floor(tz / 60)
+      tzMin = tz % 60
+      K += ii(tzHrs) + ':' + ii(tzMin)
+    format = format.replace(/(^|[^\\])K/g, '$1' + K)
+    day = (if utc then date.getUTCDay() else date.getDay()) + 1
+    format = format.replace(new RegExp(dddd[0], 'g'), dddd[day])
+    format = format.replace(new RegExp(ddd[0], 'g'), ddd[day])
+    format = format.replace(new RegExp(MMMM[0], 'g'), MMMM[M])
+    format = format.replace(new RegExp(MMM[0], 'g'), MMM[M])
+    format = format.replace(/\\(.)/g, '$1')
+    format
 
 
 
@@ -213,20 +200,22 @@ define ["i18n!/nls/lang.js", "handlebars"], ( lang )->
 
   Handlebars.registerHelper 'ifLogic', (v1, operator, v2, options) ->
 
+      r
       switch operator
           when 'is'
-              return if (v1 is v2) then options.fn(this) else options.inverse(this)
+              r = if (v1 is v2) then options.fn(this) else options.inverse(this)
           when '<'
-              return if (v1 < v2) then options.fn(this) else options.inverse(this)
+              r = if (v1 < v2) then options.fn(this) else options.inverse(this)
           when '<='
-              return if (v1 <= v2) then options.fn(this) else options.inverse(this)
+              r = if (v1 <= v2) then options.fn(this) else options.inverse(this)
           when '>'
-              return if (v1 > v2) then options.fn(this) else options.inverse(this)
+              r = if (v1 > v2) then options.fn(this) else options.inverse(this)
           when '>='
-              return if (v1 >= v2) then options.fn(this) else options.inverse(this)
+              r = if (v1 >= v2) then options.fn(this) else options.inverse(this)
           when 'and'
-              return if (v1 and v2) then options.fn(this) else options.inverse(this)
+              r = if (v1 and v2) then options.fn(this) else options.inverse(this)
           when 'or'
-              return if (v1 or v2) then options.fn(this) else options.inverse(this)
+              r = if (v1 or v2) then options.fn(this) else options.inverse(this)
           else
-              return options.inverse(this)
+              r = options.inverse(this)
+      r

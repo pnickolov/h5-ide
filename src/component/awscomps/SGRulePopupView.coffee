@@ -2,7 +2,7 @@
 #  View(UI logic) for component/sgrule
 #############################
 
-define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event" ], ( template, lang, Design, ide_event ) ->
+define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event", "UI.modalplus" ], ( template, lang, Design, ide_event, modalPlus ) ->
 
     SGRulePopupView = Backbone.View.extend {
 
@@ -15,8 +15,14 @@ define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event" ], ( template,
           "click .btn-modal-close"           : 'onModalClose'
 
         render : () ->
-
-          modal template( @model.attributes ), true
+          @modal = new modalPlus {
+            title: lang.PROP.CREATE_SECURITY_GROUP_RULE
+            disableClose: true
+            disableFooter: true
+            width: 530
+          }
+          @modal.find(".modal-body").replaceWith(template(@model.attributes)).end()
+          .find(".modal-header").css {background: "#232526"}
 
           # In case there's two modal dialog in the page, although it is ALMOST
           # not possible
@@ -58,12 +64,12 @@ define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event" ], ( template,
           $("#sg-rule-create-msg").text info
 
           # Switch to done view.
-          this.$el.find('#modal-box').toggleClass('done', true)
+          this.$el.find('.modal-box').toggleClass('done', true)
 
           @updateSidebar()
 
         readdRule : () ->
-          this.$el.find('#modal-box').toggleClass('done', false)
+          this.$el.find('.modal-box').toggleClass('done', false)
 
         deleteRule : ( event ) ->
 
@@ -116,7 +122,7 @@ define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event" ], ( template,
           $sidebar = $("#sgRuleCreateSidebar").html( MC.template.groupedSgRuleList( @model.attributes ) )
           $("#sgRuleCreateCount").text("(#{ruleCount})")
 
-          $modal   = this.$el.find('#modal-box')
+          $modal   = this.$el.find('.modal-box')
           $sidebar = $sidebar.closest(".sg-rule-create-sidebar")
 
           isShown = $sidebar.hasClass "shown"
@@ -131,7 +137,7 @@ define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event" ], ( template,
               $modal.animate({left:'+=100px'}, 300)
 
         onModalClose : ()->
-          modal.close()
+          @modal.close()
 
           lineId = @model.get("lineId")
           comp = Design.instance().component( lineId )

@@ -6,18 +6,21 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
 
         initCol: ->
             region = Design.instance().region()
-            @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
-            @topicCol = CloudResources constant.RESTYPE.TOPIC, region
+            @subCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.SUBSCRIPTION, region
+            @topicCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.TOPIC, region
 
             @listenTo @topicCol, 'update', @processCol
             @listenTo @topicCol, 'change', @processCol
             @listenTo @subCol, 'update', @processCol
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
 
         initDropdown: ->
             options =
                 manageBtnValue      : lang.PROP.INSTANCE_MANAGE_SNS
                 filterPlaceHolder   : lang.PROP.INSTANCE_FILTER_SNS
                 classList           : 'sns-dropdown'
+                resourceName        : lang.PROP.RESOURCE_NAME_SNS
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
@@ -32,7 +35,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
                 @selection = options.selection
             @initCol()
             @initDropdown()
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
 
@@ -52,6 +55,10 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
             @dropdown.setSelection selection
             @el = @dropdown.el
             @
+
+        credChanged: ->
+            @dropdown?.render("loading")
+            @topicCol.fetchForce()
 
         quickCreate: ->
             new snsManage().render().quickCreate()
@@ -97,7 +104,7 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
             @dropdown.render('nocredential').toggleControls false
 
         show: ->
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
                 if not @dropdown.$( '.item' ).length

@@ -1,10 +1,8 @@
 define [
-  "ApiRequest"
   "../CrCollection"
   "constant"
-  "CloudResources"
   "./CrModelRdsParameter"
-], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsParamModel )->
+], ( CrCollection, constant, CrRdsParamModel )->
 
   ###
     This kind of collection can only be obtained by CrModelRdsPGroup.getParameters()
@@ -31,8 +29,7 @@ define [
 
     doFetch : ( marker )->
       self = @
-      ApiRequest("rds_pg_DescribeDBParameters", {
-        region_name : @region()
+      @sendRequest("rds_pg_DescribeDBParameters", {
         param_group : @category
         marker      : marker
       }).then ( data )->

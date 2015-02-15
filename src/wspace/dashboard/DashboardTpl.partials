@@ -1,0 +1,145 @@
+<!-- {{main}} -->
+
+<div>
+
+  <header class="dashboard-header">
+    <button class="icon-refresh refreshResource">{{i18n "DASH_TPL_JUST_NOW"}}</button>
+
+    <div class="hovermenu">
+      <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
+      <div class="dropdown-menu">
+        {{#each providers}}<ul data-provider="{{id}}">{{#each regions}}<li data-region="{{id}}" class='create-stack'>{{name}} - {{alias}}</li>{{/each}}</ul>{{/each}}
+      </div>
+    </div>
+
+      <div class="hovermenu">
+        <button class="btn btn-primary icon-import">{{i18n "DASH_IMPORT_JSON"}}<i class="icon-caret-down"></i></button>
+        <div class="dropdown-menu"> <ul>
+          <li class='import-stack' data-type="stack" data-analytics-plus="import_json">{{i18n "IMPORT_FORM_STACK_JSON"}}</li>
+          <li class='import-stack' data-type="cf" data-analytics-plus="import_cf">{{i18n "IMPORT_FORM_CLOUDFORMATION"}}</li>
+        </ul> </div>
+      </div>
+
+      <button id="VisualizeVPC" class="btn btn-blue icon-visualize tooltip" data-analytics-plus="visualize_vpc" title="{{i18n "PROVIDE_CRED_TO_VISUALIZE"}}" data-tooltip="{{i18n "PROVIDE_CRED_TO_VISUALIZE"}}">{{i18n "DASH_VISUALIZE_VPC"}}</button>
+
+  </header>
+
+  <div class="dashboard-wrapper">
+      <article class="dashboard-content">
+          <div id="global-region-wrap">
+              <!-- Global Map -->
+              <section id="dashboard-data-wrap">
+                  <!-- Region view -->
+                  <section id="RegionView">
+                      <div id="region-app-stack-wrap">
+                          <div class="dash-region-apps-wrap">
+                              <div class="dashboard-loading">
+                                  <div class="loading-spinner"></div>
+                              </div>
+                          </div>
+                          <div class="dash-region-stacks-wrap">
+                              <div class="dashboard-loading">
+                                  <div class="loading-spinner"></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="dash-resource-wrap">
+                          <label class="region-resource-tab">
+                              <span>Resource Table</span>
+                          </label>
+                          <nav class="dash-region-navigation" data-type="resource">
+                              <button class="js-toggle-dropdown">
+                                  <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
+                              </button>
+                              <ul id="region-switch-list" class="dropdown-menu">
+                                  <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+                                  {{#each providers}}{{#each regions}}
+                                      <li data-region="{{id}}">{{alias}}</li>
+                                  {{/each}}{{/each}}
+                              </ul>
+                          </nav>
+                          <ul id="GlobalView" style="display: none;"></ul>
+                          <div id="RegionViewWrap">
+                              <nav class="" id="RegionResourceNav">
+                                  <div class="resource-tab instances on" data-type="INSTANCE">
+                                      <span class="resource-count">{{i18n "DASH_LBL_INSTANCE"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab rds" data-type="DBINSTANCE">
+                                      <span class="resource-count">{{i18n "DASH_LBL_RDS"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab eips" data-type="EIP">
+                                      <span class="resource-count">{{i18n "DASH_LBL_ELASTIC_IP"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab volumes" data-type="VOL">
+                                      <span class="resource-count">{{i18n "DASH_LBL_VOLUME"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab vpcs" data-type="VPC">
+                                      <span class="resource-count">{{i18n "DASH_LBL_VPC"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab vpns" data-type="VPN">
+                                      <span class="resource-count">{{i18n "DASH_LBL_VPN"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab elbs" data-type="ELB">
+                                      <span class="resource-count">{{i18n "DASH_LBL_LOAD_BALANCER"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab asgs" data-type="ASG">
+                                      <span class="resource-count">{{i18n "DASH_LBL_AUTO_SCALING_GROUP"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab cloudwatches" data-type="CW">
+                                      <span class="resource-count">{{i18n "DASH_LBL_CLOUDWATCH_ALARM"}}</span><span
+                                          class="count-bubble"></span></div>
+                                  <div class="resource-tab snss" data-type="SUBSCRIPTION">
+                                      <span class="resource-count">{{i18n "DASH_LBL_SNS_SUBSCRIPTION"}}</span><span
+                                          class="count-bubble"></span></div>
+                              </nav>
+                              <div id="RegionResourceData" class="table-head-fix"></div>
+                          </div>
+                      </div>
+                  </section>
+                  <!-- Region view -->
+                  <div id="DashboardDemo">
+                      <div class="enter-credential">
+                          {{i18n "DASH_TPL_SAMPLE_INSTRUCTION"}}<br/>
+                          {{#if isAdmin}}
+                          <a class="show-credential">{{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_1"}}</a> {{i18n "DASH_TPL_PROVIDE_YOUR_CREDENTIAL_2"}}
+                          {{else}}
+                          <p>{{i18n "DASH_ASK_ADMIN_PROVIDE_CREDENTIAL"}}</p>
+                          {{/if}}
+                      </div>
+                      <img src="/assets/images/ide/global-demo.png"/>
+                  </div>
+              </section>
+          </div>
+      </article>
+
+    <aside class="dashboard-sidebar">
+      <nav>
+        <button class="dashboard-nav-log dashboard-nav-activity selected" data-id="activity">{{i18n "DASHBOARD_PANEL_LOGS_ACTIVITY"}}</button>
+        {{#if isAdmin}}<button class="dashboard-nav-log dashboard-nav-audit" data-id="audit">{{i18n "DASHBOARD_PANEL_LOGS_AUDIT"}}</button>{{/if}}
+      </nav>
+      <div class="dashboard-log-wrap">
+          <div class="dashboard-log dashboard-log-activity"><div class="loading-spinner"></div></div>
+          <div class="dashboard-log dashboard-log-audit hide"><div class="loading-spinner"></div></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- {{activityList}} -->
+<ul class="dashboard-log-list">
+    {{#each this}}
+    <li class="dashboard-log-item {{action_type}}">
+        {{#if avatar}}<img class="avatar" src="{{avatar}}" />{{else}}{{/if}}
+        <div class="info">
+            <div class="event">{{{event}}}</div>
+            <div class="time">{{time}}</div>
+        </div>
+    </li>
+    {{/each}}
+</ul>
+
+<!-- {{noActivity}} -->
+<div class="dashboard-log-empty">
+    <div class="main">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY"}}</div>
+    <div class="sub">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY_SUB"}}</div>
+</div>

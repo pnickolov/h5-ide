@@ -1623,8 +1623,23 @@ _.extend(Meteor._DdpClientStream.prototype, {on: function(a, b) {
             return b.RETRY_MIN_TIMEOUT;
         var c = Math.min(b.RETRY_MAX_TIMEOUT, b.RETRY_BASE_TIMEOUT * Math.pow(b.RETRY_EXPONENT, a));
         return c *= Random.fraction() * b.RETRY_FUZZ + (1 - b.RETRY_FUZZ / 2)
+    }, disconnect: function () {
+        var self = this;
+        self._cleanup();
+        if (self.retryTimer) {
+          clearTimeout(self.retryTimer);
+          self.retryTimer = null;
+        }
+        self.currentStatus = {
+          status: "offline",
+          connected: false,
+          retryCount: 0
+        };
+        self.statusChanged();
     },_online: function() {
-        this.reconnect()
+        // if we've requested to be offline by disconnecting, don't reconnect.
+        if (this.currentStatus.status != "offline")
+            this.reconnect();
     },_retryLater: function() {
         var a = this, b = a._retryTimeout(a.currentStatus.retryCount);
         a.retryTimer && clearTimeout(a.retryTimer), a.retryTimer = setTimeout(_.bind(a._retryNow, a), b), a.currentStatus.status = "waiting", a.currentStatus.connected = !1, a.currentStatus.retryTime = (new Date).getTime() + b, a.statusChanged()
@@ -2507,15 +2522,15 @@ if (LocalCollection._compileSelector = function(a) {
     if (c.moved)
         throw new Error("_diffQueryUnordered called with a moved observer!");
     _.each(b, function(b) {
-        if (_.has(a, b._id)) {
-            var d = a[b._id];
+        if (_.has(a, b._id.valueOf())) {
+            var d = a[b._id.valueOf()];
             c.changed && !EJSON.equals(d, b) && c.changed(b._id, LocalCollection._makeChangedFields(b, d))
         } else {
             var e = EJSON.clone(b);
             delete e._id, c.added && c.added(b._id, e)
         }
     }), c.removed && _.each(a, function(a) {
-        _.has(b, a._id) || c.removed(a._id)
+        _.has(b, a._id.valueOf()) || c.removed(a._id)
     })
 }, LocalCollection._diffQueryOrderedChanges = function(a, b, c) {
     var d = {};

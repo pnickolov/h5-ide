@@ -12,7 +12,7 @@ Refer to kpView.coffee
 
 ###
 
-define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', 'UI.notification' ], ( template, Backbone, $, modalplus ) ->
+define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus', "credentialFormView", 'UI.notification' ], ( template, Backbone, $, modalplus, CredentialFormView ) ->
 
 
     Backbone.View.extend
@@ -46,7 +46,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             null
 
         __showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
+            new CredentialFormView({model: Design.instance().project()}).render()
 
         __sort: ->
             # detail tr will disturb the sort, so details must be removed when sort trigger
@@ -237,7 +237,8 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
 
             if _.isString refresh
                 tpl = refresh
-                @$( '.content-wrap' ).html template[ tpl ] and template[ tpl ]() or tpl
+
+                @$( '.content-wrap' ).html template[ tpl ] and template[ tpl ](@options) or tpl
             else
                 @renderLoading()
 
@@ -303,7 +304,7 @@ define [ 'component/common/toolbarModalTpl', 'backbone', 'jquery', 'UI.modalplus
             context = context or @
 
             for key, method of events
-                if (!_.isFunction(method)) then method = context[events[key]];
+                if (!_.isFunction(method)) then method = context[events[key]]
                 if not method then continue
 
                 match = key.match /^(\S+)\s*(.*)$/

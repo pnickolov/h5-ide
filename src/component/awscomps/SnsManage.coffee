@@ -6,8 +6,8 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
         initCol: ->
             region = Design.instance().region()
-            @subCol = CloudResources constant.RESTYPE.SUBSCRIPTION, region
-            @topicCol = CloudResources constant.RESTYPE.TOPIC, region
+            @subCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.SUBSCRIPTION, region
+            @topicCol = CloudResources Design.instance().credentialId(), constant.RESTYPE.TOPIC, region
             @topicCol.on 'update', @processCol, @
             @subCol.on 'update', @processSubUpdate, @
 
@@ -33,6 +33,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
             title: sprintf lang.IDE.MANAGE_SNS_IN_AREA, regionName
             classList: 'sns-manage'
+            resourceName: lang.IDE.RESOURCE_NAME_SNS
             #slideable: _.bind that.denySlide, that
             context: that
             buttons: [
@@ -133,15 +134,21 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
                     throw err
 
         fetch: ->
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
 
         initialize: () ->
             @initCol()
             @initModal()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @fetch()
-            window.M$ = @M$
+
+        credChanged: ()->
+            @topicCol.fetchForce()
+            @modal?.renderLoading()
+            @modal and @refresh()
 
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)
@@ -246,7 +253,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
         render: ->
             @modal.render()
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @processCol()
             else
                 @modal.render 'nocredential'
@@ -414,7 +421,7 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
 
 
         show: ->
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 @topicCol.fetch()
                 @subCol.fetch()
                 @processCol()

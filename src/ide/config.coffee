@@ -98,9 +98,6 @@ require.config {
     'UI.table'           : 'ui/UI.table'
     'UI.tablist'         : 'ui/UI.tablist'
     'UI.selectbox'       : 'ui/UI.selectbox'
-    'UI.searchbar'       : 'ui/UI.searchbar'
-    'UI.filter'          : 'ui/UI.filter'
-    'UI.radiobuttons'    : 'ui/UI.radiobuttons'
     'UI.notification'    : 'ui/UI.notification'
     'UI.multiinputbox'   : 'ui/UI.multiinputbox'
     'UI.canvg'           : 'ui/UI.canvg'
@@ -136,29 +133,36 @@ require.config {
     #############################################
     # ide                       # Merge in deploy
     #############################################
-    "OpsModel"  : "ide/submodels/OpsModel"
-    "Workspace" : "ide/Workspace"
+    "Project"    : "ide/Project"
+    "Credential" : "ide/Credential"
+    "Scene"      : "ide/Scene"
+    "OpsModel"   : "ide/submodels/OpsModel"
+    "ProjectLog" : "ide/submodels/ProjectLog"
+
+    #############################################
+    # workspace                 # Merge in deploy
+    #############################################
+    "Workspace"  : "scenes/ProjectWorkspace"
 
     #############################################
     # coreeditor                # Merge in deploy
     #############################################
-    "OpsEditor"         : "workspaces/coreeditor/OpsEditor"
-    'Design'            : 'workspaces/coreeditor/Design'
-    "ResourceModel"     : "workspaces/coreeditor/ModelResource"
-    "ComplexResModel"   : "workspaces/coreeditor/ModelComplex"
-    "ConnectionModel"   : "workspaces/coreeditor/ModelConnection"
-    "GroupModel"        : "workspaces/coreeditor/ModelGroup"
-    "CoreEditor"        : "workspaces/coreeditor/EditorCore"
-    "CoreEditorView"    : "workspaces/coreeditor/EditorView"
-    "CoreEditorApp"     : "workspaces/coreeditor/EditorCoreApp"
-    "CoreEditorViewApp" : "workspaces/coreeditor/EditorViewApp"
-    "ProgressViewer"    : "workspaces/coreeditor/ProgressViewer"
-    "CanvasElement"     : "workspaces/coreeditor/CanvasElement"
-    "CanvasLine"        : "workspaces/coreeditor/CanvasLine"
-    "CanvasView"        : "workspaces/coreeditor/CanvasView"
-    "CanvasViewLayout"  : "workspaces/coreeditor/CanvasViewLayout"
-    "CanvasManager"     : "workspaces/coreeditor/CanvasManager"
-    "CanvasPopup"       : "workspaces/coreeditor/CanvasPopup"
+    'Design'            : 'wspace/coreeditor/Design'
+    "ResourceModel"     : "wspace/coreeditor/ModelResource"
+    "ComplexResModel"   : "wspace/coreeditor/ModelComplex"
+    "ConnectionModel"   : "wspace/coreeditor/ModelConnection"
+    "GroupModel"        : "wspace/coreeditor/ModelGroup"
+    "CoreEditor"        : "wspace/coreeditor/EditorCore"
+    "CoreEditorView"    : "wspace/coreeditor/EditorView"
+    "CoreEditorApp"     : "wspace/coreeditor/EditorCoreApp"
+    "CoreEditorViewApp" : "wspace/coreeditor/EditorViewApp"
+    "ProgressViewer"    : "wspace/coreeditor/ProgressViewer"
+    "CanvasElement"     : "wspace/coreeditor/CanvasElement"
+    "CanvasLine"        : "wspace/coreeditor/CanvasLine"
+    "CanvasView"        : "wspace/coreeditor/CanvasView"
+    "CanvasViewLayout"  : "wspace/coreeditor/CanvasViewLayout"
+    "CanvasManager"     : "wspace/coreeditor/CanvasManager"
+    "CanvasPopup"       : "wspace/coreeditor/CanvasPopup"
 
     #############################################
     # component                 # Merge in deploy
@@ -182,6 +186,7 @@ require.config {
 
     'combo_dropdown'   : 'component/common/comboDropdown'
     'toolbar_modal'    : 'component/common/toolbarModal'
+    "credentialFormView":'component/common/credentialFormView'
 
     'dhcp'             : 'component/awscomps/Dhcp'
     'kp_dropdown'      : 'component/awscomps/KpDropdown'
@@ -189,6 +194,7 @@ require.config {
     'kp_upload'        : 'component/awscomps/KpUpload'
     'sns_dropdown'     : 'component/awscomps/SnsDropdown'
     'sns_manage'       : 'component/awscomps/SnsManage'
+    'dhcp_manage'       : 'component/awscomps/DhcpManage'
     'snapshotManager'  : 'component/awscomps/Snapshot'
     'rds_pg'           : 'component/awscomps/RdsPg'
     'rds_snapshot'     : 'component/awscomps/RdsSnapshot'
@@ -243,9 +249,6 @@ require.config {
       'UI.table'
       'UI.tablist'
       'UI.selectbox'
-      'UI.searchbar'
-      'UI.filter'
-      'UI.radiobuttons'
       'UI.notification'
       'UI.multiinputbox'
       'UI.canvg'
@@ -273,8 +276,17 @@ require.config {
     "component/StateStatus" : [ "state_status" ]
     "component/StateEditor" : [ "StateEditor", "StateEditorView" ]
 
+    "ide/AppBundle" : [
+      "ide/Application"
+      "OpsModel"
+      "Project"
+      "Credential"
+      "Scene"
+      "ProjectLog"
+    ]
+
     "component/ResDiff"   : [ "ResDiff", "DiffTree" ]
-    "component/Common"    : [ "combo_dropdown", "toolbar_modal" ]
+    "component/Common"    : [ "combo_dropdown", "toolbar_modal", "credentialFormView" ]
 
     "component/AwsComps" : [
       'dhcp'
@@ -283,6 +295,7 @@ require.config {
       'kp_upload'
       'sns_dropdown'
       'sns_manage'
+      'dhcp_manage'
       'snapshotManager'
       'rds_pg'
       'rds_snapshot'
@@ -302,13 +315,19 @@ require.config {
 
     "component/AppAction" : [ "AppAction" ]
 
-    "ide/AppBundle" : [ "ide/Application", "Workspace", "OpsModel", "ide/Router" ]
+    "scenes/Scenes" : [
+      "scenes/Router"
+      "scenes/ProjectScene"
+      "scenes/Settings"
+      "scenes/StackStore"
+      "scenes/Cheatsheet"
+      "Workspace"
+    ]
 
-    "workspaces/dashboard/Dashboard"     : []
-    "workspaces/osdashboard/DashboardOs" : []
+    "wspace/dashboard/Dashboard"     : []
+    "wspace/progress/ProgressViewer" : []
 
-    "workspaces/coreeditor/CoreEditorBundle" : [
-      "OpsEditor"
+    "wspace/coreeditor/CoreEditorBundle" : [
       "Design"
       "ResourceModel"
       "ComplexResModel"
@@ -318,7 +337,6 @@ require.config {
       "CoreEditorView"
       "CoreEditorApp"
       "CoreEditorViewApp"
-      "ProgressViewer"
       "CanvasElement"
       "CanvasLine"
       "CanvasView"
@@ -327,8 +345,10 @@ require.config {
       "CanvasPopup"
     ]
 
-    "workspaces/awseditor/EditorAws" : []
-    "workspaces/oseditor/EditorOs"  : []
+    "wspace/awseditor/EditorAws" : [
+      "wspace/awseditor/AwsEditorStack"
+      "wspace/awseditor/AwsEditorApp"
+    ]
 
 
   bundleExcludes : # This is a none requirejs option, but it's used by compiler to exclude some of the source.
@@ -338,8 +358,8 @@ require.config {
     "component/OsComps"     : [ "Design", "OpsModel" ]
 
     "component/AppAction"                : [ "Design" ] # Workaround for messy deps
-    "workspaces/dashboard/Dashboard"     : [ "Design" ] # Workaround for messy deps
-    "workspaces/osdashboard/DashboardOs" : [ "Design" ] # Workaround for messy deps
+    "wspace/dashboard/Dashboard"     : [ "Design" ] # Workaround for messy deps
+    "wspace/osdashboard/DashboardOs" : [ "Design" ] # Workaround for messy deps
 
   ### env:prod:end ###
 }
@@ -365,31 +385,65 @@ if window.define
     'zh-cn' : true
   }
 
+### env:dev ###
+window.__detailExtend = ( protoProps, staticProps )->
+  ### jshint -W061 ###
+
+  parent = this
+
+  funcName = (protoProps.ClassName||protoProps.type).replace(/\./g,"_")
+  childSpawner = eval( "(function(a){var #{funcName}=function(){ return a.apply(this,arguments);};return #{funcName};})" )
+
+  if protoProps and protoProps.hasOwnProperty "constructor"
+    cstr = protoProps.constructor
+  else
+    cstr = ()-> return parent.apply( this, arguments )
+
+  child = childSpawner( cstr )
+
+  _.extend(child, parent, staticProps)
+
+  funcName = "PROTO_" + funcName
+  prototypeSpawner = eval( "(function(a){var #{funcName}=function(){ this.constructor = a };return #{funcName};})" )
+
+  Surrogate = prototypeSpawner( child )
+  Surrogate.prototype = parent.prototype
+  child.prototype = new Surrogate()
+
+  if protoProps
+    _.extend(child.prototype, protoProps)
+
+  child.__super__ = parent.prototype
+  ### jshint +W061 ###
+
+  child
+### env:dev:end ###
 
 require [
   'ide/Application'
+  "scenes/Router"
   "cloudres/CrBundle"
-  "workspaces/dashboard/Dashboard"
-  "OpsEditor"
-  "ide/Router"
   "MC"
   'lib/aws'
 
-  # Extra Workspaces
-  "workspaces/awseditor/EditorAws"
-  "workspaces/oseditor/EditorOs"
-], ( Application, CrBundle, Dashboard, OpsEditor, Router ) ->
+  # Workspace deps here as plugin
+  "wspace/dashboard/Dashboard"
+  "wspace/progress/ProgressViewer"
+  "wspace/awseditor/AwsEditorStack"
+  "wspace/awseditor/AwsEditorApp"
 
-  ###########
-  # IDE Init
-  ###########
-  window.OpsEditor = OpsEditor
+], ( Application, Router, CrBundle ) ->
 
-  window.Router    = new Router()
-  (new Application()).initialize().then ()->
-    window.Router.start()
-    window.Dashboard = new Dashboard()
-    return
+  window.Router = new Router()
+
+  (new Application()).initialize().then ()-> window.Router.start()
+
+  ### env:dev ###
+  require ["./scenes/Debugger"], ()->
+  ### env:dev:end ###
+  ### env:debug ###
+  require ["./scenes/Debugger"], ()->
+  ### env:debug:end ###
 
 , ( err )->
   err = err || { requireType : "timeout" }

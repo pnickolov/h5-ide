@@ -108,11 +108,19 @@ module.exports =
 
     ERR_SAVE_FAILED:
       en: "Fail to save stack %s. Please try again."
-      zh: "保存模块 %s 失败，请您检查并重新保存。"
+      zh: "保存stack %s 失败，请您检查并重新保存。"
 
     ERR_SAVE_FAILED_NAME:
       en: "The stack name has already been used. Please change to a new one."
-      zh: "已存在相同名字的模块，请输入一个新的名字后重新保存。"
+      zh: "已存在相同名字的stack，请输入一个新的名字后重新保存。"
+
+    ERR_SAVE_FAILED_CONFLICT:
+      en: "Cannot save stack since another user has applied changes to this stack."
+      zh: "其他组员在这你之前修改了这个stack，因此无法保存。"
+
+    ERR_APP_UPDATE_FAILED_CONFLICT:
+      en: "Cannot apply update to the app since another user has modified this app."
+      zh: "其他组员在这你之前修改了这个app，因此无法应用更新。"
 
     ERR_SAVE_SUCCESS:
       en: "Save stack %s successfully."
@@ -332,3 +340,15 @@ module.exports =
     UPDATED_FULLNAME_FAIL:
       en: "Fail to update full name. Please try again later."
       zh: "全名更新失败，请稍后重试。"
+
+    LOAD_SAMPLE_FAIL:
+      en : "Fail to load the requested sample stack. Please try again later."
+      zh : "无法加载指定的模板，请稍后重试。"
+
+    PARSE_SAMPLE_FAIL:
+      en : "The sample stack is malformed. Please contact us for further support."
+      zh : "指定的模板格式不正确，无法加载。"
+
+    INFO_PROJECT_REMOVED:
+      en : "You no longer have access to the workspace '%s'."
+      zh : "You no longer have access to the workspace '%s'."

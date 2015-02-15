@@ -1,5 +1,5 @@
 
-define ["ApiRequest", "../CrCollection", "../CrModel", "constant"], ( ApiRequest, CrCollection, CrModel, constant )->
+define ["../CrCollection", "../CrModel", "constant"], ( CrCollection, CrModel, constant )->
 
   # Common Collection is a base class for all the non-shared resources.
   # For example, elb / volume / ami / eip things
@@ -64,7 +64,7 @@ define ["ApiRequest", "../CrCollection", "../CrModel", "constant"], ( ApiRequest
 
       self = @
 
-      ApiRequest("aws_resource", {
+      @sendRequest( "aws_resource", {
         region_name : null
         resources   : param
         addition    : "all"

@@ -199,7 +199,7 @@
             </div>
             {{/each}}
             <table class="table">
-                <tr><th>{{i18n SETTING}}</th><th>{{i18n "PROP.VALUE"}}</th></tr>
+                <tr><th>{{i18n "PROP.SETTING"}}</th><th>{{i18n "PROP.VALUE"}}</th></tr>
                 {{#each OptionSettings}}
                 <tr><td>{{Name}}</td><td>{{Value}}</td></tr>
                 {{/each}}

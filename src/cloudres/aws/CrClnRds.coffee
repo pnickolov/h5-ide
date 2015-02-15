@@ -1,12 +1,10 @@
 define [
-  "ApiRequest"
   "../CrCollection"
   "constant"
-  "CloudResources"
   "./CrModelRdsSnapshot"
   "./CrModelRdsInstance"
   "./CrModelRdsPGroup"
-], ( ApiRequest, CrCollection, constant, CloudResources, CrRdsSnapshotModel, CrRdsDbInstanceModel, CrRdsPGroupModel )->
+], ( CrCollection, constant, CrRdsSnapshotModel, CrRdsDbInstanceModel, CrRdsPGroupModel )->
 
 
   ### Engine ###
@@ -60,7 +58,7 @@ define [
     doFetch : ()->
       self = @
       regionName = @region()
-      ApiRequest("rds_DescribeDBEngineVersions", {region_name : regionName}).then ( data )->
+      @sendRequest("rds_DescribeDBEngineVersions").then ( data )->
 
         #init for region
         self.optionGroupData[regionName]    = {}
@@ -95,7 +93,7 @@ define [
             self.defaultInfo[regionName][d.DBParameterGroupFamily] = dict
 
         jobs = _.keys( engines ).map ( engineName )->
-          ApiRequest("rds_og_DescribeOptionGroupOptions", {
+          self.sendRequest("rds_og_DescribeOptionGroupOptions", {
             region_name : regionName
             engine_name : engineName
           }).then ( data )->
@@ -134,6 +132,7 @@ define [
         _.each self.engineDict[regionName][d.EngineName], (item, key) ->
           if key.indexOf( d.MajorEngineVersion ) is 0
             item.canCustomOG = true
+          return
 
       @optionGroupData[regionName][engineName] = optionData
       return
@@ -148,7 +147,7 @@ define [
     type  : constant.RESTYPE.DBSBG
     #model : CrRdsDbSubnetGroupModel
 
-    doFetch : ()-> ApiRequest("rds_subgrp_DescribeDBSubnetGroups", {region_name : @region()})
+    doFetch : ()-> @sendRequest("rds_subgrp_DescribeDBSubnetGroups")
     parseFetchData : ( data )->
       data = data.DescribeDBSubnetGroupsResponse.DescribeDBSubnetGroupsResult.DBSubnetGroups?.DBSubnetGroup || []
       if not _.isArray( data ) then data = [data]
@@ -161,6 +160,7 @@ define [
       @camelToPascal data
       _.each data, (dataItem) ->
         dataItem.id  = dataItem.DBSubnetGroupName
+        return
       data
   }
 
@@ -172,7 +172,7 @@ define [
 
     type  : constant.RESTYPE.DBOG
 
-    doFetch : ()-> ApiRequest("rds_og_DescribeOptionGroups", {region_name : @region()})
+    doFetch : ()-> @sendRequest("rds_og_DescribeOptionGroups")
     parseFetchData : ( data )->
       data = data.DescribeOptionGroupsResponse.DescribeOptionGroupsResult.OptionGroupsList?.OptionGroup || []
       if not _.isArray( data ) then data = [data]
@@ -196,7 +196,7 @@ define [
     type  : constant.RESTYPE.DBINSTANCE
     model : CrRdsDbInstanceModel
 
-    doFetch : ()-> ApiRequest("rds_ins_DescribeDBInstances", {region_name : @region()})
+    doFetch : ()-> @sendRequest("rds_ins_DescribeDBInstances")
     parseFetchData : ( data )->
       data = data.DescribeDBInstancesResponse.DescribeDBInstancesResult.DBInstances?.DBInstance || []
       if not _.isArray( data ) then data = [data]
@@ -247,7 +247,7 @@ define [
     type  : constant.RESTYPE.DBSNAP
     model : CrRdsSnapshotModel
 
-    doFetch : ()-> ApiRequest("rds_snap_DescribeDBSnapshots", {region_name : @region()})
+    doFetch : ()-> @sendRequest("rds_snap_DescribeDBSnapshots")
     parseFetchData : ( data )->
       data = data.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots?.DBSnapshot || []
 
@@ -269,7 +269,7 @@ define [
     type  : constant.RESTYPE.DBPG
     model : CrRdsPGroupModel
 
-    doFetch : ()-> ApiRequest("rds_pg_DescribeDBParameterGroups", {region_name : @region()})
+    doFetch : ()-> @sendRequest("rds_pg_DescribeDBParameterGroups")
     parseFetchData : ( data )->
       data = data.DescribeDBParameterGroupsResponse.DescribeDBParameterGroupsResult.DBParameterGroups?.DBParameterGroup || []
 

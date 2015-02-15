@@ -8,40 +8,47 @@
 
 define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )->
 
+  singleton     = null
   WEBSOCKET_URL = "#{MC.API_HOST}/ws/"
 
   # Meteor actually have a option to enable logging. But the goddamn library is not possible to customize.
   Meteor._debug = ()-> console.log.apply console, arguments
 
-  singleton = null
 
+
+  # The websocket object does subscribe some basic collection.
+  # One can also use it to subscribe other stuffs.
   Websocket = ()->
     if singleton then return singleton
 
     singleton = @
 
     # Create a promise to notify others that Websocket is ready.
-    @__readyDefer = Q.defer()
-    @__isReady    = false
-
-    @connection = Meteor.connect WEBSOCKET_URL, true
+    @connection   = Meteor.connect WEBSOCKET_URL, true
+    @projects     = {}
 
     opts =
       connection : @connection
 
+    @__sessionExpire = false
+
     @collection =
-      request        : new Meteor.Collection "request",        opts
-      request_detail : new Meteor.Collection "request_detail", opts
-      stack          : new Meteor.Collection "stack",          opts
-      app            : new Meteor.Collection "app",            opts
-      status         : new Meteor.Collection "status",         opts
-      imports        : new Meteor.Collection "imports",        opts
-      user_state     : new Meteor.Collection "user",           opts
+      user    : new Meteor.Collection "user",     opts
+      imports : new Meteor.Collection "imports",  opts
+      project : new Meteor.Collection "project",  opts
+      history : new Meteor.Collection "project_history",  opts
+      request : new Meteor.Collection "request",  opts
+      status  : new Meteor.Collection "status",   opts
+      app     : new Meteor.Collection "app",      opts
+      stack   : new Meteor.Collection "stack",    opts
+
+    @collection.user.find().observe {
+      removed : ( e )-> App.WS.onUserSubError( e )
+    }
 
     # Trigger an event when connection state changed.
     Deps.autorun ()=> @statusChanged()
 
-    @subscribe()
     @pipeChanges()
 
     # We start notifying in 5 seconds
@@ -51,10 +58,25 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
         @statusChanged()
     , 5000
 
+    @__appWideSubscripe()
     this
 
+  # isReady is only true for a project, when its request subscription is ready.
+  Websocket.prototype.onUserSubError = ( e )->
+    console.log "[Websocket Error]", e
+
+    if @__sessionExpire then return
+
+    @__sessionExpire = true
+
+    # Disconnect from websocket
+    @connection._stream.disconnect()
+
+    @trigger "Disconnected"
+    return
+
   Websocket.prototype.statusChanged = ()->
-    status = @connection.status().connected
+    status = @connection.status().connected or @__sessionExpire
 
     if status
       @shouldNotify = true
@@ -65,43 +87,76 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
 
     @trigger "StatusChanged", status
 
-  # A Websocket can only subscribe once.
-  Websocket.prototype.subscribe = ()->
-    if @subscribed then return
 
-    subscribed = true
+  # When the session is lost and then re-accuqired. Call this method to re-subscribe
+  # everything that's previous subscribed.
+  # Websocket.prototype.reconnect = ()->
+  #   @subscribeErrorState = false
 
-    onReady = ()->
-      @__isReady = true
-      @__readyDefer.resolve()
+  #   ps = _.keys @projects
+  #   @projects = {}
+  #   for p in ps
+  #     @subscribe( p )
 
-    usercode = App.user.get 'usercode'
-    session  = App.user.get 'session'
-    callback = {
-      onReady : _.bind onReady, @
-      onError : _.bind @onError, @
+  #   return
+
+  Websocket.prototype.__appWideSubscripe = ()->
+    # Subscripe user to watch if session becomes invalid.
+    @connection.subscribe "user", App.user.get("usercode"), App.user.get("session"), {
+      onReady : ()->
+      onError : (e)-> singleton.onUserSubError(e)
     }
+    @connection.subscribe "imports", App.user.get("usercode"), App.user.get("session")
 
-    @connection.subscribe "request", usercode, session, callback
-    @connection.subscribe "stack",   usercode, session
-    @connection.subscribe "app",     usercode, session
-    @connection.subscribe "status",  usercode, session
-    @connection.subscribe "imports", usercode, session
-    @connection.subscribe "user",    usercode, session
+  subMap = {
+    project : 0
+    history : 1
+    request : 2
+    stack   : 3
+    app     : 4
+    status  : 5
+  }
+  Websocket.prototype.isSubReady = ( projectId, subscription )-> @projects[ projectId ][ subMap[subscription] ].ready()
+
+  # Watch changes of a project, keep track of the subscription
+  # Auto-subscribe when connection lost.
+  Websocket.prototype.subscribe = ( projectId )->
+    if @projects[ projectId ] then return
+
+    self = @
+    session  = App.user.get("session")
+    usercode = App.user.get("usercode")
+
+    @projects[ projectId ] = [
+      @connection.subscribe "project", usercode, session, projectId, { onError : ( e )-> self.onError(e, projectId) }
+      @connection.subscribe "history", usercode, session, projectId
+      @connection.subscribe "request", usercode, session, projectId
+      @connection.subscribe "stack",   usercode, session, projectId
+      @connection.subscribe "app",     usercode, session, projectId
+      @connection.subscribe "status",  usercode, session, projectId
+    ]
     return
 
-  # Return a promise that will be resolve when the websocket is ready.
-  # Websocket will be ready after the first data is fetched.
-  Websocket.prototype.ready = ()-> @__readyDefer.promise
-  Websocket.prototype.isReady = ()-> @__isReady
+  Websocket.prototype.unsubscribe = ( projectId )->
+    for subscription in @projects[ projectId ] || []
+      subscription.stop()
+
+    delete @projects[ projectId ]
+    return
 
   # Whenever an error posted from the backend. The subscription will be removed.
   # The error is typically the "Invalid session error".
   # We notitfy the others to handle this error.
-  Websocket.prototype.onError = ( error )->
+  Websocket.prototype.onError = ( error, projectId )->
     console.error "Websocket/Meteor Error:", error
-    @subscribed = false
-    @trigger "Disconnected"
+    if not @subscribeErrorState
+      @subscribeErrorState = true
+      try
+        @unsubscribe( projectId )
+      catch e
+        # Not sure if Meteor throws error when calling stop() on a disconnected subscription.
+        # So we use a try / catch here.
+      @trigger "Disconnected"
     return
 
   # The code is copied from the deprecated ide/deprecated/ide.coffee
@@ -110,35 +165,14 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
   # and we can also place the watching code in the other place.
   Websocket.prototype.pipeChanges = ()->
     self = this
-    # User State
-    @collection.user_state.find().fetch()
-    @collection.user_state.find().observeChanges {
-      added : ( idx, dag )->
-        self.trigger "userStateChange", idx, dag
-      changed : ( idx, dag )->
-        self.trigger "userStateChange", idx, dag
-    }
-
-    # request list
-    @collection.request.find().fetch()
-    @collection.request.find().observeChanges {
-      added : (idx, dag) ->
-        self.trigger "requestChange", idx, dag
-      changed : (idx, dag) ->
-        self.trigger "requestChange", idx, dag
-    }
 
     # import list
-    @collection.imports.find().fetch()
     @collection.imports.find().observe {
-      added : (idx, dag) ->
-        self.trigger "visualizeUpdate", idx
-      changed : (idx, dag) ->
-        self.trigger "visualizeUpdate", idx
+      added   : (idx, dag) -> self.trigger "visualizeUpdate", idx
+      changed : (idx, dag) -> self.trigger "visualizeUpdate", idx
     }
 
     # state status
-    @collection.status.find().fetch()
     @collection.status.find().observe {
       added : (idx, statusData) ->
         ide_event.trigger ide_event.UPDATE_STATE_STATUS_DATA, 'add', idx, statusData

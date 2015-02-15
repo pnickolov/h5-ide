@@ -16,10 +16,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     doCreate : ()->
       self = @
 
-      ApiRequest("sns_CreateTopic",{
-        region_name : @getCollection().region()
-        topic_name  : @get("Name")
-      }).then ( res )->
+      @sendRequest("sns_CreateTopic",{topic_name : @get("Name")}).then ( res )->
         try
           id = res.CreateTopicResponse.CreateTopicResult.TopicArn
         catch e
@@ -32,8 +29,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
           # Delay Modifying the display name, because sometimes
           # AWS might complain that the resource not found.
           setTimeout ()->
-            ApiRequest("sns_SetTopicAttributes", {
-              region_name : self.getCollection().region()
+            self.sendRequest("sns_SetTopicAttributes", {
               topic_arn   : id
               attr_name   : "DisplayName"
               attr_value  : self.get("DisplayName")
@@ -44,8 +40,7 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
 
     doUpdate : ( displayName )->
       self = @
-      ApiRequest("sns_SetTopicAttributes", {
-        region_name : @getCollection().region()
+      @sendRequest("sns_SetTopicAttributes", {
         topic_arn   : @get("id")
         attr_name   : "DisplayName"
         attr_value  : displayName
@@ -53,10 +48,6 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         self.set "DisplayName", displayName
         self
 
-    doDestroy : ()->
-      ApiRequest("sns_DeleteTopic", {
-        region_name : @getCollection().region()
-        topic_arn   : @get("id")
-      })
+    doDestroy : ()-> @sendRequest("sns_DeleteTopic", {topic_arn : @get("id") })
 
   }

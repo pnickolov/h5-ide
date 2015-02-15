@@ -41,7 +41,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', "CloudResources" ], ( c
 			# get ami info from aws
 			if snaphostAry.length
 
-				cr = CloudResources( constant.RESTYPE.SNAP, Design.instance().region() )
+				cr = CloudResources( Design.instance().credentialId(), constant.RESTYPE.SNAP, Design.instance().region() )
 				failure = ()-> callback( null )
 				success = ()->
 

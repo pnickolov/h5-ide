@@ -55,11 +55,12 @@ define [ 'MC', 'constant', 'underscore', 'jquery', 'Design', 'i18n!/nls/lang.js'
 
         if Design.instance().type() isnt OpsModel.Type.OpenStack
 
+            # need to update
             _getSelectedASGModelByLC = () ->
 
                 $asgDom = $('#OpsEditor g.AWS-AutoScaling-LaunchConfiguration.selected').parent('g.AWS-AutoScaling-Group')
                 asgViewId = $asgDom.data('id')
-                return App.workspaces.getAwakeSpace().view.canvas.getItem(asgViewId).model if asgViewId
+                return App.sceneManager.activeScene().getAwakeSpace().view.canvas.getItem(asgViewId).model if asgViewId
                 return null
 
             if currentCompData.type is constant.RESTYPE.ASG

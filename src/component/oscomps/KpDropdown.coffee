@@ -11,7 +11,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       @template = selectTemplate
       @resModel = resModel
 
-      @collection = CloudResources(constant.RESTYPE.OSKP, Design.instance().region())
+      @collection = CloudResources(Design.instance().credentialId(), constant.RESTYPE.OSKP, Design.instance().region())
       @listenTo @collection, 'update', @updateOption.bind(@)
 
       @
@@ -107,6 +107,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
 
       title: "Manage Key Pairs in #{regionName}"
       slideable: _.bind that.denySlide, that
+      resourceName: lang.PROP.RESOURCE_NAME_KEYPAIR
       context: that
       buttons: [
         {
@@ -154,7 +155,7 @@ define ['Design', "CloudResources", 'constant', 'toolbar_modal', 'UI.modalplus',
       options = {} if not options
       @initModal()
       @modal.render()
-      if App.user.hasCredential()
+      if Design.instance().credential() and not Design.instance().credential().isDemo()
         that = @
         @collection.fetch().then ->
           that.renderKeys()

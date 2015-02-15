@@ -74,18 +74,19 @@ api = (option)->
             params: option.data || {}
         )
         success: (res)->
-            option.success(res.result[1], res.result[0])
+            option.success?(res.result[1], res.result[0])
         error: (xhr,status,error)->
             #console.log error
             if status!='abort'
-                option.error(status, -1)
+                option.error?(status, -1)
     xhr
 
 # register i18n handlebars helper
 Handlebars.registerHelper 'i18n', (str)->
     i18n?(str) || str
 
-loadPageVar = (sVar) -> decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"))
+loadPageVar = (sVar) ->
+    decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1")) + location.hash
 
 getRef = ()->
     ref = loadPageVar('ref')
@@ -93,6 +94,11 @@ getRef = ()->
         ref
     else
         "/"
+
+gotoRef = ->
+    ref = location.pathname + location.hash
+    location.href = "/login?ref=#{ref}"
+
 getSearch = -> (window.location.search || "")
 # init the page . load i18n source file
 loadLang = (cb)->
@@ -127,9 +133,9 @@ i18n = (str) ->
     langsrc[deepth][str]
 
 # render template
-render = (tempName)->
+render = (tempName, data)->
     template = Handlebars.compile $(tempName).html()
-    $("#main-body").html template()
+    $("#main-body").html template(data)
 
 # init function
 init = ->
@@ -155,6 +161,27 @@ init = ->
       $("header").after "<div id='unsupported-browser'><p>#{langsrc.LOGIN.browser_not_support_1}</p> <p>#{langsrc.LOGIN.browser_not_support_2}<a href='https://www.google.com/intl/en/chrome/browser/' target='_blank'>Chrome</a>, <a href='http://www.mozilla.org/en-US/firefox/all/' target='_blank'>Firefox</a> or <a href='http://windows.microsoft.com/en-us/internet-explorer/download-ie' target='_blank'>IE</a>#{langsrc.LOGIN.browser_not_support_3}</p></div>"
 
     userRoute(
+        "invite": ( pathArray, hashArray ) ->
+            if !checkAllCookie()
+                gotoRef()
+                return
+
+            deepth = 'INVITE'
+            hashTarget = hashArray[0]
+            unless hashTarget is 'member' then return
+
+            checkInviteKey( hashArray[ 1 ] ).then ( result ) ->
+                retCode = result.result[0]
+                if retCode is 0 # success invite
+                    projectId = atob( hashArray[ 1 ] ).split( '&' )[ 0 ]
+                    location.href = "/workspace/#{projectId}"
+                else if retCode is 120 # link is for other user
+                    render '#expire-template', {other_user: true}
+                else # invalid or expired link (format issue or user leave workspace)
+                    render '#expire-template'
+            , () ->
+                render '#expire-template' # invalid or expired link
+
         "reset": (pathArray, hashArray)->
             deepth = 'RESET'
             hashTarget = hashArray[0]
@@ -482,6 +509,13 @@ checkPassKey = (keyToValid,fn)->
             handleNetError(status)
             false
     )
+
+checkInviteKey = ( key ) ->
+    api {
+        url: '/project/'
+        method: 'check_invitation'
+        data: [ $.cookie('session_id'), key ]
+    }
 
 setCredit = (result)->
     # Clear any cookie that's not ours

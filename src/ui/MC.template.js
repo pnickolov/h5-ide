@@ -30,308 +30,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div style=\"width: 520px\">\n    <div class=\"modal-header\">\n        <h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n        <i class=\"modal-close\">&times;</i>\n    </div>\n    <div class=\"modal-body\">\n        <p class=\"modal-text-minor\">"
-    + escapeExpression(((stack1 = (depth0 && depth0['intro-1'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>\n        <p class=\"modal-text-minor\">"
-    + escapeExpression(((stack1 = (depth0 && depth0['intro-2'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>\n        <div class=\"modal-center-align-helper\">\n            <div class=\"modal-control-group\">\n                <div id=\"replace_stack\" style=\"padding: 10px 0\">\n                    <div class=\"radio\">\n                        <input id=\"radio-replace-stack\" type=\"radio\" name=\"save-stack-type\" checked>\n                        <label for=\"radio-replace-stack\"></label>\n                    </div>\n                    <label class=\"modal-text-minor\" for=\"radio-replace-stack\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.replace)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</label>\n                    <div style=\"padding: 10px 22px\" class=\"radio-instruction\">\n                        "
-    + escapeExpression(((stack1 = (depth0 && depth0['replace-info'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " \""
-    + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" "
-    + escapeExpression(((stack1 = (depth0 && depth0['replace-info-end'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n                    </div>\n                </div>\n                <div id=\"save_new_stack\">\n                   <div class=\"radio\">\n                       <input id=\"radio-new-stack\" type=\"radio\" name=\"save-stack-type\">\n                       <label for=\"radio-new-stack\"></label>\n                   </div>\n                   <label class=\"modal-text-minor\" for=\"radio-new-stack\">"
-    + escapeExpression(((stack1 = (depth0 && depth0['save-new'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</label>\n                   <div style=\"padding: 10px 22px\" class=\"radio-instruction hide\">\n                       <p>"
-    + escapeExpression(((stack1 = (depth0 && depth0.instruction)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>\n                       <input class=\"input\" id=\"modal-input-value\" value=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" type=\"text\" style=\"width: 400px\"/>\n                       <div id=\"stack-name-exist\" class=\"hide\" style=\"color: #ec3c38\">"
-    + escapeExpression(((stack1 = (depth0 && depth0['error-message'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n                   </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"modal-footer\">\n        <button id=\"btn-confirm\" class=\"btn btn-"
-    + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</button>\n        <button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n    </div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalAppToStack=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n			<div class=\"modal-text-wraper\">\n				<div class=\"modal-center-align-helper\">\n					";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.input), {hash:{},inverse:self.program(4, program4, data),fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n				</div>\n			</div>\n		";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n						<div class=\"modal-control-group\">\n							<label class=\"modal-text-major\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.body)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</label>\n							<input id=\"modal-input-value\" class=\"input\" type=\"text\" value=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.input)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" />\n						</div>\n					";
-  return buffer;
-  }
-
-function program4(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n						<div class=\"modal-text-major\">\n							";
-  stack1 = ((stack1 = (depth0 && depth0.body)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n						</div>\n						";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_asg), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n					";
-  return buffer;
-  }
-function program5(depth0,data) {
-  
-  var buffer = "";
-  buffer += "\n							<div class=\"modal-text-minor\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_STOP_ASG", {hash:{},data:data}))
-    + "</div>\n						";
-  return buffer;
-  }
-
-function program7(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n			<div class=\"terminate-pro-app-confirm\">\n				";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_stop), {hash:{},inverse:self.program(11, program11, data),fn:self.program(8, program8, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n				<p class=\"confirm-area\"><input class=\"input\" id=\"confirm-app-name\" data-confirm=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.app_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"/></p>\n			</div>\n		";
-  return buffer;
-  }
-function program8(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n					<p><b>"
-    + escapeExpression(((stack1 = (depth0 && depth0.app_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_PROD_APP_WARNING_MSG", {hash:{},data:data}))
-    + "</b>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_STOP_PROD_APP_MSG", {hash:{},data:data}))
-    + "\n						";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_asg), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n					</p>\n					<p>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_STOP_PROD_APP_INPUT_LBL", {hash:{},data:data}))
-    + "</p>\n				";
-  return buffer;
-  }
-function program9(depth0,data) {
-  
-  var buffer = "";
-  buffer += "\n							"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_STOP_ASG", {hash:{},data:data}))
-    + "\n						";
-  return buffer;
-  }
-
-function program11(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n					<p><b>"
-    + escapeExpression(((stack1 = (depth0 && depth0.app_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " "
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_PROD_APP_WARNING_MSG", {hash:{},data:data}))
-    + "</b>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_TERMINATE_PROD_APP_MSG", {hash:{},data:data}))
-    + "</p>\n					<p>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL", {hash:{},data:data}))
-    + "</p>\n				";
-  return buffer;
-  }
-
-function program13(depth0,data) {
-  
-  
-  return "disabled";
-  }
-
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.is_production), {hash:{},inverse:self.program(7, program7, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"btn-confirm\" class=\"btn btn-"
-    + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.is_production), {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += ">"
-    + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</button>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalApp=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:700px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<textarea id=\"json-content\"></textarea>\n	</div>\n	<div class=\"modal-footer\">\n		<a id=\"btn-confirm\" class=\"btn btn-"
-    + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" href=\"data:text/plain;, ";
-  stack1 = ((stack1 = (depth0 && depth0.filecontent)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" download=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.download)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.confirm)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalToolbar=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div class=\"modal-resource-instance-detail\" style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<dl class=\"dl-horizontal\">\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_DNSNAME", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.dnsName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ARCHITECTURE", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.architecture)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_EBSOPTIMIZED", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.ebsOptimized)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_GROUPSET", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.groupSet)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_HYPERVISOR", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.hypervisor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IMAGEID", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.imageId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCESTATE", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.instanceState)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_INSTANCETYPE", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.instanceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_IPADDRESS", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.ipAddress)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_KERNELID", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.kernelId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_KEYNAME", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.keyName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_LAUNCHTIME", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.launchTime)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_MONITORING", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.monitoring)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_NETWORKINTERFACESET", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.networkInterfaceSet)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_AVAILABILITYZONE", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.availabilityZone)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_PRIVATEDNSNAME", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.privateDnsName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ROOTDEVICENAME", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n			<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ROOTDEVICETYPE", {hash:{},data:data}))
-    + "</dt>\n			<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.rootDeviceType)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		</dl>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_BTN_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalResourceInstanceDetail=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div class=\"bubble-head\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n<div class=\"bubble-content\">\n	<dl class=\"dl-horizontal\">\n		<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_START_TIME", {hash:{},data:data}))
-    + "</dt>\n		<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0['start-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_STOP_TIME", {hash:{},data:data}))
-    + "</dt>\n		<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0['end-time'])),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n		<dt>"
-    + escapeExpression(helpers.i18n.call(depth0, "BUBBLE_ESTIMATED_COST", {hash:{},data:data}))
-    + "</dt>\n		<dd>"
-    + escapeExpression(((stack1 = (depth0 && depth0.cost)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</dd>\n	</dl>\n</div>";
-  return buffer;
-  };
-TEMPLATE.bubbleTest=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
   buffer += "<div class=\"bubble-head alert\">"
     + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</div>\n<div class=\"bubble-content\">\n	"
@@ -555,68 +253,6 @@ TEMPLATE.bubbleOsSnapshotInfo=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:660px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN", {hash:{},data:data}))
-    + ":</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div id=\"createNewStack_wrap\">\n			<ul class=\"clearfix\">\n				<li>\n					<a class=\"new-stack-dialog\" href=\"javascript:void(0)\" data-supported-platform=\"ec2-classic\">\n						<h4>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CLASSIC", {hash:{},data:data}))
-    + "</h4>\n						<p>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CLASSIC_INTRO", {hash:{},data:data}))
-    + ".</p>\n					</a>\n				</li>\n				<li>\n					<a class=\"new-stack-dialog\" href=\"javascript:void(0)\" data-supported-platform=\"ec2-vpc\">\n						<h4>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_VPC", {hash:{},data:data}))
-    + "</h4>\n						<p>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_VPC_INTRO", {hash:{},data:data}))
-    + ".</p>\n					</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.createNewStackClassic=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:400px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CREATE_STACK_ERROR", {hash:{},data:data}))
-    + "</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div id=\"createNewStack_wrap\" class=\"load-account-attr-error\">\n			<p>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY", {hash:{},data:data}))
-    + "</p>\n			<button class=\"btn btn-blue\" id=\"reload-account-attributes\">"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_BTN_RETRY", {hash:{},data:data}))
-    + "</button>\n		</div>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.createNewStackErrorAndReload=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:660px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CREATE_THIS_STACK_IN", {hash:{},data:data}))
-    + ":</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<div id=\"createNewStack_wrap\">\n			<ul class=\"clearfix\">\n				<li>\n					<a class=\"new-stack-dialog\" href=\"javascript:void(0)\" data-supported-platform=\"default-vpc\">\n						<h4>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_DEFAULT_VPC", {hash:{},data:data}))
-    + "</h4>\n						<p>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_DEFAULT_VPC_INTRO", {hash:{},data:data}))
-    + ".</p>\n					</a>\n				</li>\n				<li>\n					<a class=\"new-stack-dialog\" href=\"javascript:void(0)\" data-supported-platform=\"custom-vpc\">\n						<h4>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_CUSTOM_VPC", {hash:{},data:data}))
-    + "</h4>\n						<p>"
-    + escapeExpression(helpers.i18n.call(depth0, "DASH_POP_CREATE_STACK_VPC_INTRO", {hash:{},data:data}))
-    + ".</p>\n					</a>\n				</li>\n			</ul>\n		</div>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.createNewStackVPC=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -746,7 +382,9 @@ function program1(depth0,data) {
     + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "pastdue", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </div>\n</section>";
+  buffer += "\n    </div>\n</section>\n<section class=\"members-only hide\">\n    "
+    + escapeExpression(helpers.i18n.call(depth0, "WAIT_FOR_ADMIN_FINISH_CREDENTIAL", {hash:{},data:data}))
+    + "\n</section>";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
@@ -1010,98 +648,92 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "";
-  buffer += "\n				<div class=\"modal-text-minor\" style=\"margin-top:10px;\"><i class=\"icon-inbound\"></i>"
+  buffer += "\n		<div class=\"modal-text-minor\" style=\"margin-top:10px;\"><i class=\"icon-inbound\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_INBOUND", {hash:{},data:data}))
-    + "</div>\n			";
+    + "</div>\n	";
   return buffer;
   }
 
 function program3(depth0,data) {
   
   var buffer = "";
-  buffer += "\n			<div class=\"radio-group-horizontal\">\n				<div class=\"radio\">\n					<input id=\"radio_inbound\" type=\"radio\" name=\"sg-direction\" checked=\"checked\" value=\"inbound\" />\n					<label for=\"radio_inbound\"></label>\n				</div>\n				<label for=\"radio_inbound\" ><i class=\"icon-inbound icon-label\"></i>"
+  buffer += "\n	<div class=\"radio-group-horizontal\">\n		<div class=\"radio\">\n			<input id=\"radio_inbound\" type=\"radio\" name=\"sg-direction\" checked=\"checked\" value=\"inbound\" />\n			<label for=\"radio_inbound\"></label>\n		</div>\n		<label for=\"radio_inbound\" ><i class=\"icon-inbound icon-label\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_INBOUND", {hash:{},data:data}))
-    + "</label>\n			</div>\n\n			<div class=\"radio-group-horizontal\">\n				<div class=\"radio\">\n					<input id=\"radio_outbound\" type=\"radio\" name=\"sg-direction\" value=\"outbound\"/>\n					<label for=\"radio_outbound\"></label>\n				</div>\n				<label for=\"radio_outbound\"><i class=\"icon-outbound icon-label\"></i>"
+    + "</label>\n	</div>\n	<div class=\"radio-group-horizontal\">\n		<div class=\"radio\">\n			<input id=\"radio_outbound\" type=\"radio\" name=\"sg-direction\" value=\"outbound\"/>\n			<label for=\"radio_outbound\"></label>\n		</div>\n		<label for=\"radio_outbound\"><i class=\"icon-outbound icon-label\"></i>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_OUTBOUND", {hash:{},data:data}))
-    + "</label>\n			</div>\n			";
+    + "</label>\n	</div>\n	";
   return buffer;
   }
 
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n					<li class=\"item truncate\" data-id=\"sg\" data-uid=\""
+  buffer += "\n			<li class=\"item truncate\" data-id=\"sg\" data-uid=\""
     + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"><span class=\"sg-color\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</li>\n					";
+    + "</li>\n			";
   return buffer;
   }
 
 function program7(depth0,data) {
   
   
-  return "\n							";
+  return "\n				";
   }
 
 function program9(depth0,data) {
   
   var buffer = "";
-  buffer += "\n							<li class=\"item\" data-id=\"custom\">"
+  buffer += "\n				<li class=\"item\" data-id=\"custom\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_CUSTOM", {hash:{},data:data}))
-    + "</li>\n							<li class=\"item\" data-id=\"all\">"
+    + "</li>\n				<li class=\"item\" data-id=\"all\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_ALL", {hash:{},data:data}))
-    + "</li>\n							";
+    + "</li>\n				";
   return buffer;
   }
 
 function program11(depth0,data) {
   
   
-  return "\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-custom\">\n						<input class=\"input\" name=\"protocol-custom-ranged\" placeholder=\"0-255\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9]*$\" data-required=\"true\">\n					</div>\n					<div class=\"sg-protocol-option-input\" id=\"sg-protocol-all\">\n						Port Range:<span>0-65535</span>\n					</div>\n				";
+  return "\n			<div class=\"sg-protocol-option-input\" id=\"sg-protocol-custom\">\n				<input class=\"input\" name=\"protocol-custom-ranged\" placeholder=\"0-255\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9]*$\" data-required=\"true\">\n			</div>\n			<div class=\"sg-protocol-option-input\" id=\"sg-protocol-all\">\n				Port Range:<span>0-65535</span>\n			</div>\n		";
   }
 
-  buffer += "<div id=\"modal-sg-rule\" data-bind=\"true\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_TITLE_ADD", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i>\n	</div>\n\n	<div class=\"modal-body\">\n		<div class=\"modal-control-group clearfix\">\n			<label class=\"label-short\">"
+  buffer += "<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n	<label class=\"label-short\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_DIRECTION", {hash:{},data:data}))
-    + "</label>\n\n			<div id=\"sg-modal-direction\">\n			";
+    + "</label>\n	<div id=\"sg-modal-direction\">\n	";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isClassic), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</div>\n		</div>\n\n		<div class=\"modal-control-group clearfix\">\n			<label class=\"label-short\" for=\"securitygroup-modal-description\" id=\"rule-modal-ip-range\">"
+  buffer += "\n	</div>\n</div>\n<div class=\"modal-control-group clearfix\">\n	<label class=\"label-short\" for=\"securitygroup-modal-description\" id=\"rule-modal-ip-range\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_SOURCE", {hash:{},data:data}))
-    + "</label>\n			<div class=\"selectbox\" id=\"sg-add-model-source-select\">\n				<div class=\"selection\">IP...</div>\n				<ul class=\"dropdown\">\n					<li class=\"item selected\" data-id=\"custom\">IP...</li>\n					";
+    + "</label>\n	<div class=\"selectbox\" id=\"sg-add-model-source-select\">\n		<div class=\"selection\">IP...</div>\n		<ul class=\"dropdown\">\n			<li class=\"item selected\" data-id=\"custom\">IP...</li>\n			";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.sgList), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n				</ul>\n			</div>\n			<input class=\"input\" type=\"text\" id=\"securitygroup-modal-description\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9./]*$\" data-required=\"true\" placeholder='"
+  buffer += "\n		</ul>\n	</div>\n	<input class=\"input\" type=\"text\" id=\"securitygroup-modal-description\" data-ignore=\"true\" data-ignore-regexp=\"^[0-9./]*$\" data-required=\"true\" placeholder='"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PLACEHOLD_SOURCE", {hash:{},data:data}))
-    + "'>\n		</div>\n\n		<div class=\"modal-control-group clearfix\">\n			<label class=\"label-short\" >"
+    + "'>\n</div>\n<div class=\"modal-control-group clearfix\">\n	<label class=\"label-short\" >"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_LBL_PROTOCOL", {hash:{},data:data}))
-    + "</label>\n				<div class=\"modal-protocol-select\">\n					<div class=\"selectbox\" id=\"modal-protocol-select\"  data-protocal-type=\"tcp\">\n						<div class=\"selection\">"
+    + "</label>\n	<div class=\"modal-protocol-select\">\n		<div class=\"selectbox\" id=\"modal-protocol-select\"  data-protocal-type=\"tcp\">\n			<div class=\"selection\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_TCP", {hash:{},data:data}))
-    + "</div>\n						<ul class=\"dropdown\" tabindex=\"-1\">\n							<li class=\"selected item\" data-id=\"tcp\">"
+    + "</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"selected item\" data-id=\"tcp\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_TCP", {hash:{},data:data}))
-    + "</li>\n							<li class=\"item\" data-id=\"udp\">"
+    + "</li>\n				<li class=\"item\" data-id=\"udp\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_UDP", {hash:{},data:data}))
-    + "</li>\n							<li class=\"item\" data-id=\"icmp\">"
+    + "</li>\n				<li class=\"item\" data-id=\"icmp\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PROTOCOL_ICMP", {hash:{},data:data}))
-    + "</li>\n							";
+    + "</li>\n				";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isClassic), {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n						</ul>\n					</div>\n				</div>\n			<div id=\"sg-protocol-select-result\">\n				<div class=\"sg-protocol-option-input show\" id=\"sg-protocol-tcp\">\n					<input class=\"input\" type=\"text\" placeholder='"
+  buffer += "\n			</ul>\n		</div>\n	</div>\n	<div id=\"sg-protocol-select-result\">\n		<div class=\"sg-protocol-option-input show\" id=\"sg-protocol-tcp\">\n			<input class=\"input\" type=\"text\" placeholder='"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PLACEHOLD_PORT_RANGE", {hash:{},data:data}))
-    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\"  data-required=\"true\"/>\n				</div>\n				<div class=\"sg-protocol-option-input\" id=\"sg-protocol-udp\">\n					<input class=\"input\" type=\"text\" placeholder='"
+    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\"  data-required=\"true\"/>\n		</div>\n		<div class=\"sg-protocol-option-input\" id=\"sg-protocol-udp\">\n			<input class=\"input\" type=\"text\" placeholder='"
     + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_PLACEHOLD_PORT_RANGE", {hash:{},data:data}))
-    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\" data-required=\"true\"/>\n				</div>\n\n				<div class=\"sg-protocol-option-input\" id=\"sg-protocol-icmp\">\n					<div class=\"selectbox\" id=\"protocol-icmp-main-select\" data-protocal-main=\"0\"  data-protocal-sub=\"-1\">\n					<div class=\"selection\">Echo Reply(0)</div>\n					<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n						<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n						<ul tabindex=\"-1\" class=\"scroll-content\">\n							<li class=\"item selected\" data-id=\"0\">Echo Reply(0)</li>\n							<li class=\"item\" data-id=\"3\">Destination Unreachable(3) ...</li>\n							<li class=\"item\" data-id=\"4\">Source Quench(4)</li>\n							<li class=\"item\" data-id=\"5\">Redirect Message(5) ...</li>\n							<li class=\"item\" data-id=\"6\">Alternate Host Address(6)</li>\n							<li class=\"item\" data-id=\"8\">Echo Request(8)</li>\n							<li class=\"item\" data-id=\"9\">Router Advertisement(9)</li>\n							<li class=\"item\" data-id=\"10\">Router Solicitation(10)</li>\n							<li class=\"item\" data-id=\"11\">Time Exceeded(11) ...</li>\n							<li class=\"item\" data-id=\"12\">Parameter Problem: Bad IP header(12) ...</li>\n							<li class=\"item\" data-id=\"13\">Timestamp(13)</li>\n							<li class=\"item\" data-id=\"14\">Timestamp Reply(14)</li>\n							<li class=\"item\" data-id=\"15\">Information Request(15)</li>\n							<li class=\"item\" data-id=\"16\">Information Reply(16)</li>\n							<li class=\"item\" data-id=\"17\">Address Mask Request(17)</li>\n							<li class=\"item\" data-id=\"18\">Address Mask Reply(18)</li>\n							<li class=\"item\" data-id=\"30\">Traceroute(30)</li>\n							<li class=\"item\" data-id=\"31\">Datagram Conversion Error(31)</li>\n							<li class=\"item\" data-id=\"32\">Mobile Host Redirect(32)</li>\n							<li class=\"item\" data-id=\"33\">Where Are You(33)</li>\n							<li class=\"item\" data-id=\"34\">Here I Am(34)</li>\n							<li class=\"item\" data-id=\"35\">Mobile Registration Request(35)</li>\n							<li class=\"item\" data-id=\"36\">Mobile Registration Reply(36)</li>\n							<li class=\"item\" data-id=\"37\">Domain Name Request(37)</li>\n							<li class=\"item\" data-id=\"38\">Domain Name Reply(38)</li>\n							<li class=\"item\" data-id=\"39\">SKIP Algorithm Discovery Protocol(39)</li>\n							<li class=\"item\" data-id=\"40\">Photuris Security Failures(40)</li>\n							<li class=\"item\" data-id=\"-1\">All(-1)</li>\n						</ul>\n					</div>\n					</div>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-3\">\n					<div class=\"selection\">All(-1)</div>\n					<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n						<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n						<ul class=\"scroll-content\" tabindex=\"-1\">\n							<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n							<li class=\"item\" data-id=\"0\">destination network unreachable(0)</li>\n							<li class=\"item\" data-id=\"1\">destination host unreachable(1)</li>\n							<li class=\"item\" data-id=\"2\">destination protocol unreachable(2)</li>\n							<li class=\"item\" data-id=\"3\">destination port unreachable(3)</li>\n							<li class=\"item\" data-id=\"4\">fragmentation required and DF flag set(4)</li>\n							<li class=\"item\" data-id=\"5\">source route failed(5)</li>\n							<li class=\"item\" data-id=\"6\">destination network unknown(6)</li>\n							<li class=\"item\" data-id=\"7\">destination host unknown(7)</li>\n							<li class=\"item\" data-id=\"8\">source host isolated(8)</li>\n							<li class=\"item\" data-id=\"9\">network administratively prohibited(9)</li>\n							<li class=\"item\" data-id=\"10\">host administratively prohibited(10)</li>\n							<li class=\"item\" data-id=\"11\">network unreachable for TOS(11)</li>\n							<li class=\"item\" data-id=\"12\">host unreachable for TOS(12)</li>\n							<li class=\"item\" data-id=\"13\">communication administratively prohibited(13)</li>\n						</ul>\n					</div>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-5\">\n					<div class=\"selection\">All(-1)</div>\n					<ul class=\"dropdown\" tabindex=\"-1\">\n						<li class=\"selected item\" data-id=\"-1\">All(-1)</li>\n						<li class=\"item\" data-id=\"0\">redirect datagram for the network(0)</li>\n						<li class=\"item\" data-id=\"1\">redirect datagram for the host(1)</li>\n						<li class=\"item\" data-id=\"2\">redirect datagram for the TOS & network(2)</li>\n						<li class=\"item\" data-id=\"3\">redirect datagram for the TOS & host(3)</li>\n					</ul>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-11\">\n					<div class=\"selection\">All(-1)</div>\n					<ul class=\"dropdown\" tabindex=\"-1\">\n						<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n						<li class=\"item\" data-id=\"0\">TTL expired transit(0)</li>\n						<li class=\"item\" data-id=\"1\">fragmentation reasembly time exceeded(1)</li>\n					</ul>\n				</div>\n\n				<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-12\">\n					<div class=\"selection\">All(-1)</div>\n					<ul class=\"dropdown\" role=\"menu\">\n						<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n						<li class=\"item\" data-id=\"0\">pointer indicates the error(0)</li>\n						<li class=\"item\" data-id=\"1\">missing a required option(1)</li>\n						<li class=\"item\" data-id=\"2\">bad length(2)</li>\n					</ul>\n				</div>\n\n				";
+    + "' data-ignore=\"true\" data-ignore-regexp=\"^[0-9-]*$\" data-required=\"true\"/>\n		</div>\n\n		<div class=\"sg-protocol-option-input\" id=\"sg-protocol-icmp\">\n			<div class=\"selectbox\" id=\"protocol-icmp-main-select\" data-protocal-main=\"0\"  data-protocal-sub=\"-1\">\n			<div class=\"selection\">Echo Reply(0)</div>\n			<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n				<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n				<ul tabindex=\"-1\" class=\"scroll-content\">\n					<li class=\"item selected\" data-id=\"0\">Echo Reply(0)</li>\n					<li class=\"item\" data-id=\"3\">Destination Unreachable(3) ...</li>\n					<li class=\"item\" data-id=\"4\">Source Quench(4)</li>\n					<li class=\"item\" data-id=\"5\">Redirect Message(5) ...</li>\n					<li class=\"item\" data-id=\"6\">Alternate Host Address(6)</li>\n					<li class=\"item\" data-id=\"8\">Echo Request(8)</li>\n					<li class=\"item\" data-id=\"9\">Router Advertisement(9)</li>\n					<li class=\"item\" data-id=\"10\">Router Solicitation(10)</li>\n					<li class=\"item\" data-id=\"11\">Time Exceeded(11) ...</li>\n					<li class=\"item\" data-id=\"12\">Parameter Problem: Bad IP header(12) ...</li>\n					<li class=\"item\" data-id=\"13\">Timestamp(13)</li>\n					<li class=\"item\" data-id=\"14\">Timestamp Reply(14)</li>\n					<li class=\"item\" data-id=\"15\">Information Request(15)</li>\n					<li class=\"item\" data-id=\"16\">Information Reply(16)</li>\n					<li class=\"item\" data-id=\"17\">Address Mask Request(17)</li>\n					<li class=\"item\" data-id=\"18\">Address Mask Reply(18)</li>\n					<li class=\"item\" data-id=\"30\">Traceroute(30)</li>\n					<li class=\"item\" data-id=\"31\">Datagram Conversion Error(31)</li>\n					<li class=\"item\" data-id=\"32\">Mobile Host Redirect(32)</li>\n					<li class=\"item\" data-id=\"33\">Where Are You(33)</li>\n					<li class=\"item\" data-id=\"34\">Here I Am(34)</li>\n					<li class=\"item\" data-id=\"35\">Mobile Registration Request(35)</li>\n					<li class=\"item\" data-id=\"36\">Mobile Registration Reply(36)</li>\n					<li class=\"item\" data-id=\"37\">Domain Name Request(37)</li>\n					<li class=\"item\" data-id=\"38\">Domain Name Reply(38)</li>\n					<li class=\"item\" data-id=\"39\">SKIP Algorithm Discovery Protocol(39)</li>\n					<li class=\"item\" data-id=\"40\">Photuris Security Failures(40)</li>\n					<li class=\"item\" data-id=\"-1\">All(-1)</li>\n				</ul>\n			</div>\n			</div>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-3\">\n			<div class=\"selection\">All(-1)</div>\n			<div class=\"dropdown scroll-wrap scrollbar-auto-hide context-wrap\" style=\"height:300px;\">\n				<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n				<ul class=\"scroll-content\" tabindex=\"-1\">\n					<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n					<li class=\"item\" data-id=\"0\">destination network unreachable(0)</li>\n					<li class=\"item\" data-id=\"1\">destination host unreachable(1)</li>\n					<li class=\"item\" data-id=\"2\">destination protocol unreachable(2)</li>\n					<li class=\"item\" data-id=\"3\">destination port unreachable(3)</li>\n					<li class=\"item\" data-id=\"4\">fragmentation required and DF flag set(4)</li>\n					<li class=\"item\" data-id=\"5\">source route failed(5)</li>\n					<li class=\"item\" data-id=\"6\">destination network unknown(6)</li>\n					<li class=\"item\" data-id=\"7\">destination host unknown(7)</li>\n					<li class=\"item\" data-id=\"8\">source host isolated(8)</li>\n					<li class=\"item\" data-id=\"9\">network administratively prohibited(9)</li>\n					<li class=\"item\" data-id=\"10\">host administratively prohibited(10)</li>\n					<li class=\"item\" data-id=\"11\">network unreachable for TOS(11)</li>\n					<li class=\"item\" data-id=\"12\">host unreachable for TOS(12)</li>\n					<li class=\"item\" data-id=\"13\">communication administratively prohibited(13)</li>\n				</ul>\n			</div>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-5\">\n			<div class=\"selection\">All(-1)</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"selected item\" data-id=\"-1\">All(-1)</li>\n				<li class=\"item\" data-id=\"0\">redirect datagram for the network(0)</li>\n				<li class=\"item\" data-id=\"1\">redirect datagram for the host(1)</li>\n				<li class=\"item\" data-id=\"2\">redirect datagram for the TOS & network(2)</li>\n				<li class=\"item\" data-id=\"3\">redirect datagram for the TOS & host(3)</li>\n			</ul>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-11\">\n			<div class=\"selection\">All(-1)</div>\n			<ul class=\"dropdown\" tabindex=\"-1\">\n				<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n				<li class=\"item\" data-id=\"0\">TTL expired transit(0)</li>\n				<li class=\"item\" data-id=\"1\">fragmentation reasembly time exceeded(1)</li>\n			</ul>\n		</div>\n\n		<div class=\"selectbox protocol-icmp-sub-select\" id=\"protocol-icmp-sub-select-12\">\n			<div class=\"selection\">All(-1)</div>\n			<ul class=\"dropdown\" role=\"menu\">\n				<li class=\"item selected\" data-id=\"-1\">All(-1)</li>\n				<li class=\"item\" data-id=\"0\">pointer indicates the error(0)</li>\n				<li class=\"item\" data-id=\"1\">missing a required option(1)</li>\n				<li class=\"item\" data-id=\"2\">bad length(2)</li>\n			</ul>\n		</div>\n\n		";
   stack1 = helpers.unless.call(depth0, (depth0 && depth0.isClassic), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn btn-blue\" id='sg-modal-save'>"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_BTN_SAVE", {hash:{},data:data}))
-    + "</button>\n		<button class=\"btn btn-silver modal-close\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_SGRULE_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+  buffer += "\n	</div>\n</div>";
   return buffer;
   };
 TEMPLATE.modalSGRule=Handlebars.template(__TEMPLATE__);
@@ -1113,27 +745,25 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div style=\"width:500px\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "GET_WINDOWS_PASSWORD", {hash:{},data:data}))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		<section class=\"password-hint\">\n			<p class=\"modal-text-major\">"
+  buffer += "<section class=\"password-hint\">\n	<p class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KEYPAIR", {hash:{},data:data}))
     + "<span>"
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></p>\n			<p>"
+    + "</span></p>\n	<p>"
     + escapeExpression(helpers.i18n.call(depth0, "TO_ACCESS_THIS_INSTANCE_REMOTELY", {hash:{},data:data}))
-    + "</p>\n		</section>\n		<section class=\"import-zone\">\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		</section>\n		<section class=\"decrypt-action\" style=\"display: none;\">\n			<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>"
+    + "</p>\n</section>\n<section class=\"import-zone\">\n	<div id='keypair-loading' class=\"loading-spinner\"></div>\n</section>\n<section class=\"decrypt-action\" style=\"display: none;\">\n	<button class=\"btn btn-blue\" id=\"do-kp-decrypt\" disabled>"
     + escapeExpression(helpers.i18n.call(depth0, "DECRYPT_PASSWORD", {hash:{},data:data}))
-    + "</button>\n			<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\""
+    + "</button>\n	<input readonly class=\"input\" type=\"text\" id=\"keypair-pwd\" placeholder=\""
     + escapeExpression(helpers.i18n.call(depth0, "DECRYPTED_PASSWORD_WILL_APPEAR_HERE", {hash:{},data:data}))
-    + "\">\n			<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\""
+    + "\">\n	<div class=\"change-pw-recommend icon-info tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "RECOMMEND_CHANGE_PASSWORD", {hash:{},data:data}))
     + "\" style=\"display: none;\">"
     + escapeExpression(helpers.i18n.call(depth0, "CHANGE_PASSWORD_RECOMMENDATION_FROM_AWS", {hash:{},data:data}))
-    + "</div>\n		</section>\n		<section class=\"no-password\" style=\"display: none;\">\n			<p>\n				"
+    + "</div>\n</section>\n<section class=\"no-password\" style=\"display: none;\">\n	<p>\n		"
     + escapeExpression(helpers.i18n.call(depth0, "YOUR_PASSWORD_IS_NOT_READY", {hash:{},data:data}))
-    + "\n			</p>\n\n			<p>\n				"
+    + "\n	</p>\n\n	<p>\n		"
     + escapeExpression(helpers.i18n.call(depth0, "PASSWORD_OF_OWN_AMI", {hash:{},data:data}))
-    + "\n			</p>\n		</section>\n	</div>\n</div>";
+    + "\n	</p>\n</section>";
   return buffer;
   };
 TEMPLATE.modalDecryptPassword=Handlebars.template(__TEMPLATE__);
@@ -1147,76 +777,63 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  return "\n			<div id='keypair-loading' class=\"loading-spinner\"></div>\n		";
+  return "class=\"hide\"";
   }
 
 function program3(depth0,data) {
   
-  
-  return "class=\"hide\"";
+  var buffer = "";
+  buffer += "\n	<div class=\"keypair-download clearfix modal-control-group\">\n		<p class=\"modal-text-major left\">"
+    + escapeExpression(helpers.i18n.call(depth0, "KEY_PAIR_DATA_IS_READY", {hash:{},data:data}))
+    + "</p>\n		<a href=\"#\" class=\"btn btn-blue right\" id=\"keypair-kp-download\">"
+    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DOWNLOAD", {hash:{},data:data}))
+    + "</a>\n	</div>\n	";
+  return buffer;
   }
 
 function program5(depth0,data) {
   
-  var buffer = "";
-  buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major left\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PAIR_DATA_IS_READY", {hash:{},data:data}))
-    + "</p>\n				<a href=\"#\" class=\"btn btn-blue right\" id=\"keypair-kp-download\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DOWNLOAD", {hash:{},data:data}))
-    + "</a>\n			</div>\n			";
+  var buffer = "", stack1;
+  buffer += "\n	<div class=\"keypair-download clearfix modal-control-group\">\n		<p class=\"modal-text-major\">"
+    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KP", {hash:{},data:data}))
+    + " "
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</p>\n	</div>\n	";
   return buffer;
   }
 
 function program7(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n			<div class=\"keypair-download clearfix modal-control-group\">\n				<p class=\"modal-text-major\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_ASSO_WITH_KP", {hash:{},data:data}))
-    + " "
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</p>\n			</div>\n			";
+  buffer += "\n	<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n		<label for=\"keypair-cmd\">"
+    + escapeExpression(helpers.i18n.call(depth0, "LBL_REMOTE_ACCESS", {hash:{},data:data}))
+    + "</label>\n		<input class=\"input\" id=\"keypair-cmd\" type=\"text\" readonly=\"readonly\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.loginCmd)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n	</div>\n	";
   return buffer;
   }
 
 function program9(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n			<div id=\"keypair-remote\" class=\"modal-control-group clearfix\">\n				<label for=\"keypair-cmd\">"
-    + escapeExpression(helpers.i18n.call(depth0, "LBL_REMOTE_ACCESS", {hash:{},data:data}))
-    + "</label>\n				<input class=\"input\" id=\"keypair-cmd\" type=\"text\" readonly=\"readonly\" value=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.loginCmd)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n			</div>\n			";
-  return buffer;
-  }
-
-function program11(depth0,data) {
-  
   var buffer = "";
-  buffer += "\n			<div class=\"modal-control-group clearfix\">\n				<label style=\"width:100%;\">"
+  buffer += "\n	<div class=\"modal-control-group clearfix\">\n		<label style=\"width:100%;\">"
     + escapeExpression(helpers.i18n.call(depth0, "WINDOWS_LOGIN_PASSWORD", {hash:{},data:data}))
-    + "</label>\n				<div id=\"keypair-login\">\n					<input type=\"password\" readonly=\"readonly\" id=\"keypair-pwd-old\" class=\"input\">\n					<a href=\"#\" class=\"btn btn-silver kp-copy-btn\" id=\"keypair-show\">"
+    + "</label>\n		<div id=\"keypair-login\">\n			<input type=\"password\" readonly=\"readonly\" id=\"keypair-pwd-old\" class=\"input\">\n			<a href=\"#\" class=\"btn btn-silver kp-copy-btn\" id=\"keypair-show\">"
     + escapeExpression(helpers.i18n.call(depth0, "SHOW_PASSWORD", {hash:{},data:data}))
-    + "</a>\n				</div>\n				<div id=\"keypair-no-pwd\"></div>\n			</div>\n			";
+    + "</a>\n		</div>\n		<div id=\"keypair-no-pwd\"></div>\n	</div>\n	";
   return buffer;
   }
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\">\n		<h3 id='keypair-name'>"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n		<i class=\"modal-close\">&times;</i>\n	</div>\n	<div class=\"modal-body\">\n		";
+  buffer += "<section id=\"keypair-body\" ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		<section id=\"keypair-body\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  buffer += ">\n	";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += ">\n			";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isOldKp), {hash:{},inverse:self.program(7, program7, data),fn:self.program(5, program5, data),data:data});
+  buffer += "\n	";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.windows), {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.windows), {hash:{},inverse:self.program(11, program11, data),fn:self.program(9, program9, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n		</section>\n	</div>\n\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+  buffer += "\n\n</section>";
   return buffer;
   };
 TEMPLATE.modalDownloadKP=Handlebars.template(__TEMPLATE__);
@@ -1255,18 +872,14 @@ TEMPLATE.missingAsgWhenStop=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "SET_UP_CIDR_BLOCK", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n			<div class=\"modal-text-major\">"
+  buffer += "<div class=\"modal-text-wraper\"> <div class=\"modal-center-align-helper\">\n	<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			<div class=\"modal-text-minor\">"
+    + "</div>\n	<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n		</div> </div>\n	</div>\n	<div class=\"modal-footer\">\n		<a id=\"cidr-remove\" class=\"link-red left link-modal-danger\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.remove_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n		<button id=\"cidr-return\" class=\"btn modal-close btn-blue\">OK</button>\n	</div>\n</div>";
+    + "</div>\n</div> </div>";
   return buffer;
   };
 TEMPLATE.setupCIDRConfirm=Handlebars.template(__TEMPLATE__);
@@ -1294,42 +907,14 @@ TEMPLATE.modalAttachingEni=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
-
-
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "STACK_NAME_ALREADY_IN_USE", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PLEASE_CHOOSE_ANOTHER_STACK_NAME", (depth0 && depth0.stack_name), {hash:{},data:data}))
-    + "</div>\n				<div class=\"modal-control-group\" data-bind=\"true\">\n					<label for=\"new-stack-name\">"
-    + escapeExpression(helpers.i18n.call(depth0, "LABEL_STACK_NAME", {hash:{},data:data}))
-    + "</label>\n					<input id=\"new-stack-name\" class=\"input modal-input-value\" type=\"text\" value=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.stack_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-ignore=\"true\">\n				</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"rename-confirm\" class=\"btn btn-blue\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.SAVE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalReinputStackName=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
+  buffer += "<div class=\"modal-text-wraper\">\n	 <div class=\"modal-center-align-helper\">\n		<div class=\"modal-text-major\">"
     + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n				<div class=\"modal-text-minor\">"
+    + "</div>\n		<div class=\"modal-text-minor\">"
     + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DELETE", {hash:{},data:data}))
-    + "</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+    + "</div>\n	</div>\n </div>";
   return buffer;
   };
 TEMPLATE.modalDeleteSGOrACL=Handlebars.template(__TEMPLATE__);
@@ -1352,28 +937,6 @@ TEMPLATE.loadingTransparent=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.main_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n				<div class=\"modal-text-minor\">"
-    + escapeExpression(((stack1 = (depth0 && depth0.desc_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-delete\" class=\"btn btn-red\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_DELETE", {hash:{},data:data}))
-    + "</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalForceDeleteApp=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
@@ -1385,39 +948,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.statusbar=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n				<li>"
-    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "( "
-    + escapeExpression(((stack1 = (depth0 && depth0.instance_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " )</li>\n				";
-  return buffer;
-  }
-
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3 class=\"truncate\" style=\"width: 380px;\">"
-    + escapeExpression(helpers.i18n.call(depth0, "NEED_TO_RESTART_INSTANCE", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"height:150px;\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-text-major\">"
-    + escapeExpression(helpers.i18n.call(depth0, "TO_UPDATE_THE_PROPERTIES_YOU_CHANGED", {hash:{},data:data}))
-    + "</div>\n			<ul class=\"clearfix\">\n				";
-  stack1 = helpers.each.call(depth0, (depth0 && depth0.instance_list), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n			</ul>\n			<div id=\"instance-type\" class=\"modal-text-major\"></div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"confirm-update-app\" class=\"btn btn-blue\" style=\"width:160px;\">"
-    + escapeExpression(helpers.i18n.call(depth0, "CONTINUE_TO_UPDATE", {hash:{},data:data}))
-    + "</button>\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.restartInstance=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -1588,7 +1118,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 
   return "<div class=\"loading-spinner\"></div>";
   };
-TEMPLATE.loadingSpiner=Handlebars.template(__TEMPLATE__);
+TEMPLATE.loadingSpinner=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -1610,19 +1140,14 @@ TEMPLATE.nodeAction=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div id=\"modal-instance-sys-log\" style=\"width: 900px;\">\n	<div class=\"modal-header\"><h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG", {hash:{},data:data}))
-    + escapeExpression(((stack1 = (depth0 && depth0.instance_id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<section class=\"instance-sys-log-loading loading-spinner\"></section>\n		<div class=\"instance-sys-log-content font-mono\">"
+  buffer += "<section class=\"instance-sys-log-loading loading-spinner\"></section>\n<div class=\"instance-sys-log-content\">"
     + escapeExpression(((stack1 = (depth0 && depth0.log_content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n		<div class=\"instance-sys-log-info modal-text-minor\">"
+    + "</div>\n<div class=\"instance-sys-log-info modal-text-minor\">"
     + escapeExpression(helpers.i18n.call(depth0, "SYSTEM_LOG_NOT_READY", {hash:{},data:data}))
-    + "</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-instance-sys-log-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.LBL_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
+    + "</div>";
   return buffer;
   };
 TEMPLATE.modalInstanceSysLog=Handlebars.template(__TEMPLATE__);
@@ -1666,258 +1191,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"><h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "CONFIRM_TO_ENABLE_VISUALOPS", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			<div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
-    + escapeExpression(helpers.i18n.call(depth0, "ENABLE_VISUALOPS_OVERRIDE_USER_DATA", {hash:{},data:data}))
-    + "</div>\n			</div>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-stack-agent-enable-confirm\" style=\"width:145px;\" class=\"btn modal-confirm btn-blue\">"
-    + escapeExpression(helpers.i18n.call(depth0, "ENABLE_VISUALOPS", {hash:{},data:data}))
-    + "</button>\n		<button id=\"modal-stack-agent-enable-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalStackAgentEnable=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:640px\" id=\"modal-key-short\">\n	<div class=\"modal-header\"><h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_MOD_TIT", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i></div>\n	<div class=\"modal-body scroll-wrap\">\n		<div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n		<div class=\"scroll-content\" style=\"height: 560px\">\n			<section class=\"key-stack-app\">\n				<h3 class=\"title\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_TIT_STACK_APP_OP", {hash:{},data:data}))
-    + "</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PROP_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PROP_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_STAT_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_STAT_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DUPL_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DUPL_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DUPL_ACTION", {hash:{},data:data}))
-    + "\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DEL_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DEL_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DEL_ACTION", {hash:{},data:data}))
-    + "\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SAVE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SAVE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SAVE_ACTION", {hash:{},data:data}))
-    + "\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SCRL_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SCRL_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SCRL_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n          <li class=\"key-item\">\n            <div class=\"key\">← ↑ → ↓</div>\n            <div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_NUDGE_ITEM_ACTION", {hash:{},data:data}))
-    + "</div>\n          </li>\n				</ul>\n			</section>\n			<section class=\"key-state\">\n				<h3 class=\"title\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_TIT_STATE_GEN", {hash:{},data:data}))
-    + "</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_FOCUS_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_FOCUS_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SELECT_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SELECT_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_EXPAND_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_EXPAND_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_COLLAPSE_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_COLLAPSE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_NEXT_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_NEXT_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PREV_KEY", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PREV_ACTION", {hash:{},data:data}))
-    + "\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_CONTENT_EDITOR_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_CONTENT_EDITOR_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_CONTENT_EDITOR_ACTION", {hash:{},data:data}))
-    + "\n						</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_INFO_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_INFO_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_INFO_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_LOG_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_LOG_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_LOG_ACTION", {hash:{},data:data}))
-    + "\n						</div>\n					</li>\n				</ul>\n			</section>\n			<section class=\"key-state-edit\">\n				<h3 class=\"title\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_TIT_STATE_EDIT", {hash:{},data:data}))
-    + "</h3>\n				<ul class=\"keys\">\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SELECT_ALL_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SELECT_ALL_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_SELECT_ALL_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DESELECT_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DESELECT_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DESELECT_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_CREATE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_CREATE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_CREATE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DEL_STATE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DEL_STATE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_DEL_STATE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_MOVE_FOCUS_STATE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_MOVE_FOCUS_STATE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_MOVE_FOCUS_STATE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_COPY_STATE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_COPY_STATE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_COPY_STATE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PASTE_STATE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PASTE_STATE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_PASTE_STATE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_UNDO_STATE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_UNDO_STATE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_UNDO_STATE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n					<li class=\"key-item\">\n						<div class=\"key mac font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_REDO_STATE_KEY_MAC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"key pc font-mono\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_REDO_STATE_KEY_PC", {hash:{},data:data}))
-    + "</div>\n						<div class=\"action\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_REDO_STATE_ACTION", {hash:{},data:data}))
-    + "</div>\n					</li>\n				</ul>\n			</section>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "KEY_MODAL_BTN_CLOSE", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.shortkey=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
-
-
-  buffer += "<div style=\"width:343px\" id=\"modal-ssl-cert-setting\">\n	<div class=\"modal-header\"><h3>Server Certificate</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\" style=\"min-height:120px;\">\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_NAME", {hash:{},data:data}))
-    + "</label>\n			<input class=\"input\" value=\""
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" type=\"text\" data-required=\"true\" data-ignore=\"true\" id=\"elb-ssl-cert-name-input\"/>\n		</div>\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_PRIVATE_KEY", {hash:{},data:data}))
-    + "</label>\n			<textarea class=\"input elb-ssl-cert-input tooltip\" data-tooltip=\""
-    + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
-    + "\" data-required=\"true\" data-ignore=\"true\" id=\"elb-ssl-cert-privatekey-input\">"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.key)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</textarea>\n		</div>\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\"  >"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_PUBLIC_KEY", {hash:{},data:data}))
-    + "</label>\n			<textarea class=\"input elb-ssl-cert-input tooltip\" data-tooltip=\""
-    + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
-    + "\" data-required=\"true\" data-ignore=\"true\" id=\"elb-ssl-cert-publickey-input\">"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.body)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</textarea>\n		</div>\n		<div class=\"modal-ssl-cert-item clearfix\">\n			<label class=\"left\"  >"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_LBL_LISTENER_CERTIFICATE_CHAIN", {hash:{},data:data}))
-    + "</label>\n			<textarea class=\"input elb-ssl-cert-input tooltip\" data-tooltip=\""
-    + escapeExpression(helpers.i18n.call(depth0, "POP_TIP_PEM_ENCODED", {hash:{},data:data}))
-    + "\" id=\"elb-ssl-cert-chain-input\">"
-    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.sslCert)),stack1 == null || stack1 === false ? stack1 : stack1.chain)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"elb-ssl-cert-confirm\" class=\"btn btn-blue\">Save</button>\n		<button id=\"elb-ssl-cert-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalSSLCertSetting=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div style=\"width:623px\" id=\"experimental-modal\">\n	<div class=\"modal-header\">\n		<h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_TIT", {hash:{},data:data}))
-    + "</h3>\n		<i class=\"modal-close\">×</i>\n	</div>\n	<div class=\"modal-body\">\n		<h3 class=\"modal-body-header\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_INTRO", {hash:{},data:data}))
-    + "</h3>\n		<div class=\"modal-body-content\">\n			<div class=\"modal-text-minor\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_INTRO_MORE", {hash:{},data:data}))
-    + "</div>\n			<h4 class=\"request-invite-header\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_REQUEST_TIT", {hash:{},data:data}))
-    + "</h4>\n			<div class=\"request-invite-content\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_REQUEST_CONTENT", {hash:{},data:data}))
-    + "</div>\n			<textarea id=\"experimental-message\" class=\"input\" style=\"width:95%;height:120px;\" placeholder='"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_REQUEST_PLACEHOLDER", {hash:{},data:data}))
-    + "' data-required=\"true\"></textarea>\n		</div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"experimental-visops-confirm\" class=\"btn btn-blue\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_BTN_REQUEST", {hash:{},data:data}))
-    + "</button>\n		<button id=\"experimental-visops-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_BTN_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.experimentalVisops=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<h3 class=\"modal-body-header\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_THANK_LBL", {hash:{},data:data}))
-    + "</h3>\n<div class=\"modal-text-major tac\">"
-    + escapeExpression(helpers.i18n.call(depth0, "INVITE_MOD_THANK_MORE", {hash:{},data:data}))
-    + "</div>";
-  return buffer;
-  };
-TEMPLATE.experimentalVisopsTrail=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
   buffer += "<div class=\"bubble-head\">"
     + escapeExpression(helpers.i18n.call(depth0, "NAT_INSTANCE_MEET_REQ", {hash:{},data:data}))
     + "</div>\n<div class=\"bubble-content\">\n	<ul class=\"bubble-NAT-req-list\">\n        "
@@ -1948,27 +1221,6 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return escapeExpression(helpers.breaklines.call(depth0, (depth0 && depth0.content), {hash:{},data:data}));
   };
 TEMPLATE.convertBreaklines=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
-
-
-  buffer += "<div style=\"width:420px\">\n	<div class=\"modal-header\"> <h3>"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_TITLE", {hash:{},data:data}))
-    + "</h3><i class=\"modal-close\">&times;</i> </div>\n	<div class=\"modal-body\">\n		<div class=\"modal-text-wraper\">\n			 <div class=\"modal-center-align-helper\">\n				<div class=\"modal-text-major\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_MAIN", {hash:{},data:data}))
-    + escapeExpression(((stack1 = (depth0 && depth0.cert_name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "?</div>\n				<div class=\"modal-text-minor\">"
-    + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_CERT_REMOVE_CONFIRM_SUB", {hash:{},data:data}))
-    + "</div>\n			</div>\n		 </div>\n	</div>\n	<div class=\"modal-footer\">\n		<button id=\"modal-confirm-elb-cert-delete\" class=\"btn btn-red\">Delete</button>\n		<button id=\"modal-cancel\" class=\"btn modal-close btn-silver\">"
-    + escapeExpression(helpers.i18n.call(depth0, "POP_LBL_CANCEL", {hash:{},data:data}))
-    + "</button>\n	</div>\n</div>";
-  return buffer;
-  };
-TEMPLATE.modalDeleteELBCert=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -2058,24 +1310,46 @@ TEMPLATE.headerNotifyItem=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
-function program1(depth0,data) {
+function program1(depth0,data,depth1) {
   
   var buffer = "", stack1;
-  buffer += "\n<li>\n	<input class=\"tokenName input\" value=\""
+  buffer += "\n";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.name), {hash:{},inverse:self.noop,fn:self.programWithDepth(2, program2, data, depth1),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;
+  }
+function program2(depth0,data,depth2) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <li>\n        <input class=\"tokenName input\" value=\""
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" readonly/>\n	<span class=\"tokenToken click-select truncate tooltip\" data-tooltip=\""
+    + "\" readonly/>\n        <span class=\"tokenToken click-select truncate tooltip\" data-tooltip=\""
     + escapeExpression(helpers.i18n.call(depth0, "PROP.ELB_TIP_CLICK_TO_SELECT_ALL", {hash:{},data:data}))
     + "\">"
     + escapeExpression(((stack1 = (depth0 && depth0.token)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n	<span class=\"tokenControl\">\n		<button class=\"tooltip icon-edit\" data-tooltip=\"\"></button>\n		<button class=\"tooltip icon-delete\" data-tooltip=\"\"></button>\n		<button class=\"btn btn-blue tokenDone\">"
+    + "</span>\n        ";
+  stack1 = helpers['if'].call(depth0, (depth2 && depth2.isAdmin), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </li>\n";
+  return buffer;
+  }
+function program3(depth0,data) {
+  
+  var buffer = "";
+  buffer += "<span class=\"tokenControl\">\n            <button class=\"tooltip icon-edit\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "ACCESS_TOKEN_EDIT_TIP", {hash:{},data:data}))
+    + "\"></button>\n            <button class=\"tooltip icon-delete\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "ACCESS_TOKEN_DELETE_TIP", {hash:{},data:data}))
+    + "\"></button>\n            <button class=\"btn btn-blue tokenDone\">"
     + escapeExpression(helpers.i18n.call(depth0, "HEAD_BTN_DONE", {hash:{},data:data}))
-    + "</button>\n	</span>\n</li>\n";
+    + "</button>\n        </span>";
   return buffer;
   }
 
-  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.tokens), {hash:{},inverse:self.noop,fn:self.programWithDepth(1, program1, data, depth0),data:data});
   if(stack1 || stack1 === 0) { return stack1; }
   else { return ''; }
   };
@@ -2085,49 +1359,71 @@ TEMPLATE.accessTokenTable=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
-  
-  
-  return " panel";
-  }
-
-function program3(depth0,data) {
   
   var buffer = "";
   return buffer;
   }
 
-function program5(depth0,data) {
+function program3(depth0,data) {
   
   
   return " class=\"modal-wrapper-fix\"";
   }
 
+function program5(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "style=\"width: "
+    + escapeExpression(((stack1 = (depth0 && depth0.width)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ";\"";
+  return buffer;
+  }
+
 function program7(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n        <div class=\"modal-header\">\n            <h3>"
+    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</h3>\n            ";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.hideClose), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n        </div>\n        ";
+  return buffer;
+  }
+function program8(depth0,data) {
   
   
   return "<i class=\"modal-close\">×</i>";
   }
 
-function program9(depth0,data) {
+function program10(depth0,data) {
   
   
   return " scroll-wrap scrollbar-auto-hide";
   }
 
-function program11(depth0,data) {
+function program12(depth0,data) {
   
   
-  return " style=\"padding: 0;\"";
+  return "padding: 0;";
   }
 
-function program13(depth0,data) {
+function program14(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += " max-height: "
+    + escapeExpression(((stack1 = (depth0 && depth0.maxHeight)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  return buffer;
+  }
+
+function program16(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                <div class=\"scroll-content\" ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">\n                    ";
   stack1 = ((stack1 = (depth0 && depth0.template)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
@@ -2135,8 +1431,13 @@ function program13(depth0,data) {
   buffer += "\n                </div>\n            ";
   return buffer;
   }
+function program17(depth0,data) {
+  
+  
+  return " style=\"padding: 0;\"";
+  }
 
-function program15(depth0,data) {
+function program19(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            ";
@@ -2146,68 +1447,72 @@ function program15(depth0,data) {
   return buffer;
   }
 
-function program17(depth0,data) {
+function program21(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n        <div class=\"modal-footer\">\n            ";
-  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data});
+  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(22, program22, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            ";
-  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
+  stack1 = helpers.unless.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.hide), {hash:{},inverse:self.noop,fn:self.program(25, program25, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </div>\n        ";
   return buffer;
   }
-function program18(depth0,data) {
+function program22(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "<button class=\"btn modal-confirm btn-"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.color)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" ";
-  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.disabled), {hash:{},inverse:self.noop,fn:self.program(19, program19, data),data:data});
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.disabled), {hash:{},inverse:self.noop,fn:self.program(23, program23, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.confirm)),stack1 == null || stack1 === false ? stack1 : stack1.text)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>";
   return buffer;
   }
-function program19(depth0,data) {
+function program23(depth0,data) {
   
   
   return " disabled ";
   }
 
-function program21(depth0,data) {
+function program25(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<button class=\"btn modal-close btn-silver\">"
+  buffer += "<button class=\"btn modal-close btn-"
+    + escapeExpression(helpers.or.call(depth0, ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.color), "silver", {hash:{},data:data}))
+    + "\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.cancel)),stack1 == null || stack1 === false ? stack1 : stack1.text)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</button>";
   return buffer;
   }
 
-  buffer += "<div class=\"modal-box";
-  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.mode), "panel", {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  buffer += "<div class=\"modal-box "
+    + escapeExpression(((stack1 = (depth0 && depth0.mode)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n    <div";
+  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.mode), "panel", {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n    <div";
-  stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.mode), "panel", {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),data:data});
+  buffer += " ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.width), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += ">\n        <div class=\"modal-header\">\n            <h3>"
-    + escapeExpression(((stack1 = (depth0 && depth0.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n            ";
-  stack1 = helpers.unless.call(depth0, (depth0 && depth0.hideClose), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  buffer += ">\n        ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasHeader), {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        </div>\n        <div class=\"modal-body context-wrap";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
+  buffer += "\n	    <div class=\"modal-body context-wrap";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\"";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
+  buffer += "\" style=\"";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.compact), {hash:{},inverse:self.noop,fn:self.program(12, program12, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += " >\n            ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(15, program15, data),fn:self.program(13, program13, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.maxHeight), {hash:{},inverse:self.noop,fn:self.program(14, program14, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" >\n            ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasScroll), {hash:{},inverse:self.program(19, program19, data),fn:self.program(16, program16, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n            </div>\n        ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasFooter), {hash:{},inverse:self.noop,fn:self.program(17, program17, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.hasFooter), {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</div>";
   return buffer;
@@ -2218,20 +1523,10 @@ TEMPLATE.modalTemplate=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, escapeExpression=this.escapeExpression, self=this, functionType="function";
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
-function program1(depth0,data) {
-  
-  var buffer = "";
-  buffer += "<div class=\"warning-red no-change\">"
-    + escapeExpression(helpers.i18n.call(depth0, "YOUR_ACCOUNT_IN_LIMITED_STATUS", {hash:{},data:data}))
-    + "</div>";
-  return buffer;
-  }
 
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.shouldPay), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\">\n    </div>\n    <p class=\"modal-text-minor payment-text\">"
+  buffer += "<div class=\"payment-no-card-wrapper\">\n    <div class=\"payment-credit-card\"></div>\n    <p class=\"modal-text-minor payment-text\">"
     + escapeExpression(helpers.i18n.call(depth0, "WHILE_ENJOYING_PROVIDE_CARD", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
     + "</p>\n    <table class=\"table payment-table\">\n        <tbody>\n        <tr>\n            <td>"
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_PER_MONTH", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
@@ -2243,16 +1538,67 @@ function program1(depth0,data) {
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_INSTANT_HOUR", {hash:{},data:data}))
     + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">"
     + escapeExpression(helpers.i18n.call(depth0, "PRICING_IN_DETAIL", {hash:{},data:data}))
-    + "</a>\n    <div class=\"payment-modal-wrap\">\n        <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
+    + "</a>\n    <div class=\"payment-modal-wrap\">\n        <a href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"btn btn-blue btn-xlarge\">"
     + escapeExpression(helpers.i18n.call(depth0, "PROVIDE_BILLING_INFORMATION", {hash:{},data:data}))
-    + " <i class=\"icon-caret-right\"></i></a></div>\n        <p>\n            "
+    + " <i class=\"icon-caret-right\"></i></a>\n        <p>\n            "
     + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
     + "\n        </p>\n    </div>\n</div>";
   return buffer;
   };
-TEMPLATE.paymentSubscribe=Handlebars.template(__TEMPLATE__);
+TEMPLATE.providePayment=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD", {hash:{},data:data}))
+    + "</p>\n    <div class=\"payment-modal-wrap\">\n        <a href=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"btn btn-blue btn-xlarge route\">"
+    + escapeExpression(helpers.i18n.call(depth0, "UPDATE_BILLING_INFORMATION", {hash:{},data:data}))
+    + " <i class=\"icon-caret-right\"></i></a>\n    </div>\n";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "";
+  buffer += "\n    <p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD_MEMBER", {hash:{},data:data}))
+    + "</p>\n    <p class=\"modal-text-minor payment-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "WAIT_FOR_ADMIN_UPDATE_PAYMENT_MODAL", {hash:{},data:data}))
+    + "</p>\n";
+  return buffer;
+  }
+
+  buffer += "<div class=\"payment-credit-card payment-failed\"></div>\n";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isAdmin), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  return buffer;
+  };
+TEMPLATE.paymentUpdate=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"loading-zone\">\n    <p>"
+    + escapeExpression(((stack1 = (depth0 && depth0.tip)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</p>\n    <div class=\"loading-spinner\"></div>\n</div>";
+  return buffer;
+  };
+TEMPLATE.credentialLoading=Handlebars.template(__TEMPLATE__);
 
 
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
@@ -2261,18 +1607,50 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function";
 
 
-  buffer += "<div class=\"payment-credit-card payment-failed\">\n</div>\n<p class=\"modal-text-minor payment-text\">"
-    + escapeExpression(helpers.i18n.call(depth0, "FAILED_TO_CHARGE_YOUR_CREDIT_CARD", {hash:{},data:data}))
-    + "</p>\n\n<div class=\"payment-modal-wrap\">\n    <div class=\"payment-modal-btn-wraper\"><a target=\"_blank\" href=\""
-    + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"btn btn-blue btn-xlarge\">"
-    + escapeExpression(helpers.i18n.call(depth0, "UPDATE_BILLING_INFORMATION", {hash:{},data:data}))
-    + " <i class=\"icon-caret-right\"></i></a></div>\n    <p>\n        "
-    + escapeExpression(helpers.i18n.call(depth0, "WILL_OPEN_CHARGIFY", {hash:{},data:data}))
-    + "\n    </p>\n</div>";
+  buffer += "<div id=\"CredSetupWrap\">\n    <div id=\"CredSetupMsg\" class=\"cred-setup-msg empty-hide warning-red\"></div>\n    <div class=\"modal-control-group\">\n        <label for=\"CredSetupAlias\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_ALIAS", {hash:{},data:data}))
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAlias\" type=\"text\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n    </div>\n    <div class=\"modal-control-group\">\n        <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_ACCOUNTID", {hash:{},data:data}))
+    + "\"></i>\n        <label for=\"CredSetupAccount\">"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_ACCOUNTID", {hash:{},data:data}))
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccount\" type=\"text\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.awsAccount)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n    </div>\n    <div class=\"modal-control-group\">\n        <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_ACCESSKEY", {hash:{},data:data}))
+    + "\"></i>\n        <label for=\"CredSetupAccessKey\">"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_ACCESSKEY", {hash:{},data:data}))
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupAccessKey\" type=\"text\" placeholder=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.awsAccessKey)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n    </div>\n    <div class=\"modal-control-group\">\n        <i class=\"icon-info icon-label tooltip\" data-tooltip=\""
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_TIP_CRED_SECRETKEY", {hash:{},data:data}))
+    + "\"></i>\n        <label for=\"CredSetupSecretKey\">"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_LABEL_SECRETKEY", {hash:{},data:data}))
+    + "</label>\n        <input autocomplete=\"off\" class=\"input\" id=\"CredSetupSecretKey\" type=\"password\" placeholder=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.awsSecretKey)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n    </div>\n    <p class=\"warning-text\">"
+    + escapeExpression(helpers.i18n.call(depth0, "CREDENTIAL_AUTHORIZE_NOTE", {hash:{},data:data}))
+    + "</p>\n</div>";
   return buffer;
   };
-TEMPLATE.paymentUpdate=Handlebars.template(__TEMPLATE__);
+TEMPLATE.credentialForm=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"cred-setup-msg empty-hide warning-red\"></div>\n<div class=\"modal-text-major\">\n	"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_CRED_UPDATE_CONFIRM_TIT", {hash:{},data:data}))
+    + "\n	<p class=\"modal-text-major\">\n		"
+    + escapeExpression(helpers.i18n.call(depth0, "SETTINGS_CRED_UPDATE_CONFIRM_TEXT", {hash:{},data:data}))
+    + "\n	</p>\n</div>";
+  return buffer;
+  };
+TEMPLATE.updateCredentialConfirm=Handlebars.template(__TEMPLATE__);
 
 
 return TEMPLATE; });

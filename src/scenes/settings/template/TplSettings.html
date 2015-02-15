@@ -1,0 +1,84 @@
+<nav id="settings-nav">
+    <section>
+        <header>{{i18n "HEAD_LABEL_SETTING"}}</header>
+        <a class="active">{{i18n "HEAD_LABEL_ACCOUNT"}}</a>
+    </section>
+    <section class="project-list">
+        <header>{{i18n "MANAGE_WORKSPACE"}}</header>
+        {{#each projects}}
+        <a class="truncate" data-id="{{id}}">{{name}}</a>
+        {{/each}}
+    </section>
+</nav>
+<section class="setting-content">
+    <header>{{i18n "HEAD_LABEL_ACCOUNT"}}</header>
+    <dl class="settings-item">
+        <dt class="avatar"><img src="{{gravatar.image}}"></dt>
+        <dd class="change-photo">
+            <a id="change-photo" href="{{gravatar.profile}}" target="_blank" >{{i18n "CHANGE_PHOTO"}}</a>
+        </dd>
+    </dl>
+    <dl class="settings-item">
+        <dt>{{ i18n "HEAD_LABEL_ACCOUNT_USERNAME" }}</dt><dd>{{username}}</dd>
+    </dl>
+
+    <dl class="settings-item accountFullNameRO">
+        <dt>{{ i18n "HEAD_LABEL_ACCOUNT_FULLNAME" }}</dt><dd> <span class="fullNameText">{{firstName}} {{lastName}} </span> <button class="icon-edit link-style tooltip" data-tooltip='{{ i18n "HEAD_LABEL_ACCOUNT_FULLNAME" }}' id="AccountFullName"></button></dd>
+    </dl>
+    <div id="AccountFullNameWrap" class="accountEditWrap settings-item">
+        <dl>
+            <dt>{{ i18n "FIRST_NAME" }}</dt>
+            <dd><input type="text" class="input" id="AccountFirstName"/></dd>
+            <dt>{{ i18n "LAST_NAME" }}</dt>
+            <dd><input type="text" class="input" id="AccountLastName"/></dd>
+        </dl>
+        <div id="AccountFullNameInfo" class="empty-hide"></div>
+        <div class="edit-actions">
+            <button class="btn btn-blue" id="AccountUpdateFullName" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+            <span id="AccountCancelFullName" class="cancel-button">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+        </div>
+    </div>
+
+    <dl class="settings-item accountEmailRO">
+        <dt>{{ i18n "HEAD_LABEL_ACCOUNT_EMAIL" }}</dt>
+        <dd>
+            <span class="email-view">{{email}}</span>
+            <button class="icon-edit link-style tooltip" data-tooltip='{{ i18n "HEAD_LABEL_NEW_EMAIL" }}' id="AccountEmail"></button>
+        </dd>
+    </dl>
+    <div id="AccountEmailWrap" class="accountEditWrap settings-item">
+        <dl>
+            <dt>{{ i18n "HEAD_LABEL_NEW_EMAIL" }}</dt>
+            <dd><input type="string" class="input" id="AccountNewEmail" /></dd>
+
+            <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
+            <dd><input type="password" class="input" id="AccountEmailPwd" /></dd>
+        </dl>
+
+      <div id="SettingErrorInfo" class="empty-hide"></div>
+
+      <div class="edit-actions">
+          <button class="btn btn-blue" id="AccountUpdateEmail" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+          <span id="AccountCancelEmail" class="cancel-button">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+      </div>
+    </div>
+
+    <button id="AccountPwd" class="link-style">{{ i18n "HEAD_LABEL_CHANGE_PASSWORD" }}</button>
+    <div id="AccountPwdWrap" class="accountEditWrap settings-item">
+
+        <dl>
+            <dt>{{ i18n "HEAD_LABEL_CURRENT_PASSWORD" }}</dt>
+            <dd><input type="password" class="input" id="AccountCurrentPwd" /></dd>
+
+            <dt>{{ i18n "HAED_LABEL_NEW_PASSWORD" }}</dt>
+            <dd><input type="password" class="input" id="AccountNewPwd" /></dd>
+        </dl>
+
+        <div id="AccountInfo" class="empty-hide"></div>
+
+        <div class="edit-actions">
+            <button class="btn btn-blue" id="AccountUpdatePwd" disabled>{{ i18n "HEAD_BTN_UPDATE" }}</button>
+        <span id="AccountCancelPwd" class="cancel-button">{{ i18n "HEAD_BTN_CANCEL" }}</span>
+        </div>
+    </div>
+</section>

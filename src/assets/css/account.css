@@ -1,5 +1,6 @@
 /* Light Purple */
 /* Base Purple */
+/* Pink Purple */
 /* Dark Purple */
 /* Background Purple */
 /* Base Blue */
@@ -68,6 +69,9 @@ pre {
 
 .bd3 {
   border-radius: 3px; }
+
+.mgt-10px {
+  margin-top: 10px; }
 
 /* CSS reset */
 article,
@@ -166,15 +170,6 @@ li {
 p {
   margin: 0 0 10px;
   padding: 2px; }
-
-.clearfix {
-  *zoom: 1; }
-
-.clearfix:after {
-  content: "";
-  display: block;
-  height: 0;
-  clear: both; }
 
 .hide {
   display: none; }
@@ -543,17 +538,17 @@ footer {
 
 /* 500 */
 #body-500 {
-  background-color: #252631;
+  background-color: #4D4D69;
   height: 0;
   padding: 200px 0; }
 
 #body-500 h1 {
-  background: #66398b;
+  background: #363b76;
   position: absolute;
   z-index: 100;
   width: 100%;
   top: 0;
-  border-top: 4px solid #9C6DC0;
+  border-top: 4px solid #25254c;
   border-bottom: 1px solid #181818;
   padding: 5px 0 9px 0; }
 

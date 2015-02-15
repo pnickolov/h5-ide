@@ -6,8 +6,8 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
       "click #submitFullName": "submit"
       "change #complete-firstname": "changeInput"
       "change #complete-lastname" : "changeInput"
-      "keyup #complete-lastname" : "changeInput"
-      "keyup #complete-lastname" : "changeInput"
+      "keyup #complete-firstname" : "changeInput"
+      "keyup #complete-lastname"  : "changeInput"
 
     initialize: ()->
       @modal = new Modal {
@@ -40,16 +40,16 @@ define [ "./FullnameTpl", "UI.modalplus", 'i18n!/nls/lang.js', 'ApiRequest', "ba
       if not (firstname and lastname)
         return false
       @modal.find(".modal-confirm").attr('disabled', true)
-      @modal.setContent MC.template.loadingSpiner()
+      @modal.setContent MC.template.loadingSpinner()
       ApiRequest("account_update_account", { attributes : {
         first_name : firstname
         last_name  : lastname
       }}).then  ->
         App.user.set("firstName", firstname)
         App.user.set("lastName" , lastname )
-        @modal.close()
+        that.modal.close()
         notification "info", lang.IDE.PROFILE_UPDATED_SUCCESSFULLY
       , ->
-        @modal.close()
+        that.modal.close()
         notification 'error', lang.IDE.PROFILE_UPDATED_FAILED
   }

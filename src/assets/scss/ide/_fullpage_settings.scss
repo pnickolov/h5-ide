@@ -1,0 +1,831 @@
+#settings-nav {
+    min-width  : 220px;
+    width      : 25%;
+    padding    : 20px 2.5% 20px 2.5%;
+    background : transparentize($dark-p,.2);
+    overflow   : auto;
+
+    .back-settings {
+        font-size     : 14px;
+        display       : block;
+        width         : 44px;
+        padding       : 8px 12px;
+        border        : 1px solid $light-p-2;
+        border-radius : 3px;
+        margin-bottom : 20px;
+        color         : lighten($light-p-2,20%);
+        background    : transparent;
+
+        @include transit($method:all, $dur:.2s);
+
+        &:hover {
+            background : $light-p-2;
+            color      : #fff;
+        }
+    }
+
+    section {
+        margin-bottom: 10px;
+
+        header, a {
+            max-width     : 210px;
+        }
+
+        header {
+            font-size : 18px;
+            color     : #eee;
+            padding   : 14px 0;
+        }
+
+        a {
+            display: block;
+            padding: 5px 0 5px 10px;
+        }
+    }
+}
+
+.settings-item {
+    position      : relative;
+    padding       : 5px 0 21px 0;
+    border-bottom : 1px solid $dark-p-2;
+    font-size     : 16px;
+    line-height   : 28px;
+
+    .edit-actions {
+        margin-top: 8px;
+
+        .cancel-button {
+            font-size   : 14px;
+            margin-left : 4px;
+            cursor      : pointer;
+        }
+
+        &.inline {margin-left: 8px;}
+    }
+
+    .edit-mode {
+        display  : none;
+        position : relative;
+
+        .loading-spinner {
+            display  : inline-block;
+            position : absolute;
+            right    : -30px;
+            top      : -48px;
+        }
+    }
+
+    .normal-mode { display: inline; }
+
+    &.edit {
+        .edit-mode { display: inline; }
+        .normal-mode { display: none; }
+        .icon-edit { display: none; }
+    }
+
+    dt {
+        color        : #999;
+        width        : 23%;
+        display      : inline-block;
+    }
+
+    dd {
+        color   : #eee;
+        display : inline-block;
+        width   : 70%;
+    }
+
+    dd + dt {
+        margin-top: 10px;
+    }
+
+    .input { width: 220px;}
+}
+
+div.settings-item {
+
+    h5 {
+        color     : #999;
+        width     : 100%;
+        display   : block;
+        font-size : 16px;
+    }
+
+    .edit-actions {
+        margin-left: 29%;
+    }
+}
+
+dl.settings-item {
+    @include displayflex;
+}
+
+.leave-project-zone,
+.delete-project-zone {
+    p:first-of-type {
+        color: $orange;
+    }
+
+    .cannot-delete { color: $light-r; margin-bottom: 8px;}
+}
+
+.confirm-action {
+    margin-top: 4px;
+
+    #confirm-project-name {
+        margin-right: 8px;
+    }
+
+    .cancel-delete-confirm,
+    .cancel-leave-confirm {
+        margin-left: 4px;
+    }
+}
+
+
+.fullpage-settings {
+    a { cursor: pointer; }
+    a.active:not(.btn), a:hover:not(.btn) { color: #5da4e5; }
+
+    @include displayflex;
+    height   : 100%;
+    width    : 100%;
+
+    @media ( min-width: 1280px ) {
+        max-width     : 1280px;
+        height        : 90vh;
+        margin        : 5vh auto;
+        border        : 1px solid $light-p-2;
+        border-radius : 4px;
+        box-sizing    : border-box;
+    }
+
+    .setting-content {
+        min-width  : 700px;
+        width      : 65%;
+        padding    : 20px 2.5% 20px 2.5%;
+        background : $dark-p-1;
+        overflow   : auto;
+
+        > header {
+            color          : #cce;
+            padding-bottom : 15px;
+            margin-bottom  : 20px;
+            font-size      : 22px;
+            border-bottom  : 1px solid #0c0c0d;
+
+            #title-project-name {
+                display       : inline-block;
+                max-width     : 350px;
+                color: #99c;
+            }
+
+            #title-tab-name {
+                display: inline-block;
+                overflow: hidden;
+
+                &:before {
+                    margin    : 0 4px;
+                    content   : "/";
+                    font-size : 16px;
+                    color     : #99c;
+                }
+            }
+        }
+
+        .avatar img { width: 80px; height: 80px; }
+
+        .change-photo {
+            height: 91px;
+            #change-photo {
+                margin: 49px 0 0 0;
+                color: #148BE6;
+                display: inline-block;
+                &:hover { text-decoration: underline; }
+            }
+
+        }
+
+        #AccountEmail, #AccountFullName {
+            color : #148BE6;
+        }
+
+        #AccountEmailInfo,
+        #AccountInfo {color: $light-r;}
+
+        #AccountPwd {
+            color       : #148BE6;
+            padding     : 3px 0;
+            margin-left : 0;
+        }
+
+        #SettingErrorInfo{
+            color: #ec3c38;
+            font-size: 15px;
+        }
+
+        .icon-edit {
+            color  : #909091;
+            cursor : pointer;
+
+            &:hover { color: #148BE6; }
+        }
+
+        .icon-delete:before { margin-right: 5px; }
+
+        .credential {
+
+            .instruct {
+                font-size     : 16px;
+                color         : $base-grey;
+                margin-bottom : 20px;
+            }
+
+            .setup-credential {
+                margin  : 20px auto;
+                display : block;
+            }
+
+            .demo-note {
+                color: $yellow;
+            }
+
+            ul.credential-list {
+                > li {
+                    width         : 400px;
+                    height        : 80px;
+                    border        : 1px solid $light-p-1;
+                    border-radius : 3px;
+                    position      : relative;
+                    margin        : 4px auto;
+                    background    : $base-p;
+                    padding       : 15px 20px;
+                    box-sizing    : border-box;
+
+                    &::selection { background: transparent; }
+
+                    // .credential-logo {
+                    //     position: absolute;
+                    //     left: 0;
+                    //     width: 80px;
+                    //     height: 80px;
+                    //     background: #f9af4e;
+                    //     &:before {
+                    //         content: "logo here";
+                    //         color: white;
+                    //     }
+                    // }
+
+                    .credential-name {
+                        color       : white;
+                        font-size   : 16px;
+                        line-height : 28px;
+                    }
+
+                    .icon-caret-down {
+                        position    : absolute;
+                        top         : 4px;
+                        right       : 4px;
+                        cursor      : pointer;
+                        color       : #ccc;
+                        width       : 18px;
+                        height      : 18px;
+                        line-height : 18px;
+                        text-align  : center;
+
+                        border-radius : 2px;
+                        border        : 1px solid $light-p-2;
+
+
+                        &:hover {
+                            color: #fff;
+                            background: $dark-p-2;
+                        }
+                    }
+
+                    .button-list {
+                        top           : 26px;
+                        left          : 300px;
+                        position      : absolute;
+                        border        : 1px solid #000;
+                        background    : $bg-p;
+                        border-radius : 2px;
+
+                        li {
+                            width       : 80px;
+                            line-height : 30px;
+                            cursor      : pointer;
+                            color       : $base-b;
+                            font-size   : 14px !important;
+                            padding     : 0 5px;
+
+                            &:before {
+                                display      : inline-block;
+                                width        : 16px;
+                                margin-right : 5px;
+                            }
+
+                            &.icon-delete { color: $light-r; }
+
+                            &:hover {
+                                background: #000;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
+        }
+
+        .member-setting {
+
+            .operate {
+                position: relative;
+                height: 60px;
+            }
+
+            .title {
+                font-size   : 16px;
+                line-height : 28px;
+                color       : #999;
+            }
+
+            .memlist-count {
+                font-size   : 12px;
+                margin-left : 4px;
+                color       : $dark-grey;
+
+                &:before { content: "("}
+                &:after {content: ")"}
+            }
+
+            #mail {
+                width: 280px;
+            }
+            .search {
+                display          : none;
+                position         : absolute;
+                width            : 308px;
+                border           : 1px #000 solid;
+                z-index          : 2;
+                background-color : $bg-p;
+                padding          : 10px;
+                margin-top       : -14px;
+                box-sizing       : border-box;
+                box-shadow       : 0 0 5px rgba(0,0,0,.6);
+
+                font-size: 12px;
+                color: $dark-grey;
+
+                span {
+                    text-align : center;
+                    display    : inline-block;
+                    width      : 100%;
+                }
+
+                .name { font-size: 14px; color: #ccc;}
+            }
+
+            .limit-member-tip {
+                width: 480px;
+                float: left;
+                padding: 10px 0 20px 0;
+            }
+            #invite {
+                margin: 15px 0 15px 0;
+                margin-left: 5px;
+            }
+            #delete {
+                float: right;
+                margin-top: 15px;
+            }
+            .invite {
+                float: left;
+                position: absolute;
+            }
+            .table th, .table td {
+                overflow: inherit;
+            }
+            .checkbox-row {
+                width: 20px;
+                position: relative;
+
+                .checkbox {
+                    position : absolute;
+                    top      : 50%;
+                    left     : 50%;
+                    margin   : -8px -8px;
+                }
+            }
+
+            table {
+                font-size: 12px;
+
+                &.table tbody td:last-of-type,
+                &.table-head thead th:last-of-type {
+                    text-align: center;
+                }
+            }
+
+            .memlist-item {
+
+                .t-m-content tr {
+                    height: 60px;
+                }
+
+                .cancel.link-style {
+                    color       : $light-r;
+                    line-height : 40px;
+                }
+
+                .done {
+                    margin-top : 8px;
+                    min-width  : 50px;
+                }
+
+                .memtype {
+                    margin-top: 4px;
+                }
+                .avatar {
+                    width            : 44px;
+                    height           : 44px;
+                    border-radius    : 50%;
+                    float            : left;
+                    background-color : $light-p-1;
+                    background-size  : contain;
+                    // border        : 1px solid $light-p-1;
+
+                    &:before {
+
+                    }
+
+                }
+                .info {
+                    float: left;
+                    margin: 3px 0 0 8px;
+                    .name, .mail {
+                        // margin: 5px;
+                        width: 150px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        text-align: left;
+                    }
+                    .name {
+                        // float: left;
+                        text-align: left;
+                    }
+                    .mail {
+                        color: #888;
+                    }
+                    .you {
+                        color: #888;
+                        // float: left;
+                        margin-left: 5px;
+                    }
+                }
+                .memlist-edit-mode {
+                    display: none;
+                }
+                .memlist-view-mode, .memlist-status {
+                    line-height: 40px;
+                }
+                &.edit {
+                    .memlist-view-mode {
+                        display: none;
+                    }
+                    .memlist-edit-mode {
+                        display: block;
+                    }
+                }
+                .memlist-pending {
+                    color: $yellow;
+                }
+                .role {
+                    text-transform: uppercase;
+                }
+                .selectbox {
+                    .selection {
+                        text-transform: uppercase;
+                        .desc {
+                            display: none;
+                        }
+                    }
+                    .dropdown {
+                        width: 217px;
+                        text-align: left;
+                    }
+                    li {
+                        overflow: hidden;
+                    }
+                }
+            }
+        }
+
+        .accountEditWrap {
+            display    : none;
+        }
+
+    }
+    .update-payment-wrap{
+        margin-top: 20px;
+        position: relative;
+        h5{
+            width: 100%;
+            span{
+                display: inline-block;
+                &.card-number{
+                    width: 230px;
+                }
+                &.cvv{
+                    width: 75px;
+                }
+                &.expiration{
+                    width: 100px;
+                }
+            }
+        }
+    }
+
+    .settings-item.credit-card-info dd {
+        @include displayflex;
+        @include vo-flex-wrap(wrap);
+
+
+        .credit-meta {
+            font-size: 12px;
+            color: $dark-grey;
+
+            p {
+                margin  : 0;
+                padding : 0;
+                line-height: 24px;
+            }
+        }
+
+        .credit-update {
+            margin-top : 10px;
+            width      : 100%;
+        }
+    }
+
+    .billing-email-text p {display: inline-block;}
+
+    .billing-history {
+        display: block;
+        
+        &:empty {
+            border: none;
+        }
+
+        dd {
+            width   : 90%;
+            display : block;
+            margin  : 10px auto;
+        }
+
+        .payment-next-billing {
+            font-size : 12px;
+            color     : $dark-grey;
+            position  : absolute;
+            right     : 5%;
+            top       : 10px;
+        }
+    }
+
+    .token-table {
+        position   : relative;
+        background : rgba(0,0,0,.1);
+        font-size  : 12px;
+
+        &.empty {
+            > header { display : none; }
+        }
+
+        .tokenName, .tokenToken, .tokenControl {
+            margin      : 0 5px;
+            line-height : 20px;
+            padding     : 5px;
+            height      : 20px;
+            width       : 90px;
+            float       : left;
+        }
+
+        .tokenToken {
+            width : auto;
+            font-family: Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif;
+        }
+
+        .tokenControl {
+            position: absolute;
+            right:     0;
+            width      : 90px;
+            padding    : 0;
+            line-height: 30px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            button.tooltip {
+                cursor  : pointer;
+                padding : 0;
+                color   : #666;
+
+                &.icon-edit {
+                    margin-right: 12px;
+                }
+
+                &.icon-edit:hover {
+                    color: #148BE6;
+                }
+                &.icon-delete:hover {
+                    color: #ec3c38;
+                }
+            }
+        }
+
+        input.tokenName {
+            line-height : 18px;
+        }
+
+        input.tokenName[readonly] {
+            border : none;
+            background : none;
+        }
+
+        .tokenDone { display:none; }
+        .tokenDone {
+            min-width   : 80px;
+            padding     : 4px 0;
+            line-height : 20px;
+        }
+
+        // .tokenControl .tooltip:before {
+        //   cursor : pointer;
+        //   color  : #34A3F8;
+        // }
+
+        > .scroll-wrap {
+            height : 250px;
+        }
+    }
+
+    #TokenList {
+        &:empty {
+            height : 100%;
+            &:before {
+                content     : attr(data-empty);
+                width       : 100%;
+                text-align  : center;
+                height      : 20px;
+                line-height : 20px;
+                top         : 50%;
+                left        : 0;
+                position    : absolute;
+            }
+        }
+
+        > li {
+            clear  : both;
+            height : 30px;
+            &:hover{
+              background: #25262C;
+            }
+        }
+
+        > li {
+            &:hover, &.editing {
+                .tokenControl { display:block; }
+            }
+
+            &.editing {
+                .tooltip { display:none; }
+                .tokenDone { display:block; }
+            }
+        }
+
+        .tokenToken {
+            color: #eee;
+        }
+
+        .tokenName.input {
+            font-size: 12px;
+        }
+
+    }
+
+    #TokenRmConfirm {
+        h3 {
+            font-size     : 18px;
+            padding       : 10px 0;
+            color         : #eee;
+            margin-bottom : 10px;
+        }
+
+        p {
+            color : #ccc;
+        }
+
+    }
+
+    .cred-btn-wrap {
+        margin-top: 20px;
+    }
+
+}
+
+#CredSetupWrap {
+    
+    
+    .icon-label {
+        position    : absolute;
+        right       : -8px;
+        top         : 13px;
+        color       : $base-b;
+        line-height : 36px;
+    }
+
+    .modal-control-group {
+        position: relative;
+
+        .input { width: 260px; }
+
+        #CredSetupMsg + & {
+            background: $bg-p;
+        }
+    }
+
+}
+
+
+.update-payment-ctrl{
+  padding: 10px 0;
+}
+
+.usage-report-view {
+
+  .current-usage-block {
+    display       : block;
+    width         : 180px;
+    padding       : 10px 10px 5px 10px;
+    text-align    : center;
+    background    : #000;
+    border-radius : 4px;
+    margin-top    : 8px;
+
+    h3{
+            font-size: 36px;
+            color: #91D21E;
+        }
+    }
+
+  .usage-pagination {
+    position: absolute;
+    right: 0;
+    margin-top: -28px;
+
+    .usage-date{
+      display    : inline-block;
+      padding    : 0 8px;
+      text-align : center;
+      font-size  : 12px;
+    }
+
+    button {
+      padding: 4px 0;
+      min-width: 28px;
+    }
+
+  }
+
+  .table-head-fix {
+    &:before {
+      display: block;
+      position: relative;
+      content: " ";
+      margin: -1px;
+      padding-top: 1px;
+      z-index: -1;
+    }
+
+    background    : #000;
+    height        : auto;
+    min-height    : 280px;
+    border-radius : 4px;
+    margin-top    : 8px;
+
+    .full-space {
+      text-align  : center;
+      line-height : 280px;
+      color       : #777;
+      font-size   : 14px;
+    }
+
+    .table-head{
+      background: #363636;
+    }
+    }
+}

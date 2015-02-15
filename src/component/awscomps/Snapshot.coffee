@@ -6,10 +6,18 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
     regionsMark = {}
     snapshotRes = Backbone.View.extend
         constructor: ()->
-            @collection = CloudResources constant.RESTYPE.SNAP, Design.instance().region()
+            @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.SNAP, Design.instance().region()
             @listenTo @collection, 'update', (@onChange.bind @)
             @listenTo @collection, 'change', (@onChange.bind @)
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @
+
+        credChanged: ()->
+            @collection.fetchForce()
+            @manager?.renderLoading()
+            @manager and @refresh()
+            @dropdown?.render "loading"
 
         onChange: ->
             @initManager()
@@ -25,8 +33,9 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         renderDropdown: ()->
             option =
                 filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_VOLUME
+                resourceName: lang.PROP.RESOURCE_NAME_SNAPSHOT
             @dropdown = new combo_dropdown(option)
-            @volumes = CloudResources constant.RESTYPE.VOL, Design.instance().region()
+            @volumes = CloudResources Design.instance().credentialId(), constant.RESTYPE.VOL, Design.instance().region()
             selection = lang.PROP.VOLUME_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
@@ -113,7 +122,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager.on 'checked', @processDuplicate, @
 
             @manager.render()
-            if not App.user.hasCredential()
+            if Design.instance().credential()?.isDemo()
                 @manager?.render 'nocredential'
                 return false
             @initManager()
@@ -275,6 +284,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
             title: sprintf lang.IDE.MANAGE_SNAPSHOT_IN_AREA, regionName
             slideable: true
+            resourceName: lang.PROP.RESOURCE_NAME_SNAPSHOT
             context: that
             buttons: [
                 {

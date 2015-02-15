@@ -104,7 +104,7 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
       for ch in ($svg_canvas_element[0].children or $svg_canvas_element[0].childNodes)
         if (not ch.tagName) or (ch.tagName.toLowerCase() isnt "g") then continue
         bbox = ch.getBBox()
-        if not (bbox.x + bbox.y + bbox.width + bbox.height)
+        if (bbox.x + bbox.y + bbox.width + bbox.height) is 0
           continue
         if bbox.x < origin.x then origin.x = bbox.x
         if bbox.y < origin.y then origin.y = bbox.y
@@ -282,6 +282,8 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
     defer.promise
 
   saveThumbnail = ( id, $svg_element, size )->
+    if not $svg_element then return
+
     if typeof $svg_element is "string"
       saveThumbnailFinish {
         id    : id
@@ -293,7 +295,7 @@ define ['UI.canvg', 'component/exporter/Download'], ()->
         size     : size
         onFinish : saveThumbnailFinish
       }
-    null
+    return
 
   getThumbnail = ( id )->
     localStorage.getItem "tn/#{id}"

@@ -12,7 +12,7 @@ Refer to kpView.coffee
 
 ###
 
-define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template, Backbone, $ ) ->
+define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery', "credentialFormView" ], ( template, Backbone, $, CredentialFormView ) ->
 
 
     Backbone.View.extend
@@ -42,7 +42,7 @@ define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template
             false
 
         __showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
+            new CredentialFormView({model: Design.instance().project()}).render()
 
         __filter: ( event ) ->
             @trigger 'filter', event.currentTarget.value
@@ -63,15 +63,15 @@ define [ 'component/common/comboDropdownTpl', 'backbone', 'jquery' ], ( template
         __optionChange: ( event, name, data ) ->
             @trigger 'change', name, data
 
-        initialize: ( options ) ->
-            @$el.html template.frame options
+        initialize: ( @options ) ->
+            @$el.html template.frame @options
             @
 
 
         # ------ INTERFACE ------ #
 
         render: ( tpl ) ->
-            @$( '.combo-dd-content' ).html template[ tpl ] and template[ tpl ]() or tpl
+            @$( '.combo-dd-content' ).html template[ tpl ] and template[ tpl ](@options) or tpl
             @
 
         setSelection: ( dom ) ->

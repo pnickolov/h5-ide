@@ -126,15 +126,14 @@ p {
 	padding: 2px;
 }
 
-.clearfix {
-	*zoom: 1;
+.clearfix:before,
+.clearfix:after{
+  display: table;
+  content: " ";
 }
 
-.clearfix:after {
-	content : "";
-	display : block;
-	height  : 0;
-	clear   : both;
+.clearfix:after{
+  clear: both;
 }
 
 .hide {
@@ -245,6 +244,10 @@ body {
 
 a {
 	color: #ccc;
+
+	&:hover {
+		color: $base-b;
+	}
 }
 
 /* reset */
@@ -309,30 +312,6 @@ a {
 	/*display: inline-block;*/
 }
 
-/* Main */
-#main {
-	position : absolute;
-	left     : 0;
-	top      : 49px;
-	right    : 0;
-	bottom   : 0;
-	border-top: 1px solid #202020;
-}
-
-/* Wrapper */
-#wrapper {
-	position : absolute;
-	width    : 100%;
-	top      : 0;
-	bottom   : 0;
-
-	-webkit-transition : -webkit-transform 0.21s ease-in;
-	   -moz-transition : -moz-transform 0.21s ease-in;
-	     -o-transition : -o-transform 0.21s ease-in;
-					transition : transform 0.21s ease-in;
-}
-
-
 .global-region-status-content {
 	position: relative;
 }
@@ -344,13 +323,6 @@ a {
 	-ms-transition: -ms-transform .1s;
 	-o-transition: -o-transform, .1s;
 	transition: transform .1s;
-}
-
-/* Main Content */
-#main > div {
-	display : none;
-	height  : 100%;
-	width   : 100%;
 }
 
 /* Browse Community AMI Modal */
@@ -590,22 +562,6 @@ a {
 
 	textarea {
 	    width            : 242px;
-	    padding          : 7px;
-	    border           : 1px solid #000000;
-	    background-color : #1c1c1c;
-	    color            : #D0D0D0;
-	    height           : 60px;
-	    overflow         : auto;
-
-	    &:focus {
-    	    background-color: #000;
-		    color: #eee;
-		    border: 1px solid #161616;
-	    }
-
-	    &:hover {
-	    	background: #101010;
-	    }
 	}
 
 	#property-res-desc {
@@ -3421,7 +3377,9 @@ div.modal-text-highlight{
 	overflow: auto;
 	padding : 10px 20px;
 	height  : 500px;
-	color   : #0E750C;
+	color   : #0f0;
+
+	@include font-mono;
 }
 
 #modal-instance-sys-log .instance-sys-log-content::selection {
@@ -3569,72 +3527,6 @@ div.modal-text-highlight{
 	right: 4px;
 	top: 50%;
 	margin-top: -8px;
-}
-
-/* Keyboard Shortcuts Cheatsheet */
-
-#modal-key-short .modal-body {
-	padding: 0;
-}
-
-#modal-key-short .title {
-	font-size: 18px;
-	color: #999;
-	border-bottom: 1px solid #1d1d1d;
-	padding: 0 15px;
-}
-
-/*#modal-key-short section {
-	margin-bottom: 40px;
-}*/
-
-#modal-key-short .key-item {
-	color: #ccc;
-	padding: 10px 24px 10px 24px;
-}
-
-#modal-key-short .key-item:nth-child(2n+1) {
-	background: rgba(255,255,255,.02);
-}
-
-#modal-key-short .key-item > div {
-	display: inline-block;
-	font-size: 14px;
-}
-
-#modal-key-short .keys {
-	background: #232224;
-	padding: 0;
-}
-
-#modal-key-short .key {
-	width: 220px;
-	margin-right: 20px;
-	color: green;
-	/*text-align: right;*/
-}
-
-#modal-key-short .action {
-	position: relative;
-}
-
-#modal-key-short .meta {
-	font-size: 12px;
-	position: absolute;
-	color: #aaa;
-	display: none;
-}
-
-#modal-key-short .key.mac {
-	display: none;
-}
-
-.mac #modal-key-short .key.mac {
-	display: inline-block !important;
-}
-
-.mac #modal-key-short .key.pc {
-	display: none !important;
 }
 
 #sslcert-select .selection .icon-remove {
@@ -3816,48 +3708,16 @@ div.modal-text-highlight{
     margin-top: 6px;
 }
 
-#modal-wrap .estimate-stop{
-    display: block;
-    position: relative;
-    background: #0f0f0f;
-    padding: 10px 20px;
-}
-#modal-wrap .estimate-stop div{
-    margin: 10px 0;
-    position: relative;
-}
-#modal-wrap .estimate-stop .title{
-    font-size: 16px;
-}
-#modal-wrap .estimate-stop .price{
-    float: right;
-}
-#label-total-fee b{
+#label-total-fee b {
     font-weight: normal;
     font-size: 20px;
     color:#f8b42d;
 }
-#label-total-saving b{
-    font-weight : normal;
-    color       : #8ed72b;
-    font-size   : 18px;
-}
+
 .db-stop-status{
     color : #f8b42d;
 }
-.modal-shrink {
-    display    : block;
-    background : #020202;
-    margin     : 0 -15px;
-    padding    : 20px;
-}
-.modal-shrink .sub-gray{
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-.modal-shrink .error{
-    color: #F74A48;
-}
+
 .check-final-snapshot{
     padding   : 10px 0;
     font-size : 16px;
@@ -3914,10 +3774,7 @@ div.modal-text-highlight{
   }
 }
 
-
-@import "ide/header";
-@import "ide/navigation";
-@import "ide/settings";
+@import "utility/animation";
 @import "ide/dashboard";
 @import "sharedres/kp";
 @import "sharedres/optiongroup";
@@ -3939,3 +3796,6 @@ div.modal-text-highlight{
 @import "os/toolbar";
 @import "os/component";
 @import "os/dashboard";
+@import "ide/fullpage_settings";
+@import "ide/project";
+@import "ide/cheatsheet";

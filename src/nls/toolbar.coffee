@@ -67,6 +67,14 @@ module.exports =
       en: "has unsaved changes."
       zh: "有未保存变更。"
 
+    SAVE_AND_CLOSE_BTN:
+      en: "Save & Close"
+      zh: "保存并关闭"
+
+    SAVING_BTN:
+      en: "Saving..."
+      zh: "保存中..."
+
     CLOSE_CONFIRM:
       en: "Do you confirm to close it?"
       zh: "您确认要关闭吗?"
@@ -237,7 +245,7 @@ module.exports =
 
     TIT_CLOSE_TAB:
       en: "Close Tab"
-      zh: "关闭标签"
+      zh: "关闭"
 
     POP_TIT_DUPLICATE_STACK:
       en: "Duplicate Stack"
@@ -484,7 +492,7 @@ module.exports =
       zh: "取消应用更新"
 
     TIP_FORGET_APP:
-      en: "Forget the App, but keep all Resources"
+      en: "Forget the app, while keeping all resources"
       zh: "释放App，但保留所有AWS资源"
 
     BTN_FORGET_CONFIRM:
@@ -664,7 +672,7 @@ module.exports =
       zh: "显示未使用的地区"
 
     FORGET_VISUALOPS_CANT:
-      en: "This app is created by Visualops with state, do not support forget currently"
+      en: "This app is created by VisualOps with Instance State. For apps with Instance State, forgetting is not supprted yet."
       zh: "此 App 是用 VisualOps 创建的，里面有 State，目前不支持释放。"
 
     FORGET_CONFIRM_INSTRUCTION:

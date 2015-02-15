@@ -54,7 +54,7 @@ define [
 		for i in instanceLike
 			# Don't check instance has appId( means exsit ) and hasn't added member
 			if i.type is constant.RESTYPE.INSTANCE and i.get( 'appId' ) and i.get( 'count' ) is i.groupMembers().length + 1
-				continue;
+				continue
 
 			keyName = i.get( 'keyName' )
 			if keyName and keyName[0] isnt '@' and not i.connectionTargets( "KeypairUsage" ).length
@@ -63,11 +63,9 @@ define [
 		if not needValidate.length
 			callback null
 		else
-			username = $.cookie "usercode"
-			session  = $.cookie "session_id"
 			region = Design.instance().region()
 
-			kpCollection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+			kpCollection = CloudResources(Design.instance().credentialId(), constant.RESTYPE.KP, Design.instance().get("region"))
 			kpCollection.fetchForce().then ( col ) ->
 				kpList = col.toJSON()
 				_.each needValidate, ( i ) ->

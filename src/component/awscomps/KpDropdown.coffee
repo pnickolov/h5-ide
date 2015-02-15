@@ -5,7 +5,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
     Backbone.View.extend {
 
         showCredential: ->
-            App.showSettings App.showSettings.TAB.Credential
+            Design.instance().project().showCredential()
 
         filter: ( keyword ) ->
             hitKeys = _.filter @getKey(), ( k ) ->
@@ -47,6 +47,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             options =
                 manageBtnValue      : lang.PROP.INSTANCE_MANAGE_KP
                 filterPlaceHolder   : lang.PROP.INSTANCE_FILTER_KP
+                resourceName        : lang.PROP.RESOURCE_NAME_KEYPAIR
 
             @dropdown = new comboDropdown( options )
             @dropdown.on 'open', @show, @
@@ -56,16 +57,25 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
 
         initialize: ( options ) ->
             @resModel = if options then options.resModel else null
-            @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+            credentialId = Design.instance().credentialId()
+
+            @collection = CloudResources(credentialId, constant.RESTYPE.KP, Design.instance().get("region"))
             @listenTo @collection, 'update', @renderKeys
             @listenTo @collection, 'change', @renderKeys
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             if not @resModel
                 @__mode = 'runtime'
 
             @initDropdown()
 
+        credChanged: ()->
+            @dropdown?.render("loading")
+            @collection.fetchForce().then =>
+              @renderKeys()
+
         show: () ->
-            if App.user.hasCredential()
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 def = null
                 if not regions[Design.instance().get("region")] and @collection.isReady()
                     regions[Design.instance().get("region")] = true

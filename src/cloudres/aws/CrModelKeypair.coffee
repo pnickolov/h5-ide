@@ -19,16 +19,12 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
     doCreate : ()->
       self = @
       if @get("keyData")
-        promise = ApiRequest("kp_ImportKeyPair", {
-          region_name : @getCollection().region()
-          key_name    : @get("keyName")
-          key_data    : @get("keyData")
+        promise = @sendRequest("kp_ImportKeyPair", {
+          key_name : @get("keyName")
+          key_data : @get("keyData")
         })
       else
-        promise = ApiRequest("kp_CreateKeyPair", {
-          region_name : @getCollection().region()
-          key_name    : @get("keyName")
-        })
+        promise = @sendRequest("kp_CreateKeyPair", { key_name : @get("keyName") })
 
       promise.then ( res )->
         try
@@ -43,10 +39,6 @@ define [ "../CrModel", "ApiRequest" ], ( CrModel, ApiRequest )->
         console.log "Created keypair resource", self
         self
 
-    doDestroy : ()->
-      ApiRequest("kp_DeleteKeyPair", {
-        region_name : @getCollection().region()
-        key_name    : @get("id")
-      })
+    doDestroy : ()-> @sendRequest("kp_DeleteKeyPair", { key_name : @get("id") })
 
   }

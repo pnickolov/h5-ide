@@ -21,7 +21,7 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'TaHelper', "CloudResou
       # if have cgw in stack
       if stackCGWIP and stackCGWName and stackCGWUID and not stackCGWId
 
-        cr = CloudResources( constant.RESTYPE.CGW, Design.instance().region() )
+        cr = CloudResources( Design.instance().credentialId(), constant.RESTYPE.CGW, Design.instance().region() )
 
         failure = ()-> callback( null )
         success = ()->

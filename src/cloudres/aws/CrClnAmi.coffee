@@ -83,37 +83,43 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     __selfParseData : true
 
-    initialize : ()->
-      invalidAmi = localStorage.getItem("invalidAmi/" + @region())
-      @__markedIds = {}
+    localStorageKey : ()-> "ivla/" + @credential() + "_" + @region()
 
-      if invalidAmi
-        for id in invalidAmi.split(",")
-          @__markedIds[ id ] = true
-      return
+    initialize : ()-> @__markedIds = {}; return
 
     doFetch : ()->
       # This method is used for CloudResources to invalid the cache.
-      localStorage.setItem("invalidAmi/" + @region(), "")
+      if localStorage.getItem( @localStorageKey() )
+        localStorage.setItem( @localStorageKey(), "")
+
       @__markedIds = {}
       d = Q.defer()
       d.resolve([])
       @trigger "update"
       return d.promise
 
-    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid; return
-    isIdMarked : ( amiId )-> @__markedIds.hasOwnProperty( amiId )
+    initWithCache : ()->
+      if @__markedIdInited then return
 
-    isInvalidAmiId : ( amiId )-> @__markedIds[ amiId ]
+      @__markedIdInited = true
+      for id in (localStorage.getItem( @localStorageKey() )||"").split(",")
+        @__markedIds[ id ] = true
+
+    markId     : ( amiId, invalid )-> @__markedIds[ amiId ] = invalid; return
+    isIdMarked : ( amiId )-> @initWithCache(); @__markedIds.hasOwnProperty( amiId )
+
+    isInvalidAmiId : ( amiId )-> @initWithCache(); @__markedIds[ amiId ]
 
     getOSFamily : ( amiId )-> getOSFamily( @get( amiId ) )
 
     saveInvalidAmiId : ()->
       amis = []
       for amiId, value of @__markedIds
-        if value then amis.push amiId
+        if value and amiId then amis.push amiId
 
-      localStorage.setItem("invalidAmi/" + @region(), amis.join(",") )
+      if amis.length
+        localStorage.setItem( @localStorageKey(), amis.join(",") )
+      return
 
     fetchAmi : ( ami )->
       if not ami then return
@@ -134,7 +140,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       , 0
       return
 
-    fetchAmis : ( amis )->
+    fetchAmis : ( amis, force = false )->
       if not amis then return
 
       if _.isString(amis)
@@ -144,13 +150,13 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       # See if we ha
       toFetch = []
       for amiId in amis
-        if @get( amiId ) then continue
+        if @get( amiId ) and not force then continue
         if @isIdMarked( amiId )
           if @__markedIds[ amiId ]
             console.info "Ami '#{amiId}' is invalid. Ignore fetching info."
           else
             console.log "Ami `#{amiId}` is duplicated. Ignore fetching info."
-          continue
+          continue if not force
 
         @markId( amiId, false )
 
@@ -164,9 +170,8 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       self = @
 
       # Do fetch.
-      ApiRequest("ami_DescribeImages", {
-        region_name : @region()
-        ami_ids     : toFetch
+      @sendRequest( "ami_DescribeImages", {
+        ami_ids : toFetch
       }).then ( res )->
         res = res.DescribeImagesResponse.imagesSet?.item
         if res
@@ -175,6 +180,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         else
           self.trigger "update"
 
+        return res if force
         self.saveInvalidAmiId()
 
       , ( err )->
@@ -194,10 +200,10 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
         toFetch.splice( toFetch.indexOf(invalidId), 1 )
         self.markId( invalidId, true )
-        __markedIds = @__markedIds
-        @__markedIds = {}
+        __markedIds = self.__markedIds
+        self.__markedIds = {}
         p = self.fetchAmis( toFetch )
-        @__markedIds = __markedIds
+        self.__markedIds = __markedIds
         return p
   }
 
@@ -213,7 +219,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     getModels : ()->
       ms = []
-      col = CloudResources( constant.RESTYPE.AMI, @region() )
+      col = CloudResources( @credential(), constant.RESTYPE.AMI, @region() )
       for id in @__models
         ms.push col.get( id )
       ms
@@ -221,9 +227,6 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
     fetchForce : ()->
       @__models = []
       CrCollection.prototype.fetchForce.call this
-
-
-
   }
 
   ### This Collection is used to fetch quickstart ami ###
@@ -234,7 +237,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     type  : "QuickStartAmi"
 
-    doFetch : ()-> ApiRequest("aws_quickstart", {region_name : @region()})
+    doFetch : ()-> @sendRequest("aws_quickstart")
 
     parseFetchData : ( data )->
       # OpsResource doesn't return anything, Instead, it injects the data to other collection.
@@ -247,7 +250,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         savedAmis.push ami
         amiIds.push id
 
-      CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
+      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = amiIds
       return
   }
@@ -265,18 +268,16 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     doFetch : ()->
       selfParam1 =
-        region_name   : @region()
         executable_by : ["self"]
         filters       : [{ Name : "is-public", Value : false }]
       selfParam2 =
-        region_name   : @region()
         owners        : ["self"]
 
       self = @
 
       Q.allSettled([
-        ApiRequest("ami_DescribeImages", selfParam1)
-        ApiRequest("ami_DescribeImages", selfParam2)
+        @sendRequest( "ami_DescribeImages", selfParam1 )
+        @sendRequest( "ami_DescribeImages", selfParam2 )
       ]).spread ( d1, d2 )->
         d1 = d1.value.DescribeImagesResponse.imagesSet?.item || []
         d2 = d2.value.DescribeImagesResponse.imagesSet?.item || []
@@ -292,7 +293,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
 
     onFetch : ( amiArray )->
       @__models = fixDescribeImages( amiArray )
-      CloudResources( constant.RESTYPE.AMI, @region() ).add amiArray
+      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add amiArray
       return
 
     parseFetchData : ( data )->
@@ -307,14 +308,13 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
           amiIds.push ami.id
         catch e
 
-      CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
+      CloudResources( @credential(), constant.RESTYPE.AMI, @region() ).add savedAmis
       @__models = amiIds
       return
   }
 
 
-
-
+  UserFavAmis = {}
   ### This Collection is used to fetch favorite ami ###
   SpecificAmiCollection.extend {
     ### env:dev ###
@@ -324,62 +324,65 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
     type  : "FavoriteAmi"
 
     doFetch : ()->
-      ApiRequest("favorite_info", {
-        region_name : @region()
-        provider    : "AWS"
-        service     : "EC2"
-        resource    : "AMI"
-      })
+      region = @region()
 
-    parseFetchData : ( data )->
-      # OpsResource doesn't return anything, Instead, it injects the data to other collection.
-      savedAmis = []
-      favAmiId  = []
-      for ami in data
-        if $.isEmptyObject( ami.blockDeviceMapping )
-          ami.blockDeviceMapping = null
+      if UserFavAmis[ region ]
+        d = Q.defer()
+        d.resolve()
+        p = d.promise
+      else
+        p = ApiRequest("favorite_info", {
+          region_name : region
+          provider    : "AWS"
+          service     : "EC2"
+          resource    : "AMI"
+        }).then ( res )-> UserFavAmis[ region ] = res || []; return
 
-        savedAmis.push ami
-        favAmiId.push ami.id
+      self = @
+      p.then ()->
+        CloudResources( self.credential(), constant.RESTYPE.AMI, self.region() ).fetchAmis( UserFavAmis[ region ] )
 
-      CloudResources( constant.RESTYPE.AMI, @region() ).add savedAmis
-      @__models = favAmiId
-      return
+    parseFetchData : ( data )-> return
+
+    getModels : ()->
+      ms = []
+      col = CloudResources( @credential(), constant.RESTYPE.AMI, @region() )
+      for id in UserFavAmis[ @region() ] || []
+        m = col.get( id )
+        if m then ms.push m
+      ms
 
     unfav : ( id )->
       self = @
-      idx = @__models.indexOf id
+      idx = (UserFavAmis[@region()]||[]).indexOf id
       if idx is -1
         d = Q.defer()
         d.resolve()
         return d.promise
 
       ApiRequest("favorite_remove", {
-        region_name : self.region()
+        region_name  : @region()
         resource_ids : [id]
       }).then ()->
-        idx = self.__models.indexOf id
-        self.__models.splice idx, 1
+        ms = UserFavAmis[self.region()]
+        ms.splice ms.indexOf(id), 1
         self.trigger "update"
         self
 
-    fav : ( ami )->
-      if _.isString( ami )
-        imageId = ami
-        ami = ""
-      else
-        ami = $.extend {}, ami
-        imageId = ami.id
+    fav   : ( ami )->
+      if not ami.id then return null
+
+      imageId = ami.id
 
       self = @
       ApiRequest("favorite_add", {
-        region_name : self.region()
-        resource : { id: imageId, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
+        region_name : @region()
+        resource    : { id: ami.id, provider: 'AWS', 'resource': 'AMI', service: 'EC2' }
       }).then ()->
-        self.__models.push imageId
+        ms = UserFavAmis[ self.region() ] || (UserFavAmis[ self.region() ] = [])
+        ms.push ami.id
 
-        if ami
-          CloudResources( constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
+        CloudResources( self.credential(), constant.RESTYPE.AMI, self.region() ).add ami, {add: true, merge: true, remove: false}
 
         self.trigger "update"
         self

@@ -44,6 +44,7 @@ define [
 
             title:  sprintf lang.IDE.MANAGE_KP_IN_AREA, regionName
             slideable: _.bind that.denySlide, that
+            resourceName: lang.PROP.RESOURCE_NAME_KEYPAIR
             context: that
             buttons: [
                 {
@@ -91,24 +92,31 @@ define [
 
 
         initialize: ( options ) ->
-            options = {} if not options
-            @model = options.model
-            @resModel = options.resModel
-            @collection = CloudResources(constant.RESTYPE.KP, Design.instance().get("region"))
+            _.extend @, options
+
+            @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.KP, Design.instance().get("region")
             @initModal()
             @modal.render()
-            if App.user.hasCredential()
+
+            if Design.instance().credential() and not Design.instance().credential().isDemo()
                 that = @
                 @collection.fetch().then ->
-                  that.renderKeys()
+                    that.renderKeys()
             else
-              @modal.render 'nocredential'
+                @modal.render 'nocredential'
 
             @collection.on 'update', @renderKeys, @
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
+
+        credChanged: ()->
+            @collection.fetchForce()
+            @modal.renderLoading()
+            @modal and @refresh()
 
         renderKeys: () ->
             if not @collection.isReady()
-              return false
+                return false
             data = keys : @collection.toJSON()
             @modal.setContent template.keys data
             @
@@ -270,6 +278,7 @@ define [
             @modal.cancel()
 
         refresh: ->
+            @modal?.render "loading"
             @collection.fetchForce().then =>
               @renderKeys()
 

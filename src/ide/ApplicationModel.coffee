@@ -4,132 +4,151 @@
   The Model for application
 ----------------------------
 
-  This model holds all the data of the user in our database. For example, stack list / app list / notification things and extra.
+  ApplicationModel holds the data / settings of VisualOps. It also provides some convenient methods.
 
 ###
 
 define [
-  "./submodels/OpsCollection"
   "OpsModel"
+  "Project"
   "ApiRequest"
   "ApiRequestOs"
-  "backbone"
-  "constant"
   "ThumbnailUtil"
+  "constant"
   "i18n!/nls/lang.js"
-
-  "./submodels/OpsModelOs"
-  "./submodels/OpsModelAws"
-], ( OpsCollection, OpsModel, ApiRequest, ApiRequestOs, Backbone, constant, ThumbUtil, lang )->
+  "backbone"
+], ( OpsModel, Project, ApiRequest, ApiRequestOs, ThumbnailUtil, constant, lang )->
 
   Backbone.Model.extend {
 
-    defaults : ()->
-      __websocketReady : false
-      notification     : [] # An array holding the notification data
-      stackList        : new OpsCollection()
-      appList          : new OpsCollection()
-
-    markNotificationRead : ()->
-      for i in @attributes.notification
-        i.readed = true
-      return
-
-    # Convenient method to get the stackList and appList
-    stackList : ()-> @attributes.stackList
-    appList   : ()-> @attributes.appList
-
-    getOpsModelById : ( opsId )-> @attributes.appList.get(opsId) || @attributes.stackList.get(opsId)
-
-    createImportOps : ( region, provider, msrId )->
-      m = @attributes.appList.findWhere({importMsrId:msrId})
-      if m then return m
-      m = new OpsModel({
-        name        : "ImportedApp"
-        importMsrId : msrId
-        region      : region
-        provider    : provider
-        state       : OpsModel.State.Running
-      })
-      @attributes.appList.add m
-      m
-
-    createSampleOps : ( sampleId )->
-      m = new OpsModel({
-        sampleId : sampleId
-      })
-      @attributes.stackList.add m
-      m
-
-    # This method creates a new stack in IDE, and returns that model.
-    # The stack is not automatically stored in server.
-    # You need to call save() after that.
-    createStack : ( region, provider = "aws::global" )->
-      # console.assert( constant.REGION_KEYS.indexOf(region) >= 0, "Region is not recongnised when creating stack:", region )
-      m = new OpsModel({
-        region    : region
-        provider  : provider
-      }, {
-        initJsonData : true
-      })
-      @attributes.stackList.add m
-      m
-
-    createStackByJson : ( json, updateLayout = false )->
-      if not @attributes.stackList.isNameAvailable( json.name )
-        json.name = @stackList().getNewName( json.name )
-
-      m = new OpsModel({
-        name       : json.name
-        region     : json.region
-        autoLayout : updateLayout
-        __________itsshitdontsave : updateLayout
-      }, {
-        jsonData : json
-      })
-      @attributes.stackList.add m
-      m
-
+    # AppData Related.
     getPriceData : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).price
     getOsFamilyConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).osFamilyConfig
     getInstanceTypeConfig : ( awsRegion )-> (@__awsdata[ awsRegion ] || {}).instanceTypeConfig
     getRdsData: ( awsRegion ) -> (@__awsdata[ awsRegion ] || {}).rds
     getStateModule : ( repo, tag )-> @__stateModuleData[ repo + ":" + tag ]
 
-
     getOpenstackFlavors : ( provider, region )-> @__osdata[ provider ][ region ].flavors
     getOpenstackQuotas  : ( provider )-> @__osdata[ provider ].quota
+
+
+    # User Related.
+    # Returns a promise that will fulfilled when the user data is available.
+    fetchUserData : ( userCodeList )->
+      toFetch = []
+      result  = {}
+      for usercode in userCodeList
+        userdata = @__vousercache[usercode]
+        if userdata is undefined
+          toFetch.push usercode
+        else if userdata
+          result[usercode] = $.extend {}, userdata
+
+      if not toFetch.length
+        d = Q.defer()
+        d.resolve( result )
+        return d.promise
+
+      self = @
+      ApiRequest("account_list_user",{user_list:toFetch}).then (res)->
+        self.__vousercache[usercode] = false for usercode in toFetch
+        for d in res
+          data = self.__vousercache[d.username] = {
+            usercode : d.username
+            email    : Base64.decode( d.email || "" )
+          }
+          data.avatar = "https://www.gravatar.com/avatar/" + CryptoJS.MD5(data.email.trim().toLowerCase()).toString()
+          result[d.username] = $.extend {}, data
+        result
+
+    # Project Related.
+    getOpsModelById : ( opsModelId )->
+      for p in @get("projects").models
+        ops = p.getOpsModel( opsModelId )
+        if ops then return ops
+      return null
+
+    projects : ()-> @get("projects")
+    getPrivateProject : ()->
+      for p in @get("projects").models
+        if p.isPrivate() then return p
+      null
+
+    # Create a new project. It returns a promise.
+    # The promise will be fulfilled when the project is created successfully with the new project as the fulfillment.
+    # attr : {
+    #   name       : ""
+    #   firstname  : ""
+    #   lastname   : ""
+    #   email      : ""
+    #   card       : {
+    #      number : ""
+    #      expire : ""
+    #      cvv    : ""
+    #   }
+    # }
+    #
+    createProject : ( attr )->
+      self = @
+
+      ApiRequest( "project_create", {
+        project_name : attr.name
+        first_name   : attr.firstname
+        last_name    : attr.lastname
+        email        : attr.email
+        credit_card  : {
+          full_number      : attr.card.number
+          expiration_month : attr.card.expire.split("/")[0] or ""
+          expiration_year  : attr.card.expire.split("/")[1] or ""
+          cvv              : attr.card.cvv
+        }
+      }).then ( projectObj )->
+        p = new Project( projectObj )
+        self.projects().add(p)
+        p
 
 
     ###
       Internal methods
     ###
+    defaults : ()->
+      projects : new (Backbone.Collection.extend({
+        comparator : ( m )-> if m.isPrivate() then "" else m.get("name")
+        initialize : ()-> @on "change:name", @sort, @; return
+      }))()
+
     initialize : ()->
       @__awsdata = {}
       @__osdata  = {}
       @__stateModuleData = {}
-      @__initializeNotification()
+      @__vousercache = {}
       return
 
     # Fetches user's stacks and apps from the server, returns a promise
     fetch : ()->
       self = this
-      sp = ApiRequest("stack_list", {region_name:null}).then (res)-> self.get("stackList").set self.__parseListRes( res )
-      ap = ApiRequest("app_list",   {region_name:null}).then (res)-> self.get("appList").set   self.__parseListRes( res )
+      # Load user's projects.
+      projectlist = ApiRequest("project_list").then (res)-> self.__parseProjectData( res )
 
       # Load Application Data.
       awsData = ApiRequest("aws_aws",{fields : ["region","price","instance_types","rds"]}).then ( res )-> self.__parseAwsData( res )
 
-      osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
+      # The api is deprecated, might update in the future.
+      # osData  = ApiRequestOs("os_os",   {provider:null}).then (res)-> self.__parseOsData( res )
 
-      # When app/stack list is fetched, we first cleanup unused thumbnail. Then
-      # Tell others that we are ready.
-      Q.all([ sp, ap, awsData, osData ]).then ()->
-        try
-          ThumbUtil.cleanup self.appList().pluck("id").concat( self.stackList().pluck("id") )
-        catch e
+      Q.all([ projectlist, awsData ]).then ()->
+        # Cleans up unused thumbnails.
+        ids = []
+        for p in self.projects().models
+          ids = ids.concat p.stacks().pluck("id"), p.apps().pluck("id")
 
+        ThumbnailUtil.cleanup( ids )
         return
+
+    __parseProjectData : ( res )->
+      for p in res || []
+        @attributes.projects.add( new Project( p ) )
+      return
 
     __parseAwsData : ( res )->
       for i in res
@@ -173,7 +192,7 @@ define [
             flavors : new Backbone.Collection( _.values(data.flavor) )
 
         #quota is user-related, need optimized when backend support multiple provider indeed
-        osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res )
+        # osQuota = ApiRequestOs("os_quota",{provider:provider}).then (res)-> self.__parseOsQuota( res )
 
       return
 
@@ -206,160 +225,4 @@ define [
           throw McError( ApiRequest.Errors.InvalidRpcReturn, "Can't load state data. Please retry." )
         self.__stateModuleData[ repo + ":" + tag ] = d
         d
-
-    __parseListRes : ( res )->
-      r = []
-
-      for ops in res
-        r.push {
-          id         : ops.id
-          updateTime : ops.time_update
-          region     : ops.region
-          usage      : ops.usage
-          name       : ops.name
-          version    : ops.version
-          provider   : ops.provider
-          state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
-          stoppable  : not (ops.property and ops.property.stoppable is false)
-        }
-      r
-
-    # In the previous version, Websocket emits changes of request things (AKA, the notification). Websocket actually holds a copy of the request things. And the request things is process by module/design/toolbar ( ridiculous, but whatever ). There's no place to actually store the notification ( Well, it's stored in module/header, But I think the notification is a data source of the Application ). So now, we store the notification here.
-    __initializeNotification : ()->
-      # It seems like the toolbar doesn't even process the request_item, in which we can just directly listen to WS that the request item event.
-      self = this
-      App.WS.on "requestChange", (idx, dag)-> self.__processSingleNotification idx, dag
-
-    __triggerNotification : _.debounce ()->
-      @trigger "change:notification"
-    , 400
-
-    __processSingleNotification : ( idx )->
-
-      req = App.WS.collection.request.findOne({'_id':idx})
-      if not req then return
-
-      item = @__parseRequestInfo req
-      if not item then return
-
-      @__handleRequestChange( item )
-
-      if item.operation is "save" then return
-
-      info_list = @attributes.notification
-
-      # find existing request
-      for i, idx in info_list
-        if i.id is item.id
-          same_req = i
-          break
-
-      # Don't update the list if the request's state is not changed.
-      if same_req and _.isEqual( same_req.state, item.state )
-          return
-
-      # Mark the item as read if the current tab is the item's tab.
-      item.readed = not App.WS.isReady()
-
-      if not item.readed and App.workspaces and not item.state.failed
-        space = App.workspaces.getAwakeSpace()
-        ops = @appList().get( item.targetId ) or @stackList().get( item.targetId )
-        item.readed = space.isWorkingOn( ops )
-
-      # Prepend the item to the list.
-      info_list.splice idx, 1
-      info_list.splice 0, 0, item
-
-      # Limit the notificaiton queue
-      if info_list.length > 30
-        info_list.length = 30
-
-      # Notify the others that notification has changed.
-      @__triggerNotification()
-      null
-
-    __parseRequestInfo : (req)->
-      if not req.brief then return
-
-      dag = req.dag
-
-      request =
-        id         : req.id
-        region     : constant.REGION_SHORT_LABEL[ req.region ]
-        time       : req.time_end
-        operation  : constant.OPS_CODE_NAME[ req.code ]
-        targetId   : if dag and dag.spec then dag.spec.id else req.rid
-        targetName : req.brief.split(" ")[2] || ""
-        state      : { processing : true }
-        readed     : true
-
-      switch req.state
-        when constant.OPS_STATE.OPS_STATE_FAILED
-          request.error = req.data
-          request.state = { failed : true }
-        when constant.OPS_STATE.OPS_STATE_INPROCESS
-          request.time  = req.time_begin
-          request.step  = 0
-          if req.dag and req.dag.step
-            request.totalSteps = req.dag.step.length
-            for i in req.dag.step
-              if i[1] is "done" then ++request.step
-          else
-            request.totalSteps = 1
-
-        when constant.OPS_STATE.OPS_STATE_DONE
-          if request.operation is "save"
-            request.targetId = req.data
-
-          request.state = {
-            completed  : true
-            terminated : req.code is 'Forge.App.Terminate'
-          }
-        when constant.OPS_STATE.OPS_STATE_PENDING
-          # Only format time when the request is not pending
-          request.state = { pending : true }
-          request.time  = ""
-
-      if request.time
-        request.time = MC.dateFormat( new Date( request.time * 1000 ) , "hh:mm yyyy-MM-dd")
-
-        if req.state isnt constant.OPS_STATE.OPS_STATE_INPROCESS
-
-          time_begin = parseInt req.time_begin, 10
-          time_end   = parseInt req.time_end, 10
-          if not isNaN( time_begin ) and not isNaN( time_end ) and time_end >= time_begin
-            duration = time_end - time_begin
-            if duration < 60
-              request.duration = sprintf lang.TOOLBAR.TOOK_XXX_SEC, duration
-            else
-              request.duration = sprintf lang.TOOLBAR.TOOK_XXX_MIN, Math.round(duration/60)
-
-      request
-
-    __handleRequestChange : ( request )->
-      # This method is used to update the state of an app OpsModel
-
-      if not App.WS.isReady() and not request.state.processing then return # only updates when WS has finished pushing the initial data.
-
-      if request.state.pending then return
-
-      theApp = @appList().get( request.targetId )
-      if not theApp
-        # If the app is newly created from an stack. It might not have an appId yet,
-        # But it should have a requestId.
-        theApp = @appList().findWhere({requestId:request.id})
-        if theApp and request.targetId
-          theApp.set "id", request.targetId
-
-      if not theApp then return
-      if not request.state.processing and not theApp.isProcessing() then return
-
-      if theApp.testState( OpsModel.State.Terminating ) and request.operation isnt "terminate"
-        console.error "We recevied a request notification, which operation is not `terminate`. But the app is terminating.", request
-        return
-
-      if request.state.processing
-        theApp.setStatusProgress( request.step, request.totalSteps )
-      else
-        theApp.setStatusWithWSEvent( request.operation, request.state, request.error )
   }

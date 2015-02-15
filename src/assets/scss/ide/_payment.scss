@@ -34,13 +34,13 @@ $navHeight : 38px;
 }
 
 .warning-red {
-  display       : block;
   text-align    : center;
   color         : #eee;
   background    : #a42b2b;;
   padding       : 5px;
   line-height   : 24px;
   border-radius : 3px;
+  font-size     : 14px;
 
     a {
       text-decoration : underline;
@@ -55,7 +55,6 @@ $navHeight : 38px;
 
 
 #PaymentBody {
-  padding: 20px 15px 0px;
   min-height: 150px;
 
   .dl-horizontal {
@@ -92,18 +91,9 @@ $navHeight : 38px;
   .t-m-content tr.item{
     font-size: 12px;
   }
-  .table-head-fix{
-    height: 234px;
-    background: #131313;
-    .full-space{
-      height: 234px;
-      display: inline-block;
-      line-height: 234px;
-      text-align: center;
-      width: 100%;
-    }
-  }
+  
 }
+
 .no-payment-card-info{
   width: 400px;
   margin-bottom: 30px;
@@ -130,20 +120,6 @@ $navHeight : 38px;
     }
 }
 
-.usage-wrapper {
-  overflow: visible;
-  margin: 0 auto;
-  position: relative;
-  padding-bottom: 20px;
-  background: #0c0c0c;
-}
-
-h5.billing_usage_title{
-  color: #EEE;
-  line-height: 32px;
-  margin-bottom: 4px;
-  position: relative;
-}
 .billing_start_from{
   position: absolute;
   top: 3px;
@@ -180,50 +156,6 @@ h5.billing_usage_title{
   font-size: 12px;
 }
 
-.usage-block{
-  position: relative;
-  height: 55px;
-  div{
-    display: block;
-    position: absolute;
-    height: 12px;
-    -webkit-border-radius: 6px;
-    -moz-border-radius: 6px;
-    border-radius: 6px;
-    width: 250px;
-    background: #32bc00;
-    left: 20px;
-    top: 20px;
-    -webkit-transition: width 0.3s;
-    -moz-transition: width 0.3s;
-    -ms-transition: width 0.3s;
-    -o-transition: width 0.3s;
-    transition: width 0.3s;
-    &.freeze{
-      -webkit-transition: all 0s;
-      -moz-transition: all 0s;
-      -ms-transition: all 0s;
-      -o-transition: all 0s;
-      transition: all 0s;
-    }
-  }
-  .free-usage{
-    background: #597557;
-  }
-  .current-usage{
-    width: 0px;
-  }
-  .billable-usage{
-    background: #4d508e;
-    width: 250px;
-  }
-  &.error .billable-usage{
-    background: #851512;
-  }
-  &.error .current-usage {
-    background: #fd0d00;
-  }
-}
 
 .table.payment-table {
     color : lighten($base-p,40%);
@@ -287,9 +219,9 @@ h5.billing_usage_title{
 }
 
 #modal-run-stack, #app-apply-update {
-  display        : flex;
-  flex-wrap      : wrap;
+  @include displayflex;
   flex-direction : row;
+  @include vo-flex-wrap(wrap);
 }
 
 .payment-wrapper{
@@ -302,6 +234,18 @@ h5.billing_usage_title{
   line-height    : 20px;
   margin         : 10px 0;
   color          : #eee;
+}
+
+.members-only {
+  display               : none;
+  border                : 1px solid $yellow;
+  padding               : 10px;
+  margin                : 10px;
+  margin-bottom         : 0;
+  color                 : $yellow;
+  -webkit-border-radius : 3px;
+  -moz-border-radius    : 3px;
+  border-radius         : 3px;
 }
 
 // .payment-wrapper > .scroll-wrap > .scroll-content{

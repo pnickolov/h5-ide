@@ -1,0 +1,103 @@
+
+
+.cheatsheet {
+  position : absolute;
+  z-index  : 1000;
+  left     : 0;
+  right    : 0;
+  top      : 0;
+  bottom   : 0;
+  background : rgba(0,0,0,0.8);
+
+  .icon-close-circle {
+    position      : absolute;
+    right         : 10px;
+    top           : 10px;
+    font-size     : 16px;
+    width         : 20px;
+    height        : 20px;
+    background    : #888;
+    color         : #E5E4E0;
+    border-radius : 50%;
+    text-shadow   : none;
+    cursor        : pointer;
+
+    &:hover { background : #555; }
+    &:before {
+      font-size   : 20px;
+      line-height : 22px;
+    }
+  }
+
+  .cheatsheet-wrap {
+    position      : absolute;
+    margin        : auto;
+    height        : 80%;
+    width         : 90%;
+    left          : 0;
+    right         : 0;
+    top           : 0;
+    bottom        : 0;
+    background    : #E5E4E0;
+    color         : #383315;
+    text-shadow   : 1px 1px rgba(255,255,255,0.3);
+    border-radius : 6px;
+    padding       : 20px;
+
+    overflow-x : scroll;
+    overflow-y : hidden;
+
+    white-space : nowrap;
+
+    > section {
+      display : inline-block;
+      vertical-align: top;
+
+      height : 100%;
+      border-right : 1px dashed #B8B7A7;
+      width : 330px;
+      padding-left  : 15px;
+      padding-right : 20px;
+
+      &:last-child { border: none; }
+    }
+  }
+
+  .shortcut-item {
+    padding     : 8px 0;
+    font-size   : 14px;
+    line-height : 14px;
+
+    .shortcuts {
+      float        : left;
+      text-align   : right;
+      width        : 80px;
+      font-size    : 12px;
+      line-height  : 14px;
+      font-weight  : bold;
+    }
+
+    .shortcut {
+      display : block;
+
+      &.mac { display : none; }
+    }
+
+    .shortcut-desc { margin-left : 95px; }
+
+    &:after {
+      content : " ";
+      clear   : both;
+      display : block;
+    }
+  }
+
+  h3.title {
+    text-align  : center;
+    font-size   : 20px;
+    font-weight : bold;
+  }
+}
+
+.mac .shortcut.mac { display : block !important; }
+.mac .shortcut.pc  { display : none !important; }

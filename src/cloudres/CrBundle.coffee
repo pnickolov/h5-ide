@@ -14,11 +14,4 @@ define [
   "./openstack/CrClnNetwork"
   "./openstack/CrClnCommonRes"
 ], ( CloudResources )->
-  ### env:dev ###
-  require ["./cloudres/aws/CloudImportVpc"], ()->
-  ### env:dev:end ###
-  ### env:debug ###
-  require ["./cloudres/aws/CloudImportVpc"], ()->
-  ### env:debug:end ###
-
   CloudResources

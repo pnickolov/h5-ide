@@ -182,7 +182,7 @@ define ['constant'], (constant) ->
                 for v, i in keys
 
                     if (keys[i] is keys[i - 1])
-                        continue;
+                        continue
 
                     hasDiff = _compare.call(this, a and a[keys[i]], b and b[keys[i]], keys[i], path, resultJSON[key])
 

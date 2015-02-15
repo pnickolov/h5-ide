@@ -6,14 +6,23 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
     regionsMark = {}
     snapshotRes = Backbone.View.extend
         constructor: ()->
-            @collection = CloudResources constant.RESTYPE.DBSNAP, Design.instance().region()
+            @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBSNAP, Design.instance().region()
             @listenTo @collection, 'update', (@onChange.bind @)
             @listenTo @collection, 'change', (@onChange.bind @)
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @
 
         onChange: ->
             @initManager()
             @trigger 'datachange', @
+
+        credChanged: ->
+          @dropdown?.render("loading")
+          @manager?.renderLoading()
+          @manager and @refresh()
+          @collection.fetchForce()
+
 
         remove: ()->
             @.isRemoved = true
@@ -25,8 +34,10 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
         renderDropdown: ()->
             option =
                 filterPlaceHolder: lang.PROP.SNAPSHOT_FILTER_VOLUME
+                resourceName: lang.PROP.RESOURCE_NAME_RDS_SNAPSHOT
+
             @dropdown = new combo_dropdown(option)
-            @instances = CloudResources constant.RESTYPE.DBINSTANCE, Design.instance().region()
+            @instances = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBINSTANCE, Design.instance().region()
             selection = lang.PROP.INSTANCE_SNAPSHOT_SELECT
             @dropdown.setSelection selection
 
@@ -119,7 +130,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @manager.on 'checked', @processDuplicate, @
 
             @manager.render()
-            if not App.user.hasCredential()
+            if Design.instance().credential()?.isDemo()
                 @manager?.render 'nocredential'
                 return false
             @initManager()
@@ -236,7 +247,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @switchAction 'processing'
             newName = @manager.$el.find('#property-snapshot-name').val()
             afterDuplicate = @afterDuplicate.bind @
-            accountNumber = App.user.attributes.account
+            accountNumber = Design.instance().credential().get("awsAccount")
             if not /^\d+$/.test accountNumber.split('-').join('')
               notification('error', lang.PROP.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
               return false
@@ -300,6 +311,7 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
 
             title: sprintf lang.IDE.MANAGE_DB_SNAPSHOT_IN_AREA, regionName
             slideable: true
+            resourceName: lang.PROP.RESOURCE_NAME_RDS_SNAPSHOT
             context: that
             buttons: [
                 {

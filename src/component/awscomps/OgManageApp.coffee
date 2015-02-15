@@ -41,7 +41,7 @@ define [
 
         initialize: ( options ) ->
             appId = @model.get 'appId'
-            @appData = CloudResources(constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
+            @appData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.DBOG, Design.instance().region()).get(appId)?.toJSON()
             if not @appData then return false
 
             @render()

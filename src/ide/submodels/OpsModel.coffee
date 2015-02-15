@@ -12,42 +12,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
   KnownOpsModelClass = {}
 
-  __detailExtend = Backbone.Model.extend
-
-  ### env:dev ###
-  __detailExtend = ( protoProps, staticProps )->
-    ### jshint -W061 ###
-
-    parent = this
-
-    funcName = protoProps.type
-    childSpawner = eval( "(function(a) { var #{funcName} = function(){ return a.apply( this, arguments ); }; return #{funcName}; })" )
-
-    if protoProps and protoProps.hasOwnProperty "constructor"
-      cstr = protoProps.constructor
-    else
-      cstr = ()-> return parent.apply( this, arguments )
-
-    child = childSpawner( cstr )
-
-    _.extend(child, parent, staticProps)
-
-    funcName = "PROTO_" + funcName
-    prototypeSpawner = eval( "(function(a) { var #{funcName} = function(){ this.constructor = a }; return #{funcName}; })" )
-
-    Surrogate = prototypeSpawner( child )
-    Surrogate.prototype = parent.prototype
-    child.prototype = new Surrogate()
-
-    if protoProps
-      _.extend(child.prototype, protoProps)
-
-    child.__super__ = parent.prototype
-    ### jshint +W061 ###
-
-    child
-  ### env:dev:end ###
-
   OpsModelType =
     OpenStack : "OpenstackOps"
     Amazon    : "AwsOps"
@@ -73,21 +37,26 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     type : "GenericOps"
 
     defaults : ()->
-      updateTime : +(new Date())
-      region     : ""
-      state      : OpsModelState.UnRun
-      stoppable  : true # If the app has instance_store_ami, stoppable is false
-      name       : ""
-      version    : OpsModelLastestVersion
-      provider   : ""
+      updateTime  : +(new Date())
+      state       : OpsModelState.UnRun
+      version     : OpsModelLastestVersion
 
-      # usage          : ""
-      # terminateFail  : false
-      # progress       : 0
-      # opsActionError : ""
-      # importMsrId    : ""
-      # requestId      : ""
-      # sampleId       : ""
+      name        : ""
+      provider    : ""
+      region      : ""
+      description : ""
+      usage       : ""        # An attr bound to app
+
+      unlimited   : false     # Indicate if this is an app launch before 2014-11-11
+      importMsrId : undefined # If the ops is imported, this should hold an id of the resource.
+      stoppable   : true      # False, if the app has instance_store_ami. Use only in aws
+
+      requestId      : ""     # When the app is launching, this holds the request id.
+      progress       : 0      # The progress of current action on the app.
+      opsActionError : ""     # The failure of the lastest action.
+
+      # duplicateTarget : ""  # Use internally.
+
 
     constructor : ( attr, opts )->
       attr = attr || {}
@@ -106,37 +75,57 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           return new Model( attr, opts )
 
       Backbone.Model.apply this, arguments
-      return
 
     initialize : ( attr, options )->
-      if options
-        if options.initJsonData
-          @__initJsonData()
-        if options.jsonData
-          @__setJsonData options.jsonData
+      if options and options.jsonData
+        @__setJsonData options.jsonData
+
+      @__userTriggerAppProgress = false
 
       ### env:dev ###
-      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project()?.get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
       ### env:dev:end ###
       ### env:debug ###
-      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", @, MC.prettyStackTrace()
+      @listenTo @, "change:state", ()-> console.log "OpsModel's state changed", [@project()?.get("name"), @get("name"), OpsModelStateDesc[ @get("state") ], @, MC.prettyStackTrace()]
       ### env:debug:end ###
       return
 
+    # Returns the project to which this opsmodel belongs.
+    project : ()->
+      for p in App.model.projects().models
+        ops = p.stacks().get( @ ) or p.apps().get( @ )
+        if ops then return p
+      return null
+
     url : ()->
+      p = @project() || ""
+      if p then p = p.url()
+      p + "/" + @relativeUrl()
+
+    relativeUrl : ()->
       if @get("id")
         "ops/#{@get('id')}"
       else
-        "ops/#{@cid}/unsaved"
+        "unsaved/#{@cid}"
 
-    isStack    : ()-> @attributes.state is   OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
+    # Returns a credential of a project that is capable of handling this opsmodel
+    credential   : ()-> @project().credOfProvider( @get("provider") )
+    credentialId : ()-> (@credential() || {}).id
+
+    isStack    : ()->
+      if @attributes.state is OpsModelState.UnRun
+        return true
+      if @attributes.state is OpsModelState.Saving
+        return (@get("id")||"").indexOf("app-") is -1
+      false
+
     isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importMsrId
 
     # Payment restricted
-    isPMRestricted : ()-> @get("version") >= "2014-11-11" and @isApp()
+    isPMRestricted : ()-> @isApp() and !@get("unlimited")
 
-    testState : ( state )-> @attributes.state is state
+    testState    : ( state )-> @attributes.state is state
     getStateDesc : ()-> OpsModelStateDesc[ @attributes.state ]
 
     # Returns a plain object to represent this model.
@@ -145,11 +134,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       o = Backbone.Model.prototype.toJSON.call( this )
       o.stateDesc  = OpsModelStateDesc[ o.state ]
       o.regionName = constant.REGION_SHORT_LABEL[ o.region ]
+      o.url        = @url()
       if @isProcessing() then o.progressing = true
 
-      if options
-        if options.thumbnail
-          o.thumbnail = ThumbUtil.fetch(o.id)
+      if options and options.thumbnail
+        o.thumbnail = ThumbUtil.fetch(o.id)
       o
 
     # Return true if the stack is saved in the server.
@@ -174,60 +163,82 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         ThumbUtil.save( @get("id"), "" )
       return
 
-    hasJsonData : ()-> !!@__jsonData
-    getJsonData : ()-> @__jsonData
-    fetchJsonData : ()->
-      if @__jsonData
+    # Use this method to access the real json of the opsModel
+    getJsonData : ()->
+      {
+        id          : @get("id") or ""
+        name        : @get("name")
+        region      : @get("region")
+        usage       : @get("usage")
+        provider    : @get("provider")
+        version     : @get("version")
+        time_update : @get("updateTime")
+        description : @get("description")
+        property    : { stoppable : @get("stoppable") }
+
+        resource_diff : @__jsonData.resource_diff
+        component     : @__jsonData.component
+        layout        : @__jsonData.layout
+        agent         : @__jsonData.agent
+        stack_id      : @__jsonData.stack_id
+      }
+
+    # Use this method to load the newest json.
+    # Returns a promise that will be fulfilled when the json is loaded.
+    # After that, use getJsonData() to retreive the json.
+    fetchJsonData : ()-> @__fjdImport( @ ) || @__fdjLocalInit( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
+
+    __fdjLocalInit : ()->
+      # Always load the json from server if the ops has been saved to server.
+      if @isPersisted() then return
+
+      if @get("__________itsshitdontsave")
         d = Q.defer()
         d.resolve @
         return d.promise
 
-      @__fjdTemplate( @ ) || @__fjdImport( @ ) || @__fjdStack( @ ) || @__fjdApp( @ )
+      if @get("duplicateTarget")
+        # The stack is duplication from other stack.
+        self = @
+        return ApiRequest("stack_save_as",{
+          region_name : @get("region")
+          stack_id    : @get("duplicateTarget")
+          new_name    : @collection.getNewName()
+        }).then ( json )->
+          self.__setJsonData( json )
+          self.set {
+            id : json.id
+            duplicateTarget : undefined
+          }
 
-    __fjdTemplate : ( self )->
-      sampleId = @get("sampleId")
-      if not sampleId then return
+      if not @__jsonData
+        @__setJsonData( @__defaultJson() )
 
-      ApiRequest('stackstore_fetch_stackstore', { sub_path: "master/stack/#{sampleId}/#{sampleId}.json" })
-      .then (result) ->
-        try
-          j = JSON.parse( result )
-          delete j.id
-          delete j.signature
-          if not self.collection.isNameAvailable( j.name )
-            j.name = self.collection.getNewName( j.name )
-          self.attributes.region = j.region
-          self.__setJsonData j
-        catch e
-          j = null
-          self.attributes.region = "us-east-1"
-          self.__initJsonData()
-
-        if j then self.set "name", j.name
-        self
+      @save()
 
     __fjdImport : ( self )->
       if not @isImported() then return
 
-      CloudResources( "OpsResource", @getMsrId() ).init( @get("region"), @get("provider") ).fetchForceDedup().then ()-> self.__onFjdImported()
+      CloudResources( @credentialId(), "OpsResource", @getMsrId() ).init({
+        region   : @get("region")
+        project  : @project().id
+        provider : @get("provider")
+      }).fetchForceDedup().then ()->
+        self.__setJsonData self.generateJsonFromRes()
 
     generateJsonFromRes : ()->
-      json = CloudResources( 'OpsResource', @getMsrId() ).generatedJson
+      json = CloudResources( @credentialId(), 'OpsResource', @getMsrId() ).generatedJson
+
       if not json.agent.module.repo
         json.agent.module =
           repo : App.user.get("repo")
           tag  : App.user.get("tag")
       json
 
-    __onFjdImported : ()->
-      json = @generateJsonFromRes()
-      @__setJsonData json
-      @attributes.name = json.name
-      @
-
     __fjdStack : ( self )->
       if not @isStack() then return
       ApiRequest("stack_info", {
+        key_id      : @credentialId()
         region_name : @get("region")
         stack_ids   : [@get("id")]
       }).then (ds)-> self.__setJsonData( ds[0] )
@@ -235,6 +246,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     __fjdApp : ( self )->
       if not @isApp() then return
       ApiRequest("app_info", {
+        key_id      : @credentialId()
         region_name : @get("region")
         app_ids     : [@get("id")]
       }).then (ds)-> self.__setJsonData( ds[0] )
@@ -246,13 +258,14 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         throw new McError( ApiRequest.Errors.MissingDataInServer, "Stack/App doesn't exist." )
 
       if not json.agent
-        json.agent = {
-          enabled : false
-          module  : {
-            repo : App.user.get("repo")
-            tag  : App.user.get("tag")
-          }
+        json.agent = { enabled : false }
+
+      if not json.agent.module or not json.agent.module.repo
+        json.agent.module = {
+          repo : App.user.get("repo")
+          tag  : App.user.get("tag")
         }
+
       if not json.property
         json.property = { stoppable : true }
 
@@ -268,25 +281,36 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         size : []
       }
       ###
-      if json.layout and json.layout.component
-        newLayout      = $.extend {}, json.layout.component.node, json.layout.component.group
-        newLayout.size = json.layout.size
-        json.layout    = newLayout
+      if json.layout
+        if json.layout.component
+          newLayout      = $.extend {}, json.layout.component.node, json.layout.component.group
+          newLayout.size = json.layout.size
+          json.layout    = newLayout
 
-      if json.layout and not json.layout.size
-        json.layout.size = [240, 240]
+        if not json.layout.size
+          json.layout.size = [240, 240]
 
       # Normalize stack version in case some old stack is not using date as the version
       # The version will be updated after serialize
       if (json.version or "").split("-").length < 3 then json.version = OpsModelLastestVersion
 
-      if not json.provider and @get("provider")
-        json.provider = @get("provider")
+      @__jsonData = {
+        resource_diff : json.resource_diff
+        component     : json.component
+        layout        : json.layout
+        agent         : json.agent
+      }
 
-      @__jsonData = json
+      stoppable = json.property?.stoppable or true
 
-      if @attributes.name isnt json.name
-        @set "name", json.name
+      @set {
+        name        : json.name     || @get("name")
+        version     : json.version  || OpsModelLastestVersion
+        stoppable   : stoppable
+        description : json.description
+        usage       : json.usage
+        updateTime  : json.time_update
+      }
 
       @
 
@@ -294,52 +318,38 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     save : ( newJson, thumbnail )->
       if @isApp() or @testState( OpsModelState.Saving ) then return @__returnErrorPromise()
 
-      if not newJson then newJson = @__jsonData
+      newJson = newJson or @getJsonData()
+      # Ensure the json's id is opsmodel's id.
+      newJson.id = @get("id")
 
-      @set "state", OpsModelState.Saving
-
+      # Check if the name has been used.
       nameClash = @collection.where({name:newJson.name}) || []
       if nameClash.length > 1 or (nameClash[0] and nameClash[0] isnt @)
         d = Q.defer()
         d.reject(McError( ApiRequest.Errors.StackRepeatedStack, "Stack name has already been used." ))
         return d.promise
 
-      api = if @get("id") then "stack_save" else "stack_create"
-
-      if newJson.state isnt "Enabled"
-        console.warn "The json's state isnt `Enabled` when saving the stack", @, newJson
-        newJson.state = "Enabled"
-
-      newJson.id = @get("id")
-
+      # Apply changes via api.
+      @set "state", OpsModelState.Saving
       self = @
-      ApiRequest(api, {
+      ApiRequest( (if @isPersisted() then "stack_save" else "stack_create"), {
         region_name : @get("region")
         spec        : newJson
+        key_id      : @credentialId()
       }).then ( res )->
+        # After we save the stack, we use the saved json to update the opsmodel's attributes.
+        self.__setJsonData( res )
 
-        attr = {
-          name       : newJson.name
-          version    : newJson.version
-          updateTime : +(new Date())
-          stoppable  : res.property.stoppable
-          state      : OpsModelState.UnRun
+        self.set {
+          state : OpsModelState.UnRun
+          id    : res.id  # if opsmodel's id is not empty, it should be equal to res.id
         }
 
-        if not self.get("id")
-          attr.id = res.id
+        ThumbUtil.save( res.id, thumbnail )
 
-        if thumbnail then ThumbUtil.save( self.get("id") || attr.id, thumbnail )
-
-        self.set attr
-        self.__jsonData = res
         self.trigger "jsonDataSaved", self
+        self
 
-        # The stack is a newly created stack. We would like to trigger "update" in the collection
-        # So that other's can update their view.
-        if attr.id then self.collection.__triggerUpdate self
-
-        return self
       , ( err )->
         self.set "state", OpsModelState.UnRun
         throw err
@@ -348,113 +358,119 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     remove : ()->
       if @isPersisted() and @isApp() then return @__returnErrorPromise()
 
+      self = @
+      collection = @collection
+
+      @__userTriggerAppProgress = true
       @__destroy()
 
-      if not @get("id")
+      if not @isPersisted()
         d = Q.defer()
         d.resolve()
         return d.promise
 
-      self = @
       ApiRequest("stack_remove",{
         region_name : @get("region")
         stack_id    : @get("id")
-      }).fail ()->
-        @set "state", OpsModelState.UnRun
+      }).fail ( e )->
+        if e.error is ApiRequest.Errors.StackInvalidId
+          # The stack is not found in the server. We simply ignore this error
+          # so that the stack will be remove in local.
+          return
+
+        self.__userTriggerAppProgress = false
+        self.set "state", OpsModelState.UnRun
         # If we cannot delete the stack, we just add it back to the stackList.
-        App.model.stackList().add self
+        collection.add self
 
     # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
     run : ( toRunJson, appName )->
-      region = @get("region")
-
       # Ensure the json has correct id.
-      toRunJson.id = @get("id") || ""
+      toRunJson.id = ""
+      toRunJson.stack_id = @get("id")
 
-      ApiRequest("stack_run_v2",{
-        region_name : region
+      project = @project()
+      ApiRequest("stack_run",{
+        region_name : toRunJson.region
         stack       : toRunJson
         app_name    : appName
+        key_id      : @credentialId()
       }).then ( res )->
-        m = new OpsModel({
-          name          : appName
-          requestId     : res[0]
-          state         : OpsModelState.Initializing
-          progress      : 0
-          region        : region
-          provider      : toRunJson.provider
-          usage         : toRunJson.usage
-          version       : toRunJson.version
-          updateTime    : +(new Date())
-          stoppable     : toRunJson.property.stoppable
-          resource_diff : false
+        project.apps().add new OpsModel({
+          name       : appName
+          requestId  : res[0]
+          state      : OpsModelState.Initializing
+          region     : toRunJson.region
+          provider   : toRunJson.provider
+          usage      : toRunJson.usage
+          updateTime : +(new Date())
         })
-        App.model.appList().add m
-        m
 
     # Duplicate the stack
-    duplicate : ( name )->
+    duplicate : ()->
       if @isApp() then return
 
-      thumbnail  = ThumbUtil.fetch(@get("id"))
-      attr       = $.extend true, {}, @attributes, {
-        name       : name
-        updateTime : +(new Date())
-        provider   : @get("provider")
-      }
-      collection = @collection
-
-      ApiRequest("stack_save_as",{
-        region_name : @get("region")
-        stack_id    : @get("id")
-        new_name    : name || @collection.getNewName()
-      }).then ( id )->
-        if thumbnail then ThumbUtil.save id, thumbnail
-        attr.id = id
-        collection.add( new OpsModel(attr) )
+      @collection.add new OpsModel({
+        duplicateTarget : @get("id")
+        provider        : @get("provider")
+        region          : @get("region")
+      })
 
     # Stop the app, returns a promise
     stop : ()->
       if not @isApp() or @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
 
       self = @
-      @set "state", OpsModelState.Stopping
       @attributes.progress = 0
+      @set "state", OpsModelState.Stopping
+      @__userTriggerAppProgress = true
+
       ApiRequest("app_stop",{
         region_name : @get("region")
+        key_id      : @credentialId()
         app_id      : @get("id")
         app_name    : @get("name")
       }).fail ( err )->
+        self.__userTriggerAppProgress = false
         self.set "state", OpsModelState.Running
         throw err
 
     start : ()->
       if not @isApp() or @get("state") isnt OpsModelState.Stopped then return @__returnErrorPromise()
+
       self = @
-      @set "state", OpsModelState.Starting
       @attributes.progress = 0
+      @set "state", OpsModelState.Starting
+      @__userTriggerAppProgress = true
+
       ApiRequest("app_start",{
         region_name : @get("region")
+        key_id      : @credentialId()
         app_id      : @get("id")
         app_name    : @get("name")
       }).fail ( err )->
+        self.__userTriggerAppProgress = false
         self.set "state", OpsModelState.Stopped
         throw err
 
     # Terminate the app, returns a promise
     terminate : ( force = false , extraOption )->
       if not @isApp() then return @__returnErrorPromise()
-      oldState = @get("state")
-      @set("state", OpsModelState.Terminating)
-      @attributes.progress = 0
-      @attributes.terminateFail = false
+
+      if @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+
       self = @
+      oldState = @get("state")
+      @attributes.progress = 0
+      @set("state", OpsModelState.Terminating)
+      @__userTriggerAppProgress = true
 
       options = $.extend {
         region_name     : @get("region")
         app_id          : @get("id")
         app_name        : @get("name")
         flag            : force
+        key_id          : @credentialId()
       }, ( extraOption || {} )
 
       ApiRequest("app_terminate", options).then ()->
@@ -463,25 +479,27 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         if force then self.__destroy()
         return
       , ( err )->
-        if err.error < 0
-          throw err
-
-        self.set {
-          state         : oldState
-          terminateFail : true
-        }
+        self.__userTriggerAppProgress = false
+        self.set "state", oldState
         throw err
 
     # Update the app, returns a promise
     update : ( newJson, fastUpdate )->
       if not @isApp() then return @__returnErrorPromise()
-      if @__updateAppDefer
+
+      if @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+
+      if @testState( OpsModelState.Updating )
         console.error "The app is already updating!"
-        return @__updateAppDefer.promise
+        if @__updateAppDefer
+          return @__updateAppDefer.promise
+        else
+          return @__returnErrorPromise()
 
       oldState = @get("state")
-      @set("state", OpsModelState.Updating)
       @attributes.progress = 0
+      @__userTriggerAppProgress = true
+      @set("state", OpsModelState.Updating)
 
       @__updateAppDefer = Q.defer()
 
@@ -493,7 +511,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         spec        : newJson
         app_id      : @get("id")
         fast_update : fastUpdate
-      }).fail ( error )-> self.__updateAppDefer.reject( error )
+        key_id      : @credentialId()
+      }).fail ( error )->
+        self.__userTriggerAppProgress = false
+        self.__updateAppDefer.reject( error )
 
       errorHandler = ( error )->
         self.__updateAppDefer = null
@@ -503,164 +524,162 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # The real promise
       @__updateAppDefer.promise.then ()->
-        self.__jsonData = null
+
         self.fetchJsonData().then ()->
-          self.__updateAppDefer = null
+          # The importMsrId should be undefined when the update() is called.
+          # Not sure what this line does. Maybe there's some kind of bug out there.
           self.importMsrId = undefined # Mark as not imported once we've finish saving.
-          self.set {
-            name  : newJson.name
-            state : OpsModelState.Running
-          }
+
+          self.__updateAppDefer = null
+          self.set "state", OpsModelState.Running
+
         , errorHandler
+
       , errorHandler
 
-    # Replace the data in mongo with new data. This method doesn't trigger an app update.
+    importApp : ( newJson )->
+      newJson.id = ""
+      @syncAppJson( newJson )
+
+    # Directly modify the data in mongo. Can be used to import app or update the app's json.
     saveApp : ( newJson )->
-      if not @isApp() then return @__returnErrorPromise()
-      if @__saveAppDefer
+      newJson.id = @get("id")
+      @syncAppJson( newJson )
+
+    # This method doesn't trigger an app update.
+    syncAppJson : ( newJson )->
+      if not @isApp() or ( @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running ) then return @__returnErrorPromise()
+
+      if @testState( OpsModelState.Saving )
         console.error "The app is already saving!"
-        return @__saveAppDefer.promise
-
-      newJson.changed = false
-
-      if newJson.state isnt @getStateDesc()
-        console.warn "The new app json's state isnt the same as the app", @, newJson
-        newJson.state = @getStateDesc()
-
-      # Ensure we have correct id in the json.
-      console.assert ((newJson.id || "").indexOf("stack-") is -1), "The newJson has wrong appid, in saveApp()"
-      if newJson.id
-        if newJson.id isnt @get("id")
-          console.warn "The newJson has different id, in saveApp()"
-        newJson.id = @get("id")
-      else
-        newJson.id = ""
+        if @__saveAppDefer
+          return @__saveAppDefer.promise
+        else
+          return @__returnErrorPromise()
 
       oldState = @get("state")
-      @set("state", OpsModelState.Saving)
       @attributes.progress = 0
+      @__userTriggerAppProgress = true
+      @set("state", OpsModelState.Saving)
 
       @__saveAppDefer = Q.defer()
 
       self = @
 
+      newJson.time_update = @get("updateTime")
+
       # Send Request
-      ApiRequest("app_save_info", {spec:newJson}).then (res)->
+      ApiRequest("app_save_info", {spec:newJson, key_id: self.credentialId()}).then (res)->
         if not self.id
           self.attributes.requestId = res[0]
+
         self.attributes.importMsrId = undefined
+        newJson.time_update = res[3]
         return
       , ( error )->
+        self.__userTriggerAppProgress = false
         self.__saveAppDefer.reject( error )
 
       # The real promise
       @__saveAppDefer.promise.then ()->
-        self.__jsonData = newJson
-        self.attributes.requestId = undefined
-        self.__saveAppDefer = null
+        self.__setJsonData( newJson )
 
-        self.set {
-          name  : newJson.name
-          state : oldState
-          usage : newJson.usage
-        }
+        self.__saveAppDefer       = null
+        self.attributes.requestId = undefined
+        self.attributes.progress  = 0
+
+        self.set "state", oldState
         return
       , ( error )->
-        self.__saveAppDefer = null
+        self.__saveAppDefer       = null
         self.attributes.requestId = undefined
-        self.attributes.progress = 0
-        self.set { state : oldState }
+        self.attributes.progress  = 0
+
+        self.set "state", oldState
         throw error
-
-
-    setStatusProgress : ( steps, totalSteps )->
-      progress = parseInt( steps * 100.0 / totalSteps )
-      if @.attributes.progress != progress
-        # Disable Backbone's auto triggering change event. Because I don't wan't that changing progress will trigger `change:progress` and `change`
-        @attributes.progress = progress
-        @trigger "change:progress", @, progress
-      return
 
     isProcessing : ()->
       state = @attributes.state
       state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving
 
-    setStatusWithApiResult : ( state )->
-      console.info "OpsModel's state changes due to ApiRequest:", state, @
-      @set "state", OpsModelState[ state ]
+    isLastActionTriggerByUser : ()-> @__userTriggerAppProgress
 
-    setStatusWithWSEvent : ( operation, state, error )->
-      console.info "OpsModel's state changes due to WS event:", operation, state, error, @
-      # operation can be ["launch", "stop", "start", "update", "terminate"]
-      # state can have "completed", "failed", "progressing", "pending"
-      switch operation
-        when "launch"
-          if state.completed
-            toState = OpsModelState.Running
-          else if state.failed
-            toState = OpsModelState.Destroyed
-        when "stop"
-          if state.completed
-            toState = OpsModelState.Stopped
-          else if state.failed
-            toState = OpsModelState.Running
-        when "update"
-          if not @__updateAppDefer
-            console.warn "UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
-            return
+    updateWithWSEvent : ( wsRequest )->
+      # 1. Processing
+      if wsRequest.state is constant.OPS_STATE.INPROCESS and @isProcessing()
+        step       = 0
+        totalSteps = 1
+        if wsRequest.dag and wsRequest.dag.step
+          totalSteps = wsRequest.dag.step.length
+          for i in wsRequest.dag.step
+            if i[1] is "done" then ++step
 
-          if not state.completed
-            d = @__updateAppDefer
-            @__updateAppDefer = null
-            d.reject McError( ApiRequest.Errors.OperationFailure, error )
-          else
-            # Grab new json from server after app update succeeded.
-            @__jsonData = null
-            self = @
-            @fetchJsonData().then ()->
-              d = self.__updateAppDefer
-              self.__updateAppDefer = null
-              d.resolve()
-          return
+        progress = parseInt( step * 100.0 / totalSteps )
+        if @attributes.progress != progress
+          # Disable Backbone's auto triggering change event. Because I don't wan't that changing progress will trigger `change:progress` and `change`
+          @attributes.progress = progress
+          @trigger "change:progress", @, progress
+        return
 
-        when "save" # This is saving app.
-          if not @__saveAppDefer
-            console.warn "SaveAppDefer is null when setStatusWithWSEvent with `save` event."
-            return
+      # 2. Starting / Completed / Failed
+      console.info "OpsModel's state changes due to WS event:", [@project()?.get("name"), @get("name"), @, wsRequest]
+      if wsRequest.state is constant.OPS_STATE.INPROCESS
+        toStateIndex = 0
+      else if wsRequest.state is constant.OPS_STATE.DONE
+        toStateIndex = 1
+      else
+        toStateIndex = 2
 
-          d = @__saveAppDefer
-          @__saveAppDefer = null
+      OMS = OpsModelState
 
-          if state.completed
-            d.resolve()
-          else
-            d.reject McError( ApiRequest.Errors.OperationFailure, error )
-          return
+      switch wsRequest.code
+        when constant.OPS_CODE_NAME.LAUNCH
+          toState = [ OMS.Initializing, OMS.Running, OMS.Destroyed ]
+        when constant.OPS_CODE_NAME.STOP
+          toState = [ OMS.Stopping, OMS.Stopped, OMS.Running ]
+        when constant.OPS_CODE_NAME.START
+          toState = [ OMS.Starting, OMS.Running, OMS.Stopped ]
+        when constant.OPS_CODE_NAME.TERMINATE
+          toState = [ OMS.Terminating, OMS.Destroyed, OMS.Stopped ]
+        when constant.OPS_CODE_NAME.UPDATE, constant.OPS_CODE_NAME.STATE_UPDATE
+          if @__updateAppDefer
+            if toStateIndex is 1
+              @__updateAppDefer.resolve()
+              return
+            if toStateIndex is 2
+              @__updateAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
+              return
 
-        when "terminate"
-          if state.completed
-            toState = OpsModelState.Destroyed
-          else
-            toState = OpsModelState.Stopped
-            @attributes.terminateFail = false
-            @set "terminateFail", true
-        when "start"
-          if state.completed
-            toState = OpsModelState.Running
-          else
-            toState = OpsModelState.Stopped
+          toState = [ OMS.Updating, OMS.Running, OMS.Stopped ]
 
-      if error
-        @attributes.opsActionError = error
+        when constant.OPS_CODE_NAME.APP_SAVE, constant.OPS_CODE_NAME.APP_IMPORT # This is saving app.
+          if @__saveAppDefer
+            if toStateIndex is 1
+              @__saveAppDefer.resolve()
+              return
+            if toStateIndex is 2
+              @__saveAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
+              return
 
+          toState = [ OMS.Saving, OMS.Running, OMS.Stopped ]
+
+      toState = toState[ toStateIndex ]
+      # 3. Clear the useraction flag if the state changes from DONE state to another state.
+      if not @isProcessing() and @get("state") isnt toState
+        @__userTriggerAppProgress = false
+
+      # 4. Log message if failed.
+      @attributes.opsActionError = if toStateIndex is 2 then wsRequest.data else ""
+
+      # 5. Transition to other state.
       if toState is OpsModelState.Destroyed
         @__destroy()
-
       else if toState
-        @attributes.progress = 0
-        @set "state", toState
+        @set {
+          state    : toState
+          progress : 0
+        }
       return
-
 
     ###
      Internal Methods
@@ -678,45 +697,33 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # Cleanup CloudResources if we are an app
       msrId = @getMsrId()
-      if msrId
-        CloudResources( "OpsResource", msrId )?.destroy()
+      if msrId then CloudResources( @credential(), "OpsResource", msrId ).destroy()
 
-      # Directly modify the attr to avoid sending an event, becase destroy would trigger an update event
+      # Directly modify the attr to avoid sending an event, because destroy would trigger an update event
       @attributes.state = OpsModelState.Destroyed
       @trigger 'destroy', @, @collection
 
     __returnErrorPromise : ()->
       d = Q.defer()
-      d.resolve McError( ApiRequest.Errors.InvalidMethodCall, "The method is not supported by this model." )
+      d.resolve McError( ApiRequest.Errors.InvalidMethodCall, "Currently, the specific action can not be performed on the stack/app." )
       d.promise
 
     # This method init a json for a newly created stack.
-    __createRawJson : ()->
-      id          : @get("id") or ""
-      name        : @get("name")
-      description : ""
-      region      : @get("region")
-      platform    : "ec2-vpc"
-      state       : "Enabled"
-      version     : @get("version")
-      resource_diff: true
-      component   : {}
-      provider    : @get("provider")
-      layout      : { size : [240, 240] }
-      agent       :
+    __defaultJson : ()->
+      resource_diff : true
+      component     : {}
+      layout        : { size : [240, 240] }
+      agent         :
         enabled : true
         module  :
           repo : App.user.get("repo")
           tag  : App.user.get("tag")
-      property :
-        stoppable : true
 
-    __initJsonData : ()-> @__jsonData = @__createRawJson(); return
   }, {
     extend : ( protoProps, staticProps ) ->
 
       # Create subclass
-      subClass = __detailExtend.call( this, protoProps, staticProps )
+      subClass = (window.__detailExtend || Backbone.Model.extend).call( this, protoProps, staticProps )
 
       for provider in staticProps.supportedProviders
         KnownOpsModelClass[ provider ] = subClass

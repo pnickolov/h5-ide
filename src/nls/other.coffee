@@ -313,6 +313,10 @@ module.exports =
       en: "Delete"
       zh: "删除"
 
+    CFM_BTN_REMOVE:
+      en: "Delete"
+      zh: "删除"
+
     CFM_BTN_CANCEL:
       en: "Cancel"
       zh: "取消"
@@ -511,12 +515,12 @@ module.exports =
       zh: "更新"
 
     SETTINGS_LABEL_ACCESSTOKEN:
-      en: "Access Token"
-      zh: "访问令牌"
+      en: "API Token"
+      zh: "API令牌"
 
     SETTINGS_INFO_TOKEN:
       en: "Use token within API calls to initiate automatic states update. "
-      zh: "使用 API 接口的访问令牌可用初始化自动 state 更新。"
+      zh: "使用 API 接口的令牌以初始化自动 state 更新。"
 
     SETTINGS_BTN_TOKEN_CREATE:
       en: "Generate Token"
@@ -543,8 +547,8 @@ module.exports =
       zh: "令牌名称"
 
     SETTINGS_LABEL_TOKENTABLE_TOKEN:
-      en: "Access Token"
-      zh: "访问令牌"
+      en: "API Token"
+      zh: "API令牌"
 
     SETTINGS_CONFIRM_TOKEN_RM:
       en: 'Any applications or scripts using this token will no longer be able to access the
@@ -563,6 +567,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "<p>By removing Credentials, you will be in the demo mode.</p><p>If you want to launch stack into app, you need to provide valid AWS Credentials. </p><p>The stacks you designed in demo mode may not be able to launch with your AWS Credentials due to resource inconsistency.</p><p>If you have existing apps, they will become unmanageable and can only be forced to delete.</p>"
       zh: "<p>移除证书后， 您将处于 Demo 账号模式。</p><p>如果您想运行 App，您需要提供 AWS 证书。 </p><p>您在 Demo 账号模式下设计的 Stack 可能会因为资源获取的问题无法正常运行。 </p><p>如果您有已存在的 App， 将无法管理而强制删除。</p>"
 
+    SETTINGS_CRED_ADDING:
+      en : "Adding credential..."
+      zh : "正在添加证书..."
+
     SETTINGS_CRED_REMOVING:
       en : "Removing credential..."
       zh : "正在移除证书..."
@@ -576,24 +584,36 @@ VisualOps API. You cannot UNDO this action.'
       zh : "正在刷新资源..."
 
     SETTINGS_ERR_CRED_VALIDATE:
-      en : "Fail to validate your credential."
-      zh : "您的证书验证失败。"
+      en : "Failed to validate the credential. <br> Make sure it is correct and at least has read access to AWS."
+      zh : "您的证书验证失败。请保证其正确性，并至少拥有 AWS 的读权限。"
 
     SETTINGS_ERR_CRED_UPDATE:
-      en : "Fail to update your credential, please retry."
-      zh : "更新凭据失败，请重试。"
+      en : "Failed to update credential."
+      zh : "更新证书失败。"
 
     SETTINGS_ERR_CRED_REMOVE:
-      en : "Fail to remove your credential, please retry."
-      zh : "移除凭据失败，请重试。"
+      en : "Failed to remove credential."
+      zh : "移除证书失败。"
+
+    SETTINGS_ERR_PROJECT_REMOVE:
+      en : "Failed to remove the workspace."
+      zh : "删除项目失败。"
+
+    SETTINGS_ERR_PROJECT_RENAME:
+      en : "Failed to rename the workspace."
+      zh : "项目改名失败。"
+
+    SETTINGS_ERR_PROJECT_LEAVE:
+      en : "Failed to leave the workspace."
+      zh : "离开项目失败。"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TIT:
       en : "<span>You have running or stopped app(s).</span> Do you confirm to update the AWS credential?"
       zh : "<span>系统中存在正在运行或已经停止的 App。</span>确定要更新 AWS 证书吗？"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
-      en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to TERMINATE existing apps first."
-      zh : "继续操作，会导致现存的 App 失去管理。如果这个新 AWS 证书 没有足够的权限管理现存的 App，我们强烈建议您先终结掉这些存在的 App。"
+      en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to FORGET or TERMINATE existing apps first."
+      zh : "继续操作，会导致现存的 App 失去管理。如果这个新 AWS 证书 没有足够的权限管理现存的 App，我们强烈建议您先移除或终结掉这些存在的 App。"
 
     SETTINGS_LABEL_UPDATE_CONFIRM:
       en: "Confirm to update"
@@ -689,7 +709,7 @@ VisualOps API. You cannot UNDO this action.'
 
     WELCOME_DONE_HINT_DEMO:
       en: "You are using a demo AWS account."
-      zh: "您正在使用 demo 账号。"
+      zh: "您正在使用测试账号。"
 
     WELCOME_DONE_MSG:
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
@@ -1441,8 +1461,12 @@ VisualOps API. You cannot UNDO this action.'
       zh: "您正在使用测试账号。"
 
     COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL:
-      en: "Provide AWS Credential <br/> to manage key pairs"
-      zh: "提供 AWS 证书来管理密钥对。"
+      en: "Provide AWS Credential <br/> to manage resources."
+      zh: "提供 AWS 证书来管理资源。"
+
+    COMBO_DROPDOWN_PRIVIDE_AWS_CREDENTIAL_WITH_TYPE:
+      en: "Provide AWS Credential <br/> to manage %s"
+      zh: "提供 AWS 证书来管理%s。"
 
     PAYMENT_PAYMENT_NEEDED:
       en: "Upgrade your account"
@@ -1450,7 +1474,7 @@ VisualOps API. You cannot UNDO this action.'
 
     PAYMENT_INVALID_BILLING:
       en: "Your Billing Information is Invalid"
-      zh: "您的账单信息无效。"
+      zh: "您的账单信息无效"
 
     PAYMENT_LOADING:
       en: "Loading..."
@@ -1608,17 +1632,37 @@ VisualOps API. You cannot UNDO this action.'
       en: "%s free instance hour will be renewed in %s days."
       zh: "%s 个免费实例*小时将在 %s 天后刷新。"
 
+    PAYMENT_ACCOUNT_IN_LIMITED_STATUS:
+      en: "Your account is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled."
+      zh: "您的账户处于受限状态。导入VPC，app 操作，监控和 state ensuring 功能已被禁用。"
+
+    PAYMENT_USAGE:
+      en: "Usage"
+      zh: "用量"
+
+    PAYMENT_BILLING_EMAIL:
+      en: "Billing Email"
+      zh: "账单邮箱"
+
+    BILLING_OWNER:
+      en: "Billing Owner"
+      zh: "账单所属人"
+
+    LBL_SAVING:
+      en: "Saving..."
+      zh: "保存中..."
+
+    NO_USAGE_REPORT:
+      en: "No available usage report"
+      zh: "无可用的用量报告"
+
     NO_BILLING_EVENT:
       en: "No billing event yet."
       zh: "无付费事件。"
 
     PAYMENT_CURRENT_USAGE:
-      en: "Current Usage <span class='billing_start_from'> Since"
-      zh: "当前用量<span class='billing_start_from'>自从"
-
-    PAYMENT_CURRENT_USAGE_SPAN:
-      en: "</span>"
-      zh: "</span>"
+      en: "Current Usage"
+      zh: "当前用量"
 
     BUBBLE_DNSNAME:
       en: "DNS Name"
@@ -1885,8 +1929,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "估计 AWS 费用"
 
     PAYMENT_WARNNING_IN_MODAL:
-      en: "There was an issue to process payment in your account. Please update your <a target=\"_blank\" href=\"%s\">payment information</a>"
-      zh: "您的账户付费遇到问题，请更新您的 <a target=\"_blank\" href=\"%s\">付费信息</a>。"
+      en: "There was an issue to process payment in your account. Please update your <a class=\"route\" href=\"%s\">payment information</a>"
+      zh: "您的账户付费遇到问题，请更新您的 <a class=\"route\" href=\"%s\">付费信息</a>。"
 
     PER_MONTH:
       en: "/ month"
@@ -2125,8 +2169,16 @@ VisualOps API. You cannot UNDO this action.'
       zh: "详细价格"
 
     FAILED_TO_CHARGE_YOUR_CREDIT_CARD:
-      en: "We have failed to charge your credit card. App operation and VPC import are disabled for you now. Please update your payment information to continue managing apps with VisualOps."
-      zh: "我们无法从您的信用卡扣费。 App 操作和 VPC 导入已经对您禁用， 请更新您的付费信息以继续使用 VisualOps 管理您的 App。"
+      en: "We were unable to charge the project's credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. Update payment information as soon as possible to continue managing apps with VisualOps. "
+      zh: "我们无法从此项目绑定的信用卡中扣费。此项目现已处于受限状态。导入 VPC，App 操作，监控和 state ensuring 功能已被禁用。请尽快更新您的付款信息以继续用 VisualOps 管理资源。"
+
+    FAILED_TO_CHARGE_YOUR_CREDIT_CARD_MEMBER:
+      en: "We were unable to charge the project's credit card. This project is in limited status now. Import VPC, app operation, monitoring and state ensuring are disabled. "
+      zh: "我们无法从此项目绑定的信用卡中扣费。此项目现已处于受限状态。导入 VPC，App 操作，监控和 state ensuring 功能已被禁用。"
+
+    WAIT_FOR_ADMIN_UPDATE_PAYMENT_MODAL:
+      en: "Please wait admin of this project to update payment information before you can continue managing apps with VisualOps. "
+      zh: "请等待此项目管理员更新付费信息以能继续用 VisualOps 管理资源。"
 
     WILL_OPEN_CHARGIFY:
       en: "This will open a new window with Chargify.<br/>Meanwhile please keep this page open."
@@ -2407,3 +2459,504 @@ VisualOps API. You cannot UNDO this action.'
     LBL_DROP:
       en: "Drop %s,"
       zh: "拖拽%s到此，"
+
+    SAVE_STACK:
+      en: "Save & Close"
+      zh: "保存并关闭"
+
+    SAVING_STACK:
+      en: "Saving stack..."
+      zh: "正在保存模板..."
+
+    ACCESS_TOKEN_EDIT_TIP:
+      en: "Edit"
+      zh: "编辑"
+
+    ACCESS_TOKEN_DELETE_TIP:
+      en: "Delete"
+      zh: "删除"
+
+    WORKSPACE:
+      en: "Workspace"
+      zh: "工作空间"
+
+    WORKSPACE_NAME:
+      en: "Workspace Name"
+      zh: "工作空间名称"
+
+    MANAGE_WORKSPACE:
+      en: "Manage Workspace"
+      zh: "工作空间"
+
+    CHANGE_PHOTO:
+      en: "Change Photo"
+      zh: "更改头像"
+
+    BASIC_SETTINGS:
+      en: "Basic Settings"
+      zh: "基本设置"
+
+    TEAM:
+      en: "Team"
+      zh: "团队成员"
+
+    USAGE_REPORT:
+      en: "Usage Report"
+      zh: "用量报告"
+
+    PROVIDER_CREDENTIAL:
+      en: "Cloud Access Credential"
+      zh: "证书"
+
+    LEAVE:
+      en: "Leave"
+      zh: "离开"
+
+    DELETE_WORKSPACE_WILL_FORGOT_APPS:
+      en: "Once the workspace is deleted, all stacks will be removed and all apps will be forgotten (Resources will be left as they are)."
+      zh: "工作空间一旦被删除，所有该工作空间下的 Stack 和 App 将被删除和释放（资源不会受到影响）。"
+
+    IMPORT_JSON_BEFORE_DELETE_WORKSPACE:
+      en: "You can export stacks to JSON before deleting the workspace."
+      zh: "您可以在删除工作空间之前将 Stack 导出 JSON 文件。"
+
+    LEAVING_WORKSPACE_WILL_NOT_ACCESS:
+      en: "By leaving this workspace, you won't have access to workspace assets any more. This workspace will be managed by other admin."
+      zh: "离开工作空间后，将不再有访问工作空间资源的权限，该工作空间将被其他管理员管理。"
+
+    LEAVING_WORKSPACE_WILL_ONLY_ONE_ADMIN:
+      en: "Oops, as the only admin of this workspace, you cannot leave it behind."
+      zh: "出错了，你是该工作空间中唯一的管理员，不可离开。"
+
+    THIS_ACTION_CANNOT_BE_REVERTED:
+      en: "This action CANNOT be reverted."
+      zh: "此操作不可逆。"
+
+    TYPE_THE_WORKSPACE_NAME_TO_CONFIRM:
+      en: "Type the workspace name below to confirm deleting the workspace."
+      zh: "在下面输入工作空间的名称以确认删除该工作空间。"
+
+    ARE_YOU_SURE_YOU_WANT_TO_LEAVE_THIS_WORKSPACE:
+      en: "Are you sure you want to leave this workspace?"
+      zh: "您确定要离开此工作空间吗？"
+
+    FREE_WORKSPACE_CAN_NOT_DELETE:
+      en: "This is your default workspace which cannot be deleted."
+      zh: "默认工作空间不能删除。"
+
+    DELETE_WORKSPACE:
+      en: "Delete Workspace"
+      zh: "删除工作空间"
+
+    LEAVE_WORKSPACE:
+      en: "Leave Workspace"
+      zh: "离开工作空间"
+
+    CONFIRM_TO_DELETE:
+      en: "Confirm to Delete"
+      zh: "确认删除"
+
+    CONFIRM_TO_LEAVE:
+      en: "Confirm to Leave"
+      zh: "确认离开"
+
+    # Settings - Member
+    SETTINGS_MEMBER_COLUMN_MEMBER:
+      en: "Member"
+      zh: "成员"
+
+    SETTINGS_MEMBER_COLUMN_ROLE:
+      en: "Role"
+      zh: "角色"
+
+    SETTINGS_MEMBER_COLUMN_STATUS:
+      en: "Status"
+      zh: "状态"
+
+    SETTINGS_MEMBER_COLUMN_EDIT:
+      en: "Edit"
+      zh: "编辑"
+
+    SETTINGS_MEMBER_LABEL_MEMBER:
+      en: "Team"
+      zh: "团队成员"
+
+    SETTINGS_MEMBER_LABEL_INVITE_TIP:
+      en: "Invite by email address or username..."
+      zh: "通过电子邮箱或用户名邀请..."
+
+    SETTINGS_MEMBER_LABEL_INVITE_CONFIRM:
+      en: "Invite"
+      zh: "邀请"
+
+    SETTINGS_MEMBER_LABEL_LIMIT:
+      en: "Your workspace has reached the limit of %s. If you'd like invite more members to collaborate, contact us at"
+      zh: "该工作空间已经达到 %s 个成员的标准上限，如果你想要邀请更多协作成员，请联系："
+
+    SETTINGS_MEMBER_LABEL_ONLY_ONE_ADMIN:
+      en: "You are the only admin in this workspace. Cannot change your role to member."
+      zh: "你是该工作空间唯一的管理员，角色不可更改。"
+
+    SETTING_MEMBER_LABEL_NO_USER:
+      en: "There is no user \"%s\""
+      zh: "未找到用户 “%s”"
+
+    WORKSPACE_DEMO_TIP:
+      en: "This workspace is currently in Demo mode. Set up your own cloud credential to run stack
+into live resources, or import existing infrastructures."
+      zh: "当前工作空间处于测试模式，您需要设置证书才能运行 Stack 和导入已有资源。"
+
+    CREDENTIAL_LINKED_TO_THIS_WORKSPACE:
+      en: "Following Cloud Access Credential is linked to this workspace:"
+      zh: "连接到此工作空间的证书："
+
+    PARENTHESES_DEMO:
+      en: "(Demo)"
+      zh: "测试模式"
+
+    DEMO_CREDENTIAL_TIP:
+      en: "This is a demo credential for designing stack only."
+      zh: "这只是个测试证书，只能用于设计 Stack。"
+
+    DEMO_CREDENTIAL_ERROR_NOTE:
+      en: "Note: Some stack you build in demo mode may report error due to resource inconsistency between different cloud accounts."
+      zh: "注意：由于两种账号之间资源的差异， 当您设置了 AWS 证书后， 一些您在测试账号时创建的 Stack 可能会报错。"
+
+    SET_UP_PROVIDER_CREDENTIAL:
+      en: "Set up Cloud Access Credential"
+      zh: "设置证书"
+
+    CREDENTIAL_ALIAS:
+      en: "Credential Alias"
+      zh: "别名"
+
+    CREDENTIAL_AUTHORIZE_NOTE:
+      en: "Note: This credential must be linked to an account has at least read access to AWS EC2 resources, otherwise there will be issues using VisualOps."
+      zh: "注意：此证书最少必须有读取 AWS EC2 资源的权限，否则 VisualOps 会产生错误。"
+
+    ARE_YOU_SURE_YOU_WANT_TO_REMOVE_XXX:
+      en: "Are you sure you want to remove %s?"
+      zh: "确定要移除 %s 吗？"
+
+    REMOVE_CREDENTIAL_CONFIRM_TIPS:
+      en: "Apps managed under this credential will be forgotten. You will not be able to run stack or import VPC. If you provide a credential later with access to different AWS resources, previous stacks may not work properly."
+      zh: "与此证书关联的 App 将被释放，且您将无法运行 Stack 和 导入 VPC 。如果您以后添加一个不同的证书，先前的 Stack 可能无法工作。"
+
+    REMOVE_CREDENTIAL_CONFIRM_BTN:
+      en: "Remove Credential"
+      zh: "移除证书"
+
+    REMOVE_CREDENTIAL_CONFIRM_TITLE:
+      en: 'Remove Cloud Credential'
+      zh: "移除云证书"
+
+    SETTINGS_MEMBER_LABEL_REMOVE:
+      en: "Remove"
+      zh: "移除"
+
+    SETTINGS_MEMBER_LABEL_YOU:
+      en: "YOU"
+      zh: "你"
+
+    SETTINGS_MEMBER_LABEL_ADMIN:
+      en: "ADMIN"
+      zh: "管理员"
+
+    SETTINGS_MEMBER_LABEL_COLLABORATOR:
+      en: "MEMBER"
+      zh: "成员"
+
+    SETTINGS_MEMBER_LABEL_OBSERVER:
+      en: "OBSERVER"
+      zh: "查看者"
+
+    # SETTINGS_MEMBER_LABEL_ADMIN_DESC:
+    #   en: ""
+    #   zh: ""
+    #
+    # SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC:
+    #   en: ""
+    #   zh: ""
+    #
+    # SETTINGS_MEMBER_LABEL_OBSERVER_DESC:
+    #   en: ""
+    #   zh: ""
+
+    SETTINGS_MEMBER_LABEL_ACTIVE:
+      en: "Active"
+      zh: "已激活"
+
+    SETTINGS_MEMBER_LABEL_PENDING:
+      en: "Pending"
+      zh: "等待中"
+
+    SETTINGS_MEMBER_LABEL_CANCEL_INVITE:
+      en: "Cancel Invitation"
+      zh: "取消邀请"
+
+    SETTINGS_MEMBER_LABEL_DONE:
+      en: "Done"
+      zh: "完成"
+
+    SETTINGS_MEMBER_LABEL_NO_USER:
+      en: "There is no user"
+      zh: "未找到用户"
+
+    SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP1:
+      en: "You are the only member in your default workspace"
+      zh: "你是默认工作空间中的唯一成员"
+
+    SETTINGS_MEMBER_LABEL_DEFAULT_WORKSPACE_TIP2:
+      en: "To invite member and collaborate with other user"
+      zh: "要邀请成员并与其他用户协作"
+
+    SETTINGS_MEMBER_LABEL_CREATE_WORKSPACE:
+      en: "create a new workspace"
+      zh: "请创建新的工作空间"
+
+    SETTINGS_MEMBER_LABEL_REMOVE_CONFIRM:
+      en: "Do you confirm to remove selected %s user(s)?"
+      zh: "确定要移除选中的 %s 个用户?"
+
+    ADD_CLOUD_CREDENTIAL:
+      en: "Add Cloud Credential"
+      zh: "添加证书"
+
+    UPDATE_CLOUD_CREDENTIAL:
+      en: "Update Cloud Credential"
+      zh: "更新证书"
+
+    # Create Project Modal
+    SETTINGS_CREATE_PROJECT_NAME:
+      en: "Workspace Name"
+      zh: "工作空间名称"
+
+    SETTINGS_CREATE_PROJECT_BILLING:
+      en: "WORKSPACE BILLING"
+      zh: "工作空间付费"
+
+    SETTINGS_CREATE_PROJECT_BILLING_TIP:
+      en: "Provide billing information to create a collaborative workspace. <br/>You will only be charged when instance hour is comsumed in this workspace."
+      zh: "提供支付信息以创建一个可协作的工作空间.<br/>在此工作空间你将只需要为超出额度时间的实例付费"
+
+    SETTINGS_CREATE_PROJECT_BILLING_OWNER:
+      en: "BILLING OWNER"
+      zh: "账单拥有者"
+
+    SETTINGS_CREATE_PROJECT_BILLING_EMAIL:
+      en: "BILLING EMAIL"
+      zh: "账单邮箱"
+
+    SETTINGS_CREATE_PROJECT_FIRST_NAME:
+      en: "First Name"
+      zh: "姓"
+
+    SETTINGS_CREATE_PROJECT_LAST_NAME:
+      en: "Last Name"
+      zh: "名"
+
+    SETTINGS_CREATE_PROJECT_PL_EMAIL:
+      en: "example@email.com"
+      zh: "example@email.com"
+
+    SETTINGS_CREATE_PROJECT_CARD_NAME:
+      en: "CARD NUMBER"
+      zh: "卡号"
+
+    SETTINGS_CREATE_PROJECT_PL_CARD_NAME:
+      en: "XXXX XXXX XXXX XXXX"
+      zh: "XXXX XXXX XXXX XXXX"
+
+    SETTINGS_CREATE_PROJECT_CARD_CVV:
+      en: "CVV"
+      zh: "CVV"
+
+    SETTINGS_CREATE_PROJECT_EXPRIATION:
+      en: "EXPIRATION DATE"
+      zh: "过期日期"
+
+    SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT:
+      en: "Secure Payment"
+      zh: "安全支付"
+
+    SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT_TIT:
+      en: "Powered by Chargify"
+      zh: "由Chargify驱动"
+
+    SETTINGS_CREATE_PROJECT_TITLE:
+      en: "Create new workspace"
+      zh: "创建新工作空间"
+
+    SWITCH_WORKSPACE_UNSAVED_CHANGES:
+      en: "Unsaved Changes"
+      zh: "未保存的修改"
+
+    SETTINGS_CREATE_PROJECT_EXPIRE_FORMAT:
+      en: "Require format MM/YYYY"
+      zh: "要求格式 MM/YYYY"
+
+    PAGE_NOT_FOUND_WORKSPACE_TAB_NOT_EXIST:
+      en: "Page not Found."
+      zh: "页面未找到。"
+
+    WAIT_FOR_ADMIN_FINISH_CREDENTIAL:
+      en: "Only workspace admin has the permission to set up credential. You may wait until your admin has made everything ready."
+      zh: "只有工作空间的管理员有权限设置证书, 你可以等您的管理员设置好以后再继续。"
+
+    PROVIDE_CRED_TO_VISUALIZE:
+      en: "Provide cloud credential to import existing VPC as app."
+      zh: "提供云证书以将已有 VPC 导入为 App"
+
+    PAYMENT_INSTANCE_ID:
+      en: "Instance ID"
+      zh: "实例 ID"
+
+    CANT_DELETE_WORKSPACE:
+      en: "We were unable to charge the workspace's credit card. This workspace is in limited status now. Please update your billing information. Once the workspace is back in normal, you may delete it."
+      zh: "我们没能在您的工作空间绑定的信用卡上成功扣款。此工作空间现处于受限模式。请更新您的账单信息。一旦工作空间恢复正常模式, 您就可以删除此工作空间。"
+
+    SETTING_INVALID_EMAIL:
+      en: "This email is invalid. Please enter a valid email."
+      zh: "此电子邮件无效, 请输入有效的电子邮件。"
+
+    TITLE_OPS_CONFLICT:
+      en: "Confliction Detected"
+      zh: "版本冲突"
+
+    CONTENT_OPS_CONFLICT:
+      en: "Cannot save stack since another user has applied changes to this stack. <br/><br/> You can save your changes by duplicate this stack."
+      zh: "其他组员在这你之前修改了这个模板，因此无法保存。<br/><br/>你可以通过复制模板来保存当前的改动。"
+
+    WARNNING_APP_CHANGE_BY_OTHER_USER:
+      en: "App has been changed by another user. Close the tab and reopen."
+      zh: "App 已经被其他用户更改，请关闭该标签并重新打开。"
+
+    # Dashboard logs
+
+    DASHBOARD_PANEL_LOGS_ACTIVITY:
+      en: "Activity"
+      zh: "活动"
+
+    DASHBOARD_PANEL_LOGS_AUDIT:
+      en: "Audit Log"
+      zh: "审计"
+
+    DASHBOARD_PANEL_LOGS_NO_ACTIVITY:
+      en: "No activity yet."
+      zh: "尚无日志"
+
+    DASHBOARD_PANEL_LOGS_NO_ACTIVITY_SUB:
+      en: "Operation of team members will appear here."
+      zh: "团队成员操作将会显示在这里。"
+
+    # Stack
+    DASHBOARD_LOGS_STACK_CREATE:
+      en: "%s created stack %s"
+      zh: "%s 创建 Stack %s"
+
+    DASHBOARD_LOGS_STACK_REMOVE:
+      en: "%s deleted stack %s"
+      zh: "%s 删除 Stack %s"
+
+    DASHBOARD_LOGS_STACK_RENAME:
+      en: "%s renamed stack %s"
+      zh: "%s 重命名 Stack %s"
+
+    DASHBOARD_LOGS_STACK_SAVE:
+      en: "%s saved stack %s"
+      zh: "%s 保存 Stack %s"
+
+    DASHBOARD_LOGS_STACK_SAVEAS:
+      en: "%s duplicated stack %s"
+      zh: "%s 复制 Stack %s"
+
+    DASHBOARD_LOGS_STACK_RUN:
+    #   en: "%s ran stack %s into app %s"
+      en: "%s ran stack %s"
+      zh: "%s 运行 Stack %s"
+
+    # App
+    DASHBOARD_LOGS_APP_START:
+      en: "%s started app %s"
+      zh: "%s 恢复 App %s"
+
+    DASHBOARD_LOGS_APP_STOP:
+      en: "%s stopped app %s"
+      zh: "%s 暂停 App %s"
+
+    DASHBOARD_LOGS_APP_TERMINATE:
+      en: "%s terminated app %s"
+      zh: "%s 终结 App %s"
+
+    DASHBOARD_LOGS_APP_SAVEIMPORT:
+      en: "%s imported VPC as app %s"
+      zh: "%s 导入 VPC 为 App %s"
+
+    DASHBOARD_LOGS_APP_SAVE:
+      en: "%s saved external change to app %s"
+      zh: "%s 保存外部改变到 App %s"
+
+    DASHBOARD_LOGS_APP_UPDATE:
+      en: "%s updated app %s"
+      zh: "%s 更新 App %s"
+
+    DASHBOARD_LOGS_APP_FORGET:
+      en: "%s made app %s forgotten"
+      zh: "%s 释放 App %s"
+
+    # Project
+    DASHBOARD_LOGS_PROJECT_CREATE:
+      en: "%s created workspace %s"
+      zh: "%s 创建工作空间 %s"
+
+    DASHBOARD_LOGS_PROJECT_RENAME:
+      en: "%s renamed workspace %s"
+      zh: "%s 重命名工作空间 %s"
+
+    # Member
+    DASHBOARD_LOGS_MEMBER_CREATE:
+      en: "%s created member %s"
+      zh: "%s 创建成员 %s"
+
+    DASHBOARD_LOGS_MEMBER_UPDATE:
+      en: "%s updated member %s"
+      zh: "%s 更新成员 %s"
+
+    DASHBOARD_LOGS_MEMBER_REMOVE:
+      en: "%s removed member %s"
+      zh: "%s 删除成员 %s"
+
+    # Payment
+    DASHBOARD_LOGS_PAYMENT_ADD:
+      en: "%s added billing information"
+      zh: "%s 添加账单信息"
+
+    DASHBOARD_LOGS_PAYMENT_UPDATE:
+      en: "%s updated billing information"
+      zh: "%s 更新账单信息"
+
+    # CREDENTIAL
+    DASHBOARD_LOGS_CREDENTIAL_ADD:
+      en: "%s added cloud access credential"
+      zh: "%s 添加证书"
+
+    DASHBOARD_LOGS_CREDENTIAL_REMOVE:
+      en: "%s removed cloud access credential"
+      zh: "%s 删除证书"
+
+    DASHBOARD_LOGS_CREDENTIAL_UPDATE:
+      en: "%s updated cloud access credential"
+      zh: "%s 更新证书"
+
+    # TOKEN
+    DASHBOARD_LOGS_TOKEN_ADD:
+      en: "%s added API token %s"
+      zh: "%s 添加API令牌 %s"
+
+    DASHBOARD_LOGS_TOKEN_REMOVE:
+      en: "%s removed API token %s"
+      zh: "%s 删除API令牌 %s"
+
+    DASHBOARD_LOGS_TOKEN_RENAME:
+      en: "%s renamed API token %s"
+      zh: "%s 重命名API令牌 %s"

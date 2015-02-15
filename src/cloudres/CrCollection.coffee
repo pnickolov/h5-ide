@@ -168,30 +168,30 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
       if not tagSet
         return {}
 
-      if tagSet['Created by'] and tagSet['app'] and tagSet['app-id'] and tagSet['name'] and tagSet['Name']
+      if tagSet['Created by'] and tagSet.app and tagSet['app-id'] and tagSet.name and tagSet.Name
         #old tag format
         visopsTag = jQuery.extend(true, {}, tagSet)
-        visopsTag['isOwner'] = App.user.get('username') is tagSet['Created by']
+        visopsTag.isOwner = App.user.get('username') is tagSet['Created by']
 
-      else if tagSet['visualops'] and tagSet['Name']
+      else if tagSet.visualops and tagSet.Name
         #new tag format
         visopsTag = {}
         #1.
-        visualops = tagSet['visualops']
+        visualops = tagSet.visualops
         if visualops.indexOf('app-name=') is 0 and visualops.indexOf('app-id=') > 0 and visualops.indexOf('created-by=') > 0
           for item in visualops.split(' ')
             data = item.split('=')
             switch data[0]
-              when 'app-name'   then visopsTag['app']        = data[1]
+              when 'app-name'   then visopsTag.app           = data[1]
               when 'app-id'     then visopsTag['app-id']     = data[1]
               when 'created-by' then visopsTag['Created by'] = data[1]
             null
         #2.
-        visopsTag['name'] = tagSet['Name']
-        if visopsTag['Created by'] and visopsTag['app'] and visopsTag['app-id'] and visopsTag['name']
+        visopsTag.name = tagSet.Name
+        if visopsTag['Created by'] and visopsTag.app and visopsTag['app-id'] and visopsTag.name
           #3.
-          visopsTag['Name'] = visopsTag['app'] + '-' + visopsTag['name']
-          visopsTag['isOwner'] = App.user.get('username') is visopsTag['Created by']
+          visopsTag.Name = visopsTag.app + '-' + visopsTag.name
+          visopsTag.isOwner = App.user.get('username') is visopsTag['Created by']
 
       visopsTag
 
@@ -248,16 +248,30 @@ define ["ApiRequest", "./CrModel", "constant", "backbone"], ( ApiRequest, CrMode
     parseFetchData : ( res )-> res
 
     # Destroy the collection. Most of the collection should not be destroy.
-    destroy : ()-> @trigger "destroy", @id
+    destroy : ()-> @trigger "destroy", @credential(), @id
 
-    # Returns a newly created model. The model is not saved to AWS yet, so there's not
-    # add event.
+    # Returns a newly created model. The model is not saved to AWS yet, so there's no add event.
     create : ( attributes )->
       m = new @model( attributes )
       m.__collection = @
       m
 
-    region : ()-> @category
+    region     : ()-> @category
+    credential : ()-> @__credential
+
+    # A convenient method to call ApiRequest
+    sendRequest : ( api, params )->
+      params = params || {}
+      if params.key_id is undefined
+        params.key_id = @credential()
+
+      if params.region_name is undefined and @region()
+        # If the region is empty, we DONT assign the empty region to region_name
+        # Since ApiRequest will fill a region for us. In such case the region_name
+        # is actually useless, but the backend needs it to bypass somekind of check.
+        params.region_name = @region()
+
+      ApiRequest( api, params )
 
     # Override Backbone.Collection.set
     ### env:dev ###

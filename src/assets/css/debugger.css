@@ -1,3 +1,257 @@
+.debugToolBg:before {
+  content: " ";
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 10px;
+  background: #AAA;
+  -webkit-mask-image: url(data:image/png;base64,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);
+  -webkit-mask-size: 32px; }
+.debugToolBg:hover:before {
+  background: #fff; }
+
+#DebugTool {
+  position: absolute;
+  left: 20px;
+  bottom: 27px;
+  z-index: 9990;
+  background-color: #222;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  color: #aaa;
+  overflow: hidden;
+  box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3), 0px 0px 10px rgba(255, 255, 255, 0.3); }
+  #DebugTool:hover {
+    background-color: #020202;
+    overflow: visible;
+    border-radius: 4px 0 0 4px; }
+  #DebugTool #DebugTooltip {
+    width: 220px;
+    background: #111;
+    height: 1.8em;
+    line-height: 1.8em;
+    position: absolute;
+    bottom: -26px;
+    text-align: center;
+    border-radius: 4px; }
+  #DebugTool:hover ul {
+    opacity: 1; }
+  #DebugTool ul {
+    width: 216px;
+    height: 36px;
+    background: #222;
+    position: absolute;
+    left: 36px;
+    top: 0;
+    border-radius: 0 4px 4px 0;
+    opacity: 0;
+    padding-left: 6px; }
+    #DebugTool ul:after {
+      content: " ";
+      clear: both; }
+  #DebugTool li {
+    float: left;
+    width: 30px;
+    height: 28px;
+    margin: 4px 6px 4px 0;
+    cursor: pointer;
+    text-align: center; }
+    #DebugTool li:before {
+      line-height: 29px; }
+    #DebugTool li:hover {
+      color: #fff;
+      background: #2C61D0;
+      border-radius: 2px; }
+  #DebugTool #DtApi:before {
+    margin: 6px 7px;
+    -webkit-mask-position: 16px 16px; }
+
+#DebugQuestion {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 9996;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.25s linear; }
+  #DebugQuestion ~ #scenes {
+    transition: all 0.25s linear;
+    -webkit-filter: blur(0px); }
+  #DebugQuestion.ready {
+    transition: background 0.1s linear;
+    background: rgba(0, 0, 0, 0.3); }
+  #DebugQuestion > article {
+    width: 80%;
+    max-width: 500px;
+    margin: auto;
+    background: #1D1D1D;
+    padding: 30px 20px 20px;
+    transition: all 0.1s ease-out;
+    transform: translate(-50%, -100%);
+    color: #bbb;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); }
+  #DebugQuestion.ready ~ #scenes {
+    -webkit-filter: blur(3px); }
+  #DebugQuestion.ready > article {
+    transform: translate(-50%, 0%); }
+  #DebugQuestion.quick ~ #scenes {
+    transition: all 0.1s linear; }
+  #DebugQuestion.quick > article {
+    transition: all 0.1s linear; }
+  #DebugQuestion div {
+    float: right;
+    margin-top: 30px; }
+  #DebugQuestion p {
+    margin: 0; }
+  #DebugQuestion button {
+    color: #fff;
+    line-height: 1em;
+    padding: 6px 8px;
+    float: left;
+    margin-left: 5px;
+    background: #148BE6;
+    cursor: pointer; }
+    #DebugQuestion button:hover {
+      background: #106fb7; }
+  #DebugQuestion button[data-id="debug_q_close"] {
+    background: #FFFCFC;
+    color: #3875D7; }
+    #DebugQuestion button[data-id="debug_q_close"]:hover {
+      background: #d7d7d7; }
+
+#DebugShareSession {
+  height: 80px;
+  margin: 0;
+  font-size: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #333;
+  border: #3875D7 1px solid;
+  color: #ddd;
+  word-break: break-all; }
+
+#ApiDebuggerScene {
+  height: 100%;
+  width: 100%;
+  z-index: 9997;
+  position: absolute;
+  background: #F9F5EF;
+  box-sizing: border-box;
+  padding: 50px;
+  top: 0;
+  left: 0; }
+  #ApiDebuggerScene #ApiDebuggerLeft {
+    width: 40%;
+    float: left;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    padding-right: 20px; }
+  #ApiDebuggerScene #ApiDebuggerRight {
+    width: 60%;
+    height: 100%;
+    float: left;
+    position: relative; }
+  #ApiDebuggerScene label {
+    height: 20px;
+    display: block; }
+  #ApiDebuggerScene .select2-container {
+    margin: 10px;
+    display: block; }
+  #ApiDebuggerScene #ApiResult {
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.5em;
+    margin: 0;
+    box-sizing: border-box;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: scroll;
+    background: #333;
+    color: #ddd; }
+  #ApiDebuggerScene #ApiDebugSend {
+    position: absolute;
+    right: 20px;
+    bottom: 0; }
+  #ApiDebuggerScene .select2-choice {
+    color: #555;
+    border-color: #bdbba1; }
+  #ApiDebuggerScene #ApiParamsWrap {
+    padding: 10px; }
+    #ApiDebuggerScene #ApiParamsWrap input {
+      width: 50%;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.4em;
+      padding: 5px 10px;
+      border: 1px solid #bdbba1;
+      background: none;
+      outline: none;
+      float: left;
+      border-radius: 0;
+      height: 32px;
+      line-height: 16px;
+      box-sizing: border-box;
+      margin-bottom: -1px;
+      -webkit-appearance: none; }
+      #ApiDebuggerScene #ApiParamsWrap input:nth-child(even) {
+        border-left: none; }
+  #ApiDebuggerScene #ApiDebuggerClose {
+    background: #777;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    right: 30px;
+    top: 15px;
+    border-radius: 50%;
+    cursor: pointer; }
+    #ApiDebuggerScene #ApiDebuggerClose:hover {
+      background: #148BE6; }
+      #ApiDebuggerScene #ApiDebuggerClose:hover:before, #ApiDebuggerScene #ApiDebuggerClose:hover:after {
+        background: #fff; }
+    #ApiDebuggerScene #ApiDebuggerClose:before, #ApiDebuggerScene #ApiDebuggerClose:after {
+      content: "";
+      width: 20px;
+      height: 2px;
+      background: #444;
+      display: block;
+      transform: translate(6px, 15px) rotate(135deg); }
+    #ApiDebuggerScene #ApiDebuggerClose:after {
+      transform: translate(6px, 13px) rotate(45deg); }
+
+.select2-drop.debugger {
+  border: none;
+  border-radius: 0 0 3px 3px;
+  overflow: hidden; }
+  .select2-drop.debugger.select2-drop-active .select2-search {
+    border: none; }
+  .select2-drop.debugger .select2-results {
+    min-height: 400px; }
+  .select2-drop.debugger .select2-results li {
+    border: none; }
+  .select2-drop.debugger .select2-results-dept-0 {
+    padding: 3px 8px 0; }
+  .select2-drop.debugger .select2-results-dept-0 > .select2-result-label {
+    text-align: center;
+    padding: 5px 0; }
+  .select2-drop.debugger .select2-results-dept-1 .select2-result-label {
+    padding: 0; }
+  .select2-drop.debugger .select2-no-results {
+    padding: 15px 0;
+    text-align: center;
+    margin-left: 8px; }
+  .select2-drop.debugger .select2-results .select2-highlighted {
+    background: #148BE6; }
+
 #jsondiffContainer.changesOnly ul:not(.hasChanges),
 #jsondiffContainer.changesOnly li:not(.hasChanges) {
   display: none; }
@@ -109,11 +363,6 @@
 
 #diffInnerWrap {
   max-height: 100%;
-  width: 100%;
-  overflow: scroll; }
-
-#ApiDebugger {
-  height: 100%;
   width: 100%;
   overflow: scroll; }
 
@@ -352,110 +601,3 @@
   color: #7F7528;
   padding: 1px 3px;
   -webkit-text-size-adjust: none; }
-
-.debugToolBg:before {
-  content: " ";
-  display: block;
-  width: 16px;
-  height: 16px;
-  margin: 10px;
-  background: #AAA;
-  -webkit-mask-image: url(data:image/png;base64,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);
-  -webkit-mask-size: 32px; }
-.debugToolBg:hover:before {
-  background: #fff; }
-
-#DebugTool {
-  position: fixed;
-  left: 20px;
-  bottom: 27px;
-  z-index: 999999999;
-  background-color: #222;
-  width: 36px;
-  height: 36px;
-  border-radius: 4px;
-  color: #aaa;
-  overflow: hidden;
-  box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3), 0px 0px 10px rgba(255, 255, 255, 0.3); }
-  #DebugTool:hover {
-    background-color: #020202;
-    overflow: visible;
-    border-radius: 4px 0 0 4px; }
-  #DebugTool #DebugTooltip {
-    width: 220px;
-    background: #111;
-    height: 1.8em;
-    line-height: 1.8em;
-    position: absolute;
-    bottom: -26px;
-    text-align: center;
-    border-radius: 4px; }
-  #DebugTool:hover ul {
-    opacity: 1; }
-  #DebugTool ul {
-    width: 216px;
-    height: 36px;
-    background: #222;
-    position: absolute;
-    left: 36px;
-    top: 0;
-    border-radius: 0 4px 4px 0;
-    opacity: 0;
-    padding-left: 6px; }
-    #DebugTool ul:after {
-      content: " ";
-      clear: both; }
-  #DebugTool li {
-    float: left;
-    width: 30px;
-    height: 28px;
-    margin: 4px 6px 4px 0;
-    cursor: pointer;
-    text-align: center; }
-    #DebugTool li:before {
-      line-height: 29px; }
-    #DebugTool li:hover {
-      color: #fff;
-      background: #2C61D0;
-      border-radius: 2px; }
-  #DebugTool #DtApi:before {
-    margin: 6px 7px;
-    -webkit-mask-position: 16px 16px; }
-
-#ApiResult {
-  font-size: 12px;
-  line-height: 1.5em; }
-
-#ApiDebugger > section {
-  padding: 30px 30px 0; }
-#ApiDebugger section ~ section {
-  padding-top: 20px; }
-#ApiDebugger label {
-  display: block;
-  line-height: 2em; }
-#ApiDebugger .diffInput {
-  width: 20%;
-  height: 28px;
-  box-sizing: border-box;
-  margin-bottom: -1px;
-  color: #333;
-  background: #fff; }
-  #ApiDebugger .diffInput[value=""] {
-    background: none; }
-#ApiDebugger ::-webkit-input-placeholder {
-  color: #999; }
-#ApiDebugger .btn-blue {
-  position: absolute;
-  right: 30px;
-  top: 30px; }
-
-#DebugShareSession {
-  height: 200px;
-  font-size: 12px;
-  width: 100%;
-  box-sizing: border-box;
-  margin-top: 10px;
-  border: 1px solid #000000;
-  background: #1c1c1c;
-  color: #D0D0D0;
-  word-break: break-all; }

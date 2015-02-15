@@ -3541,35 +3541,49 @@ aside.dashboard-sidebar {
   flex-wrap: wrap;
   align-items: stretch;
   -webkit-align-items: stretch;
-  height: auto;
-  width: 100%;
+  height: 33.5vw;
+  width: 80vw;
   margin-top: 20px; }
+  @media (max-width: 1024px) {
+    #region-app-stack-wrap {
+      height: 71vw; } }
+  @media (min-width: 1280px) {
+    #region-app-stack-wrap {
+      height: 26.33333vw; } }
   #region-app-stack-wrap > div {
-    width: 48.5%;
-    height: 370px;
-    margin: 0 1%;
+    width: 38.5vw;
+    height: 30.5vw;
+    margin: 0 1vw;
     position: relative; }
     #region-app-stack-wrap > div:first-of-type {
-      margin-right: 0.5%; }
+      margin-right: .5vw; }
     #region-app-stack-wrap > div:last-of-type {
-      margin-left: 0.5%; }
+      margin-left: .5vw; }
+    @media (min-width: 1280px) {
+      #region-app-stack-wrap > div {
+        height: 20.33333vw; } }
     @media (max-width: 1024px) {
       #region-app-stack-wrap > div {
-        width: 98%; }
+        width: 78vw;
+        height: 30.5vw; }
         #region-app-stack-wrap > div:first-of-type {
-          margin-right: 1%; }
+          margin-right: 1vw; }
         #region-app-stack-wrap > div:last-of-type {
-          margin-left: 1%; } }
+          margin-left: 1vw; } }
   #region-app-stack-wrap #region-resource-stack-wrap,
   #region-app-stack-wrap #region-resource-app-wrap {
     overflow-x: hidden;
     overflow-y: auto;
-    height: 310px;
+    height: 30.5vw;
     box-sizing: border-box;
     background: #fff;
     -webkit-transform: translate3d(0, 0, 0);
     border: 1px solid #ccc;
     border-radius: 3px; }
+    @media (min-width: 1280px) {
+      #region-app-stack-wrap #region-resource-stack-wrap,
+      #region-app-stack-wrap #region-resource-app-wrap {
+        height: 20.33333vw; } }
 
 #region-resource-app-wrap.region-resource-list .region-resource-info > span {
   max-width: 55px; }

@@ -604,7 +604,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     updateWithWSEvent : ( wsRequest )->
       # 1. Processing
-      if wsRequest.state is constant.OPS_STATE.INPROCESS
+      if wsRequest.state is constant.OPS_STATE.INPROCESS and @isProcessing()
         step       = 0
         totalSteps = 1
         if wsRequest.dag and wsRequest.dag.step
@@ -619,46 +619,63 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           @trigger "change:progress", @, progress
         return
 
-      # 2. Completed / Failed
+      # 2. Starting / Completed / Failed
       console.info "OpsModel's state changes due to WS event:", @, wsRequest
-      completed = wsRequest.state is constant.OPS_STATE.DONE
+      if wsRequest.state is constant.OPS_STATE.INPROCESS
+        toStateIndex = 0
+      else if wsRequest.state is constant.OPS_STATE.DONE
+        toStateIndex = 1
+      else
+        toStateIndex = 2
+
+      OMS = OpsModelState
 
       switch wsRequest.code
         when constant.OPS_CODE_NAME.LAUNCH
-          toState = if completed then OpsModelState.Running else OpsModelState.Destroyed
+          toState = [ OMS.Initializing, OMS.Running, OMS.Destroyed ]
         when constant.OPS_CODE_NAME.STOP
-          toState = if completed then OpsModelState.Stopped else OpsModelState.Running
+          toState = [ OMS.Stopping, OMS.Stopped, OMS.Running ]
         when constant.OPS_CODE_NAME.START
-          toState = if completed then OpsModelState.Running else OpsModelState.Stopped
+          toState = [ OMS.Starting, OMS.Running, OMS.Stopped ]
         when constant.OPS_CODE_NAME.TERMINATE
-          toState = if completed then OpsModelState.Destroyed else OpsModelState.Stopped
+          toState = [ OMS.Terminating, OMS.Destroyed, OMS.Stopped ]
         when constant.OPS_CODE_NAME.UPDATE, constant.OPS_CODE_NAME.STATE_UPDATE
-          if not @__updateAppDefer
-            if @isLastActionTriggerByUser()
-              console.warn "The update action seems to caused by user, but UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
+          if toStateIndex isnt 0
+            if not @__updateAppDefer
+              if @isLastActionTriggerByUser()
+                console.warn "The update action seems to caused by user, but UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
+              return
+            if toStateIndex is 1
+              @__updateAppDefer.resolve()
+            else
+              @__updateAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
             return
-          if completed
-            @__updateAppDefer.resolve()
-          else
-            @__updateAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
-          return
+
+          toState = [ OMS.Updating ]
 
         when constant.OPS_CODE_NAME.APP_SAVE # This is saving app.
-          if not @__saveAppDefer
-            if @isLastActionTriggerByUser()
-              console.warn "The save app action seems to caused by user, but SaveAppDefer is null when setStatusWithWSEvent with `save` event."
+          if toStateIndex isnt 0
+            if not @__saveAppDefer
+              if @isLastActionTriggerByUser()
+                console.warn "The save app action seems to caused by user, but SaveAppDefer is null when setStatusWithWSEvent with `save` event."
+              return
+            if toStateIndex is 1
+              @__saveAppDefer.resolve()
+            else
+              @__saveAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
             return
-          if completed
-            @__saveAppDefer.resolve()
-          else
-            @__saveAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
-          return
 
+          toState = [ OMS.Saving ]
+
+      toState = toState[ toStateIndex ]
       # 3. Clear the useraction flag if the state changes from DONE state to another state.
       if not @isProcessing() and @get("state") isnt toState
         @__userTriggerAppProgress = false
 
-      @attributes.opsActionError = if completed then "" else wsRequest.data
+      # 4. Log message if failed.
+      @attributes.opsActionError = if toStateIndex is 2 then wsRequest.data else ""
+
+      # 5. Transition to other state.
       if toState is OpsModelState.Destroyed
         @__destroy()
       else if toState

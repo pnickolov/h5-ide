@@ -366,7 +366,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         STOP         : "Forge.App.Stop"
         START        : "Forge.App.Start"
         UPDATE       : "Forge.App.Update"
-        STATE_UPDATE : "Forge.App.State.Update"
+        STATE_UPDATE : "Forge.AppState.Update"
         TERMINATE    : "Forge.App.Terminate"
         APP_SAVE     : "Forge.App.Save"
 

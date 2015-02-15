@@ -559,18 +559,18 @@ footer {
 /* 500 */
 
 #body-500 {
-	background-color: #252631;
+	background-color: #4D4D69;
 	height: 0;
 	padding: 200px 0;
 }
 
 #body-500 h1 {
-	background: #66398b;
+	background: $base-p;
 	position: absolute;
 	z-index: 100;
 	width: 100%;
 	top: 0;
-	border-top: 4px solid #9C6DC0;
+	border-top: 4px solid $dark-p;
 	border-bottom: 1px solid #181818;
 	padding: 5px 0 9px 0;
 }

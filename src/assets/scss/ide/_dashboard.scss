@@ -725,13 +725,23 @@ $bp-2: 1280px;
       }
     }
 
+    .region-resource-progess-wrap {
+      position      : absolute;
+      left          : 0;
+      right         : 0;
+      bottom        : 0;
+      border-radius : 0 0 5px 5px;
+      overflow      : hidden;
+      height        : 27px;
+      z-index       : 1;
+      + .region-resource-info {
+        position : relative;
+        z-index  : 2;
+      }
+    }
+
     .region-resource-progess {
-      position : absolute;
-      left     : 0;
-      bottom   : 0;
-      height   : 27px;
-      z-index  : 1;
-      border-radius : 0 0 0 5px;
+      height : 27px;
 
       $stripeColor1 : #ad77d7;
       $stripeColor2 : #9e62d4;
@@ -747,11 +757,6 @@ $bp-2: 1280px;
       -webkit-animation: progress-bar 2s linear infinite;
          -moz-animation: progress-bar 2s linear infinite;
               animation: progress-bar 2s linear infinite;
-
-      + .region-resource-info {
-        position : relative;
-        z-index  : 2;
-      }
     }
 
     .region-resource-info {

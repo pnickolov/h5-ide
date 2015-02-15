@@ -97,13 +97,13 @@
                 <li data-region="{{id}}">{{shortName}}</li>{{/each}}
         </ul>
     </nav>
-    
+
     <ul id="region-resource-app-wrap" class="region-resource-list">
         {{#each apps}}
             <li data-id="{{id}}">
                 <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">{{#if progressing}}
                 <div class="thumbnail app-thumbnail"></div>
-                <div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div>
+                <div class="region-resource-progess-wrap"><div class="region-resource-progess{{#unless progress}} hide{{/unless}}" style="width:{{progress}}%;"></div></div>
                 <div class="region-resource-info truncate" title="{{name}}">
                     <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
                 </div>
@@ -123,7 +123,7 @@
             <div class="blank-widget"><div>{{i18n "DASH_LBL_NO_APP"}}</div></div>
         {{/each}}
     </ul>
- 
+
 <!--{{region_stacks}}-->
 <div class="dash-region-stacks-wrap">
     <label class="region-resource-tab">
@@ -339,7 +339,7 @@
   {{else}}
   <div class="blank-widget">{{i18n "DASH_TIP_NO_RESOURCE_LEFT"}}{{i18n "DASH_LBL_VPC"}}{{i18n "DASH_TIP_NO_RESOURCE_RIGHT"}}.</div>
   {{/each}}
-  
+
   </tbody>
 </table>
 

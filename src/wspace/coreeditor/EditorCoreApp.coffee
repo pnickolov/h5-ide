@@ -177,19 +177,34 @@ define [
     onOpsModelStateChanged : ()->
       if not @isInited() then return
 
+      if @opsModel.testState( OpsModel.State.Destroyed )
+        if not @opsModel.isLastActionTriggerByUser()
+          notification "info", "The app has been removed by other team."
+        @remove()
+        return
+
+      # Saving state only exist in IDE ( after the user saving the app directly into the database )
+      # We don't have to mask the editor while we are saving.
       if @opsModel.testState( OpsModel.State.Saving ) or @opsModel.previous("state") is OpsModel.State.Saving
         return
 
       @updateTab()
 
-      if @opsModel.isProcessing()
-        @view.toggleProcessing()
-      else if @opsModel.testState( OpsModel.State.Destroyed )
-        @remove()
-      else if not @__applyingUpdate
-        self = @
-        @view.showUpdateStatus( "", true )
-        @loadVpcResource().then ()-> self.__onVpcResLoaded()
+      if @isAppEditMode()
+        # When the opsmodel state changes in app edit mode.
+        # If the change doesn't cause by current user.
+        # We should ask the user to save the edit state, and then quit the app.
+
+      else
+        # When we are not in app edit mode, editor only have react as the opsmodel state changes.
+        if @opsModel.isProcessing()
+          @view.toggleProcessing()
+        else
+          @view.showUpdateStatus( "", true )
+          @loadVpcResource().then ()=> @__onVpcResLoaded()
+        return
+
+
       return
 
     __onVpcResLoaded : ()->

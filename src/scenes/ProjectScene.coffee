@@ -134,17 +134,22 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
 
       if not attr.opsModel then return
 
-      (@createSpace(attr)).activate()
+      @createSpace(attr)?.activate()
       return
 
-    loadDashboard : ()-> (@createSpace({type:"Dashboard"})).activate()
+    loadDashboard : ()->
+      console.assert(Workspace.findSuitableSpace({type:"Dashboard"}), "Dashboard is not found.")
+      @createSpace({type:"Dashboard"}).activate()
 
     createSpace : ( data )->
       existing = @findSpace(data)
       if existing then return existing
 
       SpaceClass = Workspace.findSuitableSpace( data )
-      console.assert( SpaceClass, "Cannot find suitable workspace to work with the data", data )
+      if not SpaceClass
+        console.warn( "Cannot find suitable workspace to work with the data", data )
+        return null
+
       new SpaceClass( data, {scene:@} )
 
     spaceParentElement : ()-> @view.$wsparent

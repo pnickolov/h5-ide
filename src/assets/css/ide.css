@@ -3541,15 +3541,9 @@ aside.dashboard-sidebar {
   flex-wrap: wrap;
   align-items: stretch;
   -webkit-align-items: stretch;
-  height: 33.5vw;
+  height: auto;
   width: 80vw;
   margin-top: 20px; }
-  @media (max-width: 1024px) {
-    #region-app-stack-wrap {
-      height: 71vw; } }
-  @media (min-width: 1280px) {
-    #region-app-stack-wrap {
-      height: 24.63333vw; } }
   #region-app-stack-wrap > div {
     width: 38.5vw;
     margin: 0 1vw;
@@ -3569,7 +3563,9 @@ aside.dashboard-sidebar {
   #region-app-stack-wrap #region-resource-app-wrap {
     overflow-x: hidden;
     overflow-y: auto;
-    height: 30.5vw;
+    height: auto;
+    max-height: 30.5vw;
+    min-height: 16.3vw;
     box-sizing: border-box;
     background: #fff;
     -webkit-transform: translate3d(0, 0, 0);
@@ -3578,7 +3574,7 @@ aside.dashboard-sidebar {
     @media (min-width: 1280px) {
       #region-app-stack-wrap #region-resource-stack-wrap,
       #region-app-stack-wrap #region-resource-app-wrap {
-        height: 20.63333vw; } }
+        max-height: 20.63333vw; } }
 
 #region-resource-app-wrap.region-resource-list .region-resource-info > span {
   max-width: 55px; }
@@ -10099,7 +10095,12 @@ dl.settings-item {
       padding: 0 10px; }
     .project-scene .project-header .project-list {
       width: 144px;
-      text-align: left; }
+      text-align: left;
+      position: relative; }
+      .project-scene .project-header .project-list:before {
+        position: absolute;
+        right: 5px;
+        top: 17px; }
   .project-scene .ws-content {
     position: absolute;
     top: 50px;
@@ -10309,7 +10310,7 @@ dl.settings-item {
   .header-popup li > a {
     display: block;
     padding: 0 30px 0 16px;
-    width: 118px; }
+    width: 165px; }
   .header-popup li > a + a {
     position: absolute;
     right: 10px;
@@ -10339,19 +10340,13 @@ dl.settings-item {
       margin-right: 4px; }
 
 .hp-project-list {
-  border-right: 1px solid #202020; }
+  border-right: 1px solid #202020;
+  border-top: 1px solid #202020; }
   .hp-project-list .selected {
-    position: relative; }
-    .hp-project-list .selected:before {
-      content: " ";
-      position: absolute;
-      top: 16px;
-      left: 6px;
-      display: block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #4a90e2; }
+    position: relative;
+    background-color: #2c2f4d;
+    color: #fff;
+    box-shadow: inset 4px 0 #51568e; }
 
 .hp-asset-list {
   width: 210px;

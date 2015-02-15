@@ -70,6 +70,13 @@
     .project-list {
       width : 144px; // The size of .project-list affects the margin of the .ws-tabbar
       text-align: left;
+      position: relative;
+
+      &:before {
+        position : absolute;
+        right    : 5px;
+        top      : 17px;
+      }
     }
   }
 
@@ -360,7 +367,7 @@
   li > a {
     display : block;
     padding : 0 30px 0 16px;
-    width   : 118px;
+    width   : 165px;
   }
 
   li > a + a {
@@ -408,23 +415,27 @@
 
 .hp-project-list {
   border-right : 1px solid #202020;
+  border-top   : 1px solid #202020;
 
   .selected {
-    position: relative;
+    position         : relative;
+    background-color : $dark-p-1;
+    color            : #fff;
+    box-shadow       : inset 4px 0 $light-p-2;
 
-    &:before {
-      content  : " ";
-      position : absolute;
-      top      : 16px;
-      left     : 6px;
-      display  : block;
+    // &:before {
+    //   content  : " ";
+    //   position : absolute;
+    //   top      : 16px;
+    //   left     : 6px;
+    //   display  : block;
 
-      width         : 6px;
-      height        : 6px;
-      border-radius : 50%;
+    //   width         : 6px;
+    //   height        : 6px;
+    //   border-radius : 50%;
 
-      background : $base-b;
-    }
+    //   background : $base-b;
+    // }
   }
 
 }

@@ -33,10 +33,10 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     @__sessionExpire = false
 
     @collection =
+      user    : new Meteor.Collection "user",     opts
+      imports : new Meteor.Collection "imports",  opts
       project : new Meteor.Collection "project",  opts
       history : new Meteor.Collection "project_history",  opts
-      user    : new Meteor.Collection "user", opts
-      imports : new Meteor.Collection "imports",  opts
       request : new Meteor.Collection "request",  opts
       status  : new Meteor.Collection "status",   opts
       app     : new Meteor.Collection "app",      opts
@@ -58,11 +58,10 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
         @statusChanged()
     , 5000
 
-    @appWideSubscripe()
+    @__appWideSubscripe()
     this
 
   # isReady is only true for a project, when its request subscription is ready.
-  Websocket.prototype.isReady = ( projectId )-> @projects[projectId]?.ready
   Websocket.prototype.onUserSubError = ( e )->
     console.log "[Websocket Error]", e
 
@@ -101,7 +100,7 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
 
   #   return
 
-  Websocket.prototype.appWideSubscripe = ()->
+  Websocket.prototype.__appWideSubscripe = ()->
     # Subscripe user to watch if session becomes invalid.
     @connection.subscribe "user", App.user.get("usercode"), App.user.get("session"), {
       onReady : ()->
@@ -109,7 +108,17 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     }
     @connection.subscribe "imports", App.user.get("usercode"), App.user.get("session")
 
-  # Watch changes of a project, keep track of the subscribtion
+  subMap = {
+    project : 0
+    history : 1
+    request : 2
+    status  : 3
+    stack   : 4
+    app     : 5
+  }
+  Websocket.prototype.isSubReady = ( projectId, subscription )-> @projects[ projectId ][ subMap[subscription] ].ready
+
+  # Watch changes of a project, keep track of the subscription
   # Auto-subscribe when connection lost.
   Websocket.prototype.subscribe = ( projectId )->
     if @projects[ projectId ] then return
@@ -119,11 +128,9 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     usercode = App.user.get("usercode")
 
     @projects[ projectId ] = [
+      @connection.subscribe "project", usercode, session, projectId, { onError : ( e )-> self.onError(e, projectId) }
       @connection.subscribe "history", usercode, session, projectId
-      @connection.subscribe "project", usercode, session, projectId, {
-        onError : ( e )-> self.onError(e, projectId)
-      }
-      @connection.subscribe "request", usercode, session, projectId, ()-> self.projects[ projectId ]?.ready = true; return
+      @connection.subscribe "request", usercode, session, projectId
       @connection.subscribe "status",  usercode, session, projectId
       @connection.subscribe "stack",   usercode, session, projectId
       @connection.subscribe "app",     usercode, session, projectId

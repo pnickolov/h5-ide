@@ -68,7 +68,7 @@ define [
 
     App.WS.collection.stack.find().observe {
       added : ( newDocument )->
-        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        if not newDocument or not App.WS.isSubReady( newDocument.project_id, "stack" ) then return
         project = App.model.projects().get( newDocument.project_id )
         if not project
           console.log "Adding a stack that is not related to any project, ignored.", newDocument
@@ -87,7 +87,7 @@ define [
         , 1000
         return
       removed : ( newDocument )->
-        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        if not newDocument or not App.WS.isSubReady( newDocument.project_id, "stack" ) then return
         project = App.model.projects().get( newDocument.project_id )
         if not project
           console.log "Removing a stack that is not related to any project, ignored.", newDocument
@@ -100,7 +100,7 @@ define [
 
     App.WS.collection.app.find().observe {
       added : ( newDocument )->
-        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        if not newDocument or not App.WS.isSubReady( newDocument.project_id, "app" ) then return
         project = App.model.projects().get( newDocument.project_id )
         if not project
           console.log "There's an app that is not related to any project, ignored.", newDocument
@@ -120,7 +120,7 @@ define [
         return
 
       removed : (newDocument)->
-        if not newDocument or not App.WS.isReady( newDocument.project_id ) then return
+        if not newDocument or not App.WS.isSubReady( newDocument.project_id ) then return
         project = App.model.projects().get( newDocument.project_id )
         if not project
           console.log "There's an app that is not related to any project that is removed. ignored.", newDocument
@@ -141,7 +141,8 @@ define [
       ###
       # Update the corresponding opsmodel.
       ###
-      if not App.WS.isReady( req.project_id ) and req.state isnt constant.OPS_STATE.INPROCESS then return # only updates when WS has finished pushing the initial data.
+      # only updates when WS has finished pushing the initial data.
+      if not App.WS.isSubReady( req.project_id, "request" ) then return
 
       TGT = App.model.projects().get( req.project_id )
       if not TGT then return

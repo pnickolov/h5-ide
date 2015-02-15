@@ -94,7 +94,7 @@ define [
           return
 
         # Use private api to destroy the stack directly.
-        project.stacks().get( newDocument.id )?.__destroy({externalAction:true})
+        project.stacks().get( newDocument.id )?.__destroy()
         return
     }
 
@@ -127,7 +127,7 @@ define [
           return
 
         wsdata = project.__parseListRes([newDocument])[0]
-        project.apps().get( newDocument.id )?.__destroy({externalAction:true})
+        project.apps().get( newDocument.id )?.__destroy()
     }
 
     handleRequest = ( req )->

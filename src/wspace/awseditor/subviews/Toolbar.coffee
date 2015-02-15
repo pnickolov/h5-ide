@@ -81,6 +81,8 @@ define [
       return
 
     updateTbBtns : ()->
+      if @workspace.isRemoved() then return
+
       opsModel = @workspace.opsModel
 
       # LineStyle Btn

@@ -86,7 +86,6 @@ define [
     toggleProcessing : ()->
       if not @$el then return
 
-      @toolbar.updateTbBtns()
       @statusbar.update()
       @$el.children(".ops-process").remove()
 

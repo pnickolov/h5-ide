@@ -584,7 +584,7 @@ VisualOps API. You cannot UNDO this action.'
       zh : "正在刷新资源..."
 
     SETTINGS_ERR_CRED_VALIDATE:
-      en : "Failed to validate the credential. Make sure it is correct and at least has read access to AWS."
+      en : "Failed to validate the credential. <br> Make sure it is correct and at least has read access to AWS."
       zh : "您的证书验证失败。请保证其正确性，并至少拥有 AWS 的读权限。"
 
     SETTINGS_ERR_CRED_UPDATE:

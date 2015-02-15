@@ -3565,7 +3565,6 @@ aside.dashboard-sidebar {
     overflow-y: auto;
     height: auto;
     max-height: 30.5vw;
-    min-height: 16.3vw;
     box-sizing: border-box;
     background: #fff;
     -webkit-transform: translate3d(0, 0, 0);

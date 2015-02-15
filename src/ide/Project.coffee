@@ -14,6 +14,14 @@ define [
   # One-time initializer to observe the websocket. Since the websocket is not
   # available during the defination of the class
   ###
+  tenSecCheckTimer = {}
+  clearTenSecCheck = ( id )->
+    if tenSecCheckTimer[id]
+      console.info "tenSecCheckTimer removed:", id
+      clearTimeout( tenSecCheckTimer[id] )
+      delete tenSecCheckTimer[id]
+    return
+
   OneTimeWsInit = ()->
     OneTimeWsInit = ()-> return
 
@@ -42,18 +50,16 @@ define [
       # removed : ()-> # Ignored
     }
 
-    isOpsExist = ( col, attr, wsdata )->
-      # The stack already exist. Ignore.
-      if col.get( wsdata.id ) then return 1
-      # There's no sign of the model, we determine that this model is created by other
-      if not col.findWhere( attr ) then return 0
-      # Cannot determine if the ops exists
-      -1
 
     tenSecCheck = ( col, attr, wsdata, retry )->
-      res = isOpsExist( col, attr, wsdata )
-      if res is 1 then return
-      if res is 0
+      # Remove timer
+      delete tenSecCheckTimer[wsdata.id]
+
+      # The stack already exist. Ignore.
+      if col.get(wsdata.id) then return
+
+      # There's no sign of the model, we determine that this model is created by other
+      if not col.findWhere(attr)
         console.log "[WS Add] The ops doesn't exist, add to collection", wsdata, col
         col.add( new OpsModel( wsdata ) )
         return
@@ -63,7 +69,11 @@ define [
         return
 
       console.log "[WS Add] Cannot determine the ops, retry in 2 sec.", wsdata
-      setTimeout (()-> tenSecCheck( col, attr, wsdata, retry + 1 )), 2000
+      sheduleTenSecCheck( col, attr, wsdata, retry + 1, 2000 )
+      return
+
+    sheduleTenSecCheck = ( col, attr, wsdata, retry, deplay )->
+      tenSecCheckTimer[ wsdata.id ] = setTimeout (()->tenSecCheck( col, attr, wsdata, retry )), deplay
       return
 
     App.WS.collection.stack.find().observe {
@@ -77,14 +87,12 @@ define [
         wsdata = project.__parseListRes([newDocument])[0]
         # Set 1sec timeout to reduce the check time.
         # Since the first check will always fail.
-        setTimeout ()->
-          tenSecCheck( project.stacks(), {
-            name     : wsdata.name
-            provider : wsdata.provider
-            region   : wsdata.region
-            state    : OpsModel.State.Saving
-          }, wsdata, 0 )
-        , 1000
+        sheduleTenSecCheck( project.stacks(), {
+          name     : wsdata.name
+          provider : wsdata.provider
+          region   : wsdata.region
+          state    : OpsModel.State.Saving
+        }, wsdata, 0, 1000 )
         return
       changed : ( newDocument )->
         if not newDocument or not App.WS.isSubReady( newDocument.project_id, "stack" ) then return
@@ -118,14 +126,12 @@ define [
         wsdata = project.__parseListRes([newDocument])[0]
         # Set time 1sec timeout to reduce the check time.
         # Since the first check will always fail.
-        setTimeout ()->
-          tenSecCheck( project.apps(), {
-            name     : wsdata.name
-            provider : wsdata.provider
-            region   : wsdata.region
-            state    : OpsModel.State.Initializing
-          }, wsdata, 0 )
-        , 1000
+        sheduleTenSecCheck( project.apps(), {
+          name     : wsdata.name
+          provider : wsdata.provider
+          region   : wsdata.region
+          state    : OpsModel.State.Initializing
+        }, wsdata, 0, 1000 )
         return
 
       changed : ( newDocument )->
@@ -147,7 +153,6 @@ define [
           console.log "There's an app that is not related to any project that is removed. ignored.", newDocument
           return
 
-        wsdata = project.__parseListRes([newDocument])[0]
         project.apps().get( newDocument.id )?.__destroy()
     }
 
@@ -256,12 +261,12 @@ define [
       @listenTo @stacks(), "change",   ()-> @trigger "change:stack"
       @listenTo @stacks(), "change:id",()-> @trigger "update:stack"
       @listenTo @stacks(), "add",      ()-> @trigger "update:stack"
-      @listenTo @stacks(), "remove",   ()-> @trigger "update:stack"
+      @listenTo @stacks(), "remove",   (o)-> clearTenSecCheck(o.id); @trigger "update:stack"
 
       @listenTo @apps(), "change", ()-> @trigger "change:app"
       @listenTo @apps(), "change:progress", ()-> @trigger "change:app"
       @listenTo @apps(), "add",    ()-> @trigger "update:app"
-      @listenTo @apps(), "remove", ()-> @trigger "update:app"
+      @listenTo @apps(), "remove", (o)-> clearTenSecCheck(o.id); @trigger "update:app"
 
       # Ask Websocket to watch changes for this project
       App.WS.subscribe( @id )

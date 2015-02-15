@@ -145,7 +145,7 @@ define [
 
     showModalError: ( message ) ->
 
-        @$el.find( '.cred-setup-msg' ).show().text message
+        @$el.find( '.cred-setup-msg' ).show().html message
 
     hideModalError: () ->
 

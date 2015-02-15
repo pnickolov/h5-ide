@@ -7,9 +7,11 @@ define [
   "Design"
   "CloudResources"
   "constant"
+  "ApiRequest"
+  "i18n!/nls/lang.js"
 
   "wspace/coreeditor/EditorDeps"
-], ( StackEditor, AppView, ResDiff, OpsModel, Design, CloudResources, constant )->
+], ( StackEditor, AppView, ResDiff, OpsModel, Design, CloudResources, constant, ApiRequest, lang )->
 
   StackEditor.extend {
 
@@ -147,9 +149,14 @@ define [
 
       @__applyingUpdate = false
       @view.stopListening @opsModel, "change:progress", @view.updateProgress
-      msg = err.msg
-      if err.result then msg += "\n" + err.result
-      msg = msg.replace(/\n/g, "<br />")
+
+      if err.error is ApiRequest.Errors.AppConflict
+        msg = lang.NOTIFY.ERR_APP_UPDATE_FAILED_CONFLICT
+      else
+        msg = err.msg
+        if err.result then msg += "\n" + err.result
+        msg = msg.replace(/\n/g, "<br />")
+
       @view.showUpdateStatus( msg )
       return
 

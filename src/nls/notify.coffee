@@ -108,15 +108,19 @@ module.exports =
 
     ERR_SAVE_FAILED:
       en: "Fail to save stack %s. Please try again."
-      zh: "保存模块 %s 失败，请您检查并重新保存。"
+      zh: "保存stack %s 失败，请您检查并重新保存。"
 
     ERR_SAVE_FAILED_NAME:
       en: "The stack name has already been used. Please change to a new one."
-      zh: "已存在相同名字的模板，请输入一个新的名字后重新保存。"
+      zh: "已存在相同名字的stack，请输入一个新的名字后重新保存。"
 
     ERR_SAVE_FAILED_CONFLICT:
       en: "Cannot save stack since another user has applied changes to this stack."
-      zh: "其他组员在这你之前修改了这个模板，因此无法保存。"
+      zh: "其他组员在这你之前修改了这个stack，因此无法保存。"
+
+    ERR_APP_UPDATE_FAILED_CONFLICT:
+      en: "Cannot apply update to the app since another user has modified this app."
+      zh: "其他组员在这你之前修改了这个app，因此无法应用更新。"
 
     ERR_SAVE_SUCCESS:
       en: "Save stack %s successfully."

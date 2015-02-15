@@ -115,7 +115,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
     saveInvalidAmiId : ()->
       amis = []
       for amiId, value of @__markedIds
-        if value then amis.push amiId
+        if value and amiId then amis.push amiId
 
       if amis.length
         localStorage.setItem( @localStorageKey(), amis.join(",") )

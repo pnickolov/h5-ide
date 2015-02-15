@@ -112,11 +112,11 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     project : 0
     history : 1
     request : 2
-    status  : 3
-    stack   : 4
-    app     : 5
+    stack   : 3
+    app     : 4
+    status  : 5
   }
-  Websocket.prototype.isSubReady = ( projectId, subscription )-> @projects[ projectId ][ subMap[subscription] ].ready
+  Websocket.prototype.isSubReady = ( projectId, subscription )-> @projects[ projectId ][ subMap[subscription] ].ready()
 
   # Watch changes of a project, keep track of the subscription
   # Auto-subscribe when connection lost.
@@ -131,9 +131,9 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
       @connection.subscribe "project", usercode, session, projectId, { onError : ( e )-> self.onError(e, projectId) }
       @connection.subscribe "history", usercode, session, projectId
       @connection.subscribe "request", usercode, session, projectId
-      @connection.subscribe "status",  usercode, session, projectId
       @connection.subscribe "stack",   usercode, session, projectId
       @connection.subscribe "app",     usercode, session, projectId
+      @connection.subscribe "status",  usercode, session, projectId
     ]
     return
 

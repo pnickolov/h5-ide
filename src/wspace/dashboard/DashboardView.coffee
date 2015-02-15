@@ -75,6 +75,9 @@ define [ "./DashboardTpl",
       @listenTo @model.scene.project, "update:credential", ()-> self.updateDemoView()
       @listenTo @model.scene.project, "change:credential", ()-> self.updateDemoView()
 
+      @listenTo @model.scene.project.apps(), "change:progress", ( ops )-> self.updateAppStackProgress( ops )
+      @listenTo @model.scene.project.stacks(), "change:progress", ( ops )-> self.updateAppStackProgress( ops )
+
       @listenTo App.WS, "visualizeUpdate", @onVisualizeUpdated
       @credentialId = @model.scene.project.credIdOfProvider constant.PROVIDER.AWSGLOBAL
       @credentialAccount = @model.scene.project.credOfProvider(constant.PROVIDER.AWSGLOBAL).get("awsAccount")
@@ -217,6 +220,10 @@ define [ "./DashboardTpl",
       else
         tpl = dataTemplate["resource#{@resourcesTab}"]( @model.getAwsResData( @region, type ) )
       @$el.find("#RegionResourceData").html( tpl )
+
+    updateAppStackProgress : ( ops )->
+      $("#region-resource-app-wrap, #region-resource-stack-wrap").children("li[data-id='#{ops.id}']").find(".region-resource-progess").css("width",ops.get("progress")+"%")
+      return
 
     updateRegionAppStack : (updateType="stack", region)->
       if updateType not in ["stacks", "apps"]

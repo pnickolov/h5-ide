@@ -114,8 +114,8 @@
 
     <aside class="dashboard-sidebar">
       <nav>
-        <button class="dashboard-nav-log dashboard-nav-activity selected" data-id="activity">Activity</button>
-        {{#if isAdmin}}<button class="dashboard-nav-log dashboard-nav-audit" data-id="audit">Audit Log</button>{{/if}}
+        <button class="dashboard-nav-log dashboard-nav-activity selected" data-id="activity">{{i18n "DASHBOARD_PANEL_LOGS_ACTIVITY"}}</button>
+        {{#if isAdmin}}<button class="dashboard-nav-log dashboard-nav-audit" data-id="audit">{{i18n "DASHBOARD_PANEL_LOGS_AUDIT"}}</button>{{/if}}
       </nav>
       <div class="dashboard-log-wrap">
           <div class="dashboard-log dashboard-log-activity"><div class="loading-spinner"></div></div>
@@ -140,6 +140,6 @@
 
 <!-- {{noActivity}} -->
 <div class="dashboard-log-empty">
-    <div class="main">No activity yet.</div>
-    <div class="sub">Operation of team members will appear here.</div>
+    <div class="main">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY"}}</div>
+    <div class="sub">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY_SUB"}}</div>
 </div>

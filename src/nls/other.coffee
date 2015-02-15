@@ -2833,6 +2833,22 @@ into live resources, or import existing infrastructures."
 
     # Dashboard logs
 
+    DASHBOARD_PANEL_LOGS_ACTIVITY:
+      en: "Activity"
+      zh: "活动"
+
+    DASHBOARD_PANEL_LOGS_AUDIT:
+      en: "Audit Log"
+      zh: "审计"
+
+    DASHBOARD_PANEL_LOGS_NO_ACTIVITY:
+      en: "No activity yet."
+      zh: "尚无日志"
+
+    DASHBOARD_PANEL_LOGS_NO_ACTIVITY_SUB:
+      en: "Operation of team members will appear here."
+      zh: "团队成员操作将会显示在这里。"
+
     # Stack
     DASHBOARD_LOGS_STACK_CREATE:
       en: "%s created stack %s"

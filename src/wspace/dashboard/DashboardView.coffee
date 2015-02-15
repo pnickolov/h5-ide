@@ -54,6 +54,8 @@ define [ "./DashboardTpl",
     initialize : ()->
       @resourcesTab = "INSTANCE"
       @region       = "global"
+      @appsRegion   = "global"
+      @stacksRegion = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
         id: @model.scene.project.get("id")
@@ -66,10 +68,10 @@ define [ "./DashboardTpl",
       @logCol.on('change add', @updateLog, this)
 
       @render()
-      @listenTo @model.scene.project, "update:stack", ()-> self.updateRegionAppStack("stacks", "global")
-      @listenTo @model.scene.project, "update:app", ()-> self.updateRegionAppStack("apps", "global")
-      @listenTo @model.scene.project, "change:stack", ()-> self.updateRegionAppStack("stacks", "global")
-      @listenTo @model.scene.project, "change:app", ()-> self.updateRegionAppStack("apps", "global")
+      @listenTo @model.scene.project, "update:stack", ()-> self.updateRegionAppStack("stacks")
+      @listenTo @model.scene.project, "update:app", ()-> self.updateRegionAppStack("apps")
+      @listenTo @model.scene.project, "change:stack", ()-> self.updateRegionAppStack("stacks")
+      @listenTo @model.scene.project, "change:app", ()-> self.updateRegionAppStack("apps")
       @listenTo @model.scene.project, "update:credential", ()-> self.updateDemoView()
       @listenTo @model.scene.project, "change:credential", ()-> self.updateDemoView()
 
@@ -186,6 +188,7 @@ define [ "./DashboardTpl",
           @model.fetchAwsResources( region )
         updateType = $(evt.currentTarget).parents(".dash-region-navigation").data("type")
         if updateType in ["stacks", "apps"]
+          @[updateType + "Region"] = region
           @updateRegionAppStack(updateType, region)
         else if updateType is "resource"
           @region = region
@@ -218,6 +221,8 @@ define [ "./DashboardTpl",
     updateRegionAppStack : (updateType="stack", region)->
       if updateType not in ["stacks", "apps"]
         return false
+      if not region
+        region = @[updateType + "Region"]
       self = @
       attr = { apps:[], stacks:[], region : @region }
       data = _.map constant.REGION_LABEL, ( name, id )->

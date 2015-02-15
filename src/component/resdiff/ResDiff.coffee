@@ -5,7 +5,8 @@ define [
     'component/resdiff/prepare'
     'constant'
     'i18n!/nls/lang.js'
-], ( modalplus, DiffTree, template, Prepare, constant, lang ) ->
+    'ApiRequest'
+], ( modalplus, DiffTree, template, Prepare, constant, lang, ApiRequest ) ->
 
     Backbone.View.extend
 
@@ -66,10 +67,13 @@ define [
                     promise.then () ->
                         # $confirmBtn.removeClass('disabled')
                         that.modal.close()
-                    , (error) ->
+                    , (data) ->
                         $confirmBtn.text(okText)
                         $confirmBtn.removeClass('disabled')
-                        notification 'error', error.msg
+                        if data.error is ApiRequest.Errors.AppConflict
+                            notification 'error', lang.IDE.WARNNING_APP_CHANGE_BY_OTHER_USER
+                        else
+                            notification 'error', data.msg
                 else
                     that.modal.close()
             , @

@@ -2827,6 +2827,10 @@ into live resources, or import existing infrastructures."
       en: "Cannot save stack since another user has applied changes to this stack. <br/><br/> You can save your changes by duplicate this stack."
       zh: "其他组员在这你之前修改了这个模板，因此无法保存。<br/><br/>你可以通过复制模板来保存当前的改动。"
 
+    WARNNING_APP_CHANGE_BY_OTHER_USER:
+      en: "App has been changed by another user. Close the tab and reopen."
+      zh: "App 已经被其他用户更改，请关闭该标签并重新打开。"
+
     # Dashboard logs
 
     # Stack

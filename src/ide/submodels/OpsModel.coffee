@@ -110,7 +110,13 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     credential   : ()-> @project().credOfProvider( @get("provider") )
     credentialId : ()-> (@credential() || {}).id
 
-    isStack    : ()-> @attributes.state is OpsModelState.UnRun || @attributes.state is OpsModelState.Saving
+    isStack    : ()->
+      if @attributes.state is OpsModelState.UnRun
+        return true
+      if @attributes.state is OpsModelState.Saving
+        return (@get("id")||"").indexOf("app-") is -1
+      false
+
     isApp      : ()-> !@isStack()
     isImported : ()-> !!@attributes.importMsrId
 

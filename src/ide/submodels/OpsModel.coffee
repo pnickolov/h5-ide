@@ -620,7 +620,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         return
 
       # 2. Starting / Completed / Failed
-      console.info "OpsModel's state changes due to WS event:", @, wsRequest
+      console.info "OpsModel's state changes due to WS event:", [@project().get("name"), @get("name"), @, wsRequest]
       if wsRequest.state is constant.OPS_STATE.INPROCESS
         toStateIndex = 0
       else if wsRequest.state is constant.OPS_STATE.DONE

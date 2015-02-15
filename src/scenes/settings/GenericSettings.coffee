@@ -203,6 +203,8 @@ define [
                     $(".fullNameText").text(first_name + " " + last_name)
                     if result
                       notification "info", lang.NOTIFY.UPDATED_FULLNAME_SUCCESS
+                      App.user.set("firstName", first_name)
+                      App.user.set("lastName" , last_name )
                 , (err)->
                     notification "error", lang.NOTIFY.UPDATED_FULLNAME_FAIL
                     $("#AccountUpdateFullName").attr("disabled", false)

@@ -2670,17 +2670,17 @@ into live resources, or import existing infrastructures."
       en: "OBSERVER"
       zh: "查看者"
 
-    SETTINGS_MEMBER_LABEL_ADMIN_DESC:
-      en: ""
-      zh: ""
-
-    SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC:
-      en: ""
-      zh: ""
-
-    SETTINGS_MEMBER_LABEL_OBSERVER_DESC:
-      en: ""
-      zh: ""
+    # SETTINGS_MEMBER_LABEL_ADMIN_DESC:
+    #   en: ""
+    #   zh: ""
+    #
+    # SETTINGS_MEMBER_LABEL_COLLABORATOR_DESC:
+    #   en: ""
+    #   zh: ""
+    #
+    # SETTINGS_MEMBER_LABEL_OBSERVER_DESC:
+    #   en: ""
+    #   zh: ""
 
     SETTINGS_MEMBER_LABEL_ACTIVE:
       en: "Active"

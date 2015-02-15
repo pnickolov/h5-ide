@@ -140,7 +140,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       , 0
       return
 
-    fetchAmis : ( amis )->
+    fetchAmis : ( amis, force = false )->
       if not amis then return
 
       if _.isString(amis)
@@ -150,13 +150,13 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
       # See if we ha
       toFetch = []
       for amiId in amis
-        if @get( amiId ) then continue
+        if @get( amiId ) and not force then continue
         if @isIdMarked( amiId )
           if @__markedIds[ amiId ]
             console.info "Ami '#{amiId}' is invalid. Ignore fetching info."
           else
             console.log "Ami `#{amiId}` is duplicated. Ignore fetching info."
-          continue
+          continue if not force
 
         @markId( amiId, false )
 
@@ -180,6 +180,7 @@ define ["ApiRequest", "../CrCollection", "constant", "CloudResources"], ( ApiReq
         else
           self.trigger "update"
 
+        return res if force
         self.saveInvalidAmiId()
 
       , ( err )->

@@ -9969,10 +9969,8 @@ dl.settings-item {
   #CredSetupMsg + #CredSetupWrap .modal-control-group {
     background: #202027; }
 
-.update-payment-ctrl button.btn {
-  min-width: 80px;
-  padding: 4px 0;
-  line-height: 20px; }
+.update-payment-ctrl {
+  padding: 10px 0; }
 
 .usage-report-view .current-usage-block {
   display: block;

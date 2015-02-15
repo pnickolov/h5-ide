@@ -117,7 +117,10 @@
       <label for="new-project-date">{{i18n "SETTINGS_CREATE_PROJECT_EXPRIATION"}}</label>
       <input class="input" id="new-project-date" type="text" placeholder="MM/YYYY" data-required="true">
     </div>
-  </div>
+    <div class="update-payment-ctrl">
+        <button class="btn btn-blue update-payment-done">{{i18n "LBL_DONE"}}</button>
+        <button class="btn btn-silver modal-close update-payment-cancel">{{i18n "LBL_CANCEL"}}</button>
+    </div>
 </section>
 
 

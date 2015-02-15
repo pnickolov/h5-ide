@@ -129,8 +129,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
           return false
 
       if valid
-        $updateBtn.prop 'disabled', true
-        wrap.find("input").attr("disabled", "disabled")
+        wrap.find("input, button").attr("disabled", "disabled")
         project_id = that.model.get("id")
         attributes = {
           first_name: $firstname.val()
@@ -145,7 +144,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
         .then ->
           that.render()
         .fail ( error )->
-          wrap.find("input").prop("disabled", false)
+          wrap.find("input, button").prop("disabled", false)
           try
             msgObj = JSON.parse(error.result)
             if _.isArray(msgObj.errors)
@@ -154,8 +153,6 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
             notification 'error', error.result
           # modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
           return
-        .done () ->
-          $updateBtn.prop 'disabled', false
 
     updatePaymentCancel: ()->
       $(".parsley-error-list").remove()

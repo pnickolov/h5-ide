@@ -850,9 +850,9 @@ module.exports =
       zh: "参数值不符合限制要求。"
 
     IMPORT_FORM_STACK_JSON:
-      en: "Import form Stack JSON"
+      en: "Import from Stack JSON"
       zh: "从 Stack JSON 导入"
 
     IMPORT_FORM_CLOUDFORMATION:
-      en: "Import form CloudFormation"
+      en: "Import from CloudFormation"
       zh: "从 CloudFormation 导入"

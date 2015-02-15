@@ -10175,7 +10175,7 @@ dl.settings-item {
 .update-payment-wrap {
   max-width: 500px; }
   .update-payment-wrap .new-project-support {
-    bottom: 17px;
+    bottom: 17px !important;
     right: 19px; }
 
 .new-project-modal .modal-footer {
@@ -10384,7 +10384,7 @@ dl.settings-item {
   .hp-asset-list .nav-empty {
     margin: 5px auto;
     padding: 15px;
-    width: 200px;
+    width: 160px;
     color: #AAA;
     background: #111;
     border-radius: 5px;
@@ -10406,9 +10406,15 @@ dl.settings-item {
     color: #ccc;
     font-size: 13px;
     cursor: pointer;
+    position: relative;
+    width: 140px;
     background-position: 18px 11px; }
     .hp-asset-list .nav-item-list > a:hover {
       background-color: rgba(0, 0, 0, 0.5); }
+    .hp-asset-list .nav-item-list > a i[class^="icon-app-type-"], .hp-asset-list .nav-item-list > a [class*=" icon-app-type-"] {
+      position: absolute;
+      top: 14px;
+      right: 5px; }
 
 .hp-usermenu {
   left: auto;

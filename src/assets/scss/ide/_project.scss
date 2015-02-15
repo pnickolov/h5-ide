@@ -173,10 +173,10 @@
   max-width: 500px;
   
   .new-project-support {
-    bottom: 17px;
+    bottom: 17px !important;
     right: 19px;
   }
-  
+
 }
 
 .new-project-modal  {
@@ -487,7 +487,7 @@
   .nav-empty {
     margin        : 5px auto;
     padding       : 15px;
-    width         : 200px;
+    width         : 160px;
     color         : #AAA;
     background    : #111;
     border-radius : 5px;
@@ -514,11 +514,19 @@
       color       : #ccc;
       font-size   : 13px;
       cursor      : pointer;
+      position    : relative;
+      width       : 140px;
 
       background-position : 18px 11px;
 
       &:hover {
         background-color: rgba(0,0,0,0.5);
+      }
+
+      i[class^="icon-app-type-"], [class*=" icon-app-type-"] {
+        position : absolute;
+        top      : 14px;
+        right    : 5px;
       }
     }
   }

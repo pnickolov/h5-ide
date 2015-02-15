@@ -6,6 +6,8 @@ define ["CloudResources", 'constant','combo_dropdown', 'dhcp_manage', 'UI.modalp
             @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.DHCP, Design.instance().region()
             @listenTo @collection, 'change', @render
             @listenTo @collection, 'update', @render
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             option =
                 manageBtnValue: lang.PROP.VPC_MANAGE_DHCP
                 filterPlaceHolder: lang.PROP.VPC_FILTER_DHCP
@@ -21,6 +23,12 @@ define ["CloudResources", 'constant','combo_dropdown', 'dhcp_manage', 'UI.modalp
             @dropdown.on 'filter', @filter, @
             @
         initialize: ( options ) -> _.extend @, options
+
+        credChanged: ()->
+            @dropdown?.render("loading")
+            @collection.fetchForce().then =>
+                @render()
+
         remove: ()->
             @.isRemoved = true
             Backbone.View::remove.call @

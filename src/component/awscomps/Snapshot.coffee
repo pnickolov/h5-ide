@@ -9,7 +9,15 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.SNAP, Design.instance().region()
             @listenTo @collection, 'update', (@onChange.bind @)
             @listenTo @collection, 'change', (@onChange.bind @)
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @
+
+        credChanged: ()->
+            @collection.fetchForce()
+            @manager?.renderLoading()
+            @manager and @refresh()
+            @dropdown?.render "loading"
 
         onChange: ->
             @initManager()

@@ -27,7 +27,14 @@ define ["CloudResources", 'constant', 'UI.modalplus', 'toolbar_modal', 'i18n!/nl
       @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.DHCP, Design.instance().region()
       @listenTo @collection, 'change', -> @renderManager()
       @listenTo @collection, 'update', -> @renderManager()
+      @listenTo Design.instance().credential(), "update", @credChanged
+      @listenTo Design.instance().credential(), "change", @credChanged
       @
+
+    credChanged: ()->
+      @collection.fetchForce()
+      @manager?.renderLoading()
+      @manager and @refreshManager()
 
     remove: ()->
       @.isRemoved = true

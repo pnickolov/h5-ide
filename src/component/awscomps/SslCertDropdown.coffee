@@ -24,7 +24,13 @@ define [ 'constant', 'CloudResources','sslcert_manage', 'combo_dropdown', 'compo
 
         initialize: () ->
             @initCol()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @initDropdown()
+
+        credChanged: ->
+            @dropdown?.render("loading")
+            @sslCertCol.fetchForce()
 
         quickCreate: () ->
             new sslCertManage().render().quickCreate()

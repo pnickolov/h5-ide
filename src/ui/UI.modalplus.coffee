@@ -132,8 +132,9 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @resize()
             modals.push @
             if modals.length > 1
-                modals[modals.length - 1].resize(1)
-                modals[modals.length - 1].animate "slideIn"
+                if self.option.mode is 'normal'
+                  modals[modals.length - 1].resize(1)
+                  modals[modals.length - 1].animate "slideIn"
                 modals[modals.length - 2].animate "fadeOut"
                 modals[modals.length - 1].tpl.addClass("bounce")
             else

@@ -141,7 +141,15 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SnsT
         initialize: () ->
             @initCol()
             @initModal()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @fetch()
+
+        credChanged: ()->
+            @topicCol.fetchForce()
+            @manager?.renderLoading()
+            @manager and @refresh()
+            @dropdown?.render "loading"
 
         doAction: ( action, checked ) ->
             @[action] and @[action](@validate(action), checked)

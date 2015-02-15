@@ -12,6 +12,8 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
             @listenTo @topicCol, 'update', @processCol
             @listenTo @topicCol, 'change', @processCol
             @listenTo @subCol, 'update', @processCol
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
 
         initDropdown: ->
             options =
@@ -53,6 +55,10 @@ define [ 'constant', 'CloudResources','sns_manage', 'combo_dropdown', 'component
             @dropdown.setSelection selection
             @el = @dropdown.el
             @
+
+        credChanged: ->
+            @dropdown?.render("loading")
+            @topicCol.fetchForce()
 
         quickCreate: ->
             new snsManage().render().quickCreate()

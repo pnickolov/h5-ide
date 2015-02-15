@@ -25,6 +25,8 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
         initialize: (option) ->
 
             @initDropdown()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @dbInstance = option.dbInstance
 
         render: (option) ->
@@ -41,6 +43,10 @@ define [ 'constant', 'CloudResources', 'combo_dropdown', 'og_manage', 'component
             @refresh()
 
             @
+
+        credChanged: ()->
+            @dropdown?.render("loading")
+            @refresh()
 
         refresh: () ->
 

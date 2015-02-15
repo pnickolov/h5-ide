@@ -9,11 +9,20 @@ define ['CloudResources', 'ApiRequest', 'constant', 'combo_dropdown', "UI.modalp
             @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.DBSNAP, Design.instance().region()
             @listenTo @collection, 'update', (@onChange.bind @)
             @listenTo @collection, 'change', (@onChange.bind @)
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             @
 
         onChange: ->
             @initManager()
             @trigger 'datachange', @
+
+        credChanged: ->
+          @dropdown?.render("loading")
+          @manager?.renderLoading()
+          @manager and @refresh()
+          @collection.fetchForce()
+
 
         remove: ()->
             @.isRemoved = true

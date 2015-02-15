@@ -62,10 +62,17 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             @collection = CloudResources(credentialId, constant.RESTYPE.KP, Design.instance().get("region"))
             @listenTo @collection, 'update', @renderKeys
             @listenTo @collection, 'change', @renderKeys
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
             if not @resModel
                 @__mode = 'runtime'
 
             @initDropdown()
+
+        credChanged: ()->
+            @dropdown?.render("loading")
+            @collection.fetchForce().then =>
+              @renderKeys()
 
         show: () ->
             if Design.instance().credential() and not Design.instance().credential().isDemo()

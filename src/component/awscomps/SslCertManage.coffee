@@ -79,6 +79,13 @@ define [ 'constant', 'CloudResources', 'toolbar_modal', 'component/awscomps/SslC
         initialize: () ->
             @initCol()
             @initModal()
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
+
+        credChanged: ()->
+            @sslCertCol.fetchForce()
+            @modal?.renderLoading()
+            @modal and @refresh()
 
         quickCreate: ->
             @modal.triggerSlide 'create'

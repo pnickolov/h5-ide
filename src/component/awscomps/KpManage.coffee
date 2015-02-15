@@ -106,6 +106,13 @@ define [
                 @modal.render 'nocredential'
 
             @collection.on 'update', @renderKeys, @
+            @listenTo Design.instance().credential(), "update", @credChanged
+            @listenTo Design.instance().credential(), "change", @credChanged
+
+        credChanged: ()->
+            @collection.fetchForce()
+            @modal.renderLoading()
+            @modal and @refresh()
 
         renderKeys: () ->
             if not @collection.isReady()
@@ -271,6 +278,7 @@ define [
             @modal.cancel()
 
         refresh: ->
+            @modal?.render "loading"
             @collection.fetchForce().then =>
               @renderKeys()
 

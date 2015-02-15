@@ -12,7 +12,15 @@ define ['CloudResources', 'ApiRequest', 'constant', "UI.modalplus", 'combo_dropd
       @listenTo @collection, 'change', (@onUpdate.bind @)
       @listenTo @collection, 'remove', (@onRemove.bind @)
       @listenTo @collection, 'add',    (@onAdd.bind @)
+      @listenTo Design.instance().credential(), "update", @credChanged
+      @listenTo Design.instance().credential(), "change", @credChanged
       @
+
+    credChanged: ()->
+      @dropdown?.render("loading")
+      @manager?.renderLoading()
+      @manager and @refresh()
+      @collection.fetchForce()
 
     onUpdate: ->
       @initManager()

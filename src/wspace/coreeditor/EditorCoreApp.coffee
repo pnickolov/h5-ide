@@ -194,7 +194,10 @@ define [
         # When the opsmodel state changes in app edit mode.
         # If the change doesn't cause by current user.
         # We should ask the user to save the edit state, and then quit the app.
-
+        if @opsModel.isLastActionTriggerByUser()
+          @view.toggleProcessing()
+        else
+          return
       else
         # When we are not in app edit mode, editor only have react as the opsmodel state changes.
         if @opsModel.isProcessing()

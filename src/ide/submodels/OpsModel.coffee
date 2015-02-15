@@ -642,32 +642,26 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         when constant.OPS_CODE_NAME.TERMINATE
           toState = [ OMS.Terminating, OMS.Destroyed, OMS.Stopped ]
         when constant.OPS_CODE_NAME.UPDATE, constant.OPS_CODE_NAME.STATE_UPDATE
-          if toStateIndex isnt 0
-            if not @__updateAppDefer
-              if @isLastActionTriggerByUser()
-                console.warn "The update action seems to caused by user, but UpdateAppDefer is null when setStatusWithWSEvent with `update` event."
-              return
+          if @__updateAppDefer
             if toStateIndex is 1
               @__updateAppDefer.resolve()
-            else
+              return
+            if toStateIndex is 2
               @__updateAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
-            return
+              return
 
-          toState = [ OMS.Updating ]
+          toState = [ OMS.Updating, OMS.Running, OMS.Stopped ]
 
         when constant.OPS_CODE_NAME.APP_SAVE # This is saving app.
-          if toStateIndex isnt 0
-            if not @__saveAppDefer
-              if @isLastActionTriggerByUser()
-                console.warn "The save app action seems to caused by user, but SaveAppDefer is null when setStatusWithWSEvent with `save` event."
-              return
+          if @__saveAppDefer
             if toStateIndex is 1
               @__saveAppDefer.resolve()
-            else
+              return
+            if toStateIndex is 2
               @__saveAppDefer.reject McError( ApiRequest.Errors.OperationFailure, wsRequest.data )
-            return
+              return
 
-          toState = [ OMS.Saving ]
+          toState = [ OMS.Saving, OMS.Running, OMS.Stopped ]
 
       toState = toState[ toStateIndex ]
       # 3. Clear the useraction flag if the state changes from DONE state to another state.

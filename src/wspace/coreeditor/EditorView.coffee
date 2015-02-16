@@ -207,6 +207,7 @@ define [
         disableFooter : true
         template      : OpsEditorTpl.modal.onClose(name)
       }
+      modal.tpl.find(".save.btn").remove() unless @workspace.opsModel.isStack()
       modal.tpl.on "click", ".tar .modal-close", ()-> modal.close()
       modal.tpl.on "click", ".tar .confirm", ()->
         modal.close()

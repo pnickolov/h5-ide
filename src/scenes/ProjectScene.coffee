@@ -232,6 +232,9 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
 
       if not force and not workspace.isRemovable() then return
 
+      if workspace.__isRemoved then return
+      workspace.__isRemoved = true
+
       id = workspace.id
 
       @view.removeSpace( id )

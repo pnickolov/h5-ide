@@ -360,7 +360,7 @@ define [
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification sprintf(lang.NOTIFY.ERROR_FAILED_STOP , name, error)
 
-    terminateApp : ( id )->
+    terminateApp : ( id, hasJson )->
       self = @
       app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
@@ -377,22 +377,23 @@ define [
       )
       cloudType = app.type
       if cloudType is OpsModel.Type.OpenStack
-        @__terminateApp(id, null, terminateConfirm)
+        @__terminateApp(id, null, terminateConfirm, hasJson)
         return false
 
       terminateConfirm.tpl.find('.modal-footer').hide()
       # get Resource list
       resourceList = CloudResources self.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
-      resourceList.fetchForce().then (result)->
-        self.__terminateApp(id, resourceList, terminateConfirm)
-      .fail (error)->
-        if error.awsError is 403 then self.__terminateApp(id, resourceList, terminateConfirm)
+      resourceList.fetchForce().then ()->
+        self.__terminateApp(id, resourceList, terminateConfirm, hasJson)
+      , (error)->
+        if error.awsError is 403
+          self.__terminateApp(id, resourceList, terminateConfirm, hasJson)
         else
           terminateConfirm.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
 
-    __terminateApp: (id, resourceList, terminateConfirm)->
+    __terminateApp: (id, resourceList, terminateConfirm, hasJsonData)->
       app  = @model || @workspace.opsModel.project().apps().get( id )
       name = app.get("name")
       production = app.get("usage") is 'production'
@@ -400,12 +401,15 @@ define [
       # renderLoading
 
       fetchJsonData = ->
+        defer = new Q.defer()
         if cloudType is OpsModel.Type.OpenStack
-          defer = new Q.defer()
           defer.resolve()
-          defer.promise
+          return defer.promise
+        else if hasJsonData
+          defer.resolve()
+          return defer.promise
         else
-          app.fetchJsonData()
+          return app.fetchJsonData()
 
       fetchJsonData().then ->
         if cloudType is OpsModel.Type.OpenStack
@@ -495,9 +499,10 @@ define [
 
         forgetConfirm.on "confirm", ()->
           forgetConfirm.close()
-          app.terminate(true, false).fail ( err )->
-            error = if err.awsError then err.error + "." + err.awsError else err.error
-            notification "Fail to forget your app \"#{name}\". (ErrorCode: #{error})"
+          app.terminate(true, false).then ()->
+            notification "info", "Your app \"#{name}\" has been removed from our database."
+          , ( err )->
+            notification "error", "Failed to remove your app \"#{name}\" from our database. (ErrorCode: #{err.error})"
           return
         return
 

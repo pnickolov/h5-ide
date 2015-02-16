@@ -108,6 +108,8 @@ define [
           text = lang.IDE.TERMINATING_YOUR_APP
         when OpsModel.State.Updating
           text = lang.IDE.APPLYING_CHANGES_TO_YOUR_APP
+        when OpsModel.State.Removing
+          text = lang.IDE.REMOVING_YOUR_APP
         else
           console.warn "Unknown opsmodel state when showing loading in AppEditor,", opsModel
           text = lang.IDE.PROCESSING_YOUR_REQUEST

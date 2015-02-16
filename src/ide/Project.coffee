@@ -59,7 +59,12 @@ define [
       if col.get(wsdata.id) then return
 
       # There's no sign of the model, we determine that this model is created by other
-      if not col.findWhere(attr)
+      if _.isFunction( attr )
+        if col.filter( attr ).length is 0
+          console.log "[WS Add] The ops doesn't exist, add to collection", wsdata, col
+          col.add( new OpsModel( wsdata ) )
+          return
+      else if not col.findWhere( attr )
         console.log "[WS Add] The ops doesn't exist, add to collection", wsdata, col
         col.add( new OpsModel( wsdata ) )
         return
@@ -124,14 +129,18 @@ define [
           return
 
         wsdata = project.__parseListRes([newDocument])[0]
+
+        test = ( i )->
+          attr = i.attributes
+          if attr.name     isnt wsdata.name     then return false
+          if attr.provider isnt wsdata.provider then return false
+          if attr.region   isnt wsdata.region   then return false
+
+          return attr.state is OpsModel.State.Initializing or attr.state is OpsModel.State.Saving
+
         # Set time 1sec timeout to reduce the check time.
         # Since the first check will always fail.
-        sheduleTenSecCheck( project.apps(), {
-          name     : wsdata.name
-          provider : wsdata.provider
-          region   : wsdata.region
-          state    : OpsModel.State.Initializing
-        }, wsdata, 0, 1000 )
+        sheduleTenSecCheck( project.apps(), test, wsdata, 0, 1000 )
         return
 
       changed : ( newDocument )->
@@ -153,7 +162,17 @@ define [
           console.log "There's an app that is not related to any project that is removed. ignored.", newDocument
           return
 
-        project.apps().get( newDocument.id )?.__destroy()
+        # Cannot immediately remove the app when we received the event.
+        # If the app fails to run, we would like to know the reason from the request event.
+        app = project.apps().get( newDocument.id )
+        if app
+          if app.testState( OpsModel.State.RollingBack )
+            # When the app fails to launch ( or maybe fail to update? ) we will destroy the app in 5sec,
+            # if request event never come.
+            setTimeout (()->app.__destroy()), 5000
+          else
+            app.__destroy()
+        return
     }
 
     handleRequest = ( req )->

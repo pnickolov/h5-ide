@@ -2384,6 +2384,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Applying changes to your app..."
       zh: "正在应用 App 的修改..."
 
+    REMOVING_YOUR_APP :
+      en: "Removing your app from our server..."
+      zh: "正在从数据库中删除你的 App..."
+
     PROCESSING_YOUR_REQUEST:
       en: "Processing your request..."
       zh: "正在处理请求 ..."
@@ -2466,7 +2470,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SAVING_STACK:
       en: "Saving stack..."
-      zh: "正在保存模板..."
+      zh: "正在保存 Stack..."
 
     ACCESS_TOKEN_EDIT_TIP:
       en: "Edit"

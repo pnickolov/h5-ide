@@ -495,9 +495,10 @@ define [
 
         forgetConfirm.on "confirm", ()->
           forgetConfirm.close()
-          app.terminate(true, false).fail ( err )->
-            error = if err.awsError then err.error + "." + err.awsError else err.error
-            notification "Fail to forget your app \"#{name}\". (ErrorCode: #{error})"
+          app.terminate(true, false).then ()->
+            notification "info", "Your app \"#{name}\" has been removed from our database."
+          , ( err )->
+            notification "error", "Failed to remove your app \"#{name}\" from our database. (ErrorCode: #{err.error})"
           return
         return
 

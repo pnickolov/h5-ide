@@ -153,7 +153,16 @@ define [
           console.log "There's an app that is not related to any project that is removed. ignored.", newDocument
           return
 
-        project.apps().get( newDocument.id )?.__destroy()
+        # Cannot immediately remove the app when we received the event.
+        # If the app fails to run, we would like to know the reason from the request event.
+        app = project.apps().get( newDocument.id )
+        if app
+          if app.testState( OpsModel.State.Initializing )
+            # If we didn't receive request event in 5sec, we will destroy the app without any error message.
+            setTimeout (()->app.__destroy()), 5000
+          else
+            app.__destroy()
+        return
     }
 
     handleRequest = ( req )->

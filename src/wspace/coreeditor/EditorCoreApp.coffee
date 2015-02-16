@@ -190,11 +190,6 @@ define [
         @remove()
         return
 
-      if @opsModel.testState( OpsModel.State.Terminating )
-        notification "info", "The app is being processed."
-        @remove()
-        return
-
       # Saving state only exist in IDE ( after the user saving the app directly into the database )
       # We don't have to mask the editor while we are saving.
       if @opsModel.testState( OpsModel.State.Saving ) or @opsModel.previous("state") is OpsModel.State.Saving

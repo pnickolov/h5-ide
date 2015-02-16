@@ -2470,7 +2470,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SAVING_STACK:
       en: "Saving stack..."
-      zh: "正在保存模板..."
+      zh: "正在保存 Stack..."
 
     ACCESS_TOKEN_EDIT_TIP:
       en: "Edit"

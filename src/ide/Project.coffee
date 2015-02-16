@@ -59,7 +59,12 @@ define [
       if col.get(wsdata.id) then return
 
       # There's no sign of the model, we determine that this model is created by other
-      if not col.findWhere(attr)
+      if _.isFunction( attr )
+        if col.filter( attr ).length is 0
+          console.log "[WS Add] The ops doesn't exist, add to collection", wsdata, col
+          col.add( new OpsModel( wsdata ) )
+          return
+      else if not col.findWhere( attr )
         console.log "[WS Add] The ops doesn't exist, add to collection", wsdata, col
         col.add( new OpsModel( wsdata ) )
         return
@@ -124,14 +129,18 @@ define [
           return
 
         wsdata = project.__parseListRes([newDocument])[0]
+
+        test = ( i )->
+          attr = i.attributes
+          if attr.name     isnt wsdata.name     then return false
+          if attr.provider isnt wsdata.provider then return false
+          if attr.region   isnt wsdata.region   then return false
+
+          return attr.state is OpsModel.State.Initializing or attr.state is OpsModel.State.Saving
+
         # Set time 1sec timeout to reduce the check time.
         # Since the first check will always fail.
-        sheduleTenSecCheck( project.apps(), {
-          name     : wsdata.name
-          provider : wsdata.provider
-          region   : wsdata.region
-          state    : OpsModel.State.Initializing
-        }, wsdata, 0, 1000 )
+        sheduleTenSecCheck( project.apps(), test, wsdata, 0, 1000 )
         return
 
       changed : ( newDocument )->

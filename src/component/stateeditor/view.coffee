@@ -3426,14 +3426,14 @@ define [ 'component/stateeditor/model',
             if stateId
                 stateLogObj = that.stateIdLogContentMap[stateId]
                 if stateLogObj
-                    modal = new modalPlus {
+                    that.logModal = new modalPlus {
                         title: lang.IDE.STATE_LOG_DETAIL_MOD_TIT
                         template: template.stateLogDetailModal {number: stateLogObj.number, content: stateLogObj.content}
                         width: 900
                         confirm: hide: true
                     }
-                    modal.tpl.attr("id", "modal-state-log-detail")
-                    modal.resize()
+                    that.logModal.tpl.attr("id", "modal-state-log-detail")
+                    that.logModal.resize()
 
         onTextParaExpandClick: (event) ->
 

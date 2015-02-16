@@ -559,6 +559,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         else
           return @__returnErrorPromise()
 
+      # save the name to the imported app first
+      if not newJson.id then @set "name", newJson.name
+
       oldState = @get("state")
       @attributes.progress = 0
       @__userTriggerAppProgress = true

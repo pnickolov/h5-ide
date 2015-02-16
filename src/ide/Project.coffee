@@ -157,8 +157,9 @@ define [
         # If the app fails to run, we would like to know the reason from the request event.
         app = project.apps().get( newDocument.id )
         if app
-          if app.testState( OpsModel.State.Initializing )
-            # If we didn't receive request event in 5sec, we will destroy the app without any error message.
+          if app.testState( OpsModel.State.RollingBack )
+            # When the app fails to launch ( or maybe fail to update? ) we will destroy the app in 5sec,
+            # if request event never come.
             setTimeout (()->app.__destroy()), 5000
           else
             app.__destroy()

@@ -27,8 +27,6 @@ define [
         data.title = @model.getStateDesc() + " your app..."
 
       @setElement $(ProgressTpl( data )).appendTo( attr.workspace.scene.spaceParentElement() )
-
-      @__progress = 0
       return
 
     switchToDone : ()->
@@ -52,6 +50,9 @@ define [
           else
             @done = true
 
+        when OpsModel.State.RollingBack
+          @$el.toggleClass("rolling-back", true)
+
         when OpsModel.State.Destroyed
           # If the app runs successfully and get destroyed, we just close the tab
           if @done
@@ -67,15 +68,8 @@ define [
       return
 
     updateProgress : ()->
-      pp = @model.get("progress")
-
       @$el.toggleClass("has-progess", true)
-
-      if @__progress > pp
-        @$el.toggleClass("rolling-back", true)
-      @__progress = pp
-
-      pro = "#{pp}%"
+      pro = "#{@model.get("progress")}%"
 
       @$el.find(".process-info").text( pro )
       @$el.find(".bar").css { width : pro }
@@ -145,7 +139,7 @@ define [
     canHandle : ( data )->
       if not data.opsModel then return false
       if data.opsModel.testState( OpsModel.State.Saving ) or data.opsModel.testState( OpsModel.State.Terminating )
-        console.warn "Avoide opening a saving/terminating OpsModel."
+        console.warn "Avoide opening a saving/terminating/removing OpsModel."
         return false
 
       return data.opsModel.isApp() and data.opsModel.isProcessing()

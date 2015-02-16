@@ -28,8 +28,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     Destroyed    : 8 # When OpsModel changes to this State, it doesn't trigger "change:state" event, instead, it triggers "destroy" event and its collection will trigger "update" event.
     Saving       : 9
     RollingBack  : 10 # When OpsModel fails to run (Initializing), it will transition to this state before going to `Destroyed`
+    Removing     : 11 # When we directly remove the app from server, it will transition to this state before going to `Destroyed`
 
-  OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", "", "Saving", "RollingBack"]
+  OpsModelStateDesc = ["", "Running", "Stopped", "Starting", "Starting", "Updating", "Stopping", "Terminating", "", "Saving", "RollingBack", "Removing"]
 
   OpsModelLastestVersion = "2014-11-11"
 
@@ -463,7 +464,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       self = @
       oldState = @get("state")
       @attributes.progress = 0
-      @set("state", OpsModelState.Terminating)
+      @set("state", if force then OpsModelState.Removing else OpsModelState.Terminating)
       @__userTriggerAppProgress = true
 
       options = $.extend {
@@ -601,7 +602,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     isProcessing : ()->
       state = @attributes.state
-      state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving || state is OpsModelState.RollingBack
+      state is OpsModelState.Initializing || state is OpsModelState.Stopping || state is OpsModelState.Updating || state is OpsModelState.Terminating || state is OpsModelState.Starting || state is OpsModelState.Saving || state is OpsModelState.RollingBack || state is OpsModelState.Removing
 
     isLastActionTriggerByUser : ()-> @__userTriggerAppProgress
 

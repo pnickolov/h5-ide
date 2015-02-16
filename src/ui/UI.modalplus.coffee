@@ -92,6 +92,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             "click i.modal-close": "close"
 
         constructor: (option)->
+            $(':focus').blur()
             @nextOptions = []
             @nextCloses = []
             if typeof option.cancel is "string"

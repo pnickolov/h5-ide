@@ -31,10 +31,7 @@ define ["backbone"], ()->
 
     # Call this method to remove the workspace from the ide.
     isRemoved : ()-> !!@__isRemoved
-    remove : ()->
-      if @__isRemoved then return
-      @__isRemoved = true
-      @scene.removeSpace(@, true)
+    remove : ()-> @scene.removeSpace(@, true)
 
     # Call this method when the url has been changed.
     updateUrl : ()-> @scene.updateSpace( @ )

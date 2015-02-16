@@ -106,10 +106,6 @@ define [
       if not attr.opsModel
         throw new Error("Cannot find opsmodel while openning workspace.")
 
-      if attr.opsModel.testState( OpsModel.State.Saving ) or attr.opsModel.testState( OpsModel.State.Terminating )
-        console.warn "Avoiding opening a saving/terminating OpsModel."
-        return
-
       Workspace.apply @, arguments
       return
 
@@ -138,7 +134,7 @@ define [
   }, {
     canHandle : ( data )->
       if not data.opsModel then return false
-      if data.opsModel.testState( OpsModel.State.Saving ) or data.opsModel.testState( OpsModel.State.Terminating )
+      if data.opsModel.testState( OpsModel.State.Saving ) or data.opsModel.testState( OpsModel.State.Terminating ) or data.opsModel.testState( OpsModel.State.Removing )
         console.warn "Avoide opening a saving/terminating/removing OpsModel."
         return false
 

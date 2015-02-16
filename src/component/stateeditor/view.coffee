@@ -3469,16 +3469,17 @@ define [ 'component/stateeditor/model',
             that = this
             textContent = originEditor.getValue()
 
-            modal = new modalPlus {
+            that.editorModal = new modalPlus {
                 title: "#{if that.readOnlyMode then lang.IDE.STATE_TEXT_VIEW else lang.IDE.STATE_TEXT_EDIT} #{cmdName} #{paraName}"
                 template: template.stateTextExpandModal()
                 width: 900
                 disableFooter: that.readOnlyMode
                 confirm: unless that.readOnlyMode then lang.IDE.STATE_TEXT_EXPAND_MODAL_SAVE_BTN
                 cancel: hide: true
+                disableClose: true
             }
 
-            modal.tpl.attr("id", "modal-state-text-expand")
+            that.editorModal.tpl.attr("id", "modal-state-text-expand")
 
             $('#modal-state-text-expand').data('origin-editor', originEditor)
 
@@ -3499,7 +3500,7 @@ define [ 'component/stateeditor/model',
                 codeEditor.focus()
                 codeEditor.clearSelection()
 
-            $('#modal-state-text-expand-save').off('click').on 'click', () ->
+            that.editorModal.on 'confirm', () ->
                 that.saveStateTextEditorContent()
 
         saveStateTextEditorContent: () ->
@@ -3508,7 +3509,7 @@ define [ 'component/stateeditor/model',
 
             if that.readOnlyMode
 
-                modal.close()
+                that.editorModal.close() if that.editorModal
 
             else
 
@@ -3536,7 +3537,7 @@ define [ 'component/stateeditor/model',
 
                     originEditor.focus()
 
-                    modal.close()
+                    that.editorModal.close() if that.editorModal
 
         remove: () ->
 

@@ -43,6 +43,12 @@ define [ "ComplexResModel", "ConnectionModel", "constant" ], ( ComplexResModel, 
         port     : ""
       }
 
+      if not r.PortRange
+        r.PortRange = {
+          From : ""
+          To   : ""
+        }
+
       # For ICMP rule, port will be "IcmTypeCode.Type/IcmpTypeCode.Code"
 
       if rule.protocol is 1 and r.IcmpTypeCode and r.IcmpTypeCode.Code and r.IcmpTypeCode.Type

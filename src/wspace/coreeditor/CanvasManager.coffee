@@ -181,16 +181,41 @@ define [ 'CloudResources', 'constant', 'i18n!/nls/lang.js' ], ( CloudResources, 
       catch e
         currentLength = 0
 
-      if currentLength > maxWidth
-        length = text.length - 1
+      #if text is too long then truncate it into 2 lines, add "..." and "tooltip" when more than 2 lines
+      el = labelElement[0]
+      @removeClass( $(el), "tooltip" )
+      $(el).data("tooltip", "").attr("data-tooltip", "")
+      tspanAry = []
+      line = 0
+      while (currentLength > maxWidth or line is 1)
+        length = text.length
         while true and length > 0
-          if labelElement[0].getSubStringLength(0, length) + 8 <= maxWidth
-            text = text.substr( 0, length ) + "..."
+          if labelElement[0].getSubStringLength(0, length-1) <= maxWidth
+            if line is 0
+              #process line 0
+              tspanAry.push( "<tspan>" + text.substr( 0, length )+"</tspan>" )
+              text = text.substr(length)
+            else
+              #process line 1
+              el = labelElement[0]
+              x = parseInt($(el).attr("x"))
+              y = parseInt($(el).attr("y")) + $(el)[0].clientHeight
+              ellipsis = ""
+              if text.substr(length).length > 0
+                #more than 2 lines
+                ellipsis =  "..."
+                @addClass( $(el), "tooltip" )
+                $(el).data("tooltip", canvasItem.label()).attr("data-tooltip", canvasItem.label())
+              tspanAry.push( "<tspan x='#{x}' y='#{y}' >" + text.substr( 0, length ) + "#{ellipsis}</tspan>" )
             break
           --length
+        currentLength-=maxWidth
+        line++
+        break if line > 1
+
 
       for el in labelElement
-        $(el).text( text )
+        $(el).html( tspanAry.join("") || text )
 
       return
   }

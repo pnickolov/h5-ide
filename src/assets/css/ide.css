@@ -4710,7 +4710,7 @@ button#property-app-keypair {
   cursor: -moz-grab;
   cursor: -webkit-grab;
   cursor: grab;
-  fill: #fff; }
+  fill: #000; }
 
 .node-label, .volume-number, .server-number {
   font-size: 12px;

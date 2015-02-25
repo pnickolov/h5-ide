@@ -187,7 +187,7 @@ define [ 'CloudResources', 'constant', 'i18n!/nls/lang.js' ], ( CloudResources, 
       $(el).data("tooltip", "").attr("data-tooltip", "")
       tspanAry = []
       line = 0
-      while (currentLength > maxWidth or line is 1 )
+      while (currentLength > maxWidth or line is 1)
         length = text.length
         while true and length > 0
           if labelElement[0].getSubStringLength(0, length-1) <= maxWidth
@@ -211,6 +211,8 @@ define [ 'CloudResources', 'constant', 'i18n!/nls/lang.js' ], ( CloudResources, 
           --length
         currentLength-=maxWidth
         line++
+        break if line > 1
+
 
       for el in labelElement
         $(el).html( tspanAry.join("") || text )

@@ -177,7 +177,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
       @ensureLcView()
       m = @model
       # Update label
-      CanvasManager.update @$el.children(".node-label"), m.get("name")
+      CanvasManager.setLabel @, @$el.children(".node-label")
       # Update Image
       CanvasManager.update @$el.children(".ami-image"), @iconUrl(), "href"
       # Update Volume

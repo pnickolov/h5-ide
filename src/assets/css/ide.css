@@ -10443,8 +10443,8 @@ dl.settings-item {
   background: rgba(0, 0, 0, 0.8); }
   .cheatsheet .icon-close-circle {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 5%;
+    top: 10%;
     font-size: 16px;
     width: 20px;
     height: 20px;
@@ -10452,7 +10452,8 @@ dl.settings-item {
     color: #E5E4E0;
     border-radius: 50%;
     text-shadow: none;
-    cursor: pointer; }
+    cursor: pointer;
+    margin-top: -8px; }
     .cheatsheet .icon-close-circle:hover {
       background: #555; }
     .cheatsheet .icon-close-circle:before {

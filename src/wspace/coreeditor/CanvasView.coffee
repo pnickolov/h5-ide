@@ -337,6 +337,14 @@ define [
       @$el.nanoScroller()
       return
 
+    enlargeIfNeeded : ( width, height )->
+      size = @size()
+      if size[0] < width
+        @resize( "width",  Math.ceil( width / 60 ) * 60 - size[0] )
+      if size[1] < height
+        @resize( "height", Math.ceil( height/ 60 ) * 60 - size[1] )
+      return
+
     update : ()-> @trigger "change:externalData"
 
     reload : ()->

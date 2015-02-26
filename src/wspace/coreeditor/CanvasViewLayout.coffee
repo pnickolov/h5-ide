@@ -342,6 +342,11 @@ define [ "CanvasView", "constant" ], ( CanvasView, constant )->
     # 5. Update Line
     ###
     line.update() for uid, line of @__itemLineMap
+
+    ###
+    # 6. Enlarge svg if needed
+    ###
+    @enlargeIfNeeded( hierachy.width + 5, hierachy.height + 5 )
     return
 
   {

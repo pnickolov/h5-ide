@@ -3347,16 +3347,6 @@ div.modal-text-highlight {
         font-size: 12px;
         margin-left: 5px;
         color: #aaa; }
-    #VisualizeVpcDialog .visualize-vpc.disabled {
-      cursor: default;
-      background: #e9e9e9;
-      border: 1px solid #e0e0e0; }
-      #VisualizeVpcDialog .visualize-vpc.disabled h5 {
-        color: #999; }
-      #VisualizeVpcDialog .visualize-vpc.disabled:hover {
-        background: #e9e9e9;
-        border: 1px solid #e0e0e0;
-        box-shadow: none; }
     #VisualizeVpcDialog .visualize-vpc ol {
       width: 600px; }
     #VisualizeVpcDialog .visualize-vpc button {
@@ -6223,8 +6213,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

@@ -157,7 +157,6 @@ define [
               elb     : resourceMap resources["AWS|ELB"]
               imported: !!resources.project_id
 
-            obj.disabled = obj.eni.length > 300
             vpcs.push obj
           catch e
 

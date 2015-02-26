@@ -18,8 +18,7 @@
 
 	<ul class="region-group clearfix" data-region="{{id}}">
 		{{#each vpcs}}
-		<li class="visualize-vpc {{#if disabled}} disabled tooltip{{/if}}"
-			{{#if disabled}} data-tooltip="{{i18n 'IDE_TIP_VISUALIZE_MORE_THAN_100_ENI'}}"{{/if}}>
+		<li class="visualize-vpc">
 			<h5>{{#if name}}{{name}} <span>({{id}})</span>{{else}}{{id}}{{/if}}</h5>
 			<ol class="tac">
 				<li class="visualize-res"><div class="vis-res-num">{{subnet.length}}</div><span class="vis-res-name">{{i18n "DASH_LBL_SUBNETS"}}</span></li>

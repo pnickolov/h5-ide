@@ -27,6 +27,8 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
 
   # The ProjectScene work with Workspace objects. It's a Workspace Manager itself.
 
+  FIRST_PROJECT_NOT_LOADED = true
+
   class ProjectScene extends Scene
 
     type : "ProjectScene"
@@ -72,6 +74,11 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
       @__awakeSpace = null
       @__spacesById = {}
 
+      if FIRST_PROJECT_NOT_LOADED
+        FIRST_PROJECT_NOT_LOADED = false
+        if not attr.pid or not App.model.projects().get( attr.pid )
+          attr.pid = localStorage.getItem( "lastws" )
+
       @project = App.model.projects().get( attr.pid ) || App.model.getPrivateProject()
       @view    = new ProjectView { scene : @ }
       @listenTo @view, "wsOrderChanged", ()->   @__updateSpaceOrder()
@@ -89,6 +96,9 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
       @view.$el.show()
       @updateUrl()
       @updateTitle()
+
+      localStorage.setItem( "lastws", @project.id )
+
       # # Remove all other projects
       # for s in App.sceneManager.scenes()
       #   if s.type is "ProjectScene" and s is @

@@ -11,7 +11,7 @@ define [ "constant", "ConnectionModel", "ComplexResModel", "Design" ], ( constan
       targetType : ""
 
     ###
-    This model is initialized by a something like:
+    This model is initialized by something like:
     {
       GatewayId              : ""
       InstanceId             : ""
@@ -50,6 +50,8 @@ define [ "constant", "ConnectionModel", "ComplexResModel", "Design" ], ( constan
 
         # Create a new object
         return ComplexResModel.call this, realAttr
+
+    serialize : ()-> # Does nothing.
   }
 
 

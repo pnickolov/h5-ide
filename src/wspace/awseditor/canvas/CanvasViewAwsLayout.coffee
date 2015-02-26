@@ -56,8 +56,9 @@ define [ "./CanvasViewAws", "CanvasViewLayout", "constant" ], ( AwsCanvasView, C
           linkedInstances[ instance.component.id ] = true
 
           for eni in enis
-            linkedEnis[ eni.id ] = true
-            eniInstanceG.push( existingEnis[ eni.id ] )
+            if existingEnis[ eni.id ]
+              linkedEnis[ eni.id ] = true
+              eniInstanceG.push( existingEnis[ eni.id ] )
 
           pairGroup.push {
             type     : "AmiEniPair"

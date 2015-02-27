@@ -66,11 +66,14 @@ define ["ApiRequest", "backbone"], ( ApiRequest )->
       if params.key_id is undefined
         params.key_id = @getCollection().credential()
 
-      if params.region_name is undefined and @getCollection().region()
+      if params.region_name is undefined
         # If the region is empty, we DONT assign the empty region to region_name
         # Since ApiRequest will fill a region for us. In such case the region_name
         # is actually useless, but the backend needs it to bypass somekind of check.
-        params.region_name = @getCollection().region()
+        if @getCollection().region()
+          params.region_name = @getCollection().region()
+        else if @get("category")
+          params.region_name = @get("category")
 
       ApiRequest( api, params )
 

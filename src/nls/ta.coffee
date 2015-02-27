@@ -101,6 +101,10 @@ module.exports =
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span>'s Listener is configured with nonexistent Server Certificate <span class='validation-tag tag-cert'>%s</span>."
       zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 的侦听器配置的服务器证书 <span class='validation-tag tag-cert'>%s</span> 不存在。"
 
+    ERROR_ELB_NAME_EXCEED_LIMIT:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span>'s name has exceeded the limit of %s characters."
+      zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 的名称超出 %s 个字符的限制。"
+
     # SG
     WARNING_SG_RULE_EXCEED_FIT_NUM:
       en: "Security Group <span class='validation-tag tag-sg'>%s</span> has more than %s rules, If a security group has a large number of rules, performance can be degraded."

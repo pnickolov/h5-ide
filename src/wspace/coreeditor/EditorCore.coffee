@@ -98,13 +98,6 @@ define [
         throw new Error("Cannot find opsmodel while openning workspace.")
 
       @opsModel = attr.opsModel
-      # OpsModel's State
-      # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
-      @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
-      @listenTo @opsModel, "change:state", @onOpsModelStateChanged
-      @listenTo @opsModel, "change:name",  @updateTab
-      @listenTo @opsModel, "change:id",    @onModelIdChange
-
       delete attr.opsModel
 
       # Load Datas
@@ -112,6 +105,15 @@ define [
       @opsModel.fetchJsonData().then (()-> s.jsonLoaded()), ((err)-> s.jsonLoadFailed(err))
 
       Workspace.apply @, arguments
+
+      # OpsModel's State
+      # OpsModel doesn't trigger "change:state" when a opsModel is set to "destroyed"
+      @listenTo @opsModel, "destroy",      @onOpsModelStateChanged
+      @listenTo @opsModel, "change:state", @onOpsModelStateChanged
+      @listenTo @opsModel, "change:name",  @updateTab
+      @listenTo @opsModel, "change:id",    @onModelIdChange
+
+      return
 
     jsonLoadFailed : ( err )->
       if @isRemoved() then return

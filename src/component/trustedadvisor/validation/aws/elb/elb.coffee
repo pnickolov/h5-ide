@@ -514,11 +514,14 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 
 		Helper.message.error uid, i18n.ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB, elb.get 'name'
 
+	isNameExceedLimit = ( uid ) ->
 
-
-
-
-
+		limit = 23
+		elb = Design.instance().component uid
+		elbName = elb.get('name')
+		if elbName and elbName.length > limit
+			return Helper.message.error uid, i18n.ERROR_ELB_NAME_EXCEED_LIMIT, elbName, limit
+		return null
 
 	isHaveIGWForInternetELB : isHaveIGWForInternetELB
 	isHaveInstanceAttached : isHaveInstanceAttached
@@ -533,3 +536,4 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 	isELBSubnetCIDREnough : isELBSubnetCIDREnough
 	isSSLCertExist : isSSLCertExist
 	isInternetElbRouteOut : isInternetElbRouteOut
+	isNameExceedLimit : isNameExceedLimit

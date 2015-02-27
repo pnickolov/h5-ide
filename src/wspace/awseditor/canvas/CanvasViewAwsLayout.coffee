@@ -178,7 +178,7 @@ define [ "./CanvasViewAws", "CanvasViewLayout", "constant" ], ( AwsCanvasView, C
         children[ i + 1 ] = ch1
       i += 2
 
-    y2 = children[0].height + 15
+    y2 = children[0].height + 5
     x1 = 0
     x2 = 0
     i  = 0
@@ -243,6 +243,14 @@ define [ "./CanvasViewAws", "CanvasViewLayout", "constant" ], ( AwsCanvasView, C
       if ch.x + ch.width > subnetGroupBaseX
         subnetGroupBaseX = ch.x + ch.width + 4
 
+      azs = childMap[ "AWS.EC2.AvailabilityZone_group" ]
+      if azs
+        for az in azs.children
+          if az.y isnt 0
+            az.y += ch.height + 6 - 5
+
+        azs.height += ch.height + 6 - 5
+
     ch = childMap[ "AWS.RDS.DBSubnetGroup_group" ]
     if ch
       ch.x = subnetGroupBaseX
@@ -270,6 +278,18 @@ define [ "./CanvasViewAws", "CanvasViewLayout", "constant" ], ( AwsCanvasView, C
         newChs.push( ch )
 
     CanvasViewLayoutHelpers.DefaultArrangeMethod.call this, newChs
+
+  ArrangeForElb = ( children )->
+    rowCount = Math.ceil( Math.sqrt(children.length/6) )
+    for ch, idx in children
+      ch.x = Math.floor(idx / rowCount) * 22
+      ch.y = (idx % rowCount) * 11
+
+    {
+      width  : Math.ceil(children.length / rowCount) * 22 - 10
+      height : rowCount * 11 - 2
+    }
+
 
   # Sort Helpers
   SortForVpc = ( children )->
@@ -329,6 +349,7 @@ define [ "./CanvasViewAws", "CanvasViewLayout", "constant" ], ( AwsCanvasView, C
 
     "AWS.ELB_group" : {
       space   : 11
+      arrangeMethod : ArrangeForElb
     }
     "AWS.ELB" : {
       width   : 9

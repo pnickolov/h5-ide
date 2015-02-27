@@ -98,7 +98,7 @@ define [
       JsonViewer.showViewDialog( Design.instance().serialize() )
       return
 
-    designLayout : ()-> App.workspaces.getAwakeSpace().view.canvas.autoLayout()
+    designLayout : ()-> App.sceneManager.activeScene().getAwakeSpace().view.canvas.autoLayout()
 
     designSet : ( a, b )-> Design.instance()?.set(a,b)
     designGet : ( a )->    Design.instance()?.get(a)

@@ -15,7 +15,7 @@
 {{/unless}} -->
     <section class="property-control-group" data-bind="true">
       <label class="left" for="property-eni-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
-      <input id="property-eni-desc" data-type="ascii" data-ignore="true" data-required-rollback="true" maxlength="255" class="input" value="{{description}}" />
+      <input id="property-eni-desc" data-type="ascii" data-ignore="true" data-required-rollback="true" data-ignore-regexp="^[a-zA-Z0-9\.\ \_\-\:\/\(\)\#\,\@\[\]\+\=\&\;\{\}\!\$\*]*$" maxlength="255" class="input" value="{{description}}" />
     </section>
     <section class="property-control-group">
       <div class="checkbox">

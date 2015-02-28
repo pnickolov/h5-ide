@@ -286,7 +286,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
           AvailabilityZone : if owner then owner.getAvailabilityZone().createRef() else ""
           AttachmentSet :
             InstanceId : instanceId
-            Device     : @get("device")
+            Device     : @get("device") or @get("name")
           Encrypted    : @get("encrypted")
       }
 

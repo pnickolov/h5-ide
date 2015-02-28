@@ -1,5 +1,5 @@
 
-define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexResModel, constant )->
+define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ], ( lang, ComplexResModel, constant, CloudResources )->
 
   Model = ComplexResModel.extend {
 
@@ -200,14 +200,15 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant" ], ( lang, ComplexRe
         #set deviceName
         deviceName = null
         if ami_info.osType isnt "windows"
-          deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+          deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "a", "b", "c", "d", "e" ]
         else
-          deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
+          deviceName = ["f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "v", "w", "x", "y", "z", "a", "b", "c", "d", "e" ]
 
         $.each ami_info.blockDeviceMapping || [], (key, value) ->
-          if key.slice(0, 4) is "/dev/"
-            k = key.slice(-1)
-            index = deviceName.indexOf(k)
+            regResult = /(sd|hd|xvd)(\w+)/i.exec(key)
+            if not regResult then return
+            preName = regResult[ 2 ][ 0 ]
+            index = deviceName.indexOf(preName)
             deviceName.splice index, 1  if index >= 0
 
         #check existed volume attached to instance

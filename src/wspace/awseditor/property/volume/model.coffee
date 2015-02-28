@@ -41,13 +41,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 name        : res.name
                 displayEncrypted : displayEncrypted
                 support_encrypted : supportEncrypted
-                encrypted : isEncrypted
-
-            if volume_detail.isWin
-                volume_detail.editName = volume_detail.name.slice(-1)
-            else
-                volume_detail.editName = volume_detail.name.slice(5)
-
+                encrypted   : isEncrypted
+                owner       : res.owner
 
             # Snapshot
             if volume_detail.snapshot_id
@@ -64,13 +59,10 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             null
 
         setDeviceName : ( name ) ->
-
             uid        = @get "uid"
-
             volume = Design.instance().component( uid )
 
             if not volume
-
                 realuid     = uid.split '_'
                 device_name = realuid[ 2 ]
                 lcUid     = realuid[ 0 ]
@@ -83,26 +75,14 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 for v in allVolume
                     if v.get( 'owner' ) is lc
                         if v.get( 'name' ) is device_name
-
-                            newDeviceName = volume.genFullName name
                             newId = "#{realuid}_volume_#{name}"
-
-                            v.set 'name', newDeviceName
-
-                            @attributes.volume_detail.name     = newDeviceName
-                            @attributes.volume_detail.editName = name
-
+                            v.set 'name', name
+                            @attributes.volume_detail.name = name
                             @set 'uid', newId
-
                             break
-
             else
-
-                newDeviceName = volume.genFullName name
-
-                volume.set 'name', newDeviceName
-
-                @attributes.volume_detail.name = newDeviceName
+                volume.set 'name', name
+                @attributes.volume_detail.name = name
 
             null
 
@@ -170,18 +150,9 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             null
 
-        genFullName: ( name ) ->
-            if comp.name[0] != '/'
-                        if comp.name == "xvd" + name
-                            return true
-                    else if comp.name.indexOf( name ) isnt -1
-                        return true
-
-
         isDuplicate : ( name ) ->
-
             uid = @get "uid"
-
+            that = @
             volume = Design.instance().component( uid )
 
             volumeModel = Design.modelClassForType constant.RESTYPE.VOL
@@ -199,10 +170,48 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                         volume = v
                         break
 
-            _.some allVolume, ( v ) ->
-                fullName = v.genFullName name
-                if v isnt volume and v.get( 'name' ) is fullName
-                    true
+            duplicateOtherVolume = _.some allVolume, ( v ) ->
+                if v isnt volume
+                    if that.isDeviceNameEqual( that.getDeviceNameMap(v.get('name')), that.getDeviceNameMap('name') )
+                        true
+
+            return true if duplicateOtherVolume
+
+            amiInfo = volume.get( 'owner' )?.getAmi()
+            return false unless amiInfo
+
+            nameMap = @getDeviceNameMap name
+            amiInfo.blockDeviceMapping['/dev/sdc'] = null
+            amiInfo.blockDeviceMapping['/dev/sdd1'] = null
+            duplicateRootDevice = _.some amiInfo.blockDeviceMapping, ( obj, rootDeviceName ) ->
+                rootDeviceNameMap = that.getDeviceNameMap rootDeviceName
+                that.isDeviceNameEqual nameMap, rootDeviceNameMap
+
+
+            duplicateRootDevice
+
+        isDeviceNameEqual: ( nameMap1, nameMap2 ) ->
+            if not nameMap1 or not nameMap2 then return false
+
+            # completely same
+            if nameMap1.origin is nameMap2.origin then return true
+
+            # you must use trailing digits on all device names that share the same base letters (such as /dev/sdc1, /dev/sdc2, /dev/sdc3)
+            if nameMap1.numberSuffix and not nameMap2.numberSuffix or not nameMap1.numberSuffix and nameMap2.numberSuffix
+                return nameMap1.prefix + nameMap1.middle is nameMap2.prefix + nameMap2.middle
+
+            false
+
+        getDeviceNameMap: ( name ) ->
+            regResult = /(sd|hd|xvd)([a-z]+)([0-9]*)/i.exec name
+            unless regResult then return null
+
+            {
+                origin: regResult[ 0 ]
+                prefix: regResult[ 1 ]
+                middle: regResult[ 2 ]
+                numberSuffix: regResult[ 3 ]
+            }
 
     }
 

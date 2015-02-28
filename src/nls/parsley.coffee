@@ -187,13 +187,13 @@ module.exports =
       en: "Volume size must in the range of 1-1024 GB."
       zh: "卷大小必须在 1-1024 GB 范围内。"
 
-    DEVICENAME_LINUX:
-      en: "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[b-z][1-15]"
-      zh: "设备名必须符合以下格式：/dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z], /dev/sd[b-z][1-15]"
+    DEVICENAME_PARAVIRTUAL:
+      en: "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[a-z][1-15]"
+      zh: "设备名必须符合以下格式：/dev/hd[a-z]，/dev/hd[a-z][1-15]，/dev/sd[a-z]，/dev/sd[a-z][1-15]"
 
-    DEVICENAME_WINDOWS:
-      en: "Device name must be like xvd[f-p]."
-      zh: "设备名必须符合xvd[f-p]的格式"
+    DEVICENAME_HVM:
+      en: "Device name must be like xvd[a-z], /dev/xvd[a-z], /dev/sd[a-z]."
+      zh: "设备名必须符合xvd[a-z]，/dev/xvd[a-z]，/dev/sd[a-z]的格式"
 
     VOLUME_NAME_INUSE:
       en: "Volume name '%s' is already in using. Please use another one."

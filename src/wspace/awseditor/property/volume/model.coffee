@@ -61,28 +61,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         setDeviceName : ( name ) ->
             uid        = @get "uid"
             volume = Design.instance().component( uid )
-
-            if not volume
-                realuid     = uid.split '_'
-                device_name = realuid[ 2 ]
-                lcUid     = realuid[ 0 ]
-
-                lc = Design.instance().component( lcUid )
-
-                volumeModel = Design.modelClassForType constant.RESTYPE.VOL
-                allVolume = volumeModel and volumeModel.allObjects() or []
-
-                for v in allVolume
-                    if v.get( 'owner' ) is lc
-                        if v.get( 'name' ) is device_name
-                            newId = "#{realuid}_volume_#{name}"
-                            v.set 'name', name
-                            @attributes.volume_detail.name = name
-                            @set 'uid', newId
-                            break
-            else
-                volume.set 'name', name
-                @attributes.volume_detail.name = name
+            volume.set 'name', name
+            @attributes.volume_detail.name = name
 
             null
 
@@ -154,37 +134,21 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             uid = @get "uid"
             that = @
             volume = Design.instance().component( uid )
+            owner = volume.get( 'owner' )
 
-            volumeModel = Design.modelClassForType constant.RESTYPE.VOL
-            allVolume = volumeModel and volumeModel.allObjects() or []
-
-            if not volume
-                realuid     = uid.split('_')
-                device_name = realuid[2]
-                lcUid       = realuid[0]
-
-                lc = Design.instance().component( lcUid )
-
-                for v in allVolume
-                    if v.get( 'owner' ) is lc
-                        volume = v
-                        break
-
-            duplicateOtherVolume = _.some allVolume, ( v ) ->
+            volumeList = owner.get( 'volumeList' )
+            duplicateOtherVolume = _.some volumeList, ( v ) ->
                 if v isnt volume
                     if that.isDeviceNameEqual( that.getDeviceNameMap(v.get('name')), that.getDeviceNameMap(name) )
                         true
 
             return true if duplicateOtherVolume
 
-            amiInfo = volume.get( 'owner' )?.getAmi()
-            return false unless amiInfo
-
+            amiInfo = owner.getAmi()
             nameMap = @getDeviceNameMap name
             duplicateRootDevice = _.some amiInfo.blockDeviceMapping, ( obj, rootDeviceName ) ->
                 rootDeviceNameMap = that.getDeviceNameMap rootDeviceName
                 that.isDeviceNameEqual nameMap, rootDeviceNameMap
-
 
             duplicateRootDevice
 

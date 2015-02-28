@@ -172,7 +172,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             duplicateOtherVolume = _.some allVolume, ( v ) ->
                 if v isnt volume
-                    if that.isDeviceNameEqual( that.getDeviceNameMap(v.get('name')), that.getDeviceNameMap('name') )
+                    if that.isDeviceNameEqual( that.getDeviceNameMap(v.get('name')), that.getDeviceNameMap(name) )
                         true
 
             return true if duplicateOtherVolume

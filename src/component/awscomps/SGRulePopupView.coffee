@@ -17,12 +17,13 @@ define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event", "UI.modalplus
         render : () ->
           @modal = new modalPlus {
             title: lang.PROP.CREATE_SECURITY_GROUP_RULE
+            template: template(@model.attributes)
+            compact: true
             disableClose: true
             disableFooter: true
             width: 530
           }
-          @modal.find(".modal-body").replaceWith(template(@model.attributes)).end()
-          .find(".modal-header").css {background: "#232526"}
+          @modal.find(".modal-header").css {background: "#232526"}
 
           # In case there's two modal dialog in the page, although it is ALMOST
           # not possible

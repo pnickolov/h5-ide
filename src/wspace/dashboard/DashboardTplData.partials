@@ -92,9 +92,9 @@
             <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
         </button>
         <ul id="region-switch-list" class="dropdown-menu">
-            <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+            <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}} <span>{{globalCount}}</span></li>
             {{#each region}}
-                <li data-region="{{id}}">{{shortName}}</li>{{/each}}
+                <li data-region="{{id}}">{{shortName}} <span>{{count}}</span></li>{{/each}}
         </ul>
     </nav>
 
@@ -135,9 +135,9 @@
         </button>
 
         <ul id="region-switch-list" class="dropdown-menu">
-            <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+            <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}} <span>{{globalCount}}</span></li>
             {{#each region}}
-                <li data-region="{{id}}">{{shortName}}</li>{{/each}}
+                <li data-region="{{id}}">{{shortName}} <span>{{count}}</span></li>{{/each}}
         </ul>
     </nav>
     <ul id="region-resource-stack-wrap" class="region-resource-list">

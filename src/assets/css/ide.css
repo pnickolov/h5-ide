@@ -3409,10 +3409,24 @@ div.modal-text-highlight {
     padding: 15px 10px;
     font-size: 14px;
     color: #666;
-    cursor: pointer; }
+    cursor: pointer;
+    position: relative; }
     #region-switch-list > li:hover {
       background-color: #eee;
       color: #148BE6; }
+    #region-switch-list > li span {
+      position: absolute;
+      right: 10px;
+      top: 16px;
+      color: #cacce1;
+      font-size: 12px;
+      height: 16px;
+      min-width: 20px;
+      max-width: 30px;
+      line-height: 16px;
+      border-radius: 3px;
+      text-align: center;
+      background: #eee; }
 
 .region-resource-tab > span {
   display: inline-block;
@@ -6213,8 +6227,7 @@ marker.server, marker.elb {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

@@ -370,8 +370,25 @@
       font-size : 14px;
       color     : #666;
       cursor    : pointer;
+      position  : relative;
 
       &:hover { background-color: #eee; color: #148BE6; }
+
+      span {
+        position      : absolute;
+        right         : 10px;
+        top           : 16px;
+        color         : lighten($light-p-2,40%);
+        font-size     : 12px;
+        height        : 16px;
+        min-width     : 20px;
+        max-width     : 30px;
+        line-height   : 16px;
+        border-radius : 3px;
+        text-align    : center;
+        // border     : 1px solid $light-b;
+        background    : #eee;
+      }
     }
 }
 

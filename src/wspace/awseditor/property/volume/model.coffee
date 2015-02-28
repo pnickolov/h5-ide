@@ -181,8 +181,6 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             return false unless amiInfo
 
             nameMap = @getDeviceNameMap name
-            amiInfo.blockDeviceMapping['/dev/sdc'] = null
-            amiInfo.blockDeviceMapping['/dev/sdd1'] = null
             duplicateRootDevice = _.some amiInfo.blockDeviceMapping, ( obj, rootDeviceName ) ->
                 rootDeviceNameMap = that.getDeviceNameMap rootDeviceName
                 that.isDeviceNameEqual nameMap, rootDeviceNameMap

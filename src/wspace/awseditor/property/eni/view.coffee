@@ -13,8 +13,7 @@ define [ '../base/view',
     ENIView = PropertyView.extend {
 
         events   :
-            # "change #property-eni-desc"             : "setEniDesc"
-            'change #property-res-desc'             : 'onChangeDesc'
+            "change #property-eni-desc"             : "setEniDesc"
             "change #property-eni-source-check"     : "setEniSourceDestCheck"
             'click .toggle-eip'                     : 'setEip'
             'click #property-eni-ip-add'            : "addIp"

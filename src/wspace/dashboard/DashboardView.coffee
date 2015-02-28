@@ -238,6 +238,7 @@ define [ "./DashboardTpl",
       data = _.map constant.REGION_LABEL, ( name, id )->
         id   : id
         name : name
+        count: 0
         shortName : constant.REGION_SHORT_LABEL[ id ]
       if region isnt "global"
         filter = (f)-> f.get("region") is region && f.isExisting()
@@ -249,7 +250,12 @@ define [ "./DashboardTpl",
       resources.sort()
       attr[updateType] = resources.filter(filter).map( (m)-> m.toJSON(tojson) ).reverse()
 
-      attr.region = data
+      # ops count for each region.
+      attr.region = _.map data, (obj)->
+        obj.count = resources.groupBy("region")[obj.id]?.length || 0
+        obj
+      attr.globalCount = resources.length
+
       attr.projectId = self.model.scene.project.id
       attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
       @$el.find("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))

@@ -215,8 +215,10 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
         volumeList = owner.get( "volumeList" )
         if volumeList and volumeList.length>0
           $.each volumeList, (key, value) ->
-            k = value.get( "name" ).slice(-1)
-            index = deviceName.indexOf(k)
+            regResult = /(sd|hd|xvd)(\w+)/i.exec( value.get('name') )
+            if not regResult then return
+            preName = regResult[ 2 ][ 0 ]
+            index = deviceName.indexOf(preName)
             deviceName.splice index, 1  if index >= 0
 
         #no valid deviceName

@@ -38,8 +38,8 @@ define(["MC"], function( MC ) {
 		, arn: /^arn:aws:sns:[\w-]+:.+$/
 		, sqs: /^arn:aws:sqs:[\w-]+:\d{12}:.+$/
 
-		, deviceLinux: /^\/dev\/(hd[a-z]([1-9]|1[0-5])|(sd[a-z]|sd[b-z]([1-9]|1[0-5])))$/
-		, deviceWindows: /^xvd[f-p]$/
+		, deviceParavirtual: /^\/dev\/(hd[a-z]([1-9]|1[0-5])?|(sd[a-z]([1-9]|1[0-5])?))$/
+		, deviceHvm: /^((\/dev\/)?xvd[a-z][a-z]?|\/dev\/sd[a-z])$/
 
 	};
 
@@ -91,13 +91,11 @@ define(["MC"], function( MC ) {
 		return regExp.urlstrict.test( value ) && value.slice(0, 5) === 'https';
 	};
 
-	MC.validate.deviceName = function ( value, type, addPrefix ) {
-		if ( type === 'linux' ) {
-			addPrefix && ( value = '/dev/' + value );
-			return regExp.deviceLinux.test( value );
-		} else if ( type === 'windows') {
-			addPrefix && ( value = 'xvd' + value );
-			return regExp.deviceWindows.test( value );
+	MC.validate.deviceName = function ( value, type ) {
+		if ( type === 'paravirtual' ) {
+			return regExp.deviceParavirtual.test( value );
+		} else if ( type === 'hvm') {
+			return regExp.deviceHvm.test( value );
 		}
 
 		return false;

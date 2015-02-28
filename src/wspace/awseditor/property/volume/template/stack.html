@@ -2,13 +2,7 @@
     <section class="property-control-group">
         <label>{{ i18n "PROP.VOLUME_DEVICE_NAME" }}</label>
         <div class="name">
-            {{#if volume_detail.isWin}}
-            <label for="volume-device">xvd</label>
-            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="1" {{#if isAppEdit}}disabled{{/if}}/>
-            {{else}}
-            <label for="volume-device">/dev/</label>
-            <input class="input input-device"  type="text" value="{{volume_detail.editName}}" id="volume-device" data-ignore="true" data-required-rollback="true" maxlength="5" {{#if isAppEdit}}disabled{{/if}}/>
-            {{/if}}
+            <input class="input input-device"  type="text" value="{{volume_detail.name}}" id="volume-device" data-ignore="true" data-ignore-regexp="^[\/a-zA-Z]+[\/0-9a-zA-Z-]*$" data-required-rollback="true" maxlength="10" {{#if isAppEdit}}disabled{{/if}}/>
         </div>
     </section>
     <section class="property-control-group">

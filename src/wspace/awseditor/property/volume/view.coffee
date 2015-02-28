@@ -55,18 +55,24 @@ define [ '../base/view',
 
         deviceNameChanged : ( event ) ->
             target       = $ event.currentTarget
+            owner        = @model.get( 'volume_detail' ).owner
             name         = target.val()
-            devicePrefix = target.prev( 'label' ).text()
-            type         = if devicePrefix is '/dev/' then 'linux' else 'windows'
 
+            devicePrefix = target.prev( 'label' ).text()
+            ami = owner.getAmi()
+            # follow aws console device name is different from different platform
+            # but follow the aws document device named rule is only determined by Virtualization Type
+            # so we recommend device name as aws console does and allow device name as aws document
+            type = if ami.osType is 'windows' then 'windows' else 'linux'
+            virtualizationType = ami.virtualizationType
             self = this
 
             target.parsley 'custom', ( val ) ->
-                if not MC.validate.deviceName val, type, true
-                    if type is 'linux'
-                        return lang.PARSLEY.DEVICENAME_LINUX
+                if not MC.validate.deviceName val, virtualizationType
+                    if virtualizationType is 'hvm'
+                        return lang.PARSLEY.DEVICENAME_HVM
                     else
-                        return lang.PARSLEY.DEVICENAME_WINDOWS
+                        return lang.PARSLEY.DEVICENAME_PARAVIRTUAL
 
                 if self.model.isDuplicate val
                     sprintf lang.PARSLEY.VOLUME_NAME_INUSE, val

@@ -286,7 +286,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
           AvailabilityZone : if owner then owner.getAvailabilityZone().createRef() else ""
           AttachmentSet :
             InstanceId : instanceId
-            Device     : @get("name")
+            Device     : @get("device")
           Encrypted    : @get("encrypted")
       }
 
@@ -324,6 +324,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
       if data.resource.AttachmentSet
         attachment = data.resource.AttachmentSet
         instance   = if attachment and attachment.InstanceId then resolve( MC.extractID( attachment.InstanceId) ) else null
+        device     = attachment.Device
       else
         console.error "deserialize failed"
         return null
@@ -344,6 +345,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
         iops       : data.resource.Iops
         appId      : data.resource.VolumeId
         encrypted  : data.resource.Encrypted
+        device     : device
 
       model = new Model attr, {noNeedGenName:true}
 

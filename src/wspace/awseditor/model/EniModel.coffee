@@ -477,13 +477,13 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
         uid             : memberData.id
         type            : @type
         name            : eniName
-        description     : @get("description") or ""
+        # description     : @get("description") or ""
         serverGroupUid  : @id
         serverGroupName : @get("name")
         number          : servergroupOption.number or 1
         resource :
           SourceDestCheck    : @get("sourceDestCheck")
-          Description        : "" #@get("description")
+          Description        : @get("description")
           NetworkInterfaceId : memberData.appId
 
           AvailabilityZone : az.createRef()
@@ -667,7 +667,7 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
         id    : data.uid
         appId : data.resource.NetworkInterfaceId
 
-        description     : data.description or ""
+        description     : data.resource.Description or data.description or ""
         sourceDestCheck : data.resource.SourceDestCheck
         assoPublicIp    : data.resource.AssociatePublicIpAddress
         attachmentId    : if attachment then attachment.AttachmentId else ""

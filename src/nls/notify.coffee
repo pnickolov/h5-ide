@@ -351,4 +351,14 @@ module.exports =
 
     INFO_PROJECT_REMOVED:
       en : "You no longer have access to the workspace '%s'."
-      zh : "You no longer have access to the workspace '%s'."
+      zh : "您没有访问工作空间 '%s' 的权限."
+
+    SETTINGS_ERR_PROJECT_REMOVE:
+      en : "Failed to remove the workspace."
+      zh : "删除项目失败。"
+
+    HAVE_ONGOINGREQUEST_DELETE_WORKSPACE:
+      en: "There is still some ongoing request in this workspace. Try again later."
+      zh: "此工作空间有正在进行的请求，请稍后重试。"
+
+

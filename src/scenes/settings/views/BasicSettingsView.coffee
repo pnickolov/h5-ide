@@ -112,9 +112,14 @@ define [
             @model.destroy().then ->
                 that.remove()
                 that.settingsView.modal.close()
-            , ->
+            , ( err ) ->
+                if err.error is 134
+                    notification 'error', lang.NOTIFY.HAVE_ONGOINGREQUEST_DELETE_WORKSPACE
+                else
+                    notification 'error', lang.NOTIFY.SETTINGS_ERR_PROJECT_REMOVE
+
                 that.render()
-                notification 'error', lang.IDE.SETTINGS_ERR_PROJECT_REMOVE
+
         doLeave: ->
 
             that = @

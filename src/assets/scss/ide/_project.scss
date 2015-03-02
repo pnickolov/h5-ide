@@ -68,9 +68,10 @@
     }
 
     .project-list {
-      width : 144px; // The size of .project-list affects the margin of the .ws-tabbar
-      text-align: left;
-      position: relative;
+      width      : 146px; // The size of .project-list affects the margin of the .ws-tabbar
+      text-align : left;
+      position   : relative;
+      margin     : 0;
 
       &:before {
         position : absolute;
@@ -390,7 +391,7 @@
 
   > li {
     padding       : 0;
-    line-height   : 39px;
+    line-height   : 40px;
     height        : 40px;
     border-bottom : 1px solid #202020;
     cursor        : pointer;

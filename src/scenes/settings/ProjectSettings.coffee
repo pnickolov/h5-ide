@@ -10,7 +10,7 @@ define [
     'backbone'
 ], ( lang, TplProject, BasicSettingsView, AccessTokenView, BillingView, TeamView, ProviderCredentialView, UsageReportView ) ->
 
-    subViewMap = {
+    SubViewMap = {
         basicsettings       : BasicSettingsView
         accesstoken         : AccessTokenView
         billing             : BillingView
@@ -19,7 +19,7 @@ define [
         usagereport         : UsageReportView
     }
 
-    subViewNameMap = {
+    SubViewNameMap = {
         basicsettings       : 'Basic Settings'
         accesstoken         : 'API Token'
         billing             : 'Billing'
@@ -27,6 +27,7 @@ define [
         credential          : 'Cloud Access Credential'
         usagereport         : 'Usage Report'
     }
+
 
     Backbone.View.extend
 
@@ -67,12 +68,12 @@ define [
             @activeTab tab
 
             @subView and @subView.remove()
-            @subView = new subViewMap[ tab ]( model: @model, settingsView: @settingsView )
+            @subView = new SubViewMap[ tab ]( model: @model, settingsView: @settingsView )
             @subView.render()
 
         setTitle: ( tab ) ->
             projectName = @model.get 'name'
-            tabName = subViewNameMap[ tab ]
+            tabName = SubViewNameMap[ tab ]
             @$('#title-project-name').text projectName
             @$('#title-tab-name').text tabName
             @

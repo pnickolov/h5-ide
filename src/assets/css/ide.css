@@ -10108,9 +10108,10 @@ dl.settings-item {
       border-right: 1px solid #202020;
       padding: 0 10px; }
     .project-scene .project-header .project-list {
-      width: 144px;
+      width: 146px;
       text-align: left;
-      position: relative; }
+      position: relative;
+      margin: 0; }
       .project-scene .project-header .project-list:before {
         position: absolute;
         right: 5px;
@@ -10341,7 +10342,7 @@ dl.settings-item {
     padding: 0; }
   .header-popup > li {
     padding: 0;
-    line-height: 39px;
+    line-height: 40px;
     height: 40px;
     border-bottom: 1px solid #202020;
     cursor: pointer;

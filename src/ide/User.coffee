@@ -34,9 +34,9 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
         firstName    : Base64.decode( result.first_name || "" )
         lastName     : Base64.decode( result.last_name || "")
 
-        # No time to fix this.. Hard code it here.
-        repo         : "https://github.com/MadeiraCloud/salt.git"
-        tag          : "v2014-07-18"
+        # Need to update when support user select tag
+        repo         : result.mod_repo
+        tag          : result.mod_tag
       }
 
       # Set user to already used IDE, so that next time we don't show welcome

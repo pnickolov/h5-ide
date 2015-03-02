@@ -4607,6 +4607,8 @@ button#property-app-keypair {
   .ops-apppm-wrapper:hover {
     top: 22px;
     box-shadow: 0 0 5px rgba(22, 21, 27, 0.6); }
+  .ops-apppm-wrapper .payment-no-card-wrapper {
+    width: 260px; }
 
 .canvas-view {
   position: relative;

@@ -583,7 +583,8 @@ define [
       if @master() then 'replica' else 'instance'
 
     getSnapshotModel: ( snapshotId ) ->
-      CloudResources(@design().credentialId(), constant.RESTYPE.DBSNAP, @design().region()).findWhere {
+      design = Design.instance()
+      CloudResources(design.credentialId(), constant.RESTYPE.DBSNAP, design.region()).findWhere {
         id: snapshotId or @get( 'snapshotId' )
       }
 

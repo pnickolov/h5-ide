@@ -10,6 +10,7 @@
 
 define [
   "OpsModel"
+  "./submodels/Notification"
   "Project"
   "ApiRequest"
   "ApiRequestOs"
@@ -17,7 +18,8 @@ define [
   "constant"
   "i18n!/nls/lang.js"
   "backbone"
-], ( OpsModel, Project, ApiRequest, ApiRequestOs, ThumbnailUtil, constant, lang )->
+], ( OpsModel, Notifications, Project, ApiRequest, ApiRequestOs, ThumbnailUtil, constant, lang )->
+
 
   Backbone.Model.extend {
 
@@ -30,6 +32,9 @@ define [
 
     getOpenstackFlavors : ( provider, region )-> @__osdata[ provider ][ region ].flavors
     getOpenstackQuotas  : ( provider )-> @__osdata[ provider ].quota
+
+
+    notifications : ()-> @get("notifications")
 
 
     # User Related.
@@ -112,6 +117,7 @@ define [
       Internal methods
     ###
     defaults : ()->
+      notifications : new Notifications()
       projects : new (Backbone.Collection.extend({
         comparator : ( m )-> if m.isPrivate() then "" else m.get("name")
         initialize : ()-> @on "change:name", @sort, @; return
@@ -122,6 +128,13 @@ define [
       @__osdata  = {}
       @__stateModuleData = {}
       @__vousercache = {}
+
+      self = @
+      # Watch request changes
+      App.WS.collection.request.find().observe {
+        added   : (req)-> self.__handleRequest(req)
+        changed : (req)-> self.__handleRequest(req)
+      }
       return
 
     # Fetches user's stacks and apps from the server, returns a promise
@@ -225,4 +238,29 @@ define [
           throw McError( ApiRequest.Errors.InvalidRpcReturn, "Can't load state data. Please retry." )
         self.__stateModuleData[ repo + ":" + tag ] = d
         d
+
+    __handleRequest : ( req )->
+      if not req.project_id then return
+      if req.state is constant.OPS_STATE.PENDING then return
+
+      # Ignore applying diff & import request
+      if req.code is constant.OPS_CODE_NAME.APP_SAVE or req.code is constant.OPS_CODE_NAME.APP_IMPORT then return
+
+      targetId = if req.dag and req.dag.spec then req.dag.spec.id else req.rid
+
+      app = @projects().get( req.project_id )?.apps().get( targetId ) || @notifications().get( targetId )
+      if not app or not app.id then return
+      # Only create notification for app that have id.
+
+      n = @notifications().get( app.id )
+      if n
+        n.updateWithRequest(req)
+      else if req.username is App.user.get("usercode")
+        # Only create new notification if the app is updating by the current user.
+        n = @notifications().add(app, req)
+
+      # Mark the notification as read if the websocket is not ready.
+      if not App.WS.isSubReady( req.project_id, "request" )
+        n.markAsRead()
+      return
   }

@@ -431,9 +431,9 @@
 .hp-notify-list {
   left  : auto;
   right : 30px;
-  width : 300px;
+  width : 360px;
   li {
-    padding       : 10px 10px 10px 20px;
+    padding       : 10px 10px 10px 30px;
     height        : auto;
     font-size     : 13px;
     color         : #eee;
@@ -448,7 +448,7 @@
     &.rollingback:before { 
       font-family : 'MCIcon';
       position    : absolute;
-      left        : 5px;
+      left        : 10px;
       top         : 14px; 
     }
 
@@ -472,6 +472,7 @@
   .hp-notify-error {
     background    : $bg-p;
     border-radius : 3px;
+    font-size     : 12px;
     color         : $light-r;
     box-sizing    : border-box;
     padding       : 6px 5px;

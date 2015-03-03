@@ -10356,9 +10356,9 @@ dl.settings-item {
 .hp-notify-list {
   left: auto;
   right: 30px;
-  width: 300px; }
+  width: 360px; }
   .hp-notify-list li {
-    padding: 10px 10px 10px 20px;
+    padding: 10px 10px 10px 30px;
     height: auto;
     font-size: 13px;
     color: #eee;
@@ -10372,7 +10372,7 @@ dl.settings-item {
     .hp-notify-list li.success:before, .hp-notify-list li.processing:before, .hp-notify-list li.failure:before, .hp-notify-list li.rollingback:before {
       font-family: 'MCIcon';
       position: absolute;
-      left: 5px;
+      left: 10px;
       top: 14px; }
     .hp-notify-list li.success:before {
       content: "\F13A";
@@ -10394,6 +10394,7 @@ dl.settings-item {
   .hp-notify-list .hp-notify-error {
     background: #202027;
     border-radius: 3px;
+    font-size: 12px;
     color: #ea5d5d;
     box-sizing: border-box;
     padding: 6px 5px; }

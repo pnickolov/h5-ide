@@ -233,6 +233,8 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
         @view.showLoading()
       else
         @view.hideLoading()
+
+      @trigger "switchWorkspace", workspace
       return
 
     removeSpace : ( workspace, force )->

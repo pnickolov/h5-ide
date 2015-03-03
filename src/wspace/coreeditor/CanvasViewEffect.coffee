@@ -234,7 +234,7 @@ define [
 
   # Add item by dnd
   CanvasViewProto.hightLightItems  = ( items )->
-    rects    = getNonOverlapRects( items )
+    rects    = getNonOverlapRects( _.uniq(items) )
     polygons = getPolygonsFromRect( rects )
     path     = getPathFromPolygons( polygons )
 

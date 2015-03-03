@@ -2,6 +2,7 @@
 
 define [ "ApiRequest",
     "./ProjectTpl",
+    "OpsModel"
     "UI.modalplus",
     "i18n!/nls/lang.js",
     "constant",
@@ -10,7 +11,7 @@ define [ "ApiRequest",
     "UI.parsley",
     "UI.errortip",
     "MC.validate"
-], ( ApiRequest, ProjectTpl, Modal, lang, constant )->
+], ( ApiRequest, ProjectTpl, OpsModel, Modal, lang, constant )->
 
   ProjectCreation = Backbone.View.extend {
 
@@ -172,6 +173,104 @@ define [ "ApiRequest",
     createProject : ()-> new ProjectCreation()
   }
 
+  NotificationPopup = HeaderPopup.extend {
+
+    initialize : ()->
+      @listenTo App.model.notifications(), "change", @renderPiece
+      @listenTo App.model.notifications(), "add",    @renderPiece
+
+    pieceTpl : ( m )->
+      target  = m.target()
+      project = m.targetProject()
+
+      duration = m.get("duration")
+      if duration
+        if duration < 60
+          duration = sprintf lang.TOOLBAR.TOOK_XXX_SEC, duration
+        else
+          duration = sprintf lang.TOOLBAR.TOOK_XXX_MIN, Math.round(duration/60)
+
+      ProjectTpl.notifyListItem({
+        name     : target.get("name")
+        id       : target.id
+        pname    : project.get("name")
+        pid      : project.id
+        time     : MC.dateFormat( new Date( m.get("startTime") * 1000 ) , "hh:mm yyyy-MM-dd")
+        duration : duration
+        error    : m.get("error")
+        desc     : @getNotifyDesc( m )
+        isNew    : m.isNew()
+        klass    : [ "processing", "success", "failure", "rollingback" ][m.get("state")]
+      })
+
+    renderPiece : ( m )->
+      if not m
+        @render()
+        return
+
+      tgt  = @$el.find("ul")
+      item = tgt.children("[data-id='#{m.id}']")
+      if not item.length
+        tgt.prepend( @pieceTpl(m) )
+      else
+        item.after( @pieceTpl(m) ).remove()
+      return
+
+    render : ()->
+      tpl = ""
+      for m in App.model.notifications().models
+        tpl += @pieceTpl( m )
+
+      @$el.html ProjectTpl.notifyList()
+      if tpl
+        @$el.find( "ul" ).html( tpl )
+      return
+
+    getNotifyDesc : ( n )->
+      switch n.get("action")
+        when constant.OPS_CODE_NAME.LAUNCH
+          desc = [
+            "is launching"
+            "launched successfully"
+            "failed to launch"
+            "is rolling back"
+          ]
+        when constant.OPS_CODE_NAME.STOP
+          desc = [
+            "is stopping"
+            "stopped successfully"
+            "failed to stop"
+            "is rolling back"
+          ]
+        when constant.OPS_CODE_NAME.START
+          desc = [
+            "is starting"
+            "started successfully"
+            "failed to start"
+            "is rolling back"
+          ]
+        when constant.OPS_CODE_NAME.TERMINATE
+          desc = [
+            "is terminating"
+            "terminated successfully"
+            "failed to terminate"
+            "is rolling back"
+          ]
+        when constant.OPS_CODE_NAME.UPDATE, constant.OPS_CODE_NAME.STATE_UPDATE
+          desc = [
+            "is updating"
+            "updated successfully"
+            "failed to update"
+            "is rolling back"
+          ]
+      desc[ n.get("state") ]
+
+
+    close : ()->
+      @stopListening()
+      App.model.notifications().markAllAsRead()
+      HeaderPopup.prototype.close.call this
+  }
 
   Backbone.View.extend {
 
@@ -209,6 +308,15 @@ define [ "ApiRequest",
           return false
         return
 
+      nfs = App.model.notifications()
+      @listenTo nfs, "change", @updateNotify
+      @listenTo nfs, "add", @updateNotify
+      @listenTo nfs, "remove", @updateNotify
+      @updateNotify()
+
+      @listenTo @scene, "switchWorkspace", @updateNotify
+      return
+
     render : ()->
       @$el.find(".project-list").text( @scene.project.get("name") )
       @$el.find(".user-menu").text( App.user.get("username") )
@@ -233,7 +341,22 @@ define [ "ApiRequest",
     popupProject : ()-> new ProjectListPopup({project:@scene.project})
     popupAsset   : ()-> new AssetListPopup({project:@scene.project})
     popupUser    : ()-> new UserPopup()
-    popupNotify  : ()->
+    popupNotify  : ()-> new NotificationPopup()
+
+    updateNotify : ()->
+      unread = App.model.notifications().where {isNew:true}
+
+      ws   = @scene.getAwakeSpace()
+      data = {opsModel:null}
+      for n, idx in unread
+        data.opsModel = n.target()
+        if ws.isWorkingOn( data )
+          n.markAsRead()
+          unread.splice( idx, 1 )
+          break
+
+      @$header.find(".icon-notification").attr("data-count", unread.length || "")
+      return
 
     ### ------------------
     # Workspace Related

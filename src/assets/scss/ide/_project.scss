@@ -23,7 +23,7 @@
       position   : absolute;
       top        : 0;
       right      : 0;
-      width      : 273px - 61px;
+      width      : 273px;
       height     : 100%;
       background : #36343c;
     }
@@ -43,6 +43,25 @@
       &:hover {
         color : $pink-p;
         background : rgba(0,0,0,0.2);
+      }
+    }
+
+    .icon-notification {
+      position : relative;
+      &[data-count=""]:after { display : none; }
+      &:after {
+        content       : attr(data-count);
+        position      : absolute;
+        left          : 50%;
+        top           : 8px;
+        background    : $light-r;
+        display       : inline-block;
+        height        : 1em;
+        line-height   : 1em;
+        padding       : 2px 5px;
+        border-radius : 8px;
+        font-size     : 10px;
+        color         : #fff;
       }
     }
 
@@ -172,7 +191,7 @@
 
 .update-payment-wrap {
   max-width: 500px;
-  
+
   .new-project-support {
     bottom: 17px;
     right: 19px;
@@ -192,7 +211,7 @@
     border-radius: 0;
   }
 
-  label { 
+  label {
     color        : #eee;
     width        : 140px;
     margin-right : 10px;
@@ -212,7 +231,7 @@
     height        : auto;
     opacity       : 1;
   }
-  
+
   .new-project-billing-wrap {
     position   : relative;
     padding    : 0;
@@ -220,10 +239,10 @@
     max-height : 0;
     overflow   : hidden;
     opacity    : 0;
-    
+
     @include transit($method:max-height,$dur:.3s);
 
-    h4 { 
+    h4 {
       font-size   : 14px;
       color       : lighten($light-p-2,20%);
       line-height : 28px;
@@ -244,7 +263,7 @@
     border-radius  : 4px;
     margin         : 6px 0;
   }
-  
+
   .new-project-err {
       display    : none;
       text-align : left;
@@ -378,17 +397,6 @@
     width   : 165px;
   }
 
-  li > a + a {
-    position    : absolute;
-    right       : 10px;
-    top         : 10px;
-    width       : 20px;
-    height      : 20px;
-    text-align  : center;
-    line-height : 26px;
-    padding     : 0;
-  }
-
   > li {
     padding       : 0;
     line-height   : 40px;
@@ -421,6 +429,70 @@
 
 }
 
+.hp-notify-list {
+  left  : auto;
+  right : 30px;
+  width : 360px;
+  max-height : 87%;
+  overflow-y : auto;
+
+  li {
+    padding       : 10px 10px 10px 30px;
+    height        : auto;
+    font-size     : 13px;
+    color         : #eee;
+    border-bottom : 1px solid #111;
+    position      : relative;
+
+    a { display : inline; padding : 0; width : auto; color: $light-b; }
+
+    &.success:before,
+    &.processing:before,
+    &.failure:before,
+    &.rollingback:before {
+      font-family : 'MCIcon';
+      position    : absolute;
+      left        : 10px;
+      top         : 14px;
+    }
+
+    &.success:before { content: "\F13A"; color: $base-g;}
+    &.failure:before { content: "\F139"; color: $light-r;}
+    &.processing:before, &.rollingback:before { content: "\F137"; color: #ccc; }
+  }
+
+  .hp-notify-timestamp {
+    font-size     : 12px;
+    color         : #999;
+    position      : relative;
+    margin-bottom : 0;
+
+    span {
+      position : absolute;
+      right    : 0;
+    }
+  }
+
+  .hp-notify-error {
+    background    : $bg-p;
+    border-radius : 3px;
+    font-size     : 12px;
+    color         : $light-r;
+    box-sizing    : border-box;
+    padding       : 6px 5px;
+  }
+
+
+  > ul + .hp-notify-list-empty { display : none; }
+  > ul:empty + .hp-notify-list-empty {
+    display    : block;
+    padding    : 20px;
+    text-align : center;
+    font-size  : 14px;
+    color      : $dark-grey;
+  }
+}
+
 .hp-project-list {
   border-right : 1px solid #202020;
   border-top   : 1px solid #202020;
@@ -444,6 +516,17 @@
 
     //   background : $base-b;
     // }
+  }
+
+  li > a + a {
+    position    : absolute;
+    right       : 10px;
+    top         : 10px;
+    width       : 20px;
+    height      : 20px;
+    text-align  : center;
+    line-height : 26px;
+    padding     : 0;
   }
 
 }

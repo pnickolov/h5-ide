@@ -433,19 +433,57 @@
   right : 30px;
   width : 300px;
   li {
-    padding   : 0 10px;
-    height    : auto;
-    font-size : 13px;
-    color     : #eee;
+    padding       : 10px 10px 10px 20px;
+    height        : auto;
+    font-size     : 13px;
+    color         : #eee;
+    border-bottom : 1px solid #111;
+    position      : relative;
 
-    > a { display : inline; padding : 0; width : auto; color: $base-b; }
+    a { display : inline; padding : 0; width : auto; color: $light-b; }
 
-    
+    &.success:before,
+    &.processing:before,
+    &.failure:before,
+    &.rollingback:before { 
+      font-family : 'MCIcon';
+      position    : absolute;
+      left        : 5px;
+      top         : 14px; 
+    }
+
+    &.success:before { content: "\F13A"; color: $base-g;}
+    &.failure:before { content: "\F139"; color: $light-r;}
+    &.processing:before, &.rollingback:before { content: "\F137"; color: #ccc; }
+  }
+
+  .hp-notify-timestamp {
+    font-size     : 12px;
+    color         : #999;
+    position      : relative;
+    margin-bottom : 0;
+
+    span {
+      position : absolute;
+      right    : 0;
+    }
+  }
+
+  .hp-notify-error {
+    background    : $bg-p;
+    border-radius : 3px;
+    color         : $light-r;
+    box-sizing    : border-box;
+    padding       : 6px 5px;
   }
 
   > ul + .hp-notify-list-empty { display : none; }
   > ul:empty + .hp-notify-list-empty {
-    display : block;
+    display    : block;
+    padding    : 20px;
+    text-align : center;
+    font-size  : 14px;
+    color      : $dark-grey;
   }
 }
 

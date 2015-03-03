@@ -50,15 +50,15 @@
 <!-- {{notifyList}} -->
 <div class="header-popup hp-notify-list">
   <ul></ul>
-  <div class="hp-notify-list-empty">no news is good news</div>
+  <div class="hp-notify-list-empty">No news is good news.</div>
 </div>
 
 <!-- {{notifyListItem}} -->
 <li class="{{klass}}{{#if isNew}} new-item{{/if}}">
-  App <a href="/workspace/{{pid}}/ops/{{id}}" class="route">{{name}}</a> {{desc}} in workspace <a href="/workspace/{{pid}}" class="route">{{pname}}</a>
-  <br />
-  {{#if error}} {{error}} {{/if}}
-  Start Time : {{time}} {{#if duration}} {{duration}} {{/if}}
+  <p>App <a href="/workspace/{{pid}}/ops/{{id}}" class="route">{{name}}</a> {{desc}} in workspace <a href="/workspace/{{pid}}" class="route">{{pname}}</a></p>
+  
+  {{#if error}} <p class="hp-notify-error">{{error}}</p> {{/if}}
+  <p class="hp-notify-timestamp">{{time}} <span>{{#if duration}} {{duration}} {{/if}}</span></p>
 </li>
 
 

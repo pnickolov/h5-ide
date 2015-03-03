@@ -10358,19 +10358,53 @@ dl.settings-item {
   right: 30px;
   width: 300px; }
   .hp-notify-list li {
-    padding: 0 10px;
+    padding: 10px 10px 10px 20px;
     height: auto;
     font-size: 13px;
-    color: #eee; }
-    .hp-notify-list li > a {
+    color: #eee;
+    border-bottom: 1px solid #111;
+    position: relative; }
+    .hp-notify-list li a {
       display: inline;
       padding: 0;
       width: auto;
-      color: #4a90e2; }
+      color: #7eace1; }
+    .hp-notify-list li.success:before, .hp-notify-list li.processing:before, .hp-notify-list li.failure:before, .hp-notify-list li.rollingback:before {
+      font-family: 'MCIcon';
+      position: absolute;
+      left: 5px;
+      top: 14px; }
+    .hp-notify-list li.success:before {
+      content: "\F13A";
+      color: #11c568; }
+    .hp-notify-list li.failure:before {
+      content: "\F139";
+      color: #ea5d5d; }
+    .hp-notify-list li.processing:before, .hp-notify-list li.rollingback:before {
+      content: "\F137";
+      color: #ccc; }
+  .hp-notify-list .hp-notify-timestamp {
+    font-size: 12px;
+    color: #999;
+    position: relative;
+    margin-bottom: 0; }
+    .hp-notify-list .hp-notify-timestamp span {
+      position: absolute;
+      right: 0; }
+  .hp-notify-list .hp-notify-error {
+    background: #202027;
+    border-radius: 3px;
+    color: #ea5d5d;
+    box-sizing: border-box;
+    padding: 6px 5px; }
   .hp-notify-list > ul + .hp-notify-list-empty {
     display: none; }
   .hp-notify-list > ul:empty + .hp-notify-list-empty {
-    display: block; }
+    display: block;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #898dbc; }
 
 .hp-project-list {
   border-right: 1px solid #202020;

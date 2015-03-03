@@ -50,18 +50,18 @@
       position : relative;
       &[data-count=""]:after { display : none; }
       &:after {
-        content: attr(data-count);
-        position: absolute;
-        left: 50%;
-        top: 8px;
-        background: red;
-        display: inline-block;
-        height: 1em;
-        line-height: 1em;
-        padding: 2px 5px;
-        border-radius: 8px;
-        font-size: 10px;
-        color: #5A0202;
+        content       : attr(data-count);
+        position      : absolute;
+        left          : 50%;
+        top           : 8px;
+        background    : $light-r;
+        display       : inline-block;
+        height        : 1em;
+        line-height   : 1em;
+        padding       : 2px 5px;
+        border-radius : 8px;
+        font-size     : 10px;
+        color         : #fff;
       }
     }
 
@@ -433,10 +433,14 @@
   right : 30px;
   width : 300px;
   li {
-    padding : 0 10px;
-    height  : auto;
+    padding   : 0 10px;
+    height    : auto;
+    font-size : 13px;
+    color     : #eee;
 
-    > a { display : inline; padding : 0; width : auto; }
+    > a { display : inline; padding : 0; width : auto; color: $base-b; }
+
+    
   }
 
   > ul + .hp-notify-list-empty { display : none; }

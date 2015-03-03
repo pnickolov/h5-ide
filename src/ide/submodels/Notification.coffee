@@ -135,12 +135,12 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
 
       ab = @attributes
 
+      ab.progress = progress
       @set {
         startTime : req.time_submit
         duration  : duration
         action    : req.code
         error     : error
-        progress  : progress
         state     : toStateIndex
         isNew     : (ab.startTime isnt req.time_submit) or (ab.duration isnt duration) or (ab.action isnt req.code) or (ab.error isnt error) or (ab.state isnt toStateIndex) or ab.isNew
       }

@@ -54,9 +54,9 @@
 </div>
 
 <!-- {{notifyListItem}} -->
-<li class="{{klass}}{{#if isNew}} new-item{{/if}}">
+<li class="{{klass}}{{#if isNew}} new-item{{/if}}" data-id="{{id}}">
   <p>App <a href="/workspace/{{pid}}/ops/{{id}}" class="route">{{name}}</a> {{desc}} in workspace <a href="/workspace/{{pid}}" class="route">{{pname}}</a></p>
-  
+
   {{#if error}} <p class="hp-notify-error">{{error}}</p> {{/if}}
   <p class="hp-notify-timestamp">{{time}} <span>{{#if duration}} {{duration}} {{/if}}</span></p>
 </li>

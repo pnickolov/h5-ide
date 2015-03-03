@@ -432,6 +432,9 @@
   left  : auto;
   right : 30px;
   width : 360px;
+  max-height : 87%;
+  overflow-y : auto;
+
   li {
     padding       : 10px 10px 10px 30px;
     height        : auto;
@@ -445,11 +448,11 @@
     &.success:before,
     &.processing:before,
     &.failure:before,
-    &.rollingback:before { 
+    &.rollingback:before {
       font-family : 'MCIcon';
       position    : absolute;
       left        : 10px;
-      top         : 14px; 
+      top         : 14px;
     }
 
     &.success:before { content: "\F13A"; color: $base-g;}
@@ -477,6 +480,7 @@
     box-sizing    : border-box;
     padding       : 6px 5px;
   }
+
 
   > ul + .hp-notify-list-empty { display : none; }
   > ul:empty + .hp-notify-list-empty {

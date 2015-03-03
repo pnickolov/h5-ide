@@ -174,31 +174,52 @@ define [ "ApiRequest",
   }
 
   NotificationPopup = HeaderPopup.extend {
+
+    initialize : ()->
+      @listenTo App.model.notifications(), "change", @renderPiece
+      @listenTo App.model.notifications(), "add",    @renderPiece
+
+    pieceTpl : ( m )->
+      target  = m.target()
+      project = m.targetProject()
+
+      duration = m.get("duration")
+      if duration
+        if duration < 60
+          duration = sprintf lang.TOOLBAR.TOOK_XXX_SEC, duration
+        else
+          duration = sprintf lang.TOOLBAR.TOOK_XXX_MIN, Math.round(duration/60)
+
+      ProjectTpl.notifyListItem({
+        name     : target.get("name")
+        id       : target.id
+        pname    : project.get("name")
+        pid      : project.id
+        time     : MC.dateFormat( new Date( m.get("startTime") * 1000 ) , "hh:mm yyyy-MM-dd")
+        duration : duration
+        error    : m.get("error")
+        desc     : @getNotifyDesc( m )
+        isNew    : m.isNew()
+        klass    : [ "processing", "success", "failure", "rollingback" ][m.get("state")]
+      })
+
+    renderPiece : ( m )->
+      if not m
+        @render()
+        return
+
+      tgt  = @$el.find("ul")
+      item = tgt.children("[data-id='#{m.id}']")
+      if not item.length
+        tgt.prepend( @pieceTpl(m) )
+      else
+        item.after( @pieceTpl(m) ).remove()
+      return
+
     render : ()->
       tpl = ""
       for m in App.model.notifications().models
-        target  = m.target()
-        project = m.targetProject()
-
-        duration = m.get("duration")
-        if duration
-          if duration < 60
-            duration = sprintf lang.TOOLBAR.TOOK_XXX_SEC, duration
-          else
-            duration = sprintf lang.TOOLBAR.TOOK_XXX_MIN, Math.round(duration/60)
-
-        tpl += ProjectTpl.notifyListItem({
-          name     : target.get("name")
-          id       : target.id
-          pname    : project.get("name")
-          pid      : project.id
-          time     : MC.dateFormat( new Date( m.get("startTime") * 1000 ) , "hh:mm yyyy-MM-dd")
-          duration : duration
-          error    : m.get("error")
-          desc     : @getNotifyDesc( m )
-          isNew    : m.isNew()
-          klass    : [ "processing", "success", "failure", "rollingback" ][m.get("state")]
-        })
+        tpl += @pieceTpl( m )
 
       @$el.html ProjectTpl.notifyList()
       if tpl
@@ -246,6 +267,7 @@ define [ "ApiRequest",
 
 
     close : ()->
+      @stopListening()
       App.model.notifications().markAllAsRead()
       HeaderPopup.prototype.close.call this
   }

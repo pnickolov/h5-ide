@@ -78,8 +78,12 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       if @get("error")
         # Keep notification that have error message ("That is failed to terminate")
         @attributes.isNew = false
+      else if @isProcessing() or @isRollingBack()
+        # Do nothing
+        return
       else
         @remove()
+
       return
 
     updateWithRequest : ( req )->

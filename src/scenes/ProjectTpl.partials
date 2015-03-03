@@ -54,7 +54,7 @@
 </div>
 
 <!-- {{notifyListItem}} -->
-<li {{#if isNew}}class="new-item"{{/if}}>
+<li class="{{klass}}{{#if isNew}} new-item{{/if}}">
   App <a href="/workspace/{{pid}}/ops/{{id}}" class="route">{{name}}</a> {{desc}} in workspace <a href="/workspace/{{pid}}" class="route">{{pname}}</a>
   <br />
   {{#if error}} {{error}} {{/if}}

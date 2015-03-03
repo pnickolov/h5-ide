@@ -261,6 +261,6 @@ define [
 
       # Mark the notification as read if the websocket is not ready.
       if not App.WS.isSubReady( req.project_id, "request" )
-        n.markAsRead()
+        n.markAsOld()
       return
   }

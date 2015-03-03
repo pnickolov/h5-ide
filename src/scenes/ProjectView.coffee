@@ -196,7 +196,8 @@ define [ "ApiRequest",
           duration : duration
           error    : m.get("error")
           desc     : @getNotifyDesc( m )
-          isNew    : not m.get("read")
+          isNew    : m.isNew()
+          klass    : [ "processing", "success", "failure", "rollingback" ][m.get("state")]
         })
 
       @$el.html ProjectTpl.notifyList()
@@ -319,7 +320,7 @@ define [ "ApiRequest",
     popupNotify  : ()-> new NotificationPopup()
 
     updateNotify : ()->
-      unread = App.model.notifications().where {read:false}
+      unread = App.model.notifications().where {isNew:true}
 
       ws   = @scene.getAwakeSpace()
       data = {opsModel:null}

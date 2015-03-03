@@ -45,7 +45,7 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
   Notification = Backbone.Model.extend {
 
     default :
-      read      : false
+      isNew     : true
       startTime : 0
       duration  : 0
       action    : ""
@@ -68,8 +68,18 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
       @trigger 'destroy', @, @collection
       return
 
+    isNew : ()-> @get("isNew")
+
     markAsRead : ()->
-      @attributes.read = true
+      @attributes.isNew = false
+      return
+
+    markAsOld : ()->
+      if @get("error")
+        # Keep notification that have error message ("That is failed to terminate")
+        @attributes.isNew = false
+      else
+        @remove()
       return
 
     updateWithRequest : ( req )->
@@ -118,14 +128,17 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
         toStateIndex = 2
         error = req.data
 
+
+      ab = @attributes
+
       @set {
         startTime : req.time_submit
         duration  : duration
         action    : req.code
-        read      : false
         error     : error
         progress  : progress
         state     : toStateIndex
+        isNew     : (ab.startTime isnt req.time_submit) or (ab.duration isnt duration) or (ab.action isnt req.code) or (ab.error isnt error) or (ab.state isnt toStateIndex) or ab.isNew
       }
       return
 
@@ -153,7 +166,7 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
     markAllAsRead : ()->
       changed = false
       for n in @models
-        if not n.get("read")
+        if n.get("isNew")
           changed = true
           n.markAsRead()
 

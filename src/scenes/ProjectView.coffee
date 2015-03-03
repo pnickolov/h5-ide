@@ -291,6 +291,8 @@ define [ "ApiRequest",
       @listenTo nfs, "add", @updateNotify
       @listenTo nfs, "remove", @updateNotify
       @updateNotify()
+
+      @listenTo @scene, "switchWorkspace", @updateNotify
       return
 
     render : ()->

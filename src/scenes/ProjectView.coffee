@@ -212,35 +212,35 @@ define [ "ApiRequest",
             "is launching"
             "launched successfully"
             "failed to launch"
-            "rolling back"
+            "is rolling back"
           ]
         when constant.OPS_CODE_NAME.STOP
           desc = [
             "is stopping"
             "stopped successfully"
             "failed to stop"
-            "rolling back"
+            "is rolling back"
           ]
         when constant.OPS_CODE_NAME.START
           desc = [
             "is starting"
             "started successfully"
             "failed to start"
-            "rolling back"
+            "is rolling back"
           ]
         when constant.OPS_CODE_NAME.TERMINATE
           desc = [
             "is terminating"
             "terminated successfully"
             "failed to terminate"
-            "rolling back"
+            "is rolling back"
           ]
         when constant.OPS_CODE_NAME.UPDATE, constant.OPS_CODE_NAME.STATE_UPDATE
           desc = [
             "is updating"
             "updated successfully"
             "failed to update"
-            "rolling back"
+            "is rolling back"
           ]
       desc[ n.get("state") ]
 

@@ -7,7 +7,7 @@
     <div class="ws-tabbar"><ul class="ws-fixed-tabs"></ul><ul class="ws-tabs"></ul></div>
     <nav>
       <a class="ph-nav-btn icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">{{i18n "IDE.DASH_LBL_SUPPORT"}}</a>
-      <!-- <button class="ph-nav-btn icon-notification popuptrigger" data-popup="popupNotify"></button> -->
+      <button class="ph-nav-btn icon-notification popuptrigger" data-popup="popupNotify"></button>
       <button class="ph-nav-btn user-menu popuptrigger truncate" data-popup="popupUser"></button>
     </nav>
   </header>
@@ -46,6 +46,20 @@
   {{#each this}}<li><a class="route{{#if selected}} selected{{/if}} truncate" href="{{url}}">{{name}}</a><a class="route icon-gear tooltip" href="settings/{{id}}" data-tooltip="Workspace Settings"></a></li>{{/each}}
   <li class="create-new-project padding icon-add">Create New Workspace</li>
 </ul>
+
+<!-- {{notifyList}} -->
+<div class="header-popup hp-notify-list">
+  <ul></ul>
+  <div class="hp-notify-list-empty">No news is good news.</div>
+</div>
+
+<!-- {{notifyListItem}} -->
+<li class="{{klass}}{{#if isNew}} new-item{{/if}}" data-id="{{id}}">
+  <p>App <a href="/workspace/{{pid}}/ops/{{id}}" class="route">{{name}}</a> {{desc}} in workspace <a href="/workspace/{{pid}}" class="route">{{pname}}</a></p>
+
+  {{#if error}} <p class="hp-notify-error">{{error}}</p> {{/if}}
+  <p class="hp-notify-timestamp">{{time}} <span>{{#if duration}} {{duration}} {{/if}}</span></p>
+</li>
 
 
 <!-- {{usermenu}} -->
@@ -126,7 +140,7 @@
 
 <!-- {{switchConfirm}} -->
 <section>
-  <p class="modal-text-major">You have unsaved changes in current workspace. Switching to another workspace will cause your chages to lose.</p> 
+  <p class="modal-text-major">You have unsaved changes in current workspace. Switching to another workspace will cause your chages to lose.</p>
   <p class="modal-text-major">Do you confirm to switch project anyway?</p>
   <div class="modal-footer">
     <button class="btn do-switch btn-red">Switch and discard changes</button>

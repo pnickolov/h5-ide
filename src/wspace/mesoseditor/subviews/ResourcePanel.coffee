@@ -528,3 +528,5 @@ define [
       return
 
   }
+
+  Backbone.View.extend {}

@@ -85,7 +85,8 @@
     .project-list, .asset-list {
       border-left  : none;
       border-right : 1px solid #202020;
-      padding : 0 10px;
+      padding      : 0 10px;
+      float        : left;
     }
 
     .project-list {

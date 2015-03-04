@@ -10,9 +10,12 @@
 
 define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant )->
 
-  OsOpsModel = OpsModel.extend {
+  OpsModel.extend {
 
     type : OpsModel.Type.Mesos
+
+    # We don't care which credential the mesos stack use, be we need a credential to send request to the server
+    credential   : ()-> @project().credentials().models[0]
 
     getMsrId : ()->
 
@@ -23,5 +26,3 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
   }, {
     supportedProviders : ["mesos::mesos"]
   }
-
-  OsOpsModel

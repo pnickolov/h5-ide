@@ -260,7 +260,7 @@ define [
         n = @notifications().add(app, req)
 
       # Mark the notification as read if the websocket is not ready.
-      if not App.WS.isSubReady( req.project_id, "request" )
+      if not App.WS.isSubReady( req.project_id, "request" ) and n
         n.markAsOld()
       return
   }

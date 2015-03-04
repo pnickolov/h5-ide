@@ -23,22 +23,24 @@
       position   : absolute;
       top        : 0;
       right      : 0;
-      width      : 273px;
+      width      : 278px;
       height     : 100%;
       background : #36343c;
+      text-align : right;
     }
 
     .ph-nav-btn {
-      float       : left;
-      height      : 100%;
-      min-width   : 20px;
-      line-height : 50px;
-      color       : #ddd;
-      padding     : 0 20px;
-      text-align  : center;
-      border-left : 1px solid #202020;
-      box-sizing  : content-box;
-      cursor      : pointer;
+      height         : 100%;
+      min-width      : 20px;
+      line-height    : 50px;
+      color          : #ddd;
+      padding        : 0 20px;
+      text-align     : center;
+      border-left    : 1px solid #202020;
+      box-sizing     : content-box;
+      cursor         : pointer;
+      display        : inline-block;
+      vertical-align : top;
 
       &:hover {
         color : $pink-p;

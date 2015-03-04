@@ -6,9 +6,7 @@
     <button class="ph-nav-btn icon-menu asset-list popuptrigger" data-popup="popupAsset"></button>
     <div class="ws-tabbar"><ul class="ws-fixed-tabs"></ul><ul class="ws-tabs"></ul></div>
     <nav>
-      <a class="ph-nav-btn icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">{{i18n "IDE.DASH_LBL_SUPPORT"}}</a>
-      <button class="ph-nav-btn icon-notification popuptrigger" data-popup="popupNotify"></button>
-      <button class="ph-nav-btn user-menu popuptrigger truncate" data-popup="popupUser"></button>
+      <a class="ph-nav-btn icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">{{i18n "IDE.DASH_LBL_SUPPORT"}}</a><button class="ph-nav-btn icon-notification popuptrigger" data-popup="popupNotify"></button><button class="ph-nav-btn user-menu popuptrigger truncate" data-popup="popupUser"></button>
     </nav>
   </header>
 

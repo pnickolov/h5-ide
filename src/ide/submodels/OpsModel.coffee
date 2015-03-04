@@ -15,6 +15,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
   OpsModelType =
     OpenStack : "OpenstackOps"
     Amazon    : "AwsOps"
+    Mesos     : "Mesos"
 
   OpsModelState =
     UnRun        : 0

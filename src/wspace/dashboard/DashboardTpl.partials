@@ -12,6 +12,13 @@
       </div>
     </div>
 
+    <div class="hovermenu">
+      <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_MESOS_STACK"}}<i class="icon-caret-down"></i></button>
+      <div class="dropdown-menu">
+        {{#each providers}}<ul data-provider="mesos::mesos">{{#each regions}}<li data-region="{{id}}" class='create-stack'>{{name}} - {{alias}}</li>{{/each}}</ul>{{/each}}
+      </div>
+    </div>
+
       <div class="hovermenu">
         <button class="btn btn-primary icon-import">{{i18n "DASH_IMPORT_JSON"}}<i class="icon-caret-down"></i></button>
         <div class="dropdown-menu"> <ul>

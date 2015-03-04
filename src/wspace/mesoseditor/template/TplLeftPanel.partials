@@ -1,0 +1,161 @@
+<!-- {{panel}} -->
+<button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
+
+<header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
+  <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}"></i>
+  <ul class="dropdown-menu resources-dropdown-wrapper">
+    <li data-action="keypair" class="icon-kp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_KEY_PAIR"}}</span></li>
+    <li data-action="snapshot" class="icon-ebs-snap"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_EBS_SNAPSHOT"}}</span></li>
+    <li data-action="sns" class="icon-sns"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SNS_SUBSCRIPTION"}}</span></li>
+    <li data-action="sslcert" class="icon-cert"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SERVER_CERTIFICATE"}}</span></li>
+    <li data-action="dhcp" class="icon-dhcp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DHCP_OPTION_SETS"}}</span></li>
+    <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_PARAMETER_GROUPS"}}</span></li>
+    <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_SNAPSHOT"}}</span></li>
+  </ul>
+  <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>
+</header>
+
+<div class="fixedaccordion accordion-default">
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
+    <ul class="resource-list-az clearfix accordion-body">
+      <li class="tooltip resource-item az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ">
+        <div class="resource-count">{{count}}</div>
+        <div class="res-name">{{i18n "PROP.AZ_AND_SUBNET"}}</div>
+      </li>
+      <li class="tooltip resource-item subnet" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_SUBNET"}}' data-type="SUBNET">{{ i18n "RES_LBL_NEW_SUBNET" }}</li>
+      <li class="tooltip resource-item subnetgroup" data-type="DBSBG">{{ i18n "RES_LBL_NEW_SUBNET_GROUP" }}</li>
+    </ul>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
+      <nav class="selectbox resource-select AmiTypeSelect js-toggle-dropdown">
+        <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
+        <ul class="dropdown">
+          <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
+          <li class="item" data-id="MyAmi">{{ i18n "RES_LBL_MY_AMI" }}</li>
+          <li class="item" data-id="FavoriteAmi">{{ i18n "RES_LBL_FAVORITE_AMI" }}</li>
+        </ul>
+      </nav>
+    </header>
+    <div class="accordion-body nano">
+      <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
+      <ul class="nano-content resource-list-ami"></ul>
+    </div>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
+    <div class="accordion-body nano">
+      <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+      <div class="nano-content">
+        <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
+        <ul class="clearfix"><li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li></ul>
+        <div class="resource-list-head">
+          {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
+          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
+            <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
+            <ul class="dropdown">
+              <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
+              <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
+            </ul>
+          </div>
+        </div>
+        <ul class="resource-list-snapshot"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
+    <div class="accordion-body nano {{#if rdsDisabled}}disableRds{{/if}}">
+      <div class="disableRds-content">{{ i18n "RES_MSG_RDS_DISABLED"}}</div>
+      <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
+      <div class="nano-content">
+        <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
+        <ul class="resource-list-rds"></ul>
+        <div class="resource-list-head">
+          {{i18n "RES_LBL_NEW_RDS_INSTANCE_FROM_SNAPSHOT"}}
+          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-rds-snapshot">
+            <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
+            <ul class="dropdown">
+              <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
+              <li class="item" data-id="engine">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_ENGINE"}}</li>
+              <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
+            </ul>
+          </div>
+        </div>
+        <ul class="resource-list-rds-snapshot"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
+    <ul class="resource-list-asg clearfix accordion-body">
+      <li class="tooltip resource-item elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
+      <li class="tooltip resource-item asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
+    </ul>
+  </section>
+
+  <section class='accordion-group'>
+    <header class="fixedaccordion-head">{{ i18n "RES_TIT_VPC" }}</header>
+    <ul class="accordion-body">
+      <li class="tooltip resource-item rtb" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_RTB"}}' data-type="RT">{{ i18n "RES_LBL_NEW_RTB" }}</li>
+
+      <li class="tooltip resource-item igw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_IGW"}}' data-type="IGW">{{ i18n "RES_LBL_NEW_IGW" }}</li>
+
+      {{#if hasVGW}}<li class="tooltip resource-item vgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_VGW"}}' data-type="VGW">{{ i18n "RES_LBL_NEW_VGW" }}</li>{{/if}}
+
+      {{#if hasCGW}}<li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>{{/if}}
+
+      <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+    </ul>
+  </section>
+</div>
+
+<!-- {{snapshot}} -->
+{{#each this}}{{#with attributes}}
+<li class="resource-item bubble snapshot" data-date="{{startTime}}" data-storge="{{volumeSize}}" data-bubble-template="resPanelSnapshot" data-bubble-data='{"id":"{{id}}", "region":"{{../../region}}"}' data-type="VOL" data-option='{"volumeSize":{{volumeSize}}, "snapshotId": "{{id}}", "encrypted": "{{#if encrypted}}true{{else}}false{{/if}}"}'>
+  <div class="ebs-size">{{volumeSize}} GB</div>{{id}}
+</li>{{/with}}{{else}}
+<div style="padding-bottom:15px;">{{i18n "TOOLBAR.CLOUD_RESOURCE_NO_EBS_SNAPSHOT" region}}</div>
+{{/each}}
+
+<!-- {{rds}} -->
+{{#each this}}{{#with this.[0].attributes}}
+<li class="resource-item dbinstance tooltip" data-tooltip="{{@key}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}"}'>
+<div class="resource-icon-dbinstance"><img src="/assets/images/ide/icon/rds-{{firstOfSplit Engine '-' }}.png" width="42" height="30"></div>
+{{@key}}
+</li>
+{{/with}}
+{{/each}}
+
+<!-- {{rds_snapshot}} -->
+{{#each this}}
+<li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": "{{AllocatedStorage}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
+  <div class="resource-icon-dbsnapshot"><img src="/assets/images/ide/icon/rds-{{firstOfSplit Engine '-' }}.png" width="32" height="23">
+  <div class="rds-snapshot-size">{{AllocatedStorage}} GB</div></div>{{DBInstanceIdentifier}}
+</li>
+{{else}}
+<div style="padding-bottom:15px;">{{i18n "TOOLBAR.CLOUD_RESOURCE_NO_DB_SNAPSHOT" region}}</div>
+{{/each}}
+
+<!-- {{ami}} -->
+{{#each this}}{{#with attributes}}
+<li class="bubble resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{id}}"}' data-type="INSTANCE" data-option='{"imageId":"{{id}}"}'>
+  {{#if ../../fav}}<button class="btn-fav-ami fav tooltip" data-tooltip="{{i18n 'RES_TIT_TOGGLE_FAVORITE'}}" data-id="{{id}}"></button>{{/if}}
+  <div class="resource-icon-instance"><img src="/assets/images/ide/ami/{{osType}}.{{architecture}}.{{rootDeviceType}}.png" width='39' height='27' /></div>
+  {{name}}
+</li>{{/with}}
+{{else}}{{#if fav}}<p class="blank-slate">{{i18n "TOOLBAR.CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI"}}</p>{{/if}}{{/each}}
+
+<!-- {{reuse_lc}} -->
+<div class="resource-icon resource-icon-instance" >
+  <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
+</div>{{i18n "TOOLBAR.CLOUD_RESOURCE_AUTO_SCALING_GROUP"}} ({{name}})
+
+<!-- {{resourcePanelBubble}} -->
+<div class="bubble-head">{{or id ID}}</div>
+<dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>

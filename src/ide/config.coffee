@@ -431,6 +431,8 @@ require [
   "wspace/progress/ProgressViewer"
   "wspace/awseditor/AwsEditorStack"
   "wspace/awseditor/AwsEditorApp"
+  "wspace/mesoseditor/MesosEditorStack"
+  "wspace/mesoseditor/MesosEditorApp"
 
 ], ( Application, Router, CrBundle ) ->
 

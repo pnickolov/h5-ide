@@ -5,12 +5,11 @@ define [
   "./subviews/ResourcePanel"
   "./subviews/PropertyPanel"
   "./subviews/Toolbar"
-  "./subviews/Statusbar"
   "./canvas/CanvasViewMesos"
 
   "event"
 
-], ( CoreEditorViewApp, ResourcePanel, PropertyPanel, Toolbar, Statusbar, CanvasView, ide_event )->
+], ( CoreEditorViewApp, ResourcePanel, PropertyPanel, Toolbar, CanvasView, ide_event )->
 
   CoreEditorViewApp.extend {
 
@@ -19,7 +18,6 @@ define [
         TopPanel    : Toolbar
         RightPanel  : PropertyPanel
         LeftPanel   : ResourcePanel
-        BottomPanel : Statusbar
         CanvasView  : CanvasView
       }
       CoreEditorViewApp.apply this, arguments

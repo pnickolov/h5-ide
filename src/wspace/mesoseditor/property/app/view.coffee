@@ -1,13 +1,10 @@
-#############################
-#  View(UI logic) for design/property/dbinstacne
-#############################
-
 define [ '../base/view'
+         './container'
          './template/stack'
          'i18n!/nls/lang.js'
          'constant'
          'UI.modalplus'
-], ( PropertyView, Tpl, lang, constant ) ->
+], ( PropertyView, Container, Tpl, lang, constant ) ->
 
     view = PropertyView.extend
 
@@ -19,6 +16,7 @@ define [ '../base/view'
 
         render: () ->
             @$el.html Tpl @model.toJSON()
+            new Container( model: @model ).render()
             @model.get 'name'
 
 

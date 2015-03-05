@@ -1,0 +1,29 @@
+<div class="container optiongroup" data-bind="true">
+    <div class="input-item">
+        <label class="left">Image</label>
+        <input class="input" value="" type="text" data-required="true">
+    </div>
+    <div class="input-item">
+        <label class="left">Network</label>
+        <select name="" class="select3">
+            <option value="BRIDGE">BRIDGE</option>
+            <option value="HOST">HOST</option>
+        </select>
+    </div>
+    <div class="input-item">
+        <label class="left">Port Mappings</label>
+        <div class="titles">
+            <span>Host</span><span>Container</span><span>Service Port</span>
+        </div>
+        <div class="multi-input" data-max-row="4">
+            <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" placeholder="80" type="text" name="host"/>
+                    <input class="input" placeholder="0/tcp" type="text" name="container"/>
+                    <input class="input" placeholder="80" type="text" name="serviceport"/>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -70,13 +70,14 @@ define [ '../base/view',
                     }
             }
 
-            new modalPlus({
+            @modal = new modalPlus({
                 title: lang.IDE.POP_ACLRULE_TITLE_ADD
                 width: 450
                 template: rulePopupTpl data
                 confirm: text: lang.IDE.POP_ACLRULE_BTN_SAVE
                 compact: true
-            }).on("confirm", _.bind( @saveRule, @ )).tpl.attr("id", "modal-acl-rule")
+            })
+            @modal.on("confirm", _.bind( @saveRule, @ )).tpl.attr("id", "modal-acl-rule")
 
             # Bind Modal Events
             $("#acl-add-model-source-select").on("OPTION_CHANGE", @modalRuleSourceSelected )
@@ -187,7 +188,7 @@ define [ '../base/view',
                 port     : port
             }
 
-            modal.close()
+            @modal.close()
             null
 
         modalRuleSourceSelected : (event) ->

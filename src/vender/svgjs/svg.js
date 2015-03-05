@@ -1533,8 +1533,10 @@ define([], function() {
         }
 
         /* remove defs node */
-        if (this._defs)
-          this._defs.clear()
+        if (this._defs) {
+          this._defs.clear();
+          this._defs = null;
+        }
 
         return this
       }

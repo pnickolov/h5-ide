@@ -529,14 +529,23 @@
 }
 
 .container-settings {
+	.input-item{
+		margin-top: 20px;
+		&:first-child { margin-top: 0; }
+	}
 	.multi-input, .titles { clear: both; }
 	.ipt-wrapper { display: flex; }
 	.ipt-wrapper input { margin: 0 5px; }
 	.multi-ipt-row:first-child:last-child .icon-del { display: block; }
 	.icon-add::before { content: "\F13D"; }
 	.input-item .left { width: 115px !important; }
-	.titles span { display: inline-block; padding: 9px 7px; width: 264px; }
-	.port-mappings .titles span { width: 170px; }
+	.titles span { display: inline-block; padding: 9px 7px; width: 360px; }
+	.port-mappings .titles span { width: 235px; }
+	.container.optiongroup {
+		top: 43px !important;
+		left: 0;
+		right: 0;
+	}
 }
 
 

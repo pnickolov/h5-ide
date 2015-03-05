@@ -8,7 +8,7 @@ module.exports =
       zh: "创建 Stack"
 
     DASH_CREATE_NEW_MESOS_STACK:
-      en: "Create new mesos stack"
+      en: "Create new marathon stack"
       zh: "创建 Mesos Stack"
 
     DASH_IMPORT_JSON:

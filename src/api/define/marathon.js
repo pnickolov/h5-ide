@@ -5,7 +5,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'marathon_deployment_list'          : { type:'marathon', url:'/deployment/',	method:'list',	params:['username', 'session_id', 'app_id']   },
 		'marathon_deployment_delete'        : { type:'marathon', url:'/deployment/',	method:'delete',	params:['username', 'session_id', 'deployment_id']   },
 		'marathon_group_list'               : { type:'marathon', url:'/group/',	method:'list',	params:['username', 'session_id', 'app_id', 'group_id']   },
-		'marathon_marathon'                 : { type:'marathon', url:'/marathon/',	method:'marathon',	params:['username', 'session_id', 'sources', 'fields']   },
+		'marathon_images'                   : { type:'marathon', url:'/marathon/',	method:'images',	params:['username', 'session_id', 'sources', 'fields']   },
 		'marathon_server_info'              : { type:'marathon', url:'/server/',	method:'info',	params:['username', 'session_id', 'app_id']   },
 		'marathon_server_leader'            : { type:'marathon', url:'/server/',	method:'leader',	params:['username', 'session_id', 'app_id', 'new_election']   },
 		'marathon_subscription_list'        : { type:'marathon', url:'/subscription/',	method:'list',	params:['username', 'session_id', 'app_id']   },

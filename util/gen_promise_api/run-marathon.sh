@@ -304,7 +304,7 @@ function fn_generate_coffee() {
         if [ "${_CUR_API}" == "def" ]
         then
             continue
-        elif [ "${_CUR_API}" == "marathon" ]
+        elif [ "${_CUR_API}" == "images" ]
         then
             _API_NAME="'marathon_${_CUR_API}'"
         else
@@ -419,6 +419,7 @@ echo "Use 'git status' or 'git diff' to see the change"
 echo
 echo "Done"
 echo
+
 
 
 

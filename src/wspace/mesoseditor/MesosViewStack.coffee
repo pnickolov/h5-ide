@@ -20,6 +20,8 @@ define [
         CanvasView  : CanvasView
       }
       CoreEditorView.apply this, arguments
+      @$el.find(".OEPanelBottom").remove()
+      return
 
     showProperty    : ()-> ide_event.trigger ide_event.FORCE_OPEN_PROPERTY; return
     onItemSelected  : ( type, id )-> ide_event.trigger ide_event.OPEN_PROPERTY, type, id; return

@@ -14,7 +14,6 @@
     <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOLBAR.LBL_LINESTYLE_CURVE" }}</span></li>
   </ul>
 </div>
-<button class="btn-toolbar icon-hide-sg tooltip" data-tooltip='{{ i18n "TOOLBAR.LBL_LINESTYLE_HIDE_SG" }}'></button>
 
 <!-- {{toolbar.BtnRunStack}} -->
 <button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
@@ -31,14 +30,8 @@
   <ul class="dropdown">
     <li data-analytics-plus="export_png" class="icon-export-png">{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}</li>
     <li data-analytics-plus="export_json" class="icon-export-json">{{ i18n "TOOLBAR.EXPORT_AS_JSON" }}</li>
-    <li data-analytics-plus="cloudformation" class="icon-toolbar-cloudformation">{{ i18n "TOOLBAR.EXPORT_AS_CF" }}</li>
   </ul>
 </div>
-
-<!-- {{toolbar.BtnEditApp}} -->
-<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
-<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
-<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
 
 <!-- {{toolbar.BtnAppOps}} -->
 <button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOLBAR.TIP_STOP_APP' }}"></button>
@@ -53,45 +46,11 @@
 <!-- {{toolbar.BtnReloadRes}} -->
 <button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_REOURCES'}}"></button>
 
-
-<!-- {{toolbar.BtnSwitchStates}} -->
-<label class="switch toolbar-visual-ops-switch tooltip{{#if stateOn}} on{{/if}}" data-tooltip="{{i18n 'TOOLBAR.TIP_CUSTOM_USER_DATA'}}">
-    <span class="switch-label" data-on="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_OFF'}}"></span>
-    <span class="switch-handle"></span>
-</label>
-
-<!-- {{toolbar.BtnReloadStates}} -->
-<button class="icon-reload tooltip btn btn-blue reload-states" data-original="{{i18n "TOOLBAR.RELOAD_STATES"}}" data-disabled="{{i18n "TOOLBAR.INITIATING"}}…"  data-tooltip="{{i18n 'TOOLBAR.INSTANTLY_RERUN_ALL_STATES_IN_THIS_APP'}}">{{i18n "TOOLBAR.RELOAD_STATES"}}</button>
-
 <!-- {{confirm.enableState}} -->
 <div class="modal-text-wraper">
     <div class="modal-center-align-helper">
         <div class="modal-text-major">{{i18n "TOOLBAR.CONFIRM_ENABLE_STATE"}}</div>
     </div>
-</div>
-
-<!-- {{export.CF}} -->
-<div class="modal-text-wraper">
-    <div class="modal-center-align-helper">
-        {{#if hasCustomOG}}
-            <div class="modal-text-highlight">{{i18n "TOOLBAR.EXPORT_CLOUDFORMATION_WARNNING"}}</div>{{/if}}
-        <div class="modal-text-minor">{{i18n "TOOLBAR.POP_EXPORT_CF_INFO"}}</div>
-    </div>
-</div>
-<div class="stack-validation">
-    <details open style="display:none;">
-        <summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
-        <div id="stack-run-validation-container"></div>
-    </details>
-    <div class="nutshell">:<label></label></div>
-    <div class="validating">
-        <div class="loading-spinner loading-spinner-small"></div>
-        <p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
-    </div>
-</div>
-<div style="padding-top:20px;text-align:right;">
-    <a class="btn btn-blue disabled">{{i18n "HEAD_INFO_LOADING"}}</a>
-    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
 </div>
 
 <!-- {{export.JSON}} -->
@@ -126,47 +85,5 @@
 <div class="modal-text-wrapper">
     <div class="modal-center-align-helper">
         <div class="modal-text-major">{{i18n "IDE.CONTENT_OPS_CONFLICT"}}</div>
-    </div>
-</div>
-
-<!-- {{saveAppToStack}} -->
-<p class="modal-text-major">{{ i18n 'TOOLBAR.POP_INTRO_1' }}</p>
-<p class="modal-text-minor">{{ i18n 'TOOLBAR.POP_INTRO_2' }}</p>
-<div class="modal-center-align-helper">
-    <div class="modal-control-group">
-        {{#if originStackExist}}
-        <div id="replace_stack" style="padding: 10px 0">
-            <div class="radio">
-                <input id="radio-replace-stack" type="radio" name="save-stack-type" value="replace" checked>
-                <label for="radio-replace-stack"></label>
-            </div>
-            <label class="modal-text-minor" for="radio-replace-stack">{{ i18n 'TOOLBAR.POP_REPLACE_STACK'}}</label>
-            <div style="padding: 10px 22px" class="radio-instruction">
-                {{ i18n 'TOOLBAR.POP_REPLACE_STACK_INTRO'}} "{{input}}" {{i18n "TOOLBAR.POP_REPLACE_STACK_INTRO_END"}}
-            </div>
-        </div>
-        <div id="save_new_stack">
-            <div class="radio">
-                <input id="radio-new-stack" type="radio" name="save-stack-type">
-                <label for="radio-new-stack"></label>
-            </div>
-            <label class="modal-text-minor" for="radio-new-stack">{{ i18n "TOOLBAR.POP_SAVE_NEW_STACK" }}</label>
-            <div style="padding: 10px 22px" class="radio-instruction hide">
-                <p>{{ i18n "TOOLBAR.POP_SAVE_STACK_INSTRUCTION" }}</p>
-                <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
-                <div id="stack-name-exist" class="hide" style="color: #ec3c38">
-                  {{i18n "TOOLBAR.POP_STACK_NAME_ERROR"}}</div>
-            </div>
-        </div>
-        {{else}}
-        <div id="name_new_stack">
-            <input id="radio-new-stack" type="hidden" name="save-stack-type" checked>
-            <div style="padding: 10px 22px" class="radio-instruction">
-                <p>{{ i18n "TOOLBAR.POP_SAVE_STACK_INSTRUCTION" }}</p>
-                <input class="input" id="modal-input-value" value="{{stackName}}" type="text" style="width: 400px"/>
-                <div id="stack-name-exist" class="hide" style="color: #ec3c38">{{i18n "TOOLBAR.POP_STACK_NAME_ERROR"}}</div>
-            </div>
-        </div>
-        {{/if}}
     </div>
 </div>

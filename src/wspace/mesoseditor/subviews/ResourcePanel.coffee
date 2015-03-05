@@ -12,14 +12,13 @@ define [
   'kp_manage'
   'rds_pg'
   'rds_snapshot'
-  './AmiBrowser'
   'i18n!/nls/lang.js'
   'ApiRequest'
   'OpsModel'
   "backbone"
   "UI.nanoscroller"
   "UI.dnd"
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
+], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, lang, ApiRequest, OpsModel )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null

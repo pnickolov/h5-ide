@@ -26,6 +26,9 @@ define [
 
     sortGroup : ()->
 
+    fixConnection : ( coord, initiator, target )->
+    hightLightItems : ()->
+
     appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
     appendline   : ( svgEl )-> @__appendSvg(svgEl, ".layer_line")
 

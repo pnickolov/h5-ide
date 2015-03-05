@@ -306,7 +306,7 @@
   }
 }
 
-.AWS-VPC-Subnet, .DOCKER-MARATHON-Group {
+.AWS-VPC-Subnet {
   .group {
     stroke: #dbd7d7;
     stroke-linejoin: round;
@@ -918,4 +918,67 @@ marker {
   &:before, &:after { content : ""; }
 
   &[data-type="bottom"] { top : auto; bottom : 8px; }
+}
+
+.DOCKER-MARATHON-Group {
+  .group-label-bg {
+    fill: #E5E5ED;
+  }
+  .group {
+    stroke: #E5E5ED;
+    stroke-width: 2;
+  }
+
+  &:hover, &.highlight {
+    .group { stroke: #C6C4C4; stroke-width : 4px; }
+  }
+
+  .group-label {
+    fill: #888CAD;
+  }
+}
+
+.DOCKER-MARATHON-App {
+  &.selected .marathon-app-bg {
+    stroke-width:1px;
+    stroke:#1D8DEA;
+    display:block;
+  }
+  &:hover{
+    .marathon-app-bg {
+      display:block;
+    }
+  }
+  .marathon-app-bg {
+    fill:#CCDAE5;
+    display:none;
+  }
+  .marathon-app-bottom {
+    fill: #fff;
+    stroke-width: 1px;
+    stroke:#B1B1B1;
+  }
+  .marathon-app-line{
+    fill: #E3E3E3;
+  }
+  .marathon-app-top {
+    fill: #f7f7f7;
+    stroke-width: 1px;
+    stroke:#B1B1B1;
+  }
+  .node-label {
+    text-anchor: initial;
+  }
+}
+
+.MarathonDep {
+  stroke: #7FD321;
+  stroke-dasharray: 10,10;
+  stroke-linecap: square;
+}
+.draw-line {
+  &.app-dep-in, &.app-dep-out, &.group-dep-in, &.group-dep-out { stroke: #7FD321; }
+}
+marker {
+  &.app-dep-in, &.app-dep-out, &.group-dep-in, &.group-dep-out { fill: #7FD321; }
 }

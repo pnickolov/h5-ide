@@ -4869,15 +4869,15 @@ button#property-app-keypair {
 .AWS-EC2-AvailabilityZone .group-label {
   fill: #F69722; }
 
-.AWS-VPC-Subnet .group, .DOCKER-MARATHON-Group .group {
+.AWS-VPC-Subnet .group {
   stroke: #dbd7d7;
   stroke-linejoin: round;
   stroke-dasharray: 16, 6;
   stroke-width: 2; }
-.AWS-VPC-Subnet:hover .group, .droppable.AWS-VPC-Subnet .group, .AWS-VPC-Subnet.highlight .group, .DOCKER-MARATHON-Group:hover .group, .DOCKER-MARATHON-Group.highlight .group {
+.AWS-VPC-Subnet:hover .group, .droppable.AWS-VPC-Subnet .group, .AWS-VPC-Subnet.highlight .group {
   stroke: #C6C4C4;
   stroke-width: 4px; }
-.AWS-VPC-Subnet .group-label, .DOCKER-MARATHON-Group .group-label {
+.AWS-VPC-Subnet .group-label {
   fill: #999; }
 
 .group-asg {
@@ -5358,6 +5358,50 @@ marker.server, marker.elb {
   .canvas-message[data-type="bottom"] {
     top: auto;
     bottom: 8px; }
+
+.DOCKER-MARATHON-Group .group-label-bg {
+  fill: #E5E5ED; }
+.DOCKER-MARATHON-Group .group {
+  stroke: #E5E5ED;
+  stroke-width: 2; }
+.DOCKER-MARATHON-Group:hover .group, .DOCKER-MARATHON-Group.highlight .group {
+  stroke: #C6C4C4;
+  stroke-width: 4px; }
+.DOCKER-MARATHON-Group .group-label {
+  fill: #888CAD; }
+
+.DOCKER-MARATHON-App.selected .marathon-app-bg {
+  stroke-width: 1px;
+  stroke: #1D8DEA;
+  display: block; }
+.DOCKER-MARATHON-App:hover .marathon-app-bg {
+  display: block; }
+.DOCKER-MARATHON-App .marathon-app-bg {
+  fill: #CCDAE5;
+  display: none; }
+.DOCKER-MARATHON-App .marathon-app-bottom {
+  fill: #fff;
+  stroke-width: 1px;
+  stroke: #B1B1B1; }
+.DOCKER-MARATHON-App .marathon-app-line {
+  fill: #E3E3E3; }
+.DOCKER-MARATHON-App .marathon-app-top {
+  fill: #f7f7f7;
+  stroke-width: 1px;
+  stroke: #B1B1B1; }
+.DOCKER-MARATHON-App .node-label {
+  text-anchor: initial; }
+
+.MarathonDep {
+  stroke: #7FD321;
+  stroke-dasharray: 10,10;
+  stroke-linecap: square; }
+
+.draw-line.app-dep-in, .draw-line.app-dep-out, .draw-line.group-dep-in, .draw-line.group-dep-out {
+  stroke: #7FD321; }
+
+marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out {
+  fill: #7FD321; }
 
 .resources-dropdown-wrapper {
   position: absolute;

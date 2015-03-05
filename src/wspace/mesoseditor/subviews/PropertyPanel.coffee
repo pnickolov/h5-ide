@@ -35,13 +35,6 @@ define [
       @[funcName].apply @, trim
 
 
-  # Please delete it when you see
-  testInit = ->
-    MarathonAppModel = Design.modelClassForType CONST.RESTYPE.MRTHAPP
-    app = new MarathonAppModel()
-    ide_event.trigger ide_event.OPEN_PROPERTY, CONST.RESTYPE.MRTHAPP, app.id
-
-
   Backbone.View.extend {
 
     events :

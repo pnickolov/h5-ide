@@ -7,30 +7,44 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
     ### env:dev:end ###
     type : constant.RESTYPE.MRTHGROUP
 
-    parentType  : [ constant.RESTYPE.AZ ]
+    parentType  : [ constant.RESTYPE.MRTHGROUP, "SVG" ]
     defaultSize : [ 19, 19 ]
 
     portPosition : ( portName, isAtomic )->
       m = @model
-      portY = m.height() * CanvasView.GRID_HEIGHT / 2 - 5
 
-      if portName is "subnet-assoc-in"
-        [ -12, portY, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      if portName is "group-dep-in"
+        [ -12, 10, CanvasElement.constant.PORT_LEFT_ANGLE ]
       else
         x = m.width() * CanvasView.GRID_WIDTH + 4
         if isAtomic then x += 8
-        [ x, portY, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+        [ x, 10, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
     listenModelEvents : ()->
       # @listenTo @model, "change:cidr", @render
+      return
+
+    applyGeometry : ( x, y, width, height )->
+      CanvasElement.prototype.applyGeometry.apply this, arguments
+
+      for ch in @$el[0].instance.children()
+        classes = ch.classes()
+        if classes.indexOf("group-label-bg") >= 0
+          ch.size( width * 10, ch.height() )
+          break
+
       return
 
     # Creates a svg element
     create : ()->
       svg = @canvas.svg
 
+      m = @model
       svgEl = @canvas.appendGroup( @createGroup() )
       svgEl.add([
+        svg.rect( m.width() * 10, 20 ).move(0,0).radius(2).attr({
+          'class' : "group-label-bg"
+        })
         svg.use("port_right").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'group-dep-in'
@@ -41,12 +55,11 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
           'data-name'    : 'group-dep-out'
           'data-tooltip' : lang.IDE.PORT_TIP_M
         })
-      ])
-      m = @model
+      ], 0)
       @initNode svgEl, m.x(), m.y()
       svgEl
 
-    label : ()-> "#{@model.get('name')}"
+    label : ()-> @model.get('name')
 
     # Update the svg element
     render : ()->

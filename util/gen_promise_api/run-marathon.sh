@@ -313,7 +313,7 @@ function fn_generate_coffee() {
 
 
         _URL="'/${RESOURCE_URL}/'"
-        _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
+        _API_NAME=`echo ${_API_NAME} | awk '{printf "%-35s", $0}'`
         echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
 
         _LAST_API=${_CUR_API}

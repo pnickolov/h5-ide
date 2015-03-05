@@ -1,13 +1,11 @@
 
 define [ "Design"
          "../base/main"
-         "./model"
          "./view"
          "constant"
          "event"
 ], ( Design,
      PropertyModule,
-     model,
      view,
      constant ) ->
 
@@ -17,7 +15,7 @@ define [ "Design"
 
         initStack : ( uid )->
             @view = view
-            @model = model
+            @model = Design.instance().component uid
             @view.isAppEdit = false
             null
 

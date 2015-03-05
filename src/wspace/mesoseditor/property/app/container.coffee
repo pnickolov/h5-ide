@@ -14,7 +14,9 @@ define [ './template/container'
             'REMOVE_ROW .multi-input': 'processMapTitle'
 
         initialize: ( options ) ->
+            # Bind Parsley
             @$el.prop 'data-bind', true
+
             modalOptions =
                 template        : @el
                 title           : 'Container Settings'

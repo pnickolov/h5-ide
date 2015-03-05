@@ -23,7 +23,7 @@ define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel
         toplevel : !@parent()
         resource :
           id : @get("name")
-          containers: @get("containers")
+          container: _.extend { type: 'DOCKER' }, @get("container")
 
       { component : component, layout : @generateLayout() }
 
@@ -38,7 +38,7 @@ define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel
         name   : data.resource.id
         parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null
 
-        containers: data.resource.containers
+        container: data.resource.containers
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

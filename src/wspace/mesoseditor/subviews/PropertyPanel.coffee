@@ -1,6 +1,7 @@
 
 define [
-  "../template/TplRightPanel"
+  '../template/TplRightPanel'
+  '../property/base/main'
   'StateEditor'
   "constant"
   "Design"
@@ -9,7 +10,9 @@ define [
   'CloudResources'
   "backbone"
 
-], ( RightPanelTpl, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
+  '../property/app/main'
+
+], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
 
   ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
     $("#OEPanelRight").trigger "REFRESH"; return
@@ -30,6 +33,13 @@ define [
       trim = Array.prototype.slice.call arguments, 0
       trim.shift()
       @[funcName].apply @, trim
+
+
+  # Please delete it when you see
+  testInit = ->
+    MarathonAppModel = Design.modelClassForType CONST.RESTYPE.MRTHAPP
+    app = new MarathonAppModel()
+    ide_event.trigger ide_event.OPEN_PROPERTY, CONST.RESTYPE.MRTHAPP, app.id
 
 
   Backbone.View.extend {
@@ -67,6 +77,9 @@ define [
 
       if @__showingState
         @showStateEditor()
+
+      # Please delete it when you see
+      testInit?()
       return
 
     backup : ()->
@@ -302,4 +315,3 @@ define [
       return
   }
 
-  Backbone.View.extend {}

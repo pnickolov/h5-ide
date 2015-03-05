@@ -19,6 +19,16 @@ define [
       ])
       return
 
+    appendGroup  : ( svgEl )->
+      el = @__appendSvg(svgEl, ".layer_group")
+      @sortGroup()
+      el
+
+    sortGroup : ()->
+
+    appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
+    appendline   : ( svgEl )-> @__appendSvg(svgEl, ".layer_line")
+
     errorMessageForDrop : ( type )->
       switch type
         when constant.RESTYPE.VOL       then return lang.CANVAS.WARN_NOTMATCH_VOLUME

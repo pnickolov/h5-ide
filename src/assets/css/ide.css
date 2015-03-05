@@ -4860,15 +4860,15 @@ button#property-app-keypair {
 .AWS-EC2-AvailabilityZone .group-label {
   fill: #F69722; }
 
-.AWS-VPC-Subnet .group {
+.AWS-VPC-Subnet .group, .DOCKER-MARATHON-Group .group {
   stroke: #dbd7d7;
   stroke-linejoin: round;
   stroke-dasharray: 16, 6;
   stroke-width: 2; }
-.AWS-VPC-Subnet:hover .group, .droppable.AWS-VPC-Subnet .group, .AWS-VPC-Subnet.highlight .group {
+.AWS-VPC-Subnet:hover .group, .droppable.AWS-VPC-Subnet .group, .AWS-VPC-Subnet.highlight .group, .DOCKER-MARATHON-Group:hover .group, .DOCKER-MARATHON-Group.highlight .group {
   stroke: #C6C4C4;
   stroke-width: 4px; }
-.AWS-VPC-Subnet .group-label {
+.AWS-VPC-Subnet .group-label, .DOCKER-MARATHON-Group .group-label {
   fill: #999; }
 
 .group-asg {

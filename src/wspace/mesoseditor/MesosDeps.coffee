@@ -5,4 +5,6 @@ define [
   # "./model/DVJsonNormalize"
   # "./model/SVJsonNormalize"
 
+  "./canvas/CeMarathonGroup"
+
 ], ()->

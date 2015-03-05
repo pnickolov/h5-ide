@@ -88,11 +88,11 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
           coordinate : [9,17]
           groupUId : "USEAST001"
         "USEAST001" :
-          coordinate : [9,5]
+          coordinate : [9,7]
           size       : [10,10]
           groupUId : "SERVICE001"
         "SERVICE001" :
-          coordinate : [7,2]
+          coordinate : [7,5]
           size       : [20,40]
           groupUId : "PRODUCT001"
         "PRODUCT001" :

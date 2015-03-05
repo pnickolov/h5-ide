@@ -5,7 +5,7 @@ define [
   "./subviews/PropertyPanel"
   "./subviews/Toolbar"
   "./subviews/ResourcePanel"
-  "./canvas/CanvasViewMesos"
+  "./canvas/CanvasViewMarathon"
 
   "event"
 

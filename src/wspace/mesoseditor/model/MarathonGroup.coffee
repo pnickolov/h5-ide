@@ -9,6 +9,14 @@ define [ "constant",
     type    : constant.RESTYPE.MRTHGROUP
     newNameTmpl : "group"
 
+    path : ()->
+      path = []
+      t = @
+      while t
+        path.unshift( t.get("name") )
+        t = t.parent()
+      ("/" + path.join("/")).replace(/\/+/g,"/")
+
     serialize : ()->
 
       groups = []

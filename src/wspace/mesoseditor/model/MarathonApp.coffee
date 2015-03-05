@@ -8,6 +8,14 @@ define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel
     defaults:
       container: { docker: {}, volumes: [] }
 
+    path : ()->
+      path = []
+      t = @
+      while t
+        path.unshift( t.get("name") )
+        t = t.parent()
+      ("/" + path.join("/")).replace(/\/+/g,"/")
+
     serialize : ()->
       component =
         uid      : @id

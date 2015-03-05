@@ -1,15 +1,15 @@
 define(['ApiRequestDefs'], function( ApiRequestDefs ){
 	var Apis = {
-		'app_list'                : { type:'forge', url:'/app/',	method:'list',	params:['username', 'session_id', 'app_id', 'marathon_app_id']   },
-		'app_list_version'        : { type:'forge', url:'/app/',	method:'list_version',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'version']   },
-		'deployment_list'         : { type:'forge', url:'/deployment/',	method:'list',	params:['username', 'session_id', 'app_id']   },
-		'deployment_delete'       : { type:'forge', url:'/deployment/',	method:'delete',	params:['username', 'session_id', 'deployment_id']   },
-		'group_list'              : { type:'forge', url:'/group/',	method:'list',	params:['username', 'session_id', 'app_id', 'group_id']   },
-		'subscription_list'       : { type:'forge', url:'/subscription/',	method:'list',	params:['username', 'session_id', 'app_id']   },
-		'subscription_register'   : { type:'forge', url:'/subscription/',	method:'register',	params:['username', 'session_id', 'app_id', 'callback_url']   },
-		'task_list'               : { type:'forge', url:'/task/',	method:'list',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'task_id']   },
-		'task_kill'               : { type:'forge', url:'/task/',	method:'kill',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'task_id']   },
-		'task_queue'              : { type:'forge', url:'/task/',	method:'queue',	params:['username', 'session_id', 'app_id']   },
+		'marathon_app_list'       : { type:'marathon', url:'/app/',	method:'list',	params:['username', 'session_id', 'app_id', 'marathon_app_id']   },
+		'marathon_app_list_version' : { type:'marathon', url:'/app/',	method:'list_version',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'version']   },
+		'marathon_deployment_list' : { type:'marathon', url:'/deployment/',	method:'list',	params:['username', 'session_id', 'app_id']   },
+		'marathon_deployment_delete' : { type:'marathon', url:'/deployment/',	method:'delete',	params:['username', 'session_id', 'deployment_id']   },
+		'marathon_group_list'     : { type:'marathon', url:'/group/',	method:'list',	params:['username', 'session_id', 'app_id', 'group_id']   },
+		'marathon_subscription_list' : { type:'marathon', url:'/subscription/',	method:'list',	params:['username', 'session_id', 'app_id']   },
+		'marathon_subscription_register' : { type:'marathon', url:'/subscription/',	method:'register',	params:['username', 'session_id', 'app_id', 'callback_url']   },
+		'marathon_task_list'      : { type:'marathon', url:'/task/',	method:'list',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'task_id']   },
+		'marathon_task_kill'      : { type:'marathon', url:'/task/',	method:'kill',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'task_id']   },
+		'marathon_task_queue'     : { type:'marathon', url:'/task/',	method:'queue',	params:['username', 'session_id', 'app_id']   },
 	}
 
 	for ( var i in Apis ) {

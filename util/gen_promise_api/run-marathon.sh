@@ -149,8 +149,8 @@ function fn_generate_coffee() {
     else
         SERVICE_URL=${_RESOURCE_l}
         RESOURCE_URL=${SERVICE_URL}
-        API_TYPE="Forge"
-        api_type="forge"
+        API_TYPE="Marathon"
+        api_type="marathon"
     fi
 
     echo
@@ -359,45 +359,11 @@ function fn_generate_coffee() {
             continue
         fi
 
-        if [ "${__TYPE}" == "aws" ]
-        then
-            if [ "${RESOURCE}" == "EBS" ]
-            then
-                FOUND_VOL=`echo ${_CUR_API} | grep "Volume" | wc -l`
-                if [ ${FOUND_VOL} -eq 1 ]
-                then
-                    _API_NAME="'${RESOURCE_NAME_SHORT}_${_CUR_API}'"
-                    _URL="'/${RESOURCE_URL}/volume/'"
-                else
-                    _API_NAME="'${RESOURCE_NAME_SHORT}_${_CUR_API}'"
-                    _URL="'/${RESOURCE_URL}/snapshot/'"
-                fi
-            else
-                _API_NAME="'${RESOURCE_NAME_SHORT}_${_CUR_API}'"
-                _URL="'/${RESOURCE_URL}/'"
-            fi
-            _API_NAME=`echo ${_API_NAME} | awk '{printf "%-40s", $0}'`
-        elif [ "${__TYPE}" == "awsutil" ]
-        then
-            _API_NAME="'aws_${_CUR_API}'"
-            _URL="'/${RESOURCE_URL}/'"
-            _API_NAME=`echo ${_API_NAME} | awk '{printf "%-20s", $0}'`
-        else
-            if [ "${_RESOURCE_l}" == "user" ]
-            then
-                _API_NAME="'${_RESOURCE_l/user/account}_${_CUR_API}'"
-                _URL="'/account/'"
-            else
-                _API_NAME="'${_RESOURCE_l}_${_CUR_API}'"
-                _URL="'/${RESOURCE_URL}/'"
-            fi
-            _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
-        fi
 
-        if [ "${_CUR_API}" != "del_account" ]
-        then
-            echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
-        fi
+        _URL="'/${RESOURCE_URL}/'"
+        _API_NAME="'marathon_${_RESOURCE_l}_${_CUR_API}'"
+        _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
+        echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
 
         _LAST_API=${_CUR_API}
 
@@ -502,4 +468,5 @@ echo "Use 'git status' or 'git diff' to see the change"
 echo
 echo "Done"
 echo
+
 

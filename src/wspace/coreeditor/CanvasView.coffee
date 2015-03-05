@@ -49,7 +49,8 @@ define [
       @design    = @workspace.design
       @parent    = options.parent
 
-      @listenTo @design, Design.EVENT.Deserialized,   @reload
+      @listenTo @design, Design.EVENT.DidDeserialized, @reload
+
       @listenTo @design, Design.EVENT.AddResource,    @addItem
       @listenTo @design, Design.EVENT.RemoveResource, @removeItem
       @listenTo @design, "change:mode", @switchMode

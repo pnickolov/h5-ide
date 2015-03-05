@@ -223,8 +223,17 @@ define [
       # Broadcast event
       ####################
       @__initializing = false
+      # Send out two types of event here.
+      # The Deserialized event is used by resource model, (e.g. security group) to know when other resource have done
+      # deserialaztion. So that they can perform some interaction with other resources.
       Backbone.Events.trigger.call @, Design.EVENT.Deserialized
       Design.trigger Design.EVENT.Deserialized, @
+
+      # After all the resource models are fully deseralized.
+      # This event is send out to notify other objects that are not within the design (e.g. some kind of view)
+      # that the design has done deserialaztion.
+      Backbone.Events.trigger.call @, Design.EVENT.DidDeserialized
+      Design.trigger Design.EVENT.DidDeserialized, @
 
 
       # Only at this point, we are finally deserialized.
@@ -478,9 +487,10 @@ define [
       ChangeResource : "CHANGE_RESOURCE"
 
       # Events that will trigger both using Design.trigger and Design.instance().trigger
-      AddResource    : "ADD_RESOURCE"
-      RemoveResource : "REMOVE_RESOURCE"
-      Deserialized   : "DESERIALIZED"
+      AddResource     : "ADD_RESOURCE"
+      RemoveResource  : "REMOVE_RESOURCE"
+      Deserialized    : "DESERIALIZED"  # This event is used by the internal resource model to get notified when the deserialization is done.
+      DidDeserialized : "DIDDESERIALIZED" # This event is used by external objects which want to know when the design finish deserialization.
 
 
     registerModelClass : ( type, modelClass, resolveFirst )->

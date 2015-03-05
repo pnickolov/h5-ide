@@ -24,5 +24,5 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
 
       json
   }, {
-    supportedProviders : ["mesos::mesos"]
+    supportedProviders : ["docker::marathon"]
   }

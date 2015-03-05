@@ -107,6 +107,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         # Marathon
         MRTHAPP    : "DOCKER.MARATHON.App"
         MRTHGROUP  : "DOCKER.MARATHON.Group"
+        DOCKERIMAGE: "DOCKER.IMAGE"
 
     RESNAME =
 

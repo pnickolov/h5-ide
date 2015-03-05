@@ -13,3 +13,4 @@ define [ "../CrModel", "CloudResources", "ApiRequest" ], ( CrModel, CloudResourc
       "is_trusted": false
       "is_official": true
       "description": ""
+  }

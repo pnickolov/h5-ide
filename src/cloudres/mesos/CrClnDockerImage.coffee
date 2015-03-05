@@ -13,7 +13,7 @@ define [
     type  : constant.RESTYPE.DOCKERIMAGE
     model : CrRdsDockerImageModel
 
-    doFetch : ()-> @sendRequest("marathon_marathon")
+    doFetch : ()-> @sendRequest("marathon_images")
     parseFetchData : ( data )->
       data = data.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots?.DBSnapshot || []
 

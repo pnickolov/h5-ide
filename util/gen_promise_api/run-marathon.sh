@@ -299,69 +299,20 @@ function fn_generate_coffee() {
         #echo "_PARAM_DEF:"${_PARAM_DEF}
         #echo "_PARAM_LIST:"${_PARAM_LIST}
 
-        #gen prefix
-        if [ "${SERVICE}" == "RDS" ]
-        then
-            case "${_RESOURCE_l}" in
-                ###RDS###
-                # "rds" )              RESOURCE_NAME_SHORT=${_RESOURCE_l/rds/rds};;
-                "instance" )         RESOURCE_NAME_SHORT=${_RESOURCE_l/instance/rds_ins};;
-                "reservedinstance" ) RESOURCE_NAME_SHORT=${_RESOURCE_l/reservedinstance/rds_revd_ins};;
-                "optiongroup" )      RESOURCE_NAME_SHORT=${_RESOURCE_l/optiongroup/rds_og};;
-                "parametergroup" )   RESOURCE_NAME_SHORT=${_RESOURCE_l/parametergroup/rds_pg};;
-                "securitygroup" )    RESOURCE_NAME_SHORT=${_RESOURCE_l/securitygroup/rds_sg};;
-                "snapshot" )         RESOURCE_NAME_SHORT=${_RESOURCE_l/snapshot/rds_snap};;
-                "subnetgroup" )      RESOURCE_NAME_SHORT=${_RESOURCE_l/subnetgroup/rds_subgrp};;
-                *)                   RESOURCE_NAME_SHORT=${_RESOURCE_l};
-            esac
-        else
-            case "${_RESOURCE_l}" in
-                ###EC2###
-                # "ec2" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/ec2/ec2};;
-                # "eip" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/eip/eip};;
-                # "ami" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/ami/ami};;
-                # "ebs" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/ebs/ebs};;
-                "keypair" )         RESOURCE_NAME_SHORT=${_RESOURCE_l/keypair/kp};;
-                "instance" )        RESOURCE_NAME_SHORT=${_RESOURCE_l/instance/ins};;
-                "securitygroup" )   RESOURCE_NAME_SHORT=${_RESOURCE_l/securitygroup/sg};;
-                "placementgroup" )  RESOURCE_NAME_SHORT=${_RESOURCE_l/placementgroup/pg};;
-                ###ELB###
-                # "elb" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/elb/elb};;
-                # "iam" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/iam/iam};;
-                ###VPC###
-                # "vpc" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/vpc/vpc};;
-                # "dhcp" )            RESOURCE_NAME_SHORT=${_RESOURCE_l/dhcp/dhcp};;
-                # "vpn" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/vpn/vpn};;
-                # "acl" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/acl/acl};;
-                # "eni" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/eni/eni};;
-                # "subnet" )          RESOURCE_NAME_SHORT=${_RESOURCE_l/subnet/subnet};;
-                "routetable" )      RESOURCE_NAME_SHORT=${_RESOURCE_l/routetable/rtb};;
-                "internetgateway" ) RESOURCE_NAME_SHORT=${_RESOURCE_l/internetgateway/igw};;
-                "customergateway" ) RESOURCE_NAME_SHORT=${_RESOURCE_l/customergateway/cgw};;
-                "vpngateway" )      RESOURCE_NAME_SHORT=${_RESOURCE_l/vpngateway/vgw};;
-                ###ASG###
-                "autoscaling" )     RESOURCE_NAME_SHORT=${_RESOURCE_l/autoscaling/asl};;
-                "cloudwatch" )      RESOURCE_NAME_SHORT=${_RESOURCE_l/cloudwatch/clw};;
-                # "sns" )             RESOURCE_NAME_SHORT=${_RESOURCE_l/sns/sns};;
-                ###OpsWork###
-                "opsworks" )        RESOURCE_NAME_SHORT=${_RESOURCE_l/opsworks/ow};;
-                *)                  RESOURCE_NAME_SHORT=${_RESOURCE_l};
-            esac
-        fi
-
-        # echo "_RESOURCE_l: ${_RESOURCE_l}"
-        # echo "RESOURCE_NAME_SHORT: ${RESOURCE_NAME_SHORT}"
-
 
         #1.append api ( ${_CUR_API} ) to ${_RESOURCE_l}_service.coffee
         if [ "${_CUR_API}" == "def" ]
         then
             continue
+        elif [ "${_CUR_API}" == "marathon" ]
+        then
+            _API_NAME="'marathon_${_CUR_API}'"
+        else
+            _API_NAME="'marathon_${_RESOURCE_l}_${_CUR_API}'"
         fi
 
 
         _URL="'/${RESOURCE_URL}/'"
-        _API_NAME="'marathon_${_RESOURCE_l}_${_CUR_API}'"
         _API_NAME=`echo ${_API_NAME} | awk '{printf "%-25s", $0}'`
         echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
 
@@ -468,5 +419,6 @@ echo "Use 'git status' or 'git diff' to see the change"
 echo
 echo "Done"
 echo
+
 
 

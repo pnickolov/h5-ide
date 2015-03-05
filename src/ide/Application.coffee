@@ -21,7 +21,7 @@ define [
   # Extra depedencies
   "./submodels/OpsModelAws"
   "./submodels/OpsModelOs"
-  "./submodels/OpsModelMesos"
+  "./submodels/OpsModelMarathon"
 ], ( Websocket, ApplicationView, ApplicationModel, User, SceneManager, ApiRequest, lang )->
 
 

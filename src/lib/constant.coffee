@@ -104,6 +104,9 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSNQ       : "OS::Neutron::Quota"
         OSCQ       : "OS::Cinder::Quota"
 
+        # Marathon
+        MRTHAPP    : "DOCKER.MARATHON.App"
+        MRTHGROUP  : "DOCKER.MARATHON.Group"
 
     RESNAME =
 

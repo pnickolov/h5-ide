@@ -1,7 +1,8 @@
 
 define [
-  # Extra Includes
-  "./model/DVJsonNormailize"
-  "./model/SVJsonNormailize"
+  "./model/MarathonGroup"
+  "./model/MarathonApp"
+  "./model/DVJsonNormalize"
+  "./model/SVJsonNormalize"
 
 ], ()->

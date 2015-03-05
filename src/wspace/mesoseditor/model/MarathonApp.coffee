@@ -8,9 +8,11 @@ define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel
 
     serialize : ()->
       component =
-        uid  : @get("name")
-        name : @get("name")
-        type : @type
+        uid      : @id
+        type     : @type
+        toplevel : !@parent()
+        resource :
+          id : @get("name")
 
       { component : component, layout : @generateLayout() }
 
@@ -21,9 +23,9 @@ define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel
     deserialize : ( data, layout_data, resolve )->
 
       new Model({
-        id     : data.__uid
-        name   : data.id
-        parent : if data.__parentGroup then resolve( data.__parentGroup ) else null
+        id     : data.uid
+        name   : data.resource.id
+        parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

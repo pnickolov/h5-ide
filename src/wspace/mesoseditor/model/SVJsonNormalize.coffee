@@ -8,12 +8,18 @@ define [ "./DesignMesos"], ( Design )->
 
     for uid, comp of components
       cache[ uid ] = comp
+      layout = layouts[ comp.uid ]
 
-      if comp.__parentGroup
+      delete comp.uid
+
+      if layout.groupUId
+        parent = cache[ layout.groupUId ]
         if comp.type is "DOCKER.MARATHON.Group"
-          cache[ comp.__parentGroup ].groups.push comp
+          delete comp.type
+          (parent.groups || parent.groups = []).push comp
         else
-          cache[ comp.__parentGroup ].apps.push comp
+          (parent.apps || parent.apps = []).push comp
+
         delete components[ uid ]
 
     return

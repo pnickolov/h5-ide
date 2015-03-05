@@ -10,10 +10,25 @@ define [ "constant",
     newNameTmpl : "group"
 
     serialize : ()->
+
+      groups = []
+      apps   = []
+
+      for ch in @children()
+        if ch.type is constant.RESTYPE.MRTHGROUP
+          groups.push ch.id
+        else
+          apps.push ch.id
+
       component =
-        uid  : @get("name")
-        id   : @get("name")
-        type : @type
+        uid      : @id
+        type     : @type
+        toplevel : !@parent()
+        resource :
+          id : @get("name")
+
+      if groups.length then component.resource.groups = groups
+      if apps.length   then component.resource.apps   = apps
 
       { component : component, layout : @generateLayout() }
 
@@ -25,9 +40,9 @@ define [ "constant",
 
       new Model {
 
-        id    : data.__uid
-        name  : data.id
-        parent : if data.__parentGroup then resolve( data.__parentGroup ) else null
+        id    : data.uid
+        name  : data.resource.id
+        parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null
 
         x      : layout_data.coordinate[0]
         y      : layout_data.coordinate[1]

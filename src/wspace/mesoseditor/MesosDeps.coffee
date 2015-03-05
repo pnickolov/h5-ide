@@ -2,7 +2,7 @@
 define [
   "./model/MarathonGroup"
   "./model/MarathonApp"
-  "./model/DVJsonNormalize"
-  "./model/SVJsonNormalize"
+  # "./model/DVJsonNormalize"
+  # "./model/SVJsonNormalize"
 
 ], ()->

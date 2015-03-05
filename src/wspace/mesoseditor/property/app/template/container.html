@@ -1,29 +1,77 @@
-<div class="container optiongroup" data-bind="true">
+<div class="container optiongroup">
     <div class="input-item">
         <label class="left">Image</label>
-        <input class="input" value="" type="text" data-required="true">
+        <input class="input" name="image" value="{{image}}" type="text" data-required="true">
     </div>
     <div class="input-item">
         <label class="left">Network</label>
-        <select name="" class="select3">
-            <option value="BRIDGE">BRIDGE</option>
-            <option value="HOST">HOST</option>
+        <select name="network" class="select3">
+            <option value="BRIDGE" {{#ifCond network 'BRIDGE'}}selected{{/ifCond}}>BRIDGE</option>
+            <option value="HOST" {{#ifCond network 'HOST'}}selected{{/ifCond}}>HOST</option>
         </select>
     </div>
-    <div class="input-item">
-        <label class="left">Port Mappings</label>
+    <div class="input-item port-mappings">
+        <label class="left">Port Mappings <a href="#" class="icon-add" id="add-item-outside"></a></label>
         <div class="titles">
             <span>Host</span><span>Container</span><span>Service Port</span>
         </div>
-        <div class="multi-input" data-max-row="4">
+        <div class="multi-input">
+            {{#each portMappings}}
             <div class="multi-ipt-row">
                 <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
-                    <input class="input" placeholder="80" type="text" name="host"/>
-                    <input class="input" placeholder="0/tcp" type="text" name="container"/>
-                    <input class="input" placeholder="80" type="text" name="serviceport"/>
+                    <input class="input" placeholder="0" type="text" data-name="host" value={{host}}/>
+                    <input class="input" placeholder="80/tcp" type="text" data-name="container" value="{{containerPort}}/{{protocol}}"/>
+                    <input class="input" placeholder="80" type="text" data-name="serviceport" value="{{serviceport}}"/>
                 </span>
             </div>
+            {{/each}}
         </div>
     </div>
+
+    <div class="input-item volumes">
+        <label class="left">Volumes <a href="#" class="icon-add" id="add-item-outside"></a></label>
+        <div class="titles">
+            <span>Host Path</span><span>Container Path</span>
+        </div>
+        <div class="multi-input">
+            {{#each volumes}}
+            <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" placeholder="/host/path" type="text" data-name="hostPath"/>
+                    <input class="input" placeholder="/mount/point:ro" type="text" data-name="containerPath"/>
+                </span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="input-item parameters">
+        <label class="left">Parameters <a href="#" class="icon-add" id="add-item-outside"></a></label>
+        <div class="titles">
+            <span>Key</span><span>Value</span>
+        </div>
+        <div class="multi-input">
+            {{#each parameters}}
+            <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" type="text" data-name="key"/>
+                    <input class="input" type="text" data-name="value"/>
+                </span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="input-item privileged">
+        <div class="checkbox">
+            <input type="checkbox" id="cb-privileged" {{#if privileged}}checked="checked"{{/if}}>
+            <label for="cb-privileged"></label>
+        </div>
+        Privileged
+    </div>
+
+
 </div>

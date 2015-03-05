@@ -10,6 +10,8 @@ define [ './template/container'
         tagName: 'form'
         events:
             'click #add-item-outside': 'addItem'
+            'ADD_ROW .multi-input': 'processMapTitle'
+            'REMOVE_ROW .multi-input': 'processMapTitle'
 
         initialize: ( options ) ->
             @$el.prop 'data-bind', true
@@ -35,7 +37,7 @@ define [ './template/container'
             Backbone.View.prototype.remove.apply @, arguments
 
         addItem: ( e ) ->
-            $( e.currentTarget ).closest( '.input-item' ).find( '.icon-add' ).click()
+            $( e.currentTarget ).closest( '.input-item' ).find( '.ipt-controls .icon-add' ).eq( 0 ).click()
             false
 
         save: ->
@@ -63,7 +65,7 @@ define [ './template/container'
         getMapData: ( $dom ) ->
             data = []
 
-            $dom.find( '.multi-ipt-row' ).each ->
+            $dom.find( '.multi-ipt-row:not(.template)' ).each ->
                 item = {}
                 $(@).find( '.input' ).each ->
                     $input = $ @
@@ -84,6 +86,12 @@ define [ './template/container'
                 data.push item
 
             data
+
+        processMapTitle: ( e ) ->
+            $multiInput = $( e.currentTarget )
+            hasItem = $multiInput.find( '.multi-ipt-row' ).length > 1
+
+            $multiInput.prev( '.titles' ).toggle hasItem
 
 
 

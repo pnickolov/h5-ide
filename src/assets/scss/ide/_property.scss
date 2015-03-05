@@ -529,17 +529,14 @@
 }
 
 .container-settings {
-	.titles { clear: both; }
+	.multi-input, .titles { clear: both; }
 	.ipt-wrapper { display: flex; }
 	.ipt-wrapper input { margin: 0 5px; }
 	.multi-ipt-row:first-child:last-child .icon-del { display: block; }
 	.icon-add::before { content: "\F13D"; }
 	.input-item .left { width: 115px !important; }
-	.port-mappings .titles span {
-		display: inline-block;
-		padding: 9px 7px;
-		width: 170px;
-	}
+	.titles span { display: inline-block; padding: 9px 7px; width: 264px; }
+	.port-mappings .titles span { width: 170px; }
 }
 
 

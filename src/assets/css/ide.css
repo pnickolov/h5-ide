@@ -6396,7 +6396,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .syslog-dbinstance .no-data {
   margin-top: 40px; }
 
-.container-settings .titles {
+.container-settings .multi-input, .container-settings .titles {
   clear: both; }
 .container-settings .ipt-wrapper {
   display: flex; }
@@ -6408,9 +6408,11 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   content: "\F13D"; }
 .container-settings .input-item .left {
   width: 115px !important; }
-.container-settings .port-mappings .titles span {
+.container-settings .titles span {
   display: inline-block;
   padding: 9px 7px;
+  width: 264px; }
+.container-settings .port-mappings .titles span {
   width: 170px; }
 
 /* Styles for Design Module Toolbar */

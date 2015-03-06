@@ -75,8 +75,8 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
       }
 
       for key in ['cpus', 'mem', 'instances', 'cmd', 'args', 'env', 'ports', 'executor', 'uris', 'constraints', 'healthChecks', 'upgradeStrategy']
-      if data[key]
-        attributes[key] = data[key]
+        if data.resource[key]
+          attributes[key] = data[key]
 
       new Model(attributes)
 

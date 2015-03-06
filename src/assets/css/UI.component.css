@@ -4036,10 +4036,11 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 *::-webkit-scrollbar-track {
   background: none; }
 *::-webkit-scrollbar-thumb {
-  background: rgba(100, 100, 100, 0.3);
+  background: rgba(54, 59, 118, 0.2);
   border-radius: 8px; }
   *::-webkit-scrollbar-thumb:hover {
-    background: rgba(100, 100, 100, 0.5); }
+    background: rgba(54, 59, 118, 0.6);
+    width: 8px; }
 *::-webkit-scrollbar-corner {
   background: none; }
 

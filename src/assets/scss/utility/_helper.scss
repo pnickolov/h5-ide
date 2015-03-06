@@ -32,6 +32,11 @@
 @mixin v-scroll {
     overflow-x : hidden;
     overflow-y : auto;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 8px;
+    }
 }
 
 .mgt-10px { margin-top: 10px; }

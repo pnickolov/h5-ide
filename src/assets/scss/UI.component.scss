@@ -2517,11 +2517,12 @@ position:relative;
 		background: none;
 	}
 	&::-webkit-scrollbar-thumb {
-		background: rgba(100,100,100,.3);
+		background: transparentize($base-p, .8);
 		border-radius: 8px;
 
 		&:hover {
-			background: rgba(100,100,100,.5);
+			background : transparentize($base-p, .4);
+			width      : 8px;
 		}
 	}
   	&::-webkit-scrollbar-corner {

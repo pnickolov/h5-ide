@@ -45,20 +45,22 @@
                           </div>
                       </div>
                       <div class="dash-resource-wrap">
-                          <label class="region-resource-tab">
-                              <span>Resource Table</span>
-                          </label>
-                          <nav class="dash-region-navigation" data-type="resource">
-                              <button class="js-toggle-dropdown">
-                                  <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
-                              </button>
-                              <ul id="region-switch-list" class="dropdown-menu">
-                                  <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
-                                  {{#each providers}}{{#each regions}}
-                                      <li data-region="{{id}}">{{alias}}</li>
-                                  {{/each}}{{/each}}
-                              </ul>
-                          </nav>
+                        <header class="dash-region-header">
+                            <label class="region-resource-tab">
+                                Resource Table
+                            </label>
+                            <nav class="dash-region-navigation" data-type="resource">
+                                <button class="js-toggle-dropdown">
+                                    <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
+                                </button>
+                                <ul id="region-switch-list" class="dropdown-menu">
+                                    <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+                                    {{#each providers}}{{#each regions}}
+                                        <li data-region="{{id}}">{{alias}}</li>
+                                    {{/each}}{{/each}}
+                                </ul>
+                            </nav>
+                          </header>
                           <ul id="GlobalView" style="display: none;"></ul>
                           <div id="RegionViewWrap">
                               <nav class="" id="RegionResourceNav">

@@ -61,10 +61,11 @@ define [ '../base/view'
             if $target.data('bind')
 
               if $target.data('bind') in ["maximumOverCapacity", 'minimumHealthCapacity']
-                @model.set("upgradeStrategy", @model.get('upgradeStrategy') || {})
-                @model.set("upgradeStrategy." + $target.data('bind'), $target.val())
-
-              @model.set $target.data('bind'), $target.val()
+                upgradeStrategyData = @model.get("upgradeStrategy") || {}
+                upgradeStrategyData[$target.data('bind')] = $target.val()
+                @model.set("upgradeStrategy", upgradeStrategyData)
+              else
+                @model.set $target.data('bind'), $target.val()
 
 
         updateExecutionSetting: ()->

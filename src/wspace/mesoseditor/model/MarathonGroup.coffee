@@ -1,8 +1,9 @@
 
 define [ "constant",
          "GroupModel",
+         "./MarathonDepIn",
          "i18n!/nls/lang.js"
-], ( constant, GroupModel, lang )->
+], ( constant, GroupModel, MarathonDepIn, lang )->
 
   Model = GroupModel.extend {
 
@@ -62,6 +63,10 @@ define [ "constant",
       null
 
     postDeserialize : ( data, layout_data )->
+      for dep in data.resource.dependencies || []
+        new MarathonDepIn( Design.instance().component(data.uid), dep )
+
+      return
   }
 
   Model

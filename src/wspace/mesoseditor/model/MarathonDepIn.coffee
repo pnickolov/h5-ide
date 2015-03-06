@@ -3,7 +3,7 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Conne
 
   C = ConnectionModel.extend {
 
-    type : "MarathonDep"
+    type : "MarathonDepIn"
 
     directional : true
 
@@ -42,52 +42,45 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Conne
       }
     ]
 
+    constructor : ( p1Comp, p2Comp, attr, options )->
 
-  }, {
-    isConnectable : ( p1Comp, p2Comp )->
-      # p1p = p1Comp.parent()
-      # p2p = p2Comp.parent()
+      if _.isString( p2Comp )
+        p2 = @resolve( p1Comp, p2Comp )
+        if not p2
+          console.info "Cannot find dependency `#{p2Comp}` for", p1Comp
+          return
+        p2Comp = p2
 
-      # if not p1p or not p2p then return false
+      ConnectionModel.call this, p1Comp, p2Comp, attr, options
 
-      # if p1p.type is constant.RESTYPE.SUBNET
-      #   p1p = p1p.parent()
-      #   p2p = p2p.parent()
+    absolutePath : ( target, relativePath )->
+      if relativePath.indexOf( "../" ) is -1
+        return relativePath
 
-      # # Instance and Eni should be in the same az
-      # if p1p isnt p2p then return false
+      relativePath = relativePath.replace(/\\/g,"\/")
+      if relativePath.indexOf("../") is 0
+        relativePath = target.path() + "/" + relativePath
+      relativePath.replace(/\/[^/]+\/\.\./g,"")
 
-      # # If instance has automaticAssignPublicIp. Then ask the user to comfirm
-      # if p1Comp.type is constant.RESTYPE.INSTANCE
-      #   instance = p1Comp
-      #   eni      = p2Comp
-      # else
-      #   instance = p2Comp
-      #   eni      = p1Comp
+    serialize : ( component_data, layout_data )->
+      comp = component_data[ @port1Comp().id ]
+      if not comp.resource.dependencies
+        comp.resource.dependencies = []
 
+      comp.resource.dependencies.push @port2Comp().path()
+      return
 
-      # # Eni can only be attached to an instance.
-      # if eni.connections("EniAttachment").length > 0 then return false
+    resolve : ( p1Comp, p2path )->
+      p2path = @absolutePath( p1Comp, p2path )
+      p2Comp = null
+      p1Comp.design().eachComponent ( c )->
+        if c.path() is p2path
+          p2Comp = c
+          return false
+        true
 
+      p2Comp
 
-      # maxEniCount = instance.getMaxEniCount()
-      # # Instance have an embed eni
-      # if instance.connections( "EniAttachment" ).length + 1 >= maxEniCount
-      #   return sprintf lang.CANVAS.CVS_WARN_EXCEED_ENI_LIMIT, instance.get("name"), instance.get("instanceType"), maxEniCount
-
-
-      # if instance.getEmbedEni().get("assoPublicIp") is true
-      #   return {
-      #     confirm  : true
-      #     title    : lang.CANVAS.ATTACH_NETWORK_INTERFACE_TO_INTERFACE
-      #     action   : lang.CANVAS.ATTACH_AND_REMOVE_PUBLIC_IP
-      #     template : MC.template.modalAttachingEni({
-      #       host : instance.get("name")
-      #       eni  : eni.get("name")
-      #     })
-      #   }
-
-      true
   }
 
   C

@@ -3,7 +3,15 @@ define [ "CanvasLine", "constant", "CanvasManager", "i18n!/nls/lang.js", "SGRule
 
   CeLine.extend {
     ### env:dev ###
-    ClassName : "CeMarathonDep"
+    ClassName : "CeMarathonDepOut"
     ### env:dev:end ###
-    type : "MarathonDep"
+    type : "MarathonDepOut"
+  }
+
+
+  CeLine.extend {
+    ### env:dev ###
+    ClassName : "CeMarathonDepIn"
+    ### env:dev:end ###
+    type : "MarathonDepIn"
   }

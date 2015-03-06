@@ -1,5 +1,5 @@
 
-define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel, constant, lang )->
+define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ], ( ComplexResModel, constant, MarathonDepIn, lang )->
 
   Model = ComplexResModel.extend {
 
@@ -32,7 +32,6 @@ define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel
     handleTypes : constant.RESTYPE.MRTHAPP
 
     deserialize : ( data, layout_data, resolve )->
-
       new Model({
         id     : data.uid
         name   : data.resource.id
@@ -44,6 +43,11 @@ define [ "ComplexResModel", "constant", "i18n!/nls/lang.js" ], ( ComplexResModel
         y : layout_data.coordinate[1]
       })
 
+    postDeserialize : ( data, layout_data )->
+      for dep in data.resource.dependencies || []
+        new MarathonDepIn( Design.instance().component(data.uid), dep )
+
+      return
   }
 
   Model

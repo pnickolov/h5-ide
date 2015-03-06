@@ -14,12 +14,6 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
       cpus: 1.5
       mem: 256
       instances: 3
-      cmd: ""
-      args: []
-      env: {}
-      ports: []
-      executor: ""
-      uris: []
       constraints: []
       healthChecks: [{
           path: "/api/health",
@@ -54,6 +48,10 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
           id : @get("name")
           container: _.extend { type: 'DOCKER' }, @get("container")
 
+      for key in ['cpus', 'mem', 'instances', 'cmd', 'args', 'env', 'ports', 'executor', 'uris', 'constraints', 'healthChecks', 'upgradeStrategy']
+        if @get(key)
+          component.resource[key] = @get(key)
+
       { component : component, layout : @generateLayout() }
 
     isReparentable : ( newParent )-> !(newParent and _.find( newParent.children(), (r)-> r.type is constant.RESTYPE.MRTHGROUP ))
@@ -64,7 +62,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
 
     deserialize : ( data, layout_data, resolve )->
       console.log data
-      new Model({
+      attributes ={
         id     : data.uid
         name   : data.resource.id
         parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null
@@ -74,7 +72,13 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]
-      })
+      }
+
+      for key in ['cpus', 'mem', 'instances', 'cmd', 'args', 'env', 'ports', 'executor', 'uris', 'constraints', 'healthChecks', 'upgradeStrategy']
+      if data[key]
+        attributes[key] = data[key]
+
+      new Model(attributes)
 
     postDeserialize : ( data, layout_data )->
       for dep in data.resource.dependencies || []

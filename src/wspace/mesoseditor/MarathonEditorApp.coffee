@@ -18,6 +18,20 @@ define [
     viewClass   : AppView
     designClass : DesignMarathon
 
+    initEditor : ()->
+      self = @
+      @__refreshInterval = setInterval ()->
+        self.loadVpcResource()
+      , 8000
+      CoreEditorApp.prototype.initEditor.call this
+
+    cleanup : ()->
+      if @__refreshInterval
+        console.log( "Clearing AutoRefresh Interval" )
+        clearInterval @__refreshInterval
+        @__refreshInterval = null
+      CoreEditorApp.prototype.cleanup.call this
+
     fetchData : ()->
       self = @
 
@@ -31,6 +45,8 @@ define [
       ])
 
     diff : ()->
+
+    loadVpcResource : ()-> CloudResources( @opsModel.credentialId(), constant.RESTYPE.MRTHAPP, @opsModel.id ).fetch()
 
   }, {
     canHandle : ( data )->

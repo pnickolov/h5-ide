@@ -293,6 +293,8 @@ define [
     credential   : ()-> @__opsModel.credential()
     credentialId : ()-> @__opsModel.credentialId()
 
+    opsModel : ()-> @__opsModel
+
     modeIsStack   : ()->  @__mode == Design.MODE.Stack
     modeIsApp     : ()->  @__mode == Design.MODE.App
     modeIsAppView : ()->  false

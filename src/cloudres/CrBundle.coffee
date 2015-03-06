@@ -16,6 +16,7 @@ define [
 
   "./mesos/CrClnDockerImage"
   "./mesos/CrClnMarathonApp"
+  "./mesos/CrClnMarathonGroup"
 ], ( CloudResources )->
   CloudResources
 

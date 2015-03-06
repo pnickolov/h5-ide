@@ -1,5 +1,5 @@
 
-define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "CanvasView" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView )->
+define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "CanvasView", "CloudResources" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView, CloudResources )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -18,7 +18,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
     iconUrl : ()-> "ide/ami/ami-not-available.png"
 
     listenModelEvents : ()->
-      # @listenTo @model, "change:cidr", @render
+      @listenTo CloudResources(this.canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, this.canvas.design.opsModel().id), "change", @render
+      @listenTo CloudResources(this.canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, this.canvas.design.opsModel().id), "add", (m)->
+        if m.id is @model.path()
+          @render()
+        return
+
       return
 
     # Creates a svg element
@@ -80,10 +85,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
           })
         ]).attr({
           "class"        : "server-number-group tooltip"
-          "data-tooltip" : "Instances"
+          "data-tooltip" : if @canvas.design.modeIsApp() then "Tasks/Instances" else "Instances"
         })
 
       ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\.|:/g, "-") )
+
+      if @canvas.design.modeIsApp()
+        $(svgEl.node).find(".server-number-bg").attr({
+          width : 40
+          x     : 135
+        })
+        $(svgEl.node).find(".server-number").attr({x : 155})
 
       @canvas.appendNode svgEl
       @initNode svgEl, m.x(), m.y()
@@ -102,5 +114,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
 
       CanvasManager.update @$el.find(".cpu-label"), m.get("cpus") || "0"
       CanvasManager.update @$el.find(".memory-label"), m.get("mem") || "0"
-      CanvasManager.update @$el.find(".server-number"), m.get("instances") || "0"
+      if @canvas.design.modeIsApp()
+        app = CloudResources( @canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, @canvas.design.opsModel().id ).get( m.path() )
+        if app
+          text = app.get("tasksRunning") + "/" + app.get("instances")
+        else
+          text = m.get("instances")
+        CanvasManager.update @$el.find(".server-number"), text
+      else
+        CanvasManager.update @$el.find(".server-number"), m.get("instances") || "0"
   }

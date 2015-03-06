@@ -30,11 +30,10 @@ define [
       "click .runApp"                      : 'runStack'
       "OPTION_CHANGE .toolbar-line-style"  : "setTbLineStyle"
 
-      "click .icon-stop"              : "stopApp"
-      "click .startApp"               : "startApp"
       "click .icon-terminate"         : "terminateApp"
-      "click .icon-forget-app"        : "forgetApp"
       "click .icon-refresh"           : "refreshResource"
+      "click .icon-update-app"        : "switchToAppEdit"
+      "click .icon-cancel-update-app" : "cancelAppEdit"
 
     initialize : ( options )->
       _.extend this, options
@@ -286,9 +285,22 @@ define [
     showError: (id, msg)->
         $("#runtime-error-#{id}").text(msg).show()
 
-    startApp  : ()-> @appAction.startApp( @workspace.opsModel.id ); false
-    stopApp   : ()-> @appAction.stopApp( @workspace.opsModel.id );  false
     terminateApp    : ()-> @appAction.terminateApp( @workspace.opsModel.id, true); false
-    forgetApp       : ()-> @appAction.forgetApp( @workspace.opsModel.id ); false
     refreshResource : ()-> @workspace.reloadAppData(); false
+    switchToAppEdit : ()-> @workspace.switchToEditMode(); false
+
+    cancelAppEdit : ()->
+      if not @workspace.cancelEditMode()
+        self  = @
+        modal = new Modal {
+          title    : lang.IDE.TITLE_CHANGE_NOT_APPLIED
+          template : OpsEditorTpl.modal.cancelUpdate()
+          width    : "400"
+          confirm  : { text : "Discard", color : "red" }
+          onConfirm : ()->
+            modal.close()
+            self.workspace.cancelEditMode(true)
+            return
+        }
+      return false
   }

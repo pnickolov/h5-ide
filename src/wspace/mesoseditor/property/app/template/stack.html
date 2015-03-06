@@ -88,20 +88,28 @@
                     <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
                 </span>
             </div>
-            {{#if arguments.length}}
-                {{#each arguments}}
+            {{#if constraints.length}}
+                {{#each constraints}}
                     <div class="multi-ipt-row">
                         <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                         <span class="ipt-wrapper">
-                            <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
-                            <select class="select3 select mesos-constraints-operator" name="operators">
-                                <option value="UNIQUE" {{#ifCond 1 "UNIQUE"}}selected{{/ifCond}}>UNIQUE</option>
-                                <option value="CLUSTER" {{#ifCond 1 "CLUSTER"}}selected{{/ifCond}}>CLUSTER</option>
-                                <option value="GROUP_BY"　{{#ifCond 1 "GROUP_BY"}}selected{{/ifCond}}>GROUP_BY</option>
-                                <option value="LIKE"　{{#ifCond 1 "LIKE"}}selected{{/ifCond}}>LIKE</option>
-                                <option value="UNLIKE"　{{#ifCond 1 "UNLIKE"}}selected{{/ifCond}}>UNLIKE</option>
-                            </select>
-                            <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
+                            {{#each this}}
+                                {{#ifCond @index 0}}
+                                    <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value="{{this}}"/>
+                                {{/ifCond}}
+                                {{#ifCond @index 1}}
+                                    <select class="select3 select mesos-constraints-operator" name="operators">
+                                        <option value="UNIQUE" {{#ifCond this "UNIQUE"}}selected{{/ifCond}}>UNIQUE</option>
+                                        <option value="CLUSTER" {{#ifCond this "CLUSTER"}}selected{{/ifCond}}>CLUSTER</option>
+                                        <option value="GROUP_BY"　{{#ifCond this "GROUP_BY"}}selected{{/ifCond}}>GROUP_BY</option>
+                                        <option value="LIKE"　{{#ifCond this "LIKE"}}selected{{/ifCond}}>LIKE</option>
+                                        <option value="UNLIKE"　{{#ifCond this "UNLIKE"}}selected{{/ifCond}}>UNLIKE</option>
+                                    </select>
+                                {{/ifCond}}
+                                {{#ifCond @index 2}}
+                                    <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value="{{this}}"/>
+                                {{/ifCond}}
+                            {{/each}}
                         </span>
                     </div>
                 {{/each}}

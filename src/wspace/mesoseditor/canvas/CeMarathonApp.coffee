@@ -38,8 +38,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
       svgEl = svg.group().add([
         svg.rect( width + 9, height + 9 ).move( 8.5, 0.5 ).radius(5).classes("marathon-app-bg")
         svg.rect( width-1, 37 ).move( portSize + 3.5, 37.5 ).radius(2).classes("marathon-app-bottom")
-        svg.rect( width-1, 32 ).move( portSize + 3.5, 9.5 ).classes("marathon-app-top")
-        svg.rect( width-2, 1  ).move( portSize + 4, 41 ).classes("marathon-app-line")
+        svg.rect( width-1, 32 ).move( portSize + 3.5, 8.5 ).classes("marathon-app-top")
+        svg.rect( width-2, 1  ).move( portSize + 4, 40 ).classes("marathon-app-line")
         svg.use( "marathon_app_title" ).attr({
           "class" : "marathon-app-ceiling"
           "fill"  : @model.get("color")
@@ -47,7 +47,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
 
         svg.image( MC.IMG_URL + @iconUrl(), 32, 32 ).move( 20, 20 )
 
-        svg.text("").move(45, 32).classes('node-label')
+        svg.text("").move(45, 30).classes('node-label')
 
         svg.image( MC.IMG_URL + "ide/icon-mrth/cvs-appicon.png", 120, 32 ).move( 20, 42 )
 

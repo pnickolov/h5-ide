@@ -8,7 +8,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
     type : constant.RESTYPE.MRTHGROUP
 
     parentType  : [ constant.RESTYPE.MRTHGROUP, "SVG" ]
-    defaultSize : [ 19, 19 ]
+    defaultSize : [ 22, 17 ]
 
     portPosition : ( portName, isAtomic )->
       m = @model

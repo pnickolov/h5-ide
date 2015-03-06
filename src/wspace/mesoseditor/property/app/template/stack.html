@@ -71,5 +71,112 @@
             </div>
         </section>
     </div>
+    <div class="option-group-head expand" id="mesos-constraints">Constraints</div>
+    <div class="option-group" data-bind="true">
+        <div class="multi-input mesos-constraints">
+            <div class="multi-ipt-row template">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
+                    <select class="select3 select" name="operators">
+                        <option value="UNIQUE">UNIQUE</option>
+                        <option value="CLUSTER">CLUSTER</option>
+                        <option value="GROUP_BY">GROUP_BY</option>
+                        <option value="LIKE">LIKE</option>
+                        <option value="UNLIKE">UNLIKE</option>
+                    </select>
+                    <input class="input" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
+                </span>
+            </div>
+            {{#if arguments.length}}
+                {{#each arguments}}
+                    <div class="multi-ipt-row">
+                        <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                        <span class="ipt-wrapper">
+                            <input class="input" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
+                            <select class="select3 select" name="operators">
+                                <option value="UNIQUE">UNIQUE</option>
+                                <option value="CLUSTER">CLUSTER</option>
+                                <option value="GROUP_BY">GROUP_BY</option>
+                                <option value="LIKE">LIKE</option>
+                                <option value="UNLIKE">UNLIKE</option>
+                            </select>
+                            <input class="input" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
+                        </span>
+                    </div>
+                {{/each}}
+            {{else}}
+                <div class="multi-ipt-row">
+                    <span class="ipt-controls"><a href="#" class="icon-add"></a></span>
+                    <span class="ipt-wrapper">
+                        <input class="input" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
+                        <select class="select3 select" name="operators">
+                            <option value="UNIQUE">UNIQUE</option>
+                            <option value="CLUSTER">CLUSTER</option>
+                            <option value="GROUP_BY">GROUP_BY</option>
+                            <option value="LIKE">LIKE</option>
+                            <option value="UNLIKE">UNLIKE</option>
+                        </select>
+                        <input class="input" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
+                    </span>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+    <div class="option-group-head expand" id="mesos-health-checks">Health Checks</div>
+    <div class="option-group" data-bind="true">
+        <ul id="mesos-health-checks-list" class="property-list">
+            <li class="elb-property-listener">
+                <div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="remove health check"></div>
+                <section class="property-control-group clearfix">
+                    <label class="left">Protocol</label>
+                    <div class="selectbox elb-property-elb-protocol">
+                        <div class="selection">HTTP</div>
+                        <ul class="dropdown">
+                            <li data-id="HTTP" class="item selected">HTTP</li>
+                            <li data-id="TCP" class="item ">TCP</li>
+                            <li data-id="COMMAND" class="item ">Command</li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Path</label>
+                    <input class="input tooltip parsley-validated" type="text" placeholder="/api/haelth" data-ignore="true" data-required="true">
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Port Index</label>
+                    <input class="input tooltip parsley-validated" type="text" value="0" data-ignore="true"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Grace Period Seconds</label>
+                    <input class="input tooltip parsley-validated" type="text" value="300" data-ignore="true"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Interval Seconds</label>
+                    <input class="input tooltip parsley-validated" type="text" value="60" data-ignore="true"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Timeout Seconds</label>
+                    <input class="input tooltip parsley-validated" type="text" value="20" data-ignore="true"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Max Consecutive Failures</label>
+                    <input class="input tooltip parsley-validated" type="text" value="0" data-ignore="true"/>
+                </section>
+            </li>
+        </ul>
+        <a href="#" id="mesos-add-health-check" class="add-to-list action-link">Add New Health Checks</a>
+    </div>
+    <div class="option-group-head expand" id="mesos-update-strategy">Update Strategy</div>
+    <div class="option-group" data-bind="true">
+        <section class="property-control-group clearfix">
+            <label class="left">Minimum Health Capacity</label>
+            <input class="input tooltip parsley-validated" type="text" placeholder="0.5" value="{{minHealthCapacity}}"/>
+        </section>
+        <section class="property-control-group clearfix">
+            <label class="left">Maximum Over Capacity</label>
+            <input class="input tooltip parsley-validated" type="text" placeholder="0.2" value="{{maxOverCapacity}}"/>
+        </section>
+    </div>
 </article>
 

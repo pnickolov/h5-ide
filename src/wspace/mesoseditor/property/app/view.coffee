@@ -16,8 +16,9 @@ define [ '../base/view'
         openContainer: ()->
             @container = new Container( model: @model ).render()
 
-        render: () ->
+        render: ()->
             @$el.html Tpl @model.toJSON()
+            console.log @model.toJSON()
             @model.get 'name'
 
 

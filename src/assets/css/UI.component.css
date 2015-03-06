@@ -3222,7 +3222,7 @@ select.select3.disabled {
   display: block;
   overflow: hidden; }
 
-.multi-ipt-row .ipt-wrapper input {
+.multi-ipt-row .ipt-wrapper input, .multi-ipt-row .ipt-wrapper select {
   display: block;
   width: 100% !important;
   -webkit-box-sizing: border-box;

@@ -1124,7 +1124,7 @@ a.action-link:hover {
 .elb-property-listener .listener-item input {
   width: 40px !important; }
 
-#elb-property-listener-list .elb-property-listener:only-child .elb-property-listener-item-remove {
+#elb-property-listener-list .elb-property-listener:only-child .elb-property-listener-item-remove, #mesos-health-checks-list .elb-property-listener:only-child .elb-property-listener-item-remove {
   display: none; }
 
 .elb-property-listener-item-remove {
@@ -6438,6 +6438,20 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 .selection-command, .selection-arguments {
   margin-top: 10px; }
+
+.mesos-constraints .multi-ipt-row .ipt-wrapper input, .mesos-constraints .multi-ipt-row .ipt-wrapper select {
+  width: 78px !important;
+  display: inline-block;
+  height: 33px; }
+.mesos-constraints .multi-ipt-row .ipt-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-left: 10px; }
+.mesos-constraints .multi-ipt-row {
+  margin-top: 5px; }
+.mesos-constraints .multi-ipt-row .ipt-controls {
+  margin-right: 10px; }
 
 /* Styles for Design Module Toolbar */
 /* App/Stack Toolbar */

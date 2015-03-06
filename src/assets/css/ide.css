@@ -6423,6 +6423,13 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   left: 0;
   right: 0; }
 
+.open-container {
+  margin: 10px auto;
+  display: block;
+  width: 80%;
+  padding: 10px 20px;
+  font-size: 15px; }
+
 /* Styles for Design Module Toolbar */
 /* App/Stack Toolbar */
 #main-toolbar {

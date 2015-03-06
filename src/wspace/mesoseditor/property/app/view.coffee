@@ -9,14 +9,15 @@ define [ '../base/view'
     view = PropertyView.extend
 
         events:
-            '': ''
+            'click .open-container': 'openContainer'
 
         initialize: ( options ) ->
 
+        openContainer: ()->
+            @container = new Container( model: @model ).render()
 
         render: () ->
             @$el.html Tpl @model.toJSON()
-            new Container( model: @model ).render()
             @model.get 'name'
 
 

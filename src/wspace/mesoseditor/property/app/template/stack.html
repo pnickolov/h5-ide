@@ -1,1 +1,46 @@
-Hello World
+<article>
+    <section class="clearfix">
+        <button class="open-container btn-blue btn">Container Setting</button>
+    </section>
+    <div class="option-group-head expand" id="mesos-basic-settings">{{ i18n "PROP.VPC_TIT_DETAIL" }}</div>
+    <div class="option-group" data-bind="true">
+        <section class="property-control-group clearfix">
+            <label class="left" for="property-mesos-name">ID</label>
+            <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+            <input class="input mesos-name" type="text" value="{{name}}" id="property-mesos-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+        </section>
+        <section class="property-control-group" data-bind="true">
+            <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+            <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+        </section>
+        <section class="property-control-group" data-bind="true">
+            <label for="property-mesos-cups">CPUs</label>
+            <input class="input mesos-cpus" type="text" value="{{cpus}}" id="property-mesos-cups" data-required-rollback="true"/>
+        </section>
+        <section class="property-control-group clearfix">
+            <label class="left" for="property-mesos-memory">Memory (MB)</label>
+            <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+            <input class="input mesos-cpus" type="text" value="{{memory}}" id="property-mesos-memory" data-required-rollback="true"/>
+        </section>
+        <section class="property-control-group clearfix">
+            <label for="property-mesos-instances">Instances</label>
+            <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
+            <input class="input mesos-cpus" type="text" value="{{instances}}" id="property-mesos-instances" data-required-rollback="true"/>
+        </section>
+    </div>
+    <div class="option-group-head expand" id="mesos-execution-settings">Execution Settings</div>
+    <div class="option-group" data-bind="true">
+        <section class="property-control-group">
+            <label class="left">Execution Settings</label>
+            <div class="selectbox selectbox-mega" id="property-tenancy">
+                <div class="selection">{{executionType}}</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item{{#if defaultCommand}} selected{{/if}}" data-id="default">Command</li>
+                    <li class="item{{#unless defaultCommand}} selected{{/unless}}" data-id="dedicated">Arguments</li>
+                </ul>
+
+            </div>
+        </section>
+    </div>
+</article>
+

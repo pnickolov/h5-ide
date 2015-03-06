@@ -23,6 +23,8 @@ define ['../base/view'
       "OPTION_CHANGE #property-execution-setting": "updateExecutionSetting"
       "change #mesos-health-checks-list li input.input": "updateHealthCheck"
       "OPTION_CHANGE .mesos-health-check-protocol":      "updateHealthCheck"
+      "change .mesos-constraints input"          : "updateConstraints"
+      "change .mesos-constraints select"         : "updateConstraints"
 
     initialize   : (options) ->
 
@@ -40,7 +42,7 @@ define ['../base/view'
 
     addHealthCheck: ()->
       $healthList = @$el.find("#mesos-health-checks-list")
-      $newHealthCheck = $healthList.find("li").eq(0).clone()
+      $newHealthCheck = $healthList.find("li.template").eq(0).clone().show()
       $newHealthCheck.find('.mesos-health-check-protocol .selection').text('HTTP')
       .end().find('.mesos-health-check-path').val("").show()
       .end().find('.mesos-health-check-port-index').val("0").show()
@@ -69,6 +71,15 @@ define ['../base/view'
           else
             @model.set $target.data('bind'), $target.val()
 
+    updateConstraints: ()->
+      constraints = []
+      @$el.find(".mesos-constraints .multi-ipt-row").each (index, row)->
+        attribute = $(row).find(".mesos-constraints-attribute").val()
+        operator = $(row).find(".mesos-constraints-operator").val()
+        value  = $(row).find(".mesos-constraints-value").val()
+        if attribute isnt "" or value isnt ""
+          constraints.push [attribute, operator, value]
+
     updateHealthCheck     : (evt)->
       if evt then $target = $(evt.currentTarget)
       if $target?.hasClass('mesos-health-check-protocol')
@@ -86,7 +97,7 @@ define ['../base/view'
 
       healthChecks = []
 
-      @$el.find("#mesos-health-checks-list>li").each (index, li)->
+      @$el.find("#mesos-health-checks-list>li").not(".template").each (index, li)->
         $li = $ li
         protocol = $li.find('.mesos-health-check-protocol .selection').text()
         path = $li.find('.mesos-health-check-path').val()

@@ -93,15 +93,15 @@
                     <div class="multi-ipt-row">
                         <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                         <span class="ipt-wrapper">
-                            <input class="input" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
-                            <select class="select3 select" name="operators">
-                                <option value="UNIQUE">UNIQUE</option>
-                                <option value="CLUSTER">CLUSTER</option>
-                                <option value="GROUP_BY">GROUP_BY</option>
-                                <option value="LIKE">LIKE</option>
-                                <option value="UNLIKE">UNLIKE</option>
+                            <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
+                            <select class="select3 select mesos-constraints-operator" name="operators">
+                                <option value="UNIQUE" {{#ifCond 1 "UNIQUE"}}selected{{/ifCond}}>UNIQUE</option>
+                                <option value="CLUSTER" {{#ifCond 1 "CLUSTER"}}selected{{/ifCond}}>CLUSTER</option>
+                                <option value="GROUP_BY"　{{#ifCond 1 "GROUP_BY"}}selected{{/ifCond}}>GROUP_BY</option>
+                                <option value="LIKE"　{{#ifCond 1 "LIKE"}}selected{{/ifCond}}>LIKE</option>
+                                <option value="UNLIKE"　{{#ifCond 1 "UNLIKE"}}selected{{/ifCond}}>UNLIKE</option>
                             </select>
-                            <input class="input" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
+                            <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
                         </span>
                     </div>
                 {{/each}}
@@ -125,7 +125,49 @@
     </div>
     <div class="option-group-head expand" id="mesos-health-checks">Health Checks</div>
     <div class="option-group" data-bind="true">
-        <ul id="mesos-health-checks-list" class="property-list">
+        <ul id="mesos-health-checks-list" class="property-list hide template">
+            <li class="elb-property-listener">
+                <div class="mesos-health-check-item-remove icon-remove tooltip" data-tooltip="remove health check"></div>
+                <section class="property-control-group clearfix">
+                    <label class="left">Protocol</label>
+                    <div class="selectbox mesos-health-check-protocol">
+                        <div class="selection">{{protocol}}</div>
+                        <ul class="dropdown">
+                            <li data-id="HTTP" class="item selected">HTTP</li>
+                            <li data-id="TCP" class="item ">TCP</li>
+                            <li data-id="COMMAND" class="item ">Command</li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="property-control-group health-check-option health-check-path clearfix">
+                    <label class="left">Path</label>
+                    <input class="input mesos-health-check-path tooltip parsley-validated" type="text" placeholder="/api/haelth" data-ignore="true" data-required="true" value="{{path}}" data-bind="path">
+                </section>
+                <section class="property-control-group health-check-option hide health-check-command clearfix">
+                    <label class="left">Command</label>
+                    <input class="input mesos-health-check-command tooltip parsley-validated" type="text" placeholder="" data-ignore="true" data-required="true" value="{{command.value}}" data-bind="command">
+                </section>
+                <section class="property-control-group health-check-option health-check-port-index clearfix">
+                    <label class="left">Port Index</label>
+                    <input class="input mesos-health-check-port-index tooltip parsley-validated" type="text" value="{{portIndex}}" data-ignore="true" data-bind="portIndex"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Grace Period Seconds</label>
+                    <input class="input mesos-health-check-grace-period tooltip parsley-validated" type="text" value="{{gracePeriodSeconds}}" data-ignore="true" data-bind="gracePeriodSeconds"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Interval Seconds</label>
+                    <input class="input mesos-health-check-interval tooltip parsley-validated" type="text" value="{{intervalSeconds}}" data-ignore="true" data-bind="intervalSeconds"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Timeout Seconds</label>
+                    <input class="input mesos-health-check-timeout tooltip parsley-validated" type="text" value="{{timeoutSeconds}}" data-ignore="true" data-bind="timeoutSeconds"/>
+                </section>
+                <section class="property-control-group clearfix">
+                    <label class="left">Max Consecutive Failures</label>
+                    <input class="input mesos-health-check-max-fail tooltip parsley-validated" type="text" value="{{maxConsecutiveFailures}}" data-ignore="true" data-bind="maxConsecutiveFailures"/>
+                </section>
+            </li>
             {{#each healthChecks}}
             <li class="elb-property-listener">
                 <div class="mesos-health-check-item-remove icon-remove tooltip" data-tooltip="remove health check"></div>

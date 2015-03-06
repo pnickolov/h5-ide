@@ -6414,10 +6414,16 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .syslog-dbinstance .no-data {
   margin-top: 40px; }
 
+.container-settings .container {
+  overflow: auto;
+  padding: 20px 30px; }
 .container-settings .input-item {
-  margin-top: 20px; }
+  margin-top: 20px;
+  min-height: 33px; }
   .container-settings .input-item:first-child {
     margin-top: 0; }
+.container-settings .select3 {
+  height: 33px; }
 .container-settings .privileged {
   margin-top: 16px; }
 .container-settings .multi-input, .container-settings .titles {
@@ -6431,7 +6437,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .container-settings .icon-add::before {
   content: "\F13D"; }
 .container-settings .input-item .left {
-  width: 115px !important; }
+  width: 115px; }
 .container-settings .titles span {
   display: inline-block;
   padding: 9px 7px;
@@ -6439,7 +6445,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .container-settings .port-mappings .titles span {
   width: 139px; }
 .container-settings .container.optiongroup {
-  top: 43px !important;
+  top: 43px;
   left: 0;
   right: 0; }
 

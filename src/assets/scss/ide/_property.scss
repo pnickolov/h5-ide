@@ -529,21 +529,24 @@
 }
 
 .container-settings {
+	.container { overflow: auto; padding: 20px 30px; }
 	.input-item{
 		margin-top: 20px;
+		min-height: 33px;
 		&:first-child { margin-top: 0; }
 	}
+	.select3 { height: 33px; }
 	.privileged { margin-top: 16px; }
 	.multi-input, .titles { clear: both; }
 	.ipt-wrapper { display: flex; }
 	.ipt-wrapper input { margin: 0 5px; }
 	.multi-ipt-row:first-child:last-child .icon-del { display: block; }
 	.icon-add::before { content: "\F13D"; }
-	.input-item .left { width: 115px !important; }
+	.input-item .left { width: 115px; }
 	.titles span { display: inline-block; padding: 9px 7px; width: 215px; }
 	.port-mappings .titles span { width: 139px; }
 	.container.optiongroup {
-		top: 43px !important;
+		top: 43px;
 		left: 0;
 		right: 0;
 	}

@@ -132,7 +132,7 @@ define [ "ResourceModel", "Design" ], ( ResourceModel, Design )->
             @__port1Comp = p1Comp
             @__port2Comp = p2Comp
             break
-          else if def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
+          else if not @directional and def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
             @__portDef   = def
             @__port1Comp = p2Comp
             @__port2Comp = p1Comp

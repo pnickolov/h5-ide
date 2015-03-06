@@ -79,7 +79,7 @@ define ['../base/view'
         value  = $(row).find(".mesos-constraints-value").val()
         if attribute isnt "" or value isnt ""
           constraints.push [attribute, operator, value]
-
+      @model.set("constraints", constraints)
     updateHealthCheck     : (evt)->
       if evt then $target = $(evt.currentTarget)
       if $target?.hasClass('mesos-health-check-protocol')

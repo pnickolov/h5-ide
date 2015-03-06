@@ -3457,7 +3457,8 @@ div.modal-text-highlight {
   background: url('/assets/images/ide/global-region-app-stack-m.png') 10px top no-repeat; }
   .region-resource-tab > b {
     font-weight: 200;
-    margin: 0 10px 0 5px; }
+    margin: 0 10px 0 5px;
+    color: #ddd; }
   .region-resource-tab.stack {
     background-position: 10px -50px; }
 

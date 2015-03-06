@@ -346,11 +346,14 @@ define [ 'event' ], ( ide_event )->
         null
 
     PropertyModule.snapshot = () ->
-        activeModuleId      : activeModule.uid
-        activeModuleType    : activeModuleType
-        activeSubModuleId   : if activeSubModule then activeSubModule.uid else null
-        activeSubModuleType : activeSubModuleType
-        tab_type            : activeModule.type
+        if activeModule
+            {}
+        else
+            activeModuleId      : activeModule.uid
+            activeModuleType    : activeModuleType
+            activeSubModuleId   : if activeSubModule then activeSubModule.uid else null
+            activeSubModuleType : activeSubModuleType
+            tab_type            : activeModule.type
 
     PropertyModule.restore  = ( ss, propertyView ) ->
         PropertyModule.load( ss.activeModuleType, ss.activeModuleId, ss.tab_type, true )

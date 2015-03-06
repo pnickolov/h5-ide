@@ -175,6 +175,10 @@ $dndDuration : .2s;
     padding-top : 5px;
     height : 90px;
   }
+  &.dockerimage {
+    padding-top : 5px;
+    height : 90px;
+  }
 
   &.az       { background-image: image-url('ide/icon/res-az.png'); position: relative; }
   &.volume   { background-image: image-url('ide/icon/res-vol.png'); }
@@ -209,7 +213,7 @@ $dndDuration : .2s;
   }
 }
 
-.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot, .resource-icon-docker-image {
   padding-top : 12px;
   height : 60px - 12px;
   background : image-url('ide/icon/res-instance.png') center no-repeat;

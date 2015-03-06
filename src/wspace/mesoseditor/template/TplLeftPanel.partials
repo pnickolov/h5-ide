@@ -4,7 +4,7 @@
 <section>
     <div class="resource-list-head">Marathon App</div>
     <ul class="resource-list-az clearfix">
-        <li class="tooltip resource-item az" data-tooltip='{{ i18n "RES_TIP_DRAG_AZ" }}' data-type="AZ">
+        <li class="tooltip resource-item az" data-tooltip="Drag to the canvas to use this image" data-type="MRTHGROUP">
             <div class="res-name">App Group</div>
         </li>
     </ul>
@@ -14,10 +14,11 @@
 
 <!-- {{docker_image}} -->
 {{#each this}}
-<li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": "{{AllocatedStorage}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
-  <div class="resource-icon-dbsnapshot">
-      <img src="/assets/images/ide/icon/" width="32" height="23">
-  </div>
-  {{name}}
+<li class="resource-item dockerimage bubble" data-type="MRTHAPP" data-option='' data-bubble-template="resPanelImageDocker" data-bubble-data='{{bubble}}'>
+  <div class="resource-icon-docker-image"><img src="/assets/images/ide/icon/" width="32" height="23" /></div>{{name}}
 </li>
 {{/each}}
+
+<!-- {{resourcePanelBubble}} -->
+<div class="bubble-head">{{or id ID}}</div>
+<dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>

@@ -12,7 +12,15 @@ define [
   "UI.dnd"
 ], ( CloudResources, Design, LeftPanelTpl, constant, lang, ApiRequest, OpsModel )->
 
+  MC.template.resPanelImageDocker = ( data ) ->
+
+    LeftPanelTpl.resourcePanelBubble(data)
+
   Backbone.View.extend {
+
+    events:
+
+      "mousedown .resource-item" : "startDrag"
 
     initialize : (options) ->
 
@@ -30,17 +38,22 @@ define [
     renderDockerImageList : () ->
 
       dockerImageCol = CloudResources( @workspace.design.credentialId(), constant.RESTYPE.DOCKERIMAGE, @workspace.design.region() )
-      @$el.find('.resource-list-docker-image').html LeftPanelTpl.docker_image(dockerImageCol.toJSON())
+      dataAry = dockerImageCol.toJSON()
+      _.each dataAry, (data) ->
+          data.bubble = JSON.stringify(data)
+      @$el.find('.resource-list-docker-image').html LeftPanelTpl.docker_image(dataAry)
 
-    toggleLeftPanel : ()->
+    toggleLeftPanel : () ->
 
       @__leftPanelHidden = @$el.toggleClass("hidden").hasClass("hidden")
       null
 
-    toggleResourcePanel: ()->
+    toggleResourcePanel: () ->
+
       @toggleLeftPanel()
 
-    startDrag : ( evt )->
+    startDrag : ( evt ) ->
+
       if evt.button isnt 0 then return false
       $tgt = $( evt.currentTarget )
       if $tgt.hasClass("disabled") then return false

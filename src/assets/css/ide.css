@@ -5536,6 +5536,9 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .resource-item.dbsnapshot {
     padding-top: 5px;
     height: 90px; }
+  .resource-item.dockerimage {
+    padding-top: 5px;
+    height: 90px; }
   .resource-item.az {
     background-image: url('/assets/images/ide/icon/res-az.png');
     position: relative; }
@@ -5578,15 +5581,15 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .resource-item.disabled .resource-count {
     background: #999; }
 
-.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot, .resource-icon-docker-image {
   padding-top: 12px;
   height: 48px;
   background: url('/assets/images/ide/icon/res-instance.png') center no-repeat; }
-  #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance, #DndItem .resource-icon-dbsnapshot {
+  #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance, #DndItem .resource-icon-dbsnapshot, #DndItem .resource-icon-docker-image {
     padding-top: 28px;
     height: 62px;
     position: relative; }
-  #DndItem.asg .resource-icon-instance, #DndItem.asg .resource-icon-dbinstance, #DndItem.asg .resource-icon-dbsnapshot {
+  #DndItem.asg .resource-icon-instance, #DndItem.asg .resource-icon-dbinstance, #DndItem.asg .resource-icon-dbsnapshot, #DndItem.asg .resource-icon-docker-image {
     left: 16px;
     top: 16px;
     height: 31px;
@@ -5596,7 +5599,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     -webkit-transition: all ease-in 0.2s;
     -moz-transition: all ease-in 0.2s;
     transition: all ease-in 0.2s; }
-  #DndItem.asg.dragOver .resource-icon-instance, #DndItem.asg.dragOver .resource-icon-dbinstance, #DndItem.asg.dragOver .resource-icon-dbsnapshot {
+  #DndItem.asg.dragOver .resource-icon-instance, #DndItem.asg.dragOver .resource-icon-dbinstance, #DndItem.asg.dragOver .resource-icon-dbsnapshot, #DndItem.asg.dragOver .resource-icon-docker-image {
     left: 47px;
     top: 51px;
     width: 53px;
@@ -6272,7 +6275,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

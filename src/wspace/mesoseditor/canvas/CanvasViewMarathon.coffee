@@ -14,7 +14,9 @@ define [
 
     initialize : ()->
       CanvasView.prototype.initialize.apply this, arguments
-      @$el.toggleClass("empty", !@items().length).append TplOpsEditor.canvas.placeholder()
+      @$el.addClass("marathon").toggleClass("empty", !@hasItems()).append TplOpsEditor.canvas.placeholder()
+
+    hasItems : ()-> @items().length > 1 # There would be at least one item which stands for the SVG element.
 
     recreateStructure : ()->
       @svg.clear().add([
@@ -61,7 +63,7 @@ define [
 
     removeItem : ()->
       CanvasView.prototype.removeItem.apply this, arguments
-      @$el.toggleClass("empty", !@items().length)
+      @$el.toggleClass("empty", !@hasItems())
 
     errorMessageForDrop : ( type )->
       switch type

@@ -34,7 +34,7 @@ define [ './template/container'
         render: () ->
             # App Mode
             if @appData
-                @$el.html TplApp @appData.container
+                @$el.html TplApp @appData
 
             # Stack Model
             else

@@ -352,6 +352,20 @@ TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<section id=\"modal-run-mesos\">\n  <div class=\"modal-control-group clearfix\" data-bind=\"true\">\n      <label class=\"label\" for=\"app-name\">Deployment Name</label>\n      <input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" data-ignore=\"true\">\n      <div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n  </div>\n  <div class=\"modal-control-group clearfix\" data-bind=\"true\">\n      <label class=\"label url-label\" for=\"app-url\">Specify the URL of your Mesos Cluster’s Master:</label>\n      <input id=\"app-url\" class=\"input\" type=\"text\">\n      <div class=\"runtime-error\" id=\"runtime-error-appurl\"></div>\n\n  </div>\n  <div class=\"mesos-tip\">You need to have a running Mesos Cluster first, either using VisualOps Mesos Sample Stack or your own deployment.</div>\n</section>";
+  return buffer;
+  };
+TEMPLATE.modalRunMesos=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {

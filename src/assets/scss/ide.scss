@@ -2563,6 +2563,25 @@ details[open] + .nutshell {
   font-size: 28px;
 }
 
+#modal-run-mesos {
+	.url-label {
+		width: auto;
+		display: block;
+	}
+	#app-url {
+		width: 404px;
+	}
+	.modal-control-group {
+		padding: 0;
+		margin: 5px 25px;
+	}
+	.mesos-tip {
+		margin: 5px 25px;
+		font-size: 12px;
+	}
+
+}
+
 .validation-tag,
 .resource-tag {
 	font-size     : 12px;

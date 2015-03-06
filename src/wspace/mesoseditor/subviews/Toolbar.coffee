@@ -220,10 +220,56 @@ define [
       that = @
       if $(event.currentTarget).attr 'disabled'
         return false
-      @appAction.showPayment(null ,@workspace.opsModel).then ( result ) ->
-        paymentUpdate = result.result
-        paymentModal = result.modal
-        that.appAction.runStack paymentUpdate, paymentModal, that.workspace
+
+      @doRunStack()
+
+    doRunStack: ()->
+      cloudType = @workspace.opsModel.type
+      self = @
+
+      @modal = new Modal
+        title: 'Run Marathon on Mesos Cluster'
+        template: MC.template.modalRunMesos
+        disableClose: true
+        width: '465px'
+        compact: true
+        confirm:
+          text: 'Run'
+          disabled: true
+
+      @modal.find('.modal-input-value').val @workspace.opsModel.get("name")
+
+      appNameDom = @modal.find('#app-name')
+      appUrlDom  = @modal.find('#app-url')
+
+      checkAppNameRepeat = @checkAppNameRepeat.bind @
+      validate = ->
+        nameValid = !checkAppNameRepeat(appNameDom.val())
+        urlValid = appUrlDom.length > 0
+
+        if nameValid and urlValid
+          self.modal.toggleConfirm false
+        else
+          self.modal.toggleConfirm true
+
+      appNameDom.keyup validate
+      appUrlDom.keyup validate
+
+      @modal.on 'confirm', ()=>
+        if self.checkAppNameRepeat(appNameDom.val())
+          return false
+
+        @modal.toggleConfirm true
+        @json = @workspace.design.serialize usage: 'runStack'
+        @json.name = appNameDom.val()
+
+        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+          self.modal.close()
+          App.loadUrl ops.url()
+        , (err)->
+          self.modal.close()
+          error = if err.awsError then err.error + "." + err.awsError else " #{err.error} : #{err.result || err.msg}"
+          notification 'error', sprintf(lang.NOTIFY.FAILA_TO_RUN_STACK_BECAUSE_OF_XXX,self.workspace.opsModel.get('name'),error)
 
     checkAppNameRepeat: (nameVal)->
         if @workspace.scene.project.apps().findWhere(name: nameVal)

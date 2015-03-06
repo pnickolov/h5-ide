@@ -226,7 +226,21 @@ Additional Notes and Questions
       http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
   - XSL Version: 2009-07-15-1119716
 
+<!-- {{modalRunMesos}} -->
+<section id="modal-run-mesos">
+  <div class="modal-control-group clearfix" data-bind="true">
+      <label class="label" for="app-name">Deployment Name</label>
+      <input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
+      <div class="runtime-error" id="runtime-error-appname"></div>
+  </div>
+  <div class="modal-control-group clearfix" data-bind="true">
+      <label class="label url-label" for="app-url">Specify the URL of your Mesos Cluster’s Master:</label>
+      <input id="app-url" class="input" type="text">
+      <div class="runtime-error" id="runtime-error-appurl"></div>
 
+  </div>
+  <div class="mesos-tip">You need to have a running Mesos Cluster first, either using VisualOps Mesos Sample Stack or your own deployment.</div>
+</section>
 <!-- {{modalRunStack}} -->
 <section id="modal-run-stack">
     <div class="payment-wrapper">

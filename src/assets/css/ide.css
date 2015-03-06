@@ -2134,6 +2134,17 @@ details[open] + .nutshell {
   color: #aeb3f2;
   font-size: 28px; }
 
+#modal-run-mesos .url-label {
+  width: auto;
+  display: block; }
+#modal-run-mesos #app-url {
+  width: 404px; }
+#modal-run-mesos .modal-control-group {
+  padding: 0;
+  margin: 5px 25px; }
+#modal-run-mesos .mesos-tip {
+  margin: 5px 25px; }
+
 .validation-tag,
 .resource-tag {
   font-size: 12px;

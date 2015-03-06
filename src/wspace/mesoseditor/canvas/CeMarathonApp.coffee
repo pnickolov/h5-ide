@@ -51,8 +51,14 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
 
         svg.image( MC.IMG_URL + "ide/icon-mrth/cvs-appicon.png", 120, 32 ).move( 20, 42 )
 
-        svg.plain("123").move(50,  62).classes('cpu-label')
-        svg.plain("245").move(125, 62).classes('memory-label')
+        svg.plain("").move(50,  62).attr({
+          "class"   : 'cpu-label tooltip'
+          "data-tooltip" : "CPU"
+        })
+        svg.plain("").move(115, 62).attr({
+          "class" : 'memory-label tooltip'
+          "data-tooltip" : "Memory"
+        })
 
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
@@ -72,7 +78,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
             "class" : "server-number"
             "text-anchor" : "middle"
           })
-        ]).classes("server-number-group")
+        ]).attr({
+          "class"   : "server-number-group"
+          "tooltip" : "Instances"
+        })
 
       ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\.|:/g, "-") )
 
@@ -90,4 +99,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
       m = @model
       CanvasManager.setLabel @, @$el.children(".node-label")
       @$el[0].instance.move m.x() * CanvasView.GRID_WIDTH, m.y() * CanvasView.GRID_WIDTH
+
+      CanvasManager.update @$el.find(".cpu-label"), m.get("cpus") || "0"
+      CanvasManager.update @$el.find(".memory-label"), m.get("mem") || "0"
   }

@@ -126,12 +126,13 @@
     <div class="option-group-head expand" id="mesos-health-checks">Health Checks</div>
     <div class="option-group" data-bind="true">
         <ul id="mesos-health-checks-list" class="property-list">
+            {{#each healthChecks}}
             <li class="elb-property-listener">
                 <div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="remove health check"></div>
                 <section class="property-control-group clearfix">
                     <label class="left">Protocol</label>
-                    <div class="selectbox elb-property-elb-protocol">
-                        <div class="selection">HTTP</div>
+                    <div class="selectbox mesos-health-check-protocol">
+                        <div class="selection">{{protocol}}</div>
                         <ul class="dropdown">
                             <li data-id="HTTP" class="item selected">HTTP</li>
                             <li data-id="TCP" class="item ">TCP</li>
@@ -141,29 +142,30 @@
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Path</label>
-                    <input class="input tooltip parsley-validated" type="text" placeholder="/api/haelth" data-ignore="true" data-required="true">
+                    <input class="input mesos-health-check-path tooltip parsley-validated" type="text" placeholder="/api/haelth" data-ignore="true" data-required="true" value="{{path}}">
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Port Index</label>
-                    <input class="input tooltip parsley-validated" type="text" value="0" data-ignore="true"/>
+                    <input class="input mesos-health-check-port-index tooltip parsley-validated" type="text" value="{{portIndex}}" data-ignore="true"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Grace Period Seconds</label>
-                    <input class="input tooltip parsley-validated" type="text" value="300" data-ignore="true"/>
+                    <input class="input mesos-health-check-grace-period tooltip parsley-validated" type="text" value="{{gracePeriod}}" data-ignore="true"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Interval Seconds</label>
-                    <input class="input tooltip parsley-validated" type="text" value="60" data-ignore="true"/>
+                    <input class="input mesos-health-check-interval tooltip parsley-validated" type="text" value="{{interval}}" data-ignore="true"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Timeout Seconds</label>
-                    <input class="input tooltip parsley-validated" type="text" value="20" data-ignore="true"/>
+                    <input class="input mesos-health-check-timeout tooltip parsley-validated" type="text" value="{{timeout}}" data-ignore="true"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Max Consecutive Failures</label>
-                    <input class="input tooltip parsley-validated" type="text" value="0" data-ignore="true"/>
+                    <input class="input mesos-health-check-max-fail tooltip parsley-validated" type="text" value="{{maxFail}}" data-ignore="true"/>
                 </section>
             </li>
+            {{/each}}
         </ul>
         <a href="#" id="mesos-add-health-check" class="add-to-list action-link">Add New Health Checks</a>
     </div>

@@ -46,7 +46,7 @@ define [
       if opsModel.isStack()
         btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle"]
       else
-        btns = ["BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle"]
+        btns = ["BtnEditApp", "BtnAppOps", "BtnReloadRes"]
 
       tpl = ""
       for btn in btns

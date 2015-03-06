@@ -14,7 +14,7 @@ define [
 
     initialize : ()->
       CanvasView.prototype.initialize.apply this, arguments
-      @$el.toggleClass("empty", @items().length).append TplOpsEditor.canvas.placeholder()
+      @$el.toggleClass("empty", !@items().length).append TplOpsEditor.canvas.placeholder()
 
     recreateStructure : ()->
       @svg.clear().add([

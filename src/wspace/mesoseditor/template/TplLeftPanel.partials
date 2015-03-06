@@ -14,7 +14,7 @@
 
 <!-- {{docker_image}} -->
 {{#each this}}
-<li class="resource-item dockerimage bubble" data-type="MRTHAPP" data-option='' data-bubble-template="resPanelImageDocker" data-bubble-data='{{bubble}}'>
+<li class="resource-item dockerimage bubble" data-type="MRTHAPP" data-option='{"name":"{{name}}"}' data-bubble-template="resPanelImageDocker" data-bubble-data='{{bubble}}'>
   <div class="resource-icon-docker-image"><img src="/assets/images/ide/icon/" width="32" height="23" /></div>{{name}}
 </li>
 {{/each}}

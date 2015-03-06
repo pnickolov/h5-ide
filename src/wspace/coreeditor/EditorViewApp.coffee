@@ -24,7 +24,7 @@ define [
 
     switchMode : ( mode )->
       @toolbar.updateTbBtns()
-      @statusbar.update()
+      @statusbar.update() if @statusbar.update
 
       if mode is "appedit"
         @$el.find(".OEPanelLeft").removeClass("force-hidden")
@@ -93,7 +93,7 @@ define [
     toggleProcessing : ()->
       if not @$el then return
 
-      @statusbar.update()
+      @statusbar.update() if @statusbar.update
       @$el.children(".ops-process").remove()
 
       opsModel = @workspace.opsModel

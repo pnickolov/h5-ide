@@ -48,16 +48,6 @@ define [
       else
         btns = ["BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle"]
 
-      tpl = ""
-      for btn in btns
-        attr = { stateOn: @workspace.design.get("agent").enabled }
-        tpl += OpsEditorTpl.toolbar[ btn ]( attr )
-
-      if @workspace.opsModel.isApp() and @workspace.design.attributes.agent.enabled
-          tpl += OpsEditorTpl.toolbar.BtnReloadStates()
-
-      @setElement @parent.$el.find(".OEPanelTop").html( tpl )
-
       @updateZoomButtons()
       @updateTbBtns()
 

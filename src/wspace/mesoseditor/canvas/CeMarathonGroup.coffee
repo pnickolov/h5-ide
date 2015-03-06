@@ -21,7 +21,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         [ x, 10, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
     listenModelEvents : ()->
-      # @listenTo @model, "change:cidr", @render
+      self = @
+      @listenTo @model, "change:__parent", ()-> self.canvas.sortGroup()
       return
 
     applyGeometry : ( x, y, width, height )->

@@ -34,21 +34,28 @@ define [
 
     sortGroup : ()->
       # Make sure parent groups are before child groups
-      groups = _.filter @items(), (i)-> i.type is constant.RESTYPE.MRTHGROUP
-      groups = _.map _.sortBy(groups, (i)-> i.parentCount()), (i)-> i.$el[0]
+      groups = _.chain( @items() )
+        .filter((i)-> i.type is constant.RESTYPE.MRTHGROUP)
+        .sortBy((i)-> i.parentCount())
+        .map((i)-> i.$el[0])
+        .value()
 
-      console.log( groups )
-
-      parent = $(@svg.node).children(".layer_group")[0]
+      parent    = $(@svg.node).children(".layer_group")[0]
       childrens = $(parent).children().splice(0)
 
+      needToUpdate = false
       for g, idx in childrens
-        if idx is childrens.length - 1
+        if groups[idx] isnt g
+          needToUpdate = true
           break
 
-        if groups[ idx + 1 ] isnt childrens[ idx + 1 ] and childrens[ idx + 1 ]
-          parent.insertBefore( groups[ idx + 1 ], childrens[ idx ] )
+      if not needToUpdate then return
 
+      for ch in childrens
+        parent.removeChild(ch)
+
+      for g, idx in groups
+        parent.appendChild( g )
       return
 
     fixConnection : ( coord, initiator, target )->

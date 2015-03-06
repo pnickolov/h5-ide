@@ -1,3 +1,4 @@
+<!-- {{stack}} -->
 <article>
     <div class="option-group-head expand">Dependency relationship</div>
     <div class="option-group" data-bind="true">

@@ -17,7 +17,7 @@ define [ "Design"
 
             @view = view
             @model = Design.instance().component uid
-            @view.isAppEdit = false
+            @view.mode = 'stack'
             null
 
         afterLoadStack : ()->
@@ -26,14 +26,14 @@ define [ "Design"
 
             @view = view
             @model = Design.instance().component uid
-            @view.isAppEdit = false
+            @view.mode = 'app'
             null
 
         initAppEdit : ( uid ) ->
 
             @view = view
             @model = Design.instance().component uid
-            @view.isAppEdit = false
+            @view.mode = 'appedit'
             null
 
     }

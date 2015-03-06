@@ -1,5 +1,5 @@
 define [ '../base/view'
-         './template/stack'
+         './template'
          'i18n!/nls/lang.js'
          'constant'
          'UI.modalplus'
@@ -14,7 +14,7 @@ define [ '../base/view'
             beforeComp = @model.port1Comp()
             afterComp = @model.port2Comp()
 
-            @$el.html Tpl({
+            @$el.html Tpl.stack({
                 before: beforeComp.get('name')
                 after: afterComp.get('name')
             })

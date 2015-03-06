@@ -1,5 +1,5 @@
 define [ '../base/view'
-         './template/stack'
+         './template'
          'i18n!/nls/lang.js'
          'constant'
          'UI.modalplus'
@@ -15,7 +15,10 @@ define [ '../base/view'
 
         render: () ->
 
-            @$el.html Tpl(@model.toJSON())
+            if @mode is 'stack'
+                @$el.html Tpl.stack(@model.toJSON())
+            else
+                @$el.html Tpl.app()
             @model.get('name')
 
         changeName: (event) ->

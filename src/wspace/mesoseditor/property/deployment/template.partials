@@ -1,3 +1,4 @@
+<!-- {{stack}} -->
 <article>
     <div class="option-group-head expand">Stack</div>
     <div class="option-group" data-bind="true">
@@ -6,5 +7,24 @@
             <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
             <input class="input" type="text" value="{{name}}" id="property-mesos-stack-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
         </section>
+    </div>
+</article>
+
+<!-- {{app}} -->
+<article>
+    <div class="option-group-head expand">Group Details</div>
+    <div class="option-group" data-bind="true">
+        <dl class="dl-vertical">
+            <dt>Deployment Name</dt>
+            <dd>{{name}}</dd>
+        </dl>
+        <dl class="dl-vertical">
+            <dt>Deployment ID</dt>
+            <dd>{{id}}</dd>
+        </dl>
+        <dl class="dl-vertical">
+            <dt>Mesos Master</dt>
+            <dd>{{host}}</dd>
+        </dl>
     </div>
 </article>

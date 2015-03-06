@@ -81,6 +81,12 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Conne
 
       p2Comp
 
+  }, {
+    isConnectable : ( p1Comp, p2Comp )->
+      for cn in p1Comp.connections()
+        if cn.connectsTo( p2Comp.id )
+          return false
+      true
   }
 
   C

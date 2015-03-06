@@ -1,0 +1,122 @@
+<article>
+    <div class="option-group-head expand" id="mesos-basic-settings">Container Setting</div>
+    <div class="option-group" data-bind="true">
+        <section class="clearfix">
+            <button class="open-container btn-blue btn">Container Setting</button>
+        </section>
+    </div>
+    <div class="option-group-head expand" id="mesos-basic-settings">Basic Settings</div>
+    <div class="option-group" data-bind="true">
+        <dl class="dl-vertical">
+            <dt>ID</dt>
+            <dd>{{id}}</dd>
+            <dt>CPUs</dt>
+            <dd>{{cpus}}</dd>
+            <dt>Memory</dt>
+            <dd>{{mem}}</dd>
+            <dt>Instances</dt>
+            <dd>{{instances}}</dd>
+        </dl>
+    </div>
+
+    <div class="option-group-head expand" id="mesos-execution-settings">Execution Settings</div>
+    <div class="option-group" data-bind="true">
+        <dl class="dl-vertical">
+            {{#if command}}<dt>Command</dt>
+            <dd>{{command}}</dd>{{/if}}
+            {{#if args.length}}<dt>Command</dt>
+            <dd>{{command}}</dd>{{/if}}
+            {{#if env}}<dt>Environment</dt>
+            {{#each env}}
+                <dd>{{@key}}: {{@value}}</dd>
+            {{/each}}
+            {{/if}}
+            <dt>Ports</dt>
+            {{#each ports}}<dd>{{this}}</dd>{{/each}}
+            {{#if executor}}
+                <dt>Executor</dt>
+                <dd>{{executor}}</dd>
+            {{/if}}
+            {{#each uris}}
+                <dt>URIs</dt>
+                <dd>{{this}}</dd>
+            {{/each}}
+        </dl>
+    </div>
+
+    <div class="option-group-head expand" id="mesos-constraints">Constraints</div>
+    <div class="option-group" data-bind="true">
+        <dl class="dl-vertical">
+            <dt>Constraints</dt>
+            {{#each constraints}}
+                <dd>{{#each this}}{{this}} {{/each}}</dd>
+            {{/each}}
+        </dl>
+    </div>
+
+    <div class="option-group-head expand" id="mesos-health-checks">Health Checks</div>
+    <div class="option-group" data-bind="true">
+        {{#each healthChecks}}
+        <dl class="dl-vertical mesos-health-check-li">
+            {{#if protocol}}
+            <dt>Protocol</dt>
+            <dd>{{protocol}}</dd>
+            {{/if}}
+
+            {{#if path}}
+                <dt>Path</dt>
+                <dd>{{path}}</dd>
+            {{/if}}
+
+            {{#if portIndex}}
+            <dt>Port Index</dt>
+            <dd>{{portIndex}}</dd>
+            {{/if}}
+
+            <dt>Grace Period Seconds</dt>
+            <dd>{{gracePeriodSeconds}}</dd>
+
+            <dt>Interval Seconds</dt>
+            <dd>{{intervalSeconds}}</dd>
+
+            <dt>Timeout Seconds</dt>
+            <dd>{{timeoutSeconds}}</dd>
+
+            <dt>Max Consecutive Failures</dt>
+            <dd>{{maxConsecutiveFailures}}</dd>
+        </dl>
+        {{/each}}
+    </div>
+
+    <div class="option-group-head expand" id="mesos-update-strategy">Update Strategy</div>
+    <div class="option-group" data-bind="true">
+        <dl class="dl-vertical">
+            <dt>Minimum Health Capacity  </dt>
+            <dd>{{minimumHealthCapacity}}</dd>
+            <dt>Maximum Over Capacity</dt>
+            <dd>{{maximumOverCapacity}}</dd>
+        </dl>
+    </div>
+
+    <div class="option-group-head expand" id="mesos-advanced-details  ">Advanced Details</div>
+    <div class="option-group" data-bind="true">
+
+        <dl class="dl-vertical">
+            <dt>Deployments</dt>
+            {{#each deployments}}<dd>id: {{id}}</dd>{{/each}}
+            <dt>Backoff Seconds</dt>
+            <dd>{{backoffSeconds}}</dd>
+            <dt>Backoff Factor</dt>
+            <dd>{{backoffFactor}}</dd>
+            <dt>Max Launch Delay Seconds</dt>
+            <dd>{{maxLaunchDelaySeconds}}</dd>
+            <dt>Tasks Running</dt>
+            <dd>{{tasksRunning}}</dd>
+            <dt>Tasks Staged</dt>
+            <dd>{{tasksStaged}}</dd>
+        </dl>
+
+    </div>
+
+</article>
+

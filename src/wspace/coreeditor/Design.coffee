@@ -514,12 +514,9 @@ define [
     instance : ()-> __instance
     modelClassForType : ( type )-> __modelClassMap[ type ]
     modelClassForPorts : ( port1, port2 )->
-      if port1 < port2
-        type = port1 + ">" + port2
-      else
-        type = port2 + ">" + port1
-
-      __modelClassMap[ type ]
+      l = __modelClassMap[ port1 + ">" + port2 ]
+      if l then return l
+      __modelClassMap[ port2 + ">" + port1 ]
 
     lineModelClasses : ()->
       if @__lineModelClasses then return @__lineModelClasses

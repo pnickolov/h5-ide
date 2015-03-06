@@ -19,8 +19,8 @@ define [ "Design"
 
         initApp : ( uid ) ->
             @view = view
-            @view.model = Design.instance().component uid
-            @view.appData = null
+            @model = Design.instance().component uid
+            @view.appData = {}
             @view.isAppEdit = false
             null
 

@@ -14,6 +14,7 @@ define [ './template/container'
             'REMOVE_ROW .multi-input': 'processMapTitle'
 
         initialize: ( options ) ->
+            @appData = options.appData
             # Bind Parsley
             @$el.prop 'data-bind', true
 

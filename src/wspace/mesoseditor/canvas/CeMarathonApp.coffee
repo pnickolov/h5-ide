@@ -102,4 +102,5 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
 
       CanvasManager.update @$el.find(".cpu-label"), m.get("cpus") || "0"
       CanvasManager.update @$el.find(".memory-label"), m.get("mem") || "0"
+      CanvasManager.update @$el.find(".server-number"), m.get("instances") || "0"
   }

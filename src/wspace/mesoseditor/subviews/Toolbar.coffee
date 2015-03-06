@@ -263,7 +263,7 @@ define [
         @json = @workspace.design.serialize usage: 'runStack'
         @json.name = appNameDom.val()
 
-        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+        @workspace.opsModel.run(@json, appNameDom.val(), appUrlDom.val()).then ( ops )->
           self.modal.close()
           App.loadUrl ops.url()
         , (err)->

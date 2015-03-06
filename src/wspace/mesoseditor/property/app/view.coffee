@@ -11,6 +11,7 @@ define [ '../base/view'
         events:
             'click .open-container': 'openContainer'
             'click #mesos-add-health-check': 'addHealthCheck'
+            'click .mesos-health-check-item-remove': 'removeHealthCheck'
 
         initialize: ( options ) ->
 
@@ -34,6 +35,12 @@ define [ '../base/view'
             .end().find('.mesos-health-check-timeout').text("20")
             .end().find('mesos-health-check-max-fail').text("0")
             .end().appendTo $healthList
+
+        removeHealthCheck: (evt)->
+            $(evt.currentTarget).parents('li').remove()
+            @updateAttribute()
+
+        updateAttribute: ()->
 
 
     new view()

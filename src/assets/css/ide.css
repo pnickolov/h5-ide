@@ -6453,6 +6453,30 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 .mesos-constraints .multi-ipt-row .ipt-controls {
   margin-right: 10px; }
 
+.mesos-health-check-item-remove {
+  position: absolute;
+  right: 0;
+  width: 32px;
+  height: 487px;
+  text-align: center;
+  line-height: 487px;
+  color: #555;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-left: 1px #313131 solid;
+  cursor: pointer; }
+
+.property-content #mesos-health-checks-list .elb-property-listener .property-control-group .input {
+  width: 210px; }
+.property-content #mesos-health-checks-list .elb-property-listener .selectbox {
+  width: 240px; }
+
+.property-content #mesos-health-checks-list .elb-property-listener:only-child .mesos-health-check-item-remove {
+  display: none; }
+.property-content #mesos-health-checks-list .elb-property-listener:only-child .property-control-group .input {
+  width: 230px; }
+.property-content #mesos-health-checks-list .elb-property-listener:only-child .selectbox {
+  width: 260px; }
+
 /* Styles for Design Module Toolbar */
 /* App/Stack Toolbar */
 #main-toolbar {

@@ -78,7 +78,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
 
     deserialize : ( data, layout_data, resolve )->
       console.log data
-      attributes ={
+      attributes = {
         id     : data.uid
         name   : data.resource.id
         parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null

@@ -303,6 +303,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         component     : json.component
         layout        : json.layout
         agent         : json.agent
+        host          : json.host
       }
 
       stoppable = json.property?.stoppable or true

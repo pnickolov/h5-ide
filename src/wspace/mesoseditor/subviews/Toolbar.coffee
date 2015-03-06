@@ -33,6 +33,7 @@ define [
       "click .icon-terminate"         : "terminateApp"
       "click .icon-refresh"           : "refreshResource"
       "click .icon-update-app"        : "switchToAppEdit"
+      "click .icon-apply-app"         : "applyAppEdit"
       "click .icon-cancel-update-app" : "cancelAppEdit"
 
     initialize : ( options )->
@@ -288,6 +289,78 @@ define [
     terminateApp    : ()-> @appAction.terminateApp( @workspace.opsModel.id, true); false
     refreshResource : ()-> @workspace.reloadAppData(); false
     switchToAppEdit : ()-> @workspace.switchToEditMode(); false
+
+    applyAppEdit    : ()->
+      that = @
+      oldJson = @workspace.opsModel.getJsonData()
+      newJson = @workspace.design.serialize usage: 'updateApp'
+
+      differ = new ResDiff({
+        old : oldJson
+        new : newJson
+      })
+
+      result = differ.getDiffInfo()
+      if not result.compChange and not result.layoutChange and not result.stateChange
+        return @workspace.applyAppEdit()
+
+      removes = differ.removedComps
+      components = newJson.component
+
+      @updateModal = new Modal
+        title: lang.IDE.HEAD_INFO_LOADING
+        template: MC.template.loadingSpinner
+        disableClose: true
+        cancel: "Close"
+
+      @updateModal.tpl.find(".modal-footer").hide()
+
+      removeList = []
+
+      that.updateModal.tpl.children().css("width", "450px").find(".modal-footer").show()
+      that.updateModal
+        .find(".modal-wrapper-fix")
+        .width(455)
+        .find('.modal-body')
+        .css('padding', 0)
+
+      that.updateModal.setContent( MC.template.updateApp {
+        isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
+        removeList: removeList
+      })
+
+      that.updateModal.find( '.payment-wrapper-right' ).hide()
+      that.updateModal.find(".modal-header").find("h3").text(lang.IDE.UPDATE_APP_MODAL_TITLE)
+      that.updateModal.find('.modal-confirm').prop("disabled", true).text (if Design.instance().credential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
+      that.updateModal.resize()
+
+      window.setTimeout ->
+        that.updateModal.resize()
+      ,100
+
+      that.updateModal.on 'confirm', ->
+        if not Design.instance().credential()
+          Design.instance().project().showCredential()
+          return false
+
+        newJson = that.workspace.design.serialize usage: 'updateApp'
+        that.workspace.applyAppEdit( newJson, not result.compChange )
+        that.updateModal?.close()
+
+      if result.compChange
+        $diffTree = differ.renderAppUpdateView()
+        $('#app-update-summary-table').html $diffTree
+
+      that.appAction.renderKpDropdown(that.updateModal)
+      TA.loadModule('stack').then ->
+        that.updateModal and that.updateModal.toggleConfirm false
+        that.updateModal?.resize()
+      , (err)->
+        console.log err
+        that.updateModal and that.updateModal.toggleConfirm true
+        that.updateModal and that.updateModal.tpl.find("#take-rds-snapshot").off 'change'
+        that.updateModal?.resize()
+      return
 
     cancelAppEdit : ()->
       if not @workspace.cancelEditMode()

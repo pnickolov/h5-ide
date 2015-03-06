@@ -428,6 +428,7 @@ define [
         time_update   : @__opsModel.get("updateTime")
         usage         : @__opsModel.get("usage")
         version       : OpsModel.LatestVersion
+        host          : attr.host
         property      : attr.property || {}
         description   : attr.description
         resource_diff : attr.resource_diff

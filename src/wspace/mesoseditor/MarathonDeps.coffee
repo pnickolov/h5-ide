@@ -2,7 +2,8 @@
 define [
   "./model/MarathonGroup"
   "./model/MarathonApp"
-  "./model/MarathonDep"
+  "./model/MarathonDepIn"
+  "./model/MarathonDepOut"
 
   "./canvas/CeMarathonGroup"
   "./canvas/CeMarathonApp"

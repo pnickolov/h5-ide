@@ -5,25 +5,11 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Conne
 
     type : "MarathonDep"
 
+    directional : true
+
     portDefs : [
       {
         port1 :
-          name : "app-dep-in"
-          type : constant.RESTYPE.MRTHAPP
-        port2 :
-          name : "group-dep-out"
-          type : constant.RESTYPE.MRTHGROUP
-      }
-      {
-        port1 :
-          name : "app-dep-in"
-          type : constant.RESTYPE.MRTHAPP
-        port2 :
-          name : "app-dep-out"
-          type : constant.RESTYPE.MRTHAPP
-      }
-      {
-        port1 :
           name : "app-dep-out"
           type : constant.RESTYPE.MRTHAPP
         port2 :
@@ -32,11 +18,27 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Conne
       }
       {
         port1 :
+          name : "app-dep-out"
+          type : constant.RESTYPE.MRTHAPP
+        port2 :
+          name : "app-dep-in"
+          type : constant.RESTYPE.MRTHAPP
+      }
+      {
+        port1 :
           name : "group-dep-out"
           type : constant.RESTYPE.MRTHGROUP
         port2 :
           name : "group-dep-in"
           type : constant.RESTYPE.MRTHGROUP
+      }
+      {
+        port1 :
+          name : "group-dep-out"
+          type : constant.RESTYPE.MRTHGROUP
+        port2 :
+          name : "app-dep-in"
+          type : constant.RESTYPE.MRTHAPP
       }
     ]
 

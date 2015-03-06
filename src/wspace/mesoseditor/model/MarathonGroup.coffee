@@ -60,6 +60,8 @@ define [ "constant",
       }
 
       null
+
+    postDeserialize : ( data, layout_data )->
   }
 
   Model

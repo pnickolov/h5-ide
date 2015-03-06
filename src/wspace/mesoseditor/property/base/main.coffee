@@ -301,7 +301,7 @@ define [ 'event' ], ( ide_event )->
         # 5. Re-init the `model` and `view`
         # Since the model is singleton, need to clear all the attributes.
 
-        if property.model.init # Distinguish Property Model and Resource Model by init method
+        if property.model?.init # Distinguish Property Model and Resource Model by init method
             property.model.clear( { silent : true } )
             # If the model cannot init. Default to use Missing Property.
             if property.model.init( componentUid ) is false
@@ -366,4 +366,3 @@ define [ 'event' ], ( ide_event )->
 
     # Export PropertyModule
     PropertyModule
-

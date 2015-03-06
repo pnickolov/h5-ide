@@ -13,6 +13,7 @@ define [
   '../property/app/main'
   '../property/group/main'
   '../property/dependency/main'
+  '../property/deployment/main'
 
 ], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
 

@@ -1,0 +1,26 @@
+
+define [ "Design"
+         "../base/main"
+         "./view"
+         "constant"
+         "event"
+], ( Design, PropertyModule, view, constant ) ->
+
+    PropertyModule.extend {
+
+        handleTypes : [ "Stack" ]
+
+        initStack : ( uid )->
+
+            @view = view
+            @model = Design.instance()
+            @view.isAppEdit = false
+            null
+
+        afterLoadStack : ()->
+
+        initApp : ( uid ) ->
+
+        initAppEdit : ( uid ) ->
+
+    }

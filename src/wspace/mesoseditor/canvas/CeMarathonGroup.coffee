@@ -48,12 +48,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         svg.use("port_right").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'group-dep-in'
-          'data-tooltip' : lang.IDE.PORT_TIP_L
+          'data-tooltip' : lang.IDE.PORT_TIP_U
         })
         svg.use("port_right").attr({
           'class'        : 'port port-gray tooltip'
           'data-name'    : 'group-dep-out'
-          'data-tooltip' : lang.IDE.PORT_TIP_M
+          'data-tooltip' : lang.IDE.PORT_TIP_V
         })
       ], 0)
       @initNode svgEl, m.x(), m.y()

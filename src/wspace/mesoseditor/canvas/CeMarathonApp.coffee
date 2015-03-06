@@ -63,12 +63,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'app-dep-in'
-          'data-tooltip' : lang.IDE.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_U
         })
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
           'data-name'    : 'app-dep-out'
-          'data-tooltip' : lang.IDE.PORT_TIP_D
+          'data-tooltip' : lang.IDE.PORT_TIP_V
         })
 
         # Servergroup
@@ -79,8 +79,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
             "text-anchor" : "middle"
           })
         ]).attr({
-          "class"   : "server-number-group"
-          "tooltip" : "Instances"
+          "class"        : "server-number-group tooltip"
+          "data-tooltip" : "Instances"
         })
 
       ]).attr({ "data-id" : @cid }).classes( 'canvasel ' + @type.replace(/\.|:/g, "-") )

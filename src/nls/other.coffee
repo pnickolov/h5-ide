@@ -1101,6 +1101,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Connect to Router"
       zh: ""
 
+    PORT_TIP_U:
+      en: "Connect to another app or group this item depends on"
+      zh: ""
+
+    PORT_TIP_V:
+      en: "Connect to another app or group depends on this item"
+      zh: ""
+
 
 
   ##### Modal Confirm Stop/Terminate App

@@ -6436,6 +6436,9 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   padding: 10px 20px;
   font-size: 15px; }
 
+.selection-command, .selection-arguments {
+  margin-top: 10px; }
+
 /* Styles for Design Module Toolbar */
 /* App/Stack Toolbar */
 #main-toolbar {

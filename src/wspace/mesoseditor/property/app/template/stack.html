@@ -15,6 +15,7 @@
         </section>
         <section class="property-control-group" data-bind="true">
             <label for="property-mesos-cups">CPUs</label>
+            <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
             <input class="input mesos-cpus" type="text" value="{{cpus}}" id="property-mesos-cups" data-required-rollback="true"/>
         </section>
         <section class="property-control-group clearfix">
@@ -31,14 +32,42 @@
     <div class="option-group-head expand" id="mesos-execution-settings">Execution Settings</div>
     <div class="option-group" data-bind="true">
         <section class="property-control-group">
-            <label class="left">Execution Settings</label>
-            <div class="selectbox selectbox-mega" id="property-tenancy">
+            <div class="selectbox selectbox-mega" id="property-execution-setting">
                 <div class="selection">{{executionType}}</div>
                 <ul class="dropdown" tabindex="-1">
-                    <li class="item{{#if defaultCommand}} selected{{/if}}" data-id="default">Command</li>
-                    <li class="item{{#unless defaultCommand}} selected{{/unless}}" data-id="dedicated">Arguments</li>
+                    <li class="item{{#if isCommand}} selected{{/if}}" data-id="default">Command</li>
+                    <li class="item{{#unless isCommand}} selected{{/unless}}" data-id="dedicated">Arguments</li>
                 </ul>
-
+                <div class="selection-command {{#unless isCommand}}hide{{/unless}}">
+                    <input class="input execution-command" type="text" value="{{command}}"/>
+                </div>
+                <div class="selection-arguments {{#if isCommand}}hide{{/if}}">
+                    <div class="multi-input">
+                        <div class="multi-ipt-row template">
+                            <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                            <span class="ipt-wrapper">
+                                <input class="input" placeholder="argument" type="text" data-name="argument"/>
+                            </span>
+                        </div>
+                        {{#if arguments.length}}
+                            {{#each arguments}}
+                            <div class="multi-ipt-row">
+                                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                                <span class="ipt-wrapper">
+                                    <input class="input" placeholder="" type="text" data-name="argument" value="{{this}}"/>
+                                </span>
+                            </div>
+                            {{/each}}
+                        {{else}}
+                            <div class="multi-ipt-row">
+                                <span class="ipt-controls"><a href="#" class="icon-add"></a></span>
+                                <span class="ipt-wrapper">
+                                    <input class="input" placeholder="" type="text" data-name="argument"/>
+                                </span>
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
             </div>
         </section>
     </div>

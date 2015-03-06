@@ -99,11 +99,11 @@
                                 {{/ifCond}}
                                 {{#ifCond @index 1}}
                                     <select class="select3 select mesos-constraints-operator" name="operators">
-                                        <option value="UNIQUE" {{#ifCond this "UNIQUE"}}selected{{/ifCond}}>UNIQUE</option>
-                                        <option value="CLUSTER" {{#ifCond this "CLUSTER"}}selected{{/ifCond}}>CLUSTER</option>
-                                        <option value="GROUP_BY"　{{#ifCond this "GROUP_BY"}}selected{{/ifCond}}>GROUP_BY</option>
-                                        <option value="LIKE"　{{#ifCond this "LIKE"}}selected{{/ifCond}}>LIKE</option>
-                                        <option value="UNLIKE"　{{#ifCond this "UNLIKE"}}selected{{/ifCond}}>UNLIKE</option>
+                                        <option value="UNIQUE"   {{#ifCond this "UNIQUE"}}  selected="selected"{{/ifCond}}>UNIQUE</option>
+                                        <option value="CLUSTER"  {{#ifCond this "CLUSTER"}} selected="selected"{{/ifCond}}>CLUSTER</option>
+                                        <option value="GROUP_BY" {{#ifCond this "GROUP_BY"}}selected="selected"{{/ifCond}}>GROUP_BY</option>
+                                        <option value="LIKE"     {{#ifCond this "LIKE"}}    selected="selected"{{/ifCond}}>LIKE</option>
+                                        <option value="UNLIKE"   {{#ifCond this "UNLIKE"}}  selected="selected"{{/ifCond}}>UNLIKE</option>
                                     </select>
                                 {{/ifCond}}
                                 {{#ifCond @index 2}}

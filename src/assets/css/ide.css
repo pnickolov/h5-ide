@@ -6431,7 +6431,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  padding-left: 10px; }
+  padding: 0 5px; }
 .mesos-constraints .multi-ipt-row {
   margin-top: 5px; }
 .mesos-constraints .multi-ipt-row .ipt-controls {

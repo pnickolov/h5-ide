@@ -42,7 +42,7 @@ define ['../base/view'
 
     addHealthCheck: ()->
       $healthList = @$el.find("#mesos-health-checks-list")
-      $newHealthCheck = $healthList.find("li.template").eq(0).clone().show()
+      $newHealthCheck = $healthList.find("li.template").eq(0).clone().show().removeClass("template")
       $newHealthCheck.find('.mesos-health-check-protocol .selection').text('HTTP')
       .end().find('.mesos-health-check-path').val("").show()
       .end().find('.mesos-health-check-port-index').val("0").show()

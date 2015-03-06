@@ -3,6 +3,21 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
 
   COLORSET = ["#1abc9c","#2ecc71","#3498db","#9b59b6","#34495e","#16a085","#27ae60","#2980b9","#8e44ad","#2c3e50","#f1c40f","#e67e22","#e74c3c","#f39c12","#d35400","#c0392b","#7f8c8d","#95a5a6"]
 
+  doRemoveEmptyArray = ( obj ) ->
+      if !_.isObject obj then return
+      _.each obj, ( value, key ) ->
+        if _.isArray( obj[ key ] )
+          unless obj[ key ].length
+            delete obj[ key ]
+        else
+          doRemoveEmptyArray obj[ key ]
+
+  removeEmptyArray = ( obj ) ->
+    cloneData = $.extend true, {}, obj
+    doRemoveEmptyArray cloneData
+    cloneData
+
+
   Model = ComplexResModel.extend {
 
     type : constant.RESTYPE.MRTHAPP
@@ -30,18 +45,20 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
 
     serialize : ()->
       console.log @toJSON()
+      resource = {
+        id : @get("name")
+        container: @getContainerJson()
+      }
+      for key in ['cpus', 'mem', 'instances', 'cmd', 'args', 'env', 'ports', 'executor', 'uris', 'constraints', 'healthChecks', 'upgradeStrategy']
+        if @get(key)
+          resource[key] = @get(key)
+
       component =
         uid      : @id
         type     : @type
         toplevel : !@parent()
         color    : @get("color")
-        resource :
-          id : @get("name")
-          container: @getContainerJson()
-
-      for key in ['cpus', 'mem', 'instances', 'cmd', 'args', 'env', 'ports', 'executor', 'uris', 'constraints', 'healthChecks', 'upgradeStrategy']
-        if @get(key)
-          component.resource[key] = @get(key)
+        resource : removeEmptyArray resource
 
       { component : component, layout : @generateLayout() }
 

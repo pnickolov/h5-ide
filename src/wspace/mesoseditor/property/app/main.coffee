@@ -17,13 +17,12 @@ define [ "Design"
             @view.isAppEdit = false
             null
 
-        afterLoadStack : ()->
-
         initApp : ( uid ) ->
             @view = view
             @view.model = Design.instance().component uid
             @view.appData = null
             @view.isAppEdit = false
+            null
 
         initAppEdit : ( uid ) ->
 

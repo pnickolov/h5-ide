@@ -11,6 +11,29 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
     defaults :()->
       color : COLORSET[ Math.round(Math.random()*COLORSET.length) ]
       container: { docker: {}, volumes: [] }
+      cpus: 1.5
+      mem: 256
+      instances: 3
+      cmd: ""
+      args: []
+      env: {}
+      ports: []
+      executor: ""
+      uris: []
+      constraints: []
+      healthChecks: [{
+          path: "/api/health",
+          portIndex: 0,
+          protocol: "HTTP",
+          gracePeriodSeconds: 300,
+          intervalSeconds: 60,
+          timeoutSeconds: 20,
+          maxConsecutiveFailures: 3
+        }]
+      upgradeStrategy: {
+        minimumHealthCapacity: 0.5,
+        maximumOverCapacity: 0.2
+      }
 
     path : ()->
       path = []
@@ -21,6 +44,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
       ("/" + path.join("/")).replace(/\/+/g,"/")
 
     serialize : ()->
+      console.log @toJSON()
       component =
         uid      : @id
         type     : @type
@@ -39,6 +63,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
     handleTypes : constant.RESTYPE.MRTHAPP
 
     deserialize : ( data, layout_data, resolve )->
+      console.log data
       new Model({
         id     : data.uid
         name   : data.resource.id

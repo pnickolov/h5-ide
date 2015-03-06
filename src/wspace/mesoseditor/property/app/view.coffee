@@ -12,6 +12,7 @@ define [ '../base/view'
             'click .open-container': 'openContainer'
             'click #mesos-add-health-check': 'addHealthCheck'
             'click .mesos-health-check-item-remove': 'removeHealthCheck'
+            'change .mesos-name': 'updateAttribute'
 
         initialize: ( options ) ->
 
@@ -19,7 +20,6 @@ define [ '../base/view'
             @container = new Container( model: @model ).render()
 
         render: ()->
-            @model.set('healthChecks', [{path: "/path/to/healthcheck", protocol: "HTTP"}])
             @$el.html Tpl @model.toJSON()
             console.log @model.toJSON()
             @model.get 'name'
@@ -40,7 +40,9 @@ define [ '../base/view'
             $(evt.currentTarget).parents('li').remove()
             @updateAttribute()
 
-        updateAttribute: ()->
-
+        updateAttribute: (evt)->
+          if evt
+            $target = $(evt.currentTarget)
+            @model.set $target.data('bind'), $target.val()
 
     new view()

@@ -7,26 +7,26 @@
         <section class="property-control-group clearfix">
             <label class="left" for="property-mesos-name">ID</label>
             <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
-            <input class="input mesos-name" type="text" value="{{name}}" id="property-mesos-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+            <input class="input mesos-name" type="text" value="{{name}}" data-bind="name" id="property-mesos-name" maxlength="255" data-ignore="true" data-required-rollback="true"/>
         </section>
         <section class="property-control-group" data-bind="true">
             <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
-            <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
+            <textarea id="property-res-desc" data-type="ascii" data-ignore="true" data-bind="desc" class="input">{{description}}</textarea>
         </section>
         <section class="property-control-group" data-bind="true">
             <label for="property-mesos-cups">CPUs</label>
             <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
-            <input class="input mesos-cpus" type="text" value="{{cpus}}" id="property-mesos-cups" data-required-rollback="true"/>
+            <input class="input mesos-cpus" type="text" value="{{cpus}}" id="property-mesos-cups" data-bind="cpus" data-required-rollback="true"/>
         </section>
         <section class="property-control-group clearfix">
             <label class="left" for="property-mesos-memory">Memory (MB)</label>
             <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
-            <input class="input mesos-cpus" type="text" value="{{memory}}" id="property-mesos-memory" data-required-rollback="true"/>
+            <input class="input mesos-mem" type="text" value="{{memory}}" id="property-mesos-memory" data-bind="mem" data-required-rollback="true"/>
         </section>
         <section class="property-control-group clearfix">
             <label for="property-mesos-instances">Instances</label>
             <span class="required-input right">{{ i18n "PROP.LBL_REQUIRED" }}</span>
-            <input class="input mesos-cpus" type="text" value="{{instances}}" id="property-mesos-instances" data-required-rollback="true"/>
+            <input class="input mesos-instances" type="text" value="{{instances}}" id="property-mesos-instances" data-bind="instances" data-required-rollback="true"/>
         </section>
     </div>
     <div class="option-group-head expand" id="mesos-execution-settings">Execution Settings</div>
@@ -150,19 +150,19 @@
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Grace Period Seconds</label>
-                    <input class="input mesos-health-check-grace-period tooltip parsley-validated" type="text" value="{{gracePeriod}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-grace-period tooltip parsley-validated" type="text" value="{{gracePeriodSeconds}}" data-ignore="true"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Interval Seconds</label>
-                    <input class="input mesos-health-check-interval tooltip parsley-validated" type="text" value="{{interval}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-interval tooltip parsley-validated" type="text" value="{{intervalSeconds}}" data-ignore="true"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Timeout Seconds</label>
-                    <input class="input mesos-health-check-timeout tooltip parsley-validated" type="text" value="{{timeout}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-timeout tooltip parsley-validated" type="text" value="{{timeoutSeconds}}" data-ignore="true"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Max Consecutive Failures</label>
-                    <input class="input mesos-health-check-max-fail tooltip parsley-validated" type="text" value="{{maxFail}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-max-fail tooltip parsley-validated" type="text" value="{{maxConsecutiveFailures}}" data-ignore="true"/>
                 </section>
             </li>
             {{/each}}

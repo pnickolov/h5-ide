@@ -30,6 +30,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
       mem: 256
       instances: 3
       constraints: []
+      version: ''
       upgradeStrategy: {
         minimumHealthCapacity: 0.5,
         maximumOverCapacity: 0.2
@@ -58,6 +59,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
         type     : @type
         toplevel : !@parent()
         color    : @get("color")
+        version  : @get("version")
         resource : removeEmptyArray resource
 
       { component : component, layout : @generateLayout() }
@@ -86,6 +88,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
         container : data.resource.container
         image     : data.resource.container.docker.image
         color     : data.color
+        version   : data.version or ''
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

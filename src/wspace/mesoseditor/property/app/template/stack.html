@@ -39,7 +39,7 @@
                     <li class="item{{#unless isCommand}} selected{{/unless}}" data-id="dedicated">Arguments</li>
                 </ul>
                 <div class="selection-command {{#unless isCommand}}hide{{/unless}}">
-                    <input class="input execution-command" type="text" value="{{command}}"/>
+                    <input class="input execution-command" type="text" value="{{cmd}}"/>
                 </div>
                 <div class="selection-arguments {{#if isCommand}}hide{{/if}}">
                     <div class="multi-input">
@@ -49,8 +49,8 @@
                                 <input class="input" placeholder="argument" type="text" data-name="argument"/>
                             </span>
                         </div>
-                        {{#if arguments.length}}
-                            {{#each arguments}}
+                        {{#if args.length}}
+                            {{#each args}}
                             <div class="multi-ipt-row">
                                 <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                                 <span class="ipt-wrapper">

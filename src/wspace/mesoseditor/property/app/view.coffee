@@ -17,7 +17,9 @@ define [ '../base/view'
             'change .mesos-mem': 'updateAttribute'
             'change .mesos-instances': 'updateAttribute'
             'change #property-res-desc': 'updateAttribute'
-            "click #property-execution-setting .item": "updateAttribute"
+            "change .execution-command": "updateExecutionSetting"
+            'change [data-name="argument"]': "updateExecutionSetting"
+            "OPTION_CHANGE #property-execution-setting": "updateExecutionSetting"
 
         initialize: ( options ) ->
 
@@ -57,5 +59,22 @@ define [ '../base/view'
             if $target.data('bind')
               @model.set $target.data('bind'), $target.val()
 
+
+        updateExecutionSetting: ()->
+          self = @
+          $target = $("#property-execution-setting")
+          # if is execution setting
+          val = $target.find('.selection').text().toLowerCase()
+          $(".selection-command, .selection-arguments").hide()
+          $(".selection-" + val).show()
+          if val is 'command'
+            self.model.set('cmd', $('.execution-command').val())
+            self.model.set('args', [])
+          else
+            args = []
+            $(".multi-ipt-row").not(".template").find('input').each (index,input)->
+              if input.value then args.push(input.value)
+            self.model.set('args', args)
+            self.model.set('cmd', '')
 
     new view()

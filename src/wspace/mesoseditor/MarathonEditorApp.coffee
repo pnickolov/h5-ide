@@ -29,6 +29,8 @@ define [
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
       ])
 
+    diff : ()->
+
   }, {
     canHandle : ( data )->
       if not data.opsModel then return false

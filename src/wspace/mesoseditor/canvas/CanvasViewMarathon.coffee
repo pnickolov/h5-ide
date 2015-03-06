@@ -14,7 +14,7 @@ define [
 
     initialize : ()->
       CanvasView.prototype.initialize.apply this, arguments
-      @$el.addClass("marathon empty").append TplOpsEditor.canvas.placeholder()
+      @$el.toggleClass("empty", @items().length).append TplOpsEditor.canvas.placeholder()
 
     recreateStructure : ()->
       @svg.clear().add([
@@ -26,14 +26,28 @@ define [
 
     appendGroup  : ( svgEl )->
       el = @__appendSvg(svgEl, ".layer_group")
-      @sortGroup()
+      self = @
+      setTimeout (()-> self.sortGroup()), 0
       el
 
     sortGroup : ()->
       # Make sure parent groups are before child groups
       groups = _.filter @items(), (i)-> i.type is constant.RESTYPE.MRTHGROUP
-      groups = _.sortBy groups, (i)->-i.parentCount()
+      groups = _.map _.sortBy(groups, (i)-> i.parentCount()), (i)-> i.$el[0]
+
       console.log( groups )
+
+      parent = $(@svg.node).children(".layer_group")[0]
+      childrens = $(parent).children().splice(0)
+
+      for g, idx in childrens
+        if idx is childrens.length - 1
+          break
+
+        if groups[ idx + 1 ] isnt childrens[ idx + 1 ] and childrens[ idx + 1 ]
+          parent.insertBefore( groups[ idx + 1 ], childrens[ idx ] )
+
+      return
 
     fixConnection : ( coord, initiator, target )->
     hightLightItems : ()->

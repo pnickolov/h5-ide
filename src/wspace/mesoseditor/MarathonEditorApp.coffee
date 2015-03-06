@@ -1,22 +1,22 @@
 
 define [
   "CoreEditorApp"
-  "./MesosViewApp"
+  "./MarathonViewApp"
   "./model/DesignMarathon"
-  "./MesosEditorStack"
+  "./MarathonEditorStack"
   "OpsModel"
   "CloudResources"
   "constant"
 
   "./MarathonDeps"
-], ( CoreEditorApp, AppView, DesignMesos, StackEditor, OpsModel, CloudResources, constant )->
+], ( CoreEditorApp, AppView, DesignMarathon, StackEditor, OpsModel, CloudResources, constant )->
 
   CoreEditorApp.extend {
 
     type : "MarathonEditorApp"
 
     viewClass   : AppView
-    designClass : DesignMesos
+    designClass : DesignMarathon
 
     fetchData : ()->
       self = @

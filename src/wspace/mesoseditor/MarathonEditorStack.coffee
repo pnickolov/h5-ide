@@ -2,14 +2,14 @@
 define [
   "CoreEditor"
   "OpsModel"
-  "./MesosViewStack"
+  "./MarathonViewStack"
   "./model/DesignMarathon"
   "CloudResources"
   "constant"
   "Credential"
 
   "./MarathonDeps"
-], ( CoreEditor, OpsModel, StackView, DesignMesos, CloudResources, constant, Credential )->
+], ( CoreEditor, OpsModel, StackView, DesignMarathon, CloudResources, constant, Credential )->
 
 
   ###
@@ -20,7 +20,7 @@ define [
     type : "MarathonEditorStack"
 
     viewClass   : StackView
-    designClass : DesignMesos
+    designClass : DesignMarathon
 
     title : ()-> (@design || @opsModel).get("name") + " - stack"
 

@@ -37,7 +37,6 @@ define ['../base/view'
 
       @$el.html Tpl data
       @model.get 'name'
-      @updateHealthCheck()
 
     addHealthCheck: ()->
       $healthList = @$el.find("#mesos-health-checks-list")

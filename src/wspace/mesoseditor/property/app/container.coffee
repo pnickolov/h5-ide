@@ -20,7 +20,7 @@ define [ './template/container'
             modalOptions =
                 template        : @el
                 title           : 'Container Settings'
-                width           : '855px'
+                width           : '555px'
                 height          : '473px'
                 compact         : true
                 mode            : 'panel'

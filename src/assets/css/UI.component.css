@@ -466,7 +466,6 @@ pre {
   margin-top: 0;
   position: fixed;
   height: 100%;
-  width: 855px;
   right: -50%;
   -webkit-transition: right 0.3s, opacity 0.3s;
   -moz-transition: right 0.3s, opacity 0.3s;

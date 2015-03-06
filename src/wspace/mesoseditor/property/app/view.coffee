@@ -13,6 +13,11 @@ define [ '../base/view'
             'click #mesos-add-health-check': 'addHealthCheck'
             'click .mesos-health-check-item-remove': 'removeHealthCheck'
             'change .mesos-name': 'updateAttribute'
+            'change .mesos-cpus': 'updateAttribute'
+            'change .mesos-mem': 'updateAttribute'
+            'change .mesos-instances': 'updateAttribute'
+            'change #property-res-desc': 'updateAttribute'
+            "click #property-execution-setting .item": "updateAttribute"
 
         initialize: ( options ) ->
 
@@ -20,8 +25,12 @@ define [ '../base/view'
             @container = new Container( model: @model ).render()
 
         render: ()->
-            @$el.html Tpl @model.toJSON()
-            console.log @model.toJSON()
+            data = @model.toJSON()
+
+            #Switch Command/Arguments
+            data.isCommand = data.cmd and not data.args?.length || true
+
+            @$el.html Tpl data
             @model.get 'name'
 
         addHealthCheck: ()->
@@ -43,6 +52,10 @@ define [ '../base/view'
         updateAttribute: (evt)->
           if evt
             $target = $(evt.currentTarget)
-            @model.set $target.data('bind'), $target.val()
+
+            # update data-bind attr directly
+            if $target.data('bind')
+              @model.set $target.data('bind'), $target.val()
+
 
     new view()

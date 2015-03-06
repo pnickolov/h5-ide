@@ -19,11 +19,15 @@ define ['../base/view'
       data = @model.toJSON()
       console.log @model.toJSON()
       console.log @appData
+      data.hideExecutionSettings = not(data.command or data.args?.length or data.env or data.ports?.length or data.ports?.length or data.executor or data.uris?.length)
 
+      data.hideAdvancedDetail = not(data.deployments?.length or data.backoffSeconds or data.backoffFactor or data.maxLaunchDelaySeconds or data.tasksRunning or data.tasksStaged)
       #Switch Command/Arguments
       data.isCommand = data.cmd and not data.args?.length || true
 
       @$el.html Tpl data
       @model.get 'name'
+
+
 
   new view()

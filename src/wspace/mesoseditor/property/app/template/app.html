@@ -19,6 +19,7 @@
         </dl>
     </div>
 
+    {{#unless hideExecutionSettings}}
     <div class="option-group-head expand" id="mesos-execution-settings">Execution Settings</div>
     <div class="option-group" data-bind="true">
         <dl class="dl-vertical">
@@ -31,19 +32,25 @@
                 <dd>{{@key}}: {{@value}}</dd>
             {{/each}}
             {{/if}}
+            {{#if ports.length}}
             <dt>Ports</dt>
             {{#each ports}}<dd>{{this}}</dd>{{/each}}
+            {{/if}}
             {{#if executor}}
                 <dt>Executor</dt>
                 <dd>{{executor}}</dd>
             {{/if}}
+            {{#if uris.length}}
+            <dt>URIs</dt>
             {{#each uris}}
-                <dt>URIs</dt>
                 <dd>{{this}}</dd>
             {{/each}}
+            {{/if}}
         </dl>
     </div>
+    {{/unless}}
 
+    {{#if constraints.length}}
     <div class="option-group-head expand" id="mesos-constraints">Constraints</div>
     <div class="option-group" data-bind="true">
         <dl class="dl-vertical">
@@ -53,7 +60,9 @@
             {{/each}}
         </dl>
     </div>
+    {{/if}}
 
+    {{#if healthChecks.length}}
     <div class="option-group-head expand" id="mesos-health-checks">Health Checks</div>
     <div class="option-group" data-bind="true">
         {{#each healthChecks}}
@@ -87,36 +96,51 @@
         </dl>
         {{/each}}
     </div>
+    {{/if}}
 
     <div class="option-group-head expand" id="mesos-update-strategy">Update Strategy</div>
     <div class="option-group" data-bind="true">
         <dl class="dl-vertical">
             <dt>Minimum Health Capacity  </dt>
-            <dd>{{minimumHealthCapacity}}</dd>
+            <dd>{{upgradeStrategy.minimumHealthCapacity}}</dd>
             <dt>Maximum Over Capacity</dt>
-            <dd>{{maximumOverCapacity}}</dd>
+            <dd>{{upgradeStrategy.maximumOverCapacity}}</dd>
         </dl>
     </div>
 
+    {{#unless hideAdvancedDetail}}
     <div class="option-group-head expand" id="mesos-advanced-details  ">Advanced Details</div>
     <div class="option-group" data-bind="true">
 
         <dl class="dl-vertical">
+            {{#if deployments.length}}
             <dt>Deployments</dt>
             {{#each deployments}}<dd>id: {{id}}</dd>{{/each}}
+            {{/if}}
+            {{#if backoffSeconds}}
             <dt>Backoff Seconds</dt>
             <dd>{{backoffSeconds}}</dd>
+            {{/if}}
+            {{#if backoffFactor}}
             <dt>Backoff Factor</dt>
             <dd>{{backoffFactor}}</dd>
+            {{/if}}
+            {{#if maxLaunchDelaySeconds}}
             <dt>Max Launch Delay Seconds</dt>
             <dd>{{maxLaunchDelaySeconds}}</dd>
+            {{/if}}
+            {{#if tasksRunning}}
             <dt>Tasks Running</dt>
             <dd>{{tasksRunning}}</dd>
+            {{/if}}
+            {{#if tasksStaged}}
             <dt>Tasks Staged</dt>
             <dd>{{tasksStaged}}</dd>
+            {{/if}}
         </dl>
 
     </div>
+    {{/unless}}
 
 </article>
 

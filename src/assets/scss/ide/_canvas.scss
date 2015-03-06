@@ -969,6 +969,10 @@ marker {
   .node-label {
     text-anchor: initial;
   }
+  .cpu-label, .memory-label {
+    font-size : 12px;
+    fill : red;
+  }
 }
 
 .MarathonDepIn, .MarathonDepOut {

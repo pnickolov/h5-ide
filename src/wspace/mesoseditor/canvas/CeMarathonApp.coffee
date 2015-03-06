@@ -1,8 +1,6 @@
 
 define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "CanvasView" ], ( CanvasElement, constant, CanvasManager, lang, CanvasView )->
 
-  PREDEF_APP_COLORS = ['#f26c4f', '#7dc476', '#00bef2', '#615ca8', '#fcec00', '#ff9900', '#ffcc00', '#ffcc99', '#ff99ff', '#00cccc', '#99cc99', '#9999ff', '#ffff99', '#ff00ff', '#663300', '#336600', '#660066', '#003300', '#0000ff', '#666600']
-
   CanvasElement.extend {
     ### env:dev ###
     ClassName : "CeMarathonApp"
@@ -16,10 +14,6 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
       "app-dep-in"  : [ 5,   38, CanvasElement.constant.PORT_LEFT_ANGLE ]
       "app-dep-out" : [ 170, 38, CanvasElement.constant.PORT_RIGHT_ANGLE ]
     }
-
-    initialize : ()->
-      this.color = PREDEF_APP_COLORS[ Math.round(Math.random()*PREDEF_APP_COLORS.length) ]
-      CanvasElement.prototype.initialize.apply this, arguments
 
     iconUrl : ()-> "ide/ami/ami-not-available.png"
 
@@ -48,17 +42,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         svg.rect( width-2, 1  ).move( portSize + 4, 41 ).classes("marathon-app-line")
         svg.use( "marathon_app_title" ).attr({
           "class" : "marathon-app-ceiling"
-          "fill"  : @color
+          "fill"  : @model.get("color")
         })
 
         svg.image( MC.IMG_URL + @iconUrl(), 32, 32 ).move( 20, 20 )
 
-        svg.text("").move(45, 29).classes('node-label')
+        svg.text("").move(45, 32).classes('node-label')
 
-        svg.image( MC.IMG_URL + @iconUrl(), 32, 32 ).move( 20, 50 )
+        svg.image( MC.IMG_URL + "ide/icon-mrth/cvs-appicon.png", 120, 32 ).move( 20, 42 )
 
-        svg.text("123").move(45, 29).classes('cpu-label')
-        svg.text("245").move(45, 29).classes('memory-label')
+        svg.plain("123").move(50,  62).classes('cpu-label')
+        svg.plain("245").move(125, 62).classes('memory-label')
 
         svg.use("port_diamond").attr({
           'class'        : 'port port-blue tooltip'
@@ -88,6 +82,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
 
     label : ()-> @model.get('name')
     labelWidth : ()-> 110
+
 
     # Update the svg element
     render : ()->

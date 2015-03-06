@@ -41,6 +41,8 @@ define [ "constant",
 
       { component : component, layout : @generateLayout() }
 
+    isReparentable : ( newParent )-> !(newParent and _.find( newParent.children(), (r)-> r.type is constant.RESTYPE.MRTHAPP ))
+
   }, {
 
     handleTypes : constant.RESTYPE.MRTHGROUP

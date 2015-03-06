@@ -26,11 +26,14 @@ define [
 
       # Watch model's change
       @listenTo @model, "change:name", @render
+      @listenTo @model, "change:__parent", @__updateTopLevel
 
       @listenModelEvents()
 
       @ensureStickyPos()
       return
+
+    __updateTopLevel : ()-> @canvas.markItemAsTopLevel( @, @isTopLevel() )
 
     listenModelEvents : ()->
 

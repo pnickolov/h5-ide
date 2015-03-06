@@ -8,7 +8,7 @@ define [
   "constant"
   "Credential"
 
-  "./MesosDeps"
+  "./MarathonDeps"
 ], ( CoreEditor, OpsModel, StackView, DesignMesos, CloudResources, constant, Credential )->
 
 

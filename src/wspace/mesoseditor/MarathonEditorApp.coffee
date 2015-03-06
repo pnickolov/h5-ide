@@ -2,18 +2,18 @@
 define [
   "CoreEditorApp"
   "./MesosViewApp"
-  "./model/DesignMesos"
+  "./model/DesignMarathon"
   "./MesosEditorStack"
   "OpsModel"
   "CloudResources"
   "constant"
 
-  "./MesosDeps"
+  "./MarathonDeps"
 ], ( CoreEditorApp, AppView, DesignMesos, StackEditor, OpsModel, CloudResources, constant )->
 
   CoreEditorApp.extend {
 
-    type : "MesosEditorApp"
+    type : "MarathonEditorApp"
 
     viewClass   : AppView
     designClass : DesignMesos

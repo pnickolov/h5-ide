@@ -25,6 +25,10 @@ define [
       el
 
     sortGroup : ()->
+      # Make sure parent groups are before child groups
+      groups = _.filter @items(), (i)-> i.type is constant.RESTYPE.MRTHGROUP
+      groups = _.sortBy groups, (i)->-i.parentCount()
+      console.log( groups )
 
     fixConnection : ( coord, initiator, target )->
     hightLightItems : ()->

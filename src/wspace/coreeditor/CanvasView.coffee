@@ -394,6 +394,8 @@ define [
       @__toAddLines = null
       return
 
+    items : ()-> _.uniq(_.values( @__itemMap ))
+
     addSvgItem : ()->
       SvgItemClass = CanvasElement.getClassByType( "SVG" )
       item = new SvgItemClass({canvas:@})

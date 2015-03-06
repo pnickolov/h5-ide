@@ -75,4 +75,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
       size = @size()
 
       x <= px and y <= py and x + size.width + 4 >= px and y + size.height >= py
+
+    parentCount : ()->
+      c = 0
+      a = @parent()
+      while a
+        ++c
+        a = a.parent()
+      c
   }

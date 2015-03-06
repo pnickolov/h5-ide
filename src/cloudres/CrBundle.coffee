@@ -15,5 +15,7 @@ define [
   "./openstack/CrClnCommonRes"
 
   "./mesos/CrClnDockerImage"
+  "./mesos/CrClnMarathonApp"
 ], ( CloudResources )->
   CloudResources
+

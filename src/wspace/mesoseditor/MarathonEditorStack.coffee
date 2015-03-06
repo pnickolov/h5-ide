@@ -3,7 +3,7 @@ define [
   "CoreEditor"
   "OpsModel"
   "./MesosViewStack"
-  "./model/DesignMesos"
+  "./model/DesignMarathon"
   "CloudResources"
   "constant"
   "Credential"

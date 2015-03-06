@@ -6,11 +6,11 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
   doRemoveEmptyArray = ( obj ) ->
       if !_.isObject obj then return
       _.each obj, ( value, key ) ->
-        if _.isArray( obj[ key ] )
-          unless obj[ key ].length
+        if _.isArray( value )
+          unless value.length
             delete obj[ key ]
         else
-          doRemoveEmptyArray obj[ key ]
+          doRemoveEmptyArray value
 
   removeEmptyArray = ( obj ) ->
     cloneData = $.extend true, {}, obj
@@ -84,7 +84,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
         parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null
 
         container : data.resource.container
-        image     : data.resource.container.image
+        image     : data.resource.container.docker.image
         color     : data.color
 
         x : layout_data.coordinate[0]

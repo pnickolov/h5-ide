@@ -3,11 +3,9 @@ define [ "Design"
          "../base/main"
          "./view"
          "constant"
+         "CloudResources"
          "event"
-], ( Design,
-     PropertyModule,
-     view,
-     constant ) ->
+], ( Design, PropertyModule, view, constant, CloudResources ) ->
 
     PropertyModule.extend {
 
@@ -22,6 +20,10 @@ define [ "Design"
         afterLoadStack : ()->
 
         initApp : ( uid ) ->
+            @view = view
+            @view.model = Design.instance().component uid
+            @view.appData = null
+            @view.isAppEdit = false
 
         initAppEdit : ( uid ) ->
 

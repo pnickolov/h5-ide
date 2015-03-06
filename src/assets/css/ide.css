@@ -6460,6 +6460,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   top: 43px;
   left: 0;
   right: 0; }
+.container-settings .dl-vertical {
+  margin: 10px 20px; }
 
 .open-container {
   margin: 10px auto;

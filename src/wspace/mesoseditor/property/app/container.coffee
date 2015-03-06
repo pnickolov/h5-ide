@@ -1,11 +1,11 @@
 define [ './template/container'
+         './template/containerApp'
          'i18n!/nls/lang.js'
          'constant'
          'UI.modalplus'
-], ( Tpl, lang, constant, Modal ) ->
+], ( Tpl, TplApp, lang, constant, Modal ) ->
 
     Backbone.View.extend
-        id: 'modal-option-group'
         className: 'container-settings'
         tagName: 'form'
         events:
@@ -31,8 +31,13 @@ define [ './template/container'
             @modal.on 'confirm', @save, @
 
         render: () ->
-            @$el.html Tpl @model.get 'container'
-            @model.get 'name'
+            # App Mode
+            if @appData
+                @$el.html TplApp @appData.container
+
+            # Stack Model
+            else
+                @$el.html Tpl @model.get 'container'
 
         remove: () ->
             @modal?.close()

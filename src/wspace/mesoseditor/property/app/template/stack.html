@@ -173,11 +173,11 @@
     <div class="option-group" data-bind="true">
         <section class="property-control-group clearfix">
             <label class="left">Minimum Health Capacity</label>
-            <input class="input tooltip parsley-validated" type="text" placeholder="0.5" value="{{minHealthCapacity}}"/>
+            <input class="input tooltip parsley-validated mesos-update-min-health-capacity" type="text" placeholder="0.5" data-bind="minimumHealthCapacity" value="{{upgradeStrategy.minimumHealthCapacity}}"/>
         </section>
         <section class="property-control-group clearfix">
             <label class="left">Maximum Over Capacity</label>
-            <input class="input tooltip parsley-validated" type="text" placeholder="0.2" value="{{maxOverCapacity}}"/>
+            <input class="input tooltip parsley-validated mesos-update-max-over-capacity" type="text" placeholder="0.2" data-bind="maximumOverCapacity" value="{{upgradeStrategy.maximumOverCapacity}}"/>
         </section>
     </div>
 </article>

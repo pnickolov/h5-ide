@@ -17,6 +17,8 @@ define [ '../base/view'
             'change .mesos-mem': 'updateAttribute'
             'change .mesos-instances': 'updateAttribute'
             'change #property-res-desc': 'updateAttribute'
+            'change .mesos-update-min-health-capacity': "updateAttribute"
+            'change .mesos-update-max-over-capacity': "updateAttribute"
             "change .execution-command": "updateExecutionSetting"
             'change [data-name="argument"]': "updateExecutionSetting"
             "OPTION_CHANGE #property-execution-setting": "updateExecutionSetting"
@@ -57,6 +59,11 @@ define [ '../base/view'
 
             # update data-bind attr directly
             if $target.data('bind')
+
+              if $target.data('bind') in ["maximumOverCapacity", 'minimumHealthCapacity']
+                @model.set("upgradeStrategy", @model.get('upgradeStrategy') || {})
+                @model.set("upgradeStrategy." + $target.data('bind'), $target.val())
+
               @model.set $target.data('bind'), $target.val()
 
 

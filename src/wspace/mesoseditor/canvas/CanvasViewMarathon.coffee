@@ -3,13 +3,18 @@ define [
   "CanvasView"
   "constant"
   "i18n!/nls/lang.js"
+  "../template/TplOpsEditor"
   "Design"
-], ( CanvasView, constant, lang, Design )->
+], ( CanvasView, constant, lang, TplOpsEditor, Design )->
 
   isPointInRect = ( point, rect )->
     rect.x1 <= point.x and rect.y1 <= point.y and rect.x2 >= point.x and rect.y2 >= point.y
 
   CanvasView.extend {
+
+    initialize : ()->
+      CanvasView.prototype.initialize.apply this, arguments
+      @$el.addClass("marathon empty").append TplOpsEditor.canvas.placeholder()
 
     recreateStructure : ()->
       @svg.clear().add([
@@ -35,6 +40,14 @@ define [
 
     appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
     appendline   : ( svgEl )-> @__appendSvg(svgEl, ".layer_line")
+
+    addItem : ()->
+      @$el.removeClass("empty")
+      CanvasView.prototype.addItem.apply this, arguments
+
+    removeItem : ()->
+      CanvasView.prototype.removeItem.apply this, arguments
+      @$el.toggleClass("empty", @items().length)
 
     errorMessageForDrop : ( type )->
       switch type

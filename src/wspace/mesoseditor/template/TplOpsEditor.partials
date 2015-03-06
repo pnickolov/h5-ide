@@ -87,3 +87,6 @@
         <div class="modal-text-major">{{i18n "IDE.CONTENT_OPS_CONFLICT"}}</div>
     </div>
 </div>
+
+<!-- {{canvas.placeholder}} -->
+<div class="marathon-cvs-ph">Drop stuff to create stack.</div>

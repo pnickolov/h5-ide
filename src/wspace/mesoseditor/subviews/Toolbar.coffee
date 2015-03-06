@@ -262,8 +262,9 @@ define [
         @modal.toggleConfirm true
         @json = @workspace.design.serialize usage: 'runStack'
         @json.name = appNameDom.val()
+        @json.host = appUrlDom.val()
 
-        @workspace.opsModel.run(@json, appNameDom.val(), appUrlDom.val()).then ( ops )->
+        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
           self.modal.close()
           App.loadUrl ops.url()
         , (err)->

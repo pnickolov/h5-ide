@@ -184,6 +184,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         layout        : @__jsonData.layout
         agent         : @__jsonData.agent
         stack_id      : @__jsonData.stack_id
+        host          : @__jsonData.host
       }
 
     # Use this method to load the newest json.

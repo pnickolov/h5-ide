@@ -102,29 +102,6 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
 
       json
 
-    run : ( toRunJson, appName, url )->
-      # Ensure the json has correct id.
-      toRunJson.id = ""
-      toRunJson.stack_id = @get("id")
-      toRunJson.host = url
-
-      project = @project()
-      ApiRequest("stack_run",{
-        region_name : toRunJson.region
-        stack       : toRunJson
-        app_name    : appName
-        key_id      : @credentialId()
-      }).then ( res )->
-        project.apps().add new OpsModel({
-          name       : appName
-          requestId  : res[0]
-          state      : OpsModel.State.Initializing
-          region     : toRunJson.region
-          provider   : toRunJson.provider
-          usage      : toRunJson.usage
-          updateTime : +(new Date())
-        })
-
   }, {
     supportedProviders : ["docker::marathon"]
   }

@@ -31,7 +31,7 @@ define [
 
       jobs = [
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
-        # CloudResources( credId, constant.RESTYPE.DOCKERIMAGE, region ).fetch()
+        CloudResources( credId, constant.RESTYPE.DOCKERIMAGE, region ).fetch()
       ]
 
       Q.all(jobs)

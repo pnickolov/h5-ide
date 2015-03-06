@@ -9,12 +9,15 @@
         </li>
     </ul>
     <div class="resource-list-head">Docker Container</div>
-    <ul class="nano-content resource-list-ami">
-        <li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": "{{AllocatedStorage}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
-          <div class="resource-icon-dbsnapshot">
-              <img src="/assets/images/ide/icon/" width="32" height="23">
-          </div>
-          MySQL
-        </li>
-    </ul>
+    <ul class="nano-content resource-list-docker-image"></ul>
 </section>
+
+<!-- {{docker_image}} -->
+{{#each this}}
+<li class="resource-item dbsnapshot bubble" data-date="{{SnapshotCreateTime}}" data-engine="{{EngineVersion}}" data-storge="{{AllocatedStorage}}" data-type="DBINSTANCE" data-option='{"engine":"{{Engine}}", "snapshotId": "{{DBSnapshotIdentifier}}","allocatedStorage": "{{AllocatedStorage}}" }' data-bubble-template="resPanelDbSnapshot" data-bubble-data='{"id":"{{DBSnapshotIdentifier}}","region":"{{../region}}"}'>
+  <div class="resource-icon-dbsnapshot">
+      <img src="/assets/images/ide/icon/" width="32" height="23">
+  </div>
+  {{name}}
+</li>
+{{/each}}

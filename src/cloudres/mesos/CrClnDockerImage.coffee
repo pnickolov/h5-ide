@@ -15,12 +15,11 @@ define [
 
     doFetch : ()-> @sendRequest("marathon_images")
     parseFetchData : ( data )->
-      data = data.DescribeDBSnapshotsResponse.DescribeDBSnapshotsResult.DBSnapshots?.DBSnapshot || []
 
-      if not _.isArray( data ) then data = [data]
+      data = data?.docker_hub or []
 
       for i in data
-        i.id = i.DBSnapshotIdentifier
+        i.id = i.name
 
       data
   }

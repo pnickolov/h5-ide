@@ -21,6 +21,7 @@ define [ "Design"
         initApp : ( uid ) ->
             @view = appView
             @model = Design.instance().component uid
+            @jsonData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.MRTHAPP, Design.instance().serialize().id )
             @view.appData = {}
             @view.isAppEdit = false
             null

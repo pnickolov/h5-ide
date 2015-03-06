@@ -12,7 +12,7 @@
 
 <!-- {{app}} -->
 <article>
-    <div class="option-group-head expand">Group Details</div>
+    <div class="option-group-head expand">Deployment Details</div>
     <div class="option-group" data-bind="true">
         <dl class="dl-vertical">
             <dt>Deployment Name</dt>

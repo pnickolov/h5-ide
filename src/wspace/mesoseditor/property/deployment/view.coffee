@@ -18,7 +18,7 @@ define [ '../base/view'
             if @mode is 'stack'
                 @$el.html Tpl.stack(@model.toJSON())
             else
-                @$el.html Tpl.app()
+                @$el.html Tpl.app(@model.toJSON())
             @model.get('name')
 
         changeName: (event) ->

@@ -46,13 +46,21 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
         color    : @get("color")
         resource :
           id : @get("name")
-          container: _.extend { type: 'DOCKER' }, @get("container")
+          container: @getContainerJson()
 
       for key in ['cpus', 'mem', 'instances', 'cmd', 'args', 'env', 'ports', 'executor', 'uris', 'constraints', 'healthChecks', 'upgradeStrategy']
         if @get(key)
           component.resource[key] = @get(key)
 
       { component : component, layout : @generateLayout() }
+
+    getContainerJson: ->
+      _.extend { type: 'DOCKER' }, @get("container"), docker: { image: @get( 'image' ) }
+
+    container: ->
+      c = @get( 'container' )
+      c.docker.image = @get 'image'
+      c
 
     isReparentable : ( newParent )-> !(newParent and _.find( newParent.children(), (r)-> r.type is constant.RESTYPE.MRTHGROUP ))
 
@@ -67,8 +75,9 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
         name   : data.resource.id
         parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null
 
-        container: data.resource.containers
-        color : data.color
+        container : data.resource.container
+        image     : data.resource.container.image
+        color     : data.color
 
         x : layout_data.coordinate[0]
         y : layout_data.coordinate[1]

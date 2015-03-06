@@ -37,7 +37,7 @@ define [ './template/container'
 
             # Stack Model
             else
-                @$el.html Tpl @model.get 'container'
+                @$el.html Tpl @model.container()
 
         remove: () ->
             @modal?.close()

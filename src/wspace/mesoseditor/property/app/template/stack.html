@@ -140,29 +140,33 @@
                         </ul>
                     </div>
                 </section>
-                <section class="property-control-group clearfix">
+                <section class="property-control-group health-check-option health-check-path clearfix">
                     <label class="left">Path</label>
-                    <input class="input mesos-health-check-path tooltip parsley-validated" type="text" placeholder="/api/haelth" data-ignore="true" data-required="true" value="{{path}}">
+                    <input class="input mesos-health-check-path tooltip parsley-validated" type="text" placeholder="/api/haelth" data-ignore="true" data-required="true" value="{{path}}" data-bind="path">
                 </section>
-                <section class="property-control-group clearfix">
+                <section class="property-control-group health-check-option hide health-check-command clearfix">
+                    <label class="left">Command</label>
+                    <input class="input mesos-health-check-command tooltip parsley-validated" type="text" placeholder="" data-ignore="true" data-required="true" value="{{command.value}}" data-bind="command">
+                </section>
+                <section class="property-control-group health-check-option health-check-port-index clearfix">
                     <label class="left">Port Index</label>
-                    <input class="input mesos-health-check-port-index tooltip parsley-validated" type="text" value="{{portIndex}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-port-index tooltip parsley-validated" type="text" value="{{portIndex}}" data-ignore="true" data-bind="portIndex"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Grace Period Seconds</label>
-                    <input class="input mesos-health-check-grace-period tooltip parsley-validated" type="text" value="{{gracePeriodSeconds}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-grace-period tooltip parsley-validated" type="text" value="{{gracePeriodSeconds}}" data-ignore="true" data-bind="gracePeriodSeconds"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Interval Seconds</label>
-                    <input class="input mesos-health-check-interval tooltip parsley-validated" type="text" value="{{intervalSeconds}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-interval tooltip parsley-validated" type="text" value="{{intervalSeconds}}" data-ignore="true" data-bind="intervalSeconds"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Timeout Seconds</label>
-                    <input class="input mesos-health-check-timeout tooltip parsley-validated" type="text" value="{{timeoutSeconds}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-timeout tooltip parsley-validated" type="text" value="{{timeoutSeconds}}" data-ignore="true" data-bind="timeoutSeconds"/>
                 </section>
                 <section class="property-control-group clearfix">
                     <label class="left">Max Consecutive Failures</label>
-                    <input class="input mesos-health-check-max-fail tooltip parsley-validated" type="text" value="{{maxConsecutiveFailures}}" data-ignore="true"/>
+                    <input class="input mesos-health-check-max-fail tooltip parsley-validated" type="text" value="{{maxConsecutiveFailures}}" data-ignore="true" data-bind="maxConsecutiveFailures"/>
                 </section>
             </li>
             {{/each}}

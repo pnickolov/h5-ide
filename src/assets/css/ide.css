@@ -6426,14 +6426,16 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .syslog-dbinstance .no-data {
   margin-top: 40px; }
 
-.container-settings .container {
-  overflow: auto;
-  padding: 20px 30px; }
 .container-settings .input-item {
   margin-top: 20px;
-  min-height: 33px; }
+  min-height: 33px;
+  line-height: 33px; }
   .container-settings .input-item:first-child {
     margin-top: 0; }
+.container-settings .icon-add {
+  padding-left: 3px; }
+.container-settings .icon-add::before {
+  content: "\F13D"; }
 .container-settings .select3 {
   height: 33px; }
 .container-settings .privileged {
@@ -6446,8 +6448,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   margin: 0 5px; }
 .container-settings .multi-ipt-row:first-child:last-child .icon-del {
   display: block; }
-.container-settings .icon-add::before {
-  content: "\F13D"; }
 .container-settings .input-item .left {
   width: 115px; }
 .container-settings .titles span {
@@ -6456,8 +6456,12 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 215px; }
 .container-settings .port-mappings .titles span {
   width: 139px; }
-.container-settings .container.optiongroup {
+.container-settings .container {
+  position: absolute;
+  overflow: auto;
+  padding: 20px 30px;
   top: 43px;
+  bottom: 60px;
   left: 0;
   right: 0; }
 .container-settings .dl-vertical {

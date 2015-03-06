@@ -48,6 +48,12 @@ define [
       else
         btns = ["BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle"]
 
+      tpl = ""
+      for btn in btns
+        tpl += OpsEditorTpl.toolbar[btn]()
+
+      @setElement @parent.$el.find(".OEPanelTop").html( tpl )
+
       @updateZoomButtons()
       @updateTbBtns()
 

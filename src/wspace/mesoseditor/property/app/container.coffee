@@ -71,19 +71,21 @@ define [ './template/container'
                 item = {}
                 $(@).find( '.input' ).each ->
                     $input = $ @
+                    value = $input.val()
                     name = $input.data( 'name' )
+
                     if name is 'container'
-                        splits              = name.split '/'
+                        splits              = value.split '/'
                         item.containerPort  = splits[ 0 ]
                         item.protocol       = splits[ 1 ]
 
                     else if name is 'containerPath'
-                        splits              = name.split ':'
+                        splits              = value.split ':'
                         item.containerPath  = splits[ 0 ]
                         item.mode           = splits[ 1 ]
 
                     else
-                        item[ name ] = $input.val()
+                        item[ name ] = value
 
                 data.push item
 

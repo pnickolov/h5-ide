@@ -41,7 +41,8 @@ define [
 
       Q.all([
         App.model.fetchStateModule( stateModule.repo, stateModule.tag )
-        CloudResources( credId, constant.RESTYPE.MRTHAPP, @opsModel.id ).fetch()
+        CloudResources( credId, constant.RESTYPE.MRTHAPP,   @opsModel.id ).fetch()
+        CloudResources( credId, constant.RESTYPE.MRTHGROUP, @opsModel.id ).fetch()
       ])
 
     diff : ()->

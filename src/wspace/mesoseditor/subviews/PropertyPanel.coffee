@@ -11,6 +11,8 @@ define [
   "backbone"
 
   '../property/app/main'
+  '../property/group/main'
+  '../property/dependency/main'
 
 ], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
 
@@ -307,4 +309,3 @@ define [
       @forceShow()
       return
   }
-

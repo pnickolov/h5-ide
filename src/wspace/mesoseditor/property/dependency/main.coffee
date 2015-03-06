@@ -11,9 +11,10 @@ define [ "Design"
 
     PropertyModule.extend {
 
-        handleTypes : [ constant.RESTYPE.MRTHAPP ]
+        handleTypes : [ "MarathonDepIn", "MarathonDepOut" ]
 
         initStack : ( uid )->
+
             @view = view
             @model = Design.instance().component uid
             @view.isAppEdit = false

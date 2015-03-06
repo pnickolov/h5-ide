@@ -4,16 +4,14 @@ define [ "Design"
          "./view"
          "constant"
          "event"
-], ( Design,
-     PropertyModule,
-     view,
-     constant ) ->
+], ( Design, PropertyModule, view, constant ) ->
 
     PropertyModule.extend {
 
-        handleTypes : [ constant.RESTYPE.MRTHAPP ]
+        handleTypes : [ constant.RESTYPE.MRTHGROUP ]
 
         initStack : ( uid )->
+
             @view = view
             @model = Design.instance().component uid
             @view.isAppEdit = false

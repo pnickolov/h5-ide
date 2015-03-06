@@ -61,7 +61,7 @@ define [
 
     removeItem : ()->
       CanvasView.prototype.removeItem.apply this, arguments
-      @$el.toggleClass("empty", @items().length)
+      @$el.toggleClass("empty", !@items().length)
 
     errorMessageForDrop : ( type )->
       switch type

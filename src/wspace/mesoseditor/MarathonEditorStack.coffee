@@ -17,7 +17,7 @@ define [
   ###
   CoreEditor.extend {
 
-    type : "MesosEditorStack"
+    type : "MarathonEditorStack"
 
     viewClass   : StackView
     designClass : DesignMesos

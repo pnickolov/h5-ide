@@ -179,7 +179,7 @@ function fn_generate_coffee() {
     #     mkdir -p ${__TGT_DIR_TEST}
     # fi
 
- 
+
 
     echo "append api..."
     _PUBLIC_API_LIST=""
@@ -307,12 +307,12 @@ function fn_generate_coffee() {
         elif [ "${_CUR_API}" == "images" ]
         then
             _API_NAME="'marathon_${_CUR_API}'"
+            _URL="'/${api_type}/'"
         else
             _API_NAME="'marathon_${_RESOURCE_l}_${_CUR_API}'"
+            _URL="'/${api_type}/${RESOURCE_URL}/'"
         fi
 
-
-        _URL="'/${RESOURCE_URL}/'"
         _API_NAME=`echo ${_API_NAME} | awk '{printf "%-35s", $0}'`
         echo -e "\t\t${_API_NAME} : { type:'${api_type}', url:${_URL},\tmethod:'${_CUR_API}',\tparams:[${_PARAM_LIST}]   }," >> ${OUTPUT_FILE}.js
 
@@ -419,6 +419,7 @@ echo "Use 'git status' or 'git diff' to see the change"
 echo
 echo "Done"
 echo
+
 
 
 

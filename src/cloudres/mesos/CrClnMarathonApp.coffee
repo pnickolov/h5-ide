@@ -20,9 +20,9 @@ define [
         app_id      : @category
       }).then ( data )->
 
-        self.set data[1].apps
 
         # Clear promise, so that next fetch() will send request.
         self.__fetchPromise = null
-        []
+
+        data[1].apps
   }

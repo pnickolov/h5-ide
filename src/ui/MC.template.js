@@ -1676,15 +1676,4 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 TEMPLATE.applyMarathonStack=Handlebars.template(__TEMPLATE__);
 
 
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  
-
-
-  return "<section class=\"marathon-app\">\n\n\n\n</section>";
-  };
-TEMPLATE.marathonApp=Handlebars.template(__TEMPLATE__);
-
-
 return TEMPLATE; });

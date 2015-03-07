@@ -573,6 +573,13 @@ $bp-2: 1280px;
 
   margin-top : 20px;
 
+  &.marathon{
+    height: $dashWrapHeight - 60px;
+    .region-resource-list {
+      height: $dashWrapHeight - 130px;
+    }
+  }
+
   > div {
     width         : 38vw;
     margin        : 0 1vw;

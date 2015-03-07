@@ -246,9 +246,9 @@
                     <div class="selectbox mesos-health-check-protocol">
                         <div class="selection">{{protocol}}</div>
                         <ul class="dropdown">
-                            <li data-id="HTTP" class="item selected">HTTP</li>
-                            <li data-id="TCP" class="item ">TCP</li>
-                            <li data-id="COMMAND" class="item ">Command</li>
+                            <li data-id="HTTP" class="item {{#ifCond protocol "HTTP"}}selected{{/ifCond}}">HTTP</li>
+                            <li data-id="TCP" class="item {{#ifCond protocol "TCP"}}selected{{/ifCond}}">TCP</li>
+                            <li data-id="COMMAND" class="item {{#ifCond protocol "COMMAND"}}selected{{/ifCond}}">COMMAND</li>
                         </ul>
                     </div>
                 </section>

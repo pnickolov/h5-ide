@@ -49,6 +49,7 @@ define ['../base/view'
 
       @$el.html Tpl data
       @model.get 'name'
+      @updateHealthCheck(true)
 
     addHealthCheck: ()->
       $healthList = @$el.find("#mesos-health-checks-list")
@@ -94,26 +95,35 @@ define ['../base/view'
           constraints.push [attribute, operator, value]
       @model.set("constraints", constraints)
 
-    updateHealthCheck     : (evt)->
-      if evt then $target = $(evt.currentTarget)
-      if $target?.hasClass('mesos-health-check-protocol')
-        $scope = $target.parents('li')
-        protocol = $scope.find(".mesos-health-check-protocol").find('.selection').text()
-        if  protocol is 'HTTP'
-          $scope.find(".health-check-option").show()
-          $scope.find(".health-check-command").hide()
-        else if protocol is 'TCP'
-          $scope.find(".health-check-option").hide()
-          $scope.find(".health-check-port-index").show()
+    updateProtocol: ($target)->
+      $scope = $target.parents('li')
+      protocol = $scope.find(".mesos-health-check-protocol").find('.selection').text()
+      if not protocol then return false
+      if  protocol is 'HTTP'
+        $scope.find(".health-check-option").show()
+        $scope.find(".health-check-command").hide()
+      else if protocol is 'TCP'
+        $scope.find(".health-check-option").hide()
+        $scope.find(".health-check-port-index").show()
+      else
+        $scope.find(".health-check-option").hide()
+        $scope.find(".health-check-command").show()
+
+    updateHealthCheck: (evt)->
+      self = @
+      if evt
+        if evt.currentTarget
+          $target = $(evt.currentTarget)
+          @updateProtocol($target)
         else
-          $scope.find(".health-check-option").hide()
-          $scope.find(".health-check-command").show()
+          $("#mesos-health-checks-list li").not(".template").find(".mesos-health-check-protocol").each (index, protocol)->
+            self.updateProtocol $(protocol)
 
       healthChecks = []
 
       @$el.find("#mesos-health-checks-list>li").not(".template").each (index, li)->
         $li = $ li
-        protocol = $li.find('.mesos-health-check-protocol .selection').text()
+        protocol = $li.find('.mesos-health-check-protocol .selection').text().toUpperCase()
         path = $li.find('.mesos-health-check-path').val()
         portIndex = +$li.find(".mesos-health-check-port-index").val()
         gracePeriodSeconds = +$li.find(".mesos-health-check-grace-period").val()

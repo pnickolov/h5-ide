@@ -34,7 +34,9 @@ define ['../base/view'
       'change .mesos-uri'                        : 'updateAdvance'
       'click .mesos-envs .ipt-controls a'        : 'updateAdvance'
       'change #property-res-desc'                : 'updateDescription'
-
+      "change .update-tooltip"                   : "updateTooltip"
+      "keyup .update-tooltip"                    : "updateTooltip"
+      "click .ipt-controls a"                    : "removeEmptyTooltip"
     initialize   : (options) ->
 
     openContainer: ()->
@@ -192,5 +194,14 @@ define ['../base/view'
     updateDescription: ()->
       description = @$el.find("#property-res-desc").val()
       @model.setDescription(description)
+
+    updateTooltip: (evt)->
+      $target = $(evt.currentTarget)
+      $target.attr("data-tooltip", $target.val())
+
+    removeEmptyTooltip: ()->
+      $targets = $("input.update-tooltip")
+      $targets.each (index, target)->
+        $(target).attr("data-tooltip", $(target).val())
 
   new view()

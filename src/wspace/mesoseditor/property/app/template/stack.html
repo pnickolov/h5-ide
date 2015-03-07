@@ -77,8 +77,8 @@
                 <div class="multi-ipt-row">
                     <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
-                    <input class="input mesos-env-key" type="text" value="{{@key}}"/>
-                    <input class="input mesos-env-value" type="text" value="{{this}}"/>
+                    <input class="input mesos-env-key update-tooltip tooltip" type="text" value="{{@key}}" data-tooltip="{{@key}}"/>
+                    <input class="input mesos-env-value update-tooltip tooltip" type="text" value="{{this}}" data-tooltip="{{this}}"/>
                 </span>
                 </div>
             </div>
@@ -87,8 +87,8 @@
                 <div class="multi-ipt-row">
                     <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
-                    <input class="input mesos-env-key" type="text" value=""/>
-                    <input class="input mesos-env-value" type="text" value=""/>
+                    <input class="input mesos-env-key update-tooltip tooltip" type="text" value="" data-tooltip=""/>
+                    <input class="input mesos-env-value update-tooltip tooltip" type="text" value="" data-tooltip=""/>
                 </span>
                 </div>
             </div>
@@ -120,7 +120,7 @@
 
         <section class="property-control-group clearfix">
             <label class="left">Executor</label>
-            <input class="input mesos-executor parsley-validated" type="text" placeholder="" value="{{executor}}" data-bind="path">
+            <input class="input mesos-executor update-tooltip tooltip parsley-validated" type="text" placeholder="" value="{{executor}}" data-bind="path" data-tooltip="{{executor}}">
         </section>
 
         <section class="property-control-group clearfix">
@@ -130,7 +130,7 @@
                 <div class="multi-ipt-row">
                     <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
-                    <input class="input mesos-uri" type="text" value="{{this}}"/>
+                    <input class="input mesos-uri update-tooltip tooltip" type="text" value="{{this}}" data-tooltip="{{this}}"/>
                 </span>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                 <div class="multi-ipt-row">
                     <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
-                    <input class="input mesos-uri" type="text" value=""/>
+                    <input class="input mesos-uri update-tooltip tooltip" type="text" value="" data-tooltip=""/>
                 </span>
                 </div>
             </div>
@@ -157,7 +157,7 @@
                         <span class="ipt-wrapper">
                             {{#each this}}
                                 {{#ifCond @index 0}}
-                                    <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value="{{this}}"/>
+                                    <input class="input mesos-constraints-attribute update-tooltip tooltip" placeholder="attribute" type="text" data-name="argument" value="{{this}}" data-tooltip="{{this}}"/>
                                 {{/ifCond}}
                                 {{#ifCond @index 1}}
                                     <select class="select3 select mesos-constraints-operator" name="operators">
@@ -169,7 +169,7 @@
                                     </select>
                                 {{/ifCond}}
                                 {{#ifCond @index 2}}
-                                    <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value="{{this}}"/>
+                                    <input class="input mesos-constraints-value update-tooltip tooltip" placeholder="value" type="text" data-name="argument" value="{{this}}" data-tooltip="{{this}}"/>
                                 {{/ifCond}}
                             {{/each}}
                         </span>
@@ -178,7 +178,7 @@
                     <div class="multi-ipt-row">
                         <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                             <span class="ipt-wrapper">
-                                <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value=""/>
+                                <input class="input mesos-constraints-attribute update-tooltip tooltip" placeholder="attribute" type="text" data-name="argument" value="" data-tooltip=""/>
                                 <select class="select3 select mesos-constraints-operator" name="operators">
                                     <option value="UNIQUE">UNIQUE</option>
                                     <option value="CLUSTER">CLUSTER</option>
@@ -186,7 +186,7 @@
                                     <option value="LIKE">LIKE</option>
                                     <option value="UNLIKE">UNLIKE</option>
                                 </select>
-                                <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value=""/>
+                                <input class="input mesos-constraints-value update-tooltip tooltip" placeholder="value" type="text" data-name="argument" value="" data-tooltip=""/>
                             </span>
                     </div>
                 {{/each}}
@@ -215,7 +215,7 @@
                 </section>
                 <section class="property-control-group health-check-option hide health-check-command clearfix">
                     <label class="left">Command</label>
-                    <input class="input mesos-health-check-command tooltip parsley-validated" type="text" placeholder="" value="{{command.value}}" data-bind="command">
+                    <input class="input mesos-health-check-command update-tooltip tooltip parsley-validated" type="text" placeholder="" value="{{command.value}}" data-bind="command" data-tooltip="{{command.value}}">
                 </section>
                 <section class="property-control-group health-check-option health-check-port-index clearfix">
                     <label class="left">Port Index</label>

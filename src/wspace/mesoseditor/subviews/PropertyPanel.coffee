@@ -196,13 +196,7 @@ define [
         tab_type = PropertyBaseModule.TYPE.Stack
 
       else
-        # If component has associated aws resource (a.k.a has appId), it's AppEdit mode ( Partially Editable )
-        # Otherwise, it's Stack mode ( Fully Editable )
-        if not component or component.get("appId") or ( component.type is 'ExpandedAsg' and component.get("originalAsg")?.get("appId") )
           tab_type = PropertyBaseModule.TYPE.AppEdit
-        else
-          tab_type = PropertyBaseModule.TYPE.Stack
-
 
       # Tell `PropertyBaseModule` to load corresponding property panel.
       try

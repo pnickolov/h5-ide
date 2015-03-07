@@ -29,6 +29,7 @@ define [ "Design"
         initAppEdit : ( uid ) ->
             @view = view
             @view.model = Design.instance().component uid
+            @view.jsonData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.MRTHAPP, Design.instance().serialize().id )
             @view.appData = {}
             @view.isAppEdit = true
             null

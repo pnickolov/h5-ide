@@ -45,7 +45,7 @@ define ['../base/view'
       data = @model.toJSON()
 
       #Switch Command/Arguments
-      data.isCommand = data.cmd and not data.args?.length || true
+      data.isCommand = if data.cmd or data.args then data.cmd else true
 
       @$el.html Tpl data
       @model.get 'name'

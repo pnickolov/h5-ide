@@ -72,13 +72,13 @@
         </section>
         <section class="property-control-group">
             <label class="left">Environments</label>
-            {{#each envs}}
+            {{#each env}}
             <div class="multi-input mesos-envs">
                 <div class="multi-ipt-row">
                     <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
                     <input class="input mesos-env-key" type="text" value="{{@key}}"/>
-                    <input class="input mesos-env-value" type="text" value="{{@value}}"/>
+                    <input class="input mesos-env-value" type="text" value="{{this}}"/>
                 </span>
                 </div>
             </div>

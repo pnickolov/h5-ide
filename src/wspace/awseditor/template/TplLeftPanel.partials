@@ -124,9 +124,28 @@
 </div>
 
 <div class="panel container-panel hide">
-    <img class="logo" src="/assets/images/ide/marathon.png" />
-    <div class="desc">Manage marathon framework on Mesos stack</div>
-    <button class="btn btn-blue apply">Apply Marathon</button>
+    <div class="create">
+        <img class="logo" src="/assets/images/ide/marathon.png" />
+        <div class="desc">Manage marathon framework on Mesos stack</div>
+        <button class="btn btn-blue apply">Apply Marathon</button>
+    </div>
+    <div class="container-header">
+        <i class="icon-edit">Edit in </i>
+        <a class="edit-marathon-stack">marathon-stack-1</a>
+    </div>
+    <ul class="container-list">
+        <li class="container-item">
+            <div class="info">
+                <img class="container-icon" src="" />
+                <span class="name">backend-db-wrodpress</span>
+            </div>
+            <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
+            <span class="container-info">
+                <span>0.02</span>
+                <span>24</span>
+            </span>
+        </li>
+    </ul>
 </div>
 
 <!-- {{snapshot}} -->

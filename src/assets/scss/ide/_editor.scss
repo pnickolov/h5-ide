@@ -233,19 +233,63 @@ $BottomPanelHeight    : 24px;
 }
 
 .container-panel {
-    text-align: center;
-    padding: 0 10px;
-    img, span, button {
+    .create {
+        text-align: center;
         margin: 0 auto;
+        img, span, button {
+            margin: 0 auto;
+        }
+        .logo {
+            margin-top: 50px;
+        }
+        .desc {
+            margin-top: 20px;
+            padding: 0 10px;
+        }
+        .apply {
+            margin-top: 20px;
+        }
     }
-    .logo {
-        margin-top: 50px;
+    .container-header {
+        // height: 30px;
+        background-color: #2b2b35;
+        padding: 10px;
+        .edit-marathon-stack {
+            margin-left: 3px;
+        }
     }
-    .desc {
+    .container-list {
+        margin: 0 10px;
         margin-top: 20px;
-    }
-    .apply {
-        margin-top: 20px;
+        .container-item {
+            border-radius: 2px;
+            background-color: #fff;
+            border-top: 6px solid $dark-b;
+            position: relative;
+            overflow: auto;
+            .info {
+                line-height: 40px;
+                height: 40px;
+                border-bottom: 1px solid #ddd;
+            }
+            .container-info-icon {
+                margin-left: 0;
+                float: left;
+                margin-left: 5px;
+            }
+            .container-info {
+                position: absolute;
+                bottom: 7px;
+                left: 35px;
+                right: 0;
+                text-align: left;
+                span {
+                    width: 60px;
+                    display: inline-block;
+
+                }
+            }
+        }
     }
 }
 

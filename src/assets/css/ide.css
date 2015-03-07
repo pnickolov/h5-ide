@@ -4535,17 +4535,49 @@ button#property-app-keypair {
   .refresh-resource-panel.reloading:hover {
     background: none; }
 
-.container-panel {
+.container-panel .create {
   text-align: center;
-  padding: 0 10px; }
-  .container-panel img, .container-panel span, .container-panel button {
+  margin: 0 auto; }
+  .container-panel .create img, .container-panel .create span, .container-panel .create button {
     margin: 0 auto; }
-  .container-panel .logo {
+  .container-panel .create .logo {
     margin-top: 50px; }
-  .container-panel .desc {
+  .container-panel .create .desc {
+    margin-top: 20px;
+    padding: 0 10px; }
+  .container-panel .create .apply {
     margin-top: 20px; }
-  .container-panel .apply {
-    margin-top: 20px; }
+.container-panel .container-header {
+  background-color: #2b2b35;
+  padding: 10px; }
+  .container-panel .container-header .edit-marathon-stack {
+    margin-left: 3px; }
+.container-panel .container-list {
+  margin: 0 10px;
+  margin-top: 20px; }
+  .container-panel .container-list .container-item {
+    border-radius: 2px;
+    background-color: #fff;
+    border-top: 6px solid #3970af;
+    position: relative;
+    overflow: auto; }
+    .container-panel .container-list .container-item .info {
+      line-height: 40px;
+      height: 40px;
+      border-bottom: 1px solid #ddd; }
+    .container-panel .container-list .container-item .container-info-icon {
+      margin-left: 0;
+      float: left;
+      margin-left: 5px; }
+    .container-panel .container-list .container-item .container-info {
+      position: absolute;
+      bottom: 7px;
+      left: 35px;
+      right: 0;
+      text-align: left; }
+      .container-panel .container-list .container-item .container-info span {
+        width: 60px;
+        display: inline-block; }
 
 .sidebar-hider {
   position: absolute;

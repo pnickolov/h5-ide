@@ -2,6 +2,7 @@
 define [
   "CloudResources"
   "Design"
+  "UI.modalplus"
   "../template/TplLeftPanel"
   "constant"
   'dhcp_manage'
@@ -19,7 +20,7 @@ define [
   "backbone"
   "UI.nanoscroller"
   "UI.dnd"
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
+], ( CloudResources, Design, Modal, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -177,6 +178,8 @@ define [
       @renderReuse()
 
       @$el.find(".nano").nanoScroller()
+
+      @PopApplyMarathonModal()
       return
 
     switchPanel : (event) ->
@@ -193,6 +196,18 @@ define [
             @$el.find('.resource-panel').removeClass('hide')
         else
             @$el.find('.container-panel').removeClass('hide')
+
+    PopApplyMarathonModal: ->
+      modalOptions =
+          template        : MC.template.applyMarathonStack
+          title           : 'Apply Marathon Stack '
+          confirm         :
+              text        : 'Apply'
+
+      @marathonModal = new Modal modalOptions
+      @marathonModal.on 'confirm', () ->
+        1
+      , @
 
     resourceListSortSelectRdsEvent : (event) ->
 

@@ -24,12 +24,13 @@ define ['../base/view'
       @_render()
 
     _render: (version)->
+      @appList = _.map @jsonData.groupBy("id")[@model.path()], (model)-> model.toJSON()
       if version
-        data = @jsonData.findWhere({version}).toJSON()
+        data = _.findWhere @appList, {version: version}
       else
-        data = @jsonData.toJSON()[0]
+        data = (_.sortBy @appList, 'version')[0]
 
-      data.versions = _.pluck @jsonData.toJSON(), "version"
+      data.versions = _.pluck @appList, "version"
 
       data.host = Design.instance().serialize().host
 

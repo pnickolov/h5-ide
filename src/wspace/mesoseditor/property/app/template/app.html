@@ -90,7 +90,6 @@
 
     <div class="option-group-head expand" id="mesos-health-checks">Health Checks</div>
     <div class="option-group" data-bind="true">
-        {{#if healthChecks.length}}
         {{#each healthChecks}}
         <dl class="dl-vertical mesos-health-check-li">
             {{#if protocol}}
@@ -120,13 +119,13 @@
             <dt>Max Consecutive Failures</dt>
             <dd>{{emptyStr maxConsecutiveFailures}}</dd>
         </dl>
-        {{/each}}
         {{else}}
         <dl class="dl-vertical">
             <dt>Health Checks</dt>
             <dd>-</dd>
         </dl>
-        {{/if}}
+        {{/each}}
+
     </div>
 
     <div class="option-group-head expand" id="mesos-update-strategy">Update Strategy</div>
@@ -144,11 +143,11 @@
 
         <dl class="dl-vertical">
             <dt>Deployments</dt>
-            {{#if deployments.length}}
-            {{#each deployments}}<dd>id: {{emptyStr id}}</dd>{{/each}}
+            {{#each deployments}}
+            <dd>id: {{emptyStr id}}</dd>
             {{else}}
             <dd>-</dd>
-            {{/if}}
+            {{/each}}
             <dt>Backoff Seconds</dt>
             <dd>{{emptyStr backoffSeconds}}</dd>
 

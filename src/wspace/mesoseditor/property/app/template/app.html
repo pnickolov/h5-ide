@@ -1,17 +1,20 @@
 <article>
-    <div class="option-group-head expand" id="mesos-container-settings">Container Setting</div>
+    <div class="option-group-head expand" id="mesos-switch-versions">Switch Versions</div>
     <div class="option-group" data-bind="true">
         <section class="property-control-group clearfix">
             <label class="left">Switch Version</label>
-            <div class="selectbox mesos-health-check-protocol">
-                <div class="selection">{{emptyStr version}}</div>
+            <div class="selectbox mesos-switch-versions">
+                <div class="selection">{{version}}</div>
                 <ul class="dropdown">
                     {{#each versions}}
-                    <li data-id="{{this}}" class="item {{#ifCond this version}}selected{{/ifCond}}">{{emptyStr version}}</li>
+                    <li data-id="{{this}}" class="item {{#ifCond this version}}selected{{/ifCond}}">{{this}}</li>
                     {{/each}}
                 </ul>
             </div>
         </section>
+    </div>
+    <div class="option-group-head expand" id="mesos-container-settings">Container Setting</div>
+    <div class="option-group" data-bind="true">
         <section class="clearfix">
             <button class="open-container btn-blue btn">Container Setting</button>
         </section>

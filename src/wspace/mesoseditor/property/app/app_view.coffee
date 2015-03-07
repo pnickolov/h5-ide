@@ -9,15 +9,23 @@ define ['../base/view'
 
     events:
       'click .open-container'                    : 'openContainer'
+      "OPTION_CHANGE .mesos-switch-versions"     : "switchVersion"
 
     initialize   : (options) ->
 
     openContainer: ()->
       @container = new Container(model: @model, appData: @appData).render()
 
-    render: (version)->
+    switchVersion: (evt)->
+      version = $(evt.currentTarget).find(".selection").text()
+      @_render version.toString()
+
+    render: ()->
+      @_render()
+
+    _render: (version)->
       if version
-        data = @jsonData.find({version}).toJSON()
+        data = @jsonData.findWhere({version}).toJSON()
       else
         data = @jsonData.toJSON()[0]
 

@@ -19,10 +19,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
 
     listenModelEvents : ()->
       @listenTo CloudResources(this.canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, this.canvas.design.opsModel().id), "change", @render
-      @listenTo CloudResources(this.canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, this.canvas.design.opsModel().id), "add", (m)->
-        if m.id is @model.path()
-          @render()
-        return
+      @listenTo @model, "change", @render
 
       return
 

@@ -232,6 +232,23 @@ $BottomPanelHeight    : 24px;
   &.reloading:hover { background : none; }
 }
 
+.container-panel {
+    text-align: center;
+    padding: 0 10px;
+    img, span, button {
+        margin: 0 auto;
+    }
+    .logo {
+        margin-top: 50px;
+    }
+    .desc {
+        margin-top: 20px;
+    }
+    .apply {
+        margin-top: 20px;
+    }
+}
+
 .sidebar-hider {
   position   : absolute;
   top        : 50%;

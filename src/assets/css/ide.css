@@ -4544,6 +4544,18 @@ button#property-app-keypair {
   .refresh-resource-panel.reloading:hover {
     background: none; }
 
+.container-panel {
+  text-align: center;
+  padding: 0 10px; }
+  .container-panel img, .container-panel span, .container-panel button {
+    margin: 0 auto; }
+  .container-panel .logo {
+    margin-top: 50px; }
+  .container-panel .desc {
+    margin-top: 20px; }
+  .container-panel .apply {
+    margin-top: 20px; }
+
 .sidebar-hider {
   position: absolute;
   top: 50%;
@@ -5373,17 +5385,14 @@ marker.server, marker.elb {
   text-anchor: initial; }
 .DOCKER-MARATHON-App .cpu-label, .DOCKER-MARATHON-App .memory-label {
   font-size: 12px;
-<<<<<<< HEAD
-  fill: red; }
+  fill: #898dbc;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
 .DOCKER-MARATHON-App .server-number-group.mismatch .server-number-bg {
   fill: #F8E71C;
   stroke: #E58904;
   stroke-width: 1px; }
 .DOCKER-MARATHON-App .server-number-group.mismatch .server-number {
-  fill: #E58904; 
-fill: #898dbc;
-  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;}
-
+  fill: #E58904; }
 
 .port-marathon {
   stroke: #7ed321;

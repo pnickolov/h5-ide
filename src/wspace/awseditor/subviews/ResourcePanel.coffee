@@ -105,6 +105,7 @@ define [
   Backbone.View.extend {
 
     events :
+      "click nav button"             : "switchPanel"
       "click .btn-fav-ami"           : "toggleFav"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
@@ -177,6 +178,21 @@ define [
 
       @$el.find(".nano").nanoScroller()
       return
+
+    switchPanel : (event) ->
+
+        # clean selected
+        $button = $(event.currentTarget)
+        $button.parents('nav').find('button').removeClass('selected')
+        $button.addClass('selected')
+
+        # switch
+        @$el.find('.container-panel').addClass('hide')
+        @$el.find('.resource-panel').addClass('hide')
+        if $button.hasClass('sidebar-nav-resource')
+            @$el.find('.resource-panel').removeClass('hide')
+        else
+            @$el.find('.container-panel').removeClass('hide')
 
     resourceListSortSelectRdsEvent : (event) ->
 

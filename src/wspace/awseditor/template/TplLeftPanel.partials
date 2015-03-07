@@ -7,7 +7,8 @@
         <button class="sidebar-nav-container">Container</button>
     </nav>
 </header>
-<div class="sidebar-tool">
+
+<div class="sidebar-tool resource-panel">
     <button><i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}">Refresh</i></button>
     <button>
         <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}">Manage...</i>
@@ -22,8 +23,7 @@
         </ul>
     </button>
 </div>
-
-<div class="fixedaccordion accordion-default">
+<div class="fixedaccordion resource-panel accordion-default">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
     <ul class="resource-list-az clearfix accordion-body">
@@ -121,6 +121,12 @@
       <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
     </ul>
   </section>
+</div>
+
+<div class="panel container-panel hide">
+    <img class="logo" src="/assets/images/ide/marathon.png" />
+    <div class="desc">Manage marathon framework on Mesos stack</div>
+    <button class="btn btn-blue apply">Apply Marathon</button>
 </div>
 
 <!-- {{snapshot}} -->

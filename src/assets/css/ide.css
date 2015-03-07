@@ -5385,6 +5385,13 @@ fill: #898dbc;
   font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;}
 
 
+.port-marathon {
+  stroke: #7ed321;
+  stroke-width: 2px;
+  fill: #7ed321; }
+  .port-marathon:hover {
+    fill: none; }
+
 .MarathonDepIn, .MarathonDepOut {
   stroke: #7FD321;
   stroke-dasharray: 10,10;

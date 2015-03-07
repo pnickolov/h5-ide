@@ -990,6 +990,15 @@ marker {
   }
 }
 
+.port-marathon {
+  stroke:#7ed321;
+  stroke-width:2px;
+  fill:#7ed321;
+  &:hover{
+    fill:none;
+  }
+}
+
 .MarathonDepIn, .MarathonDepOut {
   stroke: #7FD321;
   stroke-dasharray: 10,10;

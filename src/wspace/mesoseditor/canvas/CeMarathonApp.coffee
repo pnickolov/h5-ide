@@ -10,10 +10,17 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
     parentType  : [ constant.RESTYPE.MRTHGROUP, "SVG" ]
     defaultSize : [ 18, 8 ]
 
-    portPosMap : {
-      "app-dep-in"  : [ 5,   38, CanvasElement.constant.PORT_LEFT_ANGLE ]
-      "app-dep-out" : [ 170, 38, CanvasElement.constant.PORT_RIGHT_ANGLE ]
-    }
+    portPosition : ( portName, isAtomic )->
+      m = @model
+
+      if portName is "app-dep-in"
+        x = 0
+        if isAtomic then x -= 5
+        [ x, 41, CanvasElement.constant.PORT_LEFT_ANGLE ]
+      else
+        x = 175
+        if isAtomic then x += 9
+        [ x, 41, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
     iconUrl : ()-> "ide/ami/ami-not-available.png"
 
@@ -62,13 +69,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
           "data-tooltip" : "Memory"
         })
 
-        svg.use("port_diamond").attr({
-          'class'        : 'port port-blue tooltip'
+        svg.use("marathon_port").attr({
+          'class'        : 'port port-marathon tooltip'
           'data-name'    : 'app-dep-in'
           'data-tooltip' : lang.IDE.PORT_TIP_U
         })
-        svg.use("port_diamond").attr({
-          'class'        : 'port port-blue tooltip'
+        svg.use("marathon_port").attr({
+          'class'        : 'port port-marathon tooltip'
           'data-name'    : 'app-dep-out'
           'data-tooltip' : lang.IDE.PORT_TIP_V
         })

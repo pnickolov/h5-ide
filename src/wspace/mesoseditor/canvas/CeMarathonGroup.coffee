@@ -14,11 +14,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
       m = @model
 
       if portName is "group-dep-in"
-        [ -12, 10, CanvasElement.constant.PORT_LEFT_ANGLE ]
+        x = -10
+        if isAtomic then x -= 8
+        [ x, 11, CanvasElement.constant.PORT_LEFT_ANGLE ]
       else
-        x = m.width() * CanvasView.GRID_WIDTH + 4
-        if isAtomic then x += 8
-        [ x, 10, CanvasElement.constant.PORT_RIGHT_ANGLE ]
+        x = m.width() * CanvasView.GRID_WIDTH + 10
+        if isAtomic then x += 7
+        [ x, 11, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
     listenModelEvents : ()->
       self = @
@@ -46,13 +48,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         svg.rect( m.width() * 10, 20 ).move(0,0).radius(2).attr({
           'class' : "group-label-bg"
         })
-        svg.use("port_right").attr({
-          'class'        : 'port port-gray tooltip'
+        svg.use("marathon_port").attr({
+          'class'        : 'port port-marathon tooltip'
           'data-name'    : 'group-dep-in'
           'data-tooltip' : lang.IDE.PORT_TIP_U
         })
-        svg.use("port_right").attr({
-          'class'        : 'port port-gray tooltip'
+        svg.use("marathon_port").attr({
+          'class'        : 'port port-marathon tooltip'
           'data-name'    : 'group-dep-out'
           'data-tooltip' : lang.IDE.PORT_TIP_V
         })

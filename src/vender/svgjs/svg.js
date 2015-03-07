@@ -526,29 +526,29 @@ define([], function() {
           l = this.value[i][0]
 
           if (l == 'M' || l == 'L' || l == 'T')  {
-            this.value[i][1] += x
-            this.value[i][2] += y
+            this.value[i][1] = Math.round((this.value[i][1] + x)*1000)/1000
+            this.value[i][2] = Math.round((this.value[i][2] + y)*1000)/1000
 
           } else if (l == 'H')  {
-            this.value[i][1] += x
+            this.value[i][1] = Math.round((this.value[i][1] + x)*1000)/1000
 
           } else if (l == 'V')  {
-            this.value[i][1] += y
+            this.value[i][1] = Math.round((this.value[i][1] + y)*1000)/1000
 
           } else if (l == 'C' || l == 'S' || l == 'Q')  {
-            this.value[i][1] += x
-            this.value[i][2] += y
-            this.value[i][3] += x
-            this.value[i][4] += y
+            this.value[i][1] = Math.round((this.value[i][1] + x)*1000)/1000
+            this.value[i][2] = Math.round((this.value[i][2] + y)*1000)/1000
+            this.value[i][3] = Math.round((this.value[i][3] + x)*1000)/1000
+            this.value[i][4] = Math.round((this.value[i][4] + y)*1000)/1000
 
             if (l == 'C')  {
-              this.value[i][5] += x
-              this.value[i][6] += y
+              this.value[i][5] = Math.round((this.value[i][5] + x)*1000)/1000
+              this.value[i][6] = Math.round((this.value[i][6] + y)*1000)/1000
             }
 
           } else if (l == 'A')  {
-            this.value[i][6] += x
-            this.value[i][7] += y
+            this.value[i][6] = Math.round((this.value[i][6] + x)*1000)/1000
+            this.value[i][7] = Math.round((this.value[i][7] + y)*1000)/1000
           }
 
         }

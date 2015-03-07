@@ -608,8 +608,8 @@ define [
 
     ###
     # Highlight some items ( Implemented in CavasViewEffect )
-    hightLightItems  : ( items )->
-    removeHightLight : ()->
+    highLightItems  : ( items )->
+    removeHighLight : ()->
     ###
 
   }, {

@@ -5444,8 +5444,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   position: absolute;
   top: 100px;
   left: 100px; }
-.OEPanelCenter.marathon.empty .marathon-cvs-ph {
-  display: block; }
 
 .resources-dropdown-wrapper {
   position: absolute;

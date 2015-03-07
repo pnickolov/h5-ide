@@ -34,6 +34,13 @@ define [
       ])
       return
 
+    highlightModels : ( models )->
+      if not _.isArray( models ) then models = [models]
+      self = @
+      items = _.map models, (m)-> self.getItem( m.id )
+      @hightLightItems(items)
+      return
+
     appendVpc    : ( svgEl )-> @__appendSvg(svgEl, ".layer_vpc")
     appendAz     : ( svgEl )-> @__appendSvg(svgEl, ".layer_az")
     appendSubnet : ( svgEl )-> @__appendSvg(svgEl, ".layer_subnet")

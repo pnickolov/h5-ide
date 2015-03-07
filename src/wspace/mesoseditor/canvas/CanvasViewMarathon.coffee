@@ -59,7 +59,7 @@ define [
       return
 
     fixConnection : ( coord, initiator, target )->
-    hightLightItems : ()->
+    highLightItems : ()->
 
     appendNode   : ( svgEl )-> @__appendSvg(svgEl, ".layer_node")
     appendline   : ( svgEl )-> @__appendSvg(svgEl, ".layer_line")

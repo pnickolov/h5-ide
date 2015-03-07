@@ -233,7 +233,7 @@ define [
     rects.concat cleanRects
 
   # Add item by dnd
-  CanvasViewProto.hightLightItems  = ( items )->
+  CanvasViewProto.highLightItems  = ( items )->
     rects    = getNonOverlapRects( _.uniq(items) )
     polygons = getPolygonsFromRect( rects )
     path     = getPathFromPolygons( polygons )
@@ -247,7 +247,7 @@ define [
     @__highLightRect   = @svg.rect(0,0).attr({id:"hlArea",width:"100%", height:"100%"}).clipWith( @__highLightCliper )
     return
 
-  CanvasViewProto.removeHightLight = ( items )->
+  CanvasViewProto.removeHighLight = ( items )->
     if @__highLightRect then @__highLightRect.remove()
     if @__highLightCliper then @__highLightCliper.remove()
     @__highLightRect = @__highLightCliper = null

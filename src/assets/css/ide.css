@@ -4566,9 +4566,21 @@ button#property-app-keypair {
   .container-panel .container-header .edit-marathon-stack {
     margin-left: 3px;
     cursor: pointer; }
+.container-panel .container-footer {
+  background-color: #2b2b35;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  text-align: center; }
+  .container-panel .container-footer .change-marathon-stack {
+    cursor: pointer; }
+.container-panel .tip {
+  padding: 10px; }
 .container-panel .container-list {
   margin: 0 10px;
-  margin-top: 20px; }
+  margin-top: 5px; }
   .container-panel .container-list .container-item {
     border-radius: 2px;
     background-color: #fff;
@@ -4579,6 +4591,9 @@ button#property-app-keypair {
       line-height: 40px;
       height: 40px;
       border-bottom: 1px solid #ddd; }
+      .container-panel .container-list .container-item .info .container-icon {
+        margin-left: 5px;
+        margin-right: 5px; }
     .container-panel .container-list .container-item .container-info-icon {
       margin-left: 0;
       float: left;

@@ -134,11 +134,11 @@
           <i class="icon-edit">Edit in </i>
           <a class="edit-marathon-stack">marathon-stack-1</a>
       </div>
-      <div class="">Click container item to inspect placement on canvas.</div>
+      <div class="tip">Click container item to inspect placement on canvas.</div>
       <ul class="container-list">
           <li class="container-item">
               <div class="info">
-                  <img class="container-icon" src="" />
+                  <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-wordpress.png" width="32" height="32" />
                   <span class="name">backend-db-wrodpress</span>
               </div>
               <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
@@ -174,8 +174,21 @@
               <p>bcdafsafadsfaf</p>
           </section>
           </li>
-
+          <li class="container-item">
+              <div class="info">
+                  <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-wordpress.png" width="32" height="32" />
+                  <span class="name">backend-db-wrodpress</span>
+              </div>
+              <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
+              <span class="container-info">
+                  <span>0.02</span>
+                  <span>24</span>
+              </span>
+          </li>
       </ul>
+      <div class="container-footer">
+          <a class="change-marathon-stack">Change Marathon Stack… </a>
+      </div>
     </div>
 </div>
 

@@ -10830,3 +10830,26 @@ dl.settings-item {
 
 .apply-marathon-stack .title {
   padding: 0 0 13px 0; }
+
+#marathon-app-list .constraint-list {
+  color: white;
+  border-radius: 5px;
+  background: #35363E;
+  margin-top: 10px;
+  padding: 5px 8px; }
+  #marathon-app-list .constraint-list header {
+    margin: 0 0 10px 0; }
+  #marathon-app-list .constraint-list p {
+    padding: 0;
+    margin: 5px 0; }
+  #marathon-app-list .constraint-list::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent #35363E transparent;
+    margin: 0 auto;
+    position: relative;
+    top: -10px; }

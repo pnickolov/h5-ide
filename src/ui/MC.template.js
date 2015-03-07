@@ -1671,7 +1671,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<section class=\"apply-marathon-stack\">\n  <div class=\"title\">Link to a Marathon stack designed with VisualOps:</div>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">\n      <li class=\"selected item focused\" data-value=\"testing\"></i>marathon-stack-1</li>\n      <li class=\"item\" data-value=\"development\">marathon-stack-2</li>\n      <li class=\"item\" data-value=\"production\">marathon-stack-3</li>\n    </ul>\n  </div>\n</section>";
+  return "<section class=\"apply-marathon-stack\">\n  <div class=\"title\">Link to a Marathon stack designed with VisualOps:</div>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">\n      <li class=\"item focused\" data-value=\"testing\"></i>marathon-stack-1</li>\n      <li class=\"item\" data-value=\"development\">marathon-stack-2</li>\n      <li class=\"item\" data-value=\"production\">marathon-stack-3</li>\n    </ul>\n  </div>\n</section>";
   };
 TEMPLATE.applyMarathonStack=Handlebars.template(__TEMPLATE__);
 

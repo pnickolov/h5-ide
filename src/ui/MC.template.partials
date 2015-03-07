@@ -888,7 +888,7 @@ Additional Notes and Questions
   <div id="app-usage-selectbox" class="selectbox">
     <div class="selection">Select existing Marathon stack …</div>
     <ul class="dropdown" tabindex="-1">
-      <li class="selected item focused" data-value="testing"></i>marathon-stack-1</li>
+      <li class="item focused" data-value="testing"></i>marathon-stack-1</li>
       <li class="item" data-value="development">marathon-stack-2</li>
       <li class="item" data-value="production">marathon-stack-3</li>
     </ul>

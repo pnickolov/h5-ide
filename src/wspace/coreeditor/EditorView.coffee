@@ -230,4 +230,16 @@ define [
         children = children.children()
 
       return null
+
+    highLightModels : ( models )->
+      self = @
+
+      oneTimeClicked = ( evt )->
+        console.log "hide highlight."
+        self.canvas.removeHighLight()
+        $("body")[0].removeEventListener("click", oneTimeClicked, true)
+
+      $("body")[0].addEventListener("click", oneTimeClicked, true)
+      @canvas.highLightModels(models)
+      return
   }

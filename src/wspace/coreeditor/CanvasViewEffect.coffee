@@ -232,6 +232,14 @@ define [
 
     rects.concat cleanRects
 
+  CanvasViewProto.highLightModels = ( models )->
+    @removeHighLight()
+    if not _.isArray( models ) then models = [models]
+    self = @
+    items = _.map models, (m)-> self.getItem( m.id )
+    @highLightItems(items)
+    return
+
   # Add item by dnd
   CanvasViewProto.highLightItems  = ( items )->
     rects    = getNonOverlapRects( _.uniq(items) )

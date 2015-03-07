@@ -5786,7 +5786,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     border-color: #CFCDDB; }
   #DndItem.marathon-group.dragOver {
     width: 220px;
-    height: 165px;
+    height: 157px;
     color: #888CAD; }
     #DndItem.marathon-group.dragOver:before {
       width: 200px;

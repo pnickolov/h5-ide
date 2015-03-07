@@ -15,13 +15,16 @@ define ['../base/view'
     openContainer: ()->
       @container = new Container(model: @model, appData: @appData).render()
 
-    render: ()->
-      data = @model.toJSON()
-      console.log @model.toJSON()
-      console.log @appData
-      data.hideExecutionSettings = not(data.command or data.args?.length or data.env or data.ports?.length or data.ports?.length or data.executor or data.uris?.length)
+    render: (version)->
+      if version
+        data = @jsonData.find({version}).toJSON()
+      else
+        data = @jsonData.toJSON()[0]
 
-      data.hideAdvancedDetail = not(data.deployments?.length or data.backoffSeconds or data.backoffFactor or data.maxLaunchDelaySeconds or data.tasksRunning or data.tasksStaged)
+      data.versions = _.pluck @jsonData.toJSON(), "version"
+
+      @appData = data
+
       #Switch Command/Arguments
       data.isCommand = data.cmd and not data.args?.length || true
 

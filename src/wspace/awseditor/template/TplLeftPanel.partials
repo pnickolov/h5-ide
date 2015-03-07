@@ -9,7 +9,7 @@
 </header>
 
 <div class="sidebar-tool resource-panel">
-    <button><i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>Refresh</button>
+    <button class="refresh-resource-panel"><i class="icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>Refresh</button>
     <button>
         <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}">Manage...</i>
         <ul class="dropdown-menu resources-dropdown-wrapper">

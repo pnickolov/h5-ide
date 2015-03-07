@@ -501,7 +501,7 @@ define [
     manageRdsSnapshot : ()-> new RdsSnapshotManager().render()
 
     refreshPanelData : ( evt )->
-      $tgt = $( evt.currentTarget )
+      $tgt = $( evt.currentTarget ).find(".icon-refresh")
       if $tgt.hasClass("reloading") then return
 
       $tgt.addClass("reloading")

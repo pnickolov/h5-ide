@@ -57,6 +57,8 @@ define [ "./DashboardTpl",
       @region       = "global"
       @appsRegion   = "global"
       @stacksRegion = "global"
+      @stacksRegionMarathon = "global"
+      @appsRegionMarathon = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
         id: @model.scene.project.get("id")
@@ -69,10 +71,10 @@ define [ "./DashboardTpl",
       @logCol.on('change add', @updateLog, this)
 
       @render()
-      @listenTo @model.scene.project, "update:stack", @updateStacks.bind(@)
-      @listenTo @model.scene.project, "update:app", @updateApps.bind(@)
-      @listenTo @model.scene.project, "change:stack", @updateStacks.bind(@)
-      @listenTo @model.scene.project, "change:app", ()-> @updateApps.bind(@)
+      @listenTo @model.scene.project, "update:stack", -> @updateStacks()
+      @listenTo @model.scene.project, "update:app", -> @updateApps()
+      @listenTo @model.scene.project, "change:stack", -> @updateStacks()
+      @listenTo @model.scene.project, "change:app", -> @updateApps()
       @listenTo @model.scene.project, "update:credential", ()-> self.updateDemoView()
       @listenTo @model.scene.project, "change:credential", ()-> self.updateDemoView()
 
@@ -186,6 +188,7 @@ define [ "./DashboardTpl",
       @updateRegionAppStack("stacks", "global", true)
       @updateRegionAppStack("apps", "global")
       @updateRegionAppStack("apps", "global", true)
+      @toggleMarathonOpslist()
       @updateRegionResources()
 
     switchRegion: (evt)->
@@ -231,18 +234,29 @@ define [ "./DashboardTpl",
       return
 
     updateStacks: ()->
-      @updateRegionAppStack("stack", null)
-      @updateRegionAppStack("stack", null, true)
+      @updateRegionAppStack("stacks", null)
+      @updateRegionAppStack("stacks", null, true)
+      @toggleMarathonOpslist()
 
     updateApps: ()->
       @updateRegionAppStack("apps", null)
       @updateRegionAppStack("apps", null, true)
+      @toggleMarathonOpslist()
 
-    updateRegionAppStack : (updateType="stack", region, isMarathon = false)->
+    toggleMarathonOpslist: ()->
+      $marathonWrap = @$el.find(".region-app-stack-wrap.marathon")
+      hasMarathonOps = $marathonWrap.find(".region-resource-list li").size() > 0
+
+      $marathonWrap.toggle(hasMarathonOps)
+
+    updateRegionAppStack : (updateType="stacks", region, isMarathon = false)->
       if updateType not in ["stacks", "apps"]
         return false
       if not region
-        region = @[updateType + "Region"]
+        if isMarathon
+          region = @[updateType + "RegionMarathon"]
+        else
+          region = @[updateType + "Region"]
       self = @
       attr = { apps:[], stacks:[], region : @region }
       data = _.map constant.REGION_LABEL, ( name, id )->

@@ -121,6 +121,8 @@ define [
       'OPTION_CHANGE #resource-list-sort-select-snapshot' : 'resourceListSortSelectSnapshotEvent'
       'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
 
+      'click .apply'                 : 'popApplyMarathonModal'
+
     initialize : (options)->
       _.extend this, options
 
@@ -179,7 +181,6 @@ define [
 
       @$el.find(".nano").nanoScroller()
 
-      @PopApplyMarathonModal()
       return
 
     switchPanel : (event) ->
@@ -197,7 +198,7 @@ define [
         else
             @$el.find('.container-panel').removeClass('hide')
 
-    PopApplyMarathonModal: ->
+    popApplyMarathonModal: ->
       modalOptions =
           template        : MC.template.applyMarathonStack
           title           : 'Apply Marathon Stack '
@@ -206,8 +207,13 @@ define [
 
       @marathonModal = new Modal modalOptions
       @marathonModal.on 'confirm', () ->
-        1
+        unless $( '.app-usage-selectbox .selected' ).length then return
+        @loadMarathon()
+
       , @
+
+    loadMarathon: ->
+
 
     resourceListSortSelectRdsEvent : (event) ->
 

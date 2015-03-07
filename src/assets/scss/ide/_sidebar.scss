@@ -181,6 +181,7 @@ $dndDuration : .2s;
     height : 90px;
   }
 
+  &.marathon-group{ background-image:image-url("ide/icon/res-mg.png");}
   &.az       { background-image: image-url('ide/icon/res-az.png'); position: relative; }
   &.volume   { background-image: image-url('ide/icon/res-vol.png'); }
   &.eni      { background-image: image-url('ide/icon/res-eni.png'); }
@@ -214,7 +215,7 @@ $dndDuration : .2s;
   }
 }
 
-.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot, .resource-icon-docker-image {
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
   padding-top : 12px;
   height : 60px - 12px;
   background : image-url('ide/icon/res-instance.png') center no-repeat;
@@ -272,6 +273,7 @@ $dndDuration : .2s;
     content       : "";
     display       : inline-block;
     box-sizing    : border-box;
+    margin-top    : 12px;
   }
 
   img {
@@ -369,6 +371,10 @@ $dndDuration : .2s;
     }
   }
 
+  .resource-icon-docker-image > img {
+    left : 24px;
+  }
+
   &.rtb, &.igw, &.vgw { width:80px; height:80px; }
   &.elb, &.instance, &.eni, &.dbinstance, &.dbsnapshot { width:90px; height:90px; }
 
@@ -385,7 +391,7 @@ $dndDuration : .2s;
     display : none;
   }
 
-  &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet {
+  &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet, &.marathon-group {
     background-image : none;
     color        : #eee;
     line-height  : 1em;
@@ -426,6 +432,19 @@ $dndDuration : .2s;
       &:before {
         width  : 166px;
         height : 166px;
+      }
+    }
+  }
+
+  &.marathon-group {
+    &:before { border-color: #CFCDDB; }
+    &.dragOver {
+      width  : 220px;
+      height : 165px;
+      color  : #888CAD;
+      &:before {
+        width  : 200px;
+        height : 148px;
       }
     }
   }

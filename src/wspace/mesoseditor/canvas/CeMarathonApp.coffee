@@ -22,7 +22,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         if isAtomic then x += 9
         [ x, 41, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
-    iconUrl : ()-> "ide/icon-mrth/icn-#{@model.get('name')}.png"
+    iconUrl : ()-> "ide/icon-mrth/icn-#{@model.get('image')}.png"
 
     listenModelEvents : ()->
       @listenTo CloudResources(this.canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, this.canvas.design.opsModel().id), "change", @render

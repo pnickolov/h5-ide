@@ -80,9 +80,13 @@ define [ './template/container'
                     value = $input.val()
                     name = $input.data( 'name' )
 
+                    # Some value must be number.
+                    if name in [ 'host', 'serviceport' ]
+                        value = +value
+
                     if name is 'container'
                         splits              = value.split '/'
-                        item.containerPort  = splits[ 0 ]
+                        item.containerPort  = +splits[ 0 ]
                         item.protocol       = splits[ 1 ]
 
                     else if name is 'containerPath'

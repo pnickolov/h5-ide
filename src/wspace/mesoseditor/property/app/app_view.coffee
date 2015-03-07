@@ -14,7 +14,7 @@ define ['../base/view'
     initialize   : (options) ->
 
     openContainer: ()->
-      @container = new Container(model: @model, appData: @appData[0].toJSON()).render()
+      @container = new Container(model: @model, appData: @data).render()
 
     switchVersion: (evt)->
       version = $(evt.currentTarget).find(".selection").text()

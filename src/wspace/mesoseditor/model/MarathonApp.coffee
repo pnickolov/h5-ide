@@ -65,7 +65,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
       { component : component, layout : @generateLayout() }
 
     getContainerJson: ->
-      _.extend { type: 'DOCKER' }, @get("container"), docker: { image: @get( 'image' ) }
+      _.extend { type: 'DOCKER' }, @container()
 
     container: ->
       c = @get( 'container' )

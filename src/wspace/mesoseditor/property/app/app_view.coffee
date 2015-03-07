@@ -14,7 +14,7 @@ define ['../base/view'
     initialize   : (options) ->
 
     openContainer: ()->
-      @container = new Container(model: @model, appData: @appData).render()
+      @container = new Container(model: @model, appData: @appData[0].toJSON()).render()
 
     switchVersion: (evt)->
       version = $(evt.currentTarget).find(".selection").text()
@@ -24,17 +24,18 @@ define ['../base/view'
       @_render()
 
     _render: (version)->
-      @appList = _.map @jsonData.groupBy("id")[@model.path()], (model)-> model.toJSON()
+      @appData = _.map @appData, (model)->
+        model.toJSON()
       if version
-        data = _.findWhere @appList, {version: version}
+        data =  _.findWhere @appData, {version: version}
       else
-        data = (_.sortBy @appList, 'version')[0]
+        data = _.sortBy(@appData, "version")[0]
 
-      data.versions = _.pluck @appList, "version"
+      data.versions = _.pluck @appData, 'version'
 
       data.host = Design.instance().serialize().host
 
-      @appData = data
+      @data = data
 
       #Switch Command/Arguments
       data.isCommand = data.cmd and not data.args?.length || true

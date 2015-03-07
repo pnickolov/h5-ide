@@ -21,17 +21,19 @@ define [ "Design"
         initApp : ( uid ) ->
             @view = appView
             @model = Design.instance().component uid
-            @view.jsonData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.MRTHAPP, Design.instance().serialize().id )
-            @view.appData = {}
+            path = @model.path()
+            @view.appData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.MRTHAPP, Design.instance().serialize().id ).filter (model)->
+              model.get("id") is path
             @view.isAppEdit = false
             null
 
         initAppEdit : ( uid ) ->
             @view = view
-            @view.model = Design.instance().component uid
-            @view.jsonData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.MRTHAPP, Design.instance().serialize().id )
-            @view.appData = {}
             @view.isAppEdit = true
+            @view.model = Design.instance().component uid
+            path = @view.model.path()
+            @view.appData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.MRTHAPP, Design.instance().serialize().id ).filter (model)->
+              model.get("id") is path
             null
 
     }

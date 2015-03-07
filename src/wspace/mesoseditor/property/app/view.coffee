@@ -37,7 +37,7 @@ define ['../base/view'
     initialize   : (options) ->
 
     openContainer: ()->
-      @container = new Container(model: @model, appData: @jsonData.toJSON()[0]).render()
+      @container = new Container(model: @model, appData: @appData[0].toJSON()).render()
 
     render: ()->
       data = @model.toJSON()

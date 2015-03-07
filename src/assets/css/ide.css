@@ -4513,13 +4513,16 @@ button#property-app-keypair {
       margin: 0;
       padding-top: 10px;
       padding-bottom: 10px;
-      color: #7eace1;
       width: 50%;
       text-align: center;
       float: left;
-      cursor: pointer; }
+      cursor: pointer;
+      color: #b0b0b0; }
+      .sidebar-title nav button:hover {
+        color: #fff; }
       .sidebar-title nav button.selected {
-        border-bottom: 2px solid #4a90e2; }
+        border-bottom: 2px solid #4a90e2;
+        color: #4a90e2; }
   .sidebar-title i {
     width: 40px;
     height: 40px;
@@ -4537,8 +4540,16 @@ button#property-app-keypair {
         background-color: transparent; }
 
 .sidebar-tool button {
-  color: #fff;
-  margin: 0 20px; }
+  color: #898dbc;
+  margin: 0 16px;
+  cursor: pointer; }
+  .sidebar-tool button:hover {
+    color: #51568e; }
+  .sidebar-tool button i {
+    font-style: normal; }
+    .sidebar-tool button i:before {
+      margin-right: 8px;
+      display: inline-block; }
 
 .refresh-resource-panel {
   line-height: 37px;
@@ -5416,7 +5427,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 .resources-dropdown-wrapper {
   position: absolute;
-  left: 206px;
+  left: 244px;
   top: 39px;
   width: 364px;
   margin-top: 1px;
@@ -10802,7 +10813,8 @@ dl.settings-item {
     margin-top: 50px; }
   .container-panel .create .desc {
     margin-top: 20px;
-    padding: 0 10px; }
+    padding: 0 10px;
+    color: #898dbc; }
   .container-panel .create .apply {
     margin-top: 20px; }
 .container-panel .container-header {

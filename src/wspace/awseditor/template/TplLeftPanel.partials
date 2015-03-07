@@ -157,7 +157,7 @@
           </li>
           <li class="container-item">
               <div class="info">
-                  <img class="container-icon" src="" />
+                  <img class="container-icon" src="/assets/images/ide/icon-mrth/icon-.png" width="120" height="32"" />
                   <span class="name">mysql</span>
               </div>
               <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />

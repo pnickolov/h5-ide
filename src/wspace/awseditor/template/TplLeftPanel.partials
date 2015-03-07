@@ -147,10 +147,29 @@
                   <span>24</span>
               </span>
           </li>
-          <li class="constraint-list">
+          <li class="constraint-list hide">
             <header>CONSTRAINTS</header>
             <section class="constraint-info">
               <p>dsafasfsafasf</p>
+              <p>ajaskfjaslfj</p>
+              <p>bcdafsafadsfaf</p>
+          </section>
+          </li>
+          <li class="container-item">
+              <div class="info">
+                  <img class="container-icon" src="" />
+                  <span class="name">mysql</span>
+              </div>
+              <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
+              <span class="container-info">
+                  <span>0.02</span>
+                  <span>24</span>
+              </span>
+          </li>
+          <li class="constraint-list hide">
+            <header>CONSTRAINTS</header>
+            <section class="constraint-info">
+              <p>hello world/p>
               <p>ajaskfjaslfj</p>
               <p>bcdafsafadsfaf</p>
           </section>

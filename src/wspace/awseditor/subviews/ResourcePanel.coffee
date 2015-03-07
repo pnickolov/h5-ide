@@ -122,6 +122,7 @@ define [
       'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
 
       'click .apply'                 : 'popApplyMarathonModal'
+      'click .container-item'         : 'toggleConstraint'
 
     initialize : (options)->
       _.extend this, options
@@ -183,6 +184,8 @@ define [
 
       return
 
+    # For Demo Begin
+
     switchPanel : (event) ->
 
         # clean selected
@@ -225,6 +228,22 @@ define [
 
       $appList.show()
       $createPanel.hide()
+
+    toggleConstraint: ( e ) ->
+      $item = $ e.currentTarget
+      $constraint = $item.next '.constraint-list'
+
+      if $constraint.is(':visible')
+        $constraint.stop().slideUp()
+      else
+        $( '.constraint-list' ).hide()
+        $constraint.stop().slideDown()
+
+
+
+
+    # For Demo End
+
 
 
     resourceListSortSelectRdsEvent : (event) ->

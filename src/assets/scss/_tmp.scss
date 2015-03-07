@@ -1,3 +1,5 @@
+$triangleHeight: 10px;
+
 .apply-marathon-stack {
     .title {
         padding: 0 0 13px 0;
@@ -9,7 +11,7 @@
         color: white;
         border-radius: 5px;
         background: #35363E;
-        margin-top: 10px;
+        margin-top: $triangleHeight;
         padding: 5px 8px;
 
         header {
@@ -27,11 +29,11 @@
             width: 0;
             height: 0;
             border-style: solid;
-            border-width: 0 10px 10px 10px;
+            border-width: 0 $triangleHeight $triangleHeight $triangleHeight;
             border-color: transparent transparent #35363E transparent;
             margin: 0 auto;
             position: relative;
-            top: -10px;
+            top: -$triangleHeight;
         }
     }
 }

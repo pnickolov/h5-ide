@@ -21,10 +21,18 @@ define ['../base/view'
       "change .execution-command"                : "updateExecutionSetting"
       'change [data-name="argument"]'            : "updateExecutionSetting"
       "OPTION_CHANGE #property-execution-setting": "updateExecutionSetting"
+      "click .selection-arguments .ipt-controls a": "updateExecutionSetting"
       "change #mesos-health-checks-list li input.input": "updateHealthCheck"
       "OPTION_CHANGE .mesos-health-check-protocol":      "updateHealthCheck"
       "change .mesos-constraints input"          : "updateConstraints"
       "change .mesos-constraints select"         : "updateConstraints"
+      "click .mesos-constraints .ipt-controls a" : "updateConstraints"
+      'change .mesos-env-key'                    : 'updateAdvance'
+      'change .mesos-env-value'                  : 'updateAdvance'
+      'change .mesos-port'                       : 'updateAdvance'
+      'change .mesos-executor'                   : 'updateAdvance'
+      'change .mesos-uri'                        : 'updateAdvance'
+      'click .mesos-envs .ipt-controls a'        : 'updateAdvance'
 
     initialize   : (options) ->
 
@@ -83,6 +91,7 @@ define ['../base/view'
         if attribute isnt "" or value isnt ""
           constraints.push [attribute, operator, value]
       @model.set("constraints", constraints)
+
     updateHealthCheck     : (evt)->
       if evt then $target = $(evt.currentTarget)
       if $target?.hasClass('mesos-health-check-protocol')
@@ -132,16 +141,39 @@ define ['../base/view'
       $target = $("#property-execution-setting")
       # if is execution setting
       val = $target.find('.selection').text().toLowerCase()
-      $(".selection-command, .selection-arguments").hide()
-      $(".selection-" + val).show()
+      @$el.find(".selection-command, .selection-arguments").hide()
+      @$el.find(".selection-" + val).show()
       if val is 'command'
         self.model.set('cmd', $('.execution-command').val())
         self.model.set('args', [])
       else
         args = []
-        $(".multi-ipt-row").not(".template").find('input').each (index, input)->
+        @$el.find(".selection-arguments .multi-ipt-row").not(".template").find('input').each (index, input)->
           if input.value then args.push(input.value)
         self.model.set('args', args)
         self.model.set('cmd', '')
+
+    updateAdvance: ()->
+      env = {}
+      @$el.find(".mesos-envs .multi-ipt-row").each (index, row)->
+        key = $(row).find(".mesos-env-key").val()
+        value = $(row).find(".mesos-env-value").val()
+        if key and value
+          env[key] = value
+
+      ports = []
+      @$el.find(".mesos-port").each (index, port)->
+        ports.push(+port.value) if port.value
+
+      executor = $(".mesos-executor").val()
+
+      uris = []
+      @$el.find(".mesos-uri").each (index, uri)->
+        uris.push(uri.value) if uri.value
+
+      @model.set {env} if env
+      @model.set {ports} if ports.length
+      @model.set {executor} if executor
+      @model.set {uris} if uris.length
 
   new view()

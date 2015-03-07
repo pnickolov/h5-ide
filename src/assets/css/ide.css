@@ -6248,8 +6248,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -6423,6 +6422,10 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 .selection-command, .selection-arguments {
   margin-top: 10px; }
+
+.mesos-envs input.input.mesos-env-key, .mesos-envs input.input.mesos-env-value {
+  width: 114px !important;
+  display: inline-block; }
 
 .mesos-constraints .multi-ipt-row .ipt-wrapper input, .mesos-constraints .multi-ipt-row .ipt-wrapper select {
   width: 78px !important;

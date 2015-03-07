@@ -572,6 +572,13 @@
   margin-top: 10px;
 }
 
+.mesos-envs{
+  input.input.mesos-env-key, input.input.mesos-env-value{
+    width: 114px!important;
+    display: inline-block;
+  }
+}
+
 .mesos-constraints{
   .multi-ipt-row .ipt-wrapper input, .multi-ipt-row .ipt-wrapper select{
     width: 78px!important;

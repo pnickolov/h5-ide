@@ -70,25 +70,87 @@
                 </div>
             </div>
         </section>
+        <section class="property-control-group">
+            <label class="left">Environments</label>
+            {{#each envs}}
+            <div class="multi-input mesos-envs">
+                <div class="multi-ipt-row">
+                    <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input mesos-env-key" type="text" value="{{@key}}"/>
+                    <input class="input mesos-env-value" type="text" value="{{@value}}"/>
+                </span>
+                </div>
+            </div>
+            {{else}}
+            <div class="multi-input mesos-envs">
+                <div class="multi-ipt-row">
+                    <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input mesos-env-key" type="text" value=""/>
+                    <input class="input mesos-env-value" type="text" value=""/>
+                </span>
+                </div>
+            </div>
+            {{/each}}
+        </section>
+
+        <section class="property-control-group clearfix">
+            <label class="left">Ports</label>
+            {{#each ports}}
+            <div class="multi-input mesos-ports">
+                <div class="multi-ipt-row">
+                    <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input mesos-port" type="text" value="{{this}}"/>
+                </span>
+                </div>
+            </div>
+            {{else}}
+            <div class="multi-input mesos-ports">
+                <div class="multi-ipt-row">
+                    <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input mesos-port" type="text" value=""/>
+                </span>
+                </div>
+            </div>
+            {{/each}}
+        </section>
+
+        <section class="property-control-group clearfix">
+            <label class="left">Executor</label>
+            <input class="input mesos-executor parsley-validated" type="text" placeholder="" value="{{path}}" data-bind="path">
+        </section>
+
+        <section class="property-control-group clearfix">
+            <label class="left">URIs</label>
+            {{#each uris}}
+            <div class="multi-input mesos-uris">
+                <div class="multi-ipt-row">
+                    <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input mesos-uri" type="text" value="{{this}}"/>
+                </span>
+                </div>
+            </div>
+            {{else}}
+            <div class="multi-input mesos-uris">
+                <div class="multi-ipt-row">
+                    <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input mesos-uri" type="text" value=""/>
+                </span>
+                </div>
+            </div>
+            {{/each}}
+        </section>
+
+
     </div>
     <div class="option-group-head expand" id="mesos-constraints">Constraints</div>
     <div class="option-group" data-bind="true">
         <div class="multi-input mesos-constraints">
-            <div class="multi-ipt-row template">
-                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-                <span class="ipt-wrapper">
-                    <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
-                    <select class="select3 select mesos-constraints-operator" name="operators">
-                        <option value="UNIQUE">UNIQUE</option>
-                        <option value="CLUSTER">CLUSTER</option>
-                        <option value="GROUP_BY">GROUP_BY</option>
-                        <option value="LIKE">LIKE</option>
-                        <option value="UNLIKE">UNLIKE</option>
-                    </select>
-                    <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
-                </span>
-            </div>
-            {{#if constraints.length}}
                 {{#each constraints}}
                     <div class="multi-ipt-row">
                         <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
@@ -112,23 +174,23 @@
                             {{/each}}
                         </span>
                     </div>
+                {{else}}
+                    <div class="multi-ipt-row">
+                        <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                            <span class="ipt-wrapper">
+                                <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value=""/>
+                                <select class="select3 select mesos-constraints-operator" name="operators">
+                                    <option value="UNIQUE">UNIQUE</option>
+                                    <option value="CLUSTER">CLUSTER</option>
+                                    <option value="GROUP_BY">GROUP_BY</option>
+                                    <option value="LIKE">LIKE</option>
+                                    <option value="UNLIKE">UNLIKE</option>
+                                </select>
+                                <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value=""/>
+                            </span>
+                    </div>
                 {{/each}}
-            {{else}}
-                <div class="multi-ipt-row">
-                    <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-                    <span class="ipt-wrapper">
-                        <input class="input mesos-constraints-attribute" placeholder="attribute" type="text" data-name="argument" value="{{attribute}}"/>
-                        <select class="select3 select mesos-constraints-operator" name="operators">
-                            <option value="UNIQUE">UNIQUE</option>
-                            <option value="CLUSTER">CLUSTER</option>
-                            <option value="GROUP_BY">GROUP_BY</option>
-                            <option value="LIKE">LIKE</option>
-                            <option value="UNLIKE">UNLIKE</option>
-                        </select>
-                        <input class="input mesos-constraints-value" placeholder="value" type="text" data-name="argument" value="{{value}}"/>
-                    </span>
-                </div>
-            {{/if}}
+
         </div>
     </div>
     <div class="option-group-head expand" id="mesos-health-checks">Health Checks</div>

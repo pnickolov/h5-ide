@@ -173,9 +173,9 @@ define ['../base/view'
       @$el.find(".mesos-uri").each (index, uri)->
         uris.push(uri.value) if uri.value
 
-      @model.set {env} if env
-      @model.set {ports} if ports.length
-      @model.set {executor} if executor
-      @model.set {uris} if uris.length
+      @model.set {env}
+      @model.set {ports}
+      @model.set {executor}
+      @model.set {uris}
 
   new view()

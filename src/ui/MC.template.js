@@ -1668,10 +1668,24 @@ TEMPLATE.updateCredentialConfirm=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
   
+  var buffer = "", stack1;
+  buffer += "<li class=\"item\" data-value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\"></i>"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</li>";
+  return buffer;
+  }
 
-
-  return "<section class=\"apply-marathon-stack\">\n  <div class=\"title\">Link to a Marathon stack designed with VisualOps:</div>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">\n      <li class=\"item focused\" data-value=\"testing\"></i>marathon-stack-1</li>\n      <li class=\"item\" data-value=\"development\">marathon-stack-2</li>\n      <li class=\"item\" data-value=\"production\">marathon-stack-3</li>\n    </ul>\n  </div>\n</section>";
+  buffer += "<section class=\"apply-marathon-stack\">\n  <div class=\"title\">Link to a Marathon stack designed with VisualOps:</div>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">";
+  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</ul>\n  </div>\n</section>";
+  return buffer;
   };
 TEMPLATE.applyMarathonStack=Handlebars.template(__TEMPLATE__);
 

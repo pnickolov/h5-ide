@@ -199,8 +199,15 @@ define [
             @$el.find('.container-panel').removeClass('hide')
 
     popApplyMarathonModal: ->
+      data = []
+      for model in @workspace.scene.project.stacks().filter((a)-> a.type is OpsModel.Type.Mesos)
+        data.push {
+          name : model.get("name")
+          id   : model.id
+        }
+
       modalOptions =
-          template        : MC.template.applyMarathonStack
+          template        : MC.template.applyMarathonStack( data )
           title           : 'Apply Marathon Stack '
           confirm         :
               text        : 'Apply'

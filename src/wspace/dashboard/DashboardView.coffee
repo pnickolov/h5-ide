@@ -69,10 +69,10 @@ define [ "./DashboardTpl",
       @logCol.on('change add', @updateLog, this)
 
       @render()
-      @listenTo @model.scene.project, "update:stack", ()-> self.updateRegionAppStack("stacks")
-      @listenTo @model.scene.project, "update:app", ()-> self.updateRegionAppStack("apps")
-      @listenTo @model.scene.project, "change:stack", ()-> self.updateRegionAppStack("stacks")
-      @listenTo @model.scene.project, "change:app", ()-> self.updateRegionAppStack("apps")
+      @listenTo @model.scene.project, "update:stack", @updateStacks.bind(@)
+      @listenTo @model.scene.project, "update:app", @updateApps.bind(@)
+      @listenTo @model.scene.project, "change:stack", @updateStacks.bind(@)
+      @listenTo @model.scene.project, "change:app", ()-> @updateApps.bind(@)
       @listenTo @model.scene.project, "update:credential", ()-> self.updateDemoView()
       @listenTo @model.scene.project, "change:credential", ()-> self.updateDemoView()
 
@@ -183,7 +183,9 @@ define [ "./DashboardTpl",
 
     initRegion : ( )->
       @updateRegionAppStack("stacks", "global")
+      @updateRegionAppStack("stacks", "global", true)
       @updateRegionAppStack("apps", "global")
+      @updateRegionAppStack("apps", "global", true)
       @updateRegionResources()
 
     switchRegion: (evt)->
@@ -228,7 +230,15 @@ define [ "./DashboardTpl",
       $("#region-resource-app-wrap, #region-resource-stack-wrap").children("li[data-id='#{ops.id}']").find(".region-resource-progess").css("width",ops.get("progress")+"%")
       return
 
-    updateRegionAppStack : (updateType="stack", region)->
+    updateStacks: ()->
+      @updateRegionAppStack("stack", null)
+      @updateRegionAppStack("stack", null, true)
+
+    updateApps: ()->
+      @updateRegionAppStack("apps", null)
+      @updateRegionAppStack("apps", null, true)
+
+    updateRegionAppStack : (updateType="stack", region, isMarathon = false)->
       if updateType not in ["stacks", "apps"]
         return false
       if not region
@@ -248,17 +258,26 @@ define [ "./DashboardTpl",
       resources = self.model.scene.project[updateType]()
       resources.comparator = "updateTime"
       resources.sort()
+      if isMarathon
+        resources = resources.filter (f)-> f.get("provider") is "docker::marathon"
+      else
+        resources = resources.filter (f)-> f.get("provider") isnt "docker::marathon"
+
       attr[updateType] = resources.filter(filter).map( (m)-> m.toJSON(tojson) ).reverse()
 
       # ops count for each region.
       attr.region = _.map data, (obj)->
-        obj.count = resources.groupBy("region")[obj.id]?.length || 0
+        obj.count = _.groupBy(attr[updateType], "region")[obj.id]?.length || 0
         obj
       attr.globalCount = resources.length
 
       attr.projectId = self.model.scene.project.id
       attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
-      @$el.find("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+      if isMarathon
+        attr.isMarathon = isMarathon
+        @$el.find(".region-app-stack-wrap.marathon .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+      else
+        @$el.find(".region-app-stack-wrap").not(".marathon").find(".dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
       return
 
     updateRegionTabCount : ()->

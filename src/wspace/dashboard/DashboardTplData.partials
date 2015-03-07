@@ -110,10 +110,10 @@
                     <div class="loading-spinner loading-spinner-small"></div><span>{{name}} - {{stateDesc}}...</span>
                 </div>
             {{else}}
-                {{#if usage}}<i class="icon-app-type-{{usage}}"></i>
+                {{#unless ../../isMarathon}}<i class="icon-app-type-{{usage}}"></i>
                 {{else}}
                     <i class="icon-app-type-marathon"></i>
-                {{/if}}
+                {{/unless}}
                 <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
                 <div class="region-resource-info">
                     <i class="icon-terminate terminate-app tooltip" data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_TERMINATE_APP"}}"></i>

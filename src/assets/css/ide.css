@@ -3556,7 +3556,7 @@ aside.dashboard-sidebar {
       font-size: 12px; }
 
 /* Stack App List */
-#region-app-stack-wrap {
+.region-app-stack-wrap {
   height: 360px;
   display: -webkit-box;
   display: -moz-box;
@@ -3571,7 +3571,7 @@ aside.dashboard-sidebar {
   align-items: stretch;
   -webkit-align-items: stretch;
   margin-top: 20px; }
-  #region-app-stack-wrap > div {
+  .region-app-stack-wrap > div {
     width: 38vw;
     margin: 0 1vw;
     position: relative;
@@ -3580,18 +3580,18 @@ aside.dashboard-sidebar {
     padding: 6px;
     box-sizing: border-box;
     box-shadow: 0 2px 0 #eeeef0; }
-    #region-app-stack-wrap > div:first-of-type {
+    .region-app-stack-wrap > div:first-of-type {
       margin-right: 1vw; }
-    #region-app-stack-wrap > div:last-of-type {
+    .region-app-stack-wrap > div:last-of-type {
       margin-left: .2vw; }
-  #region-app-stack-wrap .region-resource-list {
+  .region-app-stack-wrap .region-resource-list {
     overflow-x: hidden;
     overflow-y: auto;
     height: 290px; }
-    #region-app-stack-wrap .region-resource-list::-webkit-scrollbar {
+    .region-app-stack-wrap .region-resource-list::-webkit-scrollbar {
       width: 4px;
       height: 8px; }
-    #region-app-stack-wrap .region-resource-list li {
+    .region-app-stack-wrap .region-resource-list li {
       line-height: 48px;
       height: 48px;
       padding: 6px 10px;
@@ -3599,18 +3599,18 @@ aside.dashboard-sidebar {
       -webkit-transition: background 0.2s ease-in-out;
       -o-transition: background 0.2s ease-in-out;
       transition: background 0.2s ease-in-out; }
-      #region-app-stack-wrap .region-resource-list li:hover {
+      .region-app-stack-wrap .region-resource-list li:hover {
         background: #fbfbfd; }
-      #region-app-stack-wrap .region-resource-list li a {
+      .region-app-stack-wrap .region-resource-list li a {
         display: block;
         width: 100%;
         height: 100%;
         position: relative; }
-      #region-app-stack-wrap .region-resource-list li [class^="icon-app-type-"], #region-app-stack-wrap .region-resource-list li [class*=" icon-app-type-"] {
+      .region-app-stack-wrap .region-resource-list li [class^="icon-app-type-"], .region-app-stack-wrap .region-resource-list li [class*=" icon-app-type-"] {
         position: absolute;
         top: 28px;
         left: 60px; }
-      #region-app-stack-wrap .region-resource-list li .icon-app-type-marathon:before {
+      .region-app-stack-wrap .region-resource-list li .icon-app-type-marathon:before {
         content: "marathon";
         font-variant: small-caps;
         color: #11C568;
@@ -3619,7 +3619,7 @@ aside.dashboard-sidebar {
         padding: 0 3px;
         border-radius: 2px;
         display: inline-block; }
-    #region-app-stack-wrap .region-resource-list .thumbnail {
+    .region-app-stack-wrap .region-resource-list .thumbnail {
       width: 50px;
       height: 33px;
       border: 1px solid #ccc;
@@ -3633,12 +3633,12 @@ aside.dashboard-sidebar {
       left: 0;
       top: 50%;
       margin-top: -16px; }
-      #region-app-stack-wrap .region-resource-list .thumbnail.app-thumbnail {
+      .region-app-stack-wrap .region-resource-list .thumbnail.app-thumbnail {
         background-image: url('/assets/images/ide/thumbnail-app-placehoder@2x.png');
         background-size: 100% auto; }
-      #region-app-stack-wrap .region-resource-list .thumbnail img {
+      .region-app-stack-wrap .region-resource-list .thumbnail img {
         vertical-align: top; }
-    #region-app-stack-wrap .region-resource-list .region-resource-info {
+    .region-app-stack-wrap .region-resource-list .region-resource-info {
       display: inline-block;
       font-size: 16px;
       font-weight: 300;
@@ -3647,42 +3647,42 @@ aside.dashboard-sidebar {
       margin-left: 60px;
       width: 100%;
       box-sizing: border-box; }
-      #region-app-stack-wrap .region-resource-list .region-resource-info span {
+      .region-app-stack-wrap .region-resource-list .region-resource-info span {
         width: 20vw;
-        color: #4D4E8C; }
-      #region-app-stack-wrap .region-resource-list .region-resource-info i {
+        color: #4d4e8c; }
+      .region-app-stack-wrap .region-resource-list .region-resource-info i {
         position: absolute;
         color: #cacce1; }
-        #region-app-stack-wrap .region-resource-list .region-resource-info i:first-of-type {
+        .region-app-stack-wrap .region-resource-list .region-resource-info i:first-of-type {
           right: 90px; }
-        #region-app-stack-wrap .region-resource-list .region-resource-info i:last-of-type {
+        .region-app-stack-wrap .region-resource-list .region-resource-info i:last-of-type {
           right: 60px; }
-        #region-app-stack-wrap .region-resource-list .region-resource-info i:hover {
-          color: #4A90E2; }
-        #region-app-stack-wrap .region-resource-list .region-resource-info i.icon-terminate:hover, #region-app-stack-wrap .region-resource-list .region-resource-info i.icon-forget-app:hover, #region-app-stack-wrap .region-resource-list .region-resource-info i.icon-delete:hover {
+        .region-app-stack-wrap .region-resource-list .region-resource-info i:hover {
+          color: #4a90e2; }
+        .region-app-stack-wrap .region-resource-list .region-resource-info i.icon-terminate:hover, .region-app-stack-wrap .region-resource-list .region-resource-info i.icon-forget-app:hover, .region-app-stack-wrap .region-resource-list .region-resource-info i.icon-delete:hover {
           color: #ec3c38; }
-      #region-app-stack-wrap .region-resource-list .region-resource-info > .icon-pending:before {
+      .region-app-stack-wrap .region-resource-list .region-resource-info > .icon-pending:before {
         font-size: 10px;
         line-height: 10px;
         height: 10px;
         color: #999;
         margin-right: 4px; }
-      #region-app-stack-wrap .region-resource-list .region-resource-info > .running, #region-app-stack-wrap .region-resource-list .region-resource-info > .stopped {
+      .region-app-stack-wrap .region-resource-list .region-resource-info > .running, .region-app-stack-wrap .region-resource-list .region-resource-info > .stopped {
         padding-left: 20px;
         background: url('/assets/images/ide/icon-app-running-16x16.png') left center no-repeat; }
-      #region-app-stack-wrap .region-resource-list .region-resource-info > .stopped {
+      .region-app-stack-wrap .region-resource-list .region-resource-info > .stopped {
         background-image: url('/assets/images/ide/icon-app-stopped-16x16.png'); }
-      #region-app-stack-wrap .region-resource-list .region-resource-info .loading-spinner {
+      .region-app-stack-wrap .region-resource-list .region-resource-info .loading-spinner {
         width: 12px;
         height: 12px;
         position: absolute;
         top: -40px;
         left: 0; }
-        #region-app-stack-wrap .region-resource-list .region-resource-info .loading-spinner + span {
+        .region-app-stack-wrap .region-resource-list .region-resource-info .loading-spinner + span {
           margin-left: 20px;
           margin-top: -7px;
           display: block; }
-    #region-app-stack-wrap .region-resource-list .region-resource-progess-wrap {
+    .region-app-stack-wrap .region-resource-list .region-resource-progess-wrap {
       position: absolute;
       left: 60px;
       top: 30px;
@@ -3693,10 +3693,10 @@ aside.dashboard-sidebar {
       height: 10px;
       z-index: 1;
       background: #E7E7E5; }
-      #region-app-stack-wrap .region-resource-list .region-resource-progess-wrap + .region-resource-info {
+      .region-app-stack-wrap .region-resource-list .region-resource-progess-wrap + .region-resource-info {
         position: relative;
         z-index: 2; }
-    #region-app-stack-wrap .region-resource-list .region-resource-progess {
+    .region-app-stack-wrap .region-resource-list .region-resource-progess {
       height: 27px;
       background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(0.25, #ad77d7), color-stop(0.25, #9e62d4), color-stop(0.5, #9e62d4), color-stop(0.5, #ad77d7), color-stop(0.75, #ad77d7), color-stop(0.75, #9e62d4), to(#9e62d4));
       background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
@@ -6351,8 +6351,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

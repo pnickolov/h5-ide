@@ -563,7 +563,7 @@ $dashWrapHeight: 360px;
 $bp-1: 1024px;
 $bp-2: 1280px;
 
-#region-app-stack-wrap {
+.region-app-stack-wrap {
   height: $dashWrapHeight;
   @include displayflex;
   @include vo-flex-wrap(wrap);

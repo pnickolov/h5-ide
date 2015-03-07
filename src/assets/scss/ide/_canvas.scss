@@ -973,6 +973,17 @@ marker {
     font-size : 12px;
     fill : red;
   }
+
+  .server-number-group.mismatch {
+    .server-number-bg {
+      fill:#F8E71C;
+      stroke:#E58904;
+      stroke-width:1px;
+    }
+    .server-number {
+      fill:#E58904;
+    }
+  }
 }
 
 .MarathonDepIn, .MarathonDepOut {

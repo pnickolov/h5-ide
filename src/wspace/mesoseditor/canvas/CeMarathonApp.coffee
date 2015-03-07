@@ -117,7 +117,13 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
       if @canvas.design.modeIsApp()
         app = CloudResources( @canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, @canvas.design.opsModel().id ).get( m.path() )
         if app
-          text = app.get("tasksRunning") + "/" + app.get("instances")
+          t = app.get("tasksRunning")
+          i = app.get("instances")
+          text = "#{t}/#{i}"
+          if parseInt(t) isnt parseInt(i)
+            CanvasManager.addClass @$el.find(".server-number-group"), "mismatch"
+          else
+            CanvasManager.removeClass @$el.find(".server-number-group"), "mismatch"
         else
           text = m.get("instances")
         CanvasManager.update @$el.find(".server-number"), text

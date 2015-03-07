@@ -16,26 +16,23 @@
   font-style: normal;
   font-weight: 400;
   src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
   src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
-
 body {
   font-family: Lato, "Helvetica Neue", "Helvetica", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   color: #acacc6;
   font-size: 14px; }
 
 a {
-  color: #4a90e2;
+  color: #4A90E2;
   text-decoration: none; }
   a:hover {
     color: #a2d3f0; }
@@ -268,7 +265,7 @@ body {
 a {
   color: #ccc; }
   a:hover {
-    color: #4a90e2; }
+    color: #4A90E2; }
 
 /* reset */
 #overlayer {
@@ -488,9 +485,9 @@ a {
   color: #ccc;
   box-sizing: border-box; }
   .property-content a {
-    color: #4a90e2; }
+    color: #4A90E2; }
     .property-content a:hover {
-      color: #3970af; }
+      color: #3970AF; }
 
 .property-group-head {
   padding: 6px 10px;
@@ -511,13 +508,13 @@ a {
   line-height: 32px;
   display: inline-block; }
   .back:hover {
-    color: #4a90e2;
+    color: #4A90E2;
     background: rgba(0, 0, 0, 0.2); }
 
 .resdiff-switch {
   position: relative; }
   .resdiff-switch i {
-    color: #4a90e2;
+    color: #4A90E2;
     position: absolute;
     bottom: 5px;
     right: 11px; }
@@ -864,7 +861,7 @@ li:hover > .rule-remove-icon,
   padding: 10px 0; }
 
 a.action-link {
-  color: #cccccc; }
+  color: #ccc; }
 
 a.action-link:hover {
   color: #fff; }
@@ -1239,14 +1236,14 @@ a.action-link:hover {
   width: auto;
   padding: 0; }
   .property-list.route-list > li.have-vpc-peer-route {
-    border-bottom: 1px #a42b2b solid; }
+    border-bottom: 1px #A42B2B solid; }
   .property-list.route-list > li > table {
     width: 100%; }
 .property-list.route-list .route-readonly {
   color: #777; }
 .property-list.route-list .remove-vpc-peer-route {
   font-size: 13px;
-  background-color: #a42b2b;
+  background-color: #A42B2B;
   color: #fff;
   padding: 3px; }
   .property-list.route-list .remove-vpc-peer-route a {
@@ -1824,7 +1821,7 @@ a.action-link:hover {
 
 .asg-p-action i:hover,
 .sns-action i:hover {
-  color: #dddddd; }
+  color: #ddd; }
 
 .asg-p-action .icon-remove,
 .sns-action .icon-remove {
@@ -3114,7 +3111,7 @@ div.modal-text-highlight {
 .highlight-status {
   color: #f8b42d; }
   .highlight-status.in-sync {
-    color: #11c568; }
+    color: #11C568; }
 
 .complete-fullname {
   margin-top: 30px; }
@@ -3144,24 +3141,18 @@ div.modal-text-highlight {
 @-webkit-keyframes progress-bar {
   from {
     background-position: 0 0; }
-
   to {
     background-position: 40px 0; } }
-
 @-moz-keyframes progress-bar {
   from {
     background-position: 0 0; }
-
   to {
     background-position: 40px 0; } }
-
 @keyframes progress-bar {
   from {
     background-position: 0 0; }
-
   to {
     background-position: 40px 0; } }
-
 /* Dashboard Header */
 .dashboard-header {
   padding: 10px 0;
@@ -3255,7 +3246,7 @@ div.modal-text-highlight {
 
 /* Impprot CF */
 .import-cf-notice {
-  color: #ffbb0d;
+  color: #FFBB0D;
   font-size: 12px; }
   .import-cf-notice > li {
     list-style: disc;
@@ -3268,7 +3259,7 @@ div.modal-text-highlight {
   .import-cf-notice > li:last-child {
     color: #888; }
     .import-cf-notice > li:last-child a {
-      color: #4a90e2; }
+      color: #4A90E2; }
     .import-cf-notice > li:last-child a:hover {
       text-decoration: underline; }
   .import-cf-notice .tooltip {
@@ -3442,7 +3433,7 @@ div.modal-text-highlight {
     padding-right: 5px;
     cursor: pointer; }
     .dash-region-navigation button:hover {
-      color: #4a90e2; }
+      color: #4A90E2; }
 
 .region-resource-tab {
   display: inline-block;
@@ -3511,7 +3502,7 @@ aside.dashboard-sidebar {
     max-width: 50%;
     width: 50%; }
     aside.dashboard-sidebar .dashboard-nav-log.selected {
-      border-bottom: 2px solid #4a90e2;
+      border-bottom: 2px solid #4A90E2;
       width: 100%; }
   aside.dashboard-sidebar .dashboard-log-wrap {
     overflow-x: hidden;
@@ -3546,10 +3537,10 @@ aside.dashboard-sidebar {
         margin-top: 4px;
         font-size: 12px; }
       aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info a.target {
-        color: #4a90e2;
+        color: #4A90E2;
         cursor: pointer; }
         aside.dashboard-sidebar .dashboard-log .dashboard-log-item .info a.target:hover {
-          color: #3970af; }
+          color: #3970AF; }
   aside.dashboard-sidebar .dashboard-log-empty {
     text-align: center;
     padding: 15px;
@@ -3618,9 +3609,9 @@ aside.dashboard-sidebar {
       #region-app-stack-wrap .region-resource-list li .icon-app-type-marathon:before {
         content: "marathon";
         font-variant: small-caps;
-        color: #11c568;
+        color: #11C568;
         font-size: 12px;
-        border: 1px solid #11c568;
+        border: 1px solid #11C568;
         padding: 0 3px;
         border-radius: 2px;
         display: inline-block; }
@@ -3654,7 +3645,7 @@ aside.dashboard-sidebar {
       box-sizing: border-box; }
       #region-app-stack-wrap .region-resource-list .region-resource-info span {
         width: 20vw;
-        color: #4d4e8c; }
+        color: #4D4E8C; }
       #region-app-stack-wrap .region-resource-list .region-resource-info i {
         position: absolute;
         color: #cacce1; }
@@ -3663,7 +3654,7 @@ aside.dashboard-sidebar {
         #region-app-stack-wrap .region-resource-list .region-resource-info i:last-of-type {
           right: 60px; }
         #region-app-stack-wrap .region-resource-list .region-resource-info i:hover {
-          color: #4a90e2; }
+          color: #4A90E2; }
         #region-app-stack-wrap .region-resource-list .region-resource-info i.icon-terminate:hover, #region-app-stack-wrap .region-resource-list .region-resource-info i.icon-forget-app:hover, #region-app-stack-wrap .region-resource-list .region-resource-info i.icon-delete:hover {
           color: #ec3c38; }
       #region-app-stack-wrap .region-resource-list .region-resource-info > .icon-pending:before {
@@ -3707,13 +3698,13 @@ aside.dashboard-sidebar {
       background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
       background-image: -moz-linear-gradient(135deg, #ad77d7 25%, transparent 25%, transparent 50%, #ad77d7 50%, #ad77d7 75%, transparent 75%, transparent);
       background-image: linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
-      -webkit-background-size: 40px 40px;
       -moz-background-size: 40px 40px;
       -o-background-size: 40px 40px;
+      -webkit-background-size: 40px 40px;
       background-size: 40px 40px;
-      -webkit-transition: width 0.3s;
       -moz-transition: width 0.3s;
       -o-transition: width 0.3s;
+      -webkit-transition: width 0.3s;
       transition: width 0.3s;
       -webkit-animation: progress-bar 2s linear infinite;
       -moz-animation: progress-bar 2s linear infinite;
@@ -4000,7 +3991,7 @@ button#property-app-keypair {
   width: 65%; }
 
 .default-kp-info {
-  color: #4a90e2;
+  color: #4A90E2;
   margin-left: 3px; }
 
 .safari-download-textarea {
@@ -4232,7 +4223,7 @@ button#property-app-keypair {
   width: 205px; }
 
 .pg-edit-footer a {
-  color: #4a90e2;
+  color: #4A90E2;
   display: inline-block;
   margin: 18px 15px; }
 
@@ -4301,7 +4292,7 @@ button#property-app-keypair {
   line-height: 13px;
   color: #fff;
   text-align: center;
-  background: #f5a623; }
+  background: #F5A623; }
 
 #sns-placeholder .combo-dd-list > p, .policy-sns-placeholder .combo-dd-list > p {
   margin: 0; }
@@ -4414,9 +4405,9 @@ button#property-app-keypair {
   .OEPanelRight.state.hidden {
     right: -654px; }
   .OEPanelRight.no-transition {
-    -webkit-transition: none;
     -moz-transition: none;
     -o-transition: none;
+    -webkit-transition: none;
     transition: none; }
   .OEPanelRight::selection {
     background: transparent; }
@@ -4572,7 +4563,7 @@ button#property-app-keypair {
   position: relative;
   font-size: 0;
   /* A hack to make sure #canvas_body.scrollHeight is correct. */
-  background: white url('/assets/images/ide/grid_x1.png'); }
+  background: #fff url('/assets/images/ide/grid_x1.png'); }
   .canvas-view[data-scale="1.2"] {
     background-image: url('/assets/images/ide/grid_x1.2.png'); }
   .canvas-view[data-scale="1.4"] {
@@ -4625,7 +4616,7 @@ button#property-app-keypair {
   .canvas-view .canvasel.selected > .node-background, .canvas-view .canvasel.connectable > .node-background, .canvas-view .canvasel.droppable > .node-background {
     fill-opacity: .6;
     fill: #D8DAEB;
-    stroke: #4a90e2;
+    stroke: #4A90E2;
     stroke-width: 2; }
   .canvas-view .canvasel.selected > .node-label-name-bg {
     fill: #659FFF; }
@@ -4726,7 +4717,7 @@ button#property-app-keypair {
 .canvas-view .canvasel.selected > .node-background, .canvas-view .canvasel.connectable > .node-background, .canvas-view .canvasel.droppable > .node-background {
   fill-opacity: .6;
   fill: #D8DAEB;
-  stroke: #4a90e2;
+  stroke: #4A90E2;
   stroke-width: 1; }
 .canvas-view .canvasel.selected > .node-label-name-bg {
   fill: #659FFF; }
@@ -5352,6 +5343,12 @@ marker.server, marker.elb {
 .DOCKER-MARATHON-App .cpu-label, .DOCKER-MARATHON-App .memory-label {
   font-size: 12px;
   fill: red; }
+.DOCKER-MARATHON-App .server-number-group.mismatch .server-number-bg {
+  fill: #F8E71C;
+  stroke: #E58904;
+  stroke-width: 1px; }
+.DOCKER-MARATHON-App .server-number-group.mismatch .server-number {
+  fill: #E58904; }
 
 .MarathonDepIn, .MarathonDepOut {
   stroke: #7FD321;
@@ -5804,7 +5801,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     color: #aaa; }
 
 .resource-select.selectbox .selection {
-  background: #25254c;
+  background: #25254C;
   color: #F3F3F3;
   height: 17px;
   width: auto;
@@ -5882,8 +5879,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   cursor: pointer;
   color: #b0b0b0; }
 .OEPanelRight #btn-switch-property {
-  border-bottom: 3px solid #4a90e2;
-  color: #4a90e2; }
+  border-bottom: 3px solid #4A90E2;
+  color: #4A90E2; }
 .OEPanelRight #btn-switch-state:hover {
   color: #eee; }
 .OEPanelRight #btn-switch-state {
@@ -5905,8 +5902,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .OEPanelRight.state #btn-switch-property:hover {
     color: #eee; }
 .OEPanelRight.state #btn-switch-state {
-  border-bottom: 3px solid #4a90e2;
-  color: #4a90e2; }
+  border-bottom: 3px solid #4A90E2;
+  color: #4A90E2; }
 
 .property-sidebar-title {
   font-size: 13px;
@@ -6124,7 +6121,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   height: 16px;
   color: #606060; }
   .icon-btn-details:hover {
-    color: #4a90e2; }
+    color: #4A90E2; }
 
 /* property-newtwork-acl */
 .acl-rule-list.property-list li {
@@ -6151,10 +6148,10 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   display: inline-block; }
 
 .icon-allow {
-  color: #11c568; }
+  color: #11C568; }
 
 .icon-deny {
-  color: #ea5d5d; }
+  color: #EA5D5D; }
 
 /* Add ACL Rule Modal */
 #modal-acl-rule .sg-protocol-option-input {
@@ -6170,7 +6167,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 325px; }
   #modal-acl-rule .simple-protocol-select li {
     cursor: pointer;
-    color: #4a90e2;
+    color: #4A90E2;
     font-size: 12px;
     padding: 5px 0;
     display: inline-block;
@@ -6262,16 +6259,16 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 .apply-immediately-section {
   line-height: 18px;
-  background: #363b76;
+  background: #363B76;
   position: relative; }
   .apply-immediately-section i {
     display: inline-block;
     position: absolute; }
   .apply-immediately-section label {
     color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0); }
+    border: 1px solid transparent; }
   .apply-immediately-section a.icon-info {
-    color: #4a90e2;
+    color: #4A90E2;
     vertical-align: middle; }
 
 .option-group-category {
@@ -6642,17 +6639,17 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   box-sizing: border-box;
   box-shadow: none; }
   .openstack .OEPanelTop .sidebar-title.resource .resource {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
+    border-bottom: 2px solid #4A90E2;
+    color: #4A90E2; }
   .openstack .OEPanelTop .sidebar-title.property .property {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
+    border-bottom: 2px solid #4A90E2;
+    color: #4A90E2; }
   .openstack .OEPanelTop .sidebar-title.state .state {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
+    border-bottom: 2px solid #4A90E2;
+    color: #4A90E2; }
   .openstack .OEPanelTop .sidebar-title.config .config {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
+    border-bottom: 2px solid #4A90E2;
+    color: #4A90E2; }
   .openstack .OEPanelTop .sidebar-title a {
     width: 25%;
     float: left;
@@ -6741,9 +6738,9 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     color: #999;
     font-style: bold; }
   .ops-process .processing, .ops-process .success {
-    -webkit-transition: all 0.2s ease-in;
     -moz-transition: all 0.2s ease-in;
     -o-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
     transition: all 0.2s ease-in; }
   .ops-process .fadeout {
     opacity: 0;
@@ -6796,13 +6793,13 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
     background-image: -moz-linear-gradient(135deg, #ad77d7 25%, transparent 25%, transparent 50%, #ad77d7 50%, #ad77d7 75%, transparent 75%, transparent);
     background-image: linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
-    -webkit-background-size: 40px 40px;
     -moz-background-size: 40px 40px;
     -o-background-size: 40px 40px;
+    -webkit-background-size: 40px 40px;
     background-size: 40px 40px;
-    -webkit-transition: width 0.3s;
     -moz-transition: width 0.3s;
     -o-transition: width 0.3s;
+    -webkit-transition: width 0.3s;
     transition: width 0.3s;
     -webkit-animation: progress-bar 2s linear infinite;
     -moz-animation: progress-bar 2s linear infinite;
@@ -6915,7 +6912,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     padding: 10px 10px 0px 10px;
     font-size: 14px; }
     .res_diff_tree .tree .type {
-      background-color: #2c2f46;
+      background-color: #2C2F46;
       border-radius: 2px;
       padding: 3px 7px;
       color: #999;
@@ -7003,7 +7000,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       .res_diff_tree .tree .item.end .meta .type {
         cursor: auto; }
         .res_diff_tree .tree .item.end .meta .type:hover {
-          background-color: #2c2f46;
+          background-color: #2C2F46;
           color: #999; }
       .res_diff_tree .tree .item.end::after {
         display: none; }
@@ -7082,7 +7079,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   background: -o-linear-gradient(left, #27292c 0%, rgba(39, 41, 44, 0) 100%);
   background: -ms-linear-gradient(left, #27292c 0%, rgba(39, 41, 44, 0) 100%);
   background: linear-gradient(to right, #27292c 0%, rgba(39, 41, 44, 0) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#27292C', endColorstr='#27292C', GradientType=1 ); }
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#27292C', endColorstr='#27292C', GradientType=1 ); }
 
 #state-editor .editable-area .ace_marker-layer .ace_bracket {
   display: none; }
@@ -7305,31 +7302,23 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 @-webkit-keyframes cursor-blink {
   from, to {
     border-color: transparent; }
-
   50% {
     border-color: black; } }
-
 @-moz-keyframes cursor-blink {
   from, to {
     border-color: transparent; }
-
   50% {
     border-color: black; } }
-
 @-ms-keyframes cursor-blink {
   from, to {
     border-color: transparent; }
-
   50% {
     border-color: black; } }
-
 @keyframes cursor-blink {
   from, to {
     border-color: transparent; }
-
   50% {
     border-color: black; } }
-
 /*.ace_cursor {
 	border-left: 10px solid black;
 	-webkit-animation: 1s cursor-blink step-end infinite;
@@ -8397,7 +8386,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   padding: 0 20px;
   color: #ff9c00; }
 .modal-db-replica-promote-confirm a {
-  color: #4a90e2;
+  color: #4A90E2;
   font-size: 12px;
   margin: 0 20px; }
   .modal-db-replica-promote-confirm a:hover {
@@ -8526,7 +8515,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 .link-blue {
   font-size: 12px;
-  color: #4a90e2; }
+  color: #4A90E2; }
   .link-blue:hover {
     text-decoration: underline; }
 
@@ -8552,18 +8541,18 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
     .payment-credit-card {
       background-image: url("../images/ide/creditcard-normal@2x.png");
-      -webkit-background-size: 110px auto;
       -moz-background-size: 110px auto;
       -o-background-size: 110px auto;
+      -webkit-background-size: 110px auto;
       background-size: 110px auto; } }
   .payment-credit-card.payment-failed {
     background: url("../images/ide/creditcard-failed.png") center center no-repeat; }
     @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
       .payment-credit-card.payment-failed {
         background-image: url("../images/ide/creditcard-failed@2x.png");
-        -webkit-background-size: 121px auto;
         -moz-background-size: 121px auto;
         -o-background-size: 121px auto;
+        -webkit-background-size: 121px auto;
         background-size: 121px auto; } }
 
 #modal-run-stack, #app-apply-update {
@@ -8591,11 +8580,11 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 .members-only {
   display: none;
-  border: 1px solid #ffbb0d;
+  border: 1px solid #FFBB0D;
   padding: 10px;
   margin: 10px;
   margin-bottom: 0;
-  color: #ffbb0d;
+  color: #FFBB0D;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px; }
@@ -8700,17 +8689,17 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 300px;
   line-height: 18px; }
 .cf-params > li.error {
-  box-shadow: inset 4px 0 0 #a42b2b; }
+  box-shadow: inset 4px 0 0 #A42B2B; }
   .cf-params > li.error .cf-error {
     display: block; }
 .cf-params .cf-error {
   display: none;
   font-size: 12px;
-  color: #a42b2b;
+  color: #A42B2B;
   margin-top: 4px; }
 
 .param-error {
-  color: #a42b2b;
+  color: #A42B2B;
   float: left; }
 
 .param-empty {
@@ -8718,7 +8707,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 320px;
   text-align: left;
   font-size: 12px;
-  color: #ffbb0d; }
+  color: #FFBB0D; }
 
 .cf-input.select2-container {
   padding: 0;
@@ -8944,7 +8933,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
         cursor: pointer; }
     #OpsEditor .OEPanelRight.property .panel-body .item-readable-list .item.active, #OpsEditor .OEPanelRight.config .panel-body .item-readable-list .item.active {
       background-color: #2c2f4d;
-      border: 1px #363b76 solid;
+      border: 1px #363B76 solid;
       color: #fff; }
   #OpsEditor .OEPanelRight.property .dl-horizontal:first-child, #OpsEditor .OEPanelRight.config .dl-horizontal:first-child {
     margin-top: 0;
@@ -8968,9 +8957,9 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   #OpsEditor .OEPanelRight.property .os-server-image-info, #OpsEditor .OEPanelRight.config .os-server-image-info {
     cursor: pointer; }
     #OpsEditor .OEPanelRight.property .os-server-image-info p.property-os-image-text, #OpsEditor .OEPanelRight.config .os-server-image-info p.property-os-image-text {
-      color: #3970af; }
+      color: #3970AF; }
       #OpsEditor .OEPanelRight.property .os-server-image-info p.property-os-image-text:hover, #OpsEditor .OEPanelRight.config .os-server-image-info p.property-os-image-text:hover {
-        color: #4a90e2; }
+        color: #4A90E2; }
       #OpsEditor .OEPanelRight.property .os-server-image-info p.property-os-image-text span:hover, #OpsEditor .OEPanelRight.config .os-server-image-info p.property-os-image-text span:hover {
         color: #aaa; }
   #OpsEditor .OEPanelRight.property .selectize-input .property-os-image-icon, #OpsEditor .OEPanelRight.config .selectize-input .property-os-image-icon {
@@ -9026,7 +9015,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       border-style: solid;
       border-width: 0 20px 20px 0;
       margin-left: -20px;
-      border-color: transparent #11c568 transparent transparent; }
+      border-color: transparent #11C568 transparent transparent; }
     #OpsEditor .OEPanelRight.property .group.required:before, #OpsEditor .OEPanelRight.config .group.required:before {
       position: absolute;
       z-index: 2;
@@ -9088,7 +9077,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       display: inline-block;
       margin-top: 1px; }
     #OpsEditor .OEPanelRight.property .btn-group button.active, #OpsEditor .OEPanelRight.config .btn-group button.active {
-      background: #2c2f46;
+      background: #2C2F46;
       color: #fff !important; }
       #OpsEditor .OEPanelRight.property .btn-group button.active:after, #OpsEditor .OEPanelRight.config .btn-group button.active:after {
         content: "";
@@ -9096,16 +9085,16 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
         left: 0;
         bottom: 0px;
         content: '';
-        border-bottom: 2px solid #4a90e2;
+        border-bottom: 2px solid #4A90E2;
         width: 100%;
         z-index: 1; }
       #OpsEditor .OEPanelRight.property .btn-group button.active:hover, #OpsEditor .OEPanelRight.config .btn-group button.active:hover {
-        background: #2c2f46;
+        background: #2C2F46;
         color: #fff !important; }
     #OpsEditor .OEPanelRight.property .btn-group button:hover, #OpsEditor .OEPanelRight.config .btn-group button:hover {
       color: #ccc;
       background: #161616;
-      color: #4a90e2; }
+      color: #4A90E2; }
     #OpsEditor .OEPanelRight.property .btn-group button.disabled, #OpsEditor .OEPanelRight.property .btn-group button[disabled], #OpsEditor .OEPanelRight.config .btn-group button.disabled, #OpsEditor .OEPanelRight.config .btn-group button[disabled] {
       pointer-events: none;
       color: #555; }
@@ -9113,13 +9102,13 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     text-align: center;
     margin-top: 40px; }
   #OpsEditor .OEPanelRight.property .os-sg-remove, #OpsEditor .OEPanelRight.config .os-sg-remove {
-    color: #a42b2b;
+    color: #A42B2B;
     cursor: pointer;
     position: absolute;
     right: 9px;
     top: 7px; }
     #OpsEditor .OEPanelRight.property .os-sg-remove:hover, #OpsEditor .OEPanelRight.config .os-sg-remove:hover {
-      color: #ea5d5d; }
+      color: #EA5D5D; }
   #OpsEditor .OEPanelRight.property .os-sg-rule-list-container, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container {
     font-size: 12px; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .head-list, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .head-list {
@@ -9147,7 +9136,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       cursor: pointer;
       color: #666; }
       #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .rule-item-remove:hover, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .rule-item-remove:hover {
-        color: #a42b2b; }
+        color: #A42B2B; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list input.selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list input.selection {
       height: 32px; }
   #OpsEditor .OEPanelRight.property .os-sg-member-list li, #OpsEditor .OEPanelRight.config .os-sg-member-list li {
@@ -9312,8 +9301,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       padding: 0 15px 10px 15px;
       cursor: pointer; }
       .dash-ops-list-wrapper > nav .ops-list-switcher.on {
-        color: #4a90e2;
-        box-shadow: 0 2px #4a90e2; }
+        color: #4A90E2;
+        box-shadow: 0 2px #4A90E2; }
       .dash-ops-list-wrapper > nav .ops-list-switcher:hover {
         color: #7eace1; }
       .dash-ops-list-wrapper > nav .ops-list-switcher small {
@@ -9400,13 +9389,13 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     background-image: -webkit-linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
     background-image: -moz-linear-gradient(135deg, #ad77d7 25%, transparent 25%, transparent 50%, #ad77d7 50%, #ad77d7 75%, transparent 75%, transparent);
     background-image: linear-gradient(135deg, #ad77d7 25%, #9e62d4 25%, #9e62d4 50%, #ad77d7 50%, #ad77d7 75%, #9e62d4 75%, #9e62d4);
-    -webkit-background-size: 40px 40px;
     -moz-background-size: 40px 40px;
     -o-background-size: 40px 40px;
+    -webkit-background-size: 40px 40px;
     background-size: 40px 40px;
-    -webkit-transition: width 0.3s;
     -moz-transition: width 0.3s;
     -o-transition: width 0.3s;
+    -webkit-transition: width 0.3s;
     transition: width 0.3s;
     -webkit-animation: progress-bar 2s linear infinite;
     -moz-animation: progress-bar 2s linear infinite;
@@ -9574,7 +9563,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       color: #666;
       cursor: pointer; }
       .dash-ops-resource-list .resource-list-body .icon-detail:hover {
-        color: #4a90e2; }
+        color: #4A90E2; }
     .dash-ops-resource-list .resource-list-body .bubble {
       text-decoration: underline;
       cursor: default; }
@@ -9605,7 +9594,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     .dash-ops-resource-list .resource-list-body .dashboard-eip {
       background: url('/assets/images/ide/icon/icn-eipon.png') left center no-repeat;
       padding-left: 16px;
-      color: #4a90e2; }
+      color: #4A90E2; }
 
 .resource-id {
   color: #aaa;
@@ -9709,7 +9698,7 @@ dl.settings-item {
   color: #ff9c00; }
 .leave-project-zone .cannot-delete,
 .delete-project-zone .cannot-delete {
-  color: #ea5d5d;
+  color: #EA5D5D;
   margin-bottom: 8px; }
 
 .confirm-action {
@@ -9779,7 +9768,7 @@ dl.settings-item {
       color: #148BE6; }
     .fullpage-settings .setting-content #AccountEmailInfo,
     .fullpage-settings .setting-content #AccountInfo {
-      color: #ea5d5d; }
+      color: #EA5D5D; }
     .fullpage-settings .setting-content #AccountPwd {
       color: #148BE6;
       padding: 3px 0;
@@ -9802,7 +9791,7 @@ dl.settings-item {
       margin: 20px auto;
       display: block; }
     .fullpage-settings .setting-content .credential .demo-note {
-      color: #ffbb0d; }
+      color: #FFBB0D; }
     .fullpage-settings .setting-content .credential ul.credential-list > li {
       width: 400px;
       height: 80px;
@@ -9810,7 +9799,7 @@ dl.settings-item {
       border-radius: 3px;
       position: relative;
       margin: 4px auto;
-      background: #363b76;
+      background: #363B76;
       padding: 15px 20px;
       box-sizing: border-box; }
       .fullpage-settings .setting-content .credential ul.credential-list > li::selection {
@@ -9845,7 +9834,7 @@ dl.settings-item {
           width: 80px;
           line-height: 30px;
           cursor: pointer;
-          color: #4a90e2;
+          color: #4A90E2;
           font-size: 14px !important;
           padding: 0 5px; }
           .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li:before {
@@ -9853,7 +9842,7 @@ dl.settings-item {
             width: 16px;
             margin-right: 5px; }
           .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li.icon-delete {
-            color: #ea5d5d; }
+            color: #EA5D5D; }
           .fullpage-settings .setting-content .credential ul.credential-list > li .button-list li:hover {
             background: #000; }
     .fullpage-settings .setting-content .member-setting .operate {
@@ -9923,7 +9912,7 @@ dl.settings-item {
     .fullpage-settings .setting-content .member-setting .memlist-item .t-m-content tr {
       height: 60px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .cancel.link-style {
-      color: #ea5d5d;
+      color: #EA5D5D;
       line-height: 40px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .done {
       margin-top: 8px;
@@ -9962,7 +9951,7 @@ dl.settings-item {
     .fullpage-settings .setting-content .member-setting .memlist-item.edit .memlist-edit-mode {
       display: block; }
     .fullpage-settings .setting-content .member-setting .memlist-item .memlist-pending {
-      color: #ffbb0d; }
+      color: #FFBB0D; }
     .fullpage-settings .setting-content .member-setting .memlist-item .role {
       text-transform: uppercase; }
     .fullpage-settings .setting-content .member-setting .memlist-item .selectbox .selection {
@@ -10115,7 +10104,7 @@ dl.settings-item {
   position: absolute;
   right: -8px;
   top: 13px;
-  color: #4a90e2;
+  color: #4A90E2;
   line-height: 36px; }
 #CredSetupWrap .modal-control-group {
   position: relative; }
@@ -10209,7 +10198,7 @@ dl.settings-item {
       display: inline-block;
       vertical-align: top; }
       .project-scene .project-header .ph-nav-btn:hover {
-        color: #9c6dc0;
+        color: #9C6DC0;
         background: rgba(0, 0, 0, 0.2); }
     .project-scene .project-header .icon-notification {
       position: relative; }
@@ -10220,7 +10209,7 @@ dl.settings-item {
         position: absolute;
         left: 50%;
         top: 8px;
-        background: #ea5d5d;
+        background: #EA5D5D;
         display: inline-block;
         height: 1em;
         line-height: 1em;
@@ -10278,7 +10267,7 @@ dl.settings-item {
   top: 17px;
   right: 0;
   text-align: right;
-  color: #11c568; }
+  color: #11C568; }
   .update-payment-wrap .new-project-support.icon-password,
   .new-project-billing-wrap .new-project-support.icon-password {
     font-size: 12px !important; }
@@ -10369,7 +10358,7 @@ dl.settings-item {
   line-height: 18px;
   font-weight: 100;
   letter-spacing: .2px;
-  background: #363b76;
+  background: #363B76;
   padding: 4px 6px;
   border-radius: 4px;
   margin: 6px 0; }
@@ -10478,7 +10467,7 @@ dl.settings-item {
   .header-popup li.padding {
     padding: 0 16px; }
   .header-popup .create-new-project {
-    color: #4a90e2;
+    color: #4A90E2;
     font-size: 14px; }
     .header-popup .create-new-project:hover {
       color: #7eace1; }
@@ -10510,10 +10499,10 @@ dl.settings-item {
       top: 14px; }
     .hp-notify-list li.success:before {
       content: "\F13A";
-      color: #11c568; }
+      color: #11C568; }
     .hp-notify-list li.failure:before {
       content: "\F139";
-      color: #ea5d5d; }
+      color: #EA5D5D; }
     .hp-notify-list li.processing:before, .hp-notify-list li.rollingback:before {
       content: "\F137";
       color: #ccc; }
@@ -10529,7 +10518,7 @@ dl.settings-item {
     background: #202027;
     border-radius: 3px;
     font-size: 12px;
-    color: #ea5d5d;
+    color: #EA5D5D;
     box-sizing: border-box;
     padding: 6px 5px; }
   .hp-notify-list > ul + .hp-notify-list-empty {
@@ -10585,8 +10574,8 @@ dl.settings-item {
       background: rgba(255, 255, 255, 0.02);
       color: #fff; }
     .hp-asset-list .off-canvas-tab.selected {
-      border-bottom: 3px solid #4a90e2;
-      color: #4a90e2; }
+      border-bottom: 3px solid #4A90E2;
+      color: #4A90E2; }
   .hp-asset-list .nav-empty {
     margin: 5px auto;
     padding: 15px;

@@ -218,16 +218,21 @@ define [
       @marathonModal = new Modal modalOptions
       @marathonModal.on 'confirm', () ->
         unless $( '#app-usage-selectbox .selected' ).length then return
-        @loadMarathon()
+        @loadMarathon( $( '#app-usage-selectbox .selected' ).attr("data-value") )
         @marathonModal.close()
       , @
 
-    loadMarathon: ->
-      $appList = $ '#marathon-app-list'
-      $createPanel = $ '#create-marathon-panel'
+    loadMarathon: (opsModelId)->
+      opsModel = App.model.getOpsModelById( opsModelId )
+      opsModel.fetchJsonData().then ()->
+        json = $.extend true, {}, opsModel.getJsonData()
+        console.log "Marathon JSON", json
 
-      $appList.show()
-      $createPanel.hide()
+        $appList = $ '#marathon-app-list'
+        $createPanel = $ '#create-marathon-panel'
+
+        $appList.show()
+        $createPanel.hide()
 
     toggleConstraint: ( e ) ->
       $item = $ e.currentTarget

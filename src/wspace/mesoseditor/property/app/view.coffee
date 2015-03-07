@@ -63,13 +63,16 @@ define ['../base/view'
         $target = $(evt.currentTarget)
         # update data-bind attr directly
         if $target.data('bind')
-
           if $target.data('bind') in ["maximumOverCapacity", 'minimumHealthCapacity']
             upgradeStrategyData = @model.get("upgradeStrategy") || {}
-            upgradeStrategyData[$target.data('bind')] = $target.val()
+            upgradeStrategyData[$target.data('bind')] = +$target.val()
             @model.set("upgradeStrategy", upgradeStrategyData)
           else
-            @model.set $target.data('bind'), $target.val()
+            attr = $target.data('bind')
+            newValue = $target.val()
+            if attr in ["cpus", 'mem', 'instances']
+              newValue = +newValue
+            @model.set attr, newValue
 
     updateConstraints: ()->
       constraints = []
@@ -101,11 +104,11 @@ define ['../base/view'
         $li = $ li
         protocol = $li.find('.mesos-health-check-protocol .selection').text()
         path = $li.find('.mesos-health-check-path').val()
-        portIndex = $li.find(".mesos-health-check-port-index").val()
-        gracePeriodSeconds = $li.find(".mesos-health-check-grace-period").val()
-        intervalSeconds = $li.find(".mesos-health-check-interval").val()
-        timeoutSeconds = $li.find(".mesos-health-check-timeout").val()
-        maxConsecutiveFailures = $li.find(".mesos-health-check-max-fail").val()
+        portIndex = +$li.find(".mesos-health-check-port-index").val()
+        gracePeriodSeconds = +$li.find(".mesos-health-check-grace-period").val()
+        intervalSeconds = +$li.find(".mesos-health-check-interval").val()
+        timeoutSeconds = +$li.find(".mesos-health-check-timeout").val()
+        maxConsecutiveFailures = +$li.find(".mesos-health-check-max-fail").val()
         command = {value: $li.find(".mesos-health-check-command").val()}
         healthCheck = {
           protocol, path, portIndex, gracePeriodSeconds, intervalSeconds, timeoutSeconds, maxConsecutiveFailures, command

@@ -202,7 +202,7 @@
 .server-number {
   fill      : #fff;
   font-size : 11px;
-  
+
   @include font-mono;
 }
 .volume-number {
@@ -1022,5 +1022,5 @@ marker {
     top            : 100px;
     left           : 100px;
   }
-  &.empty .marathon-cvs-ph { display : block; }
+  // &.empty .marathon-cvs-ph { display : block; }
 }

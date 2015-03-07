@@ -167,7 +167,7 @@ define ['../base/view'
       @$el.find(".mesos-port").each (index, port)->
         ports.push(+port.value) if port.value
 
-      executor = $(".mesos-executor").val()
+      executor = @$el.find(".mesos-executor").val()
 
       uris = []
       @$el.find(".mesos-uri").each (index, uri)->

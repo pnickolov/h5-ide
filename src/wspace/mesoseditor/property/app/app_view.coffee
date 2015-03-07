@@ -24,14 +24,14 @@ define ['../base/view'
       @_render()
 
     _render: (version)->
-      @appData = _.map @appData, (model)->
+      @appList = _.map @appData, (model)->
         model.toJSON()
       if version
-        data =  _.findWhere @appData, {version: version}
+        data =  _.findWhere @appList, {version: version}
       else
-        data = _.sortBy(@appData, "version")[0]
+        data = _.sortBy(@appList, "version")[0]
 
-      data.versions = _.pluck @appData, 'version'
+      data.versions = _.pluck @appList, 'version'
 
       data.host = Design.instance().serialize().host
 

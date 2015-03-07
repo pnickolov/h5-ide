@@ -31,6 +31,8 @@ define ['../base/view'
 
       data.versions = _.pluck @jsonData.toJSON(), "version"
 
+      data.host = Design.instance().serialize().host
+
       @appData = data
 
       #Switch Command/Arguments

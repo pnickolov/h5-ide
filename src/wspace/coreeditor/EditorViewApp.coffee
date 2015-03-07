@@ -14,7 +14,13 @@ define [
     initialize : ()->
       StackView.prototype.initialize.apply this, arguments
 
-      @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
+      # Comment just for demo
+      #@$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
+
+      # Show marathon app list
+      @$( '.sidebar-nav-resource' ).remove()
+      @resourcePanel.switchPanel()
+      @resourcePanel.loadMarathon @workspace.opsModel.id
 
       @toggleProcessing()
       @updateProgress()

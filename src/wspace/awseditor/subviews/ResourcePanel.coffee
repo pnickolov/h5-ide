@@ -122,7 +122,8 @@ define [
       'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
 
       'click .apply'                 : 'popApplyMarathonModal'
-      'click .container-item'         : 'toggleConstraint'
+      'click .change-marathon-stack' : 'popApplyMarathonModal'
+      'click .container-item'        : 'toggleConstraint'
 
     initialize : (options)->
       _.extend this, options
@@ -187,19 +188,22 @@ define [
     # For Demo Begin
 
     switchPanel : (event) ->
-
-        # clean selected
-        $button = $(event.currentTarget)
-        $button.parents('nav').find('button').removeClass('selected')
-        $button.addClass('selected')
-
-        # switch
-        @$el.find('.container-panel').addClass('hide')
+      if not event
         @$el.find('.resource-panel').addClass('hide')
-        if $button.hasClass('sidebar-nav-resource')
-            @$el.find('.resource-panel').removeClass('hide')
-        else
-            @$el.find('.container-panel').removeClass('hide')
+        @$el.find('.container-panel').removeClass('hide')
+        return
+      # clean selected
+      $button = $(event.currentTarget)
+      $button.parents('nav').find('button').removeClass('selected')
+      $button.addClass('selected')
+
+      # switch
+      @$el.find('.container-panel').addClass('hide')
+      @$el.find('.resource-panel').addClass('hide')
+      if $button.hasClass('sidebar-nav-resource')
+          @$el.find('.resource-panel').removeClass('hide')
+      else
+          @$el.find('.container-panel').removeClass('hide')
 
     popApplyMarathonModal: ->
       data = []
@@ -224,15 +228,13 @@ define [
 
     loadMarathon: (opsModelId)->
       opsModel = App.model.getOpsModelById( opsModelId )
-      opsModel.fetchJsonData().then ()->
-        json = $.extend true, {}, opsModel.getJsonData()
-        console.log "Marathon JSON", json
+      json = $.extend true, {}, opsModel.getJsonData()
 
-        $appList = $ '#marathon-app-list'
-        $createPanel = $ '#create-marathon-panel'
+      $appList = $ '#marathon-app-list'
+      $createPanel = $ '#create-marathon-panel'
 
-        $appList.show()
-        $createPanel.hide()
+      $appList.show()
+      $createPanel.hide()
 
     toggleConstraint: ( e ) ->
       amimationDuration = 150

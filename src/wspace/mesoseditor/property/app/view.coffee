@@ -37,7 +37,9 @@ define ['../base/view'
     initialize   : (options) ->
 
     openContainer: ()->
-      @container = new Container(model: @model, appData: @appData[0].toJSON()).render()
+      model = @model
+      appData = if @isAppEdit then @appData[0]?.toJSON?() else undefined
+      @container = new Container({model, appData}).render()
 
     render: ()->
       data = @model.toJSON()

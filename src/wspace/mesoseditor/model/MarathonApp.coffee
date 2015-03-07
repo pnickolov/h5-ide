@@ -59,6 +59,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
         type     : @type
         toplevel : !@parent()
         color    : @get("color")
+        description: @get("description")
         version  : @get("version")
         resource : removeEmptyArray resource
 
@@ -66,6 +67,9 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
 
     getContainerJson: ->
       _.extend { type: 'DOCKER' }, @container()
+
+    setDescription: (description)->
+      @set("description", description)
 
     container: ->
       c = @get( 'container' )
@@ -84,7 +88,7 @@ define [ "ComplexResModel", "constant", "./MarathonDepIn", "i18n!/nls/lang.js" ]
         id     : data.uid
         name   : data.resource.id
         parent : if layout_data.groupUId then resolve( layout_data.groupUId ) else null
-
+        description: data.description
         container : data.resource.container
         image     : data.resource.container.docker.image
         color     : data.color

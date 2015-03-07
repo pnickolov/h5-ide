@@ -33,6 +33,7 @@ define ['../base/view'
       'change .mesos-executor'                   : 'updateAdvance'
       'change .mesos-uri'                        : 'updateAdvance'
       'click .mesos-envs .ipt-controls a'        : 'updateAdvance'
+      'change #property-res-desc'                : 'updateDescription'
 
     initialize   : (options) ->
 
@@ -187,5 +188,9 @@ define ['../base/view'
       @model.set {ports}
       @model.set {executor}
       @model.set {uris}
+
+    updateDescription: ()->
+      description = @$el.find("#property-res-desc").val()
+      @model.setDescription(description)
 
   new view()

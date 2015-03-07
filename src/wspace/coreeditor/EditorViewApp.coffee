@@ -88,6 +88,9 @@ define [
               modal.tpl.find(".modal-confirm").removeAttr("disabled")
             return
       })
+
+      modal.find("#importAsMesos").click ()->
+        $(".import-as-mesos-wrap").toggle($(this).is(":checked"))
       return
 
     toggleProcessing : ()->

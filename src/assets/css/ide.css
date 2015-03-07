@@ -3450,7 +3450,7 @@ div.modal-text-highlight {
 
 .region-resource-tab {
   display: inline-block;
-  width: 160px;
+  width: 200px;
   position: relative;
   text-align: left;
   background: #F3F3F3;
@@ -8796,6 +8796,15 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   padding: 0;
   border: none;
   width: 314px; }
+
+#mesos-master-url, #marathon-master-url {
+  width: 160px; }
+
+#mesos-master-port, #marathon-master-port {
+  width: 50px; }
+
+#importAsMesosWrap .modal-control-group > label {
+  width: 170px; }
 
 .openstack .OEPanelRight {
   width: 288px;

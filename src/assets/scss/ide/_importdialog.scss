@@ -122,3 +122,15 @@
   border : none;
   width : 314px;
 }
+
+#mesos-master-url, #marathon-master-url{
+  width: 160px;
+}
+
+#mesos-master-port,#marathon-master-port{
+  width: 50px;
+}
+
+#importAsMesosWrap .modal-control-group > label{
+  width: 170px;
+}

@@ -19,10 +19,7 @@ define [
         region_name : "us-east-1"
         app_id      : @category
       }).then ( data )->
-
-
         # Clear promise, so that next fetch() will send request.
         self.__fetchPromise = null
-
         data[1].apps
   }

@@ -169,10 +169,10 @@
           <li class="constraint-list hide">
             <header>CONSTRAINTS</header>
             <section class="constraint-info">
-              <p>hello world/p>
+              <p>hello world</p>
               <p>ajaskfjaslfj</p>
               <p>bcdafsafadsfaf</p>
-          </section>
+            </section>
           </li>
           <li class="container-item">
               <div class="info">
@@ -184,6 +184,14 @@
                   <span>0.02</span>
                   <span>24</span>
               </span>
+          </li>
+          <li class="constraint-list hide">
+            <header>CONSTRAINTS</header>
+            <section class="constraint-info">
+              <p>hello world</p>
+              <p>ajaskfjaslfj</p>
+              <p>bcdafsafadsfaf</p>
+            </section>
           </li>
       </ul>
       <div class="container-footer">

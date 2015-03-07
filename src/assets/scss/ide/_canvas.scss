@@ -200,8 +200,10 @@
   fill: #439beb;
 }
 .server-number {
-  fill: #fff;
-  font-size: 11px;
+  fill      : #fff;
+  font-size : 11px;
+  
+  @include font-mono;
 }
 .volume-number {
   fill: #74B1FD;
@@ -971,7 +973,9 @@ marker {
   }
   .cpu-label, .memory-label {
     font-size : 12px;
-    fill : red;
+    fill      : $dark-grey;
+
+    @include font-mono;
   }
 
   .server-number-group.mismatch {

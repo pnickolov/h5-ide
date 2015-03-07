@@ -3203,8 +3203,12 @@ div.modal-text-highlight {
     .dashboard-header .dropdown-menu > ul {
       float: left;
       background: #f8f8f8;
-      border-radius: 2px;
+      border-radius: 0 0 2px 2px;
       box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.5); }
+      .dashboard-header .dropdown-menu > ul[data-provider="docker::marathon"] {
+        border-radius: 2px 2px 0 0;
+        width: 171px;
+        border-bottom: 1px solid #ddd; }
     .dashboard-header .dropdown-menu li {
       padding: 12px 15px;
       border-bottom: 1px solid #ddd;
@@ -3520,7 +3524,7 @@ aside.dashboard-sidebar {
     padding: 15px 10px;
     cursor: default; }
     aside.dashboard-sidebar .dashboard-log .dashboard-log-item:hover {
-      background-color: rgba(126, 172, 225, 0.05); }
+      background: #fbfbfd; }
     aside.dashboard-sidebar .dashboard-log .dashboard-log-item .avatar {
       display: inline-block;
       width: 40px;
@@ -4730,7 +4734,8 @@ button#property-app-keypair {
 
 .server-number {
   fill: #fff;
-  font-size: 11px; }
+  font-size: 11px;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
 
 .volume-number {
   fill: #74B1FD;
@@ -5342,13 +5347,17 @@ marker.server, marker.elb {
   text-anchor: initial; }
 .DOCKER-MARATHON-App .cpu-label, .DOCKER-MARATHON-App .memory-label {
   font-size: 12px;
+<<<<<<< HEAD
   fill: red; }
 .DOCKER-MARATHON-App .server-number-group.mismatch .server-number-bg {
   fill: #F8E71C;
   stroke: #E58904;
   stroke-width: 1px; }
 .DOCKER-MARATHON-App .server-number-group.mismatch .server-number {
-  fill: #E58904; }
+  fill: #E58904; 
+fill: #898dbc;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;}
+
 
 .MarathonDepIn, .MarathonDepOut {
   stroke: #7FD321;
@@ -5590,6 +5599,25 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 .resource-icon-dbsnapshot {
   background-image: url('/assets/images/ide/icon/res-rdssnap.png'); }
+
+.resource-icon-docker-image {
+  position: relative;
+  background-image: none; }
+  .resource-icon-docker-image:before {
+    border: 2px solid #a8cee5;
+    background: #405bc7;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    content: "";
+    display: inline-block;
+    box-sizing: border-box; }
+  .resource-icon-docker-image img {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 21px;
+    left: 20px; }
 
 .ebs-size {
   margin-top: -1.5em;

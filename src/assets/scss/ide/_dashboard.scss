@@ -71,8 +71,14 @@
     > ul {
       float         : left;
       background    : #f8f8f8;
-      border-radius : 2px;
+      border-radius : 0 0 2px 2px;
       box-shadow    : 1px 5px 8px rgba(0, 0, 0, 0.5);
+
+      &[data-provider="docker::marathon"] {
+        border-radius : 2px 2px 0 0;
+        width         : 171px;
+        border-bottom : 1px solid #ddd;
+      }
     }
 
     li {
@@ -503,7 +509,7 @@ aside.dashboard-sidebar {
         cursor        : default;
 
         &:hover {
-            background-color: transparentize($light-b, .95);
+            background: desaturate(lighten($base-p, 65%), 12%); 
         }
 
         .avatar {

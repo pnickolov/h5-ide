@@ -258,6 +258,30 @@ $dndDuration : .2s;
 
 .resource-icon-dbinstance { background-image : image-url('ide/icon/res-rds.png'); }
 .resource-icon-dbsnapshot { background-image : image-url('ide/icon/res-rdssnap.png'); }
+.resource-icon-docker-image {
+  position         : relative;
+  background-image : none;
+
+  &:before {
+    border        : 2px solid rgb(168, 206, 229);
+    background    : #405bc7;
+    border-radius : 50%;
+    width         : 48px;
+    height        : 48px;
+    content       : "";
+    display       : inline-block;
+    box-sizing    : border-box;
+  }
+
+  img {
+    width    : 30px;
+    height   : 30px;
+    position : absolute;
+    top      : 21px;
+    left     : 20px;
+  }
+}
+
 
 .ebs-size {
   margin-top  : -1.5em;

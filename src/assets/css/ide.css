@@ -4564,7 +4564,8 @@ button#property-app-keypair {
   background-color: #2b2b35;
   padding: 10px; }
   .container-panel .container-header .edit-marathon-stack {
-    margin-left: 3px; }
+    margin-left: 3px;
+    cursor: pointer; }
 .container-panel .container-list {
   margin: 0 10px;
   margin-top: 20px; }
@@ -6364,7 +6365,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

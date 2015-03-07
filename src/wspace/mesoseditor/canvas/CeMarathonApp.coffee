@@ -22,7 +22,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
         if isAtomic then x += 9
         [ x, 41, CanvasElement.constant.PORT_RIGHT_ANGLE ]
 
-    iconUrl : ()-> "ide/ami/ami-not-available.png"
+    iconUrl : ()-> "ide/icon-mrth/icn-#{@model.get('name')}.png"
 
     listenModelEvents : ()->
       @listenTo CloudResources(this.canvas.design.credentialId(), constant.RESTYPE.MRTHAPP, this.canvas.design.opsModel().id), "change", @render
@@ -54,9 +54,9 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Can
           "fill"  : @model.get("color")
         })
 
-        svg.image( MC.IMG_URL + @iconUrl(), 32, 32 ).move( 20, 20 )
+        svg.image( MC.IMG_URL + @iconUrl(), 20, 20 ).move( 21, 15 )
 
-        svg.text("").move(45, 30).classes('node-label')
+        svg.text("").move(47, 29).classes('node-label')
 
         svg.image( MC.IMG_URL + "ide/icon-mrth/cvs-appicon.png", 120, 32 ).move( 20, 42 )
 

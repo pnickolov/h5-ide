@@ -235,14 +235,27 @@ define [
         $createPanel.hide()
 
     toggleConstraint: ( e ) ->
+      amimationDuration = 150
+
       $item = $ e.currentTarget
+
+      $( '.container-item' ).each ->
+        $c = $( @ )
+        if $c[0] is $item[0]
+          $c.addClass 'selected'
+        else
+          $c.removeClass 'selected'
+
       $constraint = $item.next '.constraint-list'
 
       if $constraint.is(':visible')
-        $constraint.stop().slideUp()
+        #$constraint.stop().slideUp()
       else
-        $( '.constraint-list' ).hide()
-        $constraint.stop().slideDown()
+        $( '.constraint-list' ).each ->
+          $c = $( @ )
+          if $c.is(':visible') then $c.stop().slideUp(amimationDuration)
+
+        $constraint.stop().slideDown(amimationDuration)
 
 
 

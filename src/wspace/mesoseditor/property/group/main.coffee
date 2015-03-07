@@ -3,8 +3,9 @@ define [ "Design"
          "../base/main"
          "./view"
          "constant"
+         "CloudResources"
          "event"
-], ( Design, PropertyModule, view, constant ) ->
+], ( Design, PropertyModule, view, constant, CloudResources ) ->
 
     PropertyModule.extend {
 
@@ -23,6 +24,7 @@ define [ "Design"
 
             @view = view
             @model = Design.instance().component uid
+            @appJSON = CloudResources(Design.instance().credentialId(), constant.RESTYPE.MRTHGROUP, Design.instance().get('id') ).toJSON()
             @view.mode = 'app'
             null
 
@@ -30,6 +32,7 @@ define [ "Design"
 
             @view = view
             @model = Design.instance().component uid
+            @appJSON = CloudResources(Design.instance().credentialId(), constant.RESTYPE.MRTHGROUP, Design.instance().get('id') ).toJSON()
             @view.mode = 'appedit'
             null
 

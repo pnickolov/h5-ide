@@ -8,7 +8,7 @@ define [ "Design"
 
     PropertyModule.extend {
 
-        handleTypes : [ "Stack" ]
+        handleTypes : [ "Stack", "default" ]
 
         initStack : ( uid )->
 

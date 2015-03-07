@@ -24,7 +24,7 @@
         </dl>
         <dl class="dl-vertical">
             <dt>Mesos Master</dt>
-            <dd>{{host}}</dd>
+            <dd><a href="{{host}}" target="_blank">{{host}}</a></dd>
         </dl>
     </div>
 </article>

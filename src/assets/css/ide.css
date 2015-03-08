@@ -10913,8 +10913,7 @@ dl.settings-item {
       .container-panel .marathon-app-list .group-list .group-item:last-child {
         margin-bottom: 177px; }
     .container-panel .marathon-app-list .container-list {
-      padding: 0 10px 0 10px;
-      box-sizing: border-box; }
+      padding: 20px 10px 0; }
     .container-panel .marathon-app-list .constraint-list {
       color: white;
       border-radius: 3px;

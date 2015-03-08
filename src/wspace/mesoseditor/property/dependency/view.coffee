@@ -11,8 +11,8 @@ define [ '../base/view'
 
         render: () ->
 
-            beforeComp = @model.port1Comp()
-            afterComp = @model.port2Comp()
+            afterComp = @model.port1Comp()
+            beforeComp = @model.port2Comp()
 
             @$el.html Tpl.stack({
                 before: beforeComp.get('name')

@@ -126,6 +126,7 @@ define [
       'click .container-item'        : 'toggleConstraint'
       'keyup #filter-containers'     : 'filterContainers'
       'change #filter-containers'    : 'filterContainers'
+      'click .group-header'          : 'toggleGroup'
 
 
     initialize : (options)->
@@ -632,10 +633,12 @@ define [
 
     renderContainerList: (json) ->
 
+        appMap = {}
         dataAry = []
 
         if json and _.keys(json).length > 0
 
+            # analyze app
             _.each json.component, (comp) ->
 
                 if comp.type is constant.RESTYPE.MRTHAPP
@@ -650,14 +653,35 @@ define [
                         memory: comp.resource.mem
                         constraints: constraints
                     }
-                    dataAry.push(data)
+                    appMap[comp.uid] = data
+
+            # analyze group
+            _.each json.component, (comp) ->
+
+                if comp.type is constant.RESTYPE.MRTHGROUP
+
+                    groupId = comp.resource.id
+                    apps = _.map comp.resource.apps, (appId) ->
+                        return appMap[appId]
+                    dataAry.push({
+                        id: groupId
+                        apps: apps
+                    })
 
             @$('.marathon-app-list').html LeftPanelTpl.containerList({
                 project: @workspace.scene.project.id
                 id: json.id
                 name: json.name
-                list: dataAry
+                groups: dataAry
             })
+
+            @recalcAccordion()
+
+    toggleGroup: (event) ->
+
+        $header = $(event.currentTarget)
+        $container = $header.next '.container-list'
+        $container.toggleClass('hide')
 
     filterContainers: (evt)->
       keyword = $(evt.currentTarget).val().toLowerCase()

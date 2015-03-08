@@ -183,30 +183,37 @@
 </div>
 <div class="modal-control-group">
     <label for="filter-containers">Filter Containters</label>
-    <input id="filter-containers" class="input filter-containers" type="text"/>
+    <input id="filter-containers" class="input filter-containers" type="text" placeholder="Search by name..."/>
 </div>
 <!-- <div class="tip">Click container item to inspect placement on canvas.</div> -->
-<ul class="container-list nano-content">
-    {{#each list}}
-    <li class="container-item" data-name="{{name}}">
-        <div class="task">{{task}}</div>
-        <div class="info">
-            <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
-            <span class="name">{{name}}</span>
-        </div>
-        <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
-        <span class="container-info">
-            <span>{{cpu}}</span>
-            <span>{{memory}}</span>
-        </span>
-    </li>
-    <li class="constraint-list hide">
-      <header>CONSTRAINTS</header>
-      <section class="constraint-info">
-        {{#each constraints}}
-            <p>{{this}}</p>
-        {{/each}}
-    </section>
+<ul class="group-list">
+    {{#each groups}}
+    <li class="group-item">
+        <div class="group-header">{{id}}</div>
+        <ul class="container-list {{#if @index}}hide{{/if}}">
+            {{#each apps}}
+            <li class="container-item" data-name="{{name}}">
+                <div class="task tooltip" data-tooltip="Instances">{{task}}</div>
+                <div class="info">
+                    <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
+                    <span class="name tooltip" data-tooltip="{{name}}">{{name}}</span>
+                </div>
+                <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
+                <span class="container-info">
+                    <span class="tooltip" data-tooltip="CPU">{{cpu}}</span>
+                    <span class="tooltip" data-tooltip="Memory">{{memory}}</span>
+                </span>
+            </li>
+            <li class="constraint-list hide">
+              <header>CONSTRAINTS</header>
+              <section class="constraint-info">
+                {{#each constraints}}
+                    <p>{{this}}</p>
+                {{/each}}
+            </section>
+            </li>
+            {{/each}}
+        </ul>
     </li>
     {{/each}}
 </ul>

@@ -898,6 +898,28 @@ marker {
 #hlArea {
   fill-opacity:0.5;
 }
+#hlAreaBorder {
+  stroke: #333;
+  stroke-width:0px;
+  -webkit-animation:borderEffect .5s ease-in;
+  animation:borderEffect .5s ease-in;
+}
+
+@-webkit-keyframes borderEffect {
+  0%   { stroke-width:1px; }
+  34%  { stroke-width:3px; }
+  50%  { stroke-width:8px; }
+  70%  { stroke-width:8px; }
+  100% { stroke-width:0px; }
+}
+
+@keyframes borderEffect {
+  0%   { stroke-width:1px; }
+  34%  { stroke-width:3px; }
+  50%  { stroke-width:8px; }
+  70%  { stroke-width:8px; }
+  100% { stroke-width:0px; }
+}
 
 .canvas-message {
   position      : absolute;

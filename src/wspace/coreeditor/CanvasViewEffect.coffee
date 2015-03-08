@@ -252,7 +252,12 @@ define [
     filler = "M0,0L#{w},0L#{w},#{h}L0,#{h}Z"
 
     @__highLightCliper = @svg.clip().attr("id", "hlClipper").add( @svg.path(filler+path).attr("clip-rule","evenodd") )
-    @__highLightRect   = @svg.rect(0,0).attr({id:"hlArea",width:"100%", height:"100%"}).clipWith( @__highLightCliper )
+    @__highLightRect   = @svg.group().add([
+      @svg.rect(0,0).attr({id:"hlArea",width:"100%", height:"100%"})
+      @svg.path(path).attr({id:"hlAreaBorder"})
+    ]).clipWith( @__highLightCliper )
+
+    # $("#hlAreaBorder").append('<animate attributeName="stroke-width" attributeType="XML" values="0px;16px;16px;16px;0px" dur="0.5s" repeatCount="1"></animate>')
     return
 
   CanvasViewProto.removeHighLight = ( items )->

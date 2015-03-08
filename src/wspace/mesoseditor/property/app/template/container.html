@@ -19,7 +19,7 @@
             <div class="multi-ipt-row template">
                 <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
-                    <input class="input" placeholder="0" type="text" data-name="host" required/>
+                    <input class="input" placeholder="0" type="text" data-name="hostPort" required/>
                     <input class="input" placeholder="80/tcp" type="text" data-name="container" required/>
                     <input class="input" placeholder="80" type="text" data-name="serviceport" required/>
                 </span>
@@ -28,9 +28,9 @@
             <div class="multi-ipt-row">
                 <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                 <span class="ipt-wrapper">
-                    <input class="input" placeholder="0" type="text" data-name="host" value={{host}} required/>
+                    <input class="input" placeholder="0" type="text" data-name="hostPort" value={{host}} required/>
                     <input class="input" placeholder="80/tcp" type="text" data-name="container" value="{{containerPort}}/{{protocol}}" required/>
-                    <input class="input" placeholder="80" type="text" data-name="serviceport" value="{{serviceport}}" required/>
+                    <input class="input" placeholder="80" type="text" data-name="servicePort" value="{{servicePort}}" required/>
                 </span>
             </div>
             {{/each}}

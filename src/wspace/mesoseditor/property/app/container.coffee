@@ -81,7 +81,7 @@ define [ './template/container'
                     name = $input.data( 'name' )
 
                     # Some value must be number.
-                    if name in [ 'host', 'serviceport' ]
+                    if name in [ 'hostPort', 'servicePort' ]
                         value = +value
 
                     if name is 'container'

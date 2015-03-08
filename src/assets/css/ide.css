@@ -6331,8 +6331,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10886,19 +10885,19 @@ dl.settings-item {
 .apply-marathon-stack .title {
   padding: 0 0 13px 0; }
 
-#marathon-app-list .constraint-list {
+.marathon-app-list .constraint-list {
   color: white;
   border-radius: 5px;
   background: #35363E;
   margin-top: 10px;
   padding: 5px 8px;
   margin-bottom: 15px; }
-  #marathon-app-list .constraint-list header {
+  .marathon-app-list .constraint-list header {
     margin: 0 0 10px 0; }
-  #marathon-app-list .constraint-list p {
+  .marathon-app-list .constraint-list p {
     padding: 0;
     margin: 5px 0; }
-  #marathon-app-list .constraint-list::before {
+  .marathon-app-list .constraint-list::before {
     content: "";
     display: block;
     width: 0;

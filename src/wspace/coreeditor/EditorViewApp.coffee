@@ -20,7 +20,11 @@ define [
       # Show marathon app list
       @$( '.sidebar-nav-resource' ).remove()
       @resourcePanel.switchPanel()
-      @resourcePanel.loadMarathon @workspace.opsModel.id
+
+      opsModelId = @workspace.opsModel.id
+
+      if opsModelId
+        @resourcePanel.loadMarathon opsModelId
 
       @toggleProcessing()
       @updateProgress()
@@ -78,6 +82,8 @@ define [
             design.set "name", json.name
             design.set "resource_diff", json.resource_diff
             design.set "usage", json.usage
+
+            self.resourcePanel.loadMarathon self.workspace.opsModel.id
 
             # "Refresh property"
             $("#OEPanelRight").trigger "REFRESH"

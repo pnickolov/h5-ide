@@ -124,7 +124,7 @@
 </div>
 
 <div class="panel container-panel hide">
-    <div class="create" id="create-marathon-panel">
+    <div class="create create-marathon-panel">
         <img class="logo" src="/assets/images/ide/marathon.png" />
         <div class="desc">Manage marathon framework on Mesos stack</div>
         <button class="btn btn-blue apply">Apply Marathon</button>

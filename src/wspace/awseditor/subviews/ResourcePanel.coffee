@@ -124,6 +124,8 @@ define [
       'click .apply'                 : 'popApplyMarathonModal'
       'click .change-marathon-stack' : 'popApplyMarathonModal'
       'click .container-item'        : 'toggleConstraint'
+      'click .container-item'        : 'highlightCanvas'
+
 
     initialize : (options)->
       _.extend this, options
@@ -231,8 +233,8 @@ define [
       opsModel = App.model.getOpsModelById( opsModelId )
       json = $.extend true, {}, opsModel.getJsonData()
 
-      $appList = $ '#marathon-app-list'
-      $createPanel = $ '#create-marathon-panel'
+      $appList = @$ '.marathon-app-list'
+      $createPanel = @$ '.create-marathon-panel'
 
       $appList.show()
       $createPanel.hide()
@@ -244,7 +246,7 @@ define [
 
       $item = $ e.currentTarget
 
-      $( '.container-item' ).each ->
+      @$( '.container-item' ).each ->
         $c = $( @ )
         if $c[0] is $item[0]
           $c.addClass 'selected'
@@ -256,13 +258,14 @@ define [
       if $constraint.is(':visible')
         #$constraint.stop().slideUp()
       else
-        $( '.constraint-list' ).each ->
+        @$( '.constraint-list' ).each ->
           $c = $( @ )
           if $c.is(':visible') then $c.stop().slideUp(amimationDuration)
 
         $constraint.stop().slideDown(amimationDuration)
 
-
+    highlightCanvas: () ->
+      Editor.view.highLightModels( models )
 
 
     # For Demo End

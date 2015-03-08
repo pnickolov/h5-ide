@@ -68,15 +68,13 @@
 <section style="margin:5px 5px 20px 8px;" id="importAsMesosWrap">
     <div class="checkbox"><input id="importAsMesos" type="checkbox"><label for="importAsMesos"></label></div>
     <label for="importAsMesos">Import as Mesos app</label>
-    <div class="import-as-mesos-wrap">
-        <div class="modal-control-group hide">
-            <label for="">Mesos Master Leader</label>
-            <input id="mesos-master-url" class="input" type="string" autofocus="">
-            <input class="input" id="mesos-master-port" type="text" value="5050"/>
-            <label for="">Any Marathon Master URL</label>
-            <input id="marathon-master-url" class="input" type="string" autofocus="">
-            <input class="input" id="marathon-master-port" type="text" value="8080"/>
-        </div>
+    <div class="modal-control-group import-as-mesos-wrap hide">
+        <label for="">Mesos Master Leader</label>
+        <input id="mesos-master-url" class="input" type="string" autofocus="">
+        <input class="input" id="mesos-master-port" type="text" value="5050"/>
+        <label for="">Any Marathon Master URL</label>
+        <input id="marathon-master-url" class="input" type="string" autofocus="">
+        <input class="input" id="marathon-master-port" type="text" value="8080"/>
     </div>
 
 </section>

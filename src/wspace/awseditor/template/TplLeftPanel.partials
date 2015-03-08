@@ -181,10 +181,14 @@
 <div class="container-edit">
     <a class="target route edit-marathon-stack icon-edit" href="/workspace/{{project}}/ops/{{id}}">Edit in {{name}}</a>
 </div>
+<div class="modal-control-group">
+    <label for="filter-containers">Filter Containters</label>
+    <input id="filter-containers" class="input filter-containers" type="text"/>
+</div>
 <div class="tip">Click container item to inspect placement on canvas.</div>
 <ul class="container-list nano-content">
     {{#each list}}
-    <li class="container-item">
+    <li class="container-item" data-name="{{name}}">
         <div class="task">{{task}}</div>
         <div class="info">
             <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />

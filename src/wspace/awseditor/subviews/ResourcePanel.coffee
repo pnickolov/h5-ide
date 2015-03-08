@@ -294,16 +294,16 @@ define [
         nameMap[comp.name] = comp.uid
 
       # switch highlight
-      # prod
-      if @marathonJson.name.indexOf('prod') isnt -1
-         modelNames1 = ['subne-web-prod-1a', 'subnet--web-4prod-1b']
-         modelNames2 = ['app-prod-1a-0', 'app-prod-1b-0']
-         modelNames3 = ['subnet-db-prod-1a', 'subnet-db-prod-10b']
       # qa
-      else
+      if @marathonJson.name.indexOf('qa') isnt -1
          modelNames1 = ['subne-web-staging-1a', 'subne-web-staging-1b']
          modelNames2 = ['subnet-qa-1a', 'subnet-qa-1b']
          modelNames3 = ['subnet-db-qa-1a', 'subnet-db-qa-1b']
+      # prod
+      else
+         modelNames1 = ['subne-web-prod-1a', 'subnet--web-4prod-1b']
+         modelNames2 = ['app-prod-1a-0', 'app-prod-1b-0']
+         modelNames3 = ['subnet-db-prod-1a', 'subnet-db-prod-10b']
 
       if event
 

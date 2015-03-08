@@ -60,7 +60,7 @@ $triangleHeight: 10px;
         text-align       : center;
         cursor           : pointer;
         color            : $base-grey;
-            
+
         &:hover { color: $base-b; }
     }
 
@@ -89,7 +89,7 @@ $triangleHeight: 10px;
               color            : #e0e0ec;
               border-bottom    : 1px solid #000;
             }
-            li:last-child {
+            .group-item:last-child {
                 margin-bottom: 177px;
             }
         }

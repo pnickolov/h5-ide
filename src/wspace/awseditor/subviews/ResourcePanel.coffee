@@ -680,8 +680,12 @@ define [
     toggleGroup: (event) ->
 
         $header = $(event.currentTarget)
+        $header.toggleClass('expand')
         $container = $header.next '.container-list'
-        $container.toggleClass('hide')
+        if $header.hasClass('expand')
+            $container.removeClass('hide')
+        else
+            $container.addClass('hide')
 
     filterContainers: (evt)->
       keyword = $(evt.currentTarget).val().toLowerCase()

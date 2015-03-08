@@ -165,13 +165,18 @@ define [
     importVpc : ( event )->
       if $(event.currentTarget).hasClass('disabled') then return false
 
-      return App.loadUrl("workspace/0f1bd360-c866-4852-94ec-a5c781f6a86f/ops/app-503dbed0")
-
-
-
-
       $tgt = $(event.currentTarget)
       if $tgt.hasClass(".disabled") then return false
+
+
+
+
+      App.loadUrl("workspace/0f1bd360-c866-4852-94ec-a5c781f6a86f/ops/app-503dbed0")
+      @dialog.close()
+      return
+
+
+
 
       opsmodel = @model.createAppByExistingResource( $tgt.attr("data-vpcid"), $tgt.closest("ul").attr("data-region"), Credential.PROVIDER.AWSGLOBAL )
 

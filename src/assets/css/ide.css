@@ -10873,13 +10873,15 @@ dl.settings-item {
         width: 4px;
         height: 8px; }
       .container-panel .marathon-app-list .group-list .group-header {
-        padding: 0 10px;
+        padding: 0 10px 0 22px;
         background-color: #2b2b35;
         height: 20px;
         line-height: 20px;
         font-size: 12px;
         color: #e0e0ec;
-        border-bottom: 1px solid #000; }
+        border-bottom: 1px solid #000;
+        position: relative;
+        cursor: pointer; }
         .container-panel .marathon-app-list .group-list .group-header:before {
           content: "";
           display: inline-block;
@@ -10888,7 +10890,14 @@ dl.settings-item {
           border-style: solid;
           border-width: 5px 0 5px 5px;
           border-color: transparent transparent transparent #51568e;
-          margin-right: 5px; }
+          position: absolute;
+          left: 10px;
+          top: 5px; }
+        .container-panel .marathon-app-list .group-list .group-header.expand:before {
+          border-width: 5px 5px 0 5px;
+          border-color: #51568e transparent transparent transparent;
+          top: 7px;
+          left: 8px; }
       .container-panel .marathon-app-list .group-list .group-item:last-child {
         margin-bottom: 177px; }
     .container-panel .marathon-app-list .container-list {
@@ -10903,6 +10912,9 @@ dl.settings-item {
       padding: 3px 8px;
       margin-bottom: 15px;
       font-size: 12px; }
+      .container-panel .marathon-app-list .constraint-list ::selection {
+        background: #3781C9;
+        color: #fcfcfc; }
       .container-panel .marathon-app-list .constraint-list header {
         margin: 0 0 10px 0;
         color: #0d964f; }
@@ -10931,11 +10943,17 @@ dl.settings-item {
       height: 73px;
       margin-bottom: 20px;
       cursor: pointer;
-      font-size: 12px; }
+      font-size: 12px;
+      opacity: .8;
+      -webkit-transition: opacity 0.2s ease-in-out;
+      -o-transition: opacity 0.2s ease-in-out;
+      transition: opacity 0.2s ease-in-out; }
       .container-panel .marathon-app-list .container-item:hover {
-        box-shadow: 0 0 0 1px #4a90e2; }
+        box-shadow: 0 0 0 1px #4a90e2;
+        opacity: .9; }
       .container-panel .marathon-app-list .container-item.selected {
-        box-shadow: 0 0 0 3px #56B8DB; }
+        box-shadow: 0 0 0 3px #56B8DB;
+        opacity: 1; }
       .container-panel .marathon-app-list .container-item .task {
         background-color: #4a90e2;
         position: absolute;

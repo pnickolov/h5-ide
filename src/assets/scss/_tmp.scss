@@ -81,13 +81,15 @@ $triangleHeight: 10px;
             @include font-mono;
 
             .group-header {
-              padding          : 0 10px;
+              padding          : 0 10px 0 22px;
               background-color : #2b2b35;
               height           : 20px;
               line-height      : 20px;
               font-size        : 12px;
               color            : #e0e0ec;
               border-bottom    : 1px solid #000;
+              position         : relative;
+              cursor           : pointer;
             
               &:before {
                 content      : "";
@@ -96,9 +98,18 @@ $triangleHeight: 10px;
                 height       : 0;
                 border-style : solid;
                 border-width : 5px 0 5px 5px ;
-                border-color :  transparent  transparent transparent $light-p-2;
-                margin-right : 5px;
+                border-color : transparent  transparent transparent $light-p-2;
+                position     : absolute;
+                left         : 10px;
+                top          : 5px;
               }  
+
+            &.expand:before {
+                border-width : 5px 5px 0 5px ;
+                border-color : $light-p-2 transparent transparent transparent ;
+                top          : 7px;
+                left         : 8px;
+              }
 
             }
             .group-item:last-child {
@@ -120,6 +131,11 @@ $triangleHeight: 10px;
             padding       : 3px 8px;
             margin-bottom : 15px;
             font-size     : 12px;
+
+            ::selection {
+                background: #3781C9;
+                color: #fcfcfc;
+            }
 
             header {
                 margin: 0 0 10px 0;
@@ -157,13 +173,18 @@ $triangleHeight: 10px;
             margin-bottom    : 20px;
             cursor           : pointer;
             font-size        : 12px;
+            opacity          : .8;
+
+            @include transit($method: opacity, $dur: .2s);
 
             &:hover {
-                box-shadow: 0 0 0 1px $base-b;
+                box-shadow : 0 0 0 1px $base-b;
+                opacity    : .9;
             }
 
             &.selected {
-              box-shadow: 0 0 0 3px #56B8DB;
+              box-shadow : 0 0 0 3px #56B8DB;
+              opacity    : 1;
             }
 
             .task {

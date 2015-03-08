@@ -24,7 +24,7 @@ define [
 
     updateResourcePanel: ->
       if @workspace.opsModel.type is OpsModel.Type.Mesos
-        @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
+        @removeLeftPanel()
       else
         @renderMarathonApp()
 
@@ -46,10 +46,13 @@ define [
         @$el.find(".OEPanelLeft").removeClass("force-hidden")
         @resourcePanel.render()
       else
-        @$el.find(".OEPanelLeft").addClass("force-hidden").empty()
+        @updateResourcePanel()
 
       @propertyPanel.openPanel()
       return
+
+    removeLeftPanel: ->
+      @$el.find(".OEPanelLeft").addClass("force-hidden").empty()
 
     confirmImport : ()->
       self = @

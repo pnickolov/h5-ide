@@ -897,28 +897,44 @@ marker {
 
 #hlArea {
   fill-opacity:0.5;
+  // -webkit-animation : fillEffect .5s ease-in-out;
+  // animation         : fillEffect .5s ease-in-out;
 }
 #hlAreaBorder {
-  stroke: #333;
-  stroke-width:0px;
-  -webkit-animation:borderEffect .5s ease-in;
-  animation:borderEffect .5s ease-in;
+  stroke            : $base-b;
+  stroke-width      : 1px;
+  -webkit-animation : borderEffect .5s ease-in;
+  animation         : borderEffect .5s ease-in;
+  opacity           : 1;
 }
 
+// @-webkit-keyframes fillEffect {
+//   0%   { fill-opacity:0;}
+//   50%  { fill-opacity:0.2;}
+//   100% { fill-opacity:0.5;}
+// }
+
+// @keyframes fillEffect {
+//   0%   { fill-opacity:0;}
+//   50%  { fill-opacity:0.2;}
+//   100% { fill-opacity:0.5;}
+// }
+
+
 @-webkit-keyframes borderEffect {
-  0%   { stroke-width:1px; }
-  34%  { stroke-width:3px; }
-  50%  { stroke-width:8px; }
-  70%  { stroke-width:8px; }
-  100% { stroke-width:0px; }
+  0%   { stroke-width:100px; opacity: 0;}
+  34%  { stroke-width:50px; opacity: .2;}
+  50%  { stroke-width:30px; opacity: .5;}
+  70%  { stroke-width:10px; opacity: .8;}
+  100% { stroke-width:1px; opacity: 1;}
 }
 
 @keyframes borderEffect {
-  0%   { stroke-width:1px; }
-  34%  { stroke-width:3px; }
-  50%  { stroke-width:8px; }
-  70%  { stroke-width:8px; }
-  100% { stroke-width:0px; }
+  0%   { stroke-width:100px; opacity: 0;}
+  34%  { stroke-width:50px; opacity: .2;}
+  50%  { stroke-width:30px; opacity: .5;}
+  70%  { stroke-width:10px; opacity: .8;}
+  100% { stroke-width:1px; opacity: 1;}
 }
 
 .canvas-message {

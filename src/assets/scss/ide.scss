@@ -724,7 +724,8 @@ a {
 }
 
 .rule-list-row {
-	height : 20px;
+	height    : 20px;
+	font-size : 12px;
 }
 
 .rule-list-row .sg-color, .sg-color-rule-header.sg-color {
@@ -736,6 +737,10 @@ a {
 	width       : 65px;
 	line-height : 20px;
 	height      : 20px;
+
+	&:last-of-type {
+		width: 120px;
+	}
 }
 
 .rule-list-row > .rule-port:empty {

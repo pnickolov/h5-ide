@@ -665,7 +665,8 @@ a {
   background: #9C6DC0; }
 
 .rule-list-row {
-  height: 20px; }
+  height: 20px;
+  font-size: 12px; }
 
 .rule-list-row .sg-color, .sg-color-rule-header.sg-color {
   box-shadow: none; }
@@ -675,6 +676,8 @@ a {
   width: 65px;
   line-height: 20px;
   height: 20px; }
+  .rule-list-row > div:last-of-type {
+    width: 120px; }
 
 .rule-list-row > .rule-port:empty {
   display: none; }

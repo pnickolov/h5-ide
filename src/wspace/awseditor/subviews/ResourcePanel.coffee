@@ -246,13 +246,16 @@ define [
 
       json = $.extend true, {}, data
 
+      # temp hack code
+      @marathonJson = json
+
       $appList = @$ '.marathon-app-list'
       $createPanel = @$ '.create-marathon-panel'
 
       $appList.show()
       $createPanel.hide()
 
-      @.renderContainerList(json)
+      @renderContainerList(json)
 
 
     toggleConstraint: ( e ) ->
@@ -290,17 +293,30 @@ define [
       _.each json.component, (comp) ->
         nameMap[comp.name] = comp.uid
 
+      # switch highlight
+      # prod
+      if @marathonJson.name.indexOf('prod') isnt -1
+         modelNames1 = ['subne-web-prod-1a', 'subnet--web-4prod-1b']
+         modelNames2 = ['app-prod-1a-0', 'app-prod-1b-0']
+         modelNames3 = ['subnet-db-prod-1a', 'subnet-db-prod-10b']
+      # qa
+      else
+         modelNames1 = ['subne-web-staging-1a', 'subne-web-staging-1b']
+         modelNames2 = ['subnet-qa-1a', 'subnet-qa-1b']
+         modelNames3 = ['subnet-db-qa-1a', 'subnet-db-qa-1b']
+
       if event
 
           $container = $(event.currentTarget)
           name = $container.data('name')
-          if name in ['APIService', 'AgentService', 'nginx']
-            modelNames = ['web-a', 'web-b']
-            modelIds = _.map modelNames, (name) ->
+          if name in ['api-service', 'agent-service', 'nginx']
+            modelIds = _.map modelNames1, (name) ->
+              return nameMap[name]
+          else if name in ['request-master', 'mongos', 'worker', 'resource-diff']
+            modelIds = _.map modelNames2, (name) ->
               return nameMap[name]
           else
-            modelNames = ['back-a', 'back-b']
-            modelIds = _.map modelNames, (name) ->
+            modelIds = _.map modelNames3, (name) ->
               return nameMap[name]
           if modelIds
             models = _.map modelIds, (id) ->

@@ -124,7 +124,6 @@ define [
       'click .apply'                 : 'popApplyMarathonModal'
       'click .container-change'      : 'popApplyMarathonModal'
       'click .container-item'        : 'toggleConstraint'
-      'click .container-item'        : 'highlightCanvas'
 
 
     initialize : (options)->
@@ -242,6 +241,7 @@ define [
       @renderContainerList(json)
 
     toggleConstraint: ( e ) ->
+
       amimationDuration = 150
 
       $item = $ e.currentTarget
@@ -264,13 +264,17 @@ define [
 
         $constraint.stop().slideDown(amimationDuration)
 
+      @highlightCanvas()
+
     highlightCanvas: () ->
-      Editor.view.highLightModels( models )
 
-
-    # For Demo End
-
-
+      modelIds = [
+          'FABDEDD1-E3D6-4B58-9963-680A2DD52A72',
+          'BA041E65-6720-4FD2-AD73-993DC0DF6C79'
+      ]
+      models = _.map modelIds, (id) ->
+        return Design.instance().component(id)
+      @workspace.view.highLightModels(models)
 
     resourceListSortSelectRdsEvent : (event) ->
 

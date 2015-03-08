@@ -1,7 +1,7 @@
 <!-- {{stack}} -->
 <article>
-    <div class="option-group-head expand">Dependency relationship</div>
+    <div class="option-group-head expand">Dependency Relationship</div>
     <div class="option-group" data-bind="true">
-        <label>{{after}} depends on {{before}}</label>
+        <label class="property-control-group">{{before}} depends on {{after}}</label>
     </div>
 </article>

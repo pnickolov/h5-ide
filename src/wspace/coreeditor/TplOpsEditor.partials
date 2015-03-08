@@ -69,7 +69,7 @@
     <div class="checkbox"><input id="importAsMesos" type="checkbox"><label for="importAsMesos"></label></div>
     <label for="importAsMesos">Import as Mesos app</label>
     <div class="modal-control-group import-as-mesos-wrap hide">
-        <label for="">Mesos Master Leader</label>
+        <label for="">Mesos Master Leader URL</label>
         <input id="mesos-master-url" class="input" type="string" autofocus="">
         <input class="input" id="mesos-master-port" type="text" value="5050"/>
         <label for="">Any Marathon Master URL</label>

@@ -133,7 +133,7 @@
 <div class="dash-region-stacks-wrap">
     <header class="dash-region-header">
         <label class="region-resource-tab stack">
-            {{stacks.length}}<b>{{#if isMarathon}}Marathon Stack{{else}}{{i18n "DASH_LBL_STACK"}}{{/if}}</b>
+            {{stacks.length}}<b>{{#if isMarathon}}Docker Stack{{else}}{{i18n "DASH_LBL_STACK"}}{{/if}}</b>
         </label>
         <nav class="dash-region-navigation {{#if isMarathon}}hide{{/if}}" data-type="stacks">
             <button class="js-toggle-dropdown">

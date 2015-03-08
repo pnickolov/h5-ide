@@ -88,7 +88,7 @@
         <label class="region-resource-tab">
             {{apps.length}}<b>{{#if isMarathon}}Marathon App{{else}}{{i18n "DASH_LBL_APP"}}{{/if}}</b>
         </label>
-        <nav class="dash-region-navigation" data-type="apps">
+        <nav class="dash-region-navigation {{#if isMarathon}}hide{{/if}}" data-type="apps">
             <button class="js-toggle-dropdown">
                 <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
             </button>
@@ -135,7 +135,7 @@
         <label class="region-resource-tab stack">
             {{stacks.length}}<b>{{#if isMarathon}}Marathon Stack{{else}}{{i18n "DASH_LBL_STACK"}}{{/if}}</b>
         </label>
-        <nav class="dash-region-navigation" data-type="stacks">
+        <nav class="dash-region-navigation {{#if isMarathon}}hide{{/if}}" data-type="stacks">
             <button class="js-toggle-dropdown">
                 <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
             </button>

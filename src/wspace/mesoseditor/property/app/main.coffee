@@ -30,6 +30,7 @@ define [ "Design"
         initAppEdit : ( uid ) ->
             @view = view
             @view.isAppEdit = true
+            @model = Design.instance().component uid
             @view.model = Design.instance().component uid
             path = @view.model.path()
             @view.appData = CloudResources( Design.instance().credentialId(), constant.RESTYPE.MRTHAPP, Design.instance().serialize().id ).filter (model)->

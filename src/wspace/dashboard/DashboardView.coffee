@@ -57,8 +57,6 @@ define [ "./DashboardTpl",
       @region       = "global"
       @appsRegion   = "global"
       @stacksRegion = "global"
-      @stacksRegionMarathon = "global"
-      @appsRegionMarathon = "global"
       @setElement $( Template.main({
         providers : @model.supportedProviders()
         id: @model.scene.project.get("id")
@@ -254,7 +252,7 @@ define [ "./DashboardTpl",
         return false
       if not region
         if isMarathon
-          region = @[updateType + "RegionMarathon"]
+          region = "global"
         else
           region = @[updateType + "Region"]
       self = @

@@ -122,7 +122,7 @@ define [
       'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
 
       'click .apply'                 : 'popApplyMarathonModal'
-      'click .change-marathon-stack' : 'popApplyMarathonModal'
+      'click .container-change'      : 'popApplyMarathonModal'
       'click .container-item'        : 'toggleConstraint'
       'click .container-item'        : 'highlightCanvas'
 

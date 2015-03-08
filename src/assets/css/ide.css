@@ -10817,21 +10817,22 @@ dl.settings-item {
     color: #898dbc; }
   .container-panel .create .apply {
     margin-top: 20px; }
-.container-panel .container-header {
+.container-panel .container-edit {
   background-color: #2b2b35;
   padding: 10px; }
-  .container-panel .container-header .edit-marathon-stack {
+  .container-panel .container-edit .edit-marathon-stack {
     margin-left: 3px;
     cursor: pointer; }
-.container-panel .container-footer {
+.container-panel .container-change {
   background-color: #2b2b35;
   padding: 10px;
   position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
-  text-align: center; }
-  .container-panel .container-footer .change-marathon-stack {
+  text-align: center;
+  cursor: pointer; }
+  .container-panel .container-change .change-marathon-stack {
     cursor: pointer; }
 .container-panel .tip {
   padding: 10px; }

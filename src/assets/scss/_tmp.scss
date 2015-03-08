@@ -19,7 +19,7 @@ $triangleHeight: 10px;
             margin-top: 20px;
         }
     }
-    .container-header {
+    .container-edit {
         // height: 30px;
         background-color: #2b2b35;
         padding: 10px;
@@ -28,7 +28,7 @@ $triangleHeight: 10px;
             cursor: pointer;
         }
     }
-    .container-footer {
+    .container-change {
         background-color: #2b2b35;
         padding: 10px;
         position: absolute;
@@ -36,6 +36,7 @@ $triangleHeight: 10px;
         right: 0;
         left: 0;
         text-align: center;
+        cursor: pointer;
         .change-marathon-stack {
             cursor: pointer;
         }

@@ -178,7 +178,7 @@
 <dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 
 <!-- {{containerList}} -->
-<div class="container-header">
+<div class="container-edit">
     <i class="icon-edit"></i>
     <a class="target route edit-marathon-stack" href="/workspace/{{project}}/ops/{{id}}">Edit in {{name}}</a>
 </div>
@@ -207,6 +207,4 @@
     </li>
     {{/each}}
 </ul>
-<div class="container-footer">
-    <a class="change-marathon-stack">Change Marathon Stack… </a>
-</div>
+<div class="container-change">Change Marathon Stack…</div>

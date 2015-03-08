@@ -19,7 +19,7 @@ define [
 
       # Show marathon app list
       @$( '.sidebar-nav-resource' ).remove()
-      @resourcePanel.switchPanel()
+      @resourcePanel?.switchPanel()
 
       if @workspace.opsModel.id
         @resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()

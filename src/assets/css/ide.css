@@ -11009,8 +11009,9 @@ dl.settings-item {
         height: 40px;
         border-bottom: 1px solid #ddd; }
         .container-panel .marathon-app-list .container-item .info .container-icon {
-          margin-left: 5px;
-          margin-right: 5px;
+          margin-left: 11px;
+          margin-right: -1px;
+          margin-top: -2px;
           width: 18px;
           height: auto; }
       .container-panel .marathon-app-list .container-item .container-info-icon {

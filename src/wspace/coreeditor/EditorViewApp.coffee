@@ -66,7 +66,10 @@ define [
         onCancel     : ()-> self.workspace.remove(); return
         onConfirm    : ()->
 
+          newName = modal.tpl.find("#ImportSaveAppName").val()
+          $("ul.ws-tabs li.active").remove()
           App.loadUrl("workspace/0f1bd360-c866-4852-94ec-a5c781f6a86f/ops/app-503dbed0")
+          $("ul.ws-tabs li").last().find("span").text(newName + " - app")
           modal.close()
           return false
 

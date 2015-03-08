@@ -26,12 +26,10 @@ $triangleHeight: 10px;
             margin-top: 20px;
         }
     }
-<<<<<<< HEAD
     .container-edit {
         // height: 30px;
         background-color: #2b2b35;
         padding: 10px;
-=======
     .container-header {
         // height        : 30px;
         position         : absolute;
@@ -42,7 +40,6 @@ $triangleHeight: 10px;
         width            : 100%;
         text-align       : center;
 
->>>>>>> [feature/mesos] update style
         .edit-marathon-stack {
             margin-left: 3px;
             cursor: pointer;
@@ -131,12 +128,8 @@ $triangleHeight: 10px;
 
 }
 
-<<<<<<< HEAD
 .marathon-app-list {
-=======
-#marathon-app-list {
 
->>>>>>> [feature/mesos] update style
     .constraint-list {
         color: white;
         border-radius: 5px;
@@ -168,12 +161,11 @@ $triangleHeight: 10px;
         }
     }
 }
-
+}
 
 .marathon-resource-panel {
     padding: 0 10px 10px 10px;
-
+    
     .sidebar-title { padding: 0 10px; }
     .resource-list-head { margin-top: 10px; }
-
 }

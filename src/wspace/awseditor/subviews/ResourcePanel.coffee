@@ -181,9 +181,8 @@ define [
       @updateDisableItems()
       @renderReuse()
 
-      @$el.find(".nano").nanoScroller()
-
       @renderContainerList()
+      @$el.find(".nano").nanoScroller()
 
       return
 
@@ -235,10 +234,10 @@ define [
       $appList = $ '#marathon-app-list'
       $createPanel = $ '#create-marathon-panel'
 
-      @renderContainerList(json)
-
       $appList.show()
       $createPanel.hide()
+
+      @renderContainerList(json)
 
     toggleConstraint: ( e ) ->
       amimationDuration = 150
@@ -642,5 +641,6 @@ define [
                     dataAry.push(data)
 
         @$el.find('.container-list').html LeftPanelTpl.containerList(dataAry)
+        @$el.find(".nano").nanoScroller()
 
   }

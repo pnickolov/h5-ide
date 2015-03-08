@@ -135,7 +135,7 @@
           <a class="edit-marathon-stack">Edit in marathon-stack-1</a>
       </div>
       <div class="tip">Click container item to inspect placement on canvas.</div>
-      <ul class="container-list"></ul>
+      <ul class="container-list nano-content"></ul>
       <div class="container-footer">
           <a class="change-marathon-stack">Change Marathon Stack… </a>
       </div>

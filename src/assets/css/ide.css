@@ -677,7 +677,7 @@ a {
   line-height: 20px;
   height: 20px; }
   .rule-list-row > div:last-of-type {
-    width: 120px; }
+    width: 100px; }
 
 .rule-list-row > .rule-port:empty {
   display: none; }
@@ -6213,7 +6213,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 /* property-newtwork-acl */
 .acl-rule-list.property-list li {
-  width: 280px;
   padding: 0; }
   .acl-rule-list.property-list li .acl-rule-number {
     width: 100%;
@@ -6408,7 +6407,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 /* General Style for Property Panel List */
 .property-list li {
-  width: 260px;
   padding: 10px;
   border-bottom: 1px solid #202027;
   background: #2b2b35;

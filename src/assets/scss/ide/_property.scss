@@ -168,7 +168,7 @@
 /* property-newtwork-acl */
 
 .acl-rule-list.property-list li {
-	width: 280px;
+	// width: 280px;
 	padding: 0;
 
 	.acl-rule-number {
@@ -457,7 +457,7 @@
 /* General Style for Property Panel List */
 
 .property-list li {
-	width         : 260px;
+	// width         : 260px;
 	padding       : 10px;
 	border-bottom : 1px solid $bg-p;
 	background    : lighten($bg-p, 5%);

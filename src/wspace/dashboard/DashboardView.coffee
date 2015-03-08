@@ -166,7 +166,12 @@ define [ "./DashboardTpl",
         data = { loading : true }
       else
         @__globalLoading = false
-        data = @model.getAwsResData()
+        data = {}
+        _.each @model.getAwsResData(), (resList, key)->
+          orderedList = _.sortBy resList, (res)->
+            -res.data.length
+          data[key] = orderedList
+
 
       @$el.find("#GlobalView").html( dataTemplate.globalResources( data ) )
       if @region is "global"

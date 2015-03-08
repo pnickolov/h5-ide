@@ -186,7 +186,7 @@
 <ul class="group-list">
     {{#each groups}}
     <li class="group-item">
-        <div class="group-header">{{id}}</div>
+        <div class="group-header {{#unless @index}}expand{{/unless}}">{{id}}</div>
         <ul class="container-list {{#if @index}}hide{{/if}}">
             {{#each apps}}
             <li class="container-item tooltip" data-tooltip="Click to view service placement on canvas" data-name="{{name}}" style="color:{{color}}">

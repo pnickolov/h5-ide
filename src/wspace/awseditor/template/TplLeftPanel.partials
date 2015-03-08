@@ -129,7 +129,7 @@
         <div class="desc">Manage marathon framework on Mesos stack</div>
         <button class="btn btn-blue apply">Apply Marathon</button>
     </div>
-    <div id="marathon-app-list" class="hide"></div>
+    <div class="marathon-app-list" class="hide"></div>
 </div>
 
 <!-- {{snapshot}} -->

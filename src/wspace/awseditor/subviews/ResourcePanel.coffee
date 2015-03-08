@@ -229,16 +229,19 @@ define [
       , @
 
     loadMarathon: (opsModelId)->
+      that = @
       opsModel = App.model.getOpsModelById( opsModelId )
-      json = $.extend true, {}, opsModel.getJsonData()
 
-      $appList = @$ '.marathon-app-list'
-      $createPanel = @$ '.create-marathon-panel'
+      opsModel.fetchJsonData().then ()->
+        json = $.extend true, {}, opsModel.getJsonData()
 
-      $appList.show()
-      $createPanel.hide()
+        $appList = that.$ '.marathon-app-list'
+        $createPanel = that.$ '.create-marathon-panel'
 
-      @renderContainerList(json)
+        $appList.show()
+        $createPanel.hide()
+
+        that.renderContainerList(json)
 
     toggleConstraint: ( e ) ->
 
@@ -647,7 +650,7 @@ define [
                     }
                     dataAry.push(data)
 
-            @$el.find('#marathon-app-list').html LeftPanelTpl.containerList({
+            @$('.marathon-app-list').html LeftPanelTpl.containerList({
                 project: @workspace.scene.project.id
                 id: json.id
                 name: json.name

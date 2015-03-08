@@ -189,8 +189,8 @@
         <div class="group-header">{{id}}</div>
         <ul class="container-list {{#if @index}}hide{{/if}}">
             {{#each apps}}
-            <li class="container-item" data-name="{{name}}">
-                <div class="task tooltip" data-tooltip="Instances">{{task}}</div>
+            <li class="container-item" data-name="{{name}}" style="border-top:4px solid {{color}}">
+                <div class="task tooltip {{#if yellow}}yellow{{/if}}" data-tooltip="{{instanceTip}}">{{task}}</div>
                 <div class="info">
                     <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
                     <span class="name tooltip" data-tooltip="{{name}}">{{name}}</span>
@@ -202,10 +202,12 @@
                 </span>
             </li>
             <li class="constraint-list hide">
-              <header>CONSTRAINTS</header>
+              <header>{{title}}</header>
               <section class="constraint-info">
                 {{#each constraints}}
-                    <p>{{this}}</p>
+                {{#ifCond @index 0}}<p class="attribute">{{this}}</p>{{/ifCond}}
+                {{#ifCond @index 1}}<p class="operator">{{this}}</p>{{/ifCond}}
+                {{#ifCond @index 2}}<p class="value">{{this}}</p>{{/ifCond}}
                 {{/each}}
             </section>
             </li>

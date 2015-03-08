@@ -645,7 +645,10 @@ define [
     renderContainerList: (json) ->
 
         appMap = {}
+        otherApp = []
         dataAry = []
+
+        isApp = Design.instance().mode() is 'app'
 
         if json and _.keys(json).length > 0
 
@@ -656,15 +659,35 @@ define [
 
                     constraints = _.map comp.resource.constraints, (constraint) ->
                         return constraint.join(', ')
+
+                    name = comp.resource.id
+                    task = comp.resource.instances
+                    title = 'CONSTRAINTS'
+                    instanceTip = 'Instances'
+
+                    if isApp
+                        title = 'RUNNING TASKS'
+                        constraints = ["mesos-dns.9b85d1a7-c47a-11e4-865f-0ae4c5a555b7", "10.0.0.6:31388"]
+                        if name in ['MongoDB']
+                            task = '2/' + task
+                            yellow = true
+                            instanceTip = 'Tasks/Instances'
+
                     data = {
-                        task: comp.resource.instances
+                        color: comp.color
+                        task: task
                         image: comp.resource.container.docker.image
-                        name: comp.resource.id
+                        name: name
                         cpu: comp.resource.cpus
                         memory: comp.resource.mem
+                        title: title
                         constraints: constraints
+                        yellow: yellow
+                        instanceTip: instanceTip
                     }
                     appMap[comp.uid] = data
+
+                    otherApp.push(comp.uid)
 
             # analyze group
             _.each json.component, (comp) ->
@@ -672,12 +695,25 @@ define [
                 if comp.type is constant.RESTYPE.MRTHGROUP
 
                     groupId = comp.resource.id
-                    apps = _.map comp.resource.apps, (appId) ->
+                    appIds = comp.resource.apps
+                    apps = _.map appIds, (appId) ->
                         return appMap[appId]
                     dataAry.push({
                         id: groupId
                         apps: apps
                     })
+                    otherApp = _.difference(otherApp, appIds)
+
+            otherApp = _.map otherApp, (appId) ->
+                return appMap[appId]
+
+            # no group
+            if otherApp.length
+
+                dataAry.push({
+                    id: "Default"
+                    apps: otherApp
+                })
 
             @$('.marathon-app-list').html LeftPanelTpl.containerList({
                 project: @workspace.scene.project.id

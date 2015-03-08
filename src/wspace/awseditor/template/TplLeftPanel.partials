@@ -185,7 +185,7 @@
     <label for="filter-containers">Filter Containters</label>
     <input id="filter-containers" class="input filter-containers" type="text"/>
 </div>
-<div class="tip">Click container item to inspect placement on canvas.</div>
+<!-- <div class="tip">Click container item to inspect placement on canvas.</div> -->
 <ul class="container-list nano-content">
     {{#each list}}
     <li class="container-item" data-name="{{name}}">

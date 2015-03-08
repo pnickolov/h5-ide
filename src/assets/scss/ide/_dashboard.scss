@@ -76,7 +76,7 @@
 
       &[data-provider="docker::marathon"] {
         border-radius : 2px 2px 0 0;
-        width         : 171px;
+        width         : 190px;
         border-bottom : 1px solid #ddd;
       }
     }
@@ -417,15 +417,15 @@
       text-align   : left;
       background   : #F3F3F3;
       font-size    : 21px;
-      font-weight  : 200;
+      // font-weight  : 200;
       color        : #666;
       padding-left : 50px;
       background   : image-url("ide/global-region-app-stack-m.png") 10px top no-repeat;
 
       > b {
-        font-weight : 200;
+        font-weight : 300;
         margin      : 0 10px 0 5px;
-        color       : #ddd;
+        color       : #ccc;
       }
 
       &.stack { background-position : 10px -50px; }
@@ -661,7 +661,7 @@ $bp-2: 1280px;
     .region-resource-info {
       display       : inline-block;
       font-size     : 16px;
-      font-weight   : 300;
+      // font-weight   : 300;
       position      : relative;
       padding-right : 80px;
       margin-left   : 60px;

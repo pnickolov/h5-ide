@@ -86,7 +86,7 @@
 <div class="dash-region-apps-wrap">
     <header class="dash-region-header">
         <label class="region-resource-tab">
-            {{apps.length}}<b>{{#if isMarathon}}Marathon App{{else}}{{i18n "DASH_LBL_APP"}}{{/if}}</b>
+            {{apps.length}}<b>{{#if isMarathon}}Docker App{{else}}{{i18n "DASH_LBL_APP"}}{{/if}}</b>
         </label>
         <nav class="dash-region-navigation {{#if isMarathon}}hide{{/if}}" data-type="apps">
             <button class="js-toggle-dropdown">

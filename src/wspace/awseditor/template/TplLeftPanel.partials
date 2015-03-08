@@ -192,7 +192,7 @@
 <li class="container-item">
     <div class="task">{{task}}</div>
     <div class="info">
-        <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" height="32" />
+        <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
         <span class="name">{{name}}</span>
     </div>
     <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />

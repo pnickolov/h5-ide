@@ -1681,10 +1681,19 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<section class=\"apply-marathon-stack\">\n  <div class=\"modal-text-major\">Link to a Marathon stack designed with VisualOps:</div>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">";
+function program3(depth0,data) {
+  
+  
+  return "\n<div class=\"modal-control-group clearfix\">\n	<label class=\"label var-label\">Specify the variable value for this deployment:</label>\n	<ul class=\"para-list\">\n		<li class=\"para-item\">\n		<input class=\"input key\" value=\"$env\" disabled />\n		<input class=\"input value\" />\n	</li>\n	<li class=\"para-item\">\n		<input class=\"input key\" value=\"$ver\" disabled />\n		<input class=\"input value\" />\n	</li>\n	</ul>\n</div>\n<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n	<label class=\"label url-label\" for=\"app-url\">Specify the URL of your Mesos Cluster’s Master:</label>\n	<input id=\"app-url\" class=\"input\" type=\"text\">\n	<div class=\"runtime-error\" id=\"runtime-error-appurl\"></div>\n</div>\n";
+  }
+
+  buffer += "<div id=\"modal-run-mesos\">\n<section class=\"apply-marathon-stack\">\n	<div class=\"modal-control-group clearfix\">\n  <label class=\"label url-label\">Link to a Marathon stack designed with VisualOps:</label>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</ul>\n  </div>\n</section>";
+  buffer += "</ul>\n  </div>\n</div>\n";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isApp), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</section>\n</div>";
   return buffer;
   };
 TEMPLATE.applyMarathonStack=Handlebars.template(__TEMPLATE__);

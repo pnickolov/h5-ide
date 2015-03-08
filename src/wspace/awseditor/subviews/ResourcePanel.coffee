@@ -218,6 +218,8 @@ define [
           id   : model.id
         }
 
+      isApp = (Design.instance().mode() in ['appedit', 'app'])
+      data.isApp = isApp
       modalOptions =
           template        : MC.template.applyMarathonStack( data )
           title           : 'Apply Marathon Stack '

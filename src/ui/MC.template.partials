@@ -895,10 +895,34 @@ Additional Notes and Questions
 
 
 <!-- {{applyMarathonStack}} -->
+<div id="modal-run-mesos">
 <section class="apply-marathon-stack">
-  <div class="modal-text-major">Link to a Marathon stack designed with VisualOps:</div>
+	<div class="modal-control-group clearfix">
+  <label class="label url-label">Link to a Marathon stack designed with VisualOps:</label>
   <div id="app-usage-selectbox" class="selectbox">
     <div class="selection">Select existing Marathon stack …</div>
     <ul class="dropdown" tabindex="-1">{{#each this}}<li class="item" data-value="{{id}}"></i>{{name}}</li>{{/each}}</ul>
   </div>
+</div>
+{{#if isApp}}
+<div class="modal-control-group clearfix">
+	<label class="label var-label">Specify the variable value for this deployment:</label>
+	<ul class="para-list">
+		<li class="para-item">
+		<input class="input key" value="$env" disabled />
+		<input class="input value" />
+	</li>
+	<li class="para-item">
+		<input class="input key" value="$ver" disabled />
+		<input class="input value" />
+	</li>
+	</ul>
+</div>
+<div class="modal-control-group clearfix" data-bind="true">
+	<label class="label url-label" for="app-url">Specify the URL of your Mesos Cluster’s Master:</label>
+	<input id="app-url" class="input" type="text">
+	<div class="runtime-error" id="runtime-error-appurl"></div>
+</div>
+{{/if}}
 </section>
+</div>

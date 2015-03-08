@@ -2162,6 +2162,8 @@ details[open] + .nutshell {
   margin-right: 5px; }
 #modal-run-mesos input.value {
   width: 297px; }
+#modal-run-mesos .selectbox {
+  width: 404px; }
 
 .validation-tag,
 .resource-tag {

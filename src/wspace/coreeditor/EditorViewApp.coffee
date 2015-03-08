@@ -65,6 +65,11 @@ define [
         hideClose    : true
         onCancel     : ()-> self.workspace.remove(); return
         onConfirm    : ()->
+
+          App.loadUrl("workspace/0f1bd360-c866-4852-94ec-a5c781f6a86f/ops/app-503dbed0")
+          modal.close()
+          return false
+
           $ipt = modal.tpl.find("#ImportSaveAppName")
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val

@@ -50,9 +50,27 @@ $triangleHeight: 10px;
             margin-top: 10px;
             border-radius: 2px;
             background-color: #fff;
+            border: 1px solid $dark-grey;
             border-top: 6px solid $dark-b;
             position: relative;
-            overflow: auto;
+            overflow: visible;
+            height: 73px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            &.selected {
+                box-shadow: 0 0 1px 3px #334df7;
+            }
+            .task {
+                background-color: $base-b;
+                position: absolute;
+                padding: 2px 5px;
+                right: 0;
+                color: #fff;
+                border-radius: 2px;
+                right: -5px;
+                top: -12px;
+                text-align: center;
+            }
             .info {
                 line-height: 40px;
                 height: 40px;
@@ -97,6 +115,7 @@ $triangleHeight: 10px;
         background: #35363E;
         margin-top: $triangleHeight;
         padding: 5px 8px;
+        margin-bottom: 15px;
 
         header {
             margin: 0 0 10px 0;

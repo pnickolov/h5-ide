@@ -183,6 +183,8 @@ define [
 
       @$el.find(".nano").nanoScroller()
 
+      @renderContainerList()
+
       return
 
     # For Demo Begin
@@ -232,6 +234,8 @@ define [
 
       $appList = $ '#marathon-app-list'
       $createPanel = $ '#create-marathon-panel'
+
+      @renderContainerList(json)
 
       $appList.show()
       $createPanel.hide()
@@ -614,5 +618,29 @@ define [
       @subViews = null
       Backbone.View.prototype.remove.call this
       return
+
+    renderContainerList: (json) ->
+
+        dataAry = []
+
+        if json
+
+            _.each json.component, (comp) ->
+
+                if comp.type is constant.RESTYPE.MRTHAPP
+
+                    constraints = _.map comp.resource.constraints, (constraint) ->
+                        return constraint.join(', ')
+                    data = {
+                        task: comp.resource.instances
+                        image: comp.resource.container.docker.image
+                        name: comp.resource.id
+                        cpu: comp.resource.cpus
+                        memory: comp.resource.mem
+                        constraints: constraints
+                    }
+                    dataAry.push(data)
+
+        @$el.find('.container-list').html LeftPanelTpl.containerList(dataAry)
 
   }

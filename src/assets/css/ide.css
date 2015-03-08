@@ -6331,7 +6331,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10842,9 +10843,25 @@ dl.settings-item {
     margin-top: 10px;
     border-radius: 2px;
     background-color: #fff;
+    border: 1px solid #898dbc;
     border-top: 6px solid #3970af;
     position: relative;
-    overflow: auto; }
+    overflow: visible;
+    height: 73px;
+    margin-bottom: 20px;
+    cursor: pointer; }
+    .container-panel .container-list .container-item.selected {
+      box-shadow: 0 0 1px 3px #334df7; }
+    .container-panel .container-list .container-item .task {
+      background-color: #4a90e2;
+      position: absolute;
+      padding: 2px 5px;
+      right: 0;
+      color: #fff;
+      border-radius: 2px;
+      right: -5px;
+      top: -12px;
+      text-align: center; }
     .container-panel .container-list .container-item .info {
       line-height: 40px;
       height: 40px;
@@ -10874,7 +10891,8 @@ dl.settings-item {
   border-radius: 5px;
   background: #35363E;
   margin-top: 10px;
-  padding: 5px 8px; }
+  padding: 5px 8px;
+  margin-bottom: 15px; }
   #marathon-app-list .constraint-list header {
     margin: 0 0 10px 0; }
   #marathon-app-list .constraint-list p {

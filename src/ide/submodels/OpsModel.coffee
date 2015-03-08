@@ -168,7 +168,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     # Use this method to access the real json of the opsModel
     getJsonData : ()->
-      {
+      base = {
         id          : @get("id") or ""
         name        : @get("name")
         region      : @get("region")
@@ -178,14 +178,16 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         time_update : @get("updateTime")
         description : @get("description")
         property    : { stoppable : @get("stoppable") }
-
-        resource_diff : @__jsonData.resource_diff
-        component     : @__jsonData.component
-        layout        : @__jsonData.layout
-        agent         : @__jsonData.agent
-        stack_id      : @__jsonData.stack_id
-        host          : @__jsonData.host
       }
+      if @__jsonData
+        _.extend(base, {
+          resource_diff : @__jsonData.resource_diff
+          component     : @__jsonData.component
+          layout        : @__jsonData.layout
+          agent         : @__jsonData.agent
+          stack_id      : @__jsonData.stack_id
+          host          : @__jsonData.host
+        })
 
     # Use this method to load the newest json.
     # Returns a promise that will be fulfilled when the json is loaded.

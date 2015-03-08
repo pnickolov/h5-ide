@@ -39,7 +39,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
         "data-id"   : $asg.attr("data-id")
       }
       $lcLayer.append( $lc )
+
+      CanvasManager.addClass(cn.$el, "hover") for cn in @connections()
       return
+
 
     hoverOut   : ( evt )->
       $lc = $( evt.currentTarget )
@@ -52,6 +55,7 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
       $layer.attr("data-id", "")
 
       @canvas.getItem( id ).$el.children().eq(0).after( $lc[0] )
+      CanvasManager.removeClass(cn.$el, "hover") for cn in @connections()
       return
 
     suppressEvent : ()-> false

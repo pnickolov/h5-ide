@@ -270,17 +270,28 @@ define [
 
         $constraint.stop().slideDown(amimationDuration)
 
-      @highlightCanvas()
+      @highlightCanvas(e)
 
-    highlightCanvas: () ->
+    highlightCanvas: (event) ->
 
-      modelIds = [
-          'FABDEDD1-E3D6-4B58-9963-680A2DD52A72',
-          'BA041E65-6720-4FD2-AD73-993DC0DF6C79'
-      ]
-      models = _.map modelIds, (id) ->
-        return Design.instance().component(id)
-      @workspace.view.highLightModels(models)
+      if event
+
+          $container = $(event.currentTarget)
+          name = $container.data('name')
+          if name in ['APIService', 'AgentService', 'nginx']
+            modelIds = [
+              'FABDEDD1-E3D6-4B58-9963-680A2DD52A72',
+              'BA041E65-6720-4FD2-AD73-993DC0DF6C79'
+            ]
+          else
+            modelIds = [
+              '9610A974-CD2A-44B4-A646-A4E79731EEE1',
+              'F7BCEBB6-6A36-43A6-AB34-04876A02EA96'
+            ]
+          if modelIds
+            models = _.map modelIds, (id) ->
+              return Design.instance().component(id)
+            @workspace.view.highLightModels(models)
 
     resourceListSortSelectRdsEvent : (event) ->
 

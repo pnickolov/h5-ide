@@ -10905,12 +10905,13 @@ dl.settings-item {
       overflow: visible;
       height: 73px;
       margin-bottom: 20px;
-      cursor: pointer; }
+      cursor: pointer;
+      font-size: 12px; }
       .container-panel .marathon-app-list .container-item:hover {
         box-shadow: 0 0 0 1px #4a90e2; }
       .container-panel .marathon-app-list .container-item.selected {
         box-shadow: 0 0 0 3px #56B8DB; }
-      .container-panel .marathon-app-list .container-item .task, .container-panel .marathon-app-list .container-item .info {
+      .container-panel .marathon-app-list .container-item .task, .container-panel .marathon-app-list .container-item .info, .container-panel .marathon-app-list .container-item .container-info {
         font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
       .container-panel .marathon-app-list .container-item .task {
         background-color: #4a90e2;

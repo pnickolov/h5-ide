@@ -126,6 +126,7 @@ $triangleHeight: 10px;
             height           : 73px;
             margin-bottom    : 20px;
             cursor           : pointer;
+            font-size        : 12px;
 
             &:hover {
                 box-shadow: 0 0 0 1px $base-b;
@@ -135,7 +136,7 @@ $triangleHeight: 10px;
               box-shadow: 0 0 0 3px #56B8DB;
             }
 
-            .task, .info { @include font-mono; }
+            .task, .info, .container-info { @include font-mono; }
 
             .task {
                 background-color: $base-b;

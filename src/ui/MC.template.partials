@@ -237,11 +237,11 @@ Additional Notes and Questions
 	  <label class="label var-label">Specify the variable value for this deployment:</label>
 	  <ul class="para-list">
 	  	<li class="para-item">
-		  <input class="input key" value="$ENV" disabled />
+		  <input class="input key" value="$env" disabled />
 		  <input class="input value" />
 		</li>
 		<li class="para-item">
-		  <input class="input key" value="$VER" disabled />
+		  <input class="input key" value="$ver" disabled />
 		  <input class="input value" />
 	    </li>
 	  </ul>

@@ -243,6 +243,7 @@ define [
 
 
     renderMarathonApp: ( data ) ->
+
       json = $.extend true, {}, data
 
       $appList = @$ '.marathon-app-list'
@@ -282,20 +283,25 @@ define [
 
     highlightCanvas: (event) ->
 
+      # get name -> uid map
+      nameMap = {}
+      # temp code
+      json = Design.instance().serialize()
+      _.each json.component, (comp) ->
+        nameMap[comp.name] = comp.uid
+
       if event
 
           $container = $(event.currentTarget)
           name = $container.data('name')
           if name in ['APIService', 'AgentService', 'nginx']
-            modelIds = [
-              'FABDEDD1-E3D6-4B58-9963-680A2DD52A72',
-              'BA041E65-6720-4FD2-AD73-993DC0DF6C79'
-            ]
+            modelNames = ['web-a', 'web-b']
+            modelIds = _.map modelNames, (name) ->
+              return nameMap[name]
           else
-            modelIds = [
-              '9610A974-CD2A-44B4-A646-A4E79731EEE1',
-              'F7BCEBB6-6A36-43A6-AB34-04876A02EA96'
-            ]
+            modelNames = ['back-a', 'back-b']
+            modelIds = _.map modelNames, (name) ->
+              return nameMap[name]
           if modelIds
             models = _.map modelIds, (id) ->
               return Design.instance().component(id)

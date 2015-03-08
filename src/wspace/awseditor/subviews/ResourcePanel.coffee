@@ -698,7 +698,7 @@ define [
                     if isApp
                         title = 'RUNNING TASKS'
                         constraints = ["mesos-dns.9b85d1a7-c47a-11e4-865f-0ae4c5a555b7", "10.0.0.6:31388"]
-                        if name in ['MongoDB']
+                        if name in ['mongodb', 'mongo-config']
                             task = '2/' + task
                             yellow = true
                             instanceTip = 'Tasks/Instances'

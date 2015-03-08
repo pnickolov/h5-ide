@@ -165,20 +165,25 @@ $triangleHeight: 10px;
             margin-top       : 10px;
             border-radius    : 2px;
             background-color : #fff;
-            border           : 1px solid $dark-grey;
             position         : relative;
             overflow         : visible;
             height           : 73px;
-            margin-bottom    : 20px;
             cursor           : pointer;
             font-size        : 12px;
             opacity          : .8;
+            border-width     : 1px;
+            border-top-width : 4px;
+            border-style     : solid;
+            margin           : 0 1px 20px;
+
+            .info, .container-info { color : #676767; }
 
             @include transit($method: opacity, $dur: .2s);
 
             &:hover {
-                box-shadow : 0 0 0 1px $base-b;
-                opacity    : .9;
+                opacity : .9;
+                border-width : 4px 2px 2px;
+                margin : 0 0 19px;
             }
 
             &.selected {

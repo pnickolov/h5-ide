@@ -189,7 +189,7 @@
         <div class="group-header">{{id}}</div>
         <ul class="container-list {{#if @index}}hide{{/if}}">
             {{#each apps}}
-            <li class="container-item" data-name="{{name}}" style="border-top:4px solid {{color}}">
+            <li class="container-item" data-name="{{name}}" style="color:{{color}}">
                 <div class="task tooltip {{#if yellow}}yellow{{/if}}" data-tooltip="{{instanceTip}}">{{task}}</div>
                 <div class="info">
                     <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />

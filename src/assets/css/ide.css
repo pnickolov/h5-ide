@@ -3578,7 +3578,7 @@ aside.dashboard-sidebar {
   flex-wrap: wrap;
   align-items: stretch;
   -webkit-align-items: stretch;
-  margin-top: 20px; }
+  margin-top: 10px; }
   .region-app-stack-wrap.marathon {
     height: 300px; }
     .region-app-stack-wrap.marathon .region-resource-list {

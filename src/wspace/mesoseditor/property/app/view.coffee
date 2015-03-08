@@ -51,8 +51,8 @@ define ['../base/view'
       data.isCommand = if data.cmd or data.args then data.cmd else true
 
       @$el.html Tpl data
-      @model.get 'name'
       @updateHealthCheck(true)
+      @model.get 'name'
 
     addHealthCheck: ()->
       $healthList = @$el.find("#mesos-health-checks-list")

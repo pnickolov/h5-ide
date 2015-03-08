@@ -10879,7 +10879,8 @@ dl.settings-item {
       font-size: 12px;
       font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
       .container-panel .marathon-app-list .constraint-list header {
-        margin: 0 0 10px 0; }
+        margin: 0 0 10px 0;
+        color: #0d964f; }
       .container-panel .marathon-app-list .constraint-list p {
         padding: 0;
         margin: 5px 0; }
@@ -10905,8 +10906,12 @@ dl.settings-item {
       height: 73px;
       margin-bottom: 20px;
       cursor: pointer; }
+      .container-panel .marathon-app-list .container-item:hover {
+        box-shadow: 0 0 0 1px #4a90e2; }
       .container-panel .marathon-app-list .container-item.selected {
         box-shadow: 0 0 0 3px #56B8DB; }
+      .container-panel .marathon-app-list .container-item .task, .container-panel .marathon-app-list .container-item .info {
+        font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
       .container-panel .marathon-app-list .container-item .task {
         background-color: #4a90e2;
         position: absolute;

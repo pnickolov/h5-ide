@@ -93,6 +93,7 @@ $triangleHeight: 10px;
 
             header {
                 margin: 0 0 10px 0;
+                color: darken($base-g, 10%);
             }
 
             p {
@@ -126,9 +127,15 @@ $triangleHeight: 10px;
             margin-bottom    : 20px;
             cursor           : pointer;
 
+            &:hover {
+                box-shadow: 0 0 0 1px $base-b;
+            }
+
             &.selected {
               box-shadow: 0 0 0 3px #56B8DB;
             }
+
+            .task, .info { @include font-mono; }
 
             .task {
                 background-color: $base-b;

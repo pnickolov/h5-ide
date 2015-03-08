@@ -14,10 +14,7 @@ define [
     initialize : ()->
       StackView.prototype.initialize.apply this, arguments
 
-      # Comment just for demo
-      #@$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
-
-      @renderMarathonApp()
+      @updateResourcePanel()
 
       @toggleProcessing()
       @updateProgress()
@@ -25,8 +22,13 @@ define [
       @listenTo @workspace.design, "change:mode", @switchMode
       return
 
+    updateResourcePanel: ->
+      if @workspace.opsModel.type is OpsModel.Type.Mesos
+        @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
+      else
+        @renderMarathonApp()
+
     renderMarathonApp: ->
-      if @workspace.opsModel.type is OpsModel.Type.Mesos then return
 
       @resourcePanel.switchPanel?()
       # Show marathon app list
@@ -87,7 +89,7 @@ define [
             design.set "resource_diff", json.resource_diff
             design.set "usage", json.usage
 
-            self.renderMarathonApp()
+            self.updateResourcePanel()
 
             # "Refresh property"
             $("#OEPanelRight").trigger "REFRESH"

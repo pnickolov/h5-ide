@@ -158,7 +158,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     getMsrId : ()-> @get("importMsrId") || undefined
 
     # Hardcode for demo
-    getMarathonStackId: -> 'stack-225fffae'
+    getMarathonStackId: -> 'app-50a72d9d'
 
     getThumbnail  : ()-> ThumbUtil.fetch(@get("id"))
     saveThumbnail : ( thumb )->

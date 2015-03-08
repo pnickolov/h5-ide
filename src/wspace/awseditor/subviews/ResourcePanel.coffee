@@ -235,16 +235,24 @@ define [
       that = @
       opsModel = App.model.getOpsModelById( opsModelId )
 
-      opsModel.fetchJsonData().then ()->
-        json = $.extend true, {}, opsModel.getJsonData()
+      data = opsModel.getJsonData()
+      if data
+        @renderMarathonApp( data )
+      else
+        opsModel.fetchJsonData().then ()-> that.renderMarathonApp( opsModel.getJsonData() )
 
-        $appList = that.$ '.marathon-app-list'
-        $createPanel = that.$ '.create-marathon-panel'
 
-        $appList.show()
-        $createPanel.hide()
+    renderMarathonApp: ( data ) ->
+      json = $.extend true, {}, data
 
-        that.renderContainerList(json)
+      $appList = @$ '.marathon-app-list'
+      $createPanel = @$ '.create-marathon-panel'
+
+      $appList.show()
+      $createPanel.hide()
+
+      @.renderContainerList(json)
+
 
     toggleConstraint: ( e ) ->
 

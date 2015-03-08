@@ -688,6 +688,8 @@ define [
       $(".container-list .container-item").each (index, item)->
         containerName = $(item).data("name").toLowerCase()
         shouldShow =  containerName.indexOf(keyword) >= 0
+        if not shouldShow and $(item).hasClass("selected")
+          $(item).next().hide()
         $(item).toggle(shouldShow)
 
   }

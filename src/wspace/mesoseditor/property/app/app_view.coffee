@@ -33,7 +33,9 @@ define ['../base/view'
 
       data.versions = _.pluck @appList, 'version'
 
-      data.host = Design.instance().serialize().host
+      path = @model.path()
+
+      data.task = Design.instance().serialize().host + "v2/apps" + path
 
       @data = data
 

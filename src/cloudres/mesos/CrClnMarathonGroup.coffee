@@ -19,6 +19,5 @@ define [
         region_name : "us-east-1"
         app_id      : @category
       }).then ( data )->
-        self.set data[1].groups
-        []
+        data[1].groups
   }

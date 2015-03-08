@@ -24,7 +24,7 @@ define [ "Design"
 
             @view = view
             @model = Design.instance().component uid
-            @appJSON = CloudResources(Design.instance().credentialId(), constant.RESTYPE.MRTHGROUP, Design.instance().get('id') ).toJSON()
+            @view.appJSON = CloudResources(Design.instance().credentialId(), constant.RESTYPE.MRTHGROUP, Design.instance().get('id') ).toJSON()
             @view.mode = 'app'
             null
 
@@ -32,7 +32,7 @@ define [ "Design"
 
             @view = view
             @model = Design.instance().component uid
-            @appJSON = CloudResources(Design.instance().credentialId(), constant.RESTYPE.MRTHGROUP, Design.instance().get('id') ).toJSON()
+            @view.appJSON = CloudResources(Design.instance().credentialId(), constant.RESTYPE.MRTHGROUP, Design.instance().get('id') ).toJSON()
             @view.mode = 'appedit'
             null
 

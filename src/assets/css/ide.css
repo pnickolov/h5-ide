@@ -10807,14 +10807,7 @@ dl.settings-item {
 
 .container-panel {
   height: 100%;
-  padding: 40px 0 80px 0;
-  box-size: border-box;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto; }
-  .container-panel::-webkit-scrollbar {
-    width: 4px;
-    height: 8px; }
+  position: relative; }
   .container-panel .create {
     text-align: center;
     margin: 0 auto; }
@@ -10829,103 +10822,123 @@ dl.settings-item {
     .container-panel .create .apply {
       margin-top: 20px; }
   .container-panel .container-edit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #2c2f4d;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box; }
+    .container-panel .container-edit:hover {
+      color: #7eace1; }
+    .container-panel .container-edit a {
+      color: #7eace1; }
+    .container-panel .container-edit a:hover {
+      color: #4a90e2; }
+    .container-panel .container-edit a span {
+      text-decoration: underline; }
+    .container-panel .container-edit .edit-marathon-stack:before {
+      display: inline-block;
+      margin: 0 5px 0 -12px; }
+  .container-panel .container-change {
     background-color: #2b2b35;
-    padding: 10px; }
-    .container-panel .container-edit .container-header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: #2c2f4d;
-      padding: 10px;
-      width: 100%;
-      text-align: center; }
-      .container-panel .container-edit .container-header .edit-marathon-stack {
-        margin-left: 3px;
-        cursor: pointer; }
-    .container-panel .container-edit .container-change {
-      background-color: #2b2b35;
-      padding: 10px;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      text-align: center;
+    padding: 10px;
+    position: absolute;
+    bottom: 40px;
+    right: 0;
+    left: 0;
+    text-align: center;
+    cursor: pointer; }
+    .container-panel .container-change .change-marathon-stack {
       cursor: pointer; }
-      .container-panel .container-edit .container-change .change-marathon-stack {
-        cursor: pointer; }
-    .container-panel .container-edit .tip {
-      padding: 10px; }
-    .container-panel .container-edit .container-list {
-      margin: 0 10px;
-      margin-top: 5px; }
-      .container-panel .container-edit .container-list .container-item {
-        margin-top: 10px;
-        border-radius: 2px;
-        background-color: #fff;
-        border: 1px solid #898dbc;
-        border-top: 4px solid #3970af;
+  .container-panel .tip {
+    padding: 5px;
+    color: #cacce1; }
+  .container-panel .marathon-app-list {
+    position: relative;
+    height: 100%; }
+    .container-panel .marathon-app-list .container-list {
+      padding: 0 10px 160px 10px;
+      box-sizing: border-box;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto; }
+      .container-panel .marathon-app-list .container-list::-webkit-scrollbar {
+        width: 4px;
+        height: 8px; }
+    .container-panel .marathon-app-list .constraint-list {
+      color: white;
+      border-radius: 3px;
+      background: #2c2f4d;
+      color: #11c568;
+      margin-top: -10px;
+      padding: 3px 8px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
+      .container-panel .marathon-app-list .constraint-list header {
+        margin: 0 0 10px 0; }
+      .container-panel .marathon-app-list .constraint-list p {
+        padding: 0;
+        margin: 5px 0; }
+      .container-panel .marathon-app-list .constraint-list:before {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 10px 10px 10px;
+        border-color: transparent transparent #2c2f4d transparent;
+        margin: 0 auto;
         position: relative;
-        overflow: visible;
-        height: 73px;
-        margin-bottom: 20px;
-        cursor: pointer; }
-        .container-panel .container-edit .container-list .container-item.selected {
-          box-shadow: 0 0 1px 3px #334df7; }
-        .container-panel .container-edit .container-list .container-item .task {
-          background-color: #4a90e2;
-          position: absolute;
-          padding: 2px 5px;
-          right: 0;
-          color: #fff;
-          border-radius: 2px;
-          right: -5px;
-          top: -12px;
-          text-align: center; }
-        .container-panel .container-edit .container-list .container-item .info {
-          line-height: 40px;
-          height: 40px;
-          border-bottom: 1px solid #ddd; }
-          .container-panel .container-edit .container-list .container-item .info .container-icon {
-            margin-left: 5px;
-            margin-right: 5px;
-            width: 18px;
-            height: auto; }
-        .container-panel .container-edit .container-list .container-item .container-info-icon {
-          margin-left: 0;
-          float: left;
-          margin-left: 5px; }
-        .container-panel .container-edit .container-list .container-item .container-info {
-          position: absolute;
-          bottom: 7px;
-          left: 35px;
-          right: 0;
-          text-align: left; }
-          .container-panel .container-edit .container-list .container-item .container-info span {
-            width: 60px;
-            display: inline-block; }
-  .container-panel .marathon-app-list .constraint-list {
-    color: white;
-    border-radius: 5px;
-    background: #35363E;
-    margin-top: 10px;
-    padding: 5px 8px;
-    margin-bottom: 15px; }
-    .container-panel .marathon-app-list .constraint-list header {
-      margin: 0 0 10px 0; }
-    .container-panel .marathon-app-list .constraint-list p {
-      padding: 0;
-      margin: 5px 0; }
-    .container-panel .marathon-app-list .constraint-list::before {
-      content: "";
-      display: block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0 10px 10px 10px;
-      border-color: transparent transparent #35363E transparent;
-      margin: 0 auto;
+        top: -10px; }
+    .container-panel .marathon-app-list .container-item {
+      margin-top: 10px;
+      border-radius: 2px;
+      background-color: #fff;
+      border: 1px solid #898dbc;
+      border-top: 4px solid #3970af;
       position: relative;
-      top: -10px; }
+      overflow: visible;
+      height: 73px;
+      margin-bottom: 20px;
+      cursor: pointer; }
+      .container-panel .marathon-app-list .container-item.selected {
+        box-shadow: 0 0 0 3px #56B8DB; }
+      .container-panel .marathon-app-list .container-item .task {
+        background-color: #4a90e2;
+        position: absolute;
+        padding: 2px 5px;
+        right: 0;
+        color: #fff;
+        border-radius: 2px;
+        right: -5px;
+        top: -12px;
+        text-align: center; }
+      .container-panel .marathon-app-list .container-item .info {
+        line-height: 40px;
+        height: 40px;
+        border-bottom: 1px solid #ddd; }
+        .container-panel .marathon-app-list .container-item .info .container-icon {
+          margin-left: 5px;
+          margin-right: 5px;
+          width: 18px;
+          height: auto; }
+      .container-panel .marathon-app-list .container-item .container-info-icon {
+        margin-left: 0;
+        float: left;
+        margin-left: 5px; }
+      .container-panel .marathon-app-list .container-item .container-info {
+        position: absolute;
+        bottom: 7px;
+        left: 35px;
+        right: 0;
+        text-align: left; }
+        .container-panel .marathon-app-list .container-item .container-info span {
+          width: 60px;
+          display: inline-block; }
 
 .marathon-resource-panel {
   padding: 0 10px 10px 10px; }

@@ -179,7 +179,7 @@
 
 <!-- {{containerList}} -->
 <div class="container-edit">
-    <a class="target route edit-marathon-stack icon-edit" href="/workspace/{{project}}/ops/{{id}}">Edit in {{name}}</a>
+    <a class="target route edit-marathon-stack icon-edit" href="/workspace/{{project}}/ops/{{id}}">Edit in <span>{{name}}</span></a>
 </div>
 <div class="modal-control-group">
     <label for="filter-containers">Filter Containters</label>

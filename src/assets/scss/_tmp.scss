@@ -44,6 +44,13 @@ $triangleHeight: 10px;
         .edit-marathon-stack:before { display: inline-block; margin: 0 5px 0 -12px; }
     }
 
+    .filter-containers {
+        width: 100%;
+        margin-top: 37px;
+        box-sizing: border-box;
+        
+    }
+
     .container-change {
         background-color : #2b2b35;
         padding          : 10px;
@@ -194,10 +201,6 @@ $triangleHeight: 10px;
     }
 }
 
-.marathon-app-list {
-
-
-}
 
 .marathon-resource-panel {
     padding: 0 10px 10px 10px;

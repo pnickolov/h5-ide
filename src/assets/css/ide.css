@@ -6332,8 +6332,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -10842,6 +10841,10 @@ dl.settings-item {
     .container-panel .container-edit .edit-marathon-stack:before {
       display: inline-block;
       margin: 0 5px 0 -12px; }
+  .container-panel .filter-containers {
+    width: 100%;
+    margin-top: 37px;
+    box-sizing: border-box; }
   .container-panel .container-change {
     background-color: #2b2b35;
     padding: 10px;

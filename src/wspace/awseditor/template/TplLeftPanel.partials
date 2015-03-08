@@ -181,10 +181,7 @@
 <div class="container-edit">
     <a class="target route edit-marathon-stack icon-edit" href="/workspace/{{project}}/ops/{{id}}">Edit in <span>{{name}}</span></a>
 </div>
-<div class="modal-control-group">
-    <label for="filter-containers">Filter Containters</label>
-    <input id="filter-containers" class="input filter-containers" type="text" placeholder="Search by name..."/>
-</div>
+<input id="filter-containers" class="input filter-containers" type="text" placeholder="Filter container..."/>
 <!-- <div class="tip">Click container item to inspect placement on canvas.</div> -->
 <ul class="group-list">
     {{#each groups}}

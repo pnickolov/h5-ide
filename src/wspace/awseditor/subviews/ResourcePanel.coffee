@@ -685,6 +685,8 @@ define [
 
     filterContainers: (evt)->
       keyword = $(evt.currentTarget).val().toLowerCase()
+      if keyword
+        $(".container-list").removeClass('hide')
       $(".container-list .container-item").each (index, item)->
         containerName = $(item).data("name").toLowerCase()
         shouldShow =  containerName.indexOf(keyword) >= 0

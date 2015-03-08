@@ -157,6 +157,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Get the Most Significant Resource id.
     getMsrId : ()-> @get("importMsrId") || undefined
 
+    # Hardcode for demo
+    getMarathonStackId: -> 'stack-225fffae'
+
     getThumbnail  : ()-> ThumbUtil.fetch(@get("id"))
     saveThumbnail : ( thumb )->
       if thumb

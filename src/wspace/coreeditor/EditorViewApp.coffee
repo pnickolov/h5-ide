@@ -17,18 +17,24 @@ define [
       # Comment just for demo
       #@$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
 
-      # Show marathon app list
-      @$( '.sidebar-nav-resource' ).remove()
-      @resourcePanel?.switchPanel()
-
-      if @workspace.opsModel.id
-        @resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()
+      @renderMarathonApp()
 
       @toggleProcessing()
       @updateProgress()
 
       @listenTo @workspace.design, "change:mode", @switchMode
       return
+
+    renderMarathonApp: ->
+      if @workspace.opsModel.type is OpsModel.Type.Mesos then return
+
+      @resourcePanel.switchPanel?()
+      # Show marathon app list
+      @$( '.sidebar-nav-resource' ).remove()
+
+      if @workspace.opsModel.id
+        @resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()
+
 
     switchMode : ( mode )->
       @toolbar.updateTbBtns()
@@ -81,7 +87,7 @@ define [
             design.set "resource_diff", json.resource_diff
             design.set "usage", json.usage
 
-            self.resourcePanel.loadMarathon self.workspace.opsModel.getMarathonStackId()
+            self.renderMarathonApp()
 
             # "Refresh property"
             $("#OEPanelRight").trigger "REFRESH"

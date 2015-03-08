@@ -10886,7 +10886,7 @@ dl.settings-item {
           width: 0;
           height: 0;
           border-style: solid;
-          border-width: 5px 5px 0 5px;
+          border-width: 5px 0 5px 5px;
           border-color: transparent transparent transparent #51568e;
           margin-right: 5px; }
       .container-panel .marathon-app-list .group-list .group-item:last-child {

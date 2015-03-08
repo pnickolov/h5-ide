@@ -884,7 +884,7 @@ Additional Notes and Questions
 
 <!-- {{applyMarathonStack}} -->
 <section class="apply-marathon-stack">
-  <div class="title">Link to a Marathon stack designed with VisualOps:</div>
+  <div class="modal-text-major">Link to a Marathon stack designed with VisualOps:</div>
   <div id="app-usage-selectbox" class="selectbox">
     <div class="selection">Select existing Marathon stack …</div>
     <ul class="dropdown" tabindex="-1">{{#each this}}<li class="item" data-value="{{id}}"></i>{{name}}</li>{{/each}}</ul>

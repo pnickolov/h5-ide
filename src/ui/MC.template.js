@@ -1681,7 +1681,7 @@ function program1(depth0,data) {
   return buffer;
   }
 
-  buffer += "<section class=\"apply-marathon-stack\">\n  <div class=\"title\">Link to a Marathon stack designed with VisualOps:</div>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">";
+  buffer += "<section class=\"apply-marathon-stack\">\n  <div class=\"modal-text-major\">Link to a Marathon stack designed with VisualOps:</div>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">";
   stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "</ul>\n  </div>\n</section>";

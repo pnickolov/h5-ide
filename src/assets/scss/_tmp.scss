@@ -1,6 +1,13 @@
 $triangleHeight: 10px;
 
 .container-panel {
+    height   : 100%;        
+    padding  : 40px 0 80px 0;
+    box-size : border-box;
+    position : relative;
+
+    @include v-scroll;
+
     .create {
         text-align: center;
         margin: 0 auto;
@@ -19,10 +26,23 @@ $triangleHeight: 10px;
             margin-top: 20px;
         }
     }
+<<<<<<< HEAD
     .container-edit {
         // height: 30px;
         background-color: #2b2b35;
         padding: 10px;
+=======
+    .container-header {
+        // height        : 30px;
+        position         : absolute;
+        top              : 0;
+        left             : 0;
+        background-color : $dark-p-1;
+        padding          : 10px;
+        width            : 100%;
+        text-align       : center;
+
+>>>>>>> [feature/mesos] update style
         .edit-marathon-stack {
             margin-left: 3px;
             cursor: pointer;
@@ -45,19 +65,21 @@ $triangleHeight: 10px;
         padding: 10px;
     }
     .container-list {
-        margin: 0 10px;
-        margin-top: 5px;
+        margin     : 0 10px;
+        margin-top : 5px;
+
         .container-item {
-            margin-top: 10px;
-            border-radius: 2px;
-            background-color: #fff;
-            border: 1px solid $dark-grey;
-            border-top: 6px solid $dark-b;
-            position: relative;
-            overflow: visible;
-            height: 73px;
-            margin-bottom: 20px;
-            cursor: pointer;
+            margin-top       : 10px;
+            border-radius    : 2px;
+            background-color : #fff;
+            border           : 1px solid $dark-grey;
+            border-top       : 4px solid $dark-b;
+            position         : relative;
+            overflow         : visible;
+            height           : 73px;
+            margin-bottom    : 20px;
+            cursor           : pointer;
+
             &.selected {
                 box-shadow: 0 0 1px 3px #334df7;
             }
@@ -79,6 +101,8 @@ $triangleHeight: 10px;
                 .container-icon {
                     margin-left: 5px;
                     margin-right: 5px;
+                    width: 18px;
+                    height: auto;
                 }
             }
             .container-info-icon {
@@ -104,12 +128,15 @@ $triangleHeight: 10px;
 
 
 .apply-marathon-stack {
-    .title {
-        padding: 0 0 13px 0;
-    }
+
 }
 
+<<<<<<< HEAD
 .marathon-app-list {
+=======
+#marathon-app-list {
+
+>>>>>>> [feature/mesos] update style
     .constraint-list {
         color: white;
         border-radius: 5px;
@@ -140,4 +167,13 @@ $triangleHeight: 10px;
             top: -$triangleHeight;
         }
     }
+}
+
+
+.marathon-resource-panel {
+    padding: 0 10px 10px 10px;
+
+    .sidebar-title { padding: 0 10px; }
+    .resource-list-head { margin-top: 10px; }
+
 }

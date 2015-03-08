@@ -1,7 +1,7 @@
 <!-- {{panel}} -->
 <button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 <header class="sidebar-title">{{ i18n "RES_TIT_RESOURCES" }}</header>
-<section>
+<section class="marathon-resource-panel">
     <div class="resource-list-head">Marathon App</div>
     <ul class="resource-list-az clearfix">
         <li class="tooltip resource-item marathon-group" data-tooltip="Drag to the canvas to use this image" data-type="MRTHGROUP">

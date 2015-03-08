@@ -53,10 +53,9 @@ $triangleHeight: 10px;
         left             : 0;
         text-align       : center;
         cursor           : pointer;
-
-        .change-marathon-stack {
-            cursor: pointer;
-        }
+        color            : $base-grey;
+            
+        &:hover { color: $base-b; }
     }
 
     .tip {

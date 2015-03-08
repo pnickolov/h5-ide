@@ -3462,9 +3462,9 @@ div.modal-text-highlight {
   padding-left: 50px;
   background: url('/assets/images/ide/global-region-app-stack-m.png') 10px top no-repeat; }
   .region-resource-tab > b {
-    font-weight: 300;
+    font-weight: 400;
     margin: 0 10px 0 5px;
-    color: #ccc; }
+    color: #aaa; }
   .region-resource-tab.stack {
     background-position: 10px -50px; }
 
@@ -10849,9 +10849,10 @@ dl.settings-item {
     right: 0;
     left: 0;
     text-align: center;
-    cursor: pointer; }
-    .container-panel .container-change .change-marathon-stack {
-      cursor: pointer; }
+    cursor: pointer;
+    color: #eeeef0; }
+    .container-panel .container-change:hover {
+      color: #4a90e2; }
   .container-panel .tip {
     padding: 5px;
     color: #cacce1; }

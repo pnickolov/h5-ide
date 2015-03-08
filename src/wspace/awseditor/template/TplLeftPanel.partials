@@ -178,9 +178,9 @@
 <dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 
 <!-- {{containerList}} -->
-<div class="container-edit">
+<!-- <div class="container-edit">
     <a class="target route edit-marathon-stack icon-edit" href="/workspace/{{project}}/ops/{{id}}">Edit in <span>{{name}}</span></a>
-</div>
+</div> -->
 <input id="filter-containers" class="input filter-containers" type="text" placeholder="Filter container..."/>
 <!-- <div class="tip">Click container item to inspect placement on canvas.</div> -->
 <ul class="group-list">
@@ -216,4 +216,4 @@
     </li>
     {{/each}}
 </ul>
-<div class="container-change">Change Marathon Stack…</div>
+<!-- <div class="container-change">Change Marathon Stack…</div> -->

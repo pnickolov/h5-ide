@@ -294,30 +294,43 @@ define [
         nameMap[comp.name] = comp.uid
 
       # switch highlight
-      # qa
-      if @marathonJson.name.indexOf('qa') isnt -1
-         modelNames1 = ['subne-web-staging-1a', 'subne-web-staging-1b']
-         modelNames2 = ['subnet-qa-1a', 'subnet-qa-1b']
-         modelNames3 = ['subnet-db-qa-1a', 'subnet-db-qa-1b']
-      # prod
-      else
-         modelNames1 = ['subne-web-prod-1a', 'subnet--web-4prod-1b']
-         modelNames2 = ['app-prod-1a-0', 'app-prod-1b-0']
-         modelNames3 = ['subnet-db-prod-1a', 'subnet-db-prod-10b']
+      prodModelNames1 = ['subne-web-prod-1a', 'subnet--web-4prod-1b']
+      prodModelNames2 = ['app-prod-1a-0', 'app-prod-1b-0']
+      prodModelNames3 = ['subnet-db-prod-1a', 'subnet-db-prod-10b']
+
+      qaModelNames1 = ['subne-web-staging-1a', 'subne-web-staging-1b']
+      qaModelNames2 = ['subnet-qa-1a', 'subnet-qa-1b']
+      qaModelNames3 = ['subnet-db-qa-1a', 'subnet-db-qa-1b']
 
       if event
 
           $container = $(event.currentTarget)
           name = $container.data('name')
-          if name in ['api-service', 'agent-service', 'nginx']
-            modelIds = _.map modelNames1, (name) ->
+
+          if name in ['prod_nginx']
+            modelIds = _.map prodModelNames1, (name) ->
               return nameMap[name]
-          else if name in ['request-master', 'mongos', 'worker', 'resource-diff']
-            modelIds = _.map modelNames2, (name) ->
+
+          else if name in ['prod_requestworker', 'prod_mongos']
+            modelIds = _.map prodModelNames2, (name) ->
               return nameMap[name]
-          else
-            modelIds = _.map modelNames3, (name) ->
+
+          else if name in ['prod_mongodb', 'prod_mongo-config', 'prod_zookeeper']
+            modelIds = _.map prodModelNames3, (name) ->
               return nameMap[name]
+
+          else if name in ['qa_nginx']
+            modelIds = _.map qaModelNames1, (name) ->
+              return nameMap[name]
+
+          else if name in ['qa_requestworker', 'qa_mongos']
+            modelIds = _.map qaModelNames2, (name) ->
+              return nameMap[name]
+
+          else if name in ['qa_mongodb', 'qa_mongo-config', 'qa_zookeeper']
+            modelIds = _.map qaModelNames3, (name) ->
+              return nameMap[name]
+
           if modelIds
             models = _.map modelIds, (id) ->
               return Design.instance().component(id)

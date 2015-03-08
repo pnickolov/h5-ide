@@ -2571,12 +2571,15 @@ details[open] + .nutshell {
 }
 
 #modal-run-mesos {
-	.url-label {
+	.url-label, .var-label {
 		width: auto;
 		display: block;
 	}
 	#app-url {
 		width: 404px;
+	}
+	#app-name {
+		width: 255px;
 	}
 	.modal-control-group {
 		padding: 0;
@@ -2586,7 +2589,19 @@ details[open] + .nutshell {
 		margin: 5px 25px;
 		font-size: 12px;
 	}
-
+	.para-list {
+		padding: 10px 0 0 0;
+		.para-item {
+			margin-bottom: 5px;
+		}
+	}
+	input.key {
+		width: 80px;
+		margin-right: 5px;
+	}
+	input.value {
+		width: 297px;
+	}
 }
 
 .validation-tag,

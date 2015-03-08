@@ -233,11 +233,23 @@ Additional Notes and Questions
       <input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
       <div class="runtime-error" id="runtime-error-appname"></div>
   </div>
+	<div class="modal-control-group clearfix">
+	  <label class="label var-label">Specify the variable value for this deployment:</label>
+	  <ul class="para-list">
+	  	<li class="para-item">
+		  <input class="input key" value="$ENV" disabled />
+		  <input class="input value" />
+		</li>
+		<li class="para-item">
+		  <input class="input key" value="$VER" disabled />
+		  <input class="input value" />
+	    </li>
+	  </ul>
+	</div>
   <div class="modal-control-group clearfix" data-bind="true">
       <label class="label url-label" for="app-url">Specify the URL of your Mesos Cluster’s Master:</label>
       <input id="app-url" class="input" type="text">
       <div class="runtime-error" id="runtime-error-appurl"></div>
-
   </div>
   <div class="mesos-tip">You need to have a running Mesos Cluster first, either using VisualOps Mesos Sample Stack or your own deployment.</div>
 </section>
@@ -890,7 +902,3 @@ Additional Notes and Questions
     <ul class="dropdown" tabindex="-1">{{#each this}}<li class="item" data-value="{{id}}"></i>{{name}}</li>{{/each}}</ul>
   </div>
 </section>
-
-
-
-

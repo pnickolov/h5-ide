@@ -2140,17 +2140,28 @@ details[open] + .nutshell {
   color: #aeb3f2;
   font-size: 28px; }
 
-#modal-run-mesos .url-label {
+#modal-run-mesos .url-label, #modal-run-mesos .var-label {
   width: auto;
   display: block; }
 #modal-run-mesos #app-url {
   width: 404px; }
+#modal-run-mesos #app-name {
+  width: 255px; }
 #modal-run-mesos .modal-control-group {
   padding: 0;
   margin: 5px 25px; }
 #modal-run-mesos .mesos-tip {
   margin: 5px 25px;
   font-size: 12px; }
+#modal-run-mesos .para-list {
+  padding: 10px 0 0 0; }
+  #modal-run-mesos .para-list .para-item {
+    margin-bottom: 5px; }
+#modal-run-mesos input.key {
+  width: 80px;
+  margin-right: 5px; }
+#modal-run-mesos input.value {
+  width: 297px; }
 
 .validation-tag,
 .resource-tag {
@@ -6381,7 +6392,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group
+label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;

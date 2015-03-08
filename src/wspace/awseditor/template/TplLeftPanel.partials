@@ -129,17 +129,7 @@
         <div class="desc">Manage marathon framework on Mesos stack</div>
         <button class="btn btn-blue apply">Apply Marathon</button>
     </div>
-    <div id="marathon-app-list" class="hide">
-      <div class="container-header">
-          <i class="icon-edit"></i>
-          <a class="edit-marathon-stack">Edit in marathon-stack-1</a>
-      </div>
-      <div class="tip">Click container item to inspect placement on canvas.</div>
-      <ul class="container-list nano-content"></ul>
-      <div class="container-footer">
-          <a class="change-marathon-stack">Change Marathon Stack… </a>
-      </div>
-    </div>
+    <div id="marathon-app-list" class="hide"></div>
 </div>
 
 <!-- {{snapshot}} -->
@@ -188,25 +178,35 @@
 <dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 
 <!-- {{containerList}} -->
-{{#each this}}
-<li class="container-item">
-    <div class="task">{{task}}</div>
-    <div class="info">
-        <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
-        <span class="name">{{name}}</span>
-    </div>
-    <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
-    <span class="container-info">
-        <span>{{cpu}}</span>
-        <span>{{memory}}</span>
-    </span>
-</li>
-<li class="constraint-list hide">
-  <header>CONSTRAINTS</header>
-  <section class="constraint-info">
-    {{#each constraints}}
-        <p>{{this}}</p>
+<div class="container-header">
+    <i class="icon-edit"></i>
+    <a class="target route edit-marathon-stack" href="/workspace/{{project}}/ops/{{id}}">Edit in {{name}}</a>
+</div>
+<div class="tip">Click container item to inspect placement on canvas.</div>
+<ul class="container-list nano-content">
+    {{#each list}}
+    <li class="container-item">
+        <div class="task">{{task}}</div>
+        <div class="info">
+            <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
+            <span class="name">{{name}}</span>
+        </div>
+        <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
+        <span class="container-info">
+            <span>{{cpu}}</span>
+            <span>{{memory}}</span>
+        </span>
+    </li>
+    <li class="constraint-list hide">
+      <header>CONSTRAINTS</header>
+      <section class="constraint-info">
+        {{#each constraints}}
+            <p>{{this}}</p>
+        {{/each}}
+    </section>
+    </li>
     {{/each}}
-</section>
-</li>
-{{/each}}
+</ul>
+<div class="container-footer">
+    <a class="change-marathon-stack">Change Marathon Stack… </a>
+</div>

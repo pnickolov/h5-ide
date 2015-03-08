@@ -622,7 +622,7 @@ define [
 
         dataAry = []
 
-        if json
+        if json and _.keys(json).length > 0
 
             _.each json.component, (comp) ->
 
@@ -640,7 +640,11 @@ define [
                     }
                     dataAry.push(data)
 
-        @$el.find('.container-list').html LeftPanelTpl.containerList(dataAry)
-        @$el.find(".nano").nanoScroller()
+            @$el.find('#marathon-app-list').html LeftPanelTpl.containerList({
+                project: @workspace.scene.project.id
+                id: json.id
+                name: json.name
+                list: dataAry
+            })
 
   }

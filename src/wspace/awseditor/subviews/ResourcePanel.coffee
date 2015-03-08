@@ -124,6 +124,8 @@ define [
       'click .apply'                 : 'popApplyMarathonModal'
       'click .container-change'      : 'popApplyMarathonModal'
       'click .container-item'        : 'toggleConstraint'
+      'keyup #filter-containers'     : 'filterContainers'
+      'change #filter-containers'    : 'filterContainers'
 
 
     initialize : (options)->
@@ -656,5 +658,12 @@ define [
                 name: json.name
                 list: dataAry
             })
+
+    filterContainers: (evt)->
+      keyword = $(evt.currentTarget).val().toLowerCase()
+      $(".container-list .container-item").each (index, item)->
+        containerName = $(item).data("name").toLowerCase()
+        shouldShow =  containerName.indexOf(keyword) >= 0
+        $(item).toggle(shouldShow)
 
   }

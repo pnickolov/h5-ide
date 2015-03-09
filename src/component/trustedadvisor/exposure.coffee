@@ -95,7 +95,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
         null
 
     _validAsync = ->
-        asyncList = config.get( 'asyncList' )
+        asyncList = [] # config.get( 'asyncList' )
 
         if not asyncList or not _.size( asyncList )
             _syncFinish()

@@ -1,5 +1,26 @@
 /* Browse Community AMI Modal */
 
+.icon-ami-os {
+  &:before {
+    content      : " ";
+    float        : left;
+    width        : 24px;
+    height       : 24px;
+    margin-right : 5px;
+    background   : image-url('ide/icon/icn-amios.png') left top no-repeat;
+  }
+
+  &.centos:before { background-position: -24px 0; }
+  &.debian:before { background-position: -48px 0; }
+  &.fedora:before      { background-position: -72px 0; }
+  &.gentoo:before      { background-position: -96px 0; }
+  &.opensuse:before    { background-position: -120px 0; }
+  &.ubuntu:before      { background-position: -144px 0; }
+  &.redhat:before      { background-position: -168px 0; }
+  &.windows:before     { background-position: -192px 0; }
+  &.linux-other:before { background-position: -216px 0; }
+}
+
 .ami-content-wrap {
     @include displayflex;
     @include vo-flex-wrap(wrap);

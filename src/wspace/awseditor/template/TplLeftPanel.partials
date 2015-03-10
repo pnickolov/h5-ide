@@ -22,7 +22,7 @@
         </ul>
     </button>
   </div>
-  <div class="fixedaccordion resource-panel accordion-default">
+  <div class="fixedaccordion accordion-default">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
     <ul class="resource-list-az clearfix accordion-body">
@@ -170,7 +170,7 @@
 {{else}}{{#if fav}}<p class="blank-slate">{{i18n "TOOLBAR.CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI"}}</p>{{/if}}{{/each}}
 
 <!-- {{reuse_lc}} -->
-<div class="resource-icon resource-icon-instance" >
+<div class="resource-icon-instance" >
   <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
 </div>{{i18n "TOOLBAR.CLOUD_RESOURCE_AUTO_SCALING_GROUP"}} ({{name}})
 

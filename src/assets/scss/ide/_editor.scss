@@ -104,16 +104,6 @@ $BottomPanelHeight    : 24px;
   }
 }
 
-
-.refresh-resource-panel {
-  line-height: 37px;
-  -webkit-transform-origin : 20px 20px;
-     -moz-transform-origin : 20px 20px;
-          transform-origin : 20px 20px;
-
-  &.reloading:hover { background : none; }
-}
-
 .sidebar-hider {
   position   : absolute;
   top        : 50%;

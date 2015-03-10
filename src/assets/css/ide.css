@@ -4530,6 +4530,32 @@ dl.settings-item {
   display: none !important; }
 
 /* Browse Community AMI Modal */
+.icon-ami-os:before {
+  content: " ";
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  background: url('/assets/images/ide/icon/icn-amios.png') left top no-repeat; }
+.icon-ami-os.centos:before {
+  background-position: -24px 0; }
+.icon-ami-os.debian:before {
+  background-position: -48px 0; }
+.icon-ami-os.fedora:before {
+  background-position: -72px 0; }
+.icon-ami-os.gentoo:before {
+  background-position: -96px 0; }
+.icon-ami-os.opensuse:before {
+  background-position: -120px 0; }
+.icon-ami-os.ubuntu:before {
+  background-position: -144px 0; }
+.icon-ami-os.redhat:before {
+  background-position: -168px 0; }
+.icon-ami-os.windows:before {
+  background-position: -192px 0; }
+.icon-ami-os.linux-other:before {
+  background-position: -216px 0; }
+
 .ami-content-wrap {
   display: -webkit-box;
   display: -moz-box;
@@ -5449,14 +5475,7 @@ aside.dashboard-sidebar {
 #dashboard-data-wrap.demo .dash-resource-wrap {
   margin-bottom: 0; }
 
-.refresh-resource-panel {
-  line-height: 37px;
-  -webkit-transform-origin: 20px 20px;
-  -moz-transform-origin: 20px 20px;
-  transform-origin: 20px 20px; }
-  .refresh-resource-panel.reloading:hover {
-    background: none; }
-
+/* Refresh & Manage Shared Resource */
 .sidebar-tool button {
   color: #898dbc;
   margin: 0 16px;
@@ -5469,6 +5488,15 @@ aside.dashboard-sidebar {
       margin-right: 8px;
       display: inline-block; }
 
+.refresh-resource-panel {
+  line-height: 37px;
+  -webkit-transform-origin: 20px 20px;
+  -moz-transform-origin: 20px 20px;
+  transform-origin: 20px 20px; }
+  .refresh-resource-panel.reloading:hover {
+    background: none; }
+
+/* Manage Shared Resource Menu */
 .menu-manage-shard-res {
   color: #5d64b5;
   background-color: rgba(0, 0, 0, 0.3); }
@@ -5522,6 +5550,7 @@ aside.dashboard-sidebar {
   .resources-dropdown-wrapper .icon-rds-snap.disabled, .resources-dropdown-wrapper .icon-pg.disabled {
     display: none; }
 
+/* Resource List */
 .AmiTypeSelect {
   position: absolute;
   top: 0;
@@ -5529,15 +5558,6 @@ aside.dashboard-sidebar {
   line-height: 20px; }
   .AmiTypeSelect:hover .selection {
     background: #234F77; }
-
-.resource-icon {
-  position: relative;
-  width: 60px;
-  height: 60px;
-  background: #ccc;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: transparent; }
 
 .resource-list-sort-select {
   margin-top: -5px;
@@ -5563,9 +5583,9 @@ aside.dashboard-sidebar {
   height: 18px;
   float: left; }
 
-.resourcetem-list-ami {
+.resource-list-ami {
   position: relative; }
-  .resourcetem-list-ami .blank-slate {
+  .resource-list-ami .blank-slate {
     position: absolute;
     font-size: 12px;
     color: #999;
@@ -6077,34 +6097,16 @@ aside.dashboard-sidebar {
     left: 10px;
     right: 10px; }
 
-.icon-ami-os:before {
-  content: " ";
-  float: left;
-  width: 24px;
-  height: 24px;
-  margin-right: 5px;
-  background: url('/assets/images/ide/icon/icn-amios.png') left top no-repeat; }
-.icon-ami-os.centos:before {
-  background-position: -24px 0; }
-.icon-ami-os.debian:before {
-  background-position: -48px 0; }
-.icon-ami-os.fedora:before {
-  background-position: -72px 0; }
-.icon-ami-os.gentoo:before {
-  background-position: -96px 0; }
-.icon-ami-os.opensuse:before {
-  background-position: -120px 0; }
-.icon-ami-os.ubuntu:before {
-  background-position: -144px 0; }
-.icon-ami-os.redhat:before {
-  background-position: -168px 0; }
-.icon-ami-os.windows:before {
-  background-position: -192px 0; }
-.icon-ami-os.linux-other:before {
-  background-position: -216px 0; }
-
 #changeAmi {
   width: 130px; }
+
+.resource-icon {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: transparent; }
 
 #changeAmiDropZone {
   width: 194px;
@@ -7098,14 +7100,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     .sidebar-title button.selected {
       border-bottom: 2px solid #4a90e2;
       color: #4a90e2; }
-
-.refresh-resource-panel {
-  line-height: 37px;
-  -webkit-transform-origin: 20px 20px;
-  -moz-transform-origin: 20px 20px;
-  transform-origin: 20px 20px; }
-  .refresh-resource-panel.reloading:hover {
-    background: none; }
 
 .sidebar-hider {
   position: absolute;

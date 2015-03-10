@@ -29,6 +29,22 @@
   font-weight: 300;
   src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
 
+/* Hack custom fonts loading */
+@media (min-width: 1px) {
+  body {
+    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
+
+  .locale-en {
+    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
+
+  .locale-zh {
+    font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif; }
+
+  .locale-zh button,
+  .locale-zh input,
+  .locale-zh select,
+  .locale-zh textarea {
+    font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif; } }
 body {
   font-family: Lato, "Helvetica Neue", "Helvetica", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   color: #acacc6;
@@ -38,7 +54,7 @@ a {
   color: #4a90e2;
   text-decoration: none; }
   a:hover {
-    color: #a2d3f0; }
+    color: #76bee9; }
 
 h1 {
   font-size: 1.6em; }
@@ -55,20 +71,55 @@ h4 {
 p {
   font-size: 1em; }
 
-code {
+code, pre {
   background: #000;
   color: #059e4f;
   font-size: 14px;
+  border-radius: 3px;
   font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
 
 pre {
-  background: #000; }
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+  display: block;
+  padding: 9.5px;
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 20px; }
+
+.link-style {
+  cursor: pointer; }
+  .link-style:hover {
+    text-decoration: underline; }
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis;
+  display: inline-block; }
 
 .mg20 {
   margin: 20px; }
 
 .bd3 {
   border-radius: 3px; }
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " "; }
+
+.clearfix:after {
+  clear: both; }
+
+.hide {
+  display: none; }
+
+.empty-hide:empty {
+  display: none; }
 
 .mgt-10px {
   margin-top: 10px; }
@@ -174,59 +225,6 @@ p {
   margin: 0 0 10px;
   padding: 2px; }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: " "; }
-
-.clearfix:after {
-  clear: both; }
-
-.hide {
-  display: none; }
-
-.link-style {
-  cursor: pointer; }
-  .link-style:hover {
-    text-decoration: underline; }
-
-.empty-hide:empty {
-  display: none; }
-
-.grabbing {
-  cursor: -webkit-grabbing !important;
-  cursor: -moz-grabbing !important;
-  cursor: grabbing !important; }
-
-.text-left {
-  text-align: left; }
-
-.text-right {
-  text-align: right; }
-
-.text-center {
-  text-align: center; }
-
-pre {
-  white-space: pre-wrap;
-  word-break: break-all;
-  word-wrap: break-word;
-  display: block;
-  padding: 9.5px;
-  margin: 10px 0;
-  font-size: 13px;
-  line-height: 20px;
-  font-family: Monaco,Menlo,Consolas,"Courier New",monospace; }
-
-code {
-  padding: 3px 4px;
-  color: #D14;
-  background-color: #F7F7F9;
-  border: 1px solid #E1E1E8;
-  font-family: Menlo,Monaco,"Courier New",monospace;
-  font-size: 12px;
-  border-radius: 3px; }
-
 abbr {
   cursor: help;
   border-bottom: 1px dotted #999; }
@@ -234,23 +232,7 @@ abbr {
 body {
   margin: 0; }
 
-/* Hack custom fonts loading */
-@media (min-width: 1px) {
-  body {
-    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
-
-  .locale-en {
-    font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif; }
-
-  .locale-zh {
-    font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif; }
-
-  .locale-zh button,
-  .locale-zh input,
-  .locale-zh select,
-  .locale-zh textarea {
-    font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif; } }
-/* Hide Selection */
+/* VisualOps Specifics */
 html,
 body {
   width: 100%;
@@ -265,30 +247,11 @@ body {
   background: #f0f0f0;
   position: relative; }
 
-a {
-  color: #ccc; }
-  a:hover {
-    color: #4a90e2; }
-
 /* reset */
-#overlayer {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 80; }
-
 .icon-caret-down {
   margin-left: 2px; }
 
 /* generic class */
-.dis-blk {
-  display: block !important; }
-
-.dis-inblk {
-  display: inline-block !important; }
-
 .pos-r {
   position: relative; }
 
@@ -334,33 +297,6 @@ a {
 
 .ovfh {
   overflow: hidden; }
-
-.truncate {
-  /*width: 250px;*/
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  -ms-text-overflow: ellipsis;
-  display: inline-block; }
-
-.table-truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  -ms-text-overflow: ellipsis;
-  /*display: inline-block;*/ }
-
-.global-region-status-content {
-  position: relative; }
-
-.scroll-transition {
-  -webkit-transition: -webkit-transform .1s;
-  -moz-transition: -moz-transform .1s;
-  -ms-transition: -ms-transform .1s;
-  -o-transition: -o-transform, .1s;
-  transition: transform .1s; }
 
 /* Browse Community AMI Modal */
 #ami-search-option {
@@ -5487,6 +5423,19 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   position: absolute;
   top: 100px;
   left: 100px; }
+
+#overlayer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 80; }
+
+.grabbing {
+  cursor: -webkit-grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: grabbing !important; }
 
 .resources-dropdown-wrapper {
   position: absolute;
@@ -10625,6 +10574,11 @@ dl.settings-item {
     border-bottom: 1px solid #202020;
     cursor: pointer;
     position: relative; }
+    .header-popup > li.logout {
+      color: #4a90e2;
+      text-decoration: none; }
+      .header-popup > li.logout:hover {
+        color: #76bee9; }
   .header-popup li:hover {
     background: rgba(0, 0, 0, 0.2); }
   .header-popup li.padding {

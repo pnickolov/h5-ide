@@ -6,6 +6,23 @@
 	border-radius: 3px;
 }
 
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " ";
+}
+
+.clearfix:after{
+  clear: both;
+}
+
+.hide {
+  display: none;
+}
+
+.empty-hide:empty {
+  display : none;
+}
 
 @mixin no-selection-bg {
 	::selection {

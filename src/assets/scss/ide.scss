@@ -126,72 +126,6 @@ p {
 	padding: 2px;
 }
 
-.clearfix:before,
-.clearfix:after{
-  display: table;
-  content: " ";
-}
-
-.clearfix:after{
-  clear: both;
-}
-
-.hide {
-	display: none;
-}
-
-.link-style {
-	cursor : pointer;
-
-	&:hover {
-		text-decoration : underline;
-	}
-}
-
-.empty-hide:empty {
-	display : none;
-}
-
-.grabbing {
-	cursor: -webkit-grabbing !important;
-	cursor: -moz-grabbing !important;
-	cursor: grabbing !important;
-}
-
-.text-left {
-	text-align: left;
-}
-
-.text-right {
-	text-align: right;
-}
-
-.text-center {
-	text-align: center;
-}
-
-pre {
-	white-space: pre-wrap;
-	word-break: break-all;
-	word-wrap: break-word;
-	display: block;
-	padding: 9.5px;
-	margin: 10px 0;
-	font-size: 13px;
-	line-height: 20px;
-	font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-}
-
-code {
-	padding: 3px 4px;
-	color: #D14;
-	background-color: #F7F7F9;
-	border: 1px solid #E1E1E8;
-	font-family: Menlo,Monaco,"Courier New",monospace;
-	font-size: 12px;
-	border-radius: 3px;
-}
-
 abbr {
 	cursor: help;
 	border-bottom: 1px dotted #999;
@@ -201,29 +135,8 @@ body {
 	margin: 0;
 }
 
-/* Hack custom fonts loading */
-@media (min-width: 1px) {
-	body {
-		font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
-	}
 
-	.locale-en {
-		font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
-	}
-
-	.locale-zh {
-		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
-	}
-
-	.locale-zh button,
-	.locale-zh input,
-	.locale-zh select,
-	.locale-zh textarea {
-		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
-	}
-}
-
-/* Hide Selection */
+/* VisualOps Specifics */
 
 html,
 body {
@@ -242,31 +155,13 @@ body {
 	position   : relative;
 }
 
-a {
-	color: #ccc;
-
-	&:hover {
-		color: $base-b;
-	}
-}
-
 /* reset */
-#overlayer {
-	width    : 100%;
-	height   : 100%;
-	position : absolute;
-	top      : 0;
-	left     : 0;
-	z-index  : 80;
-}
 
 .icon-caret-down {
 	margin-left: 2px;
 }
 
 /* generic class */
-.dis-blk   { display  : block !important; }
-.dis-inblk { display  : inline-block !important; }
 .pos-r     { position : relative; }
 
 .mgl80 { margin-left  : 80px; }
@@ -292,38 +187,6 @@ a {
 }
 
 .ovfh { overflow : hidden; }
-
-.truncate {
-	/*width: 250px;*/
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	-o-text-overflow: ellipsis;
-	-ms-text-overflow: ellipsis;
-	display: inline-block;
-}
-
-.table-truncate {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	-o-text-overflow: ellipsis;
-	-ms-text-overflow: ellipsis;
-	/*display: inline-block;*/
-}
-
-.global-region-status-content {
-	position: relative;
-}
-
-
-.scroll-transition {
-	-webkit-transition: -webkit-transform .1s;
-	-moz-transition: -moz-transform .1s;
-	-ms-transition: -ms-transform .1s;
-	-o-transition: -o-transform, .1s;
-	transition: transform .1s;
-}
 
 /* Browse Community AMI Modal */
 

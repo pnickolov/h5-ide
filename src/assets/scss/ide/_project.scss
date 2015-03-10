@@ -407,6 +407,10 @@
     border-bottom : 1px solid #202020;
     cursor        : pointer;
     position      : relative;
+
+    &.logout {
+      @include a-style;
+    }
   }
 
   li:hover {

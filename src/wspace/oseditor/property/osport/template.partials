@@ -29,7 +29,7 @@
 </div>
 
 <!-- {{unattached}} -->
-<div class="text-center">Attach the port to a server</div>
+<div>Attach the port to a server</div>
 
 <!-- {{app}} -->
 <section class="group">

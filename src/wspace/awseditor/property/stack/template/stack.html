@@ -8,17 +8,17 @@
     </section>
     {{/if}}
     <dl class="dl-horizontal dl-region-type property-control-group">
-      <dt><label>{{ i18n "PROP.STACK_LBL_REGION" }}</label></dt>
+      <dt>{{ i18n "PROP.STACK_LBL_REGION" }}</dt>
       <dd>{{region}}</dd>
-      <dt><label>{{ i18n "PROP.STACK_LBL_TYPE" }}</label></dt>
+      <dt>{{ i18n "PROP.STACK_LBL_TYPE" }}</dt>
       <dd>{{type}}</dd>
-      <dt><label>{{ i18n "PROP.APP_LBL_ID" }}</label></dt>
+      <dt>{{ i18n "PROP.APP_LBL_ID" }}</dt>
       <dd>{{id}}</dd>
       {{#if usage}}
-      <dt><label>{{ i18n "PROP.STACK_LBL_USAGE" }}</label></dt>
-      <dd style="text-transform: capitalize">{{usage}}</dd>
+      <dt>{{ i18n "PROP.STACK_LBL_USAGE" }}</dt>
+      <dd class="capitalize">{{usage}}</dd>
       {{/if}}
-      <dt><label>{{ i18n "PROP.DESCRIPTION"}}</label></dt>
+      <dt>{{ i18n "PROP.DESCRIPTION"}}</dt>
       <dd>{{description}}</dd>
     </dl>
 

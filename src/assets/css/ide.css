@@ -2184,7 +2184,6 @@ details[open] + .nutshell {
 
 .validation-counter {
   padding: 0 4px;
-  border-radius: 4px;
   font-size: 12px;
   color: #fff;
   float: right;
@@ -5503,7 +5502,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .resources-dropdown-wrapper.open {
     display: block; }
   .resources-dropdown-wrapper > li {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     padding: 15px 5px;
     width: 80px;
     height: 60px;
@@ -6394,8 +6392,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   overflow: hidden;
   text-overflow: ellipsis;
   color: #aaa; }
-.property-dbinstance #property-dbinstance-maintenance-window-group
-label, .property-dbinstance #property-dbinstance-backup-window-group label {
+.property-dbinstance #property-dbinstance-maintenance-window-group label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 73px; }
 .property-dbinstance #property-dbinstance-promote-replica {
   width: 200px;
@@ -7462,7 +7459,7 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   50% {
     border-color: black; } }
 
-@-ms-keyframes cursor-blink {
+@-o-keyframes cursor-blink {
   from, to {
     border-color: transparent; }
 

@@ -1,9 +1,6 @@
-(function() {
-  describe("Mocha Run Success", function() {
-    it("should pass", function() {
-      return true;
-    });
-    return null;
+describe("Mocha Run Success", function() {
+  it("should pass", function() {
+    return true;
   });
-
-}).call(this);
+  return null;
+});

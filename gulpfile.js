@@ -45,15 +45,15 @@ gulp.task("watch", function(){
 
 // Test
 gulp.task("maketest", function(){
-  testTask.compile();
+  return testTask.compile();
 })
 gulp.task("test", function(){
-  testTask.run();
+  return testTask.run();
 })
 
 
 // Compile gulp files
-gulp.task("makegulp", function(){ gulptask(); })
+gulp.task("makegulp", function(){ return gulptask(); })
 
 
 // Deploy

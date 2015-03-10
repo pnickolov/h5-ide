@@ -31,7 +31,7 @@ compile = function() {
 };
 
 run = function() {
-  var e, testserver, zombie;
+  var d, e, noop, testserver, zombie;
   try {
     zombie = require("zombie");
   } catch (_error) {
@@ -40,7 +40,9 @@ run = function() {
     return false;
   }
   testserver = server("./src", 3010, false, false);
-  return browser.resources.post('http://api.xxx.io/session/', {
+  d = Q.defer();
+  noop = function() {};
+  browser.resources.post('http://api.xxx.io/session/', {
     body: '{"jsonrpc":"2.0","id":"1","method":"login","params":["test","aaa123aa",{"timezone":8}]}'
   }, function(error, response) {
     var res;
@@ -57,8 +59,21 @@ run = function() {
       maxAge: 3600 * 24 * 30,
       domain: "ide.xxx.io"
     });
-    return browser.visit("/").then(function() {});
+    return browser.visit("/").then(function() {
+      console.log("\n\n\n[Debug]", "Starting tests.");
+      return gulp.src(["./test/**/*.js", "!./test/env/Browser.js"]).pipe(mocha({
+        reporter: GLOBAL.gulpConfig.testReporter
+      })).pipe(es.through(noop, function() {
+        console.log(browser);
+        testserver.close();
+        return d.resolve();
+      })).on("error", function(e) {
+        console.log(gutil.colors.bgRed.black(" Test failed to run. ", e));
+        return d.reject();
+      });
+    });
   });
+  return d.promise;
 };
 
 module.exports = {

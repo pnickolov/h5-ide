@@ -1,7 +1,43 @@
 
+
 // Resource Panel
 
 $dndDuration : .2s;
+
+.refresh-resource-panel {
+  line-height: 37px;
+  -webkit-transform-origin : 20px 20px;
+     -moz-transform-origin : 20px 20px;
+          transform-origin : 20px 20px;
+
+  &.reloading:hover { background : none; }
+}
+
+.sidebar-tool {
+  button {
+    color  : $dark-grey;
+    margin : 0 16px;
+    cursor : pointer;
+
+    &:hover {
+      color: $light-p-2;
+    }
+
+    i { 
+      font-style: normal; 
+
+      &:before {
+        margin-right : 8px;
+        display      : inline-block;
+      }
+    }
+  }
+}
+
+.menu-manage-shard-res {
+    color            : lighten($base-p,20%);
+    background-color : rgba(0, 0, 0, 0.3);
+}
 
 .resources-dropdown-wrapper {
   position      : absolute;

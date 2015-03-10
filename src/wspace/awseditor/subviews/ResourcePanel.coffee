@@ -563,7 +563,7 @@ define [
       $body     = $accordion.children ".accordion-body"
 
       $accordionWrap   = $accordion.closest ".fixedaccordion"
-      $accordionParent = $accordionWrap.parent()
+      $accordionParent = $accordionWrap.parents('.OEPanelLeft')
 
       $visibleAccordion = $accordionWrap.children().filter ()->
         $(this).css('display') isnt 'none'

@@ -1,14 +1,13 @@
 <!-- {{panel}} -->
 <button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
-<header class="sidebar-title">
-    <nav>
-        <button class="sidebar-nav-resource selected">{{ i18n "RES_TIT_RESOURCES" }}</button>
-        <button class="sidebar-nav-container">Container</button>
-    </nav>
-</header>
+<nav class="sidebar-title">
+    <button class="property-tab sidebar-nav-resource selected">{{ i18n "RES_TIT_RESOURCES" }}</button>
+    <button class="property-tab sidebar-nav-container">Container</button>
+</nav>
 
-<div class="sidebar-tool resource-panel">
+<div class="resource-panel">
+  <div class="sidebar-tool">
     <button class="refresh-resource-panel"><i class="icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>Refresh</button>
     <button>
         <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}">Manage...</i>
@@ -22,8 +21,8 @@
           <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_SNAPSHOT"}}</span></li>
         </ul>
     </button>
-</div>
-<div class="fixedaccordion resource-panel accordion-default">
+  </div>
+  <div class="fixedaccordion resource-panel accordion-default">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
     <ul class="resource-list-az clearfix accordion-body">
@@ -122,6 +121,8 @@
     </ul>
   </section>
 </div>
+</div>
+
 
 <div class="panel container-panel hide">
     <div class="create create-marathon-panel">

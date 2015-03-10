@@ -1,22 +1,21 @@
-(function() {
-  var Q, coffee, gulp;
+var Q, coffee, gulp;
 
-  coffee = require("gulp-coffee");
+coffee = require("gulp-coffee");
 
-  gulp = require("gulp");
+gulp = require("gulp");
 
-  Q = require("q");
+Q = require("q");
 
-  module.exports = function() {
-    var d;
-    d = Q.defer();
-    gulp.src(["./gulptasks/*.coffee", "./gulptasks/plugins/*.coffee"], {
-      "base": "./gulptasks"
-    }).pipe(coffee()).pipe(gulp.dest("./gulptasks")).on("end", (function() {
-      console.log("Gulp make successfully.");
-      return d.resolve();
-    }));
-    return d.promise;
-  };
-
-}).call(this);
+module.exports = function() {
+  var d;
+  d = Q.defer();
+  gulp.src(["./gulptasks/*.coffee", "./gulptasks/plugins/*.coffee"], {
+    "base": "./gulptasks"
+  }).pipe(coffee({
+    bare: true
+  })).pipe(gulp.dest("./gulptasks")).on("end", (function() {
+    console.log("Gulp make successfully.");
+    return d.resolve();
+  }));
+  return d.promise;
+};

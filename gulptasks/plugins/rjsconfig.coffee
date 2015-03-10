@@ -14,7 +14,7 @@ readRequirejsConfig = ( path )->
 
   pipeline = es.through ()-> null
 
-  pipeline.pipe(coffee()).pipe es.through ( f )-> s = f.contents.toString("utf8");null
+  pipeline.pipe(coffee({bare:true})).pipe es.through ( f )-> s = f.contents.toString("utf8");null
 
   pipeline.emit "data", {
     path     : path

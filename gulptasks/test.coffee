@@ -14,7 +14,7 @@ browser = require("../test/env/Browser.js")
 compile = ()->
   d = Q.defer()
   gulp.src( ["./test/**/*.coffee"] )
-    .pipe( coffee() ) # Compile coffee
+    .pipe( coffee({bare:true}) ) # Compile coffee
     .pipe( gulp.dest("./test") )
     .on( "end", (()-> console.log("Compile test successfully."); d.resolve()) )
   d.promise

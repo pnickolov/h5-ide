@@ -7,6 +7,8 @@ var serverTask  = require('./gulptasks/server');
 var developTask = require('./gulptasks/develop');
 var deployTask  = require('./gulptasks/deploy');
 var traceTask   = require('./gulptasks/trace');
+var testTask    = require('./gulptasks/test');
+var gulptask    = require('./gulptasks/makegulp');
 
 // Load user-config
 GLOBAL.gulpConfig = require('./gulpconfig.default');
@@ -39,6 +41,19 @@ gulp.task("watch", function(){
   serverTask();
   developTask.watch();
 });
+
+
+// Test
+gulp.task("maketest", function(){
+  testTask.compile();
+})
+gulp.task("test", function(){
+  testTask.run();
+})
+
+
+// Compile gulp files
+gulp.task("makegulp", function(){ gulptask(); })
 
 
 // Deploy
@@ -96,7 +111,16 @@ gulp.task("help", function(){
   console.log( "      Compile in debug mode. Push to remote repo, default branch is `develop`\n" );
   console.log( "+ gulp release [-b BranchName]");
   console.log( "      Compile in release mode. Push to remote repo, default branch is `master`\n" );
+  console.log( "+ gulp makegulp")
+  console.log( "      Compile the gulp tasks.\n" );
+
+  console.log( "\n ===== Test =====")
+  console.log( "+ gulp test");
+  console.log( "      Run test." );
+  console.log( "+ gulp maketest");
+  console.log( "      Compile test files." );
 
   console.log( "\n ===== Debug =====")
   console.log( "+ gulp trace\n");
+
 });

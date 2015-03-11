@@ -6083,7 +6083,8 @@ aside.dashboard-sidebar {
       border-top-color: #fff; }
 
 .resource-list-ami {
-  position: relative; }
+  position: relative;
+  height: 100%; }
   .resource-list-ami .blank-slate {
     position: absolute;
     font-size: 12px;

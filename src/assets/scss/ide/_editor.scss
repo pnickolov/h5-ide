@@ -3,6 +3,7 @@
 
     - Layout
     - Side Panel Show and Hide
+    - App View - Failed to Pay Limitation
 */
 
 $LeftPanelWidth       : 246px;
@@ -14,6 +15,7 @@ $BottomPanelHeight    : 24px;
 @import "side_panel";
 @import "canvas";
 @import "tool_status_bar";
+@import "resource_panel";
 
 /* Side Panel Layout */
 

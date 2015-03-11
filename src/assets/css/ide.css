@@ -5466,6 +5466,7 @@ aside.dashboard-sidebar {
 
     - Layout
     - Side Panel Show and Hide
+    - App View - Failed to Pay Limitation
 */
 /*
     IDE Side Panel
@@ -7026,6 +7027,19 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   cursor: -moz-grabbing !important;
   cursor: grabbing !important; }
 
+/*
+    IDE Resorce Panel
+	
+	- General Style:
+
+    - AWS:
+
+    - OpenStack:
+
+	- Marathon:
+
+*/
+/* General Style */
 /* Side Panel Layout */
 .OEPanelLeft, .OEPanelRight {
   position: absolute;

@@ -6,9 +6,6 @@ var os    = require('os');
 var serverTask  = require('./gulptasks/server');
 var developTask = require('./gulptasks/develop');
 var deployTask  = require('./gulptasks/deploy');
-var traceTask   = require('./gulptasks/trace');
-var testTask    = require('./gulptasks/test');
-var gulptask    = require('./gulptasks/makegulp');
 
 // Load user-config
 GLOBAL.gulpConfig = require('./gulpconfig.default');
@@ -21,11 +18,7 @@ if ( fs.existsSync("./gulpconfig.js") ) {
 }
 
 if ( GLOBAL.gulpConfig.pollingWatch === "auto" ) {
-  if ( os.type() === "Darwin" ) {
-    GLOBAL.gulpConfig.pollingWatch = false
-  } else {
-    GLOBAL.gulpConfig.pollingWatch = true
-  }
+  GLOBAL.gulpConfig.pollingWatch = os.type() !== "Darwin"
 }
 
 
@@ -44,16 +37,12 @@ gulp.task("watch", function(){
 
 
 // Test
-gulp.task("maketest", function(){
-  return testTask.compile();
-})
-gulp.task("test", function(){
-  return testTask.run();
-})
+gulp.task("maketest", function(){ return require('./gulptasks/test').compile(); });
+gulp.task("test",     function(){ return require('./gulptasks/test').run(); });
 
 
 // Compile gulp files
-gulp.task("makegulp", function(){ return gulptask(); })
+gulp.task("makegulp", function(){ return require('./gulptasks/makegulp')(); })
 
 
 // Deploy
@@ -86,7 +75,7 @@ function argv( cmd ) {
 
 
 // Debug
-gulp.task("trace", function(){ return traceTask(); });
+gulp.task("trace", function(){ return require('./gulptasks/trace')(); });
 
 
 

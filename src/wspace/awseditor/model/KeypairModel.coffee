@@ -113,10 +113,6 @@ define [ "constant", "ComplexResModel", "ConnectionModel", "Design"  ], ( consta
     handleTypes : constant.RESTYPE.KP
 
     deserialize : ( data, layout_data, resolve )->
-      # Keypair component isnt Default is no need yet.
-      # Drop old useless keypair component.
-      if data.name isnt DefaultKpName then return
-
       new KeypairModel({
         id          : data.uid
         name        : data.name
@@ -124,8 +120,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel", "Design"  ], ( consta
         fingerprint : data.resource.KeyFingerprint
       })
       null
-  }
+}
 
-  Design.on Design.EVENT.Deserialized, KeypairModel.ensureDefaultKp
+  Design.on Design.EVENT.Deserialized, KeypairModel.ensureDefaultKp, KeypairModel
 
   KeypairModel

@@ -17,10 +17,10 @@ $dndDuration : .2s;
 /* Refresh & Manage Shared Resource */
 
 .sidebar-tool button {
-  color       : $dark-grey;
-  margin      : 0 16px;
-  cursor      : pointer;
-  line-height : 37px;
+  color  : $dark-grey;
+  margin : 0 16px;
+  cursor : pointer;
+  line-height: 37px;
 
   &:hover {
     color: $light-p-2;
@@ -45,6 +45,7 @@ $dndDuration : .2s;
 }
 
 /* Manage Shared Resource Menu */
+
 .resources-dropdown-wrapper {
   position      : absolute;
   left          : 244px;

@@ -1,7 +1,7 @@
 <!-- {{panel}} -->
 <button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
-<nav class="sidebar-title">
+<nav class="sidebar-title clearfix">
     <button class="property-tab sidebar-nav-resource selected">{{ i18n "RES_TIT_RESOURCES" }}</button>
     <button class="property-tab sidebar-nav-container">Container</button>
 </nav>
@@ -10,7 +10,7 @@
   <div class="sidebar-tool">
     <button class="refresh-resource-panel"><i class="icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>Refresh</button>
     <button>
-        <i class="icon-resources js-toggle-dropdown tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}">Manage...</i>
+        <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}">Manage...</i>
         <ul class="dropdown-menu resources-dropdown-wrapper">
           <li data-action="keypair" class="icon-kp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_KEY_PAIR"}}</span></li>
           <li data-action="snapshot" class="icon-ebs-snap"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_EBS_SNAPSHOT"}}</span></li>

@@ -1,7 +1,138 @@
 /*
     IDE Property Panel
 	
-	- Stack
-	- App
+	- Title Show/Hide State Panel
+	- Property General Layout
+	  - Property Controls
 
 */
+
+@import "change_ami";
+
+/* Title Show/Hide State Panel */
+
+.OEPanelRight {
+
+  .sidebar-title {
+    border-left : 1px solid darken($bg-p, 5%);
+    padding     : 0;
+  }
+
+  #btn-switch-property,
+  &.state #btn-switch-state {
+    border-bottom : 2px solid $base-b;
+    color         : $base-b;
+  }
+
+  #btn-switch-state:hover {
+    color: #fff;
+  }
+
+  #btn-switch-state {
+    color: $base-g;
+
+    &:hover { color: #fff; }
+  }
+
+  &.no-state {
+    #btn-switch-state {
+      display: none;
+    }
+
+    #btn-switch-property {
+      color         : #b0b0b0;
+      border-bottom : 3px solid transparent;
+      float         : left;
+      width         : auto;
+      text-align    : left;
+      padding-left  : 10px;
+      cursor        : default;
+    }
+  }
+
+  &.state #btn-switch-property {
+      color         : #b0b0b0;
+      border-bottom : 2px solid transparent;
+
+      &:hover {
+        color      : #fff;
+      }
+  }
+}
+
+/* Property General Layout */
+
+.property-panel-wrapper {
+  width      : 100%;
+  height     : 100%;
+  left       : 0;
+  bottom     : 0;
+  position   : absolute;
+  background : desaturate(lighten($bg-p, 2%),3%); /* for zoomed out */
+
+  .scroll-wrap {
+    position : absolute;
+    top      : 33px;
+    bottom   : 0;
+    width    : 100%;
+  }
+}
+
+.property-sidebar-title {
+  font-size    : 13px;
+  padding-left : 10px;
+  color        : #999;
+
+  height     : 32px;
+  line-height: 32px;
+  position   : relative;
+  z-index    : 2;
+  display    : block !important;
+
+  cursor        : default;
+  box-shadow    : 0 1px 5px rgba(0,0,0,.3);
+  border-bottom : 1px solid #000;
+}
+
+.property-control-group {
+	padding: 8px 10px;
+	
+	> label, label.left {
+		color     : #999;
+		font-size : 13px;
+		height    : 20px;
+		cursor    : pointer;
+		display   : inline-block;
+		float     : none;
+	}
+
+	.required-input {
+		color       : #999;
+		font-size   : 12px;
+		line-height : 20px;
+	}
+
+	.input {
+		width: 230px;
+	}
+
+	textarea {
+	    width: 242px;
+	}
+
+	#property-res-desc {
+		width: 242px;
+		height: 20px;
+
+		&:focus {
+			width: 242px;
+			height: 62px;
+		}
+	}
+
+	.radio-group {
+		float: left;
+	}
+
+}
+

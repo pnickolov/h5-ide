@@ -347,34 +347,6 @@ body {
     bottom: 5px;
     right: 11px; }
 
-.property-control-group {
-  padding: 8px 10px; }
-
-.required-input {
-  color: #999;
-  font-size: 12px;
-  line-height: 20px; }
-
-.property-control-group > label, .property-control-group label.left {
-  color: #999;
-  font-size: 13px;
-  height: 20px;
-  cursor: pointer;
-  display: inline-block;
-  float: none; }
-.property-control-group .input {
-  width: 230px; }
-.property-control-group textarea {
-  width: 242px; }
-.property-control-group #property-res-desc {
-  width: 242px;
-  height: 20px; }
-  .property-control-group #property-res-desc:focus {
-    width: 242px;
-    height: 62px; }
-.property-control-group .radio-group {
-  float: left; }
-
 .property-control-group .selectbox.selectbox-mega .main {
   width: 230px;
   font-size: 14px;
@@ -2967,27 +2939,6 @@ div.modal-text-highlight {
     .complete-fullname p.information em {
       text-decoration: underline; }
 
-@-webkit-keyframes progress-bar {
-  from {
-    background-position: 0 0; }
-
-  to {
-    background-position: 40px 0; } }
-
-@-moz-keyframes progress-bar {
-  from {
-    background-position: 0 0; }
-
-  to {
-    background-position: 40px 0; } }
-
-@keyframes progress-bar {
-  from {
-    background-position: 0 0; }
-
-  to {
-    background-position: 40px 0; } }
-
 /* Styles for Manage KP and Decrypt PW */
 .password-hint::selection {
   background: transparent; }
@@ -4515,156 +4466,6 @@ dl.settings-item {
 .mac .shortcut.pc {
   display: none !important; }
 
-/* Browse Community AMI Modal */
-.icon-ami-os:before {
-  content: " ";
-  float: left;
-  width: 24px;
-  height: 24px;
-  margin-right: 5px;
-  background: url('/assets/images/ide/icon/icn-amios.png') left top no-repeat; }
-.icon-ami-os.centos:before {
-  background-position: -24px 0; }
-.icon-ami-os.debian:before {
-  background-position: -48px 0; }
-.icon-ami-os.fedora:before {
-  background-position: -72px 0; }
-.icon-ami-os.gentoo:before {
-  background-position: -96px 0; }
-.icon-ami-os.opensuse:before {
-  background-position: -120px 0; }
-.icon-ami-os.ubuntu:before {
-  background-position: -144px 0; }
-.icon-ami-os.redhat:before {
-  background-position: -168px 0; }
-.icon-ami-os.windows:before {
-  background-position: -192px 0; }
-.icon-ami-os.linux-other:before {
-  background-position: -216px 0; }
-
-.ami-content-wrap {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-flex-wrap: wrap;
-  -moz-box-flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  position: relative; }
-  .ami-content-wrap div {
-    box-sizing: border-box; }
-
-#ami-search-option {
-  width: 30%;
-  padding: 10px; }
-
-#ami-data-wrap {
-  height: 100%;
-  border-left: 1px solid #222;
-  width: 70%; }
-
-#btn-search-ami {
-  width: 100%; }
-
-.ami-option-group {
-  margin: 10px 0; }
-  .ami-option-group h5 {
-    font-size: 12px;
-    margin-bottom: 10px; }
-  .ami-option-group button {
-    width: 114px;
-    font-size: 12px;
-    padding: 4px 0; }
-    .ami-option-group button:hover {
-      background-color: #353A3F; }
-    .ami-option-group button.active {
-      background-color: #148BE6; }
-      .ami-option-group button.active:hover {
-        background-color: #34A3F8; }
-
-#community-ami-input {
-  border-radius: 3px;
-  margin-bottom: 5px;
-  font-size: 12px;
-  padding: 8px 5px 8px 10px;
-  width: 215px; }
-
-#selectbox-ami-platform {
-  margin: 5px 0;
-  width: 232px; }
-  #selectbox-ami-platform .item {
-    font-size: 12px;
-    display: block;
-    cursor: pointer;
-    padding: 8px;
-    line-height: 23px; }
-  #selectbox-ami-platform .selection {
-    border-radius: 3px;
-    padding: 8px 10px;
-    line-height: 24px; }
-
-#ami-table-wrap .scroll-wrap {
-  height: 322px; }
-
-#ami-table-wrap .table {
-  font-size: 12px; }
-
-#ami-table-wrap .table tr td {
-  vertical-align: middle; }
-
-#ami-table-wrap .ami-table-name {
-  display: block; }
-
-#ami-table-wrap .toggle-fav {
-  position: static;
-  margin: 0 2px;
-  cursor: pointer; }
-
-#ami-table-wrap .table-head thead th {
-  line-height: 16px;
-  text-align: center;
-  padding: 10px 0;
-  border: none;
-  font-size: 12px;
-  font-weight: 500;
-  color: #F3F3F3;
-  background: #292C2E; }
-
-#ami-table-wrap .table-head thead th:hover {
-  background-color: #2E3338; }
-
-.ami-meta {
-  font-size: 12px;
-  color: #999;
-  line-height: 24px; }
-  .ami-meta span {
-    margin-left: 28px; }
-
-#community-ami-page {
-  position: relative;
-  bottom: 0;
-  height: 45px;
-  background-color: #292C2E;
-  border-top: 1px solid #000;
-  width: 604px; }
-
-#community-ami-page .pagination {
-  position: absolute;
-  top: 12px;
-  right: 10px;
-  font-size: 12px;
-  color: #999; }
-
-#community-ami-page .page-tip {
-  left: 10px;
-  color: #999;
-  font-size: 12px;
-  top: 15px;
-  position: absolute; }
-
 /* Dashboard Header */
 .dashboard-header {
   padding: 10px 0;
@@ -5468,146 +5269,170 @@ aside.dashboard-sidebar {
     - Side Panel Show and Hide
     - App View - Failed to Pay Limitation
 */
-/*
-    IDE Side Panel
-
-    - Left:
-      - Resource Panel
-      - Container Panel
-    - Right:
-      - Property Panel
-      - State Panel
-
-*/
-.OEPanelRight .sidebar-title {
-  border-left: 1px solid #151519;
-  padding: 0; }
-.OEPanelRight .property-tab {
-  width: 49%;
-  height: 39px;
-  cursor: pointer;
-  color: #b0b0b0; }
-.OEPanelRight #btn-switch-property {
-  border-bottom: 3px solid #4a90e2;
-  color: #4a90e2; }
-.OEPanelRight #btn-switch-state:hover {
-  color: #eee; }
-.OEPanelRight #btn-switch-state {
-  color: #4fb845; }
-.OEPanelRight.no-state #btn-switch-state {
-  display: none; }
-.OEPanelRight.no-state #btn-switch-property {
-  color: #b0b0b0;
-  border-bottom: 3px solid transparent;
-  float: left;
-  width: auto;
-  background: none;
-  text-align: left;
-  padding-left: 10px;
-  cursor: default; }
-.OEPanelRight.state #btn-switch-property {
-  color: #b0b0b0;
-  border-bottom: 3px solid transparent; }
-  .OEPanelRight.state #btn-switch-property:hover {
-    color: #eee; }
-.OEPanelRight.state #btn-switch-state {
-  border-bottom: 3px solid #4a90e2;
-  color: #4a90e2; }
-
-.property-sidebar-title {
-  font-size: 13px;
-  text-shadow: none;
-  padding-left: 10px;
-  color: #999;
-  height: 32px;
-  line-height: 32px;
-  position: relative;
-  z-index: 2;
-  display: block !important;
-  cursor: default;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-  border-bottom: 1px solid #000; }
-
-.property-panel-wrapper {
-  width: 100%;
-  height: 100%;
-  left: 0;
-  bottom: 0;
-  position: absolute;
-  background: #26262b;
-  /* for zoomed out */ }
-  .property-panel-wrapper .scroll-wrap {
-    position: absolute;
-    top: 33px;
-    bottom: 0;
-    width: 100%; }
-
 .property-panel-wrapper.immediately > .scroll-wrap {
   top: 69px; }
-
-#changeAmi {
-  width: 130px; }
-
-.resource-icon {
-  position: relative;
-  width: 60px;
-  height: 60px;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: transparent; }
-
-#changeAmiDropZone {
-  width: 194px;
-  height: 194px;
-  background: rgba(0, 0, 0, 0.4);
-  text-align: center;
-  position: relative;
-  margin-left: 30px;
-  border-radius: 2px;
-  border: 3px dashed #666;
-  margin-bottom: 20px; }
-  #changeAmiDropZone.dragOver {
-    border-color: #fff; }
-  #changeAmiDropZone p {
-    position: absolute;
-    margin-top: 80px;
-    left: 45px;
-    color: #666; }
-  #changeAmiDropZone .resource-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -30px; }
-  #changeAmiDropZone .resource-label {
-    margin-top: 18px;
-    width: 120px;
-    margin-left: -30px;
-    font-size: 12px; }
-
-#cancelChangeAmi {
-  text-align: center;
-  width: 100%; }
-
-#confirmChangeAmi {
-  width: 180px;
-  margin-left: 40px; }
-
-#changeAmiWarning {
-  color: #ec3c38;
-  background: rgba(236, 60, 56, 0.1);
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #9e2622; }
 
 /*
     IDE Resorce Panel
 	
-	- Resource Item
-	- Resource List: Head, Sort, Body
-	- Drag-n-Drop Style
+  - General Style
+    - Refresh & Manage Shared Resource
+	  - Resource Item
+	  - Resource List: Head, Sort, Body
+	  - Drag-n-Drop Style
 	- Resource-specific Styles
 
 */
+/* Browse Community AMI Modal */
+.icon-ami-os:before {
+  content: " ";
+  float: left;
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  background: url('/assets/images/ide/icon/icn-amios.png') left top no-repeat; }
+.icon-ami-os.centos:before {
+  background-position: -24px 0; }
+.icon-ami-os.debian:before {
+  background-position: -48px 0; }
+.icon-ami-os.fedora:before {
+  background-position: -72px 0; }
+.icon-ami-os.gentoo:before {
+  background-position: -96px 0; }
+.icon-ami-os.opensuse:before {
+  background-position: -120px 0; }
+.icon-ami-os.ubuntu:before {
+  background-position: -144px 0; }
+.icon-ami-os.redhat:before {
+  background-position: -168px 0; }
+.icon-ami-os.windows:before {
+  background-position: -192px 0; }
+.icon-ami-os.linux-other:before {
+  background-position: -216px 0; }
+
+.ami-content-wrap {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -moz-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: relative; }
+  .ami-content-wrap div {
+    box-sizing: border-box; }
+
+#ami-search-option {
+  width: 30%;
+  padding: 10px; }
+
+#ami-data-wrap {
+  height: 100%;
+  border-left: 1px solid #222;
+  width: 70%; }
+
+#btn-search-ami {
+  width: 100%; }
+
+.ami-option-group {
+  margin: 10px 0; }
+  .ami-option-group h5 {
+    font-size: 12px;
+    margin-bottom: 10px; }
+  .ami-option-group button {
+    width: 114px;
+    font-size: 12px;
+    padding: 4px 0; }
+    .ami-option-group button:hover {
+      background-color: #353A3F; }
+    .ami-option-group button.active {
+      background-color: #148BE6; }
+      .ami-option-group button.active:hover {
+        background-color: #34A3F8; }
+
+#community-ami-input {
+  border-radius: 3px;
+  margin-bottom: 5px;
+  font-size: 12px;
+  padding: 8px 5px 8px 10px;
+  width: 215px; }
+
+#selectbox-ami-platform {
+  margin: 5px 0;
+  width: 232px; }
+  #selectbox-ami-platform .item {
+    font-size: 12px;
+    display: block;
+    cursor: pointer;
+    padding: 8px;
+    line-height: 23px; }
+  #selectbox-ami-platform .selection {
+    border-radius: 3px;
+    padding: 8px 10px;
+    line-height: 24px; }
+
+#ami-table-wrap .scroll-wrap {
+  height: 322px; }
+
+#ami-table-wrap .table {
+  font-size: 12px; }
+
+#ami-table-wrap .table tr td {
+  vertical-align: middle; }
+
+#ami-table-wrap .ami-table-name {
+  display: block; }
+
+#ami-table-wrap .toggle-fav {
+  position: static;
+  margin: 0 2px;
+  cursor: pointer; }
+
+#ami-table-wrap .table-head thead th {
+  line-height: 16px;
+  text-align: center;
+  padding: 10px 0;
+  border: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: #F3F3F3;
+  background: #292C2E; }
+
+#ami-table-wrap .table-head thead th:hover {
+  background-color: #2E3338; }
+
+.ami-meta {
+  font-size: 12px;
+  color: #999;
+  line-height: 24px; }
+  .ami-meta span {
+    margin-left: 28px; }
+
+#community-ami-page {
+  position: relative;
+  bottom: 0;
+  height: 45px;
+  background-color: #292C2E;
+  border-top: 1px solid #000;
+  width: 604px; }
+
+#community-ami-page .pagination {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  font-size: 12px;
+  color: #999; }
+
+#community-ami-page .page-tip {
+  left: 10px;
+  color: #999;
+  font-size: 12px;
+  top: 15px;
+  position: absolute; }
+
 /* General Style */
 /* Refresh & Manage Shared Resource */
 .sidebar-tool button {
@@ -6168,10 +5993,152 @@ aside.dashboard-sidebar {
 /*
     IDE Property Panel
 	
-	- Stack
-	- App
+	- Title Show/Hide State Panel
+	- Property General Layout
+	  - Property Controls
 
 */
+/*
+    Change AMI - IDE Property Panel
+
+*/
+#changeAmi {
+  width: 130px; }
+
+.resource-icon {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: transparent; }
+
+#changeAmiDropZone {
+  width: 194px;
+  height: 194px;
+  background: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  position: relative;
+  margin-left: 30px;
+  border-radius: 2px;
+  border: 3px dashed #666;
+  margin-bottom: 20px; }
+  #changeAmiDropZone.dragOver {
+    border-color: #fff; }
+  #changeAmiDropZone p {
+    position: absolute;
+    margin-top: 80px;
+    left: 45px;
+    color: #666; }
+  #changeAmiDropZone .resource-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -30px; }
+  #changeAmiDropZone .resource-label {
+    margin-top: 18px;
+    width: 120px;
+    margin-left: -30px;
+    font-size: 12px; }
+
+#cancelChangeAmi {
+  text-align: center;
+  width: 100%; }
+
+#confirmChangeAmi {
+  width: 180px;
+  margin-left: 40px; }
+
+#changeAmiWarning {
+  color: #ec3c38;
+  background: rgba(236, 60, 56, 0.1);
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #9e2622; }
+
+/* Title Show/Hide State Panel */
+.OEPanelRight .sidebar-title {
+  border-left: 1px solid #151519;
+  padding: 0; }
+.OEPanelRight #btn-switch-property, .OEPanelRight.state #btn-switch-state {
+  border-bottom: 2px solid #4a90e2;
+  color: #4a90e2; }
+.OEPanelRight #btn-switch-state:hover {
+  color: #fff; }
+.OEPanelRight #btn-switch-state {
+  color: #11c568; }
+  .OEPanelRight #btn-switch-state:hover {
+    color: #fff; }
+.OEPanelRight.no-state #btn-switch-state {
+  display: none; }
+.OEPanelRight.no-state #btn-switch-property {
+  color: #b0b0b0;
+  border-bottom: 3px solid transparent;
+  float: left;
+  width: auto;
+  text-align: left;
+  padding-left: 10px;
+  cursor: default; }
+.OEPanelRight.state #btn-switch-property {
+  color: #b0b0b0;
+  border-bottom: 2px solid transparent; }
+  .OEPanelRight.state #btn-switch-property:hover {
+    color: #fff; }
+
+/* Property General Layout */
+.property-panel-wrapper {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  background: #26262b;
+  /* for zoomed out */ }
+  .property-panel-wrapper .scroll-wrap {
+    position: absolute;
+    top: 33px;
+    bottom: 0;
+    width: 100%; }
+
+.property-sidebar-title {
+  font-size: 13px;
+  padding-left: 10px;
+  color: #999;
+  height: 32px;
+  line-height: 32px;
+  position: relative;
+  z-index: 2;
+  display: block !important;
+  cursor: default;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid #000; }
+
+.property-control-group {
+  padding: 8px 10px; }
+  .property-control-group > label, .property-control-group label.left {
+    color: #999;
+    font-size: 13px;
+    height: 20px;
+    cursor: pointer;
+    display: inline-block;
+    float: none; }
+  .property-control-group .required-input {
+    color: #999;
+    font-size: 12px;
+    line-height: 20px; }
+  .property-control-group .input {
+    width: 230px; }
+  .property-control-group textarea {
+    width: 242px; }
+  .property-control-group #property-res-desc {
+    width: 242px;
+    height: 20px; }
+    .property-control-group #property-res-desc:focus {
+      width: 242px;
+      height: 62px; }
+  .property-control-group .radio-group {
+    float: left; }
+
 .canvas-view {
   position: relative;
   font-size: 0;

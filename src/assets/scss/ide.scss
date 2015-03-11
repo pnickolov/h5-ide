@@ -256,49 +256,6 @@ body {
 	}
 }
 
-.property-control-group {
-	padding : 8px 10px;
-}
-
-.required-input {
-	color: #999;
-	font-size: 12px;
-	line-height: 20px;
-}
-
-.property-control-group {
-	> label, label.left {
-		color     : #999;
-		font-size : 13px;
-		height    : 20px;
-		cursor    : pointer;
-		display   : inline-block;
-		float     : none;
-	}
-
-	.input {
-		width: 230px;
-	}
-
-	textarea {
-	    width            : 242px;
-	}
-
-	#property-res-desc {
-		width: 242px;
-		height: 20px;
-
-		&:focus {
-			width: 242px;
-			height: 62px;
-		}
-	}
-
-	.radio-group {
-		float: left;
-	}
-
-}
 
 .property-control-group .selectbox.selectbox-mega .main {
 	width     : 230px;
@@ -3519,8 +3476,6 @@ div.modal-text-highlight{
   }
 }
 
-@import "utility/animation";
-
 
 @import "sharedres/kp";
 @import "sharedres/optiongroup";
@@ -3531,10 +3486,9 @@ div.modal-text-highlight{
 @import "ide/fullpage_settings";
 @import "ide/project";
 @import "ide/cheatsheet";
-@import "ide/browse_ami";
 @import "ide/dashboard";
 @import "ide/editor";
-// @import "ide/canvas";
+
 @import "ide/property";
 @import "ide/toolbar";
 @import "ide/process";

@@ -1,0 +1,70 @@
+/*
+    Change AMI - IDE Property Panel
+
+*/
+
+
+#changeAmi {
+  width: 130px;
+}
+
+.resource-icon {
+  position            : relative;
+  width               : 60px;
+  height              : 60px;
+  background-position : center center;
+  background-repeat   : no-repeat;
+  background-color    : transparent;
+}
+
+#changeAmiDropZone {
+  width        : 194px;
+  height       : 194px;
+  background   : rgba(0,0,0,.4);
+  text-align   : center;
+  position     : relative;
+  margin-left  : 30px;
+  border-radius: 2px;
+  border       : 3px dashed #666;
+  margin-bottom: 20px;
+
+  &.dragOver { border-color: #fff; }
+  p {
+    position  : absolute;
+    margin-top: 80px;
+    left      : 45px;
+    color     : #666;
+  }
+
+  .resource-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -30px;
+  }
+
+  .resource-label {
+    margin-top  : 18px;
+    width       : 120px;
+    margin-left : -30px;
+    font-size   : 12px;
+  }
+}
+
+#cancelChangeAmi {
+  text-align: center;
+  width: 100%;
+}
+
+#confirmChangeAmi {
+  width: 180px;
+  margin-left: 40px;
+}
+
+#changeAmiWarning {
+  color: #ec3c38;
+  background: rgba(236, 60, 56, 0.1);
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #9e2622;
+}

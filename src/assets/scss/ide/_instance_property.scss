@@ -1,0 +1,24 @@
+/*
+    Instance Property - IDE Property Panel
+	
+	- Instance/Server Group Name Wrap
+
+*/
+
+/* Instance/Server Group Name Wrap */
+
+.property-instance-name-wrap {
+	height     : 31px;
+
+    .name-count-wrap {
+		float       : right;
+		height      : 27px;
+		line-height : 27px;
+		padding     : 0 10px;
+		background  : #555;
+		border      : 1px solid #313131;
+		border-left : none;
+	}
+
+	&.single .name-count-wrap { display: none; }
+}

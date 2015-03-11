@@ -11,6 +11,7 @@
 /* Yellow */
 /* Red */
 /* Grey */
+/* Font Family */
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -45,6 +46,7 @@
   .locale-zh select,
   .locale-zh textarea {
     font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif; } }
+/* Basic Typesetting */
 body {
   font-family: Lato, "Helvetica Neue", "Helvetica", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   color: #acacc6;
@@ -88,6 +90,7 @@ pre {
   font-size: 13px;
   line-height: 20px; }
 
+/* Conditional Style */
 .link-style {
   cursor: pointer; }
   .link-style:hover {
@@ -347,59 +350,7 @@ body {
     bottom: 5px;
     right: 11px; }
 
-.property-control-group .selectbox.selectbox-mega .main {
-  width: 230px;
-  font-size: 14px;
-  color: #F8F8F8; }
-
-.property-control-group .selectbox.selectbox-mega .sub span {
-  font-size: 12px;
-  color: #CCC;
-  margin-right: 5px; }
-
-.property-head-num-wrap {
-  color: #999;
-  font-size: 12px;
-  margin-left: 5px; }
-
 /* Instance Property*/
-.property-instance-name-wrap.single .name-count-wrap {
-  display: none; }
-
-.property-instance-name-wrap {
-  height: 31px;
-  margin-top: 20px;
-  box-shadow: 0 1px 0 0 #5d5c5d; }
-  .property-instance-name-wrap .input {
-    width: 100% !important;
-    box-sizing: border-box; }
-  .property-instance-name-wrap .name-count-wrap {
-    float: right;
-    height: 31px;
-    line-height: 31px;
-    padding: 0 10px;
-    background: #555;
-    border: 1px solid #313131;
-    border-left: none; }
-
-.property-block-wrap {
-  font-size: 12px;
-  color: #D0D0D0;
-  width: 260px;
-  margin-top: 4px;
-  padding: 5px;
-  box-sizing: border-box;
-  border: 1px solid #1a1a1a;
-  border-radius: 4px;
-  background: #464646;
-  box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  -webkit-transition: background 0.2s ease-in-out;
-  -o-transition: background 0.2s ease-in-out;
-  transition: background 0.2s ease-in-out; }
-  .property-block-wrap:hover {
-    background: #414141; }
-
 .property-ami-label {
   padding: 6px 0;
   height: 26px;
@@ -440,7 +391,6 @@ body {
     width: 162px !important; }
 
 /* End of Instance Property */
-/* End of General Style for Property Panel List */
 /* Secondary Panel */
 .add-rule,
 .property-btn-get-system-log,
@@ -1634,17 +1584,12 @@ a.action-link:hover {
 .sns-action .icon-remove:hover {
   color: #F74A48; }
 
-/*.property-term-p:hover .asg-p-action,
-#property-asg-policies li:hover .asg-p-action {
-	display: inline-block;
-}*/
 .property-term-p:hover .asg-p-action,
 .property-list li:hover .asg-p-action,
 .property-list li:hover .sns-action {
   display: inline-block; }
 
 .property-asg-policy-name {
-  /*font-weight : bold;*/
   font-size: 16px;
   cursor: default; }
 
@@ -4252,11 +4197,6 @@ dl.settings-item {
     color: #eee;
     border-bottom: 1px solid #111;
     position: relative; }
-    .hp-notify-list li a {
-      display: inline;
-      padding: 0;
-      width: auto;
-      color: #7eace1; }
     .hp-notify-list li.success:before, .hp-notify-list li.processing:before, .hp-notify-list li.failure:before, .hp-notify-list li.rollingback:before {
       font-family: 'MCIcon';
       position: absolute;
@@ -5996,6 +5936,8 @@ aside.dashboard-sidebar {
 	- Title Show/Hide State Panel
 	- Property General Layout
 	  - Property Controls
+	  - Property List
+	  - Property Block
 
 */
 /*
@@ -6056,6 +5998,26 @@ aside.dashboard-sidebar {
   border-radius: 4px;
   border: 1px solid #9e2622; }
 
+/*
+    Instance Property - IDE Property Panel
+	
+	- Instance/Server Group Name Wrap
+
+*/
+/* Instance/Server Group Name Wrap */
+.property-instance-name-wrap {
+  height: 31px; }
+  .property-instance-name-wrap .name-count-wrap {
+    float: right;
+    height: 27px;
+    line-height: 27px;
+    padding: 0 10px;
+    background: #555;
+    border: 1px solid #313131;
+    border-left: none; }
+  .property-instance-name-wrap.single .name-count-wrap {
+    display: none; }
+
 /* Title Show/Hide State Panel */
 .OEPanelRight .sidebar-title {
   border-left: 1px solid #151519;
@@ -6113,8 +6075,9 @@ aside.dashboard-sidebar {
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid #000; }
 
+/* Control & Input */
 .property-control-group {
-  padding: 8px 10px; }
+  padding: 6px 10px; }
   .property-control-group > label, .property-control-group label.left {
     color: #999;
     font-size: 13px;
@@ -6126,18 +6089,61 @@ aside.dashboard-sidebar {
     color: #999;
     font-size: 12px;
     line-height: 20px; }
-  .property-control-group .input {
-    width: 230px; }
+  .property-control-group .input,
   .property-control-group textarea {
-    width: 242px; }
-  .property-control-group #property-res-desc {
-    width: 242px;
-    height: 20px; }
-    .property-control-group #property-res-desc:focus {
-      width: 242px;
-      height: 62px; }
-  .property-control-group .radio-group {
-    float: left; }
+    width: 100%;
+    box-sizing: border-box; }
+  .property-control-group .selectbox.selectbox-mega .main {
+    width: 230px;
+    font-size: 14px;
+    color: #F8F8F8; }
+  .property-control-group .selectbox.selectbox-mega .sub span {
+    font-size: 12px;
+    color: #CCC;
+    margin-right: 5px; }
+
+.property-head-num-wrap {
+  color: #999;
+  font-size: 12px;
+  margin-left: 5px; }
+
+#property-res-desc {
+  height: 29px;
+  -webkit-transition: height 0.1s ease-in-out;
+  -o-transition: height 0.1s ease-in-out;
+  transition: height 0.1s ease-in-out; }
+  #property-res-desc:focus {
+    height: 90px; }
+
+/* General Style for Property Panel List */
+.property-list li {
+  padding: 10px;
+  border-bottom: 1px solid #202027;
+  background: #2b2b35;
+  -webkit-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out; }
+  .property-list li:hover {
+    background: #373743; }
+
+/* Property Block - Used by AMI and EBS Snapshot */
+.property-block-wrap {
+  font-size: 12px;
+  color: #D0D0D0;
+  width: 100%;
+  margin-top: 4px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
+  background: #464646;
+  box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  -webkit-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out; }
+  .property-block-wrap:hover {
+    background: #414141; }
 
 .canvas-view {
   position: relative;
@@ -7498,20 +7504,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 100%;
   text-align: center;
   margin-top: 55px; }
-
-/* General Style for Property Panel List */
-.property-list li {
-  padding: 10px;
-  border-bottom: 1px solid #202027;
-  background: #2b2b35;
-  -webkit-transition: background .2s;
-  -moz-transition: background .2s;
-  -ms-transition: background .2s;
-  -o-transition: background .2s;
-  transition: background .2s; }
-
-.property-list li:hover {
-  background: #373743; }
 
 .syslog-dbinstance table a {
   color: #4a90e2; }

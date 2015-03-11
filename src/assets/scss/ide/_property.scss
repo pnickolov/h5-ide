@@ -454,26 +454,6 @@
 	}
 }
 
-/* General Style for Property Panel List */
-
-.property-list li {
-	// width         : 260px;
-	padding       : 10px;
-	border-bottom : 1px solid $bg-p;
-	background    : lighten($bg-p, 5%);
-
-	-webkit-transition : background .2s;
-	-moz-transition    : background .2s;
-	-ms-transition     : background .2s;
-	-o-transition      : background .2s;
-	transition         : background .2s;
-}
-
-
-.property-list li:hover {
-	background : lighten($bg-p, 10%);
-}
-
 .syslog-dbinstance {
 	table a {
 		color: #4a90e2;

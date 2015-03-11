@@ -4,10 +4,14 @@
 	- Title Show/Hide State Panel
 	- Property General Layout
 	  - Property Controls
+	  - Property List
+	  - Property Block
 
 */
 
+// Instance Property 
 @import "change_ami";
+@import "instance_property";
 
 /* Title Show/Hide State Panel */
 
@@ -94,8 +98,12 @@
   border-bottom : 1px solid #000;
 }
 
+/* Control & Input */
+
 .property-control-group {
-	padding: 8px 10px;
+	padding: 6px 10px;
+
+	// > * { box-sizing: border-box; }
 	
 	> label, label.left {
 		color     : #999;
@@ -112,27 +120,75 @@
 		line-height : 20px;
 	}
 
-	.input {
-		width: 230px;
-	}
-
+	.input,
 	textarea {
-	    width: 242px;
+		width      : 100%;
+		box-sizing : border-box;
 	}
-
-	#property-res-desc {
-		width: 242px;
-		height: 20px;
-
-		&:focus {
-			width: 242px;
-			height: 62px;
-		}
+	
+	.selectbox.selectbox-mega .main {
+		width     : 230px;
+		font-size : 14px;
+		color     : #F8F8F8;
 	}
-
-	.radio-group {
-		float: left;
+	
+	.selectbox.selectbox-mega .sub span {
+		font-size    : 12px;
+		color        : #CCC;
+		margin-right : 5px;
 	}
 
 }
 
+.property-head-num-wrap {
+	color       : #999;
+	font-size   : 12px;
+	margin-left : 5px;
+}
+
+#property-res-desc {
+	height: 29px;
+
+	@include transit($method: height, $dur: .1s);
+
+	&:focus {
+		height: 90px;
+	}
+}
+
+/* General Style for Property Panel List */
+
+.property-list li {
+	padding       : 10px;
+	border-bottom : 1px solid $bg-p;
+	background    : lighten($bg-p, 5%);
+
+	@include transit($method: background, $dur: .2s);
+
+	&:hover { background : lighten($bg-p, 10%); }
+}
+
+/* Property Block - Used by AMI and EBS Snapshot */
+
+.property-block-wrap {
+	font-size : 12px;
+	color     : #D0D0D0;
+
+	width      : 100%;
+	margin-top : 4px;
+	padding    : 5px;
+
+	box-sizing    : border-box;
+	border        : 1px solid #1a1a1a;
+	border-radius : 4px;
+	background    : #464646;
+	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.1);
+
+	cursor : pointer;
+
+	@include transit($method:background,$dur:.2s);
+
+	&:hover {
+		background: #414141;
+	}
+}

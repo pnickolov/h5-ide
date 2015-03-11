@@ -451,8 +451,6 @@
     border-bottom : 1px solid #111;
     position      : relative;
 
-    a { display : inline; padding : 0; width : auto; color: $light-b; }
-
     &.success:before,
     &.processing:before,
     &.failure:before,

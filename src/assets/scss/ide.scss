@@ -257,72 +257,9 @@ body {
 }
 
 
-.property-control-group .selectbox.selectbox-mega .main {
-	width     : 230px;
-	font-size : 14px;
-	color     : #F8F8F8;
-}
 
-.property-control-group .selectbox.selectbox-mega .sub span {
-	font-size    : 12px;
-	color        : #CCC;
-	margin-right : 5px;
-}
-
-.property-head-num-wrap {
-	color       : #999;
-	font-size   : 12px;
-	margin-left : 5px;
-}
 
 /* Instance Property*/
-.property-instance-name-wrap.single .name-count-wrap {
-	display : none;
-}
-
-.property-instance-name-wrap {
-	height     : 31px;
-	margin-top : 20px;
-    box-shadow : 0 1px 0 0 #5d5c5d;
-
-    .input {
-    	width : 100% !important;
-	    box-sizing: border-box;
-    }
-
-    .name-count-wrap {
-		float       : right;
-		height      : 31px;
-		line-height : 31px;
-		padding     : 0 10px;
-		background  : #555;
-		border      : 1px solid #313131;
-		border-left : none;
-	}
-}
-
-.property-block-wrap {
-	font-size : 12px;
-	color     : #D0D0D0;
-
-	width      : 260px;
-	margin-top : 4px;
-	padding    : 5px;
-
-	box-sizing    : border-box;
-	border        : 1px solid #1a1a1a;
-	border-radius : 4px;
-	background    : #464646;
-	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.1);
-
-	cursor : pointer;
-
-	@include transit($method:background,$dur:.2s);
-
-	&:hover {
-		background: #414141;
-	}
-}
 
 
 .property-ami-label {
@@ -373,10 +310,6 @@ body {
 }
 
 /* End of Instance Property */
-
-/* End of General Style for Property Panel List */
-
-
 
 /* Secondary Panel */
 .add-rule,
@@ -1869,11 +1802,6 @@ a.action-link:hover {
 	color: #F74A48;
 }
 
-/*.property-term-p:hover .asg-p-action,
-#property-asg-policies li:hover .asg-p-action {
-	display: inline-block;
-}*/
-
 .property-term-p:hover .asg-p-action,
 .property-list li:hover .asg-p-action,
 .property-list li:hover .sns-action {
@@ -1881,7 +1809,6 @@ a.action-link:hover {
 }
 
 .property-asg-policy-name {
-	/*font-weight : bold;*/
 	font-size   : 16px;
 	cursor      : default;
 }

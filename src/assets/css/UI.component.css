@@ -12,6 +12,7 @@
 /* Yellow */
 /* Red */
 /* Grey */
+/* Font Family */
 @font-face {
   font-family: 'Lato';
   font-style: normal;
@@ -46,6 +47,7 @@
   .locale-zh select,
   .locale-zh textarea {
     font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif; } }
+/* Basic Typesetting */
 body {
   font-family: Lato, "Helvetica Neue", "Helvetica", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
   color: #acacc6;
@@ -89,6 +91,7 @@ pre {
   font-size: 13px;
   line-height: 20px; }
 
+/* Conditional Style */
 .link-style {
   cursor: pointer; }
   .link-style:hover {
@@ -2132,7 +2135,7 @@ a.btn-primary {
   border: 1px solid #000;
   border-radius: 2px;
   font-size: 14px;
-  padding: 7px 20px 7px 6px;
+  padding: 5px 20px 5px 6px;
   display: inline-block;
   outline: none;
   -webkit-transition: background-color .2s;

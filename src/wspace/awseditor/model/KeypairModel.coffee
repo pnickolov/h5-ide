@@ -1,5 +1,5 @@
 
-define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, ComplexResModel, ConnectionModel )->
+define [ "constant", "ComplexResModel", "ConnectionModel", "Design"  ], ( constant, ComplexResModel, ConnectionModel, Design )->
 
   KeypairUsage = ConnectionModel.extend {
     type : "KeypairUsage"
@@ -30,6 +30,7 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
   }
 
 
+  DefaultKpName = 'DefaultKP'
 
   KeypairModel = ComplexResModel.extend {
     type : constant.RESTYPE.KP
@@ -41,7 +42,7 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
     isVisual : ()-> false
 
     isDefault: () ->
-      @get( 'name' ) is 'DefaultKP'
+      @get( 'name' ) is DefaultKpName
 
     remove : ()->
       # When a keypair is removed, make all usage to be DefaultKP
@@ -76,8 +77,8 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
         }
 
       _.sortBy kps, ( a, b )->
-        if a.name is "DefaultKP" then return -1
-        if b.name is "DefaultKP" then return 1
+        if a.name is DefaultKpName then return -1
+        if b.name is "DefaultKpName" then return 1
         if a.name > b.name then return 1
         if a.name is b.name then return 0
         if a.name < b.name then return -1
@@ -96,24 +97,31 @@ define [ "constant", "ComplexResModel", "ConnectionModel"  ], ( constant, Comple
 
   }, {
     getDefaultKP : ()->
-      _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
+      allKp = KeypairModel.allObjects()
+      defaultKp = _.find allKp, ( obj )-> obj.get("name") is DefaultKpName
+      defaultKp
 
     setDefaultKP: ( keyName, fingerprint ) ->
-      defaultKP = _.find KeypairModel.allObjects(), ( obj )-> obj.get("name") is "DefaultKP"
+      defaultKP = @getDefaultKP()
       defaultKP.set( 'appId', keyName or '' )
       defaultKP.set( 'fingerprint', fingerprint or '' )
       defaultKP.set( 'isSet', true )
 
+    ensureDefaultKp: () ->
+      @getDefaultKP() or new KeypairModel( { 'name': DefaultKpName } )
+
     handleTypes : constant.RESTYPE.KP
+
     deserialize : ( data, layout_data, resolve )->
       new KeypairModel({
         id          : data.uid
         name        : data.name
-        #appId       : if data.resource.KeyFingerprint then data.resource.KeyName else '' #no fingerprint is old data
         appId       : data.resource.KeyName
         fingerprint : data.resource.KeyFingerprint
       })
       null
-  }
+}
+
+  Design.on Design.EVENT.Deserialized, KeypairModel.ensureDefaultKp, KeypairModel
 
   KeypairModel

@@ -46,40 +46,39 @@
         </ul>
       </nav>
     </header>
-    <div class="accordion-body nano">
-      <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
-      <ul class="nano-content resource-list-ami"></ul>
+    <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
+    <div class="accordion-body">
+      <ul class="resource-list-ami"></ul>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
-    <div class="accordion-body nano">
-      <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
-      <div class="nano-content">
-        <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
-        <ul class="clearfix"><li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li></ul>
-        <div class="resource-list-head">
-          {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
-          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
-            <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
-            <ul class="dropdown">
-              <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
-              <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
-            </ul>
-          </div>
+    <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+    <div class="accordion-body">
+      <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
+      <ul class="clearfix"><li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li></ul>
+      <div class="resource-list-head">
+        {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
+        <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
+          <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
+          <ul class="dropdown">
+            <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
+            <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
+          </ul>
         </div>
-        <ul class="resource-list-snapshot"></ul>
       </div>
+      <ul class="resource-list-snapshot"></ul>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
-    <div class="accordion-body nano {{#if rdsDisabled}}disableRds{{/if}}">
+    <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
+    <div class="accordion-body {{#if rdsDisabled}}disableRds{{/if}}">
       <div class="disableRds-content">{{ i18n "RES_MSG_RDS_DISABLED"}}</div>
-      <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
-      <div class="nano-content">
+
+      <div>
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
         <ul class="resource-list-rds"></ul>
         <div class="resource-list-head">

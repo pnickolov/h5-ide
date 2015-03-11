@@ -5545,14 +5545,6 @@ aside.dashboard-sidebar {
 .property-panel-wrapper.immediately > .scroll-wrap {
   top: 69px; }
 
-.accordion-body.nano {
-  padding: 0; }
-  .accordion-body.nano .nano-content {
-    overflow-x: hidden;
-    top: 10px;
-    left: 10px;
-    right: 10px; }
-
 #changeAmi {
   width: 130px; }
 
@@ -5613,7 +5605,7 @@ aside.dashboard-sidebar {
 	- Resource Item
 	- Resource List: Head, Sort, Body
 	- Drag-n-Drop Style
-
+	- Resource-specific Styles
 
 */
 /* General Style */
@@ -5694,6 +5686,8 @@ aside.dashboard-sidebar {
   width: 100%;
   border-bottom: 1px #666 solid;
   height: 18px; }
+  ul + .resource-list-head {
+    margin-top: 10px; }
 
 .resource-list-sort-select {
   margin-top: -5px;
@@ -5711,14 +5705,40 @@ aside.dashboard-sidebar {
       background: transparent;
       color: #eee; }
 
+/* Fixed Accordion in Resource Panel */
+.fixedaccordion-head {
+  height: 37px;
+  line-height: 37px;
+  padding: 0 10px; }
+  .expanded .fixedaccordion-head {
+    background-color: #2b2b46;
+    color: #fff;
+    box-shadow: inset 2px 0 #5d64b5;
+    cursor: default; }
+
+.fixedaccordion .accordion-body {
+  background-color: #202027;
+  border-bottom: 1px solid #1B1B1B;
+  position: relative;
+  display: none;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 5px;
+  overflow-x: hidden;
+  overflow-y: auto; }
+  .fixedaccordion .accordion-body::-webkit-scrollbar {
+    width: 4px;
+    height: 8px; }
+
 /* Resource Item */
 .resource-item {
-  width: 70px;
+  width: 32%;
   padding-top: 65px;
-  margin: 0 5px 5px 0;
+  margin: 0 .5% .5% 0;
   border-radius: 4px;
   cursor: pointer;
-  float: left;
+  display: inline-block;
+  vertical-align: top;
   font-size: 12px;
   text-align: center;
   word-wrap: break-word;
@@ -6021,7 +6041,8 @@ aside.dashboard-sidebar {
 .resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
   padding-top: 12px;
   height: 48px;
-  background: center no-repeat; }
+  background-position: center;
+  background-repeat: no-repeat; }
   #DndItem .resource-icon-instance, #DndItem .resource-icon-dbinstance, #DndItem .resource-icon-dbsnapshot {
     padding-top: 28px;
     height: 62px;
@@ -6126,13 +6147,12 @@ aside.dashboard-sidebar {
   width: 100%;
   border: none;
   border-radius: 0;
-  z-index: 3; }
-  .BrowseCommunityAmi + .nano-content, .ManageSnapshot + .nano-content {
-    padding-bottom: 30px; }
-    .BrowseCommunityAmi + .nano-content:after, .ManageSnapshot + .nano-content:after {
-      display: block;
-      content: " ";
-      clear: both; }
+  z-index: 3;
+  display: none; }
+  .expanded .BrowseCommunityAmi, .expanded .ManageSnapshot {
+    display: block; }
+  .BrowseCommunityAmi + div, .ManageSnapshot + div {
+    padding-bottom: 30px !important; }
 
 .disableRds-content {
   display: none;
@@ -6144,6 +6164,13 @@ aside.dashboard-sidebar {
 .disableRds .ManageRdsSnapshot, .disableRds .nano-content {
   display: none; }
 
+/*
+    IDE Property Panel
+	
+	- Stack
+	- App
+
+*/
 .canvas-view {
   position: relative;
   font-size: 0;

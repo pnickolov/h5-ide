@@ -4,7 +4,7 @@
 	- Resource Item
 	- Resource List: Head, Sort, Body
 	- Drag-n-Drop Style
-
+	- Resource-specific Styles
 
 */
 
@@ -106,7 +106,6 @@
   }
 }
 
-
 /* Resource List Sort */
 
 .resource-list-head {
@@ -115,6 +114,8 @@
   width         : 100%;
   border-bottom : 1px #666 solid;
   height        : 18px;
+
+  ul + & { margin-top: 10px; }
 }
 
 .resource-list-sort-select {
@@ -138,23 +139,53 @@
   }
 }
 
+/* Fixed Accordion in Resource Panel */
+
+.fixedaccordion-head {
+	height      : 37px;
+	line-height : 37px;
+	padding     : 0 10px;
+
+	.expanded & {
+		background-color : desaturate($dark-p,10%);
+		color            : #fff;
+		box-shadow       : inset 2px 0 lighten($base-p, 20%);
+		cursor           : default;
+	}
+}
+
+
+.fixedaccordion .accordion-body {
+	background-color : $bg-p;
+	border-bottom    : 1px solid #1B1B1B;
+	position         : relative;
+	display          : none;
+	box-sizing       : border-box;
+	width            : 100%;
+	padding          : 10px 5px;
+
+	@include v-scroll;
+}
+
+
 /* Resource Item */
 
 .resource-item {
-  width         : 70px;
-  padding-top   : 65px;
-  margin        : 0 5px 5px 0;
-  border-radius : 4px;
-  cursor        : pointer;
-  float         : left;
-  font-size     : 12px;
-  text-align    : center;
-  word-wrap     : break-word;
-  overflow      : hidden;
-  line-height   : 1.2em;
-  color         : #eee;
-  position      : relative;
-  background : transparent center 5px no-repeat;
+  width          : 32%;
+  padding-top    : 65px;
+  margin         : 0 .5% .5% 0;
+  border-radius  : 4px;
+  cursor         : pointer;
+  display        : inline-block;
+  vertical-align : top;
+  font-size      : 12px;
+  text-align     : center;
+  word-wrap      : break-word;
+  overflow       : hidden;
+  line-height    : 1.2em;
+  color          : #eee;
+  position       : relative;
+  background     : transparent center 5px no-repeat;
 
   cursor: -moz-grab;
   cursor: -webkit-grab;
@@ -509,9 +540,10 @@ $dndDuration : .2s;
 }
 
 .resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
-  padding-top : 12px;
-  height      : 60px - 12px;
-  background  : center no-repeat;
+  padding-top         : 12px;
+  height              : 60px - 12px;
+  background-position : center;
+  background-repeat   : no-repeat;
 
   #DndItem & {
     padding-top : 28px;
@@ -645,14 +677,14 @@ $dndDuration : .2s;
   border        : none;
   border-radius : 0;
   z-index       : 3;
+  display       : none;
 
-  & + .nano-content {
-    padding-bottom : 30px;
-    &:after {
-      display : block;
-      content : " ";
-      clear : both;
-    }
+  .expanded & {
+  	display: block;
+  }
+
+  & + div {
+    padding-bottom : 30px !important;
   }
 }
 

@@ -1095,31 +1095,6 @@ select.select3.disabled {
 	}
 }
 
-/* Fixed Accordion in Resource Panel */
-
-.fixedaccordion-head {
-	height      : 37px;
-	line-height : 37px;
-	padding     : 0 10px;
-
-	.expanded & {
-		background-color : desaturate($dark-p,10%);
-		color            : #fff;
-		box-shadow       : inset 2px 0 lighten($base-p, 20%);
-		cursor           : default;
-	}
-}
-
-
-.fixedaccordion .accordion-body {
-	background-color : $bg-p;
-	border-bottom    : 1px solid #1B1B1B;
-	position         : relative;
-	display          : none;
-	overflow         : hidden;
-}
-
-
 /* Notification */
 #notification_wrap {
 	color      : #FFF;

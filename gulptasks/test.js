@@ -1,4 +1,4 @@
-var Q, browser, coffee, compile, es, gulp, gutil, mocha, run, server, should;
+var Q, coffee, compile, es, gulp, gutil, mocha, run;
 
 Q = require("q");
 
@@ -10,13 +10,7 @@ mocha = require("gulp-mocha");
 
 coffee = require("gulp-coffee");
 
-should = require("should");
-
 es = require("event-stream");
-
-server = require("./server");
-
-browser = require("../test/env/Browser.js");
 
 compile = function() {
   var d;
@@ -31,7 +25,9 @@ compile = function() {
 };
 
 run = function() {
-  var d, e, noop, testserver, zombie;
+  var browser, d, e, noop, server, testserver, zombie;
+  server = require("./server");
+  browser = require("../test/env/Browser.js");
   try {
     zombie = require("zombie");
   } catch (_error) {
@@ -42,35 +38,27 @@ run = function() {
   testserver = server("./src", 3010, false, false);
   d = Q.defer();
   noop = function() {};
-  browser.resources.post('http://api.xxx.io/session/', {
-    body: '{"jsonrpc":"2.0","id":"1","method":"login","params":["test","aaa123aa",{"timezone":8}]}'
-  }, function(error, response) {
-    var res;
-    res = JSON.parse(response.body.toString()).result[1];
-    browser.setCookie({
-      name: "session_id",
-      value: res.session_id,
-      maxAge: 3600 * 24 * 30,
-      domain: "ide.xxx.io"
-    });
-    browser.setCookie({
-      name: "usercode",
-      value: res.username,
-      maxAge: 3600 * 24 * 30,
-      domain: "ide.xxx.io"
-    });
-    return browser.visit("/").then(function() {
-      console.log("\n\n\n[Debug]", "Starting tests.");
-      return gulp.src(["./test/**/*.js", "!./test/env/Browser.js"]).pipe(mocha({
-        reporter: GLOBAL.gulpConfig.testReporter
-      })).pipe(es.through(noop, function() {
-        console.log(browser);
-        testserver.close();
-        return d.resolve();
-      })).on("error", function(e) {
-        console.log(gutil.colors.bgRed.black(" Test failed to run. ", e));
-        return d.reject();
-      });
+  browser.launchIDE().then(function(response) {
+    var shutDown;
+    console.log("\n\n\n[Debug]", "Starting tests.");
+    browser.silent = true;
+    shutDown = function() {
+      browser.close();
+      testserver.close();
+      d.resolve();
+      return process.exit();
+    };
+    return gulp.src(["./test/**/*.js", "!./test/env/Browser.js"]).pipe(mocha({
+      reporter: GLOBAL.gulpConfig.testReporter,
+      timeout: 20000
+    })).on("error", function(e) {
+      console.log(gutil.colors.bgRed.black(" Test failed. "));
+      return this.emit("end");
+    }).pipe(es.through(noop, shutDown));
+  }, function(error) {
+    return d.reject({
+      error: error,
+      msg: "Cannot login the server to test."
     });
   });
   return d.promise;

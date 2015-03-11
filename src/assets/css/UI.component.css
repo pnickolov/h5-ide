@@ -2371,7 +2371,8 @@ textarea {
   color: #d0d0d0;
   max-width: 236px;
   vertical-align: middle;
-  height: auto; }
+  height: auto;
+  cursor: pointer; }
 
 /* Select */
 .select {

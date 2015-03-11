@@ -302,45 +302,10 @@ body {
   overflow: hidden; }
 
 /* Property Panel */
-.property-second-panel {
-  display: none;
-  left: 100%;
-  background: #fff; }
-
-.property-second-title {
-  margin-left: 48px;
-  width: 216px; }
-
-.property-content {
-  height: 100%;
-  color: #ccc;
-  box-sizing: border-box; }
-  .property-content a {
-    color: #4a90e2; }
-    .property-content a:hover {
-      color: #3970af; }
-
 .property-group-head {
   padding: 6px 10px;
   font-size: 13px;
-  background: #323232;
-  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
-  display: block; }
-
-.back {
-  color: #999;
-  border-right: 1px solid #09090b;
-  position: absolute;
-  text-align: center;
-  cursor: pointer;
-  left: 0;
-  width: 44px;
-  height: 32px;
-  line-height: 32px;
-  display: inline-block; }
-  .back:hover {
-    color: #4a90e2;
-    background: rgba(0, 0, 0, 0.2); }
+  background: #1d1e29; }
 
 .resdiff-switch {
   position: relative; }
@@ -351,18 +316,6 @@ body {
     right: 11px; }
 
 /* Instance Property*/
-.property-ami-label {
-  padding: 6px 0;
-  height: 26px;
-  overflow: hidden; }
-
-.property-ami-icon {
-  margin: -5px 5px -5px -5px;
-  padding: 11px 2px;
-  background: #7A7A7A;
-  border-radius: 4px 0 0 4px;
-  box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.05), 2px 0 0 0 rgba(0, 0, 0, 0.1); }
-
 .property-engine-label {
   text-align: center;
   line-height: 27px;
@@ -449,10 +402,7 @@ li:hover > .rule-remove-icon,
   color: #F74A48; }
 
 .rule-direction-icon {
-  width: 32px;
-  /*	height      : 32px;*/
-  /*line-height : 16px;*/
-  /*font-size   : 24px;*/ }
+  width: 32px; }
 
 .rule-protocol {
   font-size: 12px;
@@ -5935,7 +5885,8 @@ aside.dashboard-sidebar {
 	
 	- Title Show/Hide State Panel
 	- Property General Layout
-	  - Property Controls
+	  - Second Level Panel
+	  - Property Control & Inputs
 	  - Property List
 	  - Property Block
 
@@ -6002,6 +5953,7 @@ aside.dashboard-sidebar {
     Instance Property - IDE Property Panel
 	
 	- Instance/Server Group Name Wrap
+	- AMI Property Block
 
 */
 /* Instance/Server Group Name Wrap */
@@ -6017,6 +5969,19 @@ aside.dashboard-sidebar {
     border-left: none; }
   .property-instance-name-wrap.single .name-count-wrap {
     display: none; }
+
+/* AMI Property Block */
+.property-ami-label {
+  padding: 6px 0;
+  height: 26px;
+  overflow: hidden; }
+
+.property-ami-icon {
+  margin: -5px 5px -5px -5px;
+  padding: 11px 2px;
+  background: #7A7A7A;
+  border-radius: 4px 0 0 4px;
+  box-shadow: inset 1px 1px 0 0 rgba(255, 255, 255, 0.05), 2px 0 0 0 rgba(0, 0, 0, 0.1); }
 
 /* Title Show/Hide State Panel */
 .OEPanelRight .sidebar-title {
@@ -6074,6 +6039,33 @@ aside.dashboard-sidebar {
   cursor: default;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   border-bottom: 1px solid #000; }
+
+.property-content {
+  color: #ccc;
+  box-sizing: border-box; }
+
+/* Second Level Panel */
+.property-second-panel {
+  display: none;
+  left: 100%; }
+
+.property-second-title {
+  margin-left: 48px;
+  width: 216px; }
+
+.back {
+  border-right: 1px solid #09090b;
+  position: absolute;
+  text-align: center;
+  cursor: pointer;
+  left: 0;
+  width: 44px;
+  height: 32px;
+  line-height: 32px;
+  display: inline-block; }
+  .back:hover {
+    color: #4a90e2;
+    background: rgba(0, 0, 0, 0.2); }
 
 /* Control & Input */
 .property-control-group {

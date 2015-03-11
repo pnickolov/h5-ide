@@ -2,6 +2,7 @@
     Instance Property - IDE Property Panel
 	
 	- Instance/Server Group Name Wrap
+	- AMI Property Block
 
 */
 
@@ -21,4 +22,21 @@
 	}
 
 	&.single .name-count-wrap { display: none; }
+}
+
+/* AMI Property Block */
+
+.property-ami-label {
+	padding    : 6px 0;
+	height     : 26px;
+	overflow   : hidden;
+}
+
+.property-ami-icon {
+	margin  : -5px 5px -5px -5px;
+	padding : 11px 2px;
+
+	background    : #7A7A7A;
+	border-radius : 4px 0 0 4px;
+	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
 }

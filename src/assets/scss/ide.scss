@@ -192,57 +192,11 @@ body {
 
 /* Property Panel */
 
-.property-second-panel {
-	display    : none;
-	left       : 100%;
-	background : #fff;
-}
-
-.property-second-title {
-	margin-left: 48px;
-	width: 216px;
-}
-
-.property-content {
-	height : 100%;
-	color  : #ccc;
-
-	        box-sizing: border-box;
-
-    a {
-    	color: $base-b;
-
-	    &:hover {
-			color: $dark-b;
-	    }
-    }
-}
-
+// ASG
 .property-group-head {
 	padding    : 6px 10px;
 	font-size  : 13px;
-	background : #323232;
-	box-shadow : 0 2px 0 0 rgba(0,0,0,.2);
-	display    : block;
-}
-
-.back {
-	color        : #999;
-	border-right : 1px solid darken($bg-p, 10%);
-	position     : absolute;
-	text-align   : center;
-	cursor       : pointer;
-
-	left        : 0;
-	width       : 44px;
-	height      : 32px;
-	line-height : 32px;
-	display     : inline-block;
-
-	&:hover {
-		color      : $base-b;
-		background : rgba(0,0,0,.2);
-	}
+	background : $dark-p-2;
 }
 
 .resdiff-switch {
@@ -256,26 +210,7 @@ body {
 	}
 }
 
-
-
-
 /* Instance Property*/
-
-
-.property-ami-label {
-	padding    : 6px 0;
-	height     : 26px;
-	overflow   : hidden;
-}
-
-.property-ami-icon {
-	margin  : -5px 5px -5px -5px;
-	padding : 11px 2px;
-
-	background    : #7A7A7A;
-	border-radius : 4px 0 0 4px;
-	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
-}
 
 .property-engine-label {
 	text-align         : center;
@@ -382,9 +317,6 @@ li:hover > .rule-remove-icon,
 
 .rule-direction-icon {
 	width       : 32px;
-/*	height      : 32px;*/
-	/*line-height : 16px;*/
-	/*font-size   : 24px;*/
 }
 
 .rule-protocol {

@@ -3,7 +3,8 @@
 	
 	- Title Show/Hide State Panel
 	- Property General Layout
-	  - Property Controls
+	  - Second Level Panel
+	  - Property Control & Inputs
 	  - Property List
 	  - Property Block
 
@@ -96,6 +97,41 @@
   cursor        : default;
   box-shadow    : 0 1px 5px rgba(0,0,0,.3);
   border-bottom : 1px solid #000;
+}
+
+.property-content {
+	color : #ccc;
+    box-sizing : border-box;
+}
+
+/* Second Level Panel */
+
+.property-second-panel {
+	display    : none;
+	left       : 100%;
+}
+
+.property-second-title {
+	margin-left: 48px;
+	width: 216px;
+}
+
+.back {
+	border-right : 1px solid darken($bg-p, 10%);
+	position     : absolute;
+	text-align   : center;
+	cursor       : pointer;
+
+	left        : 0;
+	width       : 44px;
+	height      : 32px;
+	line-height : 32px;
+	display     : inline-block;
+
+	&:hover {
+		color      : $base-b;
+		background : rgba(0,0,0,.2);
+	}
 }
 
 /* Control & Input */

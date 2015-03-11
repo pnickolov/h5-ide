@@ -1,4 +1,14 @@
+/*
+    IDE Side Panel
 
+    - Left:
+      - Resource Panel
+      - Container Panel
+    - Right:
+      - Property Panel
+      - State Panel
+
+*/
 
 // Resource Panel
 
@@ -7,9 +17,10 @@ $dndDuration : .2s;
 /* Refresh & Manage Shared Resource */
 
 .sidebar-tool button {
-  color  : $dark-grey;
-  margin : 0 16px;
-  cursor : pointer;
+  color       : $dark-grey;
+  margin      : 0 16px;
+  cursor      : pointer;
+  line-height : 37px;
 
   &:hover {
     color: $light-p-2;
@@ -26,7 +37,6 @@ $dndDuration : .2s;
 }
 
 .refresh-resource-panel {
-  line-height: 37px;
   -webkit-transform-origin : 20px 20px;
      -moz-transform-origin : 20px 20px;
           transform-origin : 20px 20px;
@@ -35,11 +45,6 @@ $dndDuration : .2s;
 }
 
 /* Manage Shared Resource Menu */
-.menu-manage-shard-res {
-    color            : lighten($base-p,20%);
-    background-color : rgba(0, 0, 0, 0.3);
-}
-
 .resources-dropdown-wrapper {
   position      : absolute;
   left          : 244px;
@@ -112,10 +117,32 @@ $dndDuration : .2s;
   top         : 0;
   right       : 0;
   line-height : 20px;
-
-  &:hover .selection { background: #234F77; }
 }
 
+.resource-select.selectbox {
+
+  .selection {
+    background    : $dark-p;
+    color         : #F3F3F3;
+    height        : 17px;
+    width         : auto;
+    border        : none;
+    border-left   : 1px solid #161616;
+    border-radius : 0;
+    box-shadow    : none;
+
+    padding           : 10px 20px 10px 10px;
+
+    &:after {
+      border-top-color: #fff;
+    }
+  }
+
+  .dropdown {
+    background: #4f4f4f;
+    border: 1px solid #333;
+  }
+}
 
 .resource-list-sort-select {
   margin-top: -5px;
@@ -168,7 +195,6 @@ $dndDuration : .2s;
   float         : left;
   font-size     : 12px;
   text-align    : center;
-  // height        : 3em;
   word-wrap     : break-word;
   overflow      : hidden;
   line-height   : 1.2em;
@@ -592,37 +618,6 @@ $dndDuration : .2s;
     border-color : #dbd7d7;
     color : #aaa;
   }
-}
-
-.resource-select.selectbox {
-
-  .selection {
-    background    : $dark-p;
-    color         : #F3F3F3;
-    height        : 17px;
-    width         : auto;
-    border        : none;
-    border-left   : 1px solid #161616;
-    border-radius : 0;
-    box-shadow    : none;
-
-    padding           : 10px 20px 10px 10px;
-    -webkit-transition: background .2s ease-in-out;
-    -moz-transition   : background .2s ease-in-out;
-    -ms-transition    : background .2s ease-in-out;
-    -o-transition     : background .2s ease-in-out;
-    transition        : background .2s ease-in-out;
-
-    &:after {
-      border-top-color: #fff;
-    }
-  }
-
-  .dropdown {
-    background: #4f4f4f;
-    border: 1px solid #333;
-  }
-
 }
 
 

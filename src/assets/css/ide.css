@@ -2670,20 +2670,6 @@ div.modal-text-highlight {
   text-align: center;
   display: none; }
 
-.modal-transition-animation {
-  transition: all 0.5s ease-in-out;
-  -webkit-transition: 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  transition-property: left, top, width, height, opacity, background-color;
-  -webkit-transition-property: left, top, width, height, opacity, background-color;
-  -moz-transition-property: left, top, width, height, opacity, background-color;
-  -o-transition-property: left, top, width, height, opacity, background-color;
-  /*	-webkit-transition: all 5s ease-in-out;
-  	-moz-transition: all 5s ease-in-out;
-  	-o-transition: all 5s ease-in-out;
-  	transition: all 5s ease-in-out;*/ }
-
 /* property switcher */
 #btn-switch-state .count {
   font-size: 12px;
@@ -5475,11 +5461,29 @@ aside.dashboard-sidebar {
 #dashboard-data-wrap.demo .dash-resource-wrap {
   margin-bottom: 0; }
 
+/*
+    IDE Core Editor 
+
+    - Layout
+    - Side Panel Show and Hide
+*/
+/*
+    IDE Side Panel
+
+    - Left:
+      - Resource Panel
+      - Container Panel
+    - Right:
+      - Property Panel
+      - State Panel
+
+*/
 /* Refresh & Manage Shared Resource */
 .sidebar-tool button {
   color: #898dbc;
   margin: 0 16px;
-  cursor: pointer; }
+  cursor: pointer;
+  line-height: 37px; }
   .sidebar-tool button:hover {
     color: #51568e; }
   .sidebar-tool button i {
@@ -5489,7 +5493,6 @@ aside.dashboard-sidebar {
       display: inline-block; }
 
 .refresh-resource-panel {
-  line-height: 37px;
   -webkit-transform-origin: 20px 20px;
   -moz-transform-origin: 20px 20px;
   transform-origin: 20px 20px; }
@@ -5497,10 +5500,6 @@ aside.dashboard-sidebar {
     background: none; }
 
 /* Manage Shared Resource Menu */
-.menu-manage-shard-res {
-  color: #5d64b5;
-  background-color: rgba(0, 0, 0, 0.3); }
-
 .resources-dropdown-wrapper {
   position: absolute;
   left: 244px;
@@ -5556,8 +5555,22 @@ aside.dashboard-sidebar {
   top: 0;
   right: 0;
   line-height: 20px; }
-  .AmiTypeSelect:hover .selection {
-    background: #234F77; }
+
+.resource-select.selectbox .selection {
+  background: #25254c;
+  color: #F3F3F3;
+  height: 17px;
+  width: auto;
+  border: none;
+  border-left: 1px solid #161616;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 10px 20px 10px 10px; }
+  .resource-select.selectbox .selection:after {
+    border-top-color: #fff; }
+.resource-select.selectbox .dropdown {
+  background: #4f4f4f;
+  border: 1px solid #333; }
 
 .resource-list-sort-select {
   margin-top: -5px;
@@ -5952,27 +5965,6 @@ aside.dashboard-sidebar {
     content: "subnet";
     border-color: #dbd7d7;
     color: #aaa; }
-
-.resource-select.selectbox .selection {
-  background: #25254c;
-  color: #F3F3F3;
-  height: 17px;
-  width: auto;
-  border: none;
-  border-left: 1px solid #161616;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 10px 20px 10px 10px;
-  -webkit-transition: background .2s ease-in-out;
-  -moz-transition: background .2s ease-in-out;
-  -ms-transition: background .2s ease-in-out;
-  -o-transition: background .2s ease-in-out;
-  transition: background .2s ease-in-out; }
-  .resource-select.selectbox .selection:after {
-    border-top-color: #fff; }
-.resource-select.selectbox .dropdown {
-  background: #4f4f4f;
-  border: 1px solid #333; }
 
 .resource-list > li:hover .btn-fav-ami {
   display: block; }
@@ -7086,7 +7078,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   border-bottom: 1px solid #151519;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
   .sidebar-title button {
-    font-size: 14px;
     margin: 0;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -7192,6 +7183,24 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   -moz-transition-property: right;
   -o-transition-property: right;
   transition-property: right; }
+
+/* App View Failed to Pay */
+.ops-apppm-wrapper {
+  position: absolute;
+  width: 300px;
+  min-height: 300px;
+  right: 20px;
+  background: #1c1c1f;
+  z-index: 9;
+  top: 20px;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 3px 10px rgba(22, 21, 27, 0.2); }
+  .ops-apppm-wrapper:hover {
+    top: 22px;
+    box-shadow: 0 0 5px rgba(22, 21, 27, 0.6); }
+  .ops-apppm-wrapper .payment-no-card-wrapper {
+    width: 260px; }
 
 #security-group-select {
   position: absolute;

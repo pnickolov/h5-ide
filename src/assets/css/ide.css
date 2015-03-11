@@ -7080,7 +7080,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .sidebar-title button {
     margin: 0;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 9px;
     width: 50%;
     text-align: center;
     float: left;

@@ -40,7 +40,7 @@ run = function() {
   noop = function() {};
   browser.launchIDE().then(function(response) {
     var shutDown;
-    console.log("\n\n\n[Debug]", "Starting tests.");
+    console.log("\n\n\n[" + gutil.colors.green("Debug @" + ((new Date()).toLocaleTimeString())) + "] Starting tests.");
     browser.silent = true;
     shutDown = function() {
       browser.close();

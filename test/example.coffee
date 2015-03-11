@@ -11,6 +11,11 @@ describe "VisualOps testcase example", ()->
       throw new Error("Cannot find WS in App")
     return
 
+  it "should have a user", ()->
+    if !window.App.user
+      throw new Error("No user found")
+    return
+
   # Async test
   it "should get response from server", ( done )->
     # The `require("./env/Browser")` in line 2 is node.js's require.

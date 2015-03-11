@@ -8,6 +8,11 @@ describe("VisualOps testcase example", function() {
       throw new Error("Cannot find WS in App");
     }
   });
+  it("should have a user", function() {
+    if (!window.App.user) {
+      throw new Error("No user found");
+    }
+  });
   it("should get response from server", function(done) {
     window.require(["ApiRequest"], function(ApiRequest) {
       return ApiRequest("project_list", {}).then(function(res) {

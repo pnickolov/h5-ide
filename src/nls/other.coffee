@@ -2964,3 +2964,15 @@ into live resources, or import existing infrastructures."
     DASHBOARD_LOGS_TOKEN_RENAME:
       en: "%s renamed API token %s"
       zh: "%s 重命名API令牌 %s"
+
+    AMI_IS_ADDED_TO_FAVOURITE_AMI:
+      en: "AMI %s is added to Favourite AMI."
+      zh: "AMI %s 已被添加到 AMI 收藏夹。"
+
+    AMI_IS_REMOVED_FROM_FAVOURITE_AMI:
+      en: "AMI %s is removed from Favourite AMI."
+      zh: "AMI %s 已从 AMI 收藏夹中移除。"
+
+
+
+

@@ -1,22 +1,144 @@
 /*
     IDE Resorce Panel
 	
-	- General Style
-	  - Fixed Accordion
-	  - Resource Item
-	  - Resource List: Head, Sort, Body
-	  - Drag-n-Drop Item
+	- Resource Item
+	- Resource List: Head, Sort, Body
+	- Drag-n-Drop Style
 
-    - AWS
-
-    - OpenStack
-
-	- Marathon
 
 */
 
 
 /* General Style */
+
+/* Refresh & Manage Shared Resource */
+
+.sidebar-tool button {
+  color  : $dark-grey;
+  margin : 0 16px;
+  cursor : pointer;
+  line-height: 37px;
+
+  &:hover {
+    color: $light-p-2;
+  }
+
+  i { 
+    font-style: normal; 
+
+    &:before {
+      margin-right : 8px;
+      display      : inline-block;
+    }
+  }
+}
+
+.refresh-resource-panel {
+  -webkit-transform-origin : 20px 20px;
+     -moz-transform-origin : 20px 20px;
+          transform-origin : 20px 20px;
+
+  &.reloading:hover { background : none; }
+}
+
+.resources-dropdown-wrapper {
+  position      : absolute;
+  left          : 244px;
+  top           : 39px;
+  width         : 364px;
+  margin-top    : 1px;
+  z-index       : 80;
+  box-shadow    : 1px 1px 5px rgba(0,0,0,.3);
+  border        : 1px solid #0f0f0f;
+  color         : #d0d0d0;
+  background    : #000;
+
+  &.open {
+      display: block;
+  }
+
+  > li {
+    padding          : 15px 5px;
+    width            : 80px;
+    height           : 60px;
+    position         : relative;
+    cursor           : pointer;
+    display          : block;
+    background-color : #333;
+    float            : left;
+    border-right     : 1px solid #000;
+    border-bottom    : 1px solid #000;
+    color            : lighten($base-p, 20%);
+
+    &:before {
+      font-size  : 32px;
+      text-align : center;
+      width      : 100%;
+      display    : block;
+    }
+
+    &:hover {
+      background-color : #222;
+      color            : #fff;
+      span {
+        color: #ccc;
+      }
+    }
+
+    &:last-child {
+      border-right : none;
+    }
+
+    span {
+      font-size  : 12px;
+      position   : absolute;
+      top        : 53px;
+      text-align : center;
+      width      : 80px;
+      color      : #999;
+      line-height: 16px;
+      left       : 5px;
+    }
+  }
+
+  .icon-rds-snap, .icon-pg {
+    &.disabled { display : none; }
+  }
+}
+
+
+/* Resource List Sort */
+
+.resource-list-head {
+  font-size     : 12px;
+  margin-bottom : 10px;
+  width         : 100%;
+  border-bottom : 1px #666 solid;
+  height        : 18px;
+}
+
+.resource-list-sort-select {
+  margin-top   : -5px;
+  float        : right;
+  width        : 84px;
+  margin-right : -7px;
+
+  .selection {
+    padding-right : 18px;
+    text-align    : right;
+    box-shadow    : none;
+    border        : none;
+    background    : transparent;
+    color         : #ddd;
+
+    &:hover {
+      background: transparent;
+      color: #eee;
+    }
+  }
+}
+
+/* Resource Item */
 
 .resource-item {
   width         : 70px;
@@ -92,4 +214,453 @@
   &.disabled .resource-count {
     background : #999;
   }
+}
+
+.resource-icon-instance   { background-image : image-url('ide/icon/res-instance.png'); }
+.resource-icon-dbinstance { background-image : image-url('ide/icon/res-rds.png'); }
+.resource-icon-dbsnapshot { background-image : image-url('ide/icon/res-rdssnap.png'); }
+.resource-icon-docker-image {
+  position         : relative;
+  background-image : none;
+
+  &:before {
+    border        : 2px solid rgb(168, 206, 229);
+    background    : #405bc7;
+    border-radius : 50%;
+    width         : 48px;
+    height        : 48px;
+    content       : "";
+    display       : inline-block;
+    box-sizing    : border-box;
+    margin-top    : 12px;
+  }
+
+  img {
+    width    : 30px;
+    height   : 30px;
+    position : absolute;
+    top      : 21px;
+    left     : 20px;
+  }
+}
+
+/* Drag-n-Drop Style */
+
+$dndDuration : .2s;
+
+#DndItem {
+  position         : absolute;
+  background-color : rgba(#D8DAEB,0.2);
+  z-index          : 100;
+  border-radius    : 16px;
+  color            : transparent;
+
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+  cursor: grabbing;
+
+  margin  : 0;
+  padding : 0;
+  height  : 80px;
+  width   : 80px;
+
+  background-position : center;
+
+  -webkit-transition : all ease-in $dndDuration;
+     -moz-transition : all ease-in $dndDuration;
+          transition : all ease-in $dndDuration;
+
+  -webkit-transition-property : line-height, padding-left, width, height, color;
+     -moz-transition-property : line-height, padding-left, width, height, color;
+          transition-property : line-height, padding-left, width, height, color;
+
+  -webkit-background-size : 80px;
+     -moz-background-size : 80px;
+          background-size : 80px;
+
+  &.oslistener { background-image: image-url("ide/icon-os/res-dg-listener.png"); }
+  &.ospool     { background-image: image-url("ide/icon-os/res-dg-pool.png"); }
+  &.osrt       { background-image: image-url("ide/icon-os/res-dg-rt.png"); }
+  &.osport     { background-image: image-url("ide/icon-os/res-dg-port.png"); }
+  &.osserver   {
+    background-image: image-url("ide/icon-os/res-dg-server.png");
+    > img {
+      width    : 30px;
+      height   : 30px;
+      position : relative;
+      top      : 10px;
+    }
+  }
+  &.osvol      { background-image: image-url('ide/icon-os/res-dg-volume.png'); }
+  &.ossnapshot { background-image: image-url('ide/icon-os/res-dg-snapshot.png'); }
+
+  &.oselb {
+    width : 170px;
+    background-image: image-url("ide/icon-os/res-dg-listener.png");
+    background-position: left top;
+    &:after {
+      position : absolute;
+      right    : 0;
+      top      : 0;
+      content  : " ";
+      background : image-url("ide/icon-os/res-dg-pool.png");
+      width : 80px;
+      height : 80px;
+      -webkit-background-size : 80px;
+         -moz-background-size : 80px;
+              background-size : 80px;
+    }
+  }
+
+  .resource-icon-docker-image > img {
+    left : 24px;
+  }
+
+  &.rtb, &.igw, &.vgw { width:80px; height:80px; }
+  &.elb, &.instance, &.eni, &.dbinstance, &.dbsnapshot { width:90px; height:90px; }
+
+  &.cgw {
+    background-position: 10px center;
+  }
+  &.cgw.dragOver {
+    width: 170px;
+    height: 100px;
+    background-position: 17px center;
+  }
+
+  .resource-count {
+    display : none;
+  }
+
+  &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet, &.marathon-group {
+    background-image : none;
+    color        : #eee;
+    line-height  : 1em;
+    margin-top   : 0;
+    width        : 70px;
+    height       : 15px;
+    padding-top  : 65px;
+    text-indent  : 16px;
+    text-align   : left;
+
+    -webkit-transition-property : text-indent, padding-top, width, height, color;
+       -moz-transition-property : text-indent, padding-top, width, height, color;
+            transition-property : text-indent, padding-top, width, height, color;
+
+    &:before {
+      content       : " ";
+      display       : block;
+      position      : absolute;
+      left          : 10px;
+      top           : 10px;
+      color         : transparent;
+      border        : 2px dashed #e0e0e0;
+      height        : 46px;
+      width         : 46px;
+      border-radius : 8px;
+
+      -webkit-transition : all ease-in $dndDuration;
+         -moz-transition : all ease-in $dndDuration;
+              transition : all ease-in $dndDuration;
+    }
+
+    &.dragOver {
+      width       : 190px;
+      height      : 190px - 14px;
+      padding-top : 14px;
+      text-indent : 16px;
+
+      &:before {
+        width  : 166px;
+        height : 166px;
+      }
+    }
+  }
+
+  &.marathon-group {
+    &:before { border-color: #CFCDDB; }
+    &.dragOver {
+      width  : 220px;
+      height : 157px;
+      color  : #888CAD;
+      &:before {
+        width  : 200px;
+        height : 148px;
+      }
+    }
+  }
+
+  &.ossubnet {
+    &:before { border-color: #A3A6CA; }
+    &.dragOver { color : #595974; }
+  }
+
+  &.az {
+    text-indent : 8px;
+    &:before {
+      border-color : #f69300;
+    }
+
+    &.dragOver {
+      width  : 230px;
+      height : 230px - 14px;
+      padding-top : 14px;
+      color  : #f69300;
+
+      &:before {
+        width  : 206px;
+        height : 206px;
+      }
+    }
+  }
+
+  &.subnetgroup {
+    font-size   : 10px;
+    text-indent : 4px;
+
+    &:before {
+      border-color : #498fe1;
+    }
+    &.dragOver {
+      font-size : 12px;
+      color  : #498fe1;
+    }
+  }
+
+  &.asg {
+    text-indent: 23px;
+
+    &:before {
+      z-index      : -2;
+      border-color : #76d6ff;
+    }
+    &:after {
+      z-index    : -1;
+      content    : " ";
+      display    : block;
+      height     : 0;
+      width      : 130px;
+      position   : absolute;
+      top        : 10px;
+      left       : 10px;
+      background : #83CBF9;
+      border-radius : 4px 4px 0 0;
+
+      -webkit-transition : height ease-in $dndDuration;
+         -moz-transition : height ease-in $dndDuration;
+              transition : height ease-in $dndDuration;
+    }
+
+    &.dragOver {
+      color       : #fff;
+      padding-top : 15px;
+      height      : 150px - 15px;
+      width       : 150px;
+
+      &:before {
+        width  : 126px;
+        height : 126px;
+      }
+      &:after {
+        height : 21px;
+      }
+    }
+  }
+
+  &.instance, &.dbinstance, &.dbsnapshot {
+    margin-top : 0;
+    overflow   : visible;
+
+    &:before {
+      content       : "subnet group";
+      border-radius : 4px;
+
+      position     : absolute;
+      top          : 35px;
+      left         : 35px;
+      color        : #498fe1;
+      height       : 30px;
+      width        : 30px;
+      margin-left  : -10px;
+      margin-top   : -10px;
+      padding-left : 3px;
+      text-align   : left;
+      border       : 2px dashed #498fe1;
+      overflow     : hidden;
+
+      -webkit-transition: all .15s ease-in;
+      -moz-transition   : all .15s ease-in;
+      -o-transition     : all .15s ease-in;
+      transition        : all .15s ease-in;
+    }
+
+    &.autoparent:before {
+      top    : 0;
+      left   : 0;
+      width  : 105px;
+      height : 108px;
+    }
+  }
+  &.instance:before {
+    content : "subnet";
+    border-color : #dbd7d7;
+    color : #aaa;
+  }
+}
+
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
+  padding-top : 12px;
+  height      : 60px - 12px;
+  background  : center no-repeat;
+
+  #DndItem & {
+    padding-top : 28px;
+    height      : 62px;
+    position    : relative;
+  }
+
+  #DndItem.asg & {
+    left        : 16px;
+    top         : 16px;
+    height      : 31px;
+    width       : 38px;
+    padding-top : 7px;
+    border : 1px solid #bbb;
+    -webkit-transition : all ease-in $dndDuration;
+       -moz-transition : all ease-in $dndDuration;
+            transition : all ease-in $dndDuration;
+  }
+
+  #DndItem.asg.dragOver & {
+    left   : 47px;
+    top    : 51px;
+    width  : 53px;
+    height : 46px;
+  }
+}
+
+
+/* AMI */
+
+.AmiTypeSelect {
+  position    : absolute;
+  top         : 0;
+  right       : 0;
+  line-height : 20px;
+
+  .selection {
+    background    : $dark-p;
+    color         : #F3F3F3;
+    height        : 17px;
+    width         : auto;
+    border        : none;
+    border-left   : 1px solid #161616;
+    border-radius : 0;
+    box-shadow    : none;
+
+    padding           : 10px 20px 10px 10px;
+
+    &:after {
+      border-top-color: #fff;
+    }
+  }
+}
+
+.resource-list-ami {
+  position : relative;
+
+  .blank-slate {
+    position: absolute;
+    font-size  : 12px;
+    color      : #999;
+    text-align : center;
+    top : 40%;
+  }
+}
+
+/* Toggle Fav AMI */
+
+.btn-fav-ami, .toggle-fav {
+  width      : 20px;
+  height     : 20px;
+  top        : 0;
+  right      : 0;
+  cursor     : pointer;
+  background : image-url('ide/fav-btn-off.png') center no-repeat;
+
+  &:hover {
+    width      : 20px;
+    height     : 20px;
+    background-image : image-url('ide/fav-btn-off-hover.png');
+  }
+
+  &.fav       { background-image: image-url('ide/fav-btn.png'); }
+  &.fav:hover { background-image: image-url('ide/fav-btn-hover.png'); }
+}
+
+.btn-fav-ami {
+  position : absolute;
+}
+
+/* Other Resource Specifics */
+
+.resource-item.asg > .resource-icon-instance {
+  background    : #fff;
+  border-radius : 4px;
+  position      : absolute;
+
+  left        : 17px;
+  top         : 17px;
+  width       : 36px;
+  height      : 30px;
+  padding-top : 6px;
+}
+
+.ebs-size {
+  margin-top  : -1.5em;
+  color       : #676767;
+  height      : 1.5em;
+}
+
+.rds-snapshot-size {
+  color       : #676767;
+  line-height : 2em;
+  margin-top  : 2px;
+}
+
+.az-name {
+  font-size      : 16px;
+  color          : #999;
+  height         : 60px;
+  line-height    : 60px;
+  margin-top     : -60px;
+  text-transform : uppercase;
+}
+
+.BrowseCommunityAmi, .ManageSnapshot {
+  position      : absolute;
+  bottom        : 0;
+  left          : 0;
+  width         : 100%;
+  border        : none;
+  border-radius : 0;
+  z-index       : 3;
+
+  & + .nano-content {
+    padding-bottom : 30px;
+    &:after {
+      display : block;
+      content : " ";
+      clear : both;
+    }
+  }
+}
+
+.disableRds-content {
+  display : none;
+  padding : 10px;
+}
+.disableRds {
+  .disableRds-content { display : block; color: #ff9c00;}
+  .ManageRdsSnapshot, .nano-content { display : none; }
 }

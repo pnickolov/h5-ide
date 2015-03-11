@@ -22,7 +22,7 @@
         </ul>
     </button>
   </div>
-  <div class="fixedaccordion accordion-default">
+  <div class="fixedaccordion">
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
     <ul class="resource-list-az clearfix accordion-body">
@@ -37,7 +37,7 @@
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
-      <nav class="selectbox resource-select AmiTypeSelect js-toggle-dropdown">
+      <nav class="selectbox AmiTypeSelect js-toggle-dropdown">
         <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
         <ul class="dropdown">
           <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>

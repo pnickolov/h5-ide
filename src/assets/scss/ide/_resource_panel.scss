@@ -1,15 +1,95 @@
 /*
     IDE Resorce Panel
 	
-	- General Style:
+	- General Style
+	  - Fixed Accordion
+	  - Resource Item
+	  - Resource List: Head, Sort, Body
+	  - Drag-n-Drop Item
 
-    - AWS:
+    - AWS
 
-    - OpenStack:
+    - OpenStack
 
-	- Marathon:
+	- Marathon
 
 */
 
 
 /* General Style */
+
+.resource-item {
+  width         : 70px;
+  padding-top   : 65px;
+  margin        : 0 5px 5px 0;
+  border-radius : 4px;
+  cursor        : pointer;
+  float         : left;
+  font-size     : 12px;
+  text-align    : center;
+  word-wrap     : break-word;
+  overflow      : hidden;
+  line-height   : 1.2em;
+  color         : #eee;
+  position      : relative;
+  background : transparent center 5px no-repeat;
+
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+
+  &.deleted { opacity : .5; }
+  &:hover {
+    background-color : rgba(255,255,255,.2);
+  }
+
+  &.disabled {
+    cursor     : default;
+    opacity    : .6;
+    background-color : transparent;
+  }
+
+  &.instance, &.dbinstance {
+    padding-top : 5px;
+    height      : 132px;
+  }
+
+  &.dbsnapshot,
+  &.dockerimage {
+    padding-top : 5px;
+    height : 90px;
+  }
+
+  &.marathon-group { background-image:image-url("ide/icon/res-mg.png");}
+  &.az       { background-image: image-url('ide/icon/res-az.png'); }
+  &.volume   { background-image: image-url('ide/icon/res-vol.png'); }
+  &.eni      { background-image: image-url('ide/icon/res-eni.png'); }
+  &.subnet   { background-image: image-url('ide/icon/res-subnet.png'); }
+  &.rtb      { background-image: image-url('ide/icon/res-rtb.png'); }
+  &.igw      { background-image: image-url('ide/icon/res-igw.png'); }
+  &.vgw      { background-image: image-url('ide/icon/res-vgw.png'); }
+  &.cgw      { background-image: image-url('ide/icon/res-cgw.png'); }
+  &.asg      { background-image: image-url('ide/icon/res-asg.png'); }
+  &.elb      { background-image: image-url('ide/icon/res-elb.png'); }
+  &.snapshot { background-image: image-url('ide/icon/res-snapshot.png'); }
+  &.subnetgroup { background-image: image-url('ide/icon/res-subnetg.png'); }
+
+  .resource-count {
+    position      : absolute;
+    top           : 7px;
+    left          : 47px;
+    height        : 1em;
+    width         : 1em;
+    background    : #2CBE29;
+    border-radius : 50%;
+    color         : #fff;
+    font-size     : 12px;
+    text-align    : center;
+    line-height   : 1em;
+    padding       : 2px;
+  }
+
+  &.disabled .resource-count {
+    background : #999;
+  }
+}

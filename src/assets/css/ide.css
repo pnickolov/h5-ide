@@ -5606,87 +5606,6 @@ aside.dashboard-sidebar {
     text-align: center;
     top: 40%; }
 
-.resource-item {
-  width: 70px;
-  padding-top: 65px;
-  margin: 0 5px 5px 0;
-  border-radius: 4px;
-  cursor: pointer;
-  float: left;
-  font-size: 12px;
-  text-align: center;
-  word-wrap: break-word;
-  overflow: hidden;
-  line-height: 1.2em;
-  color: #eee;
-  position: relative;
-  background: transparent center 5px no-repeat;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
-  cursor: grab; }
-  .resource-item.deleted {
-    opacity: .5; }
-  .resource-item:hover {
-    background-color: rgba(255, 255, 255, 0.2); }
-  .resource-item.disabled {
-    cursor: default;
-    opacity: .6;
-    background-color: transparent; }
-  .resource-item.instance {
-    position: relative; }
-  .resource-item.instance, .resource-item.dbinstance {
-    padding-top: 5px;
-    height: 132px; }
-  .resource-item.dbsnapshot {
-    padding-top: 5px;
-    height: 90px; }
-  .resource-item.dockerimage {
-    padding-top: 5px;
-    height: 90px; }
-  .resource-item.marathon-group {
-    background-image: url('/assets/images/ide/icon/res-mg.png'); }
-  .resource-item.az {
-    background-image: url('/assets/images/ide/icon/res-az.png');
-    position: relative; }
-  .resource-item.volume {
-    background-image: url('/assets/images/ide/icon/res-vol.png'); }
-  .resource-item.eni {
-    background-image: url('/assets/images/ide/icon/res-eni.png'); }
-  .resource-item.subnet {
-    background-image: url('/assets/images/ide/icon/res-subnet.png'); }
-  .resource-item.rtb {
-    background-image: url('/assets/images/ide/icon/res-rtb.png'); }
-  .resource-item.igw {
-    background-image: url('/assets/images/ide/icon/res-igw.png'); }
-  .resource-item.vgw {
-    background-image: url('/assets/images/ide/icon/res-vgw.png'); }
-  .resource-item.cgw {
-    background-image: url('/assets/images/ide/icon/res-cgw.png'); }
-  .resource-item.asg {
-    background-image: url('/assets/images/ide/icon/res-asg.png');
-    position: relative; }
-  .resource-item.elb {
-    background-image: url('/assets/images/ide/icon/res-elb.png'); }
-  .resource-item.snapshot {
-    background-image: url('/assets/images/ide/icon/res-snapshot.png'); }
-  .resource-item.subnetgroup {
-    background-image: url('/assets/images/ide/icon/res-subnetg.png'); }
-  .resource-item .resource-count {
-    position: absolute;
-    top: 7px;
-    left: 47px;
-    height: 1em;
-    width: 1em;
-    background: #2CBE29;
-    border-radius: 50%;
-    color: #fff;
-    font-size: 12px;
-    text-align: center;
-    line-height: 1em;
-    padding: 2px; }
-  .resource-item.disabled .resource-count {
-    background: #999; }
-
 .resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
   padding-top: 12px;
   height: 48px;
@@ -6143,6 +6062,97 @@ aside.dashboard-sidebar {
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #9e2622; }
+
+/*
+    IDE Resorce Panel
+	
+	- General Style
+	  - Fixed Accordion
+	  - Resource Item
+	  - Resource List: Head, Sort, Body
+	  - Drag-n-Drop Item
+
+    - AWS
+
+    - OpenStack
+
+	- Marathon
+
+*/
+/* General Style */
+.resource-item {
+  width: 70px;
+  padding-top: 65px;
+  margin: 0 5px 5px 0;
+  border-radius: 4px;
+  cursor: pointer;
+  float: left;
+  font-size: 12px;
+  text-align: center;
+  word-wrap: break-word;
+  overflow: hidden;
+  line-height: 1.2em;
+  color: #eee;
+  position: relative;
+  background: transparent center 5px no-repeat;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab; }
+  .resource-item.deleted {
+    opacity: .5; }
+  .resource-item:hover {
+    background-color: rgba(255, 255, 255, 0.2); }
+  .resource-item.disabled {
+    cursor: default;
+    opacity: .6;
+    background-color: transparent; }
+  .resource-item.instance, .resource-item.dbinstance {
+    padding-top: 5px;
+    height: 132px; }
+  .resource-item.dbsnapshot, .resource-item.dockerimage {
+    padding-top: 5px;
+    height: 90px; }
+  .resource-item.marathon-group {
+    background-image: url('/assets/images/ide/icon/res-mg.png'); }
+  .resource-item.az {
+    background-image: url('/assets/images/ide/icon/res-az.png'); }
+  .resource-item.volume {
+    background-image: url('/assets/images/ide/icon/res-vol.png'); }
+  .resource-item.eni {
+    background-image: url('/assets/images/ide/icon/res-eni.png'); }
+  .resource-item.subnet {
+    background-image: url('/assets/images/ide/icon/res-subnet.png'); }
+  .resource-item.rtb {
+    background-image: url('/assets/images/ide/icon/res-rtb.png'); }
+  .resource-item.igw {
+    background-image: url('/assets/images/ide/icon/res-igw.png'); }
+  .resource-item.vgw {
+    background-image: url('/assets/images/ide/icon/res-vgw.png'); }
+  .resource-item.cgw {
+    background-image: url('/assets/images/ide/icon/res-cgw.png'); }
+  .resource-item.asg {
+    background-image: url('/assets/images/ide/icon/res-asg.png'); }
+  .resource-item.elb {
+    background-image: url('/assets/images/ide/icon/res-elb.png'); }
+  .resource-item.snapshot {
+    background-image: url('/assets/images/ide/icon/res-snapshot.png'); }
+  .resource-item.subnetgroup {
+    background-image: url('/assets/images/ide/icon/res-subnetg.png'); }
+  .resource-item .resource-count {
+    position: absolute;
+    top: 7px;
+    left: 47px;
+    height: 1em;
+    width: 1em;
+    background: #2CBE29;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1em;
+    padding: 2px; }
+  .resource-item.disabled .resource-count {
+    background: #999; }
 
 .canvas-view {
   position: relative;
@@ -7027,19 +7037,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   cursor: -moz-grabbing !important;
   cursor: grabbing !important; }
 
-/*
-    IDE Resorce Panel
-	
-	- General Style:
-
-    - AWS:
-
-    - OpenStack:
-
-	- Marathon:
-
-*/
-/* General Style */
 /* Side Panel Layout */
 .OEPanelLeft, .OEPanelRight {
   position: absolute;

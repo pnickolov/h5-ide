@@ -47,13 +47,18 @@ define ['../template/TplAmiBrowser', 'i18n!/nls/lang.js', 'UI.modalplus', "ApiRe
           favAmis = CloudResources @credential, "FavoriteAmi", @region
           promise = null
           id = amiElem.closest("tr").attr("data-id")
-          if amiElem.hasClass('fav')
+          actionUnfav = amiElem.hasClass('fav')
+
+          if actionUnfav
             promise = favAmis.unfav id
           else
             data    = $.extend { id : id }, @communityAmiData[id]
             promise = favAmis.fav( data )
 
-          promise.then -> amiElem.toggleClass('fav')
+          promise.then ->
+            amiElem.toggleClass('fav')
+            message = if actionUnfav then lang.IDE.AMI_IS_REMOVED_FROM_FAVOURITE_AMI else lang.IDE.AMI_IS_ADDED_TO_FAVOURITE_AMI
+            notification 'info', sprintf message, id
 
         doSearch : (pageNum, perPage)->
           pageNum = pageNum || 1

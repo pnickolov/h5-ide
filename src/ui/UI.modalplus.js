@@ -37,7 +37,7 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
       "click i.modal-close": "close"
     },
     constructor: function(option) {
-      var _base, _base1, _ref;
+      var base, base1, ref;
       $(':focus').blur();
       this.nextOptions = [];
       this.nextCloses = [];
@@ -56,7 +56,7 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
         option.disableFooter = true;
       }
       option.hasFooter = !option.disableFooter;
-      if ((_ref = option.mode) === 'fullscreen' || _ref === 'panel') {
+      if ((ref = option.mode) === 'fullscreen' || ref === 'panel') {
         option.disableDrag = true;
       }
       this.wrap = $("#modal-wrap");
@@ -64,12 +64,12 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
         this.wrap = $("<div id='modal-wrap'></div>").appendTo($("body"));
       }
       this.option = $.extend(true, {}, defaultOptions, option);
-      (_base = this.option.cancel).text || (_base.text = lang.IDE.POP_LBL_CANCEL);
-      (_base1 = this.option.confirm).text || (_base1.text = lang.IDE.LBL_SUBMIT);
+      (base = this.option.cancel).text || (base.text = lang.IDE.POP_LBL_CANCEL);
+      (base1 = this.option.confirm).text || (base1.text = lang.IDE.LBL_SUBMIT);
       return this.render();
     },
     render: function() {
-      var self, _base;
+      var base, self;
       self = this;
       if (typeof this.option.template === "object") {
         this.option.$template = this.option.template;
@@ -99,8 +99,8 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
       } else {
         this.tpl.addClass("animate");
         this.trigger("show", this);
-        if (typeof (_base = this.option).onShow === "function") {
-          _base.onShow(this);
+        if (typeof (base = this.option).onShow === "function") {
+          base.onShow(this);
         }
         _.defer(function() {
           self.wrap.addClass("show");
@@ -122,7 +122,7 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
       return this;
     },
     close: function(number) {
-      var cb, modal, nextModal, _base;
+      var base, cb, modal, nextModal;
       modal = modals[modals.length - 1];
       if (modal != null ? modal.pending : void 0) {
         modal.nextCloses.push(this);
@@ -140,8 +140,8 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
       nextModal = modals[modals.length - (1 + number)];
       modal.pending = true;
       modal.trigger("close", this);
-      if (typeof (_base = modal.option).onClose === "function") {
-        _base.onClose(this);
+      if (typeof (base = modal.option).onClose === "function") {
+        base.onClose(this);
       }
       if (modals.length > 1) {
         if (modal.option.mode === "panel") {
@@ -155,7 +155,7 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
         modal.tpl.removeClass("bounce");
       }
       _.delay(function() {
-        var _ref;
+        var ref;
         modal.tpl.remove();
         modal.trigger("closed", this);
         modal.pending = false;
@@ -165,8 +165,8 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
           modal.wrap.remove();
           modals = [];
         }
-        if ((_ref = modals[modals.length - 1]) != null) {
-          _ref.resize();
+        if ((ref = modals[modals.length - 1]) != null) {
+          ref.resize();
         }
         return typeof cb === "function" ? cb() : void 0;
       }, modal.option.delay || 300);
@@ -179,22 +179,22 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
       return this;
     },
     confirm: function(evt) {
-      var _base;
+      var base;
       if ($(evt.currentTarget).is(":disabled")) {
         return false;
       }
       this.trigger("confirm", this);
-      if (typeof (_base = this.option).onConfirm === "function") {
-        _base.onConfirm();
+      if (typeof (base = this.option).onConfirm === "function") {
+        base.onConfirm();
       }
       return this;
     },
     cancel: function() {
-      var _base;
+      var base;
       this.trigger("cancel", this);
       this.close();
-      if (typeof (_base = this.option).onCancel === "function") {
-        _base.onCancel(this);
+      if (typeof (base = this.option).onCancel === "function") {
+        base.onCancel(this);
       }
       return this;
     },
@@ -254,20 +254,20 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
           }
         });
         $(document).mousemove(function(e) {
-          var _base, _base1, _ref;
+          var base, base1, ref;
           if (draggable) {
             modal.tpl.css({
               left: e.clientX + diffX,
               top: e.clientY + diffY
             });
             if (window.getSelection) {
-              if (typeof (_base = window.getSelection()).empty === "function") {
-                _base.empty();
+              if (typeof (base = window.getSelection()).empty === "function") {
+                base.empty();
               }
-              if (typeof (_base1 = window.getSelection()).removeAllRanges === "function") {
-                _base1.removeAllRanges();
+              if (typeof (base1 = window.getSelection()).removeAllRanges === "function") {
+                base1.removeAllRanges();
               }
-              return (_ref = document.selection) != null ? typeof _ref.empty === "function" ? _ref.empty() : void 0 : void 0;
+              return (ref = document.selection) != null ? typeof ref.empty === "function" ? ref.empty() : void 0 : void 0;
             }
           }
         });
@@ -434,8 +434,8 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
       return this;
     },
     abnormal: function() {
-      var _ref;
-      return (_ref = this.option.mode) === "panel" || _ref === "fullscreen";
+      var ref;
+      return (ref = this.option.mode) === "panel" || ref === "fullscreen";
     }
   });
   return Modal;

@@ -486,7 +486,7 @@ define [
       ms.region = @workspace.opsModel.get("region")
 
       html = LeftPanelTpl.ami ms
-      # @$el.find(".resource-list-ami").html(html).parent().nanoScroller("reset")
+      @$el.find(".resource-list-ami").html(html)#.parent().nanoScroller("reset")
 
     updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return
@@ -565,17 +565,17 @@ define [
       $visibleAccordion = $accordionWrap.children().filter ()->
         $(this).css('display') isnt 'none'
 
-      height = $accordionParent.outerHeight() - 39 - $visibleAccordion.length * $target.outerHeight()
+      height = $accordionParent.outerHeight() - 82 - $visibleAccordion.length * $target.outerHeight()
 
       $body.outerHeight height
 
       if noAnimate
-        # $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
+        $accordion.addClass("expanded")#.children(".nano").nanoScroller("reset")
         $expanded.removeClass("expanded")
         return false
 
       $body.slideDown 200, ()->
-        # $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
+        $accordion.addClass("expanded")#.children(".nano").nanoScroller("reset")
 
       $expanded.children(".accordion-body").slideUp 200, ()->
         $expanded.closest(".accordion-group").removeClass("expanded")
@@ -586,7 +586,7 @@ define [
       if not leftpane.length
         return
 
-      $accordions = leftpane.children(".fixedaccordion").children()
+      $accordions = leftpane.find(".fixedaccordion").children()
       $accordion  = $accordions.filter(".expanded")
       if $accordion.length is 0
         $accordion = $accordions.eq( @__openedAccordion || 0 )

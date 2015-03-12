@@ -27,7 +27,7 @@
         <label>{{i18n "PROP.SECURITY_GROUP"}}</label>
         <ul class="acl-sg-info-list property-list" id="og-sg">
             {{#each sgs}}
-            <li class="clearfix">
+            <li>
                 <div class="checkbox-wrap col1">
                     <div class="checkbox">
                         <input type="checkbox" {{#if used}}checked="checked"{{/if}} data-uid="{{id}}" id="og-sg-{{@index}}" {{#if checked}}checked{{/if}} />

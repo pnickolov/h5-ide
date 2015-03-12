@@ -23,137 +23,9 @@
 	width: 120px;
 }
 
-.sg-info-list-tab {
-	color         : #999;
-	background    : rgba(0,0,0,.2);
-	padding       : 5px;
-	height        : 30px;
-	box-shadow    : 0 2px 5px 0 rgba(0,0,0,.1);
-	border-bottom : 1px solid #2a2a2a;
-
-	li {
-		width : 130px;
-		float : left;
-
-		height      : 30px;
-		line-height : 30px;
-		text-align  : center;
-
-		cursor : pointer;
-
-		border-radius: 4px;
-
-		-webkit-transition: background .2s;
-		-moz-transition: background .2s;
-		-ms-transition: background .2s;
-		-o-transition: background .2s;
-		transition: background .2s;
-
-		&:last-child {
-			margin-left: 10px;
-		}
-
-		&.active,
-		&:hover {
-			color: #eee;
-			background: #000;
-		}
-	}
-}
-
-.acl-sg-info-list.property-list {
-	border-top: none;
-
-	> li {
-		height  : 52px;
-		padding : 8px 0 16px 10px;
-		width   : auto;
-		position: relative;
-
-		&:last-child {
-			border-bottom: none;
-		}
-	}
-
-	.col1 {
-		margin-right: 15px;
-		width       : 15px;
-		float       : left;
-		margin-top  : 13px;
-
-		&.checkbox-wrap {
-			margin-top  : 20px;
-		}
-	}
-
-	.col2 {
-		width     : 170px;
-		float     : left;
-		word-wrap : break-word;
-
-		> div {
-			width: 210px;
-		}
-
-		.col2-1 {
-			color: #e0e0e0;
-			margin-bottom: 8px;
-		}
-		.col2-2 {
-			color: #bbb;
-			font-size: 12px;
-		}
-		.col2-3 {
-			color: #999;
-			font-size: 12px;
-		}
-	}
-
-	.col3 {
-		float        : right;
-		margin-top   : -8px;
-		position     : relative;
-
-		text-align : center;
-
-		cursor      : pointer;
-		width       : 40px;
-		height      : 76px;
-		line-height : 76px;
-
-		@include transit($method:background,$dur:.2s);
-
-		&:hover {
-			background-color: rgba(0,0,0,.2);
-		}
-	}
-
-	&.acl-info-list {
-		> li {
-			height  : 38px;
-		}
-
-		.col3 {
-			height      : 62px;
-			line-height : 62px;
-		}
-	}
-
-	.sg-list-association-check {
-		float: left;
-		margin-right: 10px;
-
-		&.hide {
-			display: none;
-		}
-	}
-
-	.sg-list-delete-btn {
-		cursor       : pointer;
-	}
 
 
-}
+
 
 .icon-btn-details {
 	width  : 16px;
@@ -168,7 +40,6 @@
 /* property-newtwork-acl */
 
 .acl-rule-list.property-list li {
-	// width: 280px;
 	padding: 0;
 
 	.acl-rule-number {
@@ -187,8 +58,6 @@
 
 .acl-rule-details {
 	padding  : 10px;
-	position : relative;
-	width    : 260px;
 }
 
 .acl-rule-allow-cb {

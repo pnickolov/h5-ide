@@ -279,35 +279,6 @@ body {
 	width : 140px !important;
 }
 
-.rule-list-sort h5 {
-	width: 60px;
-	display: inline-block;
-}
-
-.property-content .rule-list-sort .selectbox {
-	width: 195px;
-	display: inline-block;
-}
-
-.sg-group {
-	padding : 0 !important;
-}
-
-.sg-group .tab-item {
-	display : none;
-}
-
-.sg-group .tab-item.active {
-	display : block;
-}
-
-.add-to-list {
-	width: 100%;
-	text-align: center;
-	display: block;
-	padding: 10px 0;
-}
-
 a.action-link {
 	color: #ccc
 }
@@ -628,7 +599,7 @@ a.action-link:hover {
 }
 
 .elb-property-listener .listener-item input {
-	width: 90px !important;
+	width: 80px !important;
 }
 
 #elb-property-listener-list, #mesos-health-checks-list{

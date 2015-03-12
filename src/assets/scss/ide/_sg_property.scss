@@ -67,3 +67,122 @@
 		padding : 0 3px;
 	}
 }
+
+/* Rule List Sorting */
+
+.rule-list-sort {
+	label {
+		width: 60px;
+	}
+
+	.selectbox {
+		width   : 195px; 
+		display : inline-block;
+	}
+}
+
+/* Instance/ENI/RDS SG List */
+
+.sg-group .tab {
+	background    : rgba(0,0,0,.2);
+	padding       : 5px;
+	height        : 30px;
+	border-bottom : 1px solid #0E0E10;
+
+	li {
+		width : 130px;
+		float : left;
+
+		height      : 30px;
+		line-height : 30px;
+		text-align  : center;
+
+		cursor : pointer;
+
+		border-radius: 4px;
+
+		@include transit($method: background, $dur: .2s);
+
+		&:last-child {
+			margin-left: 10px;
+		}
+
+		&.active,
+		&:hover {
+			color: #fff;
+			background: #000;
+		}
+	}
+}
+
+.tab-item {
+	display: none;
+
+	&.active { display: block; }
+}
+
+$infoListItemHeight: 72px;
+
+.acl-sg-info-list {
+
+	> li {
+		padding: 0 !important;
+
+		@include displayflex;
+		align-items: center;
+
+
+     	height     : $infoListItemHeight;
+     	box-sizing : border-box;
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+
+	.col1 {
+		width       : 26px;
+		margin-left : 10px;
+
+		& + .col2 {
+			width : 210px;
+		}
+	}
+
+	.col2 {
+		padding-left : 10px;
+		width        : 238px;
+		word-wrap    : break-word;
+
+		> div {
+			width: 210px;
+		}
+
+		.col2-1 {
+			color: #e0e0e0;
+		}
+		.col2-2 {
+			color: #bbb;
+			font-size: 12px;
+		}
+		.col2-3 {
+			color: #999;
+			font-size: 12px;
+		}
+	}
+
+	.col3 {
+		text-align : center;
+
+		cursor      : pointer;
+		width       : 40px;
+		height      : $infoListItemHeight;
+		line-height : $infoListItemHeight;
+
+		@include transit($method:background,$dur:.2s);
+
+		&:hover {
+			background-color: rgba(0,0,0,.2);
+		}
+	}
+}

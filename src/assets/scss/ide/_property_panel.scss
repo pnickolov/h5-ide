@@ -207,6 +207,13 @@
 	&:hover { background : lighten($bg-p, 10%); }
 }
 
+.add-to-list {
+	width: 100%;
+	text-align: center;
+	display: block;
+	padding: 10px 0;
+}
+
 /* Property Block - Used by AMI and EBS Snapshot */
 
 .property-block-wrap {

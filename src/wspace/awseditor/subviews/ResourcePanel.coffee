@@ -18,7 +18,6 @@ define [
   'ApiRequest'
   'OpsModel'
   "backbone"
-  "UI.nanoscroller"
   "UI.dnd"
 ], ( CloudResources, Design, Modal, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
 
@@ -186,8 +185,6 @@ define [
       @renderReuse()
 
       @renderContainerList()
-      @$el.find(".nano").nanoScroller()
-
       return
 
     # For Demo Begin
@@ -489,7 +486,7 @@ define [
       ms.region = @workspace.opsModel.get("region")
 
       html = LeftPanelTpl.ami ms
-      @$el.find(".resource-list-ami").html(html).parent().nanoScroller("reset")
+      # @$el.find(".resource-list-ami").html(html).parent().nanoScroller("reset")
 
     updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return
@@ -573,12 +570,12 @@ define [
       $body.outerHeight height
 
       if noAnimate
-        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
+        # $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
         $expanded.removeClass("expanded")
         return false
 
       $body.slideDown 200, ()->
-        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
+        # $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
 
       $expanded.children(".accordion-body").slideUp 200, ()->
         $expanded.closest(".accordion-group").removeClass("expanded")

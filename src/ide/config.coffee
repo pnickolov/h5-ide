@@ -438,7 +438,11 @@ require [
 
   window.Router = new Router()
 
-  (new Application()).initialize().then ()-> window.Router.start()
+  (new Application()).initialize().then ()->
+    window.Router.start()
+    console.log("IDE inited.")
+    window.__IDE__INITED = true
+    return
 
   ### env:dev ###
   require ["./scenes/Debugger"], ()->

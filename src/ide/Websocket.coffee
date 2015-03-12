@@ -61,6 +61,9 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     @__appWideSubscripe()
     this
 
+  Websocket.prototype.close = ()->
+    @connection._stream.disconnect()
+
   # isReady is only true for a project, when its request subscription is ready.
   Websocket.prototype.onUserSubError = ( e )->
     console.log "[Websocket Error]", e

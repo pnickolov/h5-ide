@@ -18,7 +18,6 @@ variable    = require("./plugins/variable")
 rjsconfig   = require("./plugins/rjsconfig")
 requirejs   = require("./plugins/r")
 rjsreporter = require("./plugins/rjsreporter")
-unittest    = require("./plugins/test")
 util        = require("./plugins/util")
 
 
@@ -147,7 +146,7 @@ Tasks =
     d = Q.defer()
     pipe = gulp.src( p, SrcOption )
       .pipe( confCompile() ) # Remove ### env:dev ###
-      .pipe( coffee() ) # Compile coffee
+      .pipe( coffee({bare:true}) ) # Compile coffee
       .pipe( fileLogger() )
 
     if not TasksEnvironment.isDebug then pipe = pipe.pipe( stripdDebug() )
@@ -380,22 +379,6 @@ Tasks =
           console.log gutil.colors.bgYellow.black "  Cannot delete ./deploy. You should manually delete ./deploy before next deploying.  "
       true
 
-  # test : ()->
-  #   p = "./deploy"
-  #   # Create a server to serve the files for testing.
-  #   testserver = server.create p, 3010, false, false
-
-  #   # Start test with zombie
-  #   logTask "Starting automated test"
-
-  #   result = unittest()
-  #   if result
-  #     return result.then ()-> testserver.close(); true
-  #   else
-  #     testserver.close()
-  #     return true
-
-
 # A task to build IDE
   #*** Perform `git -fX ./src` first, to remove ignored files.
   #*** Copy assets file to `build` folder
@@ -440,7 +423,6 @@ BuildProcess = ( mode, branchName )->
     Tasks.processHtml
     Tasks.concatJS
     Tasks.removeBuildFolder
-    #Tasks.test
     Tasks.fetchRepo
     Tasks.preCommit
     Tasks.fileVersion

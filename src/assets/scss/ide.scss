@@ -244,26 +244,6 @@ body {
 	}
 }
 
-/* End of Instance Property */
-
-/* Secondary Panel */
-
-.sg-member-list li {
-	clear: both;
-	padding: 10px;
-}
-.sg-member-list .sg-member-icon {
-	margin-right: 10px;
-	width: 15px;
-	height: 15px;
-	background-color: #eee;
-	/*display: inline-block;*/
-	display: none;
-}
-.sg-member-list .sg-member-name {
-	word-wrap : break-word;
-}
-
 /* Subnet Panel */
 .subnet-cidr-wrapper {
 	clear : both;
@@ -434,68 +414,6 @@ a.action-link:hover {
 	/*list-style-type: decimal;*/
 }
 
-/* Create new stack */
-#createNewStack_wrap {
-	padding: 20px 0;
-}
-
-#createNewStack_wrap li {
-	float: left;
-	width: 260px;
-	padding: 20px;
-	background: #FCFCFC;
-
-	border: 1px solid #DDD;
-	cursor: pointer;
-}
-
-#createNewStack_wrap li:first-child {
-	margin-right: 10px;
-}
-
-#createNewStack_wrap li:hover {
-	background-image: -webkit-linear-gradient(top, #fcfcfc, #f6f6f6);
-	background-image:    -moz-linear-gradient(top, #fcfcfc, #f6f6f6);
-	background-image:     -ms-linear-gradient(top, #fcfcfc, #f6f6f6);
-	background-image:      -o-linear-gradient(top, #fcfcfc, #f6f6f6);
-	background-image:         linear-gradient(top, #fcfcfc, #f6f6f6);
-
-	border: 1px solid #ccc;
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-#createNewStack_wrap h4 {
-	margin-bottom: 2px;
-	color: #666;
-	font-size: 18px;
-}
-
-.load-account-attr-error {
-	text-align: center;
-}
-
-.load-account-attr-error p {
-	margin-bottom: 30px;
-}
-
-.new-stack-dialog p {
-	color: #aaa;
-	padding: 2px 0;
-}
-
-/* volume property panel */
-.panel-wrap {
-	padding: 0 10px;
-}
-#volume-device {
-	width: 71px;
-}
-.OEPanelRight-volume .property-control-group > div {
-	margin-top: 8px;
-}
-.OEPanelRight-volume #volume-type-radios > div {
-	padding-bottom: 5px;
-}
 #volume-size-ranged, #iops-ranged {
 	display: inline-block;
 	width: 71px;

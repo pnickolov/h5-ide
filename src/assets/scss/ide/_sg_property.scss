@@ -2,12 +2,16 @@
     SG & ACL Property - IDE Property Panel
 	
 	- SG/ACL General Style
-	- SG/ACL Detail
-	- Instace/ENI/RDS SG
+	  - Icons
+	  - Rule List
+	- Rule List Sorting
+	- SG/ACL List
+	- ACL Rule List
+	- SG/ACL Member List
 
 */
 
-/* SG General Style */
+/* SG ACL General Style */
 
 .sg-color {
 	display       : inline-block;
@@ -15,6 +19,14 @@
 	height        : 10px;
 	border-radius : 2px;
 	margin-right  : 5px;
+}
+
+.icon-allow {
+	color: $base-g;
+}
+
+.icon-deny {
+	color: $light-r;
 }
 
 .rule-remove-icon {
@@ -81,7 +93,7 @@
 	}
 }
 
-/* Instance/ENI/RDS SG List */
+/* SG/ACL List */
 
 .sg-group .tab {
 	background    : rgba(0,0,0,.2);
@@ -186,3 +198,44 @@ $infoListItemHeight: 72px;
 		}
 	}
 }
+
+.icon-btn-details {
+	color  : #606060;
+
+	&:hover {
+		color: $base-b;
+	}
+}
+
+
+/* ACL Rule List */
+
+.acl-rule-list.property-list li {
+	padding: 0;
+
+	.acl-rule-details {
+		padding  : 10px;
+	}
+
+	.acl-rule-number {
+		width       : 100%;
+		height      : 20px;
+		line-height : 20px;
+		font-size   : 12px;
+
+		background : $bg-p;
+		padding    : 0 10px;
+
+		border-top    : 1px solid darken($bg-p,5%);
+		border-bottom : 1px solid darken($bg-p,5%);
+	}
+
+	.acl-rule-allow-cb {
+		width      : 16px;
+		height     : 16px;
+		display    : inline-block;
+	}
+}
+
+/* SG/ACL Member List */
+

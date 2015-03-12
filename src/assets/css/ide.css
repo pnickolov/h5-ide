@@ -343,23 +343,6 @@ body {
   .property-engineversion-dropdown li {
     width: 162px !important; }
 
-/* End of Instance Property */
-/* Secondary Panel */
-.sg-member-list li {
-  clear: both;
-  padding: 10px; }
-
-.sg-member-list .sg-member-icon {
-  margin-right: 10px;
-  width: 15px;
-  height: 15px;
-  background-color: #eee;
-  /*display: inline-block;*/
-  display: none; }
-
-.sg-member-list .sg-member-name {
-  word-wrap: break-word; }
-
 /* Subnet Panel */
 .subnet-cidr-wrapper {
   clear: both; }
@@ -503,58 +486,6 @@ a.action-link:hover {
 #modal-stack-validation-run ol li {
   padding: 5px 0;
   /*list-style-type: decimal;*/ }
-
-/* Create new stack */
-#createNewStack_wrap {
-  padding: 20px 0; }
-
-#createNewStack_wrap li {
-  float: left;
-  width: 260px;
-  padding: 20px;
-  background: #FCFCFC;
-  border: 1px solid #DDD;
-  cursor: pointer; }
-
-#createNewStack_wrap li:first-child {
-  margin-right: 10px; }
-
-#createNewStack_wrap li:hover {
-  background-image: -webkit-linear-gradient(top, #fcfcfc, #f6f6f6);
-  background-image: -moz-linear-gradient(top, #fcfcfc, #f6f6f6);
-  background-image: -ms-linear-gradient(top, #fcfcfc, #f6f6f6);
-  background-image: -o-linear-gradient(top, #fcfcfc, #f6f6f6);
-  background-image: linear-gradient(top, #fcfcfc, #f6f6f6);
-  border: 1px solid #ccc;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05); }
-
-#createNewStack_wrap h4 {
-  margin-bottom: 2px;
-  color: #666;
-  font-size: 18px; }
-
-.load-account-attr-error {
-  text-align: center; }
-
-.load-account-attr-error p {
-  margin-bottom: 30px; }
-
-.new-stack-dialog p {
-  color: #aaa;
-  padding: 2px 0; }
-
-/* volume property panel */
-.panel-wrap {
-  padding: 0 10px; }
-
-#volume-device {
-  width: 71px; }
-
-.OEPanelRight-volume .property-control-group > div {
-  margin-top: 8px; }
-
-.OEPanelRight-volume #volume-type-radios > div {
-  padding-bottom: 5px; }
 
 #volume-size-ranged, #iops-ranged {
   display: inline-block;
@@ -5869,17 +5800,27 @@ aside.dashboard-sidebar {
     SG & ACL Property - IDE Property Panel
 	
 	- SG/ACL General Style
-	- SG/ACL Detail
-	- Instace/ENI/RDS SG
+	  - Icons
+	  - Rule List
+	- Rule List Sorting
+	- SG/ACL List
+	- ACL Rule List
+	- SG/ACL Member List
 
 */
-/* SG General Style */
+/* SG ACL General Style */
 .sg-color {
   display: inline-block;
   width: 10px;
   height: 10px;
   border-radius: 2px;
   margin-right: 5px; }
+
+.icon-allow {
+  color: #11c568; }
+
+.icon-deny {
+  color: #ea5d5d; }
 
 .rule-remove-icon {
   display: none;
@@ -5925,7 +5866,7 @@ aside.dashboard-sidebar {
   width: 195px;
   display: inline-block; }
 
-/* Instance/ENI/RDS SG List */
+/* SG/ACL List */
 .sg-group .tab {
   background: rgba(0, 0, 0, 0.2);
   padding: 5px;
@@ -5996,6 +5937,37 @@ aside.dashboard-sidebar {
   .acl-sg-info-list .col3:hover {
     background-color: rgba(0, 0, 0, 0.2); }
 
+.icon-btn-details {
+  color: #606060; }
+  .icon-btn-details:hover {
+    color: #4a90e2; }
+
+/* ACL Rule List */
+.acl-rule-list.property-list li {
+  padding: 0; }
+  .acl-rule-list.property-list li .acl-rule-details {
+    padding: 10px; }
+  .acl-rule-list.property-list li .acl-rule-number {
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    background: #202027;
+    padding: 0 10px;
+    border-top: 1px solid #151519;
+    border-bottom: 1px solid #151519; }
+  .acl-rule-list.property-list li .acl-rule-allow-cb {
+    width: 16px;
+    height: 16px;
+    display: inline-block; }
+
+/* SG/ACL Member List */
+/*
+    Volume Property - IDE Property Panel
+	
+	- 
+
+*/
 /* Title Show/Hide State Panel */
 .OEPanelRight .sidebar-title {
   border-left: 1px solid #151519;
@@ -7237,57 +7209,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .ops-apppm-wrapper .payment-no-card-wrapper {
     width: 260px; }
 
-#security-group-select {
-  position: absolute;
-  top: 0;
-  right: 0; }
-  #security-group-select .dropdown-toggle {
-    width: 36px;
-    height: 36px;
-    background-color: #EEE;
-    display: inline-block; }
-  #security-group-select .dropdown-menu {
-    top: 38px;
-    left: -120px; }
-
-#security-group-select .dropdown-menu li a div.truncate {
-  width: 120px; }
-
-.icon-btn-details {
-  width: 16px;
-  height: 16px;
-  color: #606060; }
-  .icon-btn-details:hover {
-    color: #4a90e2; }
-
-/* property-newtwork-acl */
-.acl-rule-list.property-list li {
-  padding: 0; }
-  .acl-rule-list.property-list li .acl-rule-number {
-    width: 100%;
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    background: #202027;
-    padding: 0 10px;
-    border-top: 1px solid #151519;
-    border-bottom: 1px solid #151519; }
-
-.acl-rule-details {
-  padding: 10px; }
-
-.acl-rule-allow-cb {
-  width: 16px;
-  height: 16px;
-  display: inline-block; }
-
-.icon-allow {
-  color: #11c568; }
-
-.icon-deny {
-  color: #ea5d5d; }
-
-/* Add ACL Rule Modal */
 #modal-acl-rule .sg-protocol-option-input {
   display: none; }
   #modal-acl-rule .sg-protocol-option-input.show {

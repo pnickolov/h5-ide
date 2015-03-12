@@ -3116,8 +3116,7 @@ select.select3.disabled {
   font-size: 12px; }
 
 .editor > .editbtn {
-  display: block;
-  /*color: #148BE6;*/ }
+  display: block; }
 
 .editor > .edit {
   display: none; }
@@ -3158,8 +3157,7 @@ select.select3.disabled {
 .selectbox .dropdown li:focus,
 .selectbox .dropdown li.focused {
   background: #223;
-  color: #F0F0F0;
-  box-shadow: inset 0 0 5px #202027; }
+  color: #F0F0F0; }
 
 .selectbox .dropdown .item.selected {
   position: relative;

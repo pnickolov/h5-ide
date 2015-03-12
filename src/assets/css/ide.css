@@ -487,18 +487,6 @@ a.action-link:hover {
   padding: 5px 0;
   /*list-style-type: decimal;*/ }
 
-#volume-size-ranged, #iops-ranged {
-  display: inline-block;
-  width: 71px; }
-
-#snapshot-info-group {
-  padding: 10px;
-  font-size: 14px; }
-
-#snapshot-info-group span {
-  font-size: 12px;
-  color: #aaa; }
-
 /* az property panel, can also be used for panels like az's */
 .panel-single-wrap {
   height: 100%;
@@ -2418,34 +2406,6 @@ div.modal-text-highlight {
 
 #sslcert-select .icon-edit:hover {
   color: #F74A48; }
-
-/* Request Invite to VisualOps Modal */
-#experimental-visops-confirm {
-  width: 130px; }
-
-#experimental-modal .modal-body-header {
-  text-align: center;
-  font-size: 20px;
-  line-height: 24px;
-  color: #eee;
-  padding: 10px;
-  border-bottom: 1px solid #444;
-  margin-bottom: 20px; }
-
-#experimental-modal .modal-body-content {
-  padding-left: 160px;
-  background-image: url("../images/ide/request_invite_image.png");
-  background-repeat: no-repeat;
-  background-size: 91px 98px;
-  background-position-x: 10px; }
-
-#experimental-modal .request-invite-header {
-  color: #148BE6;
-  margin: 20px 0px 10px 0; }
-
-#experimental-modal .request-invite-content {
-  margin-bottom: 10px;
-  color: #999; }
 
 #stack-elb-property-panel .elb-connection-draining-input-group {
   margin-top: 10px;
@@ -5964,9 +5924,23 @@ aside.dashboard-sidebar {
 /* SG/ACL Member List */
 /*
     Volume Property - IDE Property Panel
-	
-	- 
+*/
+#volume-size-ranged, #iops-ranged {
+  display: inline-block;
+  width: 80px;
+  margin-right: 10px; }
 
+#snapshot-info-group {
+  padding: 10px;
+  font-size: 14px; }
+  #snapshot-info-group span {
+    font-size: 12px;
+    color: #aaa; }
+
+/*
+    ELB Property - IDE Property Panel
+
+	
 */
 /* Title Show/Hide State Panel */
 .OEPanelRight .sidebar-title {
@@ -7033,6 +7007,14 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   cursor: -moz-grabbing !important;
   cursor: grabbing !important; }
 
+/*
+    IDE Editor Toolbar & Status Bar
+
+    - Toolbar
+    - Side Panel Show and Hide
+    - App View - Failed to Pay Limitation
+*/
+/* Toolbar */
 /* Side Panel Layout */
 .OEPanelLeft, .OEPanelRight {
   position: absolute;
@@ -7098,6 +7080,60 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     .sidebar-title button.selected {
       border-bottom: 2px solid #4a90e2;
       color: #4a90e2; }
+
+.openstack .OEPanelTop .sidebar-title {
+  width: 280px;
+  padding-left: 0;
+  float: right;
+  border-bottom: none;
+  box-sizing: border-box;
+  box-shadow: none; }
+  .openstack .OEPanelTop .sidebar-title.resource .resource {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title.property .property {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title.state .state {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title.config .config {
+    border-bottom: 2px solid #4a90e2;
+    color: #4a90e2; }
+  .openstack .OEPanelTop .sidebar-title a {
+    width: 25%;
+    float: left;
+    cursor: pointer;
+    height: 100%;
+    box-sizing: border-box;
+    color: #75789d;
+    text-align: center; }
+    .openstack .OEPanelTop .sidebar-title a::selection {
+      background: transparent; }
+    .openstack .OEPanelTop .sidebar-title a.state span {
+      font-size: 12px;
+      display: inline-block;
+      color: #000;
+      position: absolute;
+      max-width: 22px;
+      min-width: 12px;
+      height: 14px;
+      line-height: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background: rgba(255, 255, 255, 0.2);
+      top: 11px;
+      right: 6px;
+      padding: 2px;
+      border-radius: 4px;
+      letter-spacing: -1px;
+      text-align: center; }
+  .openstack .OEPanelTop .sidebar-title a:hover {
+    color: #fff; }
+  .openstack .OEPanelTop .sidebar-title[data-mode="app"] a {
+    width: 33%; }
+    .openstack .OEPanelTop .sidebar-title[data-mode="app"] a.resource {
+      display: none; }
 
 .sidebar-hider {
   position: absolute;
@@ -7502,22 +7538,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .property-content #mesos-health-checks-list .elb-property-listener:only-child .selectbox {
   width: 260px; }
 
-/* Styles for Design Module Toolbar */
-/* App/Stack Toolbar */
-#main-toolbar {
-  position: relative;
-  top: 0;
-  z-index: 2;
-  height: 40px;
-  width: 100%;
-  min-width: 610px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid #111; }
-
-.toolbar-btn-group {
-  float: left;
-  border-right: 1px solid #ddd; }
-
 .btn-toolbar {
   width: 34px;
   height: 32px;
@@ -7611,8 +7631,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 .btn-toolbar .dropdown > li {
   line-height: 24px;
-  padding-bottom: 6px !important;
-  cursor: pointer;
   text-align: left; }
 
 .btn.reload-states {
@@ -7670,60 +7688,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .toolbar-visual-ops-switch .switch-handle {
   width: 21px;
   height: 21px; }
-
-.openstack .OEPanelTop .sidebar-title {
-  width: 280px;
-  padding-left: 0;
-  float: right;
-  border-bottom: none;
-  box-sizing: border-box;
-  box-shadow: none; }
-  .openstack .OEPanelTop .sidebar-title.resource .resource {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
-  .openstack .OEPanelTop .sidebar-title.property .property {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
-  .openstack .OEPanelTop .sidebar-title.state .state {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
-  .openstack .OEPanelTop .sidebar-title.config .config {
-    border-bottom: 2px solid #4a90e2;
-    color: #4a90e2; }
-  .openstack .OEPanelTop .sidebar-title a {
-    width: 25%;
-    float: left;
-    cursor: pointer;
-    height: 100%;
-    box-sizing: border-box;
-    color: #75789d;
-    text-align: center; }
-    .openstack .OEPanelTop .sidebar-title a::selection {
-      background: transparent; }
-    .openstack .OEPanelTop .sidebar-title a.state span {
-      font-size: 12px;
-      display: inline-block;
-      color: #000;
-      position: absolute;
-      max-width: 22px;
-      min-width: 12px;
-      height: 14px;
-      line-height: 14px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      background: rgba(255, 255, 255, 0.2);
-      top: 11px;
-      right: 6px;
-      padding: 2px;
-      border-radius: 4px;
-      letter-spacing: -1px;
-      text-align: center; }
-  .openstack .OEPanelTop .sidebar-title a:hover {
-    color: #fff; }
-  .openstack .OEPanelTop .sidebar-title[data-mode="app"] a {
-    width: 33%; }
-    .openstack .OEPanelTop .sidebar-title[data-mode="app"] a.resource {
-      display: none; }
 
 .ops-process {
   width: 100%;

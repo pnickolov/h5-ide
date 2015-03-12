@@ -105,6 +105,70 @@ $BottomPanelHeight    : 24px;
   }
 }
 
+@mixin activedPanelTab {
+    border-bottom: 2px solid $base-b;
+    color: $base-b;
+}
+
+.openstack .OEPanelTop .sidebar-title {
+
+  width        : 280px;
+  padding-left : 0;
+  float        : right;
+  border-bottom: none;
+  box-sizing   : border-box;
+  box-shadow   : none;
+
+  &.resource .resource { @include activedPanelTab; }
+  &.property .property { @include activedPanelTab; }
+  &.state    .state    { @include activedPanelTab; }
+  &.config   .config   { @include activedPanelTab; }
+
+  a {
+    width      : 25%;
+    float      : left;
+    cursor     : pointer;
+    height     : 100%;
+    box-sizing : border-box;
+
+    color      : $light-p-1;
+    text-align : center;
+
+    &::selection { background: transparent; }
+
+    &.state span {
+        font-size      : 12px;
+        display        : inline-block;
+        color          : #000;
+        position       : absolute;
+        max-width      : 22px;
+        min-width      : 12px;
+        height         : 14px;
+        line-height    : 14px;
+        overflow       : hidden;
+        text-overflow  : ellipsis;
+        background     : rgba(255,255,255,.2);
+        top            : 11px;
+        right          : 6px;
+        padding        : 2px;
+        border-radius  : 4px;
+        letter-spacing : -1px;
+        text-align     : center;
+    }
+
+  }
+
+  a:hover {
+    color: #fff;
+  }
+
+  &[data-mode="app"] a {
+    width: 33%;
+    &.resource { display: none; }
+  }
+
+}
+
 .sidebar-hider {
   position   : absolute;
   top        : 50%;

@@ -104,7 +104,7 @@ build = ( dest = "./src", shouldLog = true )->
       max_line_length : { level : "ignore" }
     }) ).pipe( lintReporter() )
 
-  p.pipe( coffee() ).pipe es.through ( f )->
+  p.pipe( coffee({bare:true}) ).pipe es.through ( f )->
     try
       vm.runInContext( f.contents.toString("utf8"), ctx )
       deepExtend( result, ctx.module.exports )

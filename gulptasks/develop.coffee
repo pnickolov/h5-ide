@@ -193,7 +193,7 @@ StreamFuncs =
 
     coffeeCompile = conditonalLint
                     .pipe( confCompile( false ) )
-                    .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap}) )
+                    .pipe( coffee({sourceMap:GLOBAL.gulpConfig.coffeeSourceMap,bare:true}) )
 
     pipeline = coffeeCompile
       # Log

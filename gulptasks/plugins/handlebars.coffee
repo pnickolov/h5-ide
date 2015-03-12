@@ -33,7 +33,7 @@ readHelperFile = ()->
 
   file = fs.readFileSync( "./src/lib/handlebarhelpers.coffee" )
   pipeline = es.through (f)->
-  pipeline.pipe( coffee() ).pipe es.through ( f )->
+  pipeline.pipe( coffee({bare:true}) ).pipe es.through ( f )->
     helpers = {}
     f.contents.toString("utf8").replace /Handlebars.registerHelper\(('|")([^'"']+?)('|")/g, ( match, p1, p2, p3 )->
       helpers[ p2 ] = true
@@ -48,6 +48,7 @@ readHelperFile = ()->
 
   pipeline.emit "data", {
     path     : "./src/lib/handlebarhelpers.coffee"
+    relative : "src/lib/handlebarhelpers.coffee"
     contents : file
     isNull   : ()-> false
     isStream : ()-> false

@@ -21,12 +21,14 @@ Copy `gulpconfig.default` to `gulpconfig.js`. Then modify `gulpconfig.js`
 `gulptasks` folder is not watched by the gulp process anymore. You need to manually compile coffees inside `gulptasks` after you modify the file.
 
 
-### Automated Test ( disabled )
-`gulp release` `gulp debug` `gulp qa` will try to run test suit if `zombie` is available. In order to install `zombie`, one need to install an C++ compiler in the system and then run `npm install zombie`
+### Test
+Whoever want to run test must install `zombie` first ( by `npm install zombie` ).
+`gulp makegulp` to build the testcase ( from coffeescript to javascript ).
+`gulp test` to run test in terminal.
 
 
 ### Use Compass
-MadeiraCloud IDE uses compass to pre-process css/scss files. If you need to modify scss, then you need to install compass by (Assuming you have ruby installed on your system):
+VisualOps uses compass to pre-process css/scss files. If you need to modify scss, then you need to install compass by (Assuming you have ruby installed on your system):
 `sudo gem install compass`
 
 

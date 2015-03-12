@@ -210,7 +210,7 @@ body {
 	}
 }
 
-/* Instance Property*/
+/* DB Instance Property*/
 
 .property-engine-label {
 	text-align         : center;
@@ -247,26 +247,6 @@ body {
 /* End of Instance Property */
 
 /* Secondary Panel */
-.add-rule,
-.property-btn-get-system-log,
-.property-btn-db-restore-config {
-	display : inline-block;
-	width   : 30px;
-	height  : 30px;
-	text-align  : center;
-	position    : absolute;
-	right       : 0;
-	cursor : pointer;
-	background: #2A55A2;
-	color: #eee;
-	box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
-	border-left: 1px solid #222;
-}
-
-.add-rule:hover {
-	color         : #fff;
-	background    : #9C6DC0;
-}
 
 .rule-list-row {
 	height    : 20px;
@@ -361,129 +341,6 @@ li:hover > .rule-remove-icon,
 .subnet-cidr-wrapper .cidr-rest {
 	width : 140px !important;
 }
-
-
-/* Network Interface IP List */
-
-.network-list-wrap {
-	border: 1px solid #242424;
-}
-
-.network-list-header {
-	background: #464646;
-	height: 20px;
-	line-height: 20px;
-	padding: 8px;
-	border-radius: 2px 2px 0 0;
-	color: #eee;
-	box-shadow: inset 0 1px rgba(255,255,255,.1);
-	border-bottom: 1px solid #242424;
-}
-
-.network-list-header .btn-small {
-	line-height: 20px;
-	margin-top: -2px;
-}
-
-#property-eni-list > li:first-child:last-child > .network-remove-icon {
-	display : none;
-}
-
-.network-list {
-	background: #f0f0f0;
-	/*border: 1px solid #ccc;*/
-}
-
-.network-list > .input-ip-item {
-	position: relative;
-	padding: 8px;
-	height: 20px;
-}
-
-.network-list > .input-ip-item:nth-child(2n+1) {
-	background: #fcfcfc;
-}
-
-.network-list > .input-ip-item .name{
-	width: 150px;
-	float: left;
-}
-
-.network-list > .input-ip-item .input-ip {
-	border-radius: 2px;
-	width: 25px;
-	height: 9px;
-	padding: 3px 2px 5px 5px;
-	background-color: #F0F0F0;
-	font-size: 12px;
-	border: 1px solid #CCC;
-	margin-top: -4px;
-	color: #999;
-}
-
-.network-list > .input-ip-item .input-ip:hover {
-	background-color: #fcfcfc;
-	box-shadow: none;
-	color: #999;
-	border: 1px solid #ccc;
-}
-
-.network-list > .input-ip-item .input-ip:focus {
-	background-color: #fff;
-	box-shadow: none;
-	color: #666;
-	border: 1px solid #999;
-}
-
-.input-ip-wrap.disabled .input-ip-prefix:after {
-	content : "x";
-}
-
-.input-ip-wrap.disabled .input-ip {
-	display : none;
-}
-
-.network-list > .input-ip-item .input-ip:hover[disabled],
-.network-list > .input-ip-item .input-ip[disabled] {
-	background   : none;
-	border       : none;
-	color        : #999;
-	padding      : 0;
-	height       : 16px;
-}
-
-.toggle-eip {
-	cursor: pointer;
-	width: 14px;
-	height: 17px;
-	background: url('../images/ide/icon/icn-eipoff.png') no-repeat;
-}
-
-.toggle-eip.associated {
-	background: url('../images/ide/icon/icn-eipon.png') no-repeat;
-}
-
-
-.network-list > .input-ip-item .toggle-eip {
-	position: absolute;
-	right: 30px;
-	top: 50%;
-	margin-top: -7px;
-}
-
-.network-list > .input-ip-item > .icon-remove {
-	position   : absolute;
-	right      : 5px;
-	top        : 50%;
-	margin-top : -9px;
-	cursor     : pointer;
-}
-
-.network-list > .input-ip-item > .icon-remove:hover {
-	color : #F74A48;
-}
-
-/* End of Network Interface IP List */
 
 .rule-list-sort h5 {
 	width: 60px;
@@ -834,7 +691,7 @@ a.action-link:hover {
 }
 
 .elb-property-listener .listener-item input {
-	width: 40px !important;
+	width: 90px !important;
 }
 
 #elb-property-listener-list, #mesos-health-checks-list{

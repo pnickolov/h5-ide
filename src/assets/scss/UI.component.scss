@@ -6,6 +6,7 @@
 @import "component/modal";
 @import "component/selectize";
 @import "component/select2";
+@import "component/image";
 
 
 /* Table */
@@ -215,7 +216,6 @@ a.table-link {
 .btn:hover {
 	color       : #fff;
 	background  : #222;
-	text-shadow : none;
 }
 
 .btn:active {
@@ -286,7 +286,6 @@ a.btn-primary {
 .btn[disabled] {
 	cursor: default;
 	background-image: none;
-	text-shadow: none;
 	color: #747474;
 	background: #505050;
 	box-shadow: none;
@@ -1014,7 +1013,6 @@ select.select3.disabled {
 	border-bottom   : 1px solid darken($bg-p, 10%);
 	color           : #ccc;
 	font-size       : 13px;
-	text-shadow     : 0 1px rgba(0,0,0,.7);
 
 	cursor              : pointer;
 	-webkit-user-select : none;

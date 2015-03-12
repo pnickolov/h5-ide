@@ -1864,6 +1864,15 @@ html[dir="rtl"] .select2-search-choice-close {
 .select2-results::empty {
   display: none; }
 
+.toggle-eip {
+  cursor: pointer;
+  width: 14px;
+  height: 17px;
+  background: url("../images/ide/icon/icn-eipoff.png") no-repeat; }
+
+.toggle-eip.associated {
+  background: url("../images/ide/icon/icn-eipon.png") no-repeat; }
+
 /* Table */
 .table {
   max-width: 100%;
@@ -2031,8 +2040,7 @@ a.table-link {
 
 .btn:hover {
   color: #fff;
-  background: #222;
-  text-shadow: none; }
+  background: #222; }
 
 .btn:active {
   /*box-shadow: inset 0 2px 0 0 rgba(0, 0, 0, 0.1);*/ }
@@ -2088,7 +2096,6 @@ a.btn-primary {
 .btn[disabled] {
   cursor: default;
   background-image: none;
-  text-shadow: none;
   color: #747474;
   background: #505050;
   box-shadow: none; }
@@ -2726,7 +2733,6 @@ select.select3.disabled {
   border-bottom: 1px solid #09090b;
   color: #ccc;
   font-size: 13px;
-  text-shadow: 0 1px rgba(0, 0, 0, 0.7);
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;

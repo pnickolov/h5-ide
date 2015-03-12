@@ -7,12 +7,14 @@
 	  - Property Control & Inputs
 	  - Property List
 	  - Property Block
+	- Option Group Header Button
 
 */
 
 // Instance Property 
 @import "change_ami";
 @import "instance_property";
+@import "sg_property";
 
 /* Title Show/Hide State Panel */
 
@@ -121,6 +123,7 @@
 	position     : absolute;
 	text-align   : center;
 	cursor       : pointer;
+	color        : #999;
 
 	left        : 0;
 	width       : 44px;
@@ -226,5 +229,28 @@
 
 	&:hover {
 		background: #414141;
+	}
+}
+
+/* Option Group Header Button */
+
+.add-rule,
+.property-btn-get-system-log,
+.property-btn-db-restore-config {
+	display     : inline-block;
+	width       : 30px;
+	height      : 30px;
+	text-align  : center;
+	position    : absolute;
+	right       : 0;
+	cursor      : pointer;
+	background  : $dark-b;
+	color       : #eee;
+	box-shadow  : inset 0 1px 0 rgba(255,255,255,.1);
+	border-left : 1px solid #222;
+
+	&:hover {
+		color      : #fff;
+		background : $base-b;
 	}
 }

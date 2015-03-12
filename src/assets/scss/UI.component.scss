@@ -119,19 +119,15 @@
 }
 
 .sortable:after {
-	/*content: "▾";*/
-
-	margin-top: 8px;
-	border: 5px solid rgba(0, 0, 0, 0);
-	border-top: 5px solid #FFF;
-}
-
-.sortable.desc-sort:after {
-	/*content: "▴" !important;*/
-
 	margin-top: 3px;
 	border: 5px solid rgba(0, 0, 0, 0);
 	border-bottom: 5px solid #FFF;
+}
+
+.sortable.desc-sort:after {
+	margin-top: 8px;
+	border: 5px solid rgba(0, 0, 0, 0);
+	border-top: 5px solid #FFF;
 }
 
 .sortable.active:after {

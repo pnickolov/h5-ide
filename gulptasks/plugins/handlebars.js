@@ -64,6 +64,7 @@ readHelperFile = function() {
   }));
   pipeline.emit("data", {
     path: "./src/lib/handlebarhelpers.coffee",
+    relative: "src/lib/handlebarhelpers.coffee",
     contents: file,
     isNull: function() {
       return false;

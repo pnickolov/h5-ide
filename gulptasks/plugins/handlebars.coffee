@@ -48,6 +48,7 @@ readHelperFile = ()->
 
   pipeline.emit "data", {
     path     : "./src/lib/handlebarhelpers.coffee"
+    relative : "src/lib/handlebarhelpers.coffee"
     contents : file
     isNull   : ()-> false
     isStream : ()-> false

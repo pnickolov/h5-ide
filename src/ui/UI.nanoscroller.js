@@ -342,12 +342,12 @@ define(["jquery"], function($) {
     @constructor
    */
   NanoScroll = (function() {
-    function NanoScroll(el, options1) {
-      var ref;
+    function NanoScroll(el, options) {
+      var _ref;
       this.el = el;
-      this.options = options1;
+      this.options = options;
       if (!BROWSER_SCROLLBAR_WIDTH || !BROWSER_SCROLLBAR_HEIGHT) {
-        ref = getBrowserScrollbarSizes(), BROWSER_SCROLLBAR_WIDTH = ref[0], BROWSER_SCROLLBAR_HEIGHT = ref[1];
+        _ref = getBrowserScrollbarSizes(), BROWSER_SCROLLBAR_WIDTH = _ref[0], BROWSER_SCROLLBAR_HEIGHT = _ref[1];
       }
       this.$el = $(this.el);
       this.doc = $(document);
@@ -673,10 +673,10 @@ define(["jquery"], function($) {
       if (!this.iOSNativeScrolling) {
         this.ySlider.bind(MOUSEDOWN, yEvents[DOWN]);
         this.xSlider.bind(MOUSEDOWN, xEvents[DOWN]);
-        this.yPane.bind(MOUSEDOWN, yEvents[PANEDOWN]).bind(MOUSEWHEEL + " " + DOMSCROLL, yEvents[WHEEL]);
-        this.xPane.bind(MOUSEDOWN, xEvents[PANEDOWN]).bind(MOUSEWHEEL + " " + DOMSCROLL, xEvents[WHEEL]);
+        this.yPane.bind(MOUSEDOWN, yEvents[PANEDOWN]).bind("" + MOUSEWHEEL + " " + DOMSCROLL, yEvents[WHEEL]);
+        this.xPane.bind(MOUSEDOWN, xEvents[PANEDOWN]).bind("" + MOUSEWHEEL + " " + DOMSCROLL, xEvents[WHEEL]);
       }
-      this.$content.bind(SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, yEvents[SCROLL]).bind(SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, xEvents[SCROLL]);
+      this.$content.bind("" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, yEvents[SCROLL]).bind("" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, xEvents[SCROLL]);
     };
 
 
@@ -697,7 +697,7 @@ define(["jquery"], function($) {
         this.yPane.unbind();
         this.xPane.unbind();
       }
-      this.$content.unbind(SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, yEvents[SCROLL]).unbind(SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, xEvents[SCROLL]);
+      this.$content.unbind("" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, yEvents[SCROLL]).unbind("" + SCROLL + " " + MOUSEWHEEL + " " + DOMSCROLL + " " + TOUCHMOVE, xEvents[SCROLL]);
     };
 
 

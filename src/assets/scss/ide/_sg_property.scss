@@ -1,8 +1,69 @@
 /*
-    SG Property - IDE Property Panel
+    SG & ACL Property - IDE Property Panel
 	
-	- Instance/Server Group Name Wrap
-	- AMI Property Block
-	- ENI IP List
+	- SG/ACL General Style
+	- SG/ACL Detail
+	- Instace/ENI/RDS SG
 
 */
+
+/* SG General Style */
+
+.sg-color {
+	display       : inline-block;
+	width         : 10px;
+	height        : 10px;
+	border-radius : 2px;
+	margin-right  : 5px;
+}
+
+.rule-remove-icon {
+	display    : none;
+	position   : absolute;
+	top        : 50%;
+	margin-top : -6px;
+	right      : 5px;
+	cursor     : pointer;
+	color      : #666;
+
+	&:hover { color: $light-r; }
+}
+
+.sg-rule-list,
+#sg-rule-list,
+.acl-rule-list {
+
+	li:hover .rule-remove-icon {
+		display : block;
+	}
+}
+
+.rule-list-row {
+	height    : 20px;
+	font-size : 12px;
+
+	> div {
+		float       : left;
+		width       : 65px;
+		line-height : 20px;
+		height      : 20px;
+	}
+
+	.rule-port:empty { display: none; }
+
+	.rule-reference,
+	.port {
+		width: 160px;
+	}
+
+	.rule-protocol {
+		font-size      : 12px;
+		color          : #148BE6;
+		text-transform : uppercase;
+
+		border-radius : 2px;
+		border        : 1px solid #148BE6;
+
+		padding : 0 3px;
+	}
+}

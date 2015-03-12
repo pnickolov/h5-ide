@@ -456,14 +456,14 @@ function program2(depth0,data) {
     + escapeExpression(((stack1 = (depth0 && depth0.relationId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-direction=\""
     + escapeExpression(((stack1 = (depth0 && depth0.direction)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"pos-r sg-create-rule-item\">\n";
+    + "\" class=\"pos-r\">\n";
   return buffer;
   }
 
 function program4(depth0,data) {
   
   
-  return "\n<li class=\"sg-create-rule-item modal-list-body\">\n";
+  return "\n<li class=\"sg-create-rule-item\">\n";
   }
 
 function program6(depth0,data) {
@@ -502,7 +502,7 @@ function program14(depth0,data) {
 function program16(depth0,data) {
   
   var buffer = "";
-  buffer += "<a href=\"#\" class=\"sg-rule-delete icon-remove tooltip\" data-tooltip='"
+  buffer += "<a href=\"#\" class=\"sg-rule-delete icon-remove tooltip rule-remove-icon\" data-tooltip='"
     + escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_REMOVE_RULE", {hash:{},data:data}))
     + "'></a>";
   return buffer;

@@ -248,69 +248,6 @@ body {
 
 /* Secondary Panel */
 
-.rule-list-row {
-	height    : 20px;
-	font-size : 12px;
-}
-
-.rule-list-row .sg-color, .sg-color-rule-header.sg-color {
-	box-shadow : none;
-}
-
-.rule-list-row > div {
-	float       : left;
-	width       : 65px;
-	line-height : 20px;
-	height      : 20px;
-
-	&:last-of-type {
-		width: 100px;
-	}
-}
-
-.rule-list-row > .rule-port:empty {
-	display : none;
-}
-
-.rule-list-row .rule-reference, .rule-list-row .port {
-	width : 160px;
-}
-
-.rule-remove-icon {
-	display    : none;
-	position   : absolute;
-	top        : 50%;
-	margin-top : -6px;
-	right      : 5px;
-	cursor     : pointer;
-}
-
-li:hover > .rule-remove-icon,
-.acl-rule-details:hover .rule-remove-icon {
-	display: block;
-	color: #666;
-}
-
-.icon-remove.rule-remove-icon:hover {
-	color: #F74A48;
-}
-
-.rule-direction-icon {
-	width       : 32px;
-}
-
-.rule-protocol {
-	font-size      : 12px;
-	color          : #148BE6;
-	text-transform : uppercase;
-
-	border-radius : 2px;
-	border        : 1px solid #148BE6;
-
-	padding : 0 3px;
-}
-
-
 .sg-member-list li {
 	clear: both;
 	padding: 10px;

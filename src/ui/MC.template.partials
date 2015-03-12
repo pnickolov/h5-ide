@@ -310,9 +310,9 @@ Additional Notes and Questions
 <!-- {{sgRuleList}} -->
 {{#each this}}
 {{#if ../deletable}}
-<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r">
 {{else}}
-<li class="sg-create-rule-item modal-list-body">
+<li class="sg-create-rule-item">
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP.SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP.SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
@@ -322,7 +322,7 @@ Additional Notes and Questions
 	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP.SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
 	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP.SG_TIP_PORT_CODE" }}'>{{port}}</div>
 </div>
-{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP.SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
+{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip rule-remove-icon" data-tooltip='{{ i18n "PROP.SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
 </li>{{/each}}
 
 <!-- {{groupedSgRuleList}} -->

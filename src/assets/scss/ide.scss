@@ -474,15 +474,8 @@ a.action-link:hover {
 /* written by song */
 
 /* elb listener set */
-#property-control-group-cert-setting {
-	border-top: 1px #292929 solid;
-}
 
-.property-list li.elb-property-listener {
-	border-bottom: 1px solid #303030;
-	padding: 0;
-	width: 280px;
-}
+
 
 .elb-property-listener .listener-item .selectbox {
 	width: 130px !important;
@@ -513,21 +506,7 @@ a.action-link:hover {
   }
 }
 
-.elb-property-listener-item-remove {
-	position : absolute;
-	right    : 0;
 
-	width       : 32px;
-	height      : 142px;
-	text-align  : center;
-	line-height : 142px;
-	color       : #555;
-
-	background-color : rgba(0,0,0,.05);
-	border-left      : 1px #313131 solid;
-
-	cursor : pointer;
-}
 
 .elb-property-listener-item-remove:hover {
 	background-color: rgba(0,0,0,.1);
@@ -1608,7 +1587,6 @@ details[open] + .nutshell {
 	height        : 30px;
 	border        : 1px solid #131313;
 	border-bottom : none;
-	// width         : 420px;
 	border-radius : 2px 2px 0 0;
 	overflow      : hidden;
 }
@@ -1637,10 +1615,6 @@ details[open] + .nutshell {
 
 	#modal-validation-statusbar & {
 		width: 120px;
-
-		// &:last-child {
-		// 	width: 121px;
-		// }
 	}
 
 }

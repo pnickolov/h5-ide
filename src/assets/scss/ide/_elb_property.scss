@@ -4,3 +4,25 @@
 	
 */
 
+/* Listener */
+
+#elb-property-listener-list.property-list li.elb-property-listener {
+	padding  : 0;
+	position : relative;
+}
+
+.elb-property-listener-item-remove {
+	position : absolute;
+	right    : 0;
+
+	width       : 32px;
+	height      : 100%;
+	line-height : 130px;
+	text-align  : center;
+	color       : #555;
+
+	background-color : rgba(0,0,0,.05);
+	border-left      : 1px #313131 solid;
+
+	cursor : pointer;
+}

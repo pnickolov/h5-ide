@@ -530,14 +530,6 @@ a.action-link:hover {
 /* elb property panel */
 /* written by song */
 /* elb listener set */
-#property-control-group-cert-setting {
-  border-top: 1px #292929 solid; }
-
-.property-list li.elb-property-listener {
-  border-bottom: 1px solid #303030;
-  padding: 0;
-  width: 280px; }
-
 .elb-property-listener .listener-item .selectbox {
   width: 130px !important; }
 
@@ -558,18 +550,6 @@ a.action-link:hover {
 
 #elb-property-listener-list .elb-property-listener:only-child .elb-property-listener-item-remove, #mesos-health-checks-list .elb-property-listener:only-child .elb-property-listener-item-remove {
   display: none; }
-
-.elb-property-listener-item-remove {
-  position: absolute;
-  right: 0;
-  width: 32px;
-  height: 142px;
-  text-align: center;
-  line-height: 142px;
-  color: #555;
-  background-color: rgba(0, 0, 0, 0.05);
-  border-left: 1px #313131 solid;
-  cursor: pointer; }
 
 .elb-property-listener-item-remove:hover {
   background-color: rgba(0, 0, 0, 0.1);
@@ -5775,6 +5755,23 @@ aside.dashboard-sidebar {
 
 	
 */
+/* Listener */
+#elb-property-listener-list.property-list li.elb-property-listener {
+  padding: 0;
+  position: relative; }
+
+.elb-property-listener-item-remove {
+  position: absolute;
+  right: 0;
+  width: 32px;
+  height: 100%;
+  line-height: 130px;
+  text-align: center;
+  color: #555;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-left: 1px #313131 solid;
+  cursor: pointer; }
+
 /* Title Show/Hide State Panel */
 .OEPanelRight .sidebar-title {
   border-left: 1px solid #151519;
@@ -5873,10 +5870,11 @@ aside.dashboard-sidebar {
   .property-control-group .required-input {
     color: #999;
     font-size: 12px;
-    line-height: 20px; }
+    line-height: 20px;
+    margin-right: 10px; }
   .property-control-group .input,
   .property-control-group textarea {
-    width: 100%;
+    width: 260px;
     box-sizing: border-box; }
   .property-control-group .selectbox.selectbox-mega .main {
     width: 230px;

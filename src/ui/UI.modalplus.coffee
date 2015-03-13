@@ -125,9 +125,11 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             if @option.width then @tpl.find(".modal-wrapper-fix").css("width", @option.width)
             @tpl.find(".modal-body").html @option.$template
             @setElement @tpl
-            if modals.length and modals[modals.length - 1].isMoving and @option.force
+            @isReady = false
+            if modals.length and not modals[modals.length - 1].isReady
                 console.warn "Sorry, But we are moving..."
-                modals[modals.length - 1].nextOptions.push @option
+                if @option.force
+                  modals[modals.length - 1].nextOptions.push @option
                 return @
             @tpl.appendTo @wrap
             @resize()
@@ -147,6 +149,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     self.tpl.addClass("bounce")
                 _.delay ->
                     self.trigger "shown", @
+                    self.isReady = true
                 , 300
             _.delay ->
                 self.resize()

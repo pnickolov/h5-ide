@@ -7,7 +7,7 @@
   $ = window.$;
 
   describe("UI.ModalPlus Test", function() {
-    return it("should not render the second modal if the first modal hasn't finished rendering", function(done) {
+    it("should not render the second modal if the first modal hasn't finished rendering", function(done) {
       return window.require(['UI.modalplus'], function(Modal) {
         var modalA, modalB;
         modalA = new Modal({
@@ -16,12 +16,35 @@
         modalB = new Modal({
           title: "test B"
         });
-        console.log(modalA, modalB.isOpen());
-        if ($(".modal-body").size() > 1) {
-          return done(new Error("Second modal shouldn't render."));
-        } else {
-          return done();
-        }
+        return window.setTimeout(function() {
+          if ($(".modal-body").size() > 1) {
+            done(new Error("Second modal shouldn't render."));
+          } else {
+            done();
+          }
+          return modalA.close();
+        }, 500);
+      });
+    });
+    return it("should render the second modal if force option is provided before the first modal finished rendering", function(done) {
+      return window.require(["UI.modalplus"], function(Modal) {
+        return window.setTimeout(function() {
+          var modalA, modalB;
+          modalA = new Modal({
+            title: "test A"
+          });
+          modalB = new Modal({
+            title: "test B",
+            force: true
+          });
+          return window.setTimeout(function() {
+            if ($(".modal-body").size() !== 2) {
+              return done(new Error("Second modal should render."));
+            } else {
+              return done();
+            }
+          }, 500);
+        }, 1000);
       });
     });
   });

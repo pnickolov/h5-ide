@@ -12,9 +12,24 @@ describe "UI.ModalPlus Test", ()->
     window.require ['UI.modalplus'], (Modal)->
       modalA = new Modal({title: "test A"})
       modalB = new Modal({title: "test B"})
-      console.log modalA, modalB.isOpen()
-      if $(".modal-body").size() > 1
-        done new Error("Second modal shouldn't render.")
-      else
-        done()
+      window.setTimeout ()->
+        if $(".modal-body").size() > 1
+          done new Error("Second modal shouldn't render.")
+        else
+          done()
+        modalA.close()
+      , 500
 
+  it "should render the second modal if force option is provided before the first modal finished rendering", (done)->
+
+    window.require ["UI.modalplus"], (Modal)->
+      window.setTimeout ()->
+        modalA = new Modal({title: "test A"})
+        modalB = new Modal({title: "test B", force: true})
+        window.setTimeout ()->
+          if $(".modal-body").size() isnt 2
+            done new Error("Second modal should render.")
+          else
+            done()
+        , 500
+      , 1000

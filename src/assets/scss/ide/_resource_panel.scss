@@ -1,6 +1,6 @@
 /*
     IDE Resorce Panel
-	
+
   - General Style
     - Refresh & Manage Shared Resource
 	  - Resource Item
@@ -26,8 +26,8 @@
     color: $light-p-2;
   }
 
-  i { 
-    font-style: normal; 
+  i {
+    font-style: normal;
 
     &:before {
       margin-right : 8px;
@@ -148,6 +148,8 @@
 	height      : 37px;
 	line-height : 37px;
 	padding     : 0 10px;
+  position    : relative;
+  z-index     : 10;
 
 	.expanded & {
 		background-color : desaturate($dark-p,10%);
@@ -158,16 +160,21 @@
 }
 
 
-.fixedaccordion .accordion-body {
-	background-color : $bg-p;
-	border-bottom    : 1px solid #1B1B1B;
-	position         : relative;
-	display          : none;
-	box-sizing       : border-box;
-	width            : 100%;
-	padding          : 10px 5px;
+.fixedaccordion {
+  .accordion-group {
+    overflow : hidden;
+  }
+  .accordion-body {
+  	background-color : $bg-p;
+  	border-bottom    : 1px solid #1B1B1B;
+  	position         : relative;
+  	box-sizing       : border-box;
+  	width            : 100%;
+  	padding          : 10px 5px;
+    display          : block;
 
-	@include v-scroll;
+  	@include v-scroll;
+  }
 }
 
 
@@ -681,11 +688,6 @@ $dndDuration : .2s;
   border        : none;
   border-radius : 0;
   z-index       : 3;
-  display       : none;
-
-  .expanded & {
-  	display: block;
-  }
 
   & + div {
     padding-bottom : 30px !important;

@@ -557,28 +557,20 @@ define [
       @__openedAccordion = $accordion.index()
 
       $expanded = $accordion.siblings ".expanded"
-      $body     = $accordion.children ".accordion-body"
 
       $accordionWrap   = $accordion.closest ".fixedaccordion"
       $accordionParent = $accordionWrap.parents('.OEPanelLeft')
 
-      $visibleAccordion = $accordionWrap.children().filter ()->
-        $(this).css('display') isnt 'none'
-
-      height = $accordionParent.outerHeight() - 82 - $visibleAccordion.length * $target.outerHeight()
-
-      $body.outerHeight height
+      titleHeight = $target.outerHeight()
+      height      = $accordionParent.outerHeight() - 82 - ($accordionWrap.children().length-1) * titleHeight
 
       if noAnimate
-        $accordion.addClass("expanded")#.children(".nano").nanoScroller("reset")
-        $expanded.removeClass("expanded")
+        $accordion.innerHeight(height).addClass("expanded")#.children(".nano").nanoScroller("reset")
+        $expanded.innerHeight(titleHeight).removeClass("expanded")
         return false
 
-      $body.slideDown 200, ()->
-        $accordion.addClass("expanded")#.children(".nano").nanoScroller("reset")
-
-      $expanded.children(".accordion-body").slideUp 200, ()->
-        $expanded.closest(".accordion-group").removeClass("expanded")
+      $accordion.animate {height:height+"px"}, 200, ()-> $accordion.addClass("expanded")
+      $expanded.animate {height:titleHeight+"px"}, 200, ()-> $expanded.removeClass("expanded")
       false
 
     recalcAccordion : () ->
@@ -587,9 +579,16 @@ define [
         return
 
       $accordions = leftpane.find(".fixedaccordion").children()
+      titleHeight = $accordions.children(".fixedaccordion-head").outerHeight()
+      height = leftpane.outerHeight() - 82 - $accordions.length * titleHeight
+      $accordions.children(".accordion-body").innerHeight(height)
+
       $accordion  = $accordions.filter(".expanded")
       if $accordion.length is 0
         $accordion = $accordions.eq( @__openedAccordion || 0 )
+
+      $accordion.innerHeight(height+titleHeight)
+      $accordion.siblings().innerHeight(titleHeight)
 
       $target = $accordion.removeClass( 'expanded' ).children( '.fixedaccordion-head' )
       this.updateAccordion( { currentTarget : $target[0] }, true )

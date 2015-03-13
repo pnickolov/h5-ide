@@ -496,7 +496,16 @@ pre {
   background: #101010;
   padding: 10px 0; }
 
-/* Modal */
+/*
+    Component - Modal Box
+
+    - General Modal Popup
+    - Full Screen Modal
+    - Modal Content Element
+      - Typography
+      - List Structure
+*/
+/* General Modal Popup */
 .modal-box {
   position: absolute;
   opacity: 0;
@@ -532,13 +541,7 @@ pre {
   right: 0;
   opacity: 1; }
 
-.modal-box.fullscreen.bounce {
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  transform: scale(1);
-  opacity: 1; }
-
+/* Full Screen Modal */
 .modal-box.fullscreen {
   width: 100%;
   height: 100%;
@@ -553,6 +556,12 @@ pre {
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out; }
+  .modal-box.fullscreen.bounce {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1; }
   .modal-box.fullscreen .modal-wrapper-fix {
     width: 100% !important; }
   .modal-box.fullscreen .modal-header {

@@ -32,7 +32,7 @@
 
   &:hover,
   &.open .selection {
-    color      : $pink-p !important;
+    color      : $pink-p;
     background : rgba(0,0,0,.3);
   }
 
@@ -60,16 +60,21 @@
 	  width        : 24px;
 	  box-sizing   : content-box;
 
-	  &:hover { background: transparent; }
+	  &:hover { background: transparent; color: $pink-p;}
+
+    > span:before { margin: 0 80px 0 4px; }
+
     }
   }
 
   .dropdown {
-	top         : 38px;
-	width       : auto;
-	min-width   : initial;
-	line-height : 24px;
-	text-align  : left;
+  	top         : 38px;
+  	width       : auto;
+  	min-width   : initial;
+  	line-height : 24px;
+  	text-align  : left;
+
+    > li > span:before { margin: 0 8px 0 2px; }
 
 	  > li:before {
 	  	padding-right : 0.5em;
@@ -81,4 +86,82 @@
 	  }
 	}
 
+  &.icon-cancel-update-app {
+    color: $light-r;
+
+    &:hover {
+      color            : #fff;
+      background-color : $light-r;
+      border-bottom    : 1px solid $base-r;
+    }
+  }
+}
+
+.toolbar-btn-primary {
+  width         : 112px;
+  color         : #f3f3f3;
+  background    : $base-g;
+  border-bottom : 1px solid $dark-g;
+
+  &:hover {
+    color      : #fff;
+    background : $dark-g;
+  }
+
+  &[disabled] {
+    background    : rgb(75, 75, 75);
+    border-right  : #ccc;
+    border-bottom : 1px solid transparent;
+    color         : #ccc;
+  }
+
+  &.icon-export-png {
+    background    : $base-b;
+    border-bottom : 1px solid $dark-b;
+    width         : 160px;
+    &:hover { background: $dark-b; }
+  }
+
+  &:before {
+    margin-right : 5px;
+  }
+}
+
+.toolbar-visual-ops-switch.switch,
+.reload-states {
+  margin    : 6px 8px 0 0;
+  float     : right;
+  width     : 120px;
+  height    : 27px;
+  font-size : 12px;
+  border-radius : 18px;
+  line-height   : 27px;
+}
+
+.reload-states {
+  padding       : 1px 8px;
+
+  &:before {
+    margin-right: 5px;
+  }
+}
+
+.toolbar-visual-ops-switch.switch {
+  border   : 1px solid #ccc;
+  position : relative;
+
+  &.on {
+    border-color : #0E8F38;
+    background   : $base-g;
+  }
+
+  .switch-handle {
+    width         : 21px;
+    height        : 21px;
+    border-radius : 50%;
+  }
+}
+
+.icon-hide-sg.selected {
+  @extend .btn-toolbar:hover;
 }

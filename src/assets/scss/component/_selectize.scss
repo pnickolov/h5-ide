@@ -477,30 +477,30 @@ input.selection, textarea.selection {
 }
 
 /* boolean switcher component */
-.switcher {
-    float: right;
-    position: absolute;
-    z-index: 2;
-    font-size: 12px;
-    margin: 4px 10px;
-    width: 45px;
-    height: 21px;
-    border: 1px solid #ccc;
-    background: #dadada;
-    font-size: 12px;
-    // position: relative;
-    display: inline-block;
-    vertical-align: top;
-    border-radius: 2px;
-    cursor: pointer;
-    -webkit-transition: 0.15s ease-out;
-    -moz-transition: 0.15s ease-out;
-    -o-transition: 0.15s ease-out;
-    transition: 0.15s ease-out;
-    -webkit-transition-property: opacity background;
-    -moz-transition-property: opacity background;
-    -o-transition-property: opacity background;
-    transition-property: opacity background;
+.switcher,
+.switch {
+    float                       : right;
+    z-index                     : 2;
+    font-size                   : 12px;
+    margin                      : 4px 10px;
+    width                       : 45px;
+    height                      : 21px;
+    border                      : 1px solid #ccc;
+    background                  : #dadada;
+    font-size                   : 12px;
+    display                     : inline-block;
+    vertical-align              : top;
+    border-radius               : 2px;
+    cursor                      : pointer;
+
+    -webkit-transition          : 0.15s ease-out;
+    -moz-transition             : 0.15s ease-out;
+    -o-transition               : 0.15s ease-out;
+    transition                  : 0.15s ease-out;
+    -webkit-transition-property : opacity background;
+    -moz-transition-property    : opacity background;
+    -o-transition-property      : opacity background;
+    transition-property         : opacity background;
 
     .switch-label {
         position: relative;
@@ -527,17 +527,18 @@ input.selection, textarea.selection {
         font-variant: small-caps;
     }
     .switch-handle {
-        position: absolute;
-        top: 2px;
-        left: 3px;
-        width: 20px;
-        height: 17px;
-        background: white;
-        border-radius: 2px;
-        -webkit-transition: left 0.15s ease-out;
-        -moz-transition: left 0.15s ease-out;
-        -o-transition: left 0.15s ease-out;
-        transition: left 0.15s ease-out;
+        position           : absolute;
+        top                : 2px;
+        left               : 3px;
+        width              : 20px;
+        height             : 17px;
+        background         : white;
+        border-radius      : 2px;
+        
+        -webkit-transition : left 0.15s ease-out;
+        -moz-transition    : left 0.15s ease-out;
+        -o-transition      : left 0.15s ease-out;
+        transition         : left 0.15s ease-out;
     }
 }
 .switcher.disabled {

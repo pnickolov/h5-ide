@@ -7018,7 +7018,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .btn-toolbar.seperator {
     border-right: 1px solid #222; }
   .btn-toolbar:hover, .icon-hide-sg.selected, .btn-toolbar.open .selection {
-    color: #9c6dc0 !important;
+    color: #9c6dc0;
     background: rgba(0, 0, 0, 0.3); }
   .btn-toolbar[disabled] {
     color: #676767;
@@ -7039,18 +7039,77 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       width: 24px;
       box-sizing: content-box; }
       .btn-toolbar.selectbox .selection:hover {
-        background: transparent; }
+        background: transparent;
+        color: #9c6dc0; }
+      .btn-toolbar.selectbox .selection > span:before {
+        margin: 0 80px 0 4px; }
   .btn-toolbar .dropdown {
     top: 38px;
     width: auto;
     min-width: initial;
     line-height: 24px;
     text-align: left; }
+    .btn-toolbar .dropdown > li > span:before {
+      margin: 0 8px 0 2px; }
     .btn-toolbar .dropdown > li:before {
       padding-right: 0.5em;
       vertical-align: -1px; }
     .btn-toolbar .dropdown > li:last-child {
       border-bottom: none; }
+  .btn-toolbar.icon-cancel-update-app {
+    color: #ea5d5d; }
+    .btn-toolbar.icon-cancel-update-app:hover, .icon-cancel-update-app.icon-hide-sg.selected {
+      color: #fff;
+      background-color: #ea5d5d;
+      border-bottom: 1px solid #a42b2b; }
+
+.toolbar-btn-primary {
+  width: 112px;
+  color: #f3f3f3;
+  background: #11c568;
+  border-bottom: 1px solid #059e4f; }
+  .toolbar-btn-primary:hover {
+    color: #fff;
+    background: #059e4f; }
+  .toolbar-btn-primary[disabled] {
+    background: #4b4b4b;
+    border-right: #ccc;
+    border-bottom: 1px solid transparent;
+    color: #ccc; }
+  .toolbar-btn-primary.icon-export-png {
+    background: #4a90e2;
+    border-bottom: 1px solid #3970af;
+    width: 160px; }
+    .toolbar-btn-primary.icon-export-png:hover {
+      background: #3970af; }
+  .toolbar-btn-primary:before {
+    margin-right: 5px; }
+
+.toolbar-visual-ops-switch.switch,
+.reload-states {
+  margin: 6px 8px 0 0;
+  float: right;
+  width: 120px;
+  height: 27px;
+  font-size: 12px;
+  border-radius: 18px;
+  line-height: 27px; }
+
+.reload-states {
+  padding: 1px 8px; }
+  .reload-states:before {
+    margin-right: 5px; }
+
+.toolbar-visual-ops-switch.switch {
+  border: 1px solid #ccc;
+  position: relative; }
+  .toolbar-visual-ops-switch.switch.on {
+    border-color: #0E8F38;
+    background: #11c568; }
+  .toolbar-visual-ops-switch.switch .switch-handle {
+    width: 21px;
+    height: 21px;
+    border-radius: 50%; }
 
 /* Side Panel Layout */
 .OEPanelLeft, .OEPanelRight {
@@ -7575,95 +7634,6 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   width: 230px; }
 .property-content #mesos-health-checks-list .elb-property-listener:only-child .selectbox {
   width: 260px; }
-
-.btn-toolbar.icon-cancel-update-app {
-  color: #ec3c38; }
-  .btn-toolbar.icon-cancel-update-app:hover, .icon-cancel-update-app.icon-hide-sg.selected {
-    color: #fff;
-    background-color: #ec3c38;
-    border-bottom: 1px solid #ec3c38; }
-
-.toolbar-btn-primary {
-  width: 112px;
-  color: #f3f3f3;
-  background: #17c249;
-  border-bottom: 1px solid #17a03a; }
-  .toolbar-btn-primary:hover {
-    color: #fff;
-    background: #17a03a; }
-  .toolbar-btn-primary[disabled] {
-    background: #4b4b4b;
-    border-right: #ccc;
-    border-bottom: 1px solid transparent;
-    color: #ccc; }
-  .toolbar-btn-primary.icon-export-png {
-    background: #148BE6;
-    border-bottom: 1px solid #1B7FCC;
-    width: 160px; }
-    .toolbar-btn-primary.icon-export-png:hover {
-      background: #1B7FCC; }
-  .toolbar-btn-primary:before {
-    margin-right: 5px; }
-
-.btn-toolbar .dropdown > li {
-  line-height: 24px;
-  text-align: left; }
-
-.btn.reload-states {
-  float: right;
-  margin-right: 8px;
-  margin-top: 6px;
-  height: 30px;
-  width: 130px;
-  border-radius: 18px;
-  line-height: 30px;
-  padding: 1px 8px; }
-  .btn.reload-states:before {
-    margin-right: 5px; }
-
-.OEPanelTop .selectbox > .selection > span:before {
-  margin-left: 4px;
-  margin-right: 80px; }
-
-.OEPanelTop .dropdown > li > span::before {
-  margin-left: 2px;
-  margin-right: 8px; }
-
-/* switch button style */
-.switch {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
-  width: 56px;
-  height: 20px;
-  border-radius: 18px;
-  cursor: pointer;
-  -webkit-transition: 0.15s ease-out;
-  -moz-transition: 0.15s ease-out;
-  -o-transition: 0.15s ease-out;
-  transition: 0.15s ease-out;
-  -webkit-transition-property: opacity background;
-  -moz-transition-property: opacity background;
-  -o-transition-property: opacity background;
-  transition-property: opacity background; }
-
-.toolbar-visual-ops-switch {
-  margin-right: 8px;
-  float: right;
-  margin-top: 6px;
-  width: 120px;
-  height: 27px;
-  border: 1px solid #ccc;
-  background: #dadada;
-  font-size: 12px; }
-
-.toolbar-visual-ops-switch.on {
-  border-color: #0E8F38;
-  background: #4fb845; }
-
-.toolbar-visual-ops-switch .switch-handle {
-  width: 21px;
-  height: 21px; }
 
 .ops-process {
   width: 100%;

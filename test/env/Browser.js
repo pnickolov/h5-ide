@@ -75,21 +75,21 @@ browser.launchIDE = function() {
 };
 
 browser.close = function() {
-  var i, j, len, len1, ref, ref1, ref2, ref3, window, ws, xhr;
+  var window, ws, xhr, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
   window = browser.window;
-  if ((ref = window.App) != null) {
-    if ((ref1 = ref.WS) != null) {
-      ref1.close();
+  if ((_ref = window.App) != null) {
+    if ((_ref1 = _ref.WS) != null) {
+      _ref1.close();
     }
   }
-  ref2 = window.____xhrarray || [];
-  for (i = 0, len = ref2.length; i < len; i++) {
-    xhr = ref2[i];
+  _ref2 = window.____xhrarray || [];
+  for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+    xhr = _ref2[_i];
     xhr.abort();
   }
-  ref3 = window.____wsarray || [];
-  for (j = 0, len1 = ref3.length; j < len1; j++) {
-    ws = ref3[j];
+  _ref3 = window.____wsarray || [];
+  for (_j = 0, _len1 = _ref3.length; _j < _len1; _j++) {
+    ws = _ref3[_j];
     ws.close();
   }
   return Browser.prototype.close.call(this, window);

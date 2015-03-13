@@ -1,6 +1,5 @@
 
 browser = require('./env/Browser')
-_       = require('underscore')
 window = browser.window
 
 $ = window.$
@@ -36,8 +35,9 @@ describe "VisualOps Integration Test", ()->
         ops.off 'destroy'
 
 
+
     console.log '------------------------'
-    console.log 'Integration Testing for Stack', _.pluck( stackJsons, 'name' ).join(', ')
+    console.log 'Integration Testing for Stacks'
     console.log '------------------------'
 
     for stackJson in stackJsons

@@ -1,8 +1,6 @@
-var $, App, Design, browser, stackJsons, window, _;
+var $, App, Design, browser, stackJsons, window;
 
 browser = require('./env/Browser');
-
-_ = require('underscore');
 
 window = browser.window;
 
@@ -42,7 +40,7 @@ describe("VisualOps Integration Test", function() {
     return ops.off('destroy');
   };
   console.log('------------------------');
-  console.log('Integration Testing for Stack', _.pluck(stackJsons, 'name').join(', '));
+  console.log('Integration Testing for Stacks');
   console.log('------------------------');
   _results = [];
   for (_i = 0, _len = stackJsons.length; _i < _len; _i++) {

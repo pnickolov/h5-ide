@@ -49,8 +49,8 @@ readRequirejsConfig = function(path) {
 };
 
 extend = function(a) {
-  var arg, i, idx, j, len;
-  for (idx = j = 0, len = arguments.length; j < len; idx = ++j) {
+  var arg, i, idx, _i, _len;
+  for (idx = _i = 0, _len = arguments.length; _i < _len; idx = ++_i) {
     arg = arguments[idx];
     if (idx === 0) {
       continue;
@@ -63,13 +63,13 @@ extend = function(a) {
 };
 
 transformModules = function(config, traceMode) {
-  var bundleExcludes, bundleName, bundles, exclude, ref;
+  var bundleExcludes, bundleName, bundles, exclude, _ref;
   exclude = [];
   config.modules = [];
   bundleExcludes = config.bundleExcludes || {};
-  ref = config.bundles;
-  for (bundleName in ref) {
-    bundles = ref[bundleName];
+  _ref = config.bundles;
+  for (bundleName in _ref) {
+    bundles = _ref[bundleName];
     config.modules.push({
       name: bundleName,
       include: bundles,

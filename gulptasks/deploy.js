@@ -276,18 +276,18 @@ Tasks = {
     noramlize = /\\/g;
     versions = {};
     return listFile.then(function() {
-      var entry, i, len, line, ref, results;
-      ref = fileData.split("\n");
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        entry = ref[i];
+      var entry, line, _i, _len, _ref, _results;
+      _ref = fileData.split("\n");
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        entry = _ref[_i];
         line = entry.split(/\s+?/);
         if (line[3]) {
           versions[line[3].replace(noramlize, "/")] = line[1].substr(0, 8);
         }
-        results.push(null);
+        _results.push(null);
       }
-      return results;
+      return _results;
     }).then(function() {
       var d;
       d = Q.defer();
@@ -358,7 +358,7 @@ Tasks = {
     return task.then(function() {
       return util.runCommand("git", ["add", "-A"], option);
     }).then(function() {
-      return util.runCommand("git", ["commit", "-m", (ideversion.version()) + " ; DevRepo: MadeiraCloud/h5-ide@" + devRepoV], option);
+      return util.runCommand("git", ["commit", "-m", "" + (ideversion.version()) + " ; DevRepo: MadeiraCloud/h5-ide@" + devRepoV], option);
     }).then(function() {
       if (GLOBAL.gulpConfig.autoPush) {
         console.log("[ " + gutil.colors.bgBlue.white("Pushing to Remote") + " ]");

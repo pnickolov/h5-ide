@@ -50,7 +50,7 @@ run = function() {
     };
     return gulp.src(["./test/**/*.js", "!./test/env/Browser.js", "!./test/stack/requireStacks.js"]).pipe(mocha({
       reporter: GLOBAL.gulpConfig.testReporter,
-      timeout: 20000
+      timeout: 100000
     })).on("error", function(e) {
       console.log(gutil.colors.bgRed.black(" Test failed. ", e));
       return this.emit("end");

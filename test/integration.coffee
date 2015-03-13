@@ -6,7 +6,8 @@ $ = window.$
 App = window.App
 Design = window.Design
 
-stackJsons = require('./stack/requireStacks')
+# stackJsons = require('./stack/requireStacks')
+stackJsons = [ require('./stack/an-instance') ]
 
 describe "VisualOps Integration Test", ()->
     stackModel = null
@@ -66,7 +67,6 @@ describe "VisualOps Integration Test", ()->
             json = stackModel.getJsonData()
             json.usage = 'testing'
             json.name = stackModel.get 'name'
-
 
             stackModel.run(json, json.name).then ( ops ) ->
                 appModel = ops

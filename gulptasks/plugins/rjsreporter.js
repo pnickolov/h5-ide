@@ -12,7 +12,7 @@ PathTransform = {
   "js/": "lib/"
 };
 
-ExcludeRjsPluginRegex = /^[^\/!]+!/;
+ExcludeRjsPluginRegex = /^[^/!]+!/;
 
 transformedPath = function(p) {
   var key, value;
@@ -27,7 +27,7 @@ transformedPath = function(p) {
 };
 
 module.exports = function(info) {
-  var duplicateTest, hasDuplicate, hasInvalidInclude, i, idx, item, j, len, len1, message, ref, res, s, source, target;
+  var duplicateTest, hasDuplicate, hasInvalidInclude, idx, item, message, res, s, source, target, _i, _j, _len, _len1, _ref;
   info = info.replace(/\r\n/g, "\n").replace(/\\/g, "/");
   if (info[0] === "\n") {
     info = info.replace("\n", "");
@@ -36,7 +36,7 @@ module.exports = function(info) {
   duplicateTest = {};
   hasDuplicate = false;
   hasInvalidInclude = false;
-  for (idx = i = 0, len = info.length; i < len; idx = ++i) {
+  for (idx = _i = 0, _len = info.length; _i < _len; idx = ++_i) {
     item = info[idx];
     item = item.split("\n----------------\n");
     target = path.dirname(item[0]) + "/";
@@ -45,9 +45,9 @@ module.exports = function(info) {
     }
     console.log(gutil.colors.green(target) + item[0].replace(target, ""));
     console.log("----------------");
-    ref = item[1].split("\n");
-    for (j = 0, len1 = ref.length; j < len1; j++) {
-      source = ref[j];
+    _ref = item[1].split("\n");
+    for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+      source = _ref[_j];
       if (!source) {
         continue;
       }

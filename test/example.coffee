@@ -1,3 +1,4 @@
+###
 
 window = require("./env/Browser").window
 
@@ -29,3 +30,4 @@ describe "VisualOps testcase example", ()->
 
   return
 
+###

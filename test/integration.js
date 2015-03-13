@@ -10,7 +10,7 @@ App = window.App;
 
 Design = window.Design;
 
-stackJsons = require('./stack/requireStacks');
+stackJsons = [require('./stack/an-instance')];
 
 describe("VisualOps Integration Test", function() {
   var appModel, opsModelState, stackJson, stackModel, unwatchAppProcess, watchAppProcess, _i, _len, _results;

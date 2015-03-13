@@ -53,8 +53,8 @@ LocaleValidator = {
 };
 
 set = function(object, paths, key, val) {
-  var i, idx, len, p;
-  for (idx = i = 0, len = paths.length; i < len; idx = ++i) {
+  var idx, p, _i, _len;
+  for (idx = _i = 0, _len = paths.length; _i < _len; idx = ++_i) {
     p = paths[idx];
     object = object[p] || (object[p] = {});
   }

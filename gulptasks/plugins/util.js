@@ -57,13 +57,13 @@ util = {
     return title;
   },
   deleteFolderRecursive: function(path) {
-    var curPath, e, file, i, index, len, ref;
+    var curPath, e, file, index, _i, _len, _ref;
     if (!fs.existsSync(path)) {
       return true;
     }
-    ref = fs.readdirSync(path) || [];
-    for (index = i = 0, len = ref.length; i < len; index = ++i) {
-      file = ref[index];
+    _ref = fs.readdirSync(path) || [];
+    for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
+      file = _ref[index];
       curPath = path + "/" + file;
       if (fs.lstatSync(curPath).isDirectory()) {
         if (!util.deleteFolderRecursive(curPath)) {

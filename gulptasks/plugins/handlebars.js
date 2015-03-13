@@ -78,9 +78,9 @@ readHelperFile = function() {
 };
 
 compile = function(file) {
-  var i, idx, ignored, j, len;
+  var i, idx, ignored, _i, _len;
   ignored = true;
-  for (idx = j = 0, len = IgnoreSyntax.length; j < len; idx = ++j) {
+  for (idx = _i = 0, _len = IgnoreSyntax.length; _i < _len; idx = ++_i) {
     i = IgnoreSyntax[idx];
     if (file.contents[idx] !== i) {
       ignored = false;
@@ -120,7 +120,7 @@ tryCompile = function(data, file) {
 };
 
 compilePartials = function(file, shouldLog) {
-  var content, data, i, idx, j, len, n, namespace, namespaces, newData, result, space;
+  var content, data, i, idx, n, namespace, namespaces, newData, result, space, _i, _len;
   content = file.contents.toString("utf8").replace(/\r\n/g, "\n");
   data = content.split(/<!--\s*\{\{\s*(.*)\s*\}\}\s*-->\n/ig);
   newData = "";
@@ -135,7 +135,7 @@ compilePartials = function(file, shouldLog) {
     newData += "__TEMPLATE__ =" + result + (";\nTEMPLATE." + data[i] + "=Handlebars.template(__TEMPLATE__);\n\n\n");
     namespaces = data[i].split(".");
     space = namespace;
-    for (idx = j = 0, len = namespaces.length; j < len; idx = ++j) {
+    for (idx = _i = 0, _len = namespaces.length; _i < _len; idx = ++_i) {
       n = namespaces[idx];
       if (idx < namespaces.length - 1) {
         if (!space[n]) {

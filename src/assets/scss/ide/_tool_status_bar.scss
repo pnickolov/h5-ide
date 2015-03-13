@@ -9,3 +9,76 @@
 
 /* Toolbar */
 
+.btn-toolbar {
+  width    : 34px;
+  height   : 32px;
+  line-height: 32px;
+  position : relative;
+  float    : left;
+
+
+  text-align : center;
+  color      : #ccc;
+  font-size  : 16px;
+
+  padding : 4px 4px 3px;
+
+  cursor     : pointer;
+  box-sizing : content-box;
+
+  &.seperator {
+    border-right : 1px solid #222;
+  }
+
+  &:hover,
+  &.open .selection {
+    color      : $pink-p !important;
+    background : rgba(0,0,0,.3);
+  }
+
+  &[disabled] {
+    color      : #676767;
+    background : none;
+    cursor     : default;
+  }
+
+  &.selectbox {
+    width  : 52px;
+    padding: 0;
+    height : 40px;
+
+    .selection {
+	  font-size    : 16px;
+	  padding      : 0 18px 0 10px;
+	  float        : left;
+
+	  border       : none;
+	  background   : transparent;
+
+	  line-height  : 40px;
+	  display      : inline-block;
+	  width        : 24px;
+	  box-sizing   : content-box;
+
+	  &:hover { background: transparent; }
+    }
+  }
+
+  .dropdown {
+	top         : 38px;
+	width       : auto;
+	min-width   : initial;
+	line-height : 24px;
+	text-align  : left;
+
+	  > li:before {
+	  	padding-right : 0.5em;
+		vertical-align: -1px;
+	  }
+
+	  > li:last-child {
+		border-bottom: none;
+	  }
+	}
+
+}

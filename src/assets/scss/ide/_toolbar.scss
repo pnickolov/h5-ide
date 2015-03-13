@@ -1,86 +1,3 @@
-.btn-toolbar {
-  width  : 34px;
-  height : 32px;
-  position : relative;
-  float    : left;
-
-  line-height: 32px;
-  text-align : center;
-  color      : #ccc;
-  font-size  : 16px;
-
-  padding : 4px 4px 3px;
-
-  cursor : pointer;
-  box-sizing : content-box;
-
-  &.seperator {
-    border-right : 1px solid #222;
-  }
-
-  &:hover {
-    color      : #9F62D1;
-    background : rgba(0,0,0,.3);
-  }
-
-  &[disabled] {
-    color      : #676767;
-    background : none;
-    cursor     : default;
-  }
-
-  &.open {
-    background : #0f0f0f;
-  }
-
-  &.selectbox {
-    width  : 52px;
-    padding: 0;
-    height : 40px;
-  }
-}
-
-.btn-toolbar:hover .selection, .btn-toolbar.open .selection {
-  color : #9F62D1 !important;
-}
-
-.btn-toolbar.selectbox .selection {
-  font-size    : 16px;
-  color        : #ccc;
-  padding      : 0 18px 0 10px;
-  float        : left;
-
-  border       : none;
-  border-radius: 0;
-  background   : transparent;
-  box-shadow   : none;
-
-  line-height  : 40px;
-  display      : inline-block;
-  width        : 24px;
-  height       : 40px;
-  margin       : 0;
-  box-sizing   : content-box;
-}
-
-.btn-toolbar.selectbox .selection:hover {
-  background: transparent;
-}
-
-.btn-toolbar.selectbox .dropdown {
-  top       : 39px;
-  width     : auto;
-  min-width : initial;
-}
-
-.btn-toolbar .dropdown > li > i, .btn-toolbar .dropdown > li:before {
-  padding-right : 0.5em;
-  vertical-align: -1px;
-}
-
-.btn-toolbar .dropdown > li:last-child {
-  border-bottom: none;
-}
 
 .btn-toolbar.icon-cancel-update-app {
   color: #ec3c38;
@@ -119,11 +36,6 @@
   &:before {
     margin-right : 5px;
   }
-}
-
-.btn-toolbar .dropdown > li {
-  line-height   : 24px;
-  text-align    : left;
 }
 
 .btn.reload-states {

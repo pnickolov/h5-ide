@@ -20,7 +20,6 @@ describe "VisualOps Integration Test", ()->
         ops.on 'change:state', () ->
             state = ops.get 'state'
 
-            console.log 'watch:', state
             if state is opsModelState.RollingBack
                 throw 'Operation faild and Rrlling back'
                 return
@@ -31,7 +30,6 @@ describe "VisualOps Integration Test", ()->
             callback ops.get 'state'
 
     unwatchAppProcess = ( ops ) ->
-        console.log 'unwatch'
         ops.off 'change:progress'
         ops.off 'change:state'
         ops.off 'destroy'
@@ -48,7 +46,6 @@ describe "VisualOps Integration Test", ()->
         App.loadUrl( stackModel.url() )
 
         stackModel.on 'change:state', () ->
-            console.log 'State Changed'
 
             if stackModel.id
                 done()
@@ -80,7 +77,6 @@ describe "VisualOps Integration Test", ()->
         console.log 'Stop App Test Start...'
 
         watchAppProcess appModel, ( state ) ->
-            console.log 'Stop Log': state
             if state is opsModelState.Stopped
                 unwatchAppProcess appModel
                 done()
@@ -93,7 +89,6 @@ describe "VisualOps Integration Test", ()->
         console.log 'Start App Test Start...'
 
         watchAppProcess appModel, ( state ) ->
-            console.log 'Start Log: State ', state
             if state is opsModelState.Running
                 unwatchAppProcess appModel
                 done()

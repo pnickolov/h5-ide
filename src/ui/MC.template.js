@@ -951,22 +951,6 @@ TEMPLATE.loadingTransparent=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div>\n	<div class=\"info\">"
-    + escapeExpression(helpers.i18n.call(depth0, "LAST_SAVED", {hash:{},data:data}))
-    + " <span class=\"stack-save-time\">-</span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">"
-    + escapeExpression(helpers.i18n.call(depth0, "LBL_VALIDATE", {hash:{},data:data}))
-    + "</li>\n	</ul>\n</div>";
-  return buffer;
-  };
-TEMPLATE.statusbar=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {

@@ -1240,7 +1240,7 @@ input.selection, textarea.selection {
   font-size: 12px;
   margin: 4px 10px;
   width: 45px;
-  height: 21px;
+  height: 22px;
   border: 1px solid #ccc;
   background: #dadada;
   font-size: 12px;
@@ -1284,7 +1284,7 @@ input.selection, textarea.selection {
   .switcher .switch-handle,
   .switch .switch-handle {
     position: absolute;
-    top: 2px;
+    top: 3px;
     left: 3px;
     width: 20px;
     height: 17px;

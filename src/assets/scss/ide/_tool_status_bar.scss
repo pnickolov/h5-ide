@@ -2,8 +2,7 @@
     IDE Editor Toolbar & Status Bar
 
     - Toolbar
-    - Side Panel Show and Hide
-    - App View - Failed to Pay Limitation
+    - Status Bar
 */
 
 
@@ -27,7 +26,7 @@
   box-sizing : content-box;
 
   &.seperator {
-    border-right : 1px solid #222;
+    border-right : 1px solid #000;
   }
 
   &:hover,
@@ -165,3 +164,21 @@
 .icon-hide-sg.selected {
   @extend .btn-toolbar:hover;
 }
+
+/* Status Bar */
+
+.status-bar {
+  .info { float: left; margin-left: 10px; }
+  .status-bar-btn {
+    text-align        : center;
+    float             : right;
+    cursor            : pointer;
+    padding           : 0 10px;
+    color             : #eee;
+    border            : none;
+    border-radius     : 0;
+    box-shadow        : inset 1px 0 rgba(255,255,255,.1);
+    border-left       : 1px solid #212121;
+  }
+}
+

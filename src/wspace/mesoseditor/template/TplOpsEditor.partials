@@ -6,7 +6,7 @@
 <button class="btn-toolbar icon-zoom-out seperator tooltip" data-tooltip='{{ i18n "TOOLBAR.TIP_ZOOM_OUT" }}'></button>
 
 <!-- {{toolbar.BtnLinestyle}} -->
-<div class="selectbox btn-toolbar toolbar-line-style seperator">
+<div class="selectbox btn-toolbar toolbar-line-style">
   <button class="selection tooltip" data-tooltip="{{ i18n "TOOLBAR.TIP_SG_LINE_STYLE" }}"></button>
   <ul class="dropdown">
     <li class='item' data-id="0"><span class="icon-straight">{{ i18n "TOOLBAR.LBL_LINESTYLE_STRAIGHT" }}</span></li>

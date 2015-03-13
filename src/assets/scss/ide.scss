@@ -2310,38 +2310,6 @@ div.modal-text-highlight{
 	box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-#guide-wrap .modal-footer {
-	text-align: center;
-}
-
-.status-bar .info {
-	float: left;
-	padding-left: 10px;
-}
-
-.status-bar .status-bar-btn {
-	text-align        : center;
-	float             : right;
-	cursor            : pointer;
-	padding           : 0 10px;
-	color             : #eee;
-	border            : none;
-	border-radius     : 0;
-	box-shadow        : inset 1px 0 rgba(255,255,255,.1);
-	border-left       : 1px solid #212121;
-	/*text-decoration : underline;*/
-}
-
-.status-bar .statusbar-btn:hover {
-	background-color: rgba(0,0,0,.2);
-	color: #fff;
-}
-
-.status-bar .btns a {
-	cursor: pointer;
-	color: #fff;
-}
-
 .status-bar-modal {
 	width            : 434px;
 	position         : absolute;

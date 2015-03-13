@@ -350,7 +350,7 @@ define [ "ApiRequest",
       data = {opsModel:null}
       for n, idx in unread
         data.opsModel = n.target()
-        if ws.isWorkingOn( data )
+        if ws and ws.isWorkingOn( data )
           n.markAsRead()
           unread.splice( idx, 1 )
           break

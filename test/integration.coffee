@@ -1,12 +1,13 @@
 
 browser = require('./env/Browser')
+_       = require('underscore')
 window = browser.window
 
 $ = window.$
 App = window.App
 Design = window.Design
 
-stackjson = require('./stack/az-subnet-stack.json')
+stackJsons = require('./stack/requireStacks')
 
 describe "VisualOps Integration Test", ()->
     stackModel = null
@@ -15,7 +16,7 @@ describe "VisualOps Integration Test", ()->
 
     watchAppProcess = ( ops, callback ) ->
         ops.on 'change:progress', () ->
-            console.log "Running Process: %#{ops.get('progress')}"
+            console.log "Progress: %#{ops.get('progress')}"
 
         ops.on 'change:state', () ->
             state = ops.get 'state'
@@ -35,86 +36,91 @@ describe "VisualOps Integration Test", ()->
         ops.off 'destroy'
 
 
+    console.log '------------------------'
+    console.log 'Integration Testing for Stack', _.pluck( stackJsons, 'name' ).join(', ')
+    console.log '------------------------'
 
-      # Import Stack
-    it "Import and Save Stack", (done)->
-        console.log 'Import and Save Stack Test Start...'
+    for stackJson in stackJsons
 
-        stackModel = App.sceneManager.activeScene().project.createStackByJson( stackjson )
-        opsModelState = stackModel.constructor.State
+        # Import Stack
+        it "Import and Save Stack", (done)->
+            console.log 'Import and Save Stack Test Start...'
 
-        App.loadUrl( stackModel.url() )
+            stackModel = App.sceneManager.activeScene().project.createStackByJson( stackJson )
+            opsModelState = stackModel.constructor.State
 
-        stackModel.on 'change:state', () ->
+            App.loadUrl( stackModel.url() )
 
-            if stackModel.id
-                done()
-            else
-                throw new Error('Import Stack Failed')
+            stackModel.on 'change:state', () ->
 
-        return
+                if stackModel.id
+                    done()
+                else
+                    throw new Error('Import Stack Failed')
 
-    it "Run Stack", (done) ->
-        console.log 'Run Stack Test Start...'
+            return
 
-        json = stackModel.getJsonData()
-        json.usage = 'testing'
-        json.name = stackModel.get 'name'
+        it "Run Stack", (done) ->
+            console.log 'Run Stack Test Start...'
+
+            json = stackModel.getJsonData()
+            json.usage = 'testing'
+            json.name = stackModel.get 'name'
 
 
-        stackModel.run(json, json.name).then ( ops ) ->
-            appModel = ops
-            App.loadUrl ops.url()
-            watchAppProcess ops, ( state ) ->
-                if state is opsModelState.Running
-                    unwatchAppProcess ops
+            stackModel.run(json, json.name).then ( ops ) ->
+                appModel = ops
+                App.loadUrl ops.url()
+                watchAppProcess ops, ( state ) ->
+                    if state is opsModelState.Running
+                        unwatchAppProcess ops
+                        done()
+
+            , (err)->
+                throw new Error(err)
+
+        it "Stop App", (done) ->
+            console.log 'Stop App Test Start...'
+
+            watchAppProcess appModel, ( state ) ->
+                if state is opsModelState.Stopped
+                    unwatchAppProcess appModel
                     done()
 
-        , (err)->
-            throw new Error(err)
+            appModel.stop().fail () ->
+                throw new Error(err)
 
-    it "Stop App", (done) ->
-        console.log 'Stop App Test Start...'
 
-        watchAppProcess appModel, ( state ) ->
-            if state is opsModelState.Stopped
-                unwatchAppProcess appModel
+        it "Start App", (done) ->
+            console.log 'Start App Test Start...'
+
+            watchAppProcess appModel, ( state ) ->
+                if state is opsModelState.Running
+                    unwatchAppProcess appModel
+                    done()
+
+            appModel.start().fail () ->
+                throw new Error(err)
+
+
+        it "Terminate App", (done) ->
+            console.log 'Terminate App Test Start...'
+
+            watchAppProcess appModel, ( state ) ->
+                if state is opsModelState.Destroyed
+                    unwatchAppProcess appModel
+                    done()
+
+            appModel.terminate().fail () ->
+                throw new Error(err)
+
+        it "Delete Stack", (done) ->
+            console.log 'Terminate App Test Start...'
+
+            stackModel.remove().then ->
                 done()
-
-        appModel.stop().fail () ->
-            throw new Error(err)
-
-
-    it "Start App", (done) ->
-        console.log 'Start App Test Start...'
-
-        watchAppProcess appModel, ( state ) ->
-            if state is opsModelState.Running
-                unwatchAppProcess appModel
-                done()
-
-        appModel.start().fail () ->
-            throw new Error(err)
-
-
-    it "Terminate App", (done) ->
-        console.log 'Terminate App Test Start...'
-
-        watchAppProcess appModel, ( state ) ->
-            if state is opsModelState.Destroyed
-                unwatchAppProcess appModel
-                done()
-
-        appModel.terminate().fail () ->
-            throw new Error(err)
-
-    it "Delete Stack", (done) ->
-        console.log 'Terminate App Test Start...'
-
-        stackModel.remove().then ->
-            done()
-        , ( err ) ->
-            throw new Error err
+            , ( err ) ->
+                throw new Error err
 
 
 

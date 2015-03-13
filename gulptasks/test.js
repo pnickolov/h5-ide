@@ -48,11 +48,11 @@ run = function() {
       d.resolve();
       return process.exit();
     };
-    return gulp.src(["./test/**/*.js", "!./test/env/Browser.js"]).pipe(mocha({
+    return gulp.src(["./test/**/*.js", "!./test/env/Browser.js", "!./test/stack/requireStacks.js"]).pipe(mocha({
       reporter: GLOBAL.gulpConfig.testReporter,
       timeout: 20000
     })).on("error", function(e) {
-      console.log(gutil.colors.bgRed.black(" Test failed. "));
+      console.log(gutil.colors.bgRed.black(" Test failed. ", e));
       return this.emit("end");
     }).pipe(es.through(noop, shutDown));
   }, function(error) {

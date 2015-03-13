@@ -45,13 +45,13 @@ run = ()->
       # If test fails, mocha dosn't quit. Cause the process not quiting.
       process.exit()
 
-    gulp.src( ["./test/**/*.js", "!./test/env/Browser.js"] )
+    gulp.src( ["./test/**/*.js", "!./test/env/Browser.js", "!./test/stack/requireStacks.js"] )
       .pipe mocha({
         reporter : GLOBAL.gulpConfig.testReporter
         timeout  : 20000
       })
       .on "error", ( e )->
-        console.log gutil.colors.bgRed.black " Test failed. "
+        console.log gutil.colors.bgRed.black " Test failed. ", e
         @emit "end"
       .pipe( es.through noop, shutDown )
 

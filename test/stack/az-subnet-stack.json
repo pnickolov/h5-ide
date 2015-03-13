@@ -1,0 +1,262 @@
+{
+    "region": "us-east-1",
+    "provider": "aws::global",
+    "time_update": 1426149136,
+    "version": "2014-11-11",
+    "resource_diff": true,
+    "agent": {
+        "enabled": true,
+        "module": {
+            "repo": "https://github.com/MadeiraCloud/salt.git",
+            "tag": "v2015-02-27"
+        }
+    },
+    "name": "untitled-15",
+    "component": {
+        "2397C4B2-5DC2-464E-BB90-78749305D9AA": {
+            "name": "RT-0",
+            "description": "",
+            "type": "AWS.VPC.RouteTable",
+            "uid": "2397C4B2-5DC2-464E-BB90-78749305D9AA",
+            "resource": {
+                "PropagatingVgwSet": [],
+                "RouteTableId": "",
+                "VpcId": "@{EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF.resource.VpcId}",
+                "AssociationSet": [
+                    {
+                        "Main": "true",
+                        "RouteTableAssociationId": "",
+                        "SubnetId": ""
+                    }
+                ],
+                "RouteSet": [
+                    {
+                        "Origin": "CreateRouteTable",
+                        "DestinationCidrBlock": "10.0.0.0/16",
+                        "InstanceId": "",
+                        "NetworkInterfaceId": "",
+                        "GatewayId": "local"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "visops_default",
+                        "Value": "true"
+                    }
+                ]
+            }
+        },
+        "26473C74-99CA-4774-B2CE-0F42F6E91B89": {
+            "name": "DefaultACL",
+            "type": "AWS.VPC.NetworkAcl",
+            "uid": "26473C74-99CA-4774-B2CE-0F42F6E91B89",
+            "resource": {
+                "AssociationSet": [
+                    {
+                        "NetworkAclAssociationId": "",
+                        "SubnetId": "@{E017DA6F-DFB3-4357-A254-3C6B2B12C4A2.resource.SubnetId}"
+                    }
+                ],
+                "Default": true,
+                "EntrySet": [
+                    {
+                        "Egress": true,
+                        "Protocol": -1,
+                        "RuleAction": "allow",
+                        "RuleNumber": 100,
+                        "CidrBlock": "0.0.0.0/0",
+                        "IcmpTypeCode": {
+                            "Code": "",
+                            "Type": ""
+                        },
+                        "PortRange": {
+                            "From": "",
+                            "To": ""
+                        }
+                    },
+                    {
+                        "Egress": false,
+                        "Protocol": -1,
+                        "RuleAction": "allow",
+                        "RuleNumber": 100,
+                        "CidrBlock": "0.0.0.0/0",
+                        "IcmpTypeCode": {
+                            "Code": "",
+                            "Type": ""
+                        },
+                        "PortRange": {
+                            "From": "",
+                            "To": ""
+                        }
+                    },
+                    {
+                        "Egress": true,
+                        "Protocol": -1,
+                        "RuleAction": "deny",
+                        "RuleNumber": 32767,
+                        "CidrBlock": "0.0.0.0/0",
+                        "IcmpTypeCode": {
+                            "Code": "",
+                            "Type": ""
+                        },
+                        "PortRange": {
+                            "From": "",
+                            "To": ""
+                        }
+                    },
+                    {
+                        "Egress": false,
+                        "Protocol": -1,
+                        "RuleAction": "deny",
+                        "RuleNumber": 32767,
+                        "CidrBlock": "0.0.0.0/0",
+                        "IcmpTypeCode": {
+                            "Code": "",
+                            "Type": ""
+                        },
+                        "PortRange": {
+                            "From": "",
+                            "To": ""
+                        }
+                    }
+                ],
+                "NetworkAclId": "",
+                "VpcId": "@{EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF.resource.VpcId}",
+                "Tags": [
+                    {
+                        "Key": "visops_default",
+                        "Value": "true"
+                    }
+                ]
+            }
+        },
+        "EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF": {
+            "name": "vpc",
+            "description": "",
+            "type": "AWS.VPC.VPC",
+            "uid": "EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF",
+            "resource": {
+                "EnableDnsSupport": true,
+                "InstanceTenancy": "default",
+                "EnableDnsHostnames": false,
+                "DhcpOptionsId": "",
+                "VpcId": "",
+                "CidrBlock": "10.0.0.0/16"
+            }
+        },
+        "838860CA-6DE1-4E61-93A6-D582B03F60FF": {
+            "name": "DefaultSG",
+            "type": "AWS.EC2.SecurityGroup",
+            "uid": "838860CA-6DE1-4E61-93A6-D582B03F60FF",
+            "resource": {
+                "Default": true,
+                "GroupId": "",
+                "GroupName": "DefaultSG",
+                "GroupDescription": "default VPC security group",
+                "VpcId": "@{EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF.resource.VpcId}",
+                "IpPermissions": [
+                    {
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "IpRanges": "0.0.0.0/0",
+                        "IpProtocol": "tcp"
+                    }
+                ],
+                "IpPermissionsEgress": [
+                    {
+                        "FromPort": "0",
+                        "ToPort": "65535",
+                        "IpRanges": "0.0.0.0/0",
+                        "IpProtocol": "-1"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "visops_default",
+                        "Value": "true"
+                    }
+                ]
+            }
+        },
+        "6CC5F99A-D9EE-4C95-96A7-DEE587FBB1D1": {
+            "name": "DefaultKP",
+            "type": "AWS.EC2.KeyPair",
+            "uid": "6CC5F99A-D9EE-4C95-96A7-DEE587FBB1D1",
+            "resource": {
+                "KeyFingerprint": "",
+                "KeyName": "DefaultKP"
+            }
+        },
+        "BF1F37E0-055C-4107-BA6D-C9D1D028A73E": {
+            "uid": "BF1F37E0-055C-4107-BA6D-C9D1D028A73E",
+            "name": "us-east-1a",
+            "type": "AWS.EC2.AvailabilityZone",
+            "resource": {
+                "ZoneName": "us-east-1a",
+                "RegionName": "us-east-1"
+            }
+        },
+        "E017DA6F-DFB3-4357-A254-3C6B2B12C4A2": {
+            "name": "subnet0",
+            "description": "",
+            "type": "AWS.VPC.Subnet",
+            "uid": "E017DA6F-DFB3-4357-A254-3C6B2B12C4A2",
+            "resource": {
+                "AvailabilityZone": "@{BF1F37E0-055C-4107-BA6D-C9D1D028A73E.resource.ZoneName}",
+                "VpcId": "@{EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF.resource.VpcId}",
+                "SubnetId": "",
+                "CidrBlock": "10.0.0.0/24"
+            }
+        }
+    },
+    "layout": {
+        "2397C4B2-5DC2-464E-BB90-78749305D9AA": {
+            "coordinate": [
+                50,
+                5
+            ],
+            "uid": "2397C4B2-5DC2-464E-BB90-78749305D9AA",
+            "groupUId": "EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF"
+        },
+        "EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF": {
+            "coordinate": [
+                5,
+                3
+            ],
+            "uid": "EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF",
+            "size": [
+                60,
+                60
+            ]
+        },
+        "BF1F37E0-055C-4107-BA6D-C9D1D028A73E": {
+            "coordinate": [
+                18,
+                17
+            ],
+            "uid": "BF1F37E0-055C-4107-BA6D-C9D1D028A73E",
+            "groupUId": "EA5D30B8-1FD9-49CC-A2D9-2E22DC99F1AF",
+            "size": [
+                21,
+                21
+            ]
+        },
+        "E017DA6F-DFB3-4357-A254-3C6B2B12C4A2": {
+            "coordinate": [
+                20,
+                19
+            ],
+            "uid": "E017DA6F-DFB3-4357-A254-3C6B2B12C4A2",
+            "groupUId": "BF1F37E0-055C-4107-BA6D-C9D1D028A73E",
+            "size": [
+                17,
+                17
+            ]
+        },
+        "size": [
+            240,
+            240
+        ]
+    },
+    "signature": "37eee3f47d9a6cfcddbc6a47b248b56b"
+}

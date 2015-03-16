@@ -97,13 +97,18 @@ define [
 
     deserialize : ( data, layout_data, resolve ) ->
 
+      if Design.instance().modeIsStack()
+        createdBy = ""
+      else
+        createdBy = data.resource.CreatedBy
+
       new Model({
 
         id     : data.uid
         name   : data.name
         appId  : data.resource.OptionGroupName
 
-        createdBy       : data.resource.CreatedBy
+        createdBy       : createdBy
 
         engineName      : data.resource.EngineName
         engineVersion   : data.resource.MajorEngineVersion

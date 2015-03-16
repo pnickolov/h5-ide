@@ -483,6 +483,7 @@ aside.dashboard-sidebar {
       display     : inline-block;
       max-width   : 50%;
       width       : 50%;
+      color       : $dark-grey;
 
       &.selected {
         border-bottom: 2px solid $base-b;
@@ -494,6 +495,7 @@ aside.dashboard-sidebar {
         text-align    : left;
         border-bottom : none;
         padding       : 0 20px;
+        cursor        : default;
       }
     }
 

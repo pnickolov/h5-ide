@@ -1,10 +1,11 @@
 /*
     ELB Property - IDE Property Panel
-
 	
+	- ELB Stack Property
+	- ELB App Property
 */
 
-/* Listener */
+/* ELB Stack Property */
 
 #elb-property-listener-list.property-list li.elb-property-listener {
 	padding  : 0;
@@ -91,3 +92,17 @@
 
 	.elb-info-icon { margin-top: 0; }
 }
+
+/* ELB App Property */
+
+.elb-property-listener-app li {
+	@include displayflex;
+	@include vo-flex-wrap($values: wrap);
+	
+	> div:nth-child(2n) { width: 30%; }
+	> div:nth-child(2n+1) { width: 65%; margin-right: 5%; }
+
+	label { font-size: 12px; color: #999; }
+
+}
+

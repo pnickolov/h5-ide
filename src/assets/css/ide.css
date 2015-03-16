@@ -463,22 +463,6 @@ a.action-link:hover {
   width: 229px;
   margin-left: 7px; }
 
-/* Status Bar */
-#status-bar {
-  background: #fff;
-  height: 20px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  z-index: 2;
-  border-top: 1px solid #ccc;
-  padding: 5px 10px;
-  color: #aaa;
-  font-size: 12px; }
-
-#status-bar > div {
-  display: inline-block; }
-
 /* Modal Stack Validator */
 #modal-stack-validation-run {
   width: 600px; }
@@ -486,22 +470,6 @@ a.action-link:hover {
 #modal-stack-validation-run ol li {
   padding: 5px 0;
   /*list-style-type: decimal;*/ }
-
-/* az property panel, can also be used for panels like az's */
-.panel-single-wrap {
-  height: 100%;
-  padding-top: 43px;
-  margin-top: -43px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
-
-.panel-single-wrap .panel-single {
-  height: 100%;
-  padding: 10px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
 
 .property-info {
   font-size: 12px;
@@ -518,18 +486,6 @@ a.action-link:hover {
   border-radius: 2px;
   margin-top: 5px; }
 
-/*Responsive Style*/
-@media (min-width: 1680px) and (max-width: 2200px) {
-  .item-thumbnail-wrap {
-    width: 18%;
-    padding-bottom: 13.5%; } }
-@media (min-width: 480px) and (max-width: 1280px) {
-  .item-thumbnail-wrap {
-    width: 30%;
-    padding-bottom: 22.5%; } }
-/* elb property panel */
-/* written by song */
-/* elb listener set */
 #elb-property-listener-list .elb-property-listener:only-child .elb-property-listener-item-remove, #mesos-health-checks-list .elb-property-listener:only-child .elb-property-listener-item-remove {
   display: none; }
 
@@ -554,62 +510,6 @@ a.action-link:hover {
   color: #999; }
 
 /* property-rt */
-.property-list.route-list > li {
-  width: auto;
-  padding: 0; }
-  .property-list.route-list > li.have-vpc-peer-route {
-    border-bottom: 1px #a42b2b solid; }
-  .property-list.route-list > li > table {
-    width: 100%; }
-.property-list.route-list .route-readonly {
-  color: #777; }
-.property-list.route-list .remove-vpc-peer-route {
-  font-size: 13px;
-  background-color: #a42b2b;
-  color: #fff;
-  padding: 3px; }
-  .property-list.route-list .remove-vpc-peer-route a {
-    color: #fff;
-    cursor: pointer;
-    text-decoration: underline; }
-
-.route-target {
-  height: 20px;
-  line-height: 20px; }
-
-.route-label {
-  background: rgba(0, 0, 0, 0.05);
-  border-right: 1px solid #4b4b4b;
-  width: 70px;
-  padding: 5px 8px;
-  font-size: 13px;
-  color: #999;
-  vertical-align: top; }
-
-.route-target-resource, .route-destination-input {
-  padding: 5px 10px; }
-
-.property-routetable .multi-input {
-  padding-top: 5px; }
-
-.property-routetable .multi-input {
-  padding-top: 5px; }
-
-.status-good, .status-bad {
-  padding-left: 30px; }
-
-.stack-property-acl-list .delete {
-  margin-top: 5px;
-  cursor: pointer;
-  margin-left: 0px;
-  display: none; }
-
-.stack-property-acl-list .info {
-  float: left; }
-
-.stack-property-acl-list .delete.used {
-  display: block; }
-
 #acl-add-model-source-select .selection {
   width: 68px;
   margin-right: 7px; }
@@ -698,10 +598,6 @@ a.action-link:hover {
 .sg-proto-option-wrap {
   height: 150px; }
 
-/*.sg-proto-option-wrap .selection {
-	height      : 25px;
-	line-height : 25px;
-}*/
 .sg-proto-option {
   width: 150px;
   float: left;
@@ -761,11 +657,6 @@ a.action-link:hover {
   top: 0;
   z-index: -1;
   padding: 20px 0;
-  /*	-webkit-transition: left .3s ease-in-out;
-  	   -moz-transition: left .3s ease-in-out;
-  	    -ms-transition: left .3s ease-in-out;
-  	     -o-transition: left .3s ease-in-out;
-  	        transition: left .3s ease-in-out;*/
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
@@ -925,21 +816,6 @@ a.action-link:hover {
 #keypair-cmd {
   width: 346px; }
 
-#keypair-private-key {
-  width: 340px;
-  font-size: 12px;
-  line-height: 1.2em;
-  padding: 5px;
-  height: 4em; }
-
-#keypair-rdp {
-  margin-right: 10px;
-  margin-top: 10px; }
-
-#keypair-kp-win {
-  width: 140px;
-  margin-top: 10px; }
-
 .hidden-details > .dl-vertical {
   display: none; }
 
@@ -959,35 +835,6 @@ a.action-link:hover {
   padding: 5px 10px;
   font-size: 14px;
   display: inline-block; }
-
-.property-app-table {
-  width: 100%;
-  padding: 5px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box; }
-
-.property-app-table-h {
-  font-size: 14px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  background: gray; }
-
-.property-app .ipaddress .property-readonly-value {
-  padding-left: 2px; }
-
-.property-app .ipaddress .right {
-  padding-right: 56px; }
-
-.property-app .ipaddress [class^="ipaddress-"], .property-app .ipaddress [class*=" ipaddress-"] {
-  float: left; }
-
-.property-app .ipaddress .ipaddress-left {
-  width: 60%; }
-
-.property-app .ipaddress .ipaddress-right {
-  width: 40%; }
 
 /* Icons Placeholder */
 /* Tabbar Icon */
@@ -4129,7 +3976,8 @@ aside.dashboard-sidebar {
     font-size: 12px;
     display: inline-block;
     max-width: 50%;
-    width: 50%; }
+    width: 50%;
+    color: #898dbc; }
     aside.dashboard-sidebar .dashboard-nav-log.selected {
       border-bottom: 2px solid #4a90e2;
       width: 100%; }
@@ -4137,7 +3985,8 @@ aside.dashboard-sidebar {
       max-width: 100%;
       text-align: left;
       border-bottom: none;
-      padding: 0 20px; }
+      padding: 0 20px;
+      cursor: default; }
   aside.dashboard-sidebar .dashboard-log-wrap {
     overflow-x: hidden;
     overflow-y: auto;
@@ -5645,7 +5494,7 @@ aside.dashboard-sidebar {
     border-top: 1px solid #151519;
     border-bottom: 1px solid #151519; }
   .acl-rule-list.property-list li .acl-rule-allow-cb {
-    width: 16px;
+    width: 62px;
     height: 16px;
     display: inline-block; }
 
@@ -5667,10 +5516,11 @@ aside.dashboard-sidebar {
 
 /*
     ELB Property - IDE Property Panel
-
 	
+	- ELB Stack Property
+	- ELB App Property
 */
-/* Listener */
+/* ELB Stack Property */
 #elb-property-listener-list.property-list li.elb-property-listener {
   padding: 0;
   position: relative; }
@@ -5745,6 +5595,72 @@ aside.dashboard-sidebar {
       color: #888; }
   .elb-property-instance-list .elb-info-icon {
     margin-top: 0; }
+
+/* ELB App Property */
+.elb-property-listener-app li {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex-wrap: wrap;
+  -moz-box-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap; }
+  .elb-property-listener-app li > div:nth-child(2n) {
+    width: 30%; }
+  .elb-property-listener-app li > div:nth-child(2n+1) {
+    width: 65%;
+    margin-right: 5%; }
+  .elb-property-listener-app li label {
+    font-size: 12px;
+    color: #999; }
+
+/*
+    Subnet & RT Property - IDE Property Panel
+	
+	- Subnet Property
+	- RT Property
+	
+*/
+/* Subnet Property */
+/* RT Property */
+.property-list.route-list > li {
+  width: auto;
+  padding: 0; }
+  .property-list.route-list > li.have-vpc-peer-route {
+    border-bottom: 1px #a42b2b solid; }
+  .property-list.route-list > li > table {
+    width: 100%; }
+.property-list.route-list .route-readonly {
+  color: #777; }
+.property-list.route-list .remove-vpc-peer-route {
+  font-size: 13px;
+  background-color: #a42b2b;
+  color: #fff;
+  padding: 3px; }
+  .property-list.route-list .remove-vpc-peer-route a {
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline; }
+
+.route-target {
+  height: 20px;
+  line-height: 20px; }
+
+.route-label {
+  background: rgba(0, 0, 0, 0.05);
+  border-right: 1px solid #4b4b4b;
+  width: 70px;
+  padding: 5px 8px;
+  font-size: 13px;
+  color: #999;
+  vertical-align: top; }
+
+.route-target-resource,
+.route-destination-input {
+  padding: 5px 10px; }
 
 /* Title Show/Hide State Panel */
 .OEPanelRight .sidebar-title {

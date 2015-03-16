@@ -10,14 +10,22 @@ App = window.App;
 
 Design = window.Design;
 
-stackJsons = [require('./stack/an-instance')];
+stackJsons = require('./stack/requireStacks');
 
-describe("VisualOps Integration Test", function() {
+describe("VisualOps Integration Testing", function() {
   var appModel, opsModelState, stackJson, stackModel, unwatchAppProcess, watchAppProcess, _i, _len, _results;
   stackModel = null;
   appModel = null;
   opsModelState = null;
   watchAppProcess = function(ops, callback) {
+    var callTimes, insideCallback;
+    callTimes = 0;
+    insideCallback = function() {
+      if (callTimes === 0) {
+        callTimes++;
+        return callback.apply(null, arguments);
+      }
+    };
     ops.on('change:progress', function() {
       return console.log("Progress: %" + (ops.get('progress')));
     });
@@ -25,13 +33,13 @@ describe("VisualOps Integration Test", function() {
       var state;
       state = ops.get('state');
       if (state === opsModelState.RollingBack) {
-        throw 'Operation faild and Rrlling back';
+        throw 'Operation faild and Rolling back';
         return;
       }
-      return callback(state);
+      return insideCallback(state);
     });
     return ops.on('destroy', function() {
-      return callback(ops.get('state'));
+      return insideCallback(state);
     });
   };
   unwatchAppProcess = function(ops) {
@@ -46,7 +54,7 @@ describe("VisualOps Integration Test", function() {
   for (_i = 0, _len = stackJsons.length; _i < _len; _i++) {
     stackJson = stackJsons[_i];
     it("Import and Save Stack", function(done) {
-      console.log('Import and Save Stack Test Start...');
+      console.log('Import and Save Stack Testing ...');
       stackModel = App.sceneManager.activeScene().project.createStackByJson(stackJson);
       opsModelState = stackModel.constructor.State;
       App.loadUrl(stackModel.url());
@@ -60,7 +68,7 @@ describe("VisualOps Integration Test", function() {
     });
     it("Run Stack", function(done) {
       var json;
-      console.log('Run Stack Test Start...');
+      console.log('Run Stack Testing');
       json = stackModel.getJsonData();
       json.usage = 'testing';
       json.name = stackModel.get('name');
@@ -78,7 +86,7 @@ describe("VisualOps Integration Test", function() {
       });
     });
     it("Stop App", function(done) {
-      console.log('Stop App Test Start...');
+      console.log('Stop App Testing');
       watchAppProcess(appModel, function(state) {
         if (state === opsModelState.Stopped) {
           unwatchAppProcess(appModel);
@@ -90,7 +98,7 @@ describe("VisualOps Integration Test", function() {
       });
     });
     it("Start App", function(done) {
-      console.log('Start App Test Start...');
+      console.log('Start App Testing');
       watchAppProcess(appModel, function(state) {
         if (state === opsModelState.Running) {
           unwatchAppProcess(appModel);
@@ -102,9 +110,9 @@ describe("VisualOps Integration Test", function() {
       });
     });
     it("Terminate App", function(done) {
-      console.log('Terminate App Test Start...');
+      console.log('Terminate App Testing');
       watchAppProcess(appModel, function(state) {
-        if (state === opsModelState.Destroyed) {
+        if (state === opsModelState.Terminating) {
           unwatchAppProcess(appModel);
           return done();
         }
@@ -114,7 +122,7 @@ describe("VisualOps Integration Test", function() {
       });
     });
     _results.push(it("Delete Stack", function(done) {
-      console.log('Terminate App Test Start...');
+      console.log('Delete Stack Testing');
       return stackModel.remove().then(function() {
         return done();
       }, function(err) {

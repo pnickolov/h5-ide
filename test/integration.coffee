@@ -6,15 +6,22 @@ $ = window.$
 App = window.App
 Design = window.Design
 
-# stackJsons = require('./stack/requireStacks')
-stackJsons = [ require('./stack/an-instance') ]
+stackJsons = require('./stack/requireStacks')
+#stackJsons = [ require('./stack/an-instance') ]
 
-describe "VisualOps Integration Test", ()->
+describe "VisualOps Integration Testing", ()->
     stackModel = null
     appModel = null
     opsModelState = null
 
     watchAppProcess = ( ops, callback ) ->
+        callTimes = 0
+
+        insideCallback = () ->
+            if callTimes is 0
+                callTimes++
+                callback.apply null, arguments
+
         ops.on 'change:progress', () ->
             console.log "Progress: %#{ops.get('progress')}"
 
@@ -22,13 +29,13 @@ describe "VisualOps Integration Test", ()->
             state = ops.get 'state'
 
             if state is opsModelState.RollingBack
-                throw 'Operation faild and Rrlling back'
+                throw 'Operation faild and Rolling back'
                 return
 
-            callback state
+            insideCallback state
 
         ops.on 'destroy', () ->
-            callback ops.get 'state'
+            insideCallback state
 
     unwatchAppProcess = ( ops ) ->
         ops.off 'change:progress'
@@ -45,7 +52,7 @@ describe "VisualOps Integration Test", ()->
 
         # Import Stack
         it "Import and Save Stack", (done)->
-            console.log 'Import and Save Stack Test Start...'
+            console.log 'Import and Save Stack Testing ...'
 
             stackModel = App.sceneManager.activeScene().project.createStackByJson( stackJson )
             opsModelState = stackModel.constructor.State
@@ -62,7 +69,7 @@ describe "VisualOps Integration Test", ()->
             return
 
         it "Run Stack", (done) ->
-            console.log 'Run Stack Test Start...'
+            console.log 'Run Stack Testing'
 
             json = stackModel.getJsonData()
             json.usage = 'testing'
@@ -80,7 +87,7 @@ describe "VisualOps Integration Test", ()->
                 throw new Error(err)
 
         it "Stop App", (done) ->
-            console.log 'Stop App Test Start...'
+            console.log 'Stop App Testing'
 
             watchAppProcess appModel, ( state ) ->
                 if state is opsModelState.Stopped
@@ -92,7 +99,7 @@ describe "VisualOps Integration Test", ()->
 
 
         it "Start App", (done) ->
-            console.log 'Start App Test Start...'
+            console.log 'Start App Testing'
 
             watchAppProcess appModel, ( state ) ->
                 if state is opsModelState.Running
@@ -104,10 +111,10 @@ describe "VisualOps Integration Test", ()->
 
 
         it "Terminate App", (done) ->
-            console.log 'Terminate App Test Start...'
+            console.log 'Terminate App Testing'
 
             watchAppProcess appModel, ( state ) ->
-                if state is opsModelState.Destroyed
+                if state is opsModelState.Terminating
                     unwatchAppProcess appModel
                     done()
 
@@ -115,7 +122,7 @@ describe "VisualOps Integration Test", ()->
                 throw new Error(err)
 
         it "Delete Stack", (done) ->
-            console.log 'Terminate App Test Start...'
+            console.log 'Delete Stack Testing'
 
             stackModel.remove().then ->
                 done()

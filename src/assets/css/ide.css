@@ -530,98 +530,8 @@ a.action-link:hover {
 /* elb property panel */
 /* written by song */
 /* elb listener set */
-.elb-property-listener .listener-item .selectbox {
-  width: 130px !important; }
-
-.elb-property-listener .listener-item .selectbox .item {
-  width: 142px; }
-
-.elb-property-listener-item-1 {
-  float: left;
-  width: 150px; }
-
-.elb-property-listener-item-2 {
-  float: left;
-  width: 50px;
-  margin-left: 10px; }
-
-.elb-property-listener .listener-item input {
-  width: 80px !important; }
-
 #elb-property-listener-list .elb-property-listener:only-child .elb-property-listener-item-remove, #mesos-health-checks-list .elb-property-listener:only-child .elb-property-listener-item-remove {
   display: none; }
-
-.elb-property-listener-item-remove:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: #F74A48; }
-
-#elb-property-listener-cert-main {
-  border-top: 1px #404040 solid;
-  display: none;
-  background: rgba(0, 0, 0, 0.1); }
-
-.elb-pingpath-prefix {
-  position: absolute;
-  height: 31px;
-  line-height: 31px;
-  padding: 0 0 0 8px;
-  top: 1px;
-  left: 0px; }
-
-#property-elb-idle-timeout {
-  width: 100px;
-  margin-right: 10px; }
-
-#property-elb-health-path {
-  padding-left: 13px;
-  width: 212px; }
-
-#property-elb-health-path[disabled] {
-  color: transparent; }
-
-#property-elb-health-path[disabled] + .elb-pingpath-prefix {
-  display: none; }
-
-.elb-info-icon {
-  margin-top: 3px;
-  float: right; }
-
-.elb-property-cert-input {
-  height: 50px; }
-
-.elb-property-instance-list li {
-  height: 30px;
-  width: 244px !important;
-  margin-left: 10px;
-  margin-top: 10px;
-  padding-top: 5px;
-  /*padding: 2px 10px;*/ }
-
-.elb-property-instance-list li {
-  background-color: #333;
-  border: 0 !important; }
-
-.elb-property-instance-list li:hover {
-  background-color: #333; }
-
-.elb-property-instance-list li .instance-info {
-  float: left; }
-
-.elb-property-instance-list li .instance-info .instance-id {
-  color: #888; }
-
-.elb-property-instance-list li .instance-info .instance-id.instance-id-down {
-  margin-top: 10px; }
-
-.elb-property-instance-list li .instance-state {
-  float: right;
-  margin-right: 5px;
-  margin-top: 10px; }
-
-.elb-property-instance-list li .elb-info-icon {
-  float: right;
-  margin-top: -14px;
-  margin-left: 5px; }
 
 /* property-stack */
 .dl-horizontal.dl-region-type {
@@ -4223,6 +4133,11 @@ aside.dashboard-sidebar {
     aside.dashboard-sidebar .dashboard-nav-log.selected {
       border-bottom: 2px solid #4a90e2;
       width: 100%; }
+    aside.dashboard-sidebar .dashboard-nav-log:only-child {
+      max-width: 100%;
+      text-align: left;
+      border-bottom: none;
+      padding: 0 20px; }
   aside.dashboard-sidebar .dashboard-log-wrap {
     overflow-x: hidden;
     overflow-y: auto;
@@ -5771,6 +5686,65 @@ aside.dashboard-sidebar {
   background-color: rgba(0, 0, 0, 0.05);
   border-left: 1px #313131 solid;
   cursor: pointer; }
+  .elb-property-listener-item-remove:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #a42b2b; }
+
+.elb-property-listener .listener-item .selectbox {
+  width: 130px !important; }
+  .elb-property-listener .listener-item .selectbox .item {
+    width: 142px; }
+.elb-property-listener .listener-item input {
+  width: 80px !important; }
+.elb-property-listener .listener-item > div {
+  float: left; }
+.elb-property-listener .listener-item > div:first-child {
+  width: 150px; }
+.elb-property-listener .listener-item > div:last-child {
+  width: 50px;
+  margin-left: 10px; }
+
+#property-elb-health-path {
+  padding-left: 18px; }
+  #property-elb-health-path[disabled] {
+    color: transparent; }
+    #property-elb-health-path[disabled] + .elb-pingpath-prefix {
+      display: none; }
+
+.elb-pingpath-prefix {
+  position: absolute;
+  height: 31px;
+  line-height: 31px;
+  padding: 0 0 0 7px;
+  top: 0;
+  left: 0; }
+
+.elb-info-icon {
+  margin-top: 3px;
+  float: right; }
+
+.elb-property-instance-list {
+  margin-top: 5px; }
+  .elb-property-instance-list li {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    font-size: 12px;
+    padding: 5px 0; }
+    .elb-property-instance-list li .instance-info {
+      width: 60%;
+      margin-right: 5%; }
+    .elb-property-instance-list li .instance-state {
+      width: 35%; }
+    .elb-property-instance-list li .instance-name {
+      color: #eee;
+      word-break: break-all; }
+    .elb-property-instance-list li .instance-id {
+      color: #888; }
+  .elb-property-instance-list .elb-info-icon {
+    margin-top: 0; }
 
 /* Title Show/Hide State Panel */
 .OEPanelRight .sidebar-title {
@@ -5899,14 +5873,14 @@ aside.dashboard-sidebar {
     height: 90px; }
 
 /* General Style for Property Panel List */
-.property-list li {
+.property-list > li {
   padding: 10px;
   border-bottom: 1px solid #202027;
   background: #2b2b35;
   -webkit-transition: background 0.2s ease-in-out;
   -o-transition: background 0.2s ease-in-out;
   transition: background 0.2s ease-in-out; }
-  .property-list li:hover {
+  .property-list > li:hover {
     background: #373743; }
 
 .add-to-list {

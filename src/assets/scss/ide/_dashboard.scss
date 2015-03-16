@@ -461,6 +461,7 @@ aside.dashboard-sidebar {
   border-left : 1px #ddd solid;
   height      : 100%;
   position: relative;
+
   nav {
     overflow      : auto;
     background    : #eee;
@@ -486,6 +487,13 @@ aside.dashboard-sidebar {
       &.selected {
         border-bottom: 2px solid $base-b;
         width: 100%;
+      }
+
+      &:only-child {
+        max-width     : 100%;
+        text-align    : left;
+        border-bottom : none;
+        padding       : 0 20px;
       }
     }
 

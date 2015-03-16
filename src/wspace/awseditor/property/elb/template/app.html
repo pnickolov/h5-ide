@@ -93,22 +93,20 @@
             <i class="status status-{{#if health}}green{{else}}red{{/if}} icon-label"></i>
             <span class="app-panel-li-main">{{zone}}</span>
         </div>
-        <div class="list-row">
-          <ul class="elb-property-instance-list">
-            {{#each this.instance}}
-              <li>
-                <div class="instance-info">
-                  {{#if instance_name}}<div class="instance-name">{{instance_name}}</div>{{/if}}
-                  <div class="instance-id {{#unless instance_name}}instance-id-down{{/unless}}">({{instance_id}})</div>
-                </div>
-                <div class="instance-state">
-                  {{#if instance_state}}InService{{else}}OutOfService{{/if}}
-                  {{#unless instance_state}}<a class="elb-info-icon tooltip icon-info" data-tooltip="{{instance_state_desc}}"></a>{{/unless}}
-                </div>
-              </li>
-            {{/each}}
-          </ul>
-        </div>
+        <ul class="elb-property-instance-list">
+          {{#each this.instance}}
+            <li>
+              <div class="instance-info">
+                {{#if instance_name}}<div class="instance-name">{{instance_name}}</div>{{/if}}
+                <div class="instance-id {{#unless instance_name}}instance-id-down{{/unless}}">({{instance_id}})</div>
+              </div>
+              <div class="instance-state">
+                {{#if instance_state}}InService{{else}}OutOfService{{/if}}
+                {{#unless instance_state}}<a class="elb-info-icon tooltip icon-info" data-tooltip="{{instance_state_desc}}"></a>{{/unless}}
+              </div>
+            </li>
+          {{/each}}
+        </ul>
       </li>
     {{/each}}
   </ul>

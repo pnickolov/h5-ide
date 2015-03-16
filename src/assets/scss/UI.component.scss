@@ -379,7 +379,7 @@ textarea[readonly]  {
 
 .property-control-group .input.input-short,
 .input.input-short {
-	width: 160px;
+	width: 170px;
 }
 
 .input::-webkit-input-placeholder {
@@ -1582,13 +1582,18 @@ select.select3.disabled {
 	width            : 16px;
 	border           : 1px #77446c solid;
 
-	position         : absolute;
-	z-index          : 99;
-	margin-top       : -6px;
-	margin-left      : -9px;
+	position    : absolute;
+	z-index     : 99;
+	margin-top  : -6px;
+	margin-left : -9px;
+	cursor      : pointer;
 
-	background-color : #9e62d4;
-	box-shadow       : inset 0 1px 1px rgba(255,255,255,.1), 0 1px 4px rgba(0,0,0,.3);
+	background : $pink-p;
+	box-shadow : inset 0 1px 1px rgba(255,255,255,.1), 0 1px 4px rgba(0,0,0,.3);
+
+	&:hover { background: lighten($pink-p, 5%); }
+
+	@include transit($method:left, $dur:.1s);
 }
 
 .marker {

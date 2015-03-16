@@ -200,7 +200,7 @@
 
 /* General Style for Property Panel List */
 
-.property-list li {
+.property-list > li {
 	padding       : 10px;
 	border-bottom : 1px solid $bg-p;
 	background    : lighten($bg-p, 5%);

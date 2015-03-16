@@ -112,6 +112,7 @@ define [ "../DesignAws" ], (Design)->
                     compo.resource.DBSubnetGroupName = ""
                 when 'AWS.RDS.OptionGroup'
                     compo.resource.OptionGroupName = ""
+                    compo.resource.CreatedBy = ""
                 else
 
     null

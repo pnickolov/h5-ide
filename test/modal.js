@@ -2,7 +2,7 @@
 (function() {
   var $, window;
 
-  window = require("../env/Browser").window;
+  window = require("./env/Browser").window;
 
   $ = window.$;
 

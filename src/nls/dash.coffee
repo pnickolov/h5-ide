@@ -822,14 +822,14 @@ module.exports =
       en: """  <li>Currently only templates meet following requirements can be imported:</li>
         <li>Must be in VPC platform. EC2 Classic template is not supported.</li>
         <li>Must not include reference to existing VPC, Subnet or Security Group. <br> These components must be defined as complete new resources.</li>
-        <li>Resources used in template must be already <span class="tooltip" data-tooltip="EC2, VPC, Auto Scaling, Elastic Load Balancing, EBS, RDS">supported by VisualOps.</span> <br> Unsupported resources will be ignored.</li>
+        <li>Resources used in template must be already <span class="tooltip" data-tooltip="EC2, VPC, Auto Scaling Group, Elastic Load Balancing, EBS, RDS">supported by VisualOps.</span> <br> Unsupported resources will be ignored.</li>
         <li>All DependsOn attribute will be ignored.</li>
         <li>For more details, refer to <a href="http://docs.visualops.io/stack_management/import_cloudformation_template.html" target="_blank" alt="Documentation-Import CloudFormation template">Documentation</a>.</li>"""
       zh: """
         <li>当前只有符合以下要求的模板可以被导入:</li>
         <li>必须在 VPC 平台内。EC2 传统模板不会被支持。</li>
         <li>必须不包含对已存在 VPC，子网或安全组的引用。<br/>这些组件都必须定义为全新的资源。</li>
-        <li>模板里的资源必须是 <span class="tooltip" data-tooltip='EC2, VPC, Auto Scaling, Elastic Load Balancing, EBS, RDS'>VisualOps 已支持的资源</span>。<br/>不支持的资源将被忽略。</li>
+        <li>模板里的资源必须是 <span class="tooltip" data-tooltip='EC2，VPC，Auto Scaling Group，Elastic Load Balancing，EBS，RDS'>VisualOps 已支持的资源</span>。<br/>不支持的资源将被忽略。</li>
         <li>所有依赖属性将被忽略。</li>
         <li>详情请参看<a href="http://docs.visualops.io/stack_management/import_cloudformation_template.html" target="_blank" alt="Documentation-Import CloudFormation template">文档</a>。</li>"""
 

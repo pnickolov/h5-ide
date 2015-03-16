@@ -24,6 +24,7 @@
       english = loadfile("../src/nls/en-us/lang");
       for (key in english) {
         value = english[key];
+        console.log("Checking " + key + " of English lang file.");
         for (sub in value) {
           subvalue = value[sub];
           if (subvalue.match(/[\u4e00-\u9fa5]/)) {
@@ -35,6 +36,33 @@
       }
       console.log("----------------========Chinese Chars Check Passed========-------------------");
       return done();
+    });
+  });
+
+  describe("should not contains english symbol in Chinese lang.", function() {
+    var chinese;
+    chinese = loadfile("../src/nls/zh-cn/lang");
+    return it("should", function(done) {
+      var fail, key, sub, subvalue, value;
+      fail = false;
+      for (key in chinese) {
+        value = chinese[key];
+        console.log("Checking " + key + " of Chinese file...");
+        for (sub in value) {
+          subvalue = value[sub];
+          if (subvalue.match(/[\,\!]/)) {
+            if (sub !== 'DATE_FORMAT_MONTHS' && sub !== 'DATE_FORMAT_MON' && sub !== 'DATE_FORMAT_WEEK' && sub !== 'DATE_FORMAT_WEK') {
+              console.log(key, sub, subvalue);
+              fail = true;
+            }
+          }
+        }
+      }
+      if (fail) {
+        return done(new Error("Chinese file check failed."));
+      } else {
+        return done();
+      }
     });
   });
 

@@ -155,7 +155,7 @@ module.exports =
 
     INVITE_MOD_INTRO:
       en: "Introduce <b>Instance State</b>,<br>a new way to devOps your infrastructure!"
-      zh: "介绍 <b>实例 State</b>,<br>使用一种全新方式开发部署您的架构!"
+      zh: "介绍 <b>实例 State</b>，<br>使用一种全新方式开发部署您的架构！"
 
     INVITE_MOD_INTRO_MORE:
       en: "<b>Instance State</b> enables you to manage the software layer of your instances. Software packages, configuration files, services, all are there in a very easy, intuitive and functional way."

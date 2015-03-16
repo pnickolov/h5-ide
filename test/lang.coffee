@@ -2,8 +2,6 @@
 browser = require('./env/Browser')
 window = browser.window
 
-#b(){var w = window; w.alert= function(d){console.log(d)}; a.apply(w, arguments)}
-
 loadfile = (path)->
   temp = null
   define = (obj)->
@@ -19,6 +17,7 @@ describe "Lang file generated format", ()->
 
 
     for key, value of english
+      console.log "Checking #{key} of English lang file."
       for sub, subvalue of value
         if subvalue.match(/[\u4e00-\u9fa5]/)
           console.log key, sub, subvalue
@@ -28,4 +27,20 @@ describe "Lang file generated format", ()->
     console.log "----------------========Chinese Chars Check Passed========-------------------"
     done()
 
-     
+describe "should not contains english symbol in Chinese lang.", ()->
+
+  chinese = loadfile("../src/nls/zh-cn/lang")
+  it "should", (done)->
+    fail = false
+    for key, value of chinese
+      console.log "Checking #{key} of Chinese file..."
+      for sub, subvalue of value
+        if subvalue.match(/[\,\!]/)
+          if sub not in ['DATE_FORMAT_MONTHS', 'DATE_FORMAT_MON', 'DATE_FORMAT_WEEK', 'DATE_FORMAT_WEK']
+            console.log key, sub, subvalue
+            fail = true
+    if fail
+      done new Error("Chinese file check failed.")
+    else
+      done()
+

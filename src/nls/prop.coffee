@@ -153,7 +153,7 @@ module.exports =
 
     KP_CREATED_NEED_TO_DOWNLAOD:
       en: "Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created."
-      zh: "密钥对 <span></span> 创建完成, 您需要下载私钥(*.pem 文件)才能继续, 请将其保存于安全的位置, 创建完成之后您将无法再次下载。"
+      zh: "密钥对 <span></span> 创建完成，您需要下载私钥(*.pem 文件)才能继续，请将其保存于安全的位置，创建完成之后您将无法再次下载。"
 
     KP_CONFIRM_DELETE_1:
       en: "Confirm to delete "
@@ -238,11 +238,11 @@ module.exports =
 
     INSTANCE_TIP_DEFAULT_KP:
       en: 'If you have used $DefaultKeyPair for any instance/launch configuration, you will be required to specify an existing key pair for $DefaultKeyPair. Or you can choose "No Key Pair" as $DefaultKeyPair.'
-      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair, 您将需要为 $DefaultKeyPair 指定一个存在的密钥对, 或者您也可以选择'无密钥对'"
+      zh: "如果您在任何实例或者启动配置里使用了 $DefaultKeyPair，您将需要为 $DefaultKeyPair 指定一个存在的密钥对，或者您也可以选择'无密钥对'"
 
     INSTANCE_TIP_NO_KP:
       en: "If you select no key pair, you will not be able to connect to the instance unless you already know the password built into this AMI."
-      zh: "如果您选择了 “无密钥对”, 您将无法连接到实例, 除非您已经知道烧录的 AMI 的密码。"
+      zh: "如果您选择了 “无密钥对”，您将无法连接到实例，除非您已经知道烧录的 AMI 的密码。"
 
     INSTANCE_CW_ENABLED:
       en: "Enable CloudWatch Detailed Monitoring"
@@ -374,11 +374,11 @@ module.exports =
 
     INSTANCE_TIP_IF_THE_QUANTITY_IS_MORE_THAN_1:
       en: "If the quantity is more than 1, host name will be the string you provide plus number index."
-      zh: "如果数量大于1, 主机名将为您提供的字符加索引数字"
+      zh: "如果数量大于1，主机名将为您提供的字符加索引数字"
 
     INSTANCE_TIP_YOU_CANNOT_SPECIFY_INSTANCE_NUMBER:
       en: "You cannot specify instance number, since the instance is connected to a route table."
-      zh: "您不能指定实例数量, 因为实例已经连接到路由表中"
+      zh: "您不能指定实例数量，因为实例已经连接到路由表中"
 
     INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED:
       en: "Public IP cannot be associated if instance is launching with more than one network interface."
@@ -390,7 +390,7 @@ module.exports =
 
     AMI_STACK_NOT_AVAILABLE:
       en: "<p>This AMI is not available. It may have been deleted by its owner or not shared with your AWS account. </p><p>Please change to another AMI.</p>"
-      zh: "<p>此 AMI 不可用, 可能已经被所有者删除或者不再与您的 AWS 账号共享。 </p><p>请选择其他的 AMI。</p>"
+      zh: "<p>此 AMI 不可用，可能已经被所有者删除或者不再与您的 AWS 账号共享。 </p><p>请选择其他的 AMI。</p>"
 
     AMI_APP_NOT_AVAILABLE:
       en: "This AMI's infomation is unavailable."
@@ -486,7 +486,7 @@ module.exports =
 
     APP_TIP_RESDIFF:
       en: "If resource has been changed outside VisualOps, an email notification will be sent to you."
-      zh: "如果资源在 VisualOps 外发生变化, 将会给您发送一封通知邮件"
+      zh: "如果资源在 VisualOps 外发生变化，将会给您发送一封通知邮件"
 
     APP_DIFF_CHANGE_CONFIRM:
       en: "OK, got it"
@@ -786,7 +786,7 @@ module.exports =
 
     VPC_TIP_SELECT_NETBIOS_NODE:
       en: "Select NetBIOS Node Type. We recommend 2. (Broadcast and multicast are currently not supported by AWS.)"
-      zh: "选择 NetBIOS 节点类型, 我们推荐选项2。(AWS 尚未支持广播和多播)"
+      zh: "选择 NetBIOS 节点类型，我们推荐选项2。(AWS 尚未支持广播和多播)"
 
     SG_TIT_DETAIL:
       en: "Security Group Details"
@@ -1274,7 +1274,7 @@ module.exports =
 
     VOLUME_MSG_WARN:
       en: "Volume size must be at least 10 GB to use Provisioned IOPS volume type."
-      zh: "要使用预配置IOPS,磁盘必须最少10GB"
+      zh: "要使用预配置 IOPS，磁盘必须最少10GB"
 
     VOLUME_ENCRYPTED_LABEL:
       en: "Encrypt this volume"
@@ -1518,7 +1518,7 @@ module.exports =
 
     ELB_TIP_25_80_443OR1024TO65535:
       en: "25, 80, 443 or 1024 - 65535"
-      zh: "25, 80, 443 or 1024 - 65535"
+      zh: "25，80，443 或 1024 - 65535"
 
     ELB_TIP_1_65535:
       en: "1 - 65535"
@@ -1610,7 +1610,7 @@ module.exports =
 
     ASG_ELB_WARN:
       en: "If the calls to Elastic Load Balancing health check for the instance returns any state other than InService, Auto Scaling marks the instance as Unhealthy. And if the instance is marked as Unhealthy, Auto Scaling starts the termination process for the instance."
-      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态, Auto Scaling 组将此实例标记为不健康。 且一旦一个实例被标记为不健康, Auto Scaling 组将结束此实例。"
+      zh: "只要弹性负载均衡的健康检查返回非正常服务的状态，Auto Scaling 组将此实例标记为不健康。 且一旦一个实例被标记为不健康，Auto Scaling 组将结束此实例。"
 
     ASG_TERMINATION_POLICY:
       en: "Termination Policy"
@@ -2094,7 +2094,7 @@ module.exports =
 
     DBINSTANCE_SUBNETGROUP_NOT_SETUP:
       en: "Subnet Group %s is not correctly set up yet. Assign %s to at least 2 availability zones."
-      zh: "子网组设置不正确, 分配 %s 至少两个可用区域"
+      zh: "子网组设置不正确，分配 %s 至少两个可用区域"
 
     DBINSTANCE_BACKUP_MAINTENANCE:
       en: "Backup & Maintenance"
@@ -2134,15 +2134,15 @@ module.exports =
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_1:
       en: "Stop any transactions from being written to the read replica source DB instance, and then wait for all updates to be made to the read replica."
-      zh: "停止只读副本源数据库的所有写入操作, 并等待只读副本完成全部更新"
+      zh: "停止只读副本源数据库的所有写入操作，并等待只读副本完成全部更新"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_2:
       en: "To be able to make changes to the read replica, you must the set the read_only parameter to 0 in the DB parameter group for the read replica."
-      zh: "要修改只读副本, 您必须在只读副本的参数组里将 read_only 参数设置为 0"
+      zh: "要修改只读副本，您必须在只读副本的参数组里将 read_only 参数设置为 0"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_3:
       en: "Perform all needed DDL operations, such as creating indexes, on the read replica."
-      zh: "然后进行所有的 DDL 操作, 比如在只读副本上创建索引"
+      zh: "然后进行所有的 DDL 操作，比如在只读副本上创建索引"
 
     DBINSTANCE_PROMOTE_CONFIRM_CONTENT_4:
       en: "Promote the read replica."
@@ -2154,7 +2154,7 @@ module.exports =
 
     DBINSTANCE_PROMOTE_NOTE_CONTENT:
       en: "The promotion process takes a few minutes to complete. When you promote a read replica, replication is stopped and the read replica is rebooted. When the reboot is complete, the read replica is available as a Single-AZ DB instance."
-      zh: "提升的过程将会花费几分钟。提升只读副本的时候, 副本停止并重启, 重启完成后, 只读副本将变成可用的单区域数据库实例。"
+      zh: "提升的过程将会花费几分钟。提升只读副本的时候，副本停止并重启，重启完成后，只读副本将变成可用的单区域数据库实例。"
 
     DBINSTANCE_PROMOTE_LINK_TEXT:
       en: "Read AWS Document"
@@ -2230,7 +2230,7 @@ module.exports =
 
     DBINSTANCE_IOPS_AVAILABILITY_IMPACT:
       en: "When you initiate a storage type conversion between IOPS and standard storage, your DB Instance will have an availability impact for a few minutes."
-      zh: "当您进行 IOPS 与标准存储之间的类型转换时, 您的数据库实例将会有几分钟受影响"
+      zh: "当您进行 IOPS 与标准存储之间的类型转换时，您的数据库实例将会有几分钟受影响"
 
     DBINSTANCE_MASTER_USERNAME:
       en: "Master Username"
@@ -2401,7 +2401,7 @@ module.exports =
 
     ASG_ADJUST_TOOLTIP_CHANGE:
       en: "Increase or decrease existing capacity by integer you input here. A positive value adds to the current capacity and a negative value removes from the current capacity."
-      zh: "根据您输入的数字增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减"
+      zh: "根据您输入的数字增减当前值，若为正值会与当前值相加，负值则会与当前值相减"
 
     ASG_ADJUST_TOOLTIP_EXACT:
       en: "Change the current capacity of your Auto Scaling group to the exact value specified."
@@ -2409,11 +2409,11 @@ module.exports =
 
     ASG_ADJUST_TOOLTIP_PERCENT:
       en: "Increase or decrease the desired capacity by a percentage of the desired capacity. A positive value adds to the current capacity and a negative value removes from the current capacity"
-      zh: "根据百分比来增减当前值, 若为正值会与当前值相加, 负值则会与当前值相减"
+      zh: "根据百分比来增减当前值，若为正值会与当前值相加，负值则会与当前值相减"
 
     AZ_CANNOT_EDIT_EXISTING_AZ:
       en: "Cannot edit existing availability zone. However, newly created availability zone is editable."
-      zh: "无法编辑已存在的 AZ, 但新建的 AZ 可以编辑"
+      zh: "无法编辑已存在的 AZ，但新建的 AZ 可以编辑"
 
     CGW_IP_VALIDATE_REQUIRED:
       en: "IP Address is required."
@@ -2429,7 +2429,7 @@ module.exports =
 
     CGW_IP_VALIDATE_INVALID_DESC:
       en: "Please provide a valid IP Address. For example, 192.168.1.1."
-      zh: "请提供一个有效的 IP 地址, 比如: 192.168.1.1"
+      zh: "请提供一个有效的 IP 地址，比如: 192.168.1.1"
 
     CGW_IP_VALIDATE_INVALID_CUSTOM:
       en: "IP Address %s is invalid for customer gateway."
@@ -2565,7 +2565,7 @@ module.exports =
 
     RTB_CIDR_BLOCK_INVALID_DESC:
       en: "Please provide a valid IP range. For example, 10.0.0.1/24."
-      zh: "请提供有效的 IP 区间, 如: 10.0.0.1/24"
+      zh: "请提供有效的 IP 区间，如: 10.0.0.1/24"
 
     RTB_CIDR_BLOCK_CONFLICTS:
       en: "%s conflicts with other route."

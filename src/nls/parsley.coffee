@@ -262,7 +262,7 @@ module.exports =
 
     CANNOT_CONTAIN_CHARACTER_SPLASH:
       en: "Cannot contain character /,\",@"
-      zh: "不能使用 /,\",@ 等字符"
+      zh: "不能使用 /，\"，@ 等字符"
 
     MUST_CONTAIN_FROM_MIN_TO_MAX_CHARACTERS:
       en: "Must contain from %s to %s characters"
@@ -270,7 +270,7 @@ module.exports =
 
     THIS_VALUE_CANNOT_BE_1434_3389_47001_49152_49156:
       en: "This value can't be 1434, 3389, 47001, 49152-49156"
-      zh: "该值不能为1434, 3389, 47001或者在49152-49156的范围内"
+      zh: "该值不能为1434，3389，47001或者在49152-49156的范围内"
 
     MUST_CONTAIN_FROM_MIN_TO_MAX_ALPHANUMERIC_CHARACTERS_HYPHEN:
       en: "Must contain from %s to %s alphanumeric characters or hyphens and first character must be a letter, cannot end with a hyphen or contain two consecutive hyphens"

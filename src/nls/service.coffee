@@ -6,7 +6,7 @@ module.exports =
 
     NETWORK_ERROR:
       en: "Service is temporarily unavailable. Please try again later."
-      zh: "服务暂时不可用, 请稍后重试"
+      zh: "服务暂时不可用，请稍后重试"
 
     "ERROR_CODE_-1_MESSAGE_AWS_RESOURCE":
       en: "Sorry, we are suffering from some technical issues, please click the refresh icon at top right corner of Global tab again."

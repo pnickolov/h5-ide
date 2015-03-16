@@ -333,7 +333,7 @@ module.exports =
 
     POP_BODY_EXPORT_AS_JSON:
       en: "The stack is ready to export. Please click the Download button to save the file."
-      zh: "此 Stack 已经可以导出, 请点击下载按钮保存文件。"
+      zh: "此 Stack 已经可以导出，请点击下载按钮保存文件。"
 
     POP_BTN_DOWNLOAD:
       en: "Download"

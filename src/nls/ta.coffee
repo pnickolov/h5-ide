@@ -148,7 +148,7 @@ module.exports =
 
     NOTICE_INSTANCE_HAS_RTB_NO_ELB:
       en: "Route Table <span class='validation-tag tag-rtb'>%s</span> has route to Instance <span class='validation-tag tag-instance'>%s</span>. If <span class='validation-tag tag-instance'>%s</span> is working as NAT instance, it should be assigned with an Elastic IP."
-      zh: "路由表 <span class='validation-tag tag-rtb'>%s</span> 连接到了实例 <span class='validation-tag tag-instance'>%s</span>, 如果 <span class='validation-tag tag-instance'>%s</span> 正作为 NAT 实例，那么它应该被分配一个弹性 IP。"
+      zh: "路由表 <span class='validation-tag tag-rtb'>%s</span> 连接到了实例 <span class='validation-tag tag-instance'>%s</span>，如果 <span class='validation-tag tag-instance'>%s</span> 正作为 NAT 实例，那么它应该被分配一个弹性 IP。"
 
     WARNING_NO_RTB_CONNECT_IGW:
       en: "No Route Table is connected to Internet Gateway."
@@ -361,7 +361,7 @@ module.exports =
 
     ERROR_SUBNET_HAS_PORT_SHOULD_CONNECTED_OUT:
       en: "Subnet %s should be connected to a router associated with External Gateway, so that Floating IP would work. "
-      zh: ""
+      zh: "为了使浮动IP正常工作，子网 %s 应该连接到一个关联到对外网关的路由器。"
 
     ERROR_SUBNET_HAS_CONFLICT_CIDR_WITH_OTHERS:
       en: "Subnet <span class='validation-tag tag-ossubnet'>%s</span>'s CIDR block(%s) conflicts with  Subnet <span class='validation-tag tag-ossubnet'>%s</span>'s CIDR block(%s)."

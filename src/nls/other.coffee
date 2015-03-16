@@ -30,7 +30,7 @@ module.exports =
 
     IDE_MSG_ERR_OPEN_TAB:
       en: "Unable to open the stack/app, please try again"
-      zh: "无法打开 Stack/App, 请重试"
+      zh: "无法打开 Stack/App，请重试"
 
     IDE_MSG_ERR_CONNECTION:
       en: "Unable to load some parts of the IDE, please refresh the browser"
@@ -38,7 +38,7 @@ module.exports =
 
     IDE_TIP_VISUALIZE_MORE_THAN_100_ENI:
       en: "Currently we do not support to visualize system has more than 300 network interfaces. Contact us by the Feedback button for details."
-      zh: "我们目前尚不支持可视化超过300 个网络接口的系统, 如有需要请通过反馈按钮联系我们。"
+      zh: "我们目前尚不支持可视化超过300 个网络接口的系统，如有需要请通过反馈按钮联系我们。"
 
     RES_TIT_RESOURCES:
       en: "Resources"
@@ -2805,7 +2805,7 @@ into live resources, or import existing infrastructures."
 
     WAIT_FOR_ADMIN_FINISH_CREDENTIAL:
       en: "Only workspace admin has the permission to set up credential. You may wait until your admin has made everything ready."
-      zh: "只有工作空间的管理员有权限设置证书, 你可以等您的管理员设置好以后再继续。"
+      zh: "只有工作空间的管理员有权限设置证书，你可以等您的管理员设置好以后再继续。"
 
     PROVIDE_CRED_TO_VISUALIZE:
       en: "Provide cloud credential to import existing VPC as app."
@@ -2817,11 +2817,11 @@ into live resources, or import existing infrastructures."
 
     CANT_DELETE_WORKSPACE:
       en: "We were unable to charge the workspace's credit card. This workspace is in limited status now. Please update your billing information. Once the workspace is back in normal, you may delete it."
-      zh: "我们没能在您的工作空间绑定的信用卡上成功扣款。此工作空间现处于受限模式。请更新您的账单信息。一旦工作空间恢复正常模式, 您就可以删除此工作空间。"
+      zh: "我们没能在您的工作空间绑定的信用卡上成功扣款。此工作空间现处于受限模式。请更新您的账单信息。一旦工作空间恢复正常模式，您就可以删除此工作空间。"
 
     SETTING_INVALID_EMAIL:
       en: "This email is invalid. Please enter a valid email."
-      zh: "此电子邮件无效, 请输入有效的电子邮件。"
+      zh: "此电子邮件无效，请输入有效的电子邮件。"
 
     TITLE_OPS_CONFLICT:
       en: "Confliction Detected"

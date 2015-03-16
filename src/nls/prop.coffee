@@ -2029,7 +2029,7 @@ module.exports =
       zh: "数据库配置"
 
     DATABASE_NAME:
-      en: "Database Name"
+      en: "DB instance name"
       zh: "数据库名称"
 
     DBINSTANCE_PORT:

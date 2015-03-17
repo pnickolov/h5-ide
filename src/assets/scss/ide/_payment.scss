@@ -1,12 +1,3 @@
-// @import "compass";
-$navHeight : 38px;
-@mixin retina {
-  @media (-webkit-min-device-pixel-ratio:2), (min--moz-device-pixel-ratio:2), (-o-min-device-pixel-ratio:2/1), (min-device-pixel-ratio: 2) {
-    & { @content; }
-  }
-}
-
-
 #PaymentBody {
   min-height: 150px;
 
@@ -19,29 +10,18 @@ $navHeight : 38px;
     }
   }
 
-  .link-style {
-    color: #999;
-    line-height: 30px;
-    margin-left: 10px;
-  }
-  .table-head{
-    width: 100%;
+  .table-head {
     background: #363636;
-    tr th{
-      position: relative;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 500;
 
+    tr th{
+      position    : relative;
+      padding     : 6px 12px;
+      font-size   : 13px;
+      font-weight : 500;
     }
   }
-  .sortable{
-    cursor: pointer;
-  }
-  .t-m-content a.link-blue{
-    margin:0 10px;
-  }
-  .t-m-content tr.item{
+
+  .table {
     font-size: 12px;
   }
   
@@ -55,53 +35,6 @@ $navHeight : 38px;
 }
 .payment-hint{
   margin-top: 20px;
-}
-.payment-card{
-  height: 100px;
-  width: 100%;
-}
-.payment-credit-middle{
-  width           : 80px;
-  height          : 44px;
-  background      : url("../images/ide/creditcard-normal.png") left center no-repeat;
-  background-size : 60px auto;
-
-  @include retina() {
-      & {
-        background-image : url("../images/ide/creditcard-normal@2x.png");
-      }
-    }
-}
-
-.billing_start_from{
-  position: absolute;
-  top: 3px;
-  right: 0;
-  font-size: 12px;
-  color: #99A;
-}
-
-.used-points{
-  display: inline-block;
-  margin-top: 20px;
-  margin-left: 20px;
-
-  .usage-number{
-    font-size : 36px;
-    color     : #be4444;
-    display   : inline-block;
-  }
-  span{
-    margin-left: 10px;
-    display: inline-block;
-  }
-}
-.used-points .usage-number{
-  color: #33c317;
-}
-
-.used-points.error .usage-number{
-  color: #fd0d00;
 }
 
 .renew-points{
@@ -119,17 +52,11 @@ $navHeight : 38px;
   }
 } 
 
-.link-blue {
-  font-size : 12px;
-  color     : $base-b;
-  &:hover {
-    text-decoration : underline;
-  }
-}
-.payment-no-card-wrapper{
+.payment-no-card-wrapper {
   width: 450px;
   margin: 0 auto;
 }
+
 .payment-modal-wrap, .provide-payment-info {
   text-align: center;
   padding-top: 30px;
@@ -146,30 +73,6 @@ $navHeight : 38px;
   }
 }
 
-.payment-credit-card {
-  width  : 100%;
-  height : 100px;
-
-  background: url("../images/ide/creditcard-normal.png") center center no-repeat;
-
-  @include retina() {
-      & {
-        background-image : url("../images/ide/creditcard-normal@2x.png");
-        @include background-size( image-width("../images/ide/creditcard-normal.png") auto ); 
-      }
-    }
-
-  &.payment-failed {
-    background: url("../images/ide/creditcard-failed.png") center center no-repeat;
-
-    @include retina() {
-      & {
-        background-image : url("../images/ide/creditcard-failed@2x.png");
-        @include background-size( image-width("../images/ide/creditcard-failed.png") auto ); 
-      }
-    }
-  }
-}
 
 #modal-run-stack, #app-apply-update {
   @include displayflex;
@@ -196,33 +99,17 @@ $navHeight : 38px;
   margin                : 10px;
   margin-bottom         : 0;
   color                 : $yellow;
-  -webkit-border-radius : 3px;
-  -moz-border-radius    : 3px;
   border-radius         : 3px;
 }
 
-// .payment-wrapper > .scroll-wrap > .scroll-content{
-//   padding: 12px 15px;
-// }
 .payment-wrapper-right{
   width            : 210px;
   border-left      : 1px solid #000000;
   background-color : #212121;
 }
-.payment-warning{
-  display: block;
-  border: 1px solid #f9b42d;
-  color: #f9b42d;
-  font-size: 12px;
-  padding: 3px;
-  margin: 0 10px;
-  background-color: #393939;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-}
-.payment-warning a{
-  color: #f9b42d;
-  text-decoration: underline;
-}
 
+.payment-credit-middle {
+  width           : 80px;
+  height          : 44px;
+  background-size : 60px auto;
+}

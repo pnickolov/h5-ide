@@ -754,8 +754,6 @@ pre {
   width: 100%;
   right: 0;
   bottom: 0;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
 #modal-wrap {
@@ -860,26 +858,17 @@ li.error-message {
   visibility: visible !important;
   background: #f2f2f2 !important;
   background: rgba(0, 0, 0, 0.06) !important;
-  border: 0 none !important;
-  /*  -webkit-box-shadow: inset 0 0 12px 4px #ffffff;
-    box-shadow: inset 0 0 12px 4px #ffffff;*/ }
+  border: 0 none !important; }
 
 .selectize-control.plugin-drag_drop .ui-sortable-placeholder::after {
   content: '!';
   visibility: hidden; }
 
-.selectize-control.plugin-drag_drop .ui-sortable-helper {
-  /*  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/ }
-
 .selectize-dropdown-header {
   position: relative;
   padding: 5px 8px;
   border-bottom: 1px solid #d0d0d0;
-  background: #f8f8f8;
-  /*  -webkit-border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
-    border-radius: 3px 3px 0 0;*/ }
+  background: #f8f8f8; }
 
 .selectize-dropdown-header-close {
   position: absolute;
@@ -898,8 +887,6 @@ li.error-message {
   border-right: 1px solid #f2f2f2;
   border-top: 0 none;
   float: left;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
 .selectize-dropdown.plugin-optgroup_columns .optgroup:last-child {
@@ -932,11 +919,6 @@ li.error-message {
   display: inline-block;
   padding: 2px 0 0 0;
   border-left: 1px solid #d0d0d0;
-  /*  -webkit-border-radius: 0 2px 2px 0;
-    -moz-border-radius: 0 2px 2px 0;
-    border-radius: 0 2px 2px 0;*/
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
 .selectize-control.plugin-remove_button [data-value] .remove:hover {
@@ -977,14 +959,7 @@ li.error-message {
   /*overflow         : hidden;*/
   position: relative;
   z-index: 1;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  /*  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;*/ }
+  box-sizing: border-box; }
 
 .selectize-control.multi .selectize-input.has-items {
   padding: 6px 8px 3px; }
@@ -999,11 +974,6 @@ li.error-message {
 .selectize-input.focus {
   /*  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);*/ }
-
-.selectize-input.dropdown-active {
-  /*  -webkit-border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
-    border-radius: 3px 3px 0 0;*/ }
 
 .selectize-input > * {
   vertical-align: baseline;
@@ -1042,7 +1012,6 @@ li.error-message {
   background: none !important;
   line-height: inherit !important;
   -webkit-user-select: auto !important;
-  -webkit-box-shadow: none !important;
   box-shadow: none !important; }
 
 .selectize-input > input::-ms-clear {
@@ -1361,8 +1330,6 @@ input.selection, textarea.selection {
   padding: 5px;
   z-index: 999;
   font-size: 12px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box; }
   #selection-tip .icon-info, .selection-tip .icon-info {
     color: #4a90e2;
@@ -1403,8 +1370,6 @@ input.selection, textarea.selection {
   left: 0;
   padding: 20px;
   height: 30px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
   line-height: 4px;
   color: #fff;
@@ -1435,15 +1400,6 @@ Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
 .select2-drop,
 .select2-search,
 .select2-search input {
-  /*
-    Force border-box so that % widths fit the parent
-    container without overlap because of margin/padding.
-    More Info : http://www.quirksmode.org/css/box.html
-  */
-  -webkit-box-sizing: border-box;
-  /* webkit */
-  -moz-box-sizing: border-box;
-  /* firefox */
   box-sizing: border-box;
   /* css3 */ }
 
@@ -1535,7 +1491,6 @@ Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
   border: 1px solid #aaa;
   border-top: 0;
   border-radius: 0 0 4px 4px;
-  -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15); }
 
 .select2-drop.select2-drop-above {
@@ -1543,7 +1498,6 @@ Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
   border-top: 1px solid #aaa;
   border-bottom: 0;
   border-radius: 4px 4px 0 0;
-  -webkit-box-shadow: 0 -4px 5px rgba(0, 0, 0, 0.15);
   box-shadow: 0 -4px 5px rgba(0, 0, 0, 0.15); }
 
 .select2-drop-active {
@@ -1785,7 +1739,6 @@ disabled look for disabled choices in the results dropdown
 .select2-container-multi.select2-container-active .select2-choices {
   border: 1px solid #4a90e2;
   outline: none;
-  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); }
 
 .select2-container-multi .select2-choices li {
@@ -1946,6 +1899,22 @@ html[dir="rtl"] .select2-search-choice-close {
 .icon-stack-tabbar {
   background: url("../images/ide/icon-stack.png") center center no-repeat; }
 
+/* Payment */
+.payment-credit-card {
+  width: 100%;
+  height: 100px;
+  background: url("../images/ide/creditcard-normal.png") center center no-repeat; }
+  @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+    .payment-credit-card {
+      background-image: url("../images/ide/creditcard-normal@2x.png");
+      background-size: 110px auto; } }
+  .payment-credit-card.payment-failed {
+    background: url("../images/ide/creditcard-failed.png") center center no-repeat; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2 / 1), (min-device-pixel-ratio: 2) {
+      .payment-credit-card.payment-failed {
+        background-image: url("../images/ide/creditcard-failed@2x.png");
+        background-size: 121px auto; } }
+
 /* jQuery time-picker */
 .ui-timepicker-wrapper {
   overflow-y: auto;
@@ -1953,8 +1922,6 @@ html[dir="rtl"] .select2-search-choice-close {
   width: 6.5em;
   background: #fff;
   border: 1px solid #ddd;
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   outline: none;
   z-index: 10001;
@@ -2357,6 +2324,9 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .table-head-fix .table-head thead th {
   cursor: default;
   position: relative; }
+  .table thead th.sortable,
+  .table-head-fix .table-head thead th.sortable {
+    cursor: pointer; }
 
 .table thead th:hover {
   background: #404040; }
@@ -2858,10 +2828,7 @@ select.select3 {
   color: #d0d0d0;
   border: 1px solid #000;
   display: inline-block;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none; }
+  border-radius: 0; }
 
 select.select3:active,
 select.select3:focus {
@@ -3477,8 +3444,6 @@ select.select3.disabled {
 .selectbox .editor .input {
   width: 100%;
   padding: 4px 20px 4px 4px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
 .editor .btn {
@@ -3491,8 +3456,7 @@ select.select3.disabled {
   float: right; }
 
 .property-content .selectbox {
-  width: 260px;
-  /*margin-top: 10px;*/ }
+  width: 260px; }
 
 .selectbox .dropdown li {
   color: #D0D0D0;
@@ -3610,8 +3574,6 @@ select.select3.disabled {
 .multi-ipt-row .ipt-wrapper input, .multi-ipt-row .ipt-wrapper select {
   display: block;
   width: 100% !important;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
 .multi-ipt-row:first-child:last-child .icon-del {
@@ -3647,9 +3609,7 @@ select.select3.disabled {
 .pagination {
   float: left;
   border: 1px solid #CDCDCD;
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px; }
+  border-radius: 3px; }
 
 .pagination a {
   display: block;
@@ -3720,14 +3680,10 @@ select.select3.disabled {
   color: #A8A8A8; }
 
 .pagination a:first-child {
-  border-radius: 2px 0 0 2px;
-  -moz-border-radius: 2px 0 0 2px;
-  -webkit-border-radius: 2px 0 0 2px; }
+  border-radius: 2px 0 0 2px; }
 
 .pagination a:last-child {
-  border-radius: 0 2px 2px 0;
-  -moz-border-radius: 0 2px 2px 0;
-  -webkit-border-radius: 0 2px 2px 0; }
+  border-radius: 0 2px 2px 0; }
 
 .pagination a {
   border-right: 1px solid #CDCDCD;

@@ -371,7 +371,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <div class=\"payment-warning\">\n                "
+  buffer += "\n            <div class=\"warning-text\">\n                "
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_WARNNING_IN_MODAL", ((stack1 = (depth0 && depth0.paymentUpdate)),stack1 == null || stack1 === false ? stack1 : stack1.url), {hash:{},data:data}))
     + "\n            </div>\n        ";
   return buffer;
@@ -1534,7 +1534,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_CONSUMED_OVER_XXX", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
     + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/"
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_INSTANT_HOUR", {hash:{},data:data}))
-    + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">"
+    + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" target=\"_blank\">"
     + escapeExpression(helpers.i18n.call(depth0, "PRICING_IN_DETAIL", {hash:{},data:data}))
     + "</a>\n    <div class=\"payment-modal-wrap\">\n        <a href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))

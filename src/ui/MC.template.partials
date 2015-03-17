@@ -296,7 +296,7 @@ Additional Notes and Questions
             <div class="price" id="label-total-fee"><b>${{total_fee}}</b> {{i18n "PER_MONTH"}}</div>
         </div>
         {{#ifCond paymentState "pastdue"}}
-            <div class="payment-warning">
+            <div class="warning-text">
                 {{i18n "PAYMENT_WARNNING_IN_MODAL" paymentUpdate.url}}
             </div>
         {{/ifCond}}
@@ -820,7 +820,7 @@ Additional Notes and Questions
         </tr>
         </tbody>
     </table>
-    <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">{{i18n "PRICING_IN_DETAIL"}}</a>
+    <a href="https://www.visualops.io/pricing" target="_blank">{{i18n "PRICING_IN_DETAIL"}}</a>
     <div class="payment-modal-wrap">
         <a href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "PROVIDE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a>
     </div>

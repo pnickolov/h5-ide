@@ -12,8 +12,6 @@
 
 @import "browse_ami";
 
-/* General Style */
-
 /* Refresh & Manage Shared Resource */
 
 .sidebar-tool button {
@@ -315,9 +313,7 @@ $dndDuration : .2s;
      -moz-transition-property : line-height, padding-left, width, height, color;
           transition-property : line-height, padding-left, width, height, color;
 
-  -webkit-background-size : 80px;
-     -moz-background-size : 80px;
-          background-size : 80px;
+  background-size : 80px;
 
   &.oslistener { background-image: image-url("ide/icon-os/res-dg-listener.png"); }
   &.ospool     { background-image: image-url("ide/icon-os/res-dg-pool.png"); }
@@ -347,9 +343,7 @@ $dndDuration : .2s;
       background : image-url("ide/icon-os/res-dg-pool.png");
       width : 80px;
       height : 80px;
-      -webkit-background-size : 80px;
-         -moz-background-size : 80px;
-              background-size : 80px;
+      background-size : 80px;
     }
   }
 

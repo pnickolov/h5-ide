@@ -30,13 +30,6 @@ body {
 /* generic class */
 
 
-
-
-/* Property Panel */
-
-// ASG
-
-
 .resdiff-switch {
 	position: relative;
 
@@ -285,12 +278,10 @@ body {
 }
 
 .sg-create-selection {
-	height  : 30px;
-	padding : 5px;
-	border  : 1px solid rgba(0,0,0,0.2);
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+	height     : 30px;
+	padding    : 5px;
+	border     : 1px solid rgba(0,0,0,0.2);
+	box-sizing : border-box;
 }
 
 .sg-create-sg-color {
@@ -385,14 +376,8 @@ body {
 	z-index    : -1;
 	padding    : 20px 0;
 
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+    box-sizing: border-box;
 }
-
-/*.done .sg-rule-create-sidebar {
-	left : -200px;
-}*/
 
 .sidebar-wrap {
 	height        : 100%;
@@ -651,11 +636,8 @@ details[open] + .nutshell {
 	border-right       : 1px solid #000;
 	box-shadow         : inset 0 -1px 0 #000;
 	text-align         : left;
-	-webkit-transition : background .2s;
-	-moz-transition    : background .2s;
-	-ms-transition     : background .2s;
-	-o-transition      : background .2s;
-	transition         : background .2s;
+
+	@include transit( background .2s );
 
 	#modal-validation-statusbar & {
 		width: 120px;
@@ -940,8 +922,6 @@ details[open] + .nutshell {
 	bottom: 0;
 	left: 0;
 	z-index: 70;
-	/*background-color: rgba(0, 0, 0, 0.5);*/
-	/*background: rgba(102, 57, 139, 0.9);*/
 }
 
 .loading-modal {
@@ -1009,33 +989,15 @@ details[open] + .nutshell {
 	pointer-events : none;
 }
 
-/* dhcp-property-detail */
-#property-dhcp-options .property-control-group label {
-	display: block;
-}
-
-#property-dhcp-options .property-control-group .checkbox.left {
-	margin-top: 1px;
-}
-
-.waiting-bar {
-	position: fixed;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	z-index: 70;
-}
-
-/* Add Termination Policy popup */
+/* Add Scaling Policy popup */
 #asg-policy-name {
 	margin-left: 50px;
 	width: 200px;
 }
 
 #asg-policy-name[readonly] {
-	background: none;
-	border: none;
+	background : none;
+	border     : none;
 }
 
 #asg-termination-policy h5 {
@@ -1435,7 +1397,6 @@ div.modal-text-highlight{
 	display: none;
 }
 
-
 #app-update-summary-table {
 	font-size: 12px;
 }
@@ -1504,8 +1465,6 @@ div.modal-text-highlight{
     content: "";
     width: 5px;
     height: 5px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
     border-radius: 50%;
     background: #dadada;
     position: absolute;

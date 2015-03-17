@@ -47,6 +47,8 @@
 .table-head-fix .table-head thead th {
 	cursor: default;
 	position: relative;
+
+	&.sortable { cursor: pointer; }
 }
 
 .table thead th:hover {
@@ -645,9 +647,6 @@ select.select3 {
   border: 1px solid #000;
   display: inline-block;
   border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
 }
 select.select3:active,
 select.select3:focus {
@@ -1388,9 +1387,7 @@ select.select3.disabled {
 	width   : 100%;
 	padding : 4px 20px 4px 4px;
 
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .editor .btn {
@@ -1405,7 +1402,6 @@ select.select3.disabled {
 
 .property-content .selectbox {
 	width: 260px;
-	/*margin-top: 10px;*/
 }
 
 
@@ -1546,11 +1542,9 @@ select.select3.disabled {
 }
 
 .multi-ipt-row .ipt-wrapper input, .multi-ipt-row .ipt-wrapper select{
-	display : block;
-	width   : 100% !important;
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-	        box-sizing: border-box;
+	display    : block;
+	width      : 100% !important;
+	box-sizing : border-box;
 }
 
 .multi-ipt-row:first-child:last-child .icon-del {
@@ -1594,8 +1588,6 @@ select.select3.disabled {
 	float: left;
 	border: 1px solid #CDCDCD;
 	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
 }
 
 .pagination a {
@@ -1653,14 +1645,10 @@ select.select3.disabled {
 
 .pagination a:first-child {
 	border-radius: 2px 0 0 2px;
-	-moz-border-radius: 2px 0 0 2px;
-	-webkit-border-radius: 2px 0 0 2px;
 }
 
 .pagination a:last-child {
 	border-radius: 0 2px 2px 0;
-	-moz-border-radius: 0 2px 2px 0;
-	-webkit-border-radius: 0 2px 2px 0;
 }
 
 .pagination a {

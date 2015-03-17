@@ -1,57 +1,10 @@
-@import "compass";
+// @import "compass";
 $navHeight : 38px;
 @mixin retina {
   @media (-webkit-min-device-pixel-ratio:2), (min--moz-device-pixel-ratio:2), (-o-min-device-pixel-ratio:2/1), (min-device-pixel-ratio: 2) {
     & { @content; }
   }
 }
-#PaymentNav {
-  background:    #0c0c0c;
-  height:        $navHeight;
-  border-bottom: 1px solid #000;
-
-  > span {
-    float       : left;
-    min-width   : 100px;
-    text-align  : center;
-    color       : #148BE6;
-    height      : $navHeight;
-    line-height : $navHeight;
-    cursor      : pointer;
-    position    : relative;
-    padding     : 0 10px;
-    font-size   : 12px;
-
-    &.selected:before {
-      position:      absolute;
-      left:          0;
-      bottom:        0px;
-      content:       '';
-      border-bottom: 2px solid #148BE6;
-      width:         100%;
-    }
-  }
-}
-
-.warning-red {
-  text-align    : center;
-  color         : #eee;
-  background    : #a42b2b;;
-  padding       : 5px;
-  line-height   : 24px;
-  border-radius : 3px;
-  font-size     : 14px;
-
-    a {
-      text-decoration : underline;
-      font-weight     : 700;
-      color           : #7eace1;
-
-      &:hover {
-        color: #fff;
-      }
-    }
-  }
 
 
 #PaymentBody {
@@ -273,31 +226,3 @@ $navHeight : 38px;
   text-decoration: underline;
 }
 
-/* Billing Modal */
-
-#PaymentBillingTab {
-  h5 {
-    color         : #eee;
-    line-height   : 32px;
-    margin-bottom : 4px;
-  }
-
-  div + h5 {
-    margin-top : 8px;
-  }
-
-  .left p {
-    margin-bottom : 4px;
-  }
-
-  .payment-next-billing {
-    float      : right;
-    margin-top : 5px;
-
-    font-size      : 12px;
-    vertical-align : bottom;
-    line-height    : 2em;
-    color          : #99a;
-  }
-
-}

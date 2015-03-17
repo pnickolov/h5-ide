@@ -105,8 +105,54 @@ pre {
   -ms-text-overflow: ellipsis;
   display: inline-block; }
 
+.pos-r {
+  position: relative; }
+
+.mgl5 {
+  margin-left: 5px; }
+
+.mgl80 {
+  margin-left: 80px; }
+
+.mgr10 {
+  margin-right: 10px; }
+
+.mgt10 {
+  margin-top: 10px; }
+
+.mgt5 {
+  margin-top: 5px; }
+
 .mg20 {
   margin: 20px; }
+
+.lh30 {
+  line-height: 30px; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.tal {
+  text-align: left; }
+
+.tac {
+  text-align: center; }
+
+.tar {
+  text-align: right; }
+
+.capitalize {
+  text-transform: capitalize; }
+
+.fitfloat {
+  display: block;
+  overflow: hidden; }
+
+.ovfh {
+  overflow: hidden; }
 
 .bd3 {
   border-radius: 3px; }
@@ -124,9 +170,6 @@ pre {
 
 .empty-hide:empty {
   display: none; }
-
-.mgt-10px {
-  margin-top: 10px; }
 
 /* CSS reset */
 article,
@@ -214,9 +257,6 @@ h4 {
 h5 {
   font-size: 14px; }
 
-h6 {
-  font-size: 11.9px; }
-
 ul,
 ol,
 li {
@@ -256,52 +296,6 @@ body {
   margin-left: 2px; }
 
 /* generic class */
-.pos-r {
-  position: relative; }
-
-.mgl80 {
-  margin-left: 80px; }
-
-.mgr10 {
-  margin-right: 10px; }
-
-.mgt10 {
-  margin-top: 10px; }
-
-.mgt5 {
-  margin-top: 5px; }
-
-.mgl5 {
-  margin-left: 5px; }
-
-.lh30 {
-  line-height: 30px; }
-
-.left {
-  float: left; }
-
-.right {
-  float: right; }
-
-.tal {
-  text-align: left; }
-
-.tac {
-  text-align: center; }
-
-.tar {
-  text-align: right; }
-
-.capitalize {
-  text-transform: capitalize; }
-
-.fitfloat {
-  display: block;
-  overflow: hidden; }
-
-.ovfh {
-  overflow: hidden; }
-
 /* Property Panel */
 .resdiff-switch {
   position: relative; }
@@ -311,35 +305,6 @@ body {
     bottom: 5px;
     right: 11px; }
 
-/* DB Instance Property*/
-.property-engine-label {
-  text-align: center;
-  line-height: 27px;
-  height: 27px;
-  width: 80px;
-  color: #8B8787;
-  background: #444343;
-  border: 1px solid #1a1a1a;
-  border-right: none;
-  border-radius: 4px 0 0 4px;
-  -webkit-transition: background 0.2s ease-in-out;
-  -o-transition: background 0.2s ease-in-out;
-  transition: background 0.2s ease-in-out; }
-
-.property-engineversion-label {
-  padding: 6px 0;
-  height: 29px;
-  overflow: hidden;
-  box-sizing: border-box;
-  width: 179px; }
-
-.property-engineversion-dropdown {
-  left: 81px;
-  width: 180px !important; }
-  .property-engineversion-dropdown li {
-    width: 162px !important; }
-
-/* Subnet Panel */
 /* SG Rule Modal */
 .radio-group-horizontal {
   display: inline-block;
@@ -734,46 +699,10 @@ body {
   display: inline-block; }
 
 /*app-vpn-cgw*/
-#app-cgw-vpn-accordion .dl-vertical {
-  padding: 10px; }
-
 .vpn-download {
   display: block;
   width: 220px;
   margin: 10px auto; }
-
-.accordion-sub-head {
-  padding: 10px;
-  background-color: #333;
-  color: #A5A5A5; }
-
-.accordion-sub-head h5 {
-  font-size: 13px; }
-
-#app-vpn-body .table {
-  text-align: center;
-  font-size: 12px; }
-
-#app-vpn-body tr,
-#app-vpn-body td,
-#app-vpn-body th {
-  text-align: center;
-  background-color: #f3f3f3;
-  border: 1px solid #ccc;
-  color: #666; }
-
-#app-vpn-body th {
-  font-weight: 500; }
-
-#app-vpn-body tbody td {
-  background-color: #fcfcfc; }
-
-#app-vpn-connection-body {
-  padding: 10px; }
-
-#app-cgw-body .status,
-#app-vpn-body .status {
-  margin: 0 5px 0 0; }
 
 /* run stack */
 #modal-run-stack #app-name {
@@ -1474,7 +1403,9 @@ div.modal-text-highlight {
   width: 100%; }
 
 .OEPanelRight .sub-stateeditor {
-  display: none; }
+  display: none;
+  height: 100%;
+  width: 100%; }
 
 .OEPanelRight.state .sub-stateeditor {
   display: block; }
@@ -1489,10 +1420,6 @@ div.modal-text-highlight {
 
 .OEPanelRight.state .sub-property {
   display: none; }
-
-.OEPanelRight .sub-stateeditor {
-  height: 100%;
-  width: 100%; }
 
 #app-update-summary-table {
   font-size: 12px; }
@@ -5655,7 +5582,31 @@ aside.dashboard-sidebar {
 	
 	- DB Instance Property
 */
-/* DB Instance Stack Property */
+/* DB Instance Property */
+.property-engine-label {
+  text-align: center;
+  line-height: 27px;
+  height: 27px;
+  width: 80px;
+  color: #8B8787;
+  background: #444343;
+  border: 1px solid #1a1a1a;
+  border-right: none;
+  border-radius: 4px 0 0 4px; }
+
+.property-engineversion-label {
+  padding: 6px 0;
+  height: 29px;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 179px; }
+
+.property-engineversion-dropdown {
+  left: 81px;
+  width: 180px !important; }
+  .property-engineversion-dropdown li {
+    width: 162px !important; }
+
 .property-dbinstance-status-icon-warning {
   color: #dd4c4c;
   top: 0; }
@@ -5677,7 +5628,8 @@ aside.dashboard-sidebar {
   width: 73px; }
 
 #property-dbinstance-maintenance-window-start-day-select,
-#property-dbinstance-maintenance-window-duration {
+#property-dbinstance-maintenance-window-duration,
+#property-dbinstance-backup-window-duration {
   width: 85px; }
 
 .property-dbinstance-optiongroup-placeholder .item .icon-edit {
@@ -8692,44 +8644,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 #modal-state-text-expand .editable-area .ace_gutter-active-line {
   background-color: #333 !important; }
 
-#PaymentNav {
-  background: #0c0c0c;
-  height: 38px;
-  border-bottom: 1px solid #000; }
-  #PaymentNav > span {
-    float: left;
-    min-width: 100px;
-    text-align: center;
-    color: #148BE6;
-    height: 38px;
-    line-height: 38px;
-    cursor: pointer;
-    position: relative;
-    padding: 0 10px;
-    font-size: 12px; }
-    #PaymentNav > span.selected:before {
-      position: absolute;
-      left: 0;
-      bottom: 0px;
-      content: '';
-      border-bottom: 2px solid #148BE6;
-      width: 100%; }
-
-.warning-red {
-  text-align: center;
-  color: #eee;
-  background: #a42b2b;
-  padding: 5px;
-  line-height: 24px;
-  border-radius: 3px;
-  font-size: 14px; }
-  .warning-red a {
-    text-decoration: underline;
-    font-weight: 700;
-    color: #7eace1; }
-    .warning-red a:hover {
-      color: #fff; }
-
 #PaymentBody {
   min-height: 150px; }
   #PaymentBody .dl-horizontal {
@@ -8909,23 +8823,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .payment-warning a {
   color: #f9b42d;
   text-decoration: underline; }
-
-/* Billing Modal */
-#PaymentBillingTab h5 {
-  color: #eee;
-  line-height: 32px;
-  margin-bottom: 4px; }
-#PaymentBillingTab div + h5 {
-  margin-top: 8px; }
-#PaymentBillingTab .left p {
-  margin-bottom: 4px; }
-#PaymentBillingTab .payment-next-billing {
-  float: right;
-  margin-top: 5px;
-  font-size: 12px;
-  vertical-align: bottom;
-  line-height: 2em;
-  color: #99a; }
 
 #import-cf-form {
   position: relative; }

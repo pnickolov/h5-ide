@@ -1,140 +1,6 @@
 @charset "UTF-8";
 @import "utility";
-
-
-/* CSS reset */
-article,
-footer,
-header,
-nav {
-	display: block;
-}
-
-html {
-	font-size: 100%;
-	-webkit-text-size-adjust: 100%;
-	-ms-text-size-adjust: 100%;
-}
-
-a {
-	text-decoration: none;
-	outline: none;
-	border: 0;
-}
-
-a:hover,
-a:active {
-	outline: 0;
-}
-
-img {
-	max-width: 100%;
-	vertical-align: middle;
-	border: 0;
-	-ms-interpolation-mode: bicubic;
-}
-
-button,
-input,
-select,
-textarea {
-	margin: 0;
-	font-size: 100%;
-	vertical-align: middle;
-	@include font-major;
-}
-
-button,
-input {
-	*overflow: visible;
-	line-height: normal;
-}
-
-
-button {
-	border : none;
-	background : none;
-
-	&:focus {
-		outline : none;
-	}
-}
-
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-	padding: 0;
-	border: 0;
-}
-
-textarea {
-	overflow: auto;
-	vertical-align: top;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0;
-	font-weight: 500;
-	text-rendering: optimizelegibility;
-}
-
-h1,
-h2,
-h3 {
-	line-height: 40px;
-}
-
-h1 {
-	font-size: 38.5px;
-}
-
-h2 {
-	font-size: 31.5px;
-}
-
-h3 {
-	font-size: 24.5px;
-}
-
-h4 {
-	font-size: 17.5px;
-}
-
-h5 {
-	font-size: 14px;
-}
-
-h6 {
-	font-size: 11.9px;
-}
-
-ul,
-ol,
-li {
-	margin: 0;
-	padding: 0;
-	list-style-type: none;
-	outline: none;
-}
-
-p {
-	margin: 0 0 10px;
-	padding: 2px;
-}
-
-abbr {
-	cursor: help;
-	border-bottom: 1px dotted #999;
-}
-
-body {
-	margin: 0;
-}
-
+@import "reset";
 
 /* VisualOps Specifics */
 
@@ -162,31 +28,7 @@ body {
 }
 
 /* generic class */
-.pos-r     { position : relative; }
 
-.mgl80 { margin-left  : 80px; }
-.mgr10 { margin-right : 10px; }
-.mgt10 { margin-top   : 10px; }
-.mgt5  { margin-top   : 5px; }
-.mgl5  { margin-left  : 5px;  }
-
-.lh30  { line-height : 30px; }
-
-.left  { float   : left; }
-.right { float   : right; }
-
-.tal {text-align : left;}
-.tac {text-align : center;}
-.tar {text-align : right;}
-
-.capitalize { text-transform: capitalize;}
-
-.fitfloat {
-	display  : block;
-	overflow : hidden;
-}
-
-.ovfh { overflow : hidden; }
 
 
 
@@ -205,42 +47,6 @@ body {
 		right    : 11px;
 	}
 }
-
-/* DB Instance Property*/
-
-.property-engine-label {
-	text-align         : center;
-	line-height        : 27px;
-	height             : 27px;
-	width              : 80px;
-	color              : #8B8787;
-	background         : #444343;
-
-	border             : 1px solid #1a1a1a;
-	border-right       : none;
-	border-radius      : 4px 0 0 4px;
-
-	@include transit($method:background,$dur:.2s);
-}
-
-.property-engineversion-label {
-	padding    : 6px 0;
-	height     : 29px;
-	overflow   : hidden;
-	box-sizing : border-box;
-	width      : 179px;
-}
-
-.property-engineversion-dropdown {
-	left : 81px;
-	width: 180px !important;
-
-	li {
-		width: 162px !important;
-	}
-}
-
-/* Subnet Panel */
 
 /* SG Rule Modal */
 
@@ -399,9 +205,6 @@ body {
 }
 
 /* property-rt */
-
-
-
 
 #acl-add-model-source-select .selection {
 	width: 68px;
@@ -732,62 +535,13 @@ body {
 }
 
 
-
-
-
 /*app-vpn-cgw*/
-
-
-#app-cgw-vpn-accordion .dl-vertical {
-	padding: 10px;
-}
-
 .vpn-download {
 	display: block;
 	width: 220px;
 	margin: 10px auto;
 }
 
-.accordion-sub-head {
-	padding: 10px;
-	background-color: #333;
-	color: #A5A5A5;
-}
-
-.accordion-sub-head h5 {
-	font-size: 13px;
-}
-
-#app-vpn-body .table {
-	text-align: center;
-	font-size: 12px;
-}
-
-#app-vpn-body tr,
-#app-vpn-body td,
-#app-vpn-body th {
-	text-align: center;
-	background-color: #f3f3f3;
-	border: 1px solid #ccc;
-	color: #666;
-}
-
-#app-vpn-body th {
-	font-weight: 500;
-}
-
-#app-vpn-body tbody td {
-	background-color: #fcfcfc;
-}
-
-#app-vpn-connection-body {
-	padding: 10px;
-}
-
-#app-cgw-body .status,
-#app-vpn-body .status {
-	margin: 0 5px 0 0;
-}
 
 /* run stack */
 
@@ -1660,6 +1414,8 @@ div.modal-text-highlight{
 
 .OEPanelRight .sub-stateeditor {
 	display: none;
+	height: 100%;
+	width: 100%;
 }
 
 .OEPanelRight.state .sub-stateeditor {
@@ -1679,10 +1435,6 @@ div.modal-text-highlight{
 	display: none;
 }
 
-.OEPanelRight .sub-stateeditor {
-	height: 100%;
-	width: 100%;
-}
 
 #app-update-summary-table {
 	font-size: 12px;

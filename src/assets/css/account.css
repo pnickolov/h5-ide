@@ -105,8 +105,54 @@ pre {
   -ms-text-overflow: ellipsis;
   display: inline-block; }
 
+.pos-r {
+  position: relative; }
+
+.mgl5 {
+  margin-left: 5px; }
+
+.mgl80 {
+  margin-left: 80px; }
+
+.mgr10 {
+  margin-right: 10px; }
+
+.mgt10 {
+  margin-top: 10px; }
+
+.mgt5 {
+  margin-top: 5px; }
+
 .mg20 {
   margin: 20px; }
+
+.lh30 {
+  line-height: 30px; }
+
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
+.tal {
+  text-align: left; }
+
+.tac {
+  text-align: center; }
+
+.tar {
+  text-align: right; }
+
+.capitalize {
+  text-transform: capitalize; }
+
+.fitfloat {
+  display: block;
+  overflow: hidden; }
+
+.ovfh {
+  overflow: hidden; }
 
 .bd3 {
   border-radius: 3px; }
@@ -124,9 +170,6 @@ pre {
 
 .empty-hide:empty {
   display: none; }
-
-.mgt-10px {
-  margin-top: 10px; }
 
 /* CSS reset */
 article,

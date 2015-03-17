@@ -4,7 +4,37 @@
 	- DB Instance Property
 */
 
-/* DB Instance Stack Property */
+/* DB Instance Property */
+
+.property-engine-label {
+	text-align         : center;
+	line-height        : 27px;
+	height             : 27px;
+	width              : 80px;
+	color              : #8B8787;
+	background         : #444343;
+
+	border             : 1px solid #1a1a1a;
+	border-right       : none;
+	border-radius      : 4px 0 0 4px;
+}
+
+.property-engineversion-label {
+	padding    : 6px 0;
+	height     : 29px;
+	overflow   : hidden;
+	box-sizing : border-box;
+	width      : 179px;
+}
+
+.property-engineversion-dropdown {
+	left : 81px;
+	width: 180px !important;
+
+	li {
+		width: 162px !important;
+	}
+}
 
 .property-dbinstance-status-icon-warning { color: $base-r; top:0; }
 
@@ -29,7 +59,8 @@
 }
 
 #property-dbinstance-maintenance-window-start-day-select,
-#property-dbinstance-maintenance-window-duration {
+#property-dbinstance-maintenance-window-duration,
+#property-dbinstance-backup-window-duration {
 	width: 85px;
 }
 

@@ -80,7 +80,7 @@
         <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ADJUSTMENT'}}"></span>
         <div class="asg-p-action">
 	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_EDIT'}}"></i>
-	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
+	        <i class="icon-remove icon-del tooltip mgl5" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
         </div>
       </li>
       {{#each policies}}
@@ -93,14 +93,14 @@
         <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjustmentType}}</span>
         <div class="asg-p-action">
 	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_EDIT'}}"></i>
-	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
+	        <i class="icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
         </div>
       </li>
       {{/each}}
 
 		</ul>
 		<div class="property-control-group tac">
-			<button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="{{i18n 'PROP.ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES'}}">{{i18n "PROP.ASG_BTN_ADD_SCALING_POLICY"}}</button>
+			<button class="btn btn-blue btn-long {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="{{i18n 'PROP.ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES'}}">{{i18n "PROP.ASG_BTN_ADD_SCALING_POLICY"}}</button>
 		</div>
 	</div>
 

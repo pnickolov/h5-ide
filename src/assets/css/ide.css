@@ -795,78 +795,6 @@ body {
   margin: 0 5px 0 0; }
 
 /* Auto Scaling Group Property */
-.termination-policy-brief {
-  font-size: 13px;
-  color: #999; }
-
-.asg-p-tag {
-  display: inline-block;
-  font-size: 12px;
-  color: #999;
-  word-wrap: normal;
-  background: #2E2E2E;
-  border-radius: 4px;
-  border: 1px solid #242424;
-  padding: 1px 3px;
-  margin-top: 4px;
-  margin-right: 2px;
-  cursor: default;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05); }
-
-.asg-p-tag:hover {
-  color: #eee; }
-
-.asg-p-trigger-ALARM {
-  color: #ec3c38 !important; }
-
-.asg-p-trigger-INSUFFICIANT_DATA {
-  color: #ffcb50 !important; }
-
-.asg-p-trigger-OK {
-  color: #17c249 !important; }
-
-.asg-p-action,
-.sns-action {
-  display: none;
-  cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  color: #666; }
-
-.asg-p-action i:hover,
-.sns-action i:hover {
-  color: #dddddd; }
-
-.asg-p-action .icon-remove,
-.sns-action .icon-remove {
-  margin-left: 5px; }
-
-.asg-p-action .icon-remove:hover,
-.sns-action .icon-remove:hover {
-  color: #F74A48; }
-
-.property-term-p:hover .asg-p-action,
-.property-list li:hover .asg-p-action,
-.property-list li:hover .sns-action {
-  display: inline-block; }
-
-.property-asg-policy-name {
-  font-size: 16px;
-  cursor: default; }
-
-#property-asg-policy-add {
-  width: 180px; }
-
-.dialog-group {
-  border-radius: 4px;
-  background: #ddd;
-  margin: 10px 0;
-  padding: 10px; }
-
-.dialog-group h5 {
-  color: #222; }
-
 .drag-sort-list-wrap {
   padding-left: 40px; }
 
@@ -880,11 +808,9 @@ body {
   line-height: 30px;
   padding-left: 6px;
   margin-top: -1px;
-  -webkit-transition: background .2s;
-  -moz-transition: background .2s;
-  -ms-transition: background .2s;
-  -o-transition: background .2s;
-  transition: background .2s; }
+  -webkit-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out; }
 
 .drag-sort-list li:hover,
 .drag-sort-list li.enabled:hover {
@@ -923,19 +849,6 @@ body {
   background: #f5f5f5;
   border: 1px dotted #ccc;
   border-bottom: none; }
-
-.property-asg-notification-wrap {
-  padding: 8px 15px; }
-
-.property-asg-notification-wrap > div {
-  margin-top: 5px; }
-
-.property-asg-notification-wrap > div:last-of-type {
-  margin-bottom: 15px; }
-
-.dl-horizontal.dl-region-type .endpoint.truncate {
-  width: 180px;
-  display: block; }
 
 /* run stack */
 #modal-run-stack #app-name {
@@ -5468,7 +5381,7 @@ aside.dashboard-sidebar {
     margin-top: -9px;
     cursor: pointer; }
     .network-list .icon-remove:hover {
-      color: #a42b2b; }
+      color: #dd4c4c; }
 
 /*
     Change AMI - IDE Property Panel
@@ -5733,7 +5646,7 @@ aside.dashboard-sidebar {
   cursor: pointer; }
   .elb-property-listener-item-remove:hover {
     background: rgba(0, 0, 0, 0.1);
-    color: #a42b2b; }
+    color: #dd4c4c; }
 
 .elb-property-listener .listener-item .selectbox {
   width: 130px !important; }
@@ -5840,14 +5753,14 @@ aside.dashboard-sidebar {
   width: auto;
   padding: 0; }
   .route-list > li.have-vpc-peer-route {
-    border-bottom: 1px #a42b2b solid; }
+    border-bottom: 1px #dd4c4c solid; }
   .route-list > li > table {
     width: 100%; }
 .route-list .route-readonly {
   color: #777; }
 .route-list .remove-vpc-peer-route {
   font-size: 13px;
-  background-color: #a42b2b;
+  background-color: #dd4c4c;
   color: #fff;
   padding: 3px; }
   .route-list .remove-vpc-peer-route a {
@@ -5879,7 +5792,7 @@ aside.dashboard-sidebar {
 */
 /* DB Instance Stack Property */
 .property-dbinstance-status-icon-warning {
-  color: #a42b2b;
+  color: #dd4c4c;
   top: 0; }
 
 .property-dbinstance-status-icon-warning,
@@ -5942,6 +5855,50 @@ aside.dashboard-sidebar {
   display: inline-block; }
   .property-asg-size:nth-child(2) {
     margin-left: 8%; }
+
+.termination-policy-brief {
+  font-size: 13px;
+  color: #999; }
+
+.asg-p-tag {
+  display: inline-block;
+  font-size: 12px;
+  color: #eeeef0;
+  word-wrap: normal;
+  background: #363b76;
+  border-radius: 4px;
+  border: 1px solid #202027;
+  padding: 1px 3px;
+  margin: 4px 2px 0 0;
+  cursor: default;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05); }
+  .asg-p-tag:hover {
+    color: #fff; }
+  .asg-p-tag.asg-p-trigger-ALARM {
+    color: #dd4c4c; }
+  .asg-p-tag.asg-p-trigger-INSUFFICIANT_DATA {
+    color: #ffbb0d; }
+  .asg-p-tag.asg-p-trigger-OK {
+    color: #11c568; }
+
+.asg-p-action {
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #666; }
+  .property-list li:hover .asg-p-action, .property-term-p:hover .asg-p-action {
+    display: inline-block; }
+  .asg-p-action .icon-del:hover {
+    color: #ea5d5d; }
+  .asg-p-action .icon-edit:hover {
+    color: #4a90e2; }
+
+.property-asg-notification-wrap > div {
+  margin-top: 5px; }
+  .property-asg-notification-wrap > div:last-of-type {
+    margin-bottom: 15px; }
 
 .canvas-view {
   position: relative;
@@ -6891,7 +6848,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     .btn-toolbar.icon-cancel-update-app:hover, .icon-cancel-update-app.icon-hide-sg.selected {
       color: #fff;
       background-color: #ea5d5d;
-      border-bottom: 1px solid #a42b2b; }
+      border-bottom: 1px solid #dd4c4c; }
 
 .toolbar-btn-primary {
   width: 112px;
@@ -9160,17 +9117,17 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 300px;
   line-height: 18px; }
 .cf-params > li.error {
-  box-shadow: inset 4px 0 0 #a42b2b; }
+  box-shadow: inset 4px 0 0 #dd4c4c; }
   .cf-params > li.error .cf-error {
     display: block; }
 .cf-params .cf-error {
   display: none;
   font-size: 12px;
-  color: #a42b2b;
+  color: #dd4c4c;
   margin-top: 4px; }
 
 .param-error {
-  color: #a42b2b;
+  color: #dd4c4c;
   float: left; }
 
 .param-empty {
@@ -9582,7 +9539,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     text-align: center;
     margin-top: 40px; }
   #OpsEditor .OEPanelRight.property .os-sg-remove, #OpsEditor .OEPanelRight.config .os-sg-remove {
-    color: #a42b2b;
+    color: #dd4c4c;
     cursor: pointer;
     position: absolute;
     right: 9px;
@@ -9616,7 +9573,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       cursor: pointer;
       color: #666; }
       #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list .rule-item-remove:hover, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list .rule-item-remove:hover {
-        color: #a42b2b; }
+        color: #dd4c4c; }
     #OpsEditor .OEPanelRight.property .os-sg-rule-list-container .rule-list input.selection, #OpsEditor .OEPanelRight.config .os-sg-rule-list-container .rule-list input.selection {
       height: 32px; }
   #OpsEditor .OEPanelRight.property .os-sg-member-list li, #OpsEditor .OEPanelRight.config .os-sg-member-list li {

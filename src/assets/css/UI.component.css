@@ -1343,7 +1343,7 @@ input.selection, textarea.selection {
   right: 2px;
   top: 3px; }
   .selection.item-list .item .item-remove:hover {
-    color: #a42b2b; }
+    color: #dd4c4c; }
 .selection.item-list .item .item-name {
   display: inline-block;
   max-width: 228px;
@@ -2138,6 +2138,9 @@ a.btn-primary {
   padding: 2px 0;
   min-width: 50px;
   font-size: 12px; }
+
+.btn-long {
+  width: 200px; }
 
 .btn-link {
   border: none;

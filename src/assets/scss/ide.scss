@@ -1466,8 +1466,6 @@ div.modal-text-highlight{
 	font-size: 12px;
 }
 
-
-
 /* App Useage */
 #modal-run-stack .app-usage {
 	padding: 15px;
@@ -1690,18 +1688,12 @@ div.modal-text-highlight{
 	font-size: 12px;
 }
 
-.app-update-summary-table-header.table th {
-	border-bottom: none;
-}
-
-.app-update-summary-table-header.table th,
 #app-update-summary-table.table td {
 	padding       : 2px 4px;
 	vertical-align: middle;
 	position      : relative;
 }
 
-.au-summary-extra,
 #app-apply-update .icon-warning {
 	color : #ec3c38;
 	margin: 0;
@@ -1712,94 +1704,6 @@ div.modal-text-highlight{
 	right: 4px;
 	top: 50%;
 	margin-top: -8px;
-}
-
-#sslcert-select .selection .icon-remove {
-	display : none;
-}
-
-#sslcert-select .dropdown {
-	top: 30px;
-}
-
-#sslcert-select .sslcert-select-add .input {
-	background-color: #f3f3f3;
-	font-size: 12px;
-	color: #999;
-	border: 1px solid #ccc;
-}
-
-#sslcert-select .sslcert-select-add .input:focus {
-	color: #333 !important;
-	border: 1px solid #aaa;
-	box-shadow: none;
-}
-
-#sslcert-select .icon-remove {
-	display: none;
-	position: absolute;
-	right: 5px;
-	top: 50%;
-	color: #999;
-	margin-top: -6px;
-}
-
-#sslcert-select .icon-edit {
-	display: none;
-	position: absolute;
-	right: 30px;
-	top: 50%;
-	color: #999;
-	margin-top: -6px;
-}
-
-#sslcert-select .item:hover .icon-remove {
-	display: block;
-}
-
-#sslcert-select .icon-remove:hover {
-	color: #F74A48;
-}
-
-#sslcert-select .item:hover .icon-edit {
-	display: block;
-}
-
-#sslcert-select .icon-edit:hover {
-	color: #F74A48;
-}
-
-
-#stack-elb-property-panel .elb-connection-draining-input-group {
-	margin-top: 10px;
-	margin-left: 14px;
-}
-
-#stack-elb-property-panel .elb-connection-draining-input-group label {
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-top: 7px;
-}
-
-#elb-connection-draining-input {
-	width: 60px;
-}
-
-
-#run-stack-cancel:disabled {
-	color: #ccc;
-}
-
-
-.keypair-select .selection i {
-	position: absolute;
-	top: 7px;
-	margin-left: 5px;
-}
-
-
-.keypair-select .selection i.icon-info {
-	display: none;
 }
 
 .sortable::selection {
@@ -1831,19 +1735,19 @@ div.modal-text-highlight{
     color: #dadada;
 }
 
-.modal-list-items li{
+.mega-list-wraper-items li{
     padding-left: 30px;
     position: relative;
     margin-bottom: 20px;
 }
-.modal-list-items li span{
+.mega-list-wraper-items li span{
     display: block;
     color: #6f6f6f;
 }
-.modal-list-items li span.error{
+.mega-list-wraper-items li span.error{
     color: #F74A48;
 }
-.modal-list-items li:before{
+.mega-list-wraper-items li:before{
     display: inline-block;
     content: "";
     width: 5px;

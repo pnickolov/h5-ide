@@ -40,12 +40,12 @@
         </ul>
       </div>
     </div>
-    <ul class="property-list acl-rule-list" id="acl-rule-list">{{acl_list}}</ul>
+    <ul class="mega-list-wraper acl-rule-list" id="acl-rule-list">{{acl_list}}</ul>
   </div>
 
   <div class="option-group-head acl-header expand">{{ i18n "PROP.ACL_TIT_ASSOC" }}<span class="property-head-num-wrap">(<span id="acl-assn-count">{{associations.length}}</span>)</span>
   </div>
 
-  <ul class="option-group property-list">{{#each associations}}<li>{{name}} ({{cidr}})</li>{{/each}}</ul>
+  <ul class="option-group mega-list-wraper">{{#each associations}}<li>{{name}} ({{cidr}})</li>{{/each}}</ul>
 </article>
 

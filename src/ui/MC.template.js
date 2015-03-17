@@ -549,11 +549,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n<header class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "\n<header class=\"mega-list-wraper-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</header>\n<ul class=\"modal-list\">\n";
+    + "</header>\n<ul class=\"mega-list-wraper\">\n";
   stack1 = ((stack1 = (depth0 && depth0.content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</ul>";

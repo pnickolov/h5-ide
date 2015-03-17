@@ -7,8 +7,9 @@ define [ '../base/view',
          './template/acl',
          './template/sub',
          'event',
+         'UI.modalplus',
          'i18n!/nls/lang.js'
-], ( PropertyView, template, acl_template, sub_template, ide_event, lang ) ->
+], ( PropertyView, template, acl_template, sub_template, ide_event, modalPlus, lang ) ->
 
     StackView = PropertyView.extend {
         events   :

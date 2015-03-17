@@ -7,7 +7,6 @@
 	- Rule List Sorting
 	- SG/ACL List
 	- ACL Rule List
-	- SG/ACL Member List
 
 */
 
@@ -209,7 +208,7 @@ $infoListItemHeight: 72px;
 
 /* ACL Rule List */
 
-.acl-rule-list.property-list li {
+.acl-rule-list li {
 	padding: 0;
 
 	.acl-rule-details {
@@ -236,5 +235,4 @@ $infoListItemHeight: 72px;
 	}
 }
 
-/* SG/ACL Member List */
-
+@import "sg_modal";

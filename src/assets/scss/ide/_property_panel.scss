@@ -224,17 +224,6 @@
 
 /* General Style for Property Panel List */
 
-.property-list > li,
-.modal-list > li {
-	padding       : 10px;
-	border-bottom : 1px solid $bg-p;
-	background    : lighten($bg-p, 5%);
-
-	@include transit($method: background, $dur: .2s);
-
-	&:hover { background : lighten($bg-p, 10%); }
-}
-
 .add-to-list {
 	width: 100%;
 	text-align: center;

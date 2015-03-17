@@ -7,10 +7,12 @@
 
 /* ELB Stack Property */
 
-#elb-property-listener-list.property-list li.elb-property-listener {
+#elb-property-listener-list .elb-property-listener {
 	padding  : 0;
 	position : relative;
 }
+
+.sslcert-placeholder .selectbox { width: 240px; }
 
 .elb-property-listener-item-remove {
 	position : absolute;
@@ -18,14 +20,23 @@
 
 	width       : 32px;
 	height      : 100%;
-	line-height : 130px;
-	text-align  : center;
 	color       : #555;
 
 	background-color : rgba(0,0,0,.05);
 	border-left      : 1px #313131 solid;
 
 	cursor : pointer;
+
+	&:before { 
+		display    : inline-block;
+		width      : 100%;
+		height     : 16px;
+		top        : 50%;
+		margin-top : -8px;
+		position   : absolute;
+		text-align : center;
+	}
+
 
 	&:hover { 
 		background : rgba(0,0,0,.1);
@@ -91,6 +102,16 @@
 	}
 
 	.elb-info-icon { margin-top: 0; }
+}
+
+.elb-connection-draining-input-group {
+  margin-top  : 10px;
+  margin-left : 25px;
+}
+
+#elb-connection-draining-input {
+	width  : 60px;
+	margin : 0 5px;
 }
 
 /* ELB App Property */

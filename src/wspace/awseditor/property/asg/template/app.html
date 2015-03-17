@@ -114,8 +114,8 @@
     <div class="option-group-head">{{i18n "PROP.ASG_INSTANCE"}} <span class="property-head-num-wrap">({{instance_count}})</span></div>
     <div class="option-group">
       {{#each instance_groups}}
-      <div class="property-group-head">{{name}}</div>
-      <ul class="property-list">
+      <div class="mega-list-wraper-header">{{name}}</div>
+      <ul class="mega-list-wraper">
         {{#each instances}}
           <li><i class="status status-{{status}} icon-label tooltip" data-tooltip="{{healthy}}" ></i>{{name}}</li>
         {{/each}}
@@ -132,7 +132,7 @@
         <h5>{{i18n "PROP.ASG_TERMINATION_POLICY"}}</h5>
         <p class="termination-policy-brief">{{emptyStr term_policy_brief}}</p>
       </section>
-      <ul id="property-asg-policies" class="property-list">
+      <ul id="property-asg-policies" class="mega-list-wraper">
         {{#each policies}}
           <li class="pos-r" data-uid="{{uid}}">
             <div class="property-asg-policy-name" title="{{i18n 'PROP.ASG_POLICY_TLT_NAME'}}">{{name}}</div>
@@ -156,7 +156,7 @@
         <div class="termination-policy-brief">{{term_policy_brief}}</div>
         <div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_TERMINATION_EDIT'}}" id="property-asg-term-edit"></i></div>
       </section>
-      <ul id="property-asg-policies" class="property-list">
+      <ul id="property-asg-policies" class="mega-list-wraper">
         <li class="pos-r hide">
           <h5 class="property-asg-policy-name name"></h5>
           <span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ALARM_METRIC'}}"></span>

@@ -54,7 +54,8 @@ body {
 
 a {
   color: #4a90e2;
-  text-decoration: none; }
+  text-decoration: none;
+  cursor: pointer; }
   a:hover {
     color: #76bee9; }
 
@@ -1496,16 +1497,11 @@ div.modal-text-highlight {
 #app-update-summary-table {
   font-size: 12px; }
 
-.app-update-summary-table-header.table th {
-  border-bottom: none; }
-
-.app-update-summary-table-header.table th,
 #app-update-summary-table.table td {
   padding: 2px 4px;
   vertical-align: middle;
   position: relative; }
 
-.au-summary-extra,
 #app-apply-update .icon-warning {
   color: #ec3c38;
   margin: 0; }
@@ -1515,74 +1511,6 @@ div.modal-text-highlight {
   right: 4px;
   top: 50%;
   margin-top: -8px; }
-
-#sslcert-select .selection .icon-remove {
-  display: none; }
-
-#sslcert-select .dropdown {
-  top: 30px; }
-
-#sslcert-select .sslcert-select-add .input {
-  background-color: #f3f3f3;
-  font-size: 12px;
-  color: #999;
-  border: 1px solid #ccc; }
-
-#sslcert-select .sslcert-select-add .input:focus {
-  color: #333 !important;
-  border: 1px solid #aaa;
-  box-shadow: none; }
-
-#sslcert-select .icon-remove {
-  display: none;
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  color: #999;
-  margin-top: -6px; }
-
-#sslcert-select .icon-edit {
-  display: none;
-  position: absolute;
-  right: 30px;
-  top: 50%;
-  color: #999;
-  margin-top: -6px; }
-
-#sslcert-select .item:hover .icon-remove {
-  display: block; }
-
-#sslcert-select .icon-remove:hover {
-  color: #F74A48; }
-
-#sslcert-select .item:hover .icon-edit {
-  display: block; }
-
-#sslcert-select .icon-edit:hover {
-  color: #F74A48; }
-
-#stack-elb-property-panel .elb-connection-draining-input-group {
-  margin-top: 10px;
-  margin-left: 14px; }
-
-#stack-elb-property-panel .elb-connection-draining-input-group label {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 7px; }
-
-#elb-connection-draining-input {
-  width: 60px; }
-
-#run-stack-cancel:disabled {
-  color: #ccc; }
-
-.keypair-select .selection i {
-  position: absolute;
-  top: 7px;
-  margin-left: 5px; }
-
-.keypair-select .selection i.icon-info {
-  display: none; }
 
 .sortable::selection {
   background: transparent; }
@@ -1611,19 +1539,19 @@ div.modal-text-highlight {
 .manager-content-main {
   color: #dadada; }
 
-.modal-list-items li {
+.mega-list-wraper-items li {
   padding-left: 30px;
   position: relative;
   margin-bottom: 20px; }
 
-.modal-list-items li span {
+.mega-list-wraper-items li span {
   display: block;
   color: #6f6f6f; }
 
-.modal-list-items li span.error {
+.mega-list-wraper-items li span.error {
   color: #F74A48; }
 
-.modal-list-items li:before {
+.mega-list-wraper-items li:before {
   display: inline-block;
   content: "";
   width: 5px;
@@ -2953,8 +2881,8 @@ dl.settings-item {
   top: 49px;
   z-index: 100;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  border: none;
   color: #ddd;
+  border: 1px solid #202027;
   font-size: 12px; }
   .header-popup li > a.selected {
     pointer-events: none; }
@@ -2971,7 +2899,8 @@ dl.settings-item {
     position: relative; }
     .header-popup > li.logout {
       color: #4a90e2;
-      text-decoration: none; }
+      text-decoration: none;
+      cursor: pointer; }
       .header-popup > li.logout:hover {
         color: #76bee9; }
   .header-popup li:hover {
@@ -5137,18 +5066,6 @@ aside.dashboard-sidebar {
   margin-top: 5px; }
 
 /* General Style for Property Panel List */
-.property-list > li,
-.modal-list > li {
-  padding: 10px;
-  border-bottom: 1px solid #202027;
-  background: #2b2b35;
-  -webkit-transition: background 0.2s ease-in-out;
-  -o-transition: background 0.2s ease-in-out;
-  transition: background 0.2s ease-in-out; }
-  .property-list > li:hover,
-  .modal-list > li:hover {
-    background: #373743; }
-
 .add-to-list {
   width: 100%;
   text-align: center;
@@ -5375,7 +5292,6 @@ aside.dashboard-sidebar {
 	- Rule List Sorting
 	- SG/ACL List
 	- ACL Rule List
-	- SG/ACL Member List
 
 */
 /* SG ACL General Style */
@@ -5512,11 +5428,11 @@ aside.dashboard-sidebar {
     color: #4a90e2; }
 
 /* ACL Rule List */
-.acl-rule-list.property-list li {
+.acl-rule-list li {
   padding: 0; }
-  .acl-rule-list.property-list li .acl-rule-details {
+  .acl-rule-list li .acl-rule-details {
     padding: 10px; }
-  .acl-rule-list.property-list li .acl-rule-number {
+  .acl-rule-list li .acl-rule-number {
     width: 100%;
     height: 20px;
     line-height: 20px;
@@ -5525,12 +5441,20 @@ aside.dashboard-sidebar {
     padding: 0 10px;
     border-top: 1px solid #151519;
     border-bottom: 1px solid #151519; }
-  .acl-rule-list.property-list li .acl-rule-allow-cb {
+  .acl-rule-list li .acl-rule-allow-cb {
     width: 62px;
     height: 16px;
     display: inline-block; }
 
-/* SG/ACL Member List */
+/*
+    SG-related Modal
+
+    - Create SG Rule by Connecting Ports Modal
+    - Normal Add SG Rule Modal
+    - Delete SG Line from Canvas Modal
+    
+*/
+/* Create SG Rule by Connecting Ports Modal */
 /*
     Volume Property - IDE Property Panel
 */
@@ -5553,21 +5477,30 @@ aside.dashboard-sidebar {
 	- ELB App Property
 */
 /* ELB Stack Property */
-#elb-property-listener-list.property-list li.elb-property-listener {
+#elb-property-listener-list .elb-property-listener {
   padding: 0;
   position: relative; }
+
+.sslcert-placeholder .selectbox {
+  width: 240px; }
 
 .elb-property-listener-item-remove {
   position: absolute;
   right: 0;
   width: 32px;
   height: 100%;
-  line-height: 130px;
-  text-align: center;
   color: #555;
   background-color: rgba(0, 0, 0, 0.05);
   border-left: 1px #313131 solid;
   cursor: pointer; }
+  .elb-property-listener-item-remove:before {
+    display: inline-block;
+    width: 100%;
+    height: 16px;
+    top: 50%;
+    margin-top: -8px;
+    position: absolute;
+    text-align: center; }
   .elb-property-listener-item-remove:hover {
     background: rgba(0, 0, 0, 0.1);
     color: #dd4c4c; }
@@ -5627,6 +5560,14 @@ aside.dashboard-sidebar {
       color: #888; }
   .elb-property-instance-list .elb-info-icon {
     margin-top: 0; }
+
+.elb-connection-draining-input-group {
+  margin-top: 10px;
+  margin-left: 25px; }
+
+#elb-connection-draining-input {
+  width: 60px;
+  margin: 0 5px; }
 
 /* ELB App Property */
 .elb-property-listener-app li {
@@ -5882,7 +5823,7 @@ aside.dashboard-sidebar {
   right: 10px;
   top: 10px;
   color: #666; }
-  .property-list li:hover .asg-p-action, .property-term-p:hover .asg-p-action {
+  .mega-list-wraper li:hover .asg-p-action, .property-term-p:hover .asg-p-action {
     display: inline-block; }
   .asg-p-action .icon-del:hover {
     color: #ea5d5d; }

@@ -25,7 +25,7 @@
             <input type="text" id="og-port" class="input" value="{{port}}" data-required="true" data-type="number" autocomplete="off" data-min="1150" data-max="65535"/>
         </div>
         <label>{{i18n "PROP.SECURITY_GROUP"}}</label>
-        <ul class="acl-sg-info-list property-list" id="og-sg">
+        <ul class="acl-sg-info-list mega-list-wraper" id="og-sg">
             {{#each sgs}}
             <li>
                 <div class="checkbox-wrap col1">

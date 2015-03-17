@@ -66,8 +66,9 @@ body {
 }
 
 @mixin a-style {
-	color: $base-b;
-	text-decoration: none;
+	color           : $base-b;
+	text-decoration : none;
+	cursor          : pointer;
 
 	&:hover {
 		color: adjust_hue(lighten($base-b,10%),-10deg);

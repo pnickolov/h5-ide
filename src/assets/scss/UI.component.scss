@@ -795,44 +795,6 @@ select.select3.disabled {
 	-webkit-font-smoothing: subpixel-antialiased;
 }
 
-/* webkit scrollbar */
-/*.webkit .scroll-wrap {
-	overflow: auto;
-}
-
-.webkit .scrollbar-auto-hide {
-	overflow: hidden;
-}
-
-.webkit .scrollbar-auto-hide.scroll-wrap:hover {
-	overflow: auto;
-}
-
-.scroll-wrap::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
-}
-
-.scroll-wrap::-webkit-scrollbar-track {
-	background: rgba(200, 200, 200, 0.2);
-}
-
-.scroll-wrap::-webkit-scrollbar-thumb {
-	background-color: #999;
-	border-radius: 4px;
-}
-
-.scroll-wrap::-webkit-scrollbar-thumb:hover {
-	background: rgba(0, 0, 0, .55);
-}
-
-.scroll-wrap::-webkit-scrollbar-corner {
-	background: rgba(200, 200, 200, 0.2);
-}
-
-.scrollbar-auto-hide::-webkit-scrollbar-track {
-	opacity: 0;
-}*/
 
 /* Tooltip */
 #tooltip_box {
@@ -980,16 +942,6 @@ select.select3.disabled {
 	background-image: -ms-linear-gradient(bottom, #808080, #bababa);
 	background-image: linear-gradient(to top, #808080, #bababa);
 }
-
-/*.status-orange {
-	background-color: #ff9c00;
-	background-image: -webkit-linear-gradient(bottom, #ff6c00, #f4b13d);
-	background-image: -moz-linear-gradient(bottom, #ff6c00, #f4b13d);
-	background-image: -o-linear-gradient(bottom, #ff6c00, #f4b13d);
-	background-image: -ms-linear-gradient(bottom, #ff6c00, #f4b13d);
-	background-image: linear-gradient(to top, #ff6c00, #f4b13d);
-}*/
-
 
 /* tablist */
 [data-tab-target] { cursor : pointer; }
@@ -1218,10 +1170,6 @@ select.select3.disabled {
     word-break: break-all;
 }
 
-.modal-body .dl-horizontal dd {
-	color: #ccc;
-}
-
 /* Bubble */
 #bubble-box {
 	background: #fff;
@@ -1240,7 +1188,6 @@ select.select3.disabled {
 	padding: 8px 10px;
 	font-size: 14px;
 	font-weight: normal;
-	/*background-color: #F7F7F7;*/
 	border-bottom: 1px solid #EBEBEB;
 	border-radius: 5px 5px 0 0;
 	color: #666;
@@ -2496,8 +2443,17 @@ position:relative;
 .dropdown-menu { display: none; }
 .open .dropdown-menu { display: block; }
 
-.modal-list-header,
-.property-group-head {
+.mega-list-wraper > li {
+	padding       : 10px;
+	border-bottom : 1px solid $bg-p;
+	background    : lighten($bg-p, 5%);
+
+	@include transit($method: background, $dur: .2s);
+
+	&:hover { background : lighten($bg-p, 10%); }
+}
+
+.mega-list-wraper-header {
     padding       : 4px 8px;
     background    : lighten($bg-p, 15%);
     border-bottom : 1px solid darken($bg-p, 10%);

@@ -337,8 +337,8 @@ Additional Notes and Questions
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
 {{#each this}}
-<header class="modal-list-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</header>
-<ul class="modal-list">
+<header class="mega-list-wraper-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</header>
+<ul class="mega-list-wraper">
 {{{content}}}
 </ul>{{/each}}
 </div>

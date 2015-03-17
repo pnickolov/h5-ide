@@ -54,7 +54,7 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     # We start notifying in 5 seconds
     setTimeout ()=>
       @shouldNotify = true
-      if not @connection.status.connected
+      if not @connection.status().connected
         @statusChanged()
     , 5000
 

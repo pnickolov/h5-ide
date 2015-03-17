@@ -128,6 +128,42 @@ define [
             checkedMap.otherResource[ a.id ] = a
 
       checkedMap
+
+    websocketConcurrency : ()->
+
+      concurrency       = 0
+      retry             = 0
+      host              = "#{MC.API_HOST}/ws/"
+      currentConnection = []
+      failed            = 0
+
+      int = setInterval ()->
+
+        oldConcurrency = concurrency
+
+        for cn, idx in currentConnection
+          if cn.status().connected
+            currentConnection[ idx ] = Meteor.connect host, true
+            ++concurrency
+
+          if cn.status().status is "failed"
+            currentConnection[ idx ] = Meteor.connect host, true
+            ++failed
+
+        if oldConcurrency is concurrency
+          ++retry
+          if retry > 15
+            console.log( "Done after 15 retry: Connected", concurrency, "Failed", failed )
+            clearInterval int
+        else
+          retry = 0
+
+        console.log( "Working: Connected", concurrency, "Failed", failed, "Retried", retry )
+      , 1000
+
+      while currentConnection.length < 20
+        currentConnection.push Meteor.connect host, true
+      return
   }
 
   window.man = "

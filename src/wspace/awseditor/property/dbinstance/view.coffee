@@ -926,8 +926,12 @@ define [ 'ApiRequest'
             that = @
             $target = $ event.currentTarget
 
+            value = $target.val().toLowerCase()
+
+            # Set lowercase value to the input for `checkResName`
+            $target.val value
+
             if MC.aws.aws.checkResName(@resModel.get('id'), $target, 'DBInstance')
-                value = $target.val().toLowerCase()
                 $target.parsley 'custom', ( val ) ->
                     val = val.toLowerCase()
 

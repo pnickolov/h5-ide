@@ -67,9 +67,9 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
                 elb.listenerDisplay.push listener
 
-                if listener.Listener.SSLCertificateId
+                if listener.Listener.SslcertificateId
 
-                  listener.Listener.server_certificate = listener.Listener.SSLCertificateId.split('/')[1]
+                  listener.Listener.server_certificate = listener.Listener.SslcertificateId.split('/')[1]
 
                   null
 

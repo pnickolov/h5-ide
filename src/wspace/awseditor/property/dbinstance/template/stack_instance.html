@@ -51,13 +51,15 @@
         </section>
         {{/if}}
 
+        {{#if isAppEdit}}
         <section class="property-control-group clearfix">
             <label>{{ i18n "PROP.DBINSTANCE_APP_DBINSTANCE_ID" }}</label>
-            <div>{{DBInstanceIdentifier}}{{#if PendingModifiedValues.DbinstanceIdentifier}}{{i18n "PROP.DBINSTANCE_PENDING_APPLY"}}{{/if}}</div>
+            <div>{{DBInstanceIdentifier}}</div>
         </section>
+        {{/if}}
 
         <section class="property-control-group" >
-            <label class="left" for="property-dbinstance-name" >{{i18n "PROP.DATABASE_NAME"}}</label>
+            <label class="left" for="property-dbinstance-name" >{{i18n "PROP.DBINSTANCE_APP_DBINSTANCE_ID"}}</label>
             <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <input class="input" type="text" value="{{ name }}" id="property-dbinstance-name" data-ignore="true" data-required-rollback="true"/>
         </section>

@@ -4119,13 +4119,14 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .open .dropdown-menu {
   display: block; }
 
-.option-group-category,
-.modal-list-header {
+.modal-list-header,
+.property-group-head {
   padding: 4px 8px;
   background: #424251;
-  border-bottom: 1px solid #09090b; }
-  .option-group-category::selection,
-  .modal-list-header::selection {
+  border-bottom: 1px solid #09090b;
+  width: 100%; }
+  .modal-list-header::selection,
+  .property-group-head::selection {
     background: transparent; }
 
 .click-select {

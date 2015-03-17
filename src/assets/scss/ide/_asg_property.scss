@@ -1,7 +1,5 @@
 /*
     ASG - IDE Property Panel
-	
-	- DB Instance Property
 */
 
 .property-asg-size {
@@ -57,3 +55,6 @@
 
 	&:last-of-type { margin-bottom: 15px; }
 }
+
+
+@import "termination_policy_modal";

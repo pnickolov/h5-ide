@@ -312,7 +312,7 @@ Additional Notes and Questions
 {{#if ../deletable}}
 <li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r">
 {{else}}
-<li class="sg-create-rule-item">
+<li>
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP.SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP.SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
@@ -336,8 +336,9 @@ Additional Notes and Questions
 <article class="scroll-wrap delete-sgrule-dialog">
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
-{{#each this}}<ul>
+{{#each this}}
 <header class="modal-list-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</header>
+<ul class="modal-list">
 {{{content}}}
 </ul>{{/each}}
 </div>

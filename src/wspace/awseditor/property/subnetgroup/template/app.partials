@@ -14,15 +14,15 @@
     <div class="option-group-head expand">{{ i18n "PROP.DBINSTANCE_SUBNET_GROUP_MEMBERS" }}</div>
     <div class="option-group">
         {{#each azSb}}
-        <div class="option-group-category">
+        <div class="property-group-head">
             {{az}}
         </div>
-            {{#each subnets}}
             <dl class="dl-vertical">
+            {{#each subnets}}
                 <dt>{{name}}</dt>
                 <dd>({{cidr}})</dd>
+            {{/each}}
             </dl>
             {{/each}}
-        {{/each}}
     </div>
 </article>

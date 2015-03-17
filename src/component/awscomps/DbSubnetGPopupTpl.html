@@ -5,16 +5,16 @@
 	<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 	<div class="scroll-content">
 		{{#each group}}
-		<header class="modal-list-header dbsgppp-az">{{@key}}</header>
+		<header class="modal-list-header">{{@key}}</header>
 		{{#each this}}
-		<section class="modal-list-body dbsgppp-subnet-list">
-		  <div class="checkbox">
+		<section class="modal-list-body">
+		  <div class="checkbox dbsgppp-check">
 		   <input id="dbsgppp-{{idx}}" class="dbsgppp-subnet" type="checkbox" data-id="{{id}}" {{#if checked}}checked="checked"{{/if}}>
 		   <label for="dbsgppp-{{idx}}"></label>
 		  </div>
-		  <label class="dbsgppp-sbname" for="dbsgppp-{{idx}}">{{name}}
+		  <div class="dbsgppp-sbname" for="dbsgppp-{{idx}}">{{name}}
 		  	<div class="dbsgppp-cidr">({{cidr}})</div>
-		  </label>
+		  </div>
 
 		</section>
 		{{/each}}

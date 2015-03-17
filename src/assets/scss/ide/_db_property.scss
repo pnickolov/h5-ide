@@ -1,5 +1,5 @@
 /*
-    DB Instance Property & Subnet Group - IDE Property Panel
+    DB Instance Property - IDE Property Panel
 	
 	- DB Instance Property
 */
@@ -52,8 +52,8 @@
 }
 
 #property-dbinstance-promote-replica {
-	margin: 0 auto;
-	display: block;
+	margin  : 0 auto;
+	display : block;
 }
 
 .apply-immediately-section {
@@ -73,4 +73,6 @@
 .db-og-in-app {
 	cursor: pointer;
 }
+
+@import "rds_modal";
 

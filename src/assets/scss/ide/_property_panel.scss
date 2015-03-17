@@ -158,7 +158,6 @@
 		color       : #999;
 		font-size   : 12px;
 		line-height : 20px;
-		margin-right: 10px;
 	}
 
 	.input,
@@ -225,7 +224,8 @@
 
 /* General Style for Property Panel List */
 
-.property-list > li {
+.property-list > li,
+.modal-list > li {
 	padding       : 10px;
 	border-bottom : 1px solid $bg-p;
 	background    : lighten($bg-p, 5%);
@@ -305,7 +305,6 @@
 }
 
 @import "instance_property";
-@import "change_ami";
 @import "sg_property";
 @import "volume_property";
 @import "elb_property";

@@ -302,11 +302,6 @@ body {
   overflow: hidden; }
 
 /* Property Panel */
-.property-group-head {
-  padding: 6px 10px;
-  font-size: 13px;
-  background: #1d1e29; }
-
 .resdiff-switch {
   position: relative; }
   .resdiff-switch i {
@@ -707,21 +702,6 @@ body {
 /* Delete SG Rule Modal */
 .delete-sgrule-dialog {
   max-height: 300px; }
-  .delete-sgrule-dialog li {
-    padding: 5px 10px; }
-
-.delete-sgrule-dialog .sg-create-group {
-  background: #161616;
-  border: none;
-  color: #666;
-  padding: 2px 10px; }
-
-.delete-sgrule-dialog .sg-color {
-  margin-top: 5px;
-  width: 10px;
-  height: 10px;
-  float: left;
-  margin-right: 5px; }
 
 /* App Property */
 .btn.kp-copy-btn {
@@ -793,62 +773,6 @@ body {
 #app-cgw-body .status,
 #app-vpn-body .status {
   margin: 0 5px 0 0; }
-
-/* Auto Scaling Group Property */
-.drag-sort-list-wrap {
-  padding-left: 40px; }
-
-.drag-sort-list {
-  width: 300px; }
-
-.drag-sort-list li {
-  border: 1px solid #1d1d1d;
-  color: #555;
-  background: #333;
-  line-height: 30px;
-  padding-left: 6px;
-  margin-top: -1px;
-  -webkit-transition: background 0.2s ease-in-out;
-  -o-transition: background 0.2s ease-in-out;
-  transition: background 0.2s ease-in-out; }
-
-.drag-sort-list li:hover,
-.drag-sort-list li.enabled:hover {
-  background: #222; }
-
-.drag-sort-list .list-name {
-  cursor: pointer; }
-
-.drag-sort-list .checkbox {
-  margin-top: -3px;
-  border-right: 1px solid #1d1d1d;
-  padding-right: 8px; }
-
-.drag-sort-list li.enabled {
-  background: none;
-  color: #ccc; }
-
-.drag-sort-list .drag-handle {
-  width: 16px;
-  height: 16px;
-  float: right;
-  margin: 2px 6px 0 0;
-  display: none;
-  color: #999;
-  cursor: move; }
-
-.drag-sort-list .drag-handle:hover {
-  color: #999; }
-
-.drag-sort-list .enabled .drag-handle {
-  display: block; }
-
-.drag-sort-list .sortable-placeholder {
-  line-height: 30px;
-  height: 30px;
-  background: #f5f5f5;
-  border: 1px dotted #ccc;
-  border-bottom: none; }
 
 /* run stack */
 #modal-run-stack #app-name {
@@ -5163,8 +5087,7 @@ aside.dashboard-sidebar {
   .property-control-group .required-input {
     color: #999;
     font-size: 12px;
-    line-height: 20px;
-    margin-right: 10px; }
+    line-height: 20px; }
   .property-control-group .input,
   .property-control-group textarea {
     width: 100%;
@@ -5214,14 +5137,16 @@ aside.dashboard-sidebar {
   margin-top: 5px; }
 
 /* General Style for Property Panel List */
-.property-list > li {
+.property-list > li,
+.modal-list > li {
   padding: 10px;
   border-bottom: 1px solid #202027;
   background: #2b2b35;
   -webkit-transition: background 0.2s ease-in-out;
   -o-transition: background 0.2s ease-in-out;
   transition: background 0.2s ease-in-out; }
-  .property-list > li:hover {
+  .property-list > li:hover,
+  .modal-list > li:hover {
     background: #373743; }
 
 .add-to-list {
@@ -5478,7 +5403,6 @@ aside.dashboard-sidebar {
   .rule-remove-icon:hover {
     color: #ea5d5d; }
 
-.sg-rule-list li:hover .rule-remove-icon,
 #sg-rule-list li:hover .rule-remove-icon,
 .acl-rule-list li:hover .rule-remove-icon {
   display: block; }
@@ -5786,7 +5710,7 @@ aside.dashboard-sidebar {
   padding: 5px 10px; }
 
 /*
-    DB Instance Property & Subnet Group - IDE Property Panel
+    DB Instance Property - IDE Property Panel
 	
 	- DB Instance Property
 */
@@ -5846,9 +5770,79 @@ aside.dashboard-sidebar {
   cursor: pointer; }
 
 /*
+    RDS-related Modal
+
+    - Promote Read Replica Modal
+    - Restore to Point in Time Modal
+    - Edit Subnet Group Modal
+    - DB Instance System Log
+*/
+/* Promote Read Replica Modal */
+.modal-db-replica-promote-confirm ul {
+  padding: 10px;
+  background: #202027;
+  border-radius: 3px; }
+.modal-db-replica-promote-confirm li {
+  list-style-type: decimal;
+  list-style-position: inside; }
+.modal-db-replica-promote-confirm p {
+  padding: 0 20px;
+  color: #ff9c00; }
+.modal-db-replica-promote-confirm a {
+  margin: 0 20px; }
+
+/* Restore to Point in Time Modal */
+.modal-db-instance-restore-config .datepicker {
+  float: left;
+  margin-right: 5px;
+  text-align: center;
+  padding: 6px;
+  width: 80px; }
+.modal-db-instance-restore-config .timepicker {
+  float: left;
+  width: 20px;
+  text-align: center;
+  padding: 6px;
+  margin-right: 5px; }
+.modal-db-instance-restore-config .modal-db-instance-restore-option {
+  margin-top: 20px;
+  display: inline-block; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option * {
+    float: left;
+    margin-right: 10px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .title {
+    width: 170px;
+    line-height: 20px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-latest,
+  .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-custom {
+    margin-top: 4px; }
+  .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker {
+    margin-top: -5px;
+    margin-bottom: 20px; }
+    .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker label {
+      line-height: 30px; }
+.modal-db-instance-restore-config .modal-db-instance-restore-no-restore {
+  width: 100%;
+  text-align: center;
+  margin-top: 55px; }
+
+/* Edit Subnet Group Modal */
+.dbsgppp-sbname {
+  display: inline-block; }
+
+.dbsgppp-check {
+  margin-bottom: 14px; }
+
+.dbsgppp-cidr {
+  font-size: 12px;
+  color: #666; }
+
+/* DB Instance System Log */
+.no-data {
+  margin-top: 40px; }
+
+/*
     ASG - IDE Property Panel
-	
-	- DB Instance Property
 */
 .property-asg-size {
   width: 45%;
@@ -5899,6 +5893,54 @@ aside.dashboard-sidebar {
   margin-top: 5px; }
   .property-asg-notification-wrap > div:last-of-type {
     margin-bottom: 15px; }
+
+/*
+    ASG Termination Policy Modal
+*/
+.drag-sort-list {
+  width: 300px;
+  margin: 0 auto; }
+  .drag-sort-list li {
+    border: 1px solid #1d1d1d;
+    color: #555;
+    background: #333;
+    line-height: 30px;
+    padding-left: 6px;
+    margin-top: -1px;
+    -webkit-transition: background 0.2s ease-in-out;
+    -o-transition: background 0.2s ease-in-out;
+    transition: background 0.2s ease-in-out; }
+    .drag-sort-list li:hover, .drag-sort-list li.enabled:hover {
+      background: #2c2f4d; }
+    .drag-sort-list li.enabled {
+      background: none;
+      color: #ccc; }
+  .drag-sort-list .list-name {
+    cursor: pointer;
+    width: 230px;
+    display: inline-block; }
+  .drag-sort-list .checkbox {
+    margin-top: -3px;
+    border-right: 1px solid #1d1d1d;
+    padding-right: 8px; }
+  .drag-sort-list .drag-handle {
+    width: 16px;
+    height: 16px;
+    float: right;
+    margin: 2px 6px 0 0;
+    display: none;
+    color: #999;
+    cursor: move; }
+    .drag-sort-list .drag-handle:hover {
+      color: #4a90e2; }
+  .drag-sort-list .enabled .drag-handle {
+    display: block; }
+  .drag-sort-list .sortable-placeholder {
+    line-height: 30px;
+    height: 30px;
+    background: #363b76;
+    border: 1px dotted #ccc;
+    border-bottom: none; }
 
 .canvas-view {
   position: relative;
@@ -6934,83 +6976,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     width: 79px; }
     #modal-acl-rule .simple-protocol-select li:hover {
       text-decoration: underline; }
-
-.modal-db-replica-promote-confirm h5 {
-  font-weight: bold;
-  margin-bottom: 10px;
-  font-size: 16px; }
-.modal-db-replica-promote-confirm span {
-  font-weight: bold;
-  color: #fff; }
-
-.modal-db-instance-restore-config .datepicker {
-  float: left;
-  margin-right: 5px;
-  text-align: center;
-  padding: 6px;
-  width: 80px; }
-.modal-db-instance-restore-config .timepicker {
-  float: left;
-  width: 20px;
-  text-align: center;
-  padding: 6px;
-  margin-right: 5px; }
-.modal-db-instance-restore-config .modal-db-instance-restore-option {
-  margin-top: 20px;
-  display: inline-block; }
-  .modal-db-instance-restore-config .modal-db-instance-restore-option * {
-    float: left;
-    margin-right: 10px; }
-  .modal-db-instance-restore-config .modal-db-instance-restore-option .title {
-    width: 170px;
-    line-height: 20px; }
-  .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-latest, .modal-db-instance-restore-config .modal-db-instance-restore-option #modal-db-instance-restore-radio-custom {
-    margin-top: 4px; }
-  .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker {
-    margin-top: -5px;
-    margin-bottom: 20px; }
-    .modal-db-instance-restore-config .modal-db-instance-restore-option .datetimepicker label {
-      line-height: 30px; }
-.modal-db-instance-restore-config .modal-db-instance-restore-no-restore {
-  width: 100%;
-  text-align: center;
-  margin-top: 55px; }
-
-.syslog-dbinstance table a {
-  color: #4a90e2; }
-.syslog-dbinstance table a:hover {
-  color: #3970af;
-  cursor: pointer; }
-.syslog-dbinstance.modal-toolbar .slidebox {
-  top: 0;
-  bottom: 0;
-  overflow: auto; }
-  .syslog-dbinstance.modal-toolbar .slidebox.show {
-    max-height: 100%; }
-  .syslog-dbinstance.modal-toolbar .slidebox .content {
-    margin: 0;
-    width: 100%;
-    height: 100%; }
-    .syslog-dbinstance.modal-toolbar .slidebox .content .db-sys-log-content {
-      box-sizing: border-box;
-      color: #1BA718;
-      font-size: 12px;
-      padding: 20px 25px;
-      padding-bottom: 90px;
-      position: relative;
-      height: 100%;
-      overflow: auto; }
-  .syslog-dbinstance.modal-toolbar .slidebox .action {
-    text-align: right;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: rgba(32, 32, 32, 0.9); }
-.syslog-dbinstance button[data-btn=event],
-.syslog-dbinstance button[data-btn=log] {
-  width: 100px; }
-.syslog-dbinstance .no-data {
-  margin-top: 40px; }
 
 .container-settings .input-item {
   margin-top: 20px;
@@ -8785,40 +8750,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 #modal-state-text-expand .editable-area .ace_gutter-active-line {
   background-color: #333 !important; }
-
-/* Edit Subnet Group Modal */
-.dbsgppp-subnet-list {
-  position: relative;
-  padding-left: 32px; }
-  .dbsgppp-subnet-list label {
-    cursor: pointer; }
-  .dbsgppp-subnet-list .checkbox {
-    position: absolute;
-    top: 50%;
-    left: 8px;
-    margin-top: -8px; }
-
-.dbsgppp-cidr {
-  font-size: 12px;
-  color: #666; }
-
-.modal-db-replica-promote-confirm ul {
-  padding: 10px 20px;
-  color: #ddd;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 3px; }
-.modal-db-replica-promote-confirm li {
-  list-style-type: decimal;
-  list-style-position: inside; }
-.modal-db-replica-promote-confirm p {
-  padding: 0 20px;
-  color: #ff9c00; }
-.modal-db-replica-promote-confirm a {
-  color: #4a90e2;
-  font-size: 12px;
-  margin: 0 20px; }
-  .modal-db-replica-promote-confirm a:hover {
-    text-decoration: underline; }
 
 #PaymentNav {
   background: #0c0c0c;

@@ -1,0 +1,94 @@
+/*
+    RDS-related Modal
+
+    - Promote Read Replica Modal
+    - Restore to Point in Time Modal
+    - Edit Subnet Group Modal
+    - DB Instance System Log
+*/
+
+/* Promote Read Replica Modal */
+
+.modal-db-replica-promote-confirm {
+  ul {
+    padding       : 10px;
+    background    : $bg-p;
+    border-radius : 3px;
+  }
+  li {
+    list-style-type     : decimal;
+    list-style-position : inside;
+  }
+  p {
+    padding : 0 20px;
+    color   : $orange;
+  }
+  a {
+    margin    : 0 20px;
+  }
+}
+
+/* Restore to Point in Time Modal */
+
+.modal-db-instance-restore-config {
+
+	.datepicker {
+		float: left;
+		margin-right: 5px;
+		text-align: center;
+		padding: 6px;
+		width: 80px;
+	}
+	.timepicker {
+		float: left;
+		width: 20px;
+		text-align: center;
+		padding: 6px;
+		margin-right: 5px;
+	}
+	.modal-db-instance-restore-option {
+		margin-top : 20px;
+		display    : inline-block;
+
+		* {
+			float: left;
+			margin-right: 10px;
+		}
+
+		.title {
+			width       : 170px;
+			line-height : 20px;
+		}
+
+		#modal-db-instance-restore-radio-latest, 
+		#modal-db-instance-restore-radio-custom {
+			margin-top: 4px;
+		}
+
+		.datetimepicker {
+			margin-top: -5px;
+			margin-bottom: 20px;
+			label {
+				line-height: 30px;
+			}
+		}
+	}
+	.modal-db-instance-restore-no-restore {
+		width: 100%;
+		text-align: center;
+		margin-top: 55px;
+	}
+}
+
+/* Edit Subnet Group Modal */
+
+.dbsgppp-sbname { display: inline-block; }
+.dbsgppp-check { margin-bottom: 14px; }
+.dbsgppp-cidr {
+  font-size   : 12px;
+  color       : #666;
+}
+
+/* DB Instance System Log */
+
+.no-data { margin-top: 40px; }

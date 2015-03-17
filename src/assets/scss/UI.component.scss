@@ -2496,12 +2496,12 @@ position:relative;
 .dropdown-menu { display: none; }
 .open .dropdown-menu { display: block; }
 
-
-.option-group-category,
-.modal-list-header {
+.modal-list-header,
+.property-group-head {
     padding       : 4px 8px;
     background    : lighten($bg-p, 15%);
     border-bottom : 1px solid darken($bg-p, 10%);
+    width         : 100%;
 
 	&::selection {
 		background: transparent;

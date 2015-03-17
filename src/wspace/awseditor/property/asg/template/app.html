@@ -62,22 +62,20 @@
   {{#if isEditable}}
   <div class="option-group-head expand">{{ i18n "PROP.ASG_DETAILS"}}</div>
   <div class="option-group" data-bind="true">
-    <section class="property-control-group clearfix">
-      <div class="left property-asg-size">
+    <section class="property-control-group">
+      <div class="property-asg-size">
         <label class="left" for="property-asg-min">{{ i18n "PROP.ASG_MIN_SIZE" }}</label>
         <input class="input" type="text" id="property-asg-min" value="{{minSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
       </div>
-      <div class="right property-asg-size">
+      <div class="property-asg-size">
         <label class="left" for="property-asg-max">{{ i18n "PROP.ASG_MAX_SIZE" }}</label>
         <input class="input" type="text" id="property-asg-max" value="{{maxSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
       </div>
+      <div class="property-asg-size">
+        <label class="left" for="property-asg-capacity">{{ i18n "PROP.ASG_DESIRE_CAPACITY" }}</label>
+        <input class="input" type="text" id="property-asg-capacity" value="{{capacity}}" maxlength="255" data-type="digits" data-ignore="true">
+      </div>
     </section>
-
-    <section class="property-control-group property-asg-size">
-      <label class="left" for="property-asg-capacity">{{ i18n "PROP.ASG_DESIRE_CAPACITY" }}</label>
-      <input class="input" type="text" id="property-asg-capacity" value="{{capacity}}" maxlength="255" data-type="digits" data-ignore="true">
-    </section>
-
     <section class="property-control-group">
       <label class="left" for="property-asg-cooldown">{{ i18n "PROP.ASG_COOL_DOWN" }}</label>
       <input class="input input-short" type="text" id="property-asg-cooldown" value="{{cooldown}}" data-type="digits" max="86400">
@@ -86,14 +84,14 @@
 
     <section class="property-control-group clearfix">
       <label clas="left">{{i18n "PROP.ASG_HEALTH_CHECK_TYPE"}}</label>
-      <div class="asg-radio-group">
+      <div class="mgt5">
         <div class="radio">
           <input id="property-asg-ec2" type="radio" value="ec2" {{#if isEC2HealthCheck}}checked="true"{{/if}} name="property-asg-hc-option" />
           <label for="property-asg-ec2"></label>
         </div>
         <label for="property-asg-ec2">EC2</label>
       </div>
-      <div {{#unless has_elb}}data-tooltip="{{ i18n 'PROP.ASG_HAS_ELB_WARN'}}" class="asg-radio-group tooltip"{{else}}class="asg-radio-group"{{/unless}}>
+      <div {{#unless has_elb}}data-tooltip="{{ i18n 'PROP.ASG_HAS_ELB_WARN'}}" class="mgt5 tooltip"{{else}}class="mgt5"{{/unless}}>
         <div class="radio">
           <input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#unless isEC2HealthCheck}}checked="true"{{/unless}} name="property-asg-hc-option" />
           <label for="property-asg-elb"></label>

@@ -162,7 +162,7 @@
 
 <!-- {{optionGroupDropDown}} -->
 {{#if canCustomOG}}
-<label for="property-dbinstance-optiongroup-placeholder">{{i18n "PROP.DBINSTANCE_OPTION_GROUP"}}</label>
+<label>{{i18n "PROP.DBINSTANCE_OPTION_GROUP"}}</label>
 <div class="property-dbinstance-optiongroup-placeholder"></div>
 {{else}}
 <label>{{i18n "PROP.DBINSTANCE_OPTION_GROUP"}}</label>

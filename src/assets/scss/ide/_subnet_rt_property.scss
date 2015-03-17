@@ -8,11 +8,25 @@
 
 /* Subnet Property */
 
+.subnet-cidr-wrapper {
+	clear : both;
+
+	.cidr-prefix {
+		display        : inline-block;
+		width          : 50px;
+		vertical-align : middle;
+		margin-right   : 6px;
+	}
+
+	.cidr-rest {
+		width : 140px !important;
+	}
+}
 
 
 /* RT Property */
 
-.property-list.route-list {
+.route-list {
 	> li {
 		width   : auto;
 		padding : 0;

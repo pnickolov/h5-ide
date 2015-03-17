@@ -1,6 +1,6 @@
 <article class="property-dbinstance" data-bind="true">
 
-    <div class="property-dbinstance-not-available-info hide">
+    <div class="property-dbinstance-not-available-info property-warning-block hide">
         {{i18n "PROP.DBINSTANCE_NOT_AVAILABLE"}}
     </div>
 
@@ -83,12 +83,12 @@
             <span class="required-input right">{{ i18n "PROP.INSTANCE_REQUIRE" }}</span>
             <div class="ranged-number-input">
                 <label for="property-dbinstance-storage"></label>
-                <input id="property-dbinstance-storage" type="text" class="input parsley-validated property-input-left tooltip" value="{{allocatedStorage}}" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number" {{#if isAppEdit}}{{#if isSqlserver}}disabled data-tooltip="{{i18n "PROP.DBINSTANCE_SCALLING_NOT_SUPPORT"}}"{{/if}}{{/if}}>
-                <label for="property-dbinstance-storage" class="property-label-right">GB</label>
+                <input id="property-dbinstance-storage" type="text" class="input parsley-validated input-short tooltip" value="{{allocatedStorage}}" name="property-dbinstance-storage" data-ignore="true" maxlength="4" data-required="true" data-type="number" {{#if isAppEdit}}{{#if isSqlserver}}disabled data-tooltip="{{i18n "PROP.DBINSTANCE_SCALLING_NOT_SUPPORT"}}"{{/if}}{{/if}}>
+                <label for="property-dbinstance-storage">GB</label>
             </div>
             {{#if isAppEdit}}
                 {{#if originAllocatedStorage}}
-                <label>{{i18n "PROP.DBINSTANCE_CURRENT_ALLOCATED_STORAGE"}}{{originAllocatedStorage}} GB</label>
+                <div class="property-info">{{i18n "PROP.DBINSTANCE_CURRENT_ALLOCATED_STORAGE"}}{{originAllocatedStorage}} GB</div>
                 {{/if}}
             {{/if}}
         </section>
@@ -113,7 +113,7 @@
                 <input class="input" id="property-dbinstance-iops-value" {{#if isAppEdit}}{{#if isSqlserver}}disabled{{/if}}{{/if}} type="text" value="{{iops}}" name="iops-ranged" data-ignore="true" data-required="true" data-type="number">
                 <label for="property-dbinstance-iops-value"></label>
             </div>
-            <label class="property-dbinstance-iops-info">{{iopsInfo}}</label>
+            <div class="property-info">{{iopsInfo}}</div>
         </section>
         {{/ifLogic}}
 
@@ -255,20 +255,20 @@
 
             <section id="group-dbinstance-backup-period" class="property-control-group {{#unless backupRetentionPeriod}}hide{{/unless}}" >
                 <label>{{i18n "PROP.DBINSTANCE_BACKUP_RETENTION_PERIOD"}}</label>
-                <input class="input shorter-input" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text" data-type="digits" data-min="1" data-max="35" data-ignore="true">
+                <input class="input input-shorter" value="{{backupRetentionPeriod}}" id="property-dbinstance-backup-period" type="text" data-type="digits" data-min="1" data-max="35" data-ignore="true">
                 <label class="property-label-right" for="property-dbinstance-backup-period">{{i18n "PROP.DBINSTANCE_BACK_RETANTION_PERIOD_DAY"}}</label>
             </section>
 
             <section id="property-dbinstance-backup-window-select" class="property-control-group">
                 <label>{{i18n "PROP.DBINSTANCE_BACKUP_WINDOW"}}</label>
-                <div class="property-dbinstance-radio-group">
+                <div class="mgt5">
                     <div class="radio">
                         <input id="property-dbinstance-backup-radio-no" name="property-dbinstance-backup-radio" type="radio" {{#unless backupWindow}}checked="checked"{{/unless}} value="no">
                         <label for="property-dbinstance-backup-radio-no"></label>
                     </div>
                     <label for="property-dbinstance-backup-radio-no">{{i18n "PROP.DBINSTANCE_NO_PREFERENCE"}}</label>
                 </div>
-                <div class="property-dbinstance-radio-group">
+                <div class="mgt5">
                     <div class="radio">
                         <input id="property-dbinstance-backup-radio-window" name="property-dbinstance-backup-radio" type="radio" {{#if backupWindow}}checked="checked"{{/if}} value="window">
                         <label for="property-dbinstance-backup-radio-window"></label>
@@ -280,7 +280,7 @@
             <section id="property-dbinstance-backup-window-group" class="{{#unless backupWindow}}hide{{/unless}} property-control-group">
                 <section class="property-control-group">
                     <label>{{i18n "PROP.DBINSTANCE_START_TIME"}}</label>
-                    <input class="input shorter-input" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-ignore="true" data-ignore-regexp="^[0-9:]*$"/>
+                    <input class="input input-shorter" type="text" id="property-dbinstance-backup-window-start-time" value="{{backup.startTime}}" data-ignore="true" data-ignore-regexp="^[0-9:]*$"/>
                     <label>UTC</label>
                 </section>
                 <section class="property-control-group">
@@ -302,9 +302,6 @@
                 <label>{{i18n "PROP.DBINSTANCE_CURRENT_BACKUP_WINDOW"}}{{originBackupWindow}}</label>
             </section>
             {{/if}}
-
-
-
         </div>
     </div>
 
@@ -314,14 +311,14 @@
 
         <section id="property-dbinstance-maintenance-window-select" class="property-control-group">
             <label>{{i18n "PROP.DBINSTANCE_MAINTENANCE_WINDOW"}}</label>
-            <div class="property-dbinstance-radio-group">
+            <div class="mgt5">
                 <div class="radio">
                     <input id="property-dbinstance-maintenance-radio-no" name="property-dbinstance-maintenance-radio" type="radio" {{#unless maintenanceWindow}}checked="checked"{{/unless}} value="no">
                     <label for="property-dbinstance-maintenance-radio-no"></label>
                 </div>
                 <label for="property-dbinstance-maintenance-radio-no">{{i18n "PROP.DBINSTANCE_NO_PREFERENCE"}}</label>
             </div>
-            <div class="property-dbinstance-radio-group">
+            <div class="mgt5">
                 <div class="radio">
                     <input id="property-dbinstance-maintenance-radio-window" name="property-dbinstance-maintenance-radio" type="radio" {{#if maintenanceWindow}}checked="checked"{{/if}} value="window">
                     <label for="property-dbinstance-maintenance-radio-window"></label>
@@ -333,7 +330,7 @@
         <section id="property-dbinstance-maintenance-window-group" class="property-control-group {{#unless maintenanceWindow}}hide{{/unless}}">
             <section class="property-control-group" >
                 <label class="left">{{i18n "PROP.DBINSTANCE_MAINTENANCE_START_DAY"}}</label>
-                <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-start-day-select">
+                <div class="selectbox" id="property-dbinstance-maintenance-window-start-day-select">
                     <div class="selection">{{i18n "PROP.WEEKDAY_MONDAY"}}</div>
                     <ul class="dropdown" tabindex="-1">
                         <li class="item" data-id="mon">{{i18n "PROP.WEEKDAY_MONDAY"}}</li>
@@ -348,12 +345,12 @@
             </section>
             <section class="property-control-group" >
                 <label>{{i18n "PROP.DBINSTANCE_START_TIME"}}</label>
-                <input class="input shorter-input" type="text" id="property-dbinstance-maintenance-window-start-time" value="{{maintenance.startTime}}" data-required-rollback="true" data-ignore="true" data-ignore-regexp="^[0-9:]*$"/>
+                <input class="input input-shorter" type="text" id="property-dbinstance-maintenance-window-start-time" value="{{maintenance.startTime}}" data-required-rollback="true" data-ignore="true" data-ignore-regexp="^[0-9:]*$"/>
                 <label>UTC</label>
             </section>
             <section class="property-control-group" >
                 <label>{{i18n "PROP.DBINSTANCE_DURATION"}}</label>
-                <div class="selectbox shorter-dropdown" id="property-dbinstance-maintenance-window-duration">
+                <div class="selectbox" id="property-dbinstance-maintenance-window-duration">
                     <div class="selection"></div>
                     <ul class="dropdown" tabindex="-1">
                         {{#each maintenanceDurations}}

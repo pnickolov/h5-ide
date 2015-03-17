@@ -1310,14 +1310,14 @@ define [ 'ApiRequest'
                 $('.property-dbinstance-status-icon-warning').remove()
                 that.setTitle(that.appModel.get('name')) if that.appModel
                 if showError is true
-                    $('.db-status-loading').remove()
+                    $('.property-dbinstance-status-loading').remove()
                     $('.property-dbinstance-not-available-info').show()
                     tip = '<i class="property-dbinstance-status-icon-warning icon-warning"></i>'
                 else if showError is false
-                    $('.db-status-loading').remove()
+                    $('.property-dbinstance-status-loading').remove()
                     tip = ''
                 else
-                    tip = '<div class="db-status-loading loading-spinner loading-spinner-small"></div>'
+                    tip = '<div class="property-dbinstance-status-loading loading-spinner loading-spinner-small"></div>'
                 that.prependTitle tip
 
             _setStatus()

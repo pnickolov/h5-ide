@@ -38,164 +38,12 @@
 
 // RDS Instance Property
 
-.property-panel-wrapper {
-	.property-dbinstance-status-icon-warning {
-		float        : right;
-		color        : #f00;
-		margin-right : 10px;
-	}
-	.db-status-loading {
-		position: absolute;
-		right: 5px;
-		top: -44px;
-	}
-	.property-dbinstance-not-available-info {
-		color: #fff;
-		background-color: #ff6600;
-		padding: 10px;
-	}
-}
-
-.property-dbinstance {
-	#property-dbinstance-class-select .dropdown {
-		top: 49px;
-	}
-	#property-dbinstance-name {
-		text-transform: lowercase;
-	}
-	#property-dbinstance-engine-version-select.combo-dd.selectbox .scroll-wrap {
-		width: 178px;
-	}
-	input.shorter-input {
-		width: 37px;
-		padding-right: 7px;
-	}
-	.selectbox.shorter-dropdown {
-		width: 85px;
-	}
-	input.property-input-left {
-		width: 184px;
-	}
-	.property-label-right {
-		margin-left: 10px;
-	}
-	.property-input-row-head {
-		display: inline-block;
-		width: 220px;
-		margin-bottom: 7px;
-		margin-top: 10px;
-	}
-	.property-dbinstance-radio-group {
-		margin-bottom: 5px;
-	}
-	.property-input-row {
-		float: left;
-		width: 120px;
-		margin-bottom: 10px;
-		label.left {
-			display: block;
-		}
-		input.input {
-			width: 80px;
-		}
-		div.selectbox {
-			width: 115px;
-			margin-top: 2px;
-		}
-	}
-	.property-dbinstance-iops-value-section {
-		label.left {
-			margin-top: 10px;
-			margin-right: 5px;
-		}
-		#property-dbinstance-iops-value {
-			width: 115px;
-		}
-	}
-
-	.property-dbinstance-iops-info {
-		margin-top: 15px;
-	}
-
-	.property-dbinstance-optiongroup-placeholder {
-		.selectbox .selection {
-			.icon-edit { display: none; }
-			.option-preview { display: none; }
-		}
-	}
-
-	.property-dbinstance-optiongroup-placeholder {
-		.item .icon-edit {
-			float: right;
-			position: absolute;
-			top: 50%;
-			right: 0;
-			margin-top: -8px;
-			margin-right: 10px;
-		}
-		.option-preview {
-			width: 208px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			color: #aaa;
-		}
-	}
-	#property-dbinstance-maintenance-window-group
-	, #property-dbinstance-backup-window-group {
-		label {
-			width: 73px;
-		}
-	}
-	#property-dbinstance-promote-replica {
-		width: 200px;
-		margin-left: 30px;
-	}
-}
-
-.property-subnet-group {
-	.dl-vertical.sbg-list > dd {
-		margin: 1px 0 1px 0;
-	}
-}
-
-.app-dbinstance {
-	.db-og-in-app {
-		cursor: pointer;
-	}
-}
-
-.apply-immediately-section {
-	line-height : 18px;
-	background  : $base-p;
-	position    : relative;
-	i {
-		display  : inline-block;
-		position : absolute;
-	}
-	label {
-    color: #fff;
-    border: 1px solid rgba(0,0,0,0);
-    }
-    a.icon-info{
-        color: $base-b;
-        vertical-align: middle;
-    }
-
-}
-
-.option-group-category {
-  display       : block;
-  padding       : 6px 12px;
-  background    : lighten($bg-p, 15%);
-  border-bottom : 1px solid darken($bg-p, 10%);
-}
 
 .modal-db-replica-promote-confirm {
 	h5 {
 		font-weight: bold;
 		margin-bottom: 10px;
 		font-size: 16px;
-		// color: #fff;
 	}
 	span {
 		font-weight: bold;
@@ -204,6 +52,7 @@
 }
 
 .modal-db-instance-restore-config {
+
 	.datepicker {
 		float: left;
 		margin-right: 5px;
@@ -219,21 +68,23 @@
 		margin-right: 5px;
 	}
 	.modal-db-instance-restore-option {
-		margin-top: 20px;
-		display: inline-block;
-		// margin-bottom: 50px;
+		margin-top : 20px;
+		display    : inline-block;
+
 		* {
 			float: left;
 			margin-right: 10px;
 		}
+
 		.title {
-			width: 170px;
-			// margin-top: 20px;
-			line-height: 20px;
+			width       : 170px;
+			line-height : 20px;
 		}
+
 		#modal-db-instance-restore-radio-latest, #modal-db-instance-restore-radio-custom {
 			margin-top: 4px;
 		}
+
 		.datetimepicker {
 			margin-top: -5px;
 			margin-bottom: 20px;

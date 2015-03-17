@@ -1,0 +1,12 @@
+/*
+    ASG - IDE Property Panel
+	
+	- DB Instance Property
+*/
+
+.property-asg-size {
+	width   : 45%;
+	display : inline-block;
+
+	&:nth-child(2) { margin-left: 8%; }
+}

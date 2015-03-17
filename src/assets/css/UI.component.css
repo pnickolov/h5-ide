@@ -392,14 +392,12 @@ pre {
   display: none; }
 
 .combo-dd.selectbox .combo-dd-filter {
-  width: 232px;
   border-radius: 0;
   border: 0;
   padding-right: 20px;
   display: none; }
 
 .combo-dd.selectbox .combo-dd-filter:focus {
-  width: 232px;
   border-radius: 0;
   border: 0;
   padding-right: 20px; }
@@ -761,13 +759,6 @@ pre {
   border: 1px solid #1a1a1a; }
 
 /* List Structure in Modal */
-.modal-list-header {
-  padding: 6px 12px;
-  background: #424251;
-  border-bottom: 1px solid #09090b; }
-  .modal-list-header::selection {
-    background: transparent; }
-
 .modal-list-body {
   background: #202027;
   padding: 5px 10px; }
@@ -1888,6 +1879,29 @@ html[dir="rtl"] .select2-search-choice-close {
 .toggle-eip.associated {
   background: url("../images/ide/icon/icn-eipon.png") no-repeat; }
 
+/* Tabbar Icon */
+.icon-dashboard {
+  background: url("../images/ide/icon-dashboard.png") center center no-repeat; }
+
+.icon-stack {
+  background: url("../images/ide/icon-stack.png") center center no-repeat; }
+
+.icon-app-running,
+.icon-app-Running {
+  background: url("../images/ide/icon-app-running.png") center center no-repeat; }
+
+.icon-app-stopped,
+.icon-app-Stopped {
+  background: url("../images/ide/icon-app-stopped.png") center center no-repeat; }
+
+.icon-app-pending {
+  background: url("../images/ide/icon-app-pending.png") center center no-repeat; }
+
+/* Nav Icon */
+.icon-stack-nav,
+.icon-stack-tabbar {
+  background: url("../images/ide/icon-stack.png") center center no-repeat; }
+
 /* Table */
 .table {
   max-width: 100%;
@@ -2190,6 +2204,10 @@ textarea[readonly] {
 .property-control-group .input.input-short,
 .input.input-short {
   width: 170px; }
+
+.property-control-group .input.input-shorter,
+.input.input-shorter {
+  width: 85px; }
 
 .input::-webkit-input-placeholder {
   color: #555; }
@@ -4097,3 +4115,22 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 
 .open .dropdown-menu {
   display: block; }
+
+.option-group-category,
+.modal-list-header {
+  padding: 4px 8px;
+  background: #424251;
+  border-bottom: 1px solid #09090b; }
+  .option-group-category::selection,
+  .modal-list-header::selection {
+    background: transparent; }
+
+.click-select {
+  cursor: pointer;
+  height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+  .click-select::selection {
+    background: #3781C9;
+    color: #fcfcfc; }

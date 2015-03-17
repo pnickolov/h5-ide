@@ -8,3 +8,34 @@
 .toggle-eip.associated {
 	background: url('../images/ide/icon/icn-eipon.png') no-repeat;
 }
+
+
+/* Tabbar Icon */
+
+.icon-dashboard {
+	background: url('../images/ide/icon-dashboard.png') center center no-repeat;
+}
+
+.icon-stack {
+	background: url('../images/ide/icon-stack.png') center center no-repeat;
+}
+
+.icon-app-running,
+.icon-app-Running {
+	background: url('../images/ide/icon-app-running.png') center center no-repeat;
+}
+
+.icon-app-stopped,
+.icon-app-Stopped {
+	background: url('../images/ide/icon-app-stopped.png') center center no-repeat;
+}
+
+.icon-app-pending {
+	background: url('../images/ide/icon-app-pending.png') center center no-repeat;
+}
+
+/* Nav Icon */
+.icon-stack-nav,
+.icon-stack-tabbar {
+	background: url('../images/ide/icon-stack.png') center center no-repeat;
+}

@@ -92,7 +92,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
     updatePaymentDone: ()->
       that = @
       wrap = @$el.find(".update-payment-wrap")
-      wrap.find(".new-project-err").hide()
+      wrap.find(".billing-info-err").hide()
 
       $updateBtn = that.$el.find(".update-payment-done")
 

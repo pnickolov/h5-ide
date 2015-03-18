@@ -14,12 +14,12 @@
 </div>
 
 <!-- {{assetList}} -->
-<aside class="header-popup hp-asset-list">
+<aside class="header-popup ph-asset-list">
   <nav>
     <button class="off-canvas-tab" data-id="app">{{ i18n "NAV_TIT_APPS" }}</button>
     <button class="off-canvas-tab selected" data-id="stack">{{ i18n "NAV_TIT_STACKS" }}</button>
   </nav>
-  <div class="hp-asset-list-wrap">
+  <div class="ph-asset-list-wrap">
     <ul data-id="app" class="hide">
       {{#each apps}}<li>
         <h3 class="nav-group-title">{{regionName}} ({{data.length}})</h3>
@@ -40,23 +40,23 @@
 </aside>
 
 <!-- {{projectList}} -->
-<ul class="header-popup hp-project-list">
+<ul class="header-popup ph-project-list">
   {{#each this}}<li><a class="route{{#if selected}} selected{{/if}} truncate" href="{{url}}">{{name}}</a><a class="route icon-gear tooltip" href="settings/{{id}}" data-tooltip="Workspace Settings"></a></li>{{/each}}
   <li class="create-new-project padding icon-add">Create New Workspace</li>
 </ul>
 
 <!-- {{notifyList}} -->
-<div class="header-popup hp-notify-list">
+<div class="header-popup ph-notify-list">
   <ul></ul>
-  <div class="hp-notify-list-empty">No news is good news.</div>
+  <div class="ph-notify-list-empty">No news is good news.</div>
 </div>
 
 <!-- {{notifyListItem}} -->
 <li class="{{klass}}{{#if isNew}} new-item{{/if}}" data-id="{{id}}">
   <p>App <a href="/workspace/{{pid}}/ops/{{id}}" class="route">{{name}}</a> {{desc}} in workspace <a href="/workspace/{{pid}}" class="route">{{pname}}</a></p>
 
-  {{#if error}} <p class="hp-notify-error">{{error}}</p> {{/if}}
-  <p class="hp-notify-timestamp">{{time}} <span>{{#if duration}} {{duration}} {{/if}}</span></p>
+  {{#if error}} <p class="ph-notify-error">{{error}}</p> {{/if}}
+  <p class="ph-notify-timestamp">{{time}} <span>{{#if duration}} {{duration}} {{/if}}</span></p>
 </li>
 
 
@@ -76,27 +76,27 @@
   <input type="text" class="input" id="new-project-name" data-required="true" required>
   <div class="new-project-billing-wrap">
     <h4>{{i18n "SETTINGS_CREATE_PROJECT_BILLING"}}</h4>
-    <span class="new-project-support tooltip icon-password" data-tooltip="{{ i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT_TIT"}}">{{i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT"}}</span>
+    <span class="billing-info-tip tooltip icon-password" data-tooltip="{{ i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT_TIT"}}">{{i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT"}}</span>
     <div class="new-project-info">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_TIP"}}</div>
-    <div class="new-project-err warning-red"></div>
-    <div class="new-project-item new-project-item-owner">
+    <div class="billing-info-err warning-red"></div>
+    <div class="billing-info-item billing-info-item-owner">
       <label for="new-project-fn">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_OWNER"}}</label>
       <input class="input" id="new-project-fn" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_FIRST_NAME"}}" data-required="true">
       <input class="input" id="new-project-ln" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_LAST_NAME"}}" data-required="true">
     </div>
-    <div class="new-project-item new-project-item-email">
+    <div class="billing-info-item billing-info-item-email">
       <label for="new-project-email">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_EMAIL"}}</label>
       <input class="input" id="new-project-email" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_PL_EMAIL"}}" data-required="true">
     </div>
-    <div class="new-project-item new-project-item-card">
+    <div class="billing-info-item billing-info-item-card">
       <label for="new-project-card">{{i18n "SETTINGS_CREATE_PROJECT_CARD_NAME"}}</label>
       <input class="input" id="new-project-card" type="text" data-required="true" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_PL_CARD_NAME"}}">
     </div>
-    <div class="new-project-item new-project-item-cvv">
+    <div class="billing-info-item billing-info-item-cvv">
       <label for="new-project-cvv">{{i18n "SETTINGS_CREATE_PROJECT_CARD_CVV"}}</label>
       <input class="input" id="new-project-cvv"  type="text" data-required="true">
     </div>
-    <div class="new-project-item new-project-item-date">
+    <div class="billing-info-item billing-info-item-date">
       <label for="new-project-date">{{i18n "SETTINGS_CREATE_PROJECT_EXPRIATION"}}</label>
       <input class="input" id="new-project-date" type="text" placeholder="MM/YYYY" data-required="true">
     </div>
@@ -110,22 +110,22 @@
 
 <!-- {{updateProject}} -->
 <section class="update-payment-wrap" data-bind="true">
-    <div class="update-payment-err warning-red"></div>
-    <span class="new-project-support tooltip icon-password" data-tooltip="{{ i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT_TIT"}}">{{i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT"}}</span>
-    <div class="new-project-item new-project-item-owner">
+    <div class="update-payment-err billing-info-err warning-red"></div>
+    <span class="billing-info-tip tooltip icon-password" data-tooltip="{{ i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT_TIT"}}">{{i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT"}}</span>
+    <div class="billing-info-item billing-info-item-owner">
       <label for="new-project-fn">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_OWNER"}}</label>
       <input class="input" id="new-project-fn" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_FIRST_NAME"}}" data-required="true">
       <input class="input" id="new-project-ln" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_LAST_NAME"}}" data-required="true">
     </div>
-    <div class="new-project-item new-project-item-card">
+    <div class="billing-info-item billing-info-item-card">
       <label for="new-project-card">{{i18n "SETTINGS_CREATE_PROJECT_CARD_NAME"}}</label>
       <input class="input" id="new-project-card" type="text" data-required="true" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_PL_CARD_NAME"}}">
     </div>
-    <div class="new-project-item new-project-item-cvv">
+    <div class="billing-info-item billing-info-item-cvv">
       <label for="new-project-cvv">{{i18n "SETTINGS_CREATE_PROJECT_CARD_CVV"}}</label>
       <input class="input" id="new-project-cvv"  type="text" data-required="true">
     </div>
-    <div class="new-project-item new-project-item-date">
+    <div class="billing-info-item billing-info-item-date">
       <label for="new-project-date">{{i18n "SETTINGS_CREATE_PROJECT_EXPRIATION"}}</label>
       <input class="input" id="new-project-date" type="text" placeholder="MM/YYYY" data-required="true">
     </div>

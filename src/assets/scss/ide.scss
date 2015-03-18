@@ -21,6 +21,26 @@ body {
 	position   : relative;
 }
 
+#scenes, .project-scene {
+  width      : 100%;
+  height     : 100%;
+  overflow   : hidden;
+  background : #000;
+}
+
+.ws-content {
+  position : absolute;
+  top      : 50px;
+  bottom   : 0;
+  left     : 0;
+  right    : 0;
+  z-index  : 3;
+  &>div{
+    width: 100%;
+    height: 100%;
+  }
+}
+
 /* reset */
 
 .icon-caret-down {
@@ -1545,10 +1565,10 @@ div.modal-text-highlight{
 @import "sharedres/rdssnap";
 
 @import "ide/fullpage_settings";
-@import "ide/project";
 @import "ide/cheatsheet";
 @import "ide/dashboard";
 @import "ide/editor";
+@import "ide/header";
 
 @import "ide/property";
 @import "ide/process";
@@ -1556,6 +1576,7 @@ div.modal-text-highlight{
 @import "ide/stateeditor";
 
 @import "ide/payment";
+@import "ide/billing";
 @import "ide/importdialog";
 
 

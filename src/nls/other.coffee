@@ -595,6 +595,10 @@ VisualOps API. You cannot UNDO this action.'
       en : "Failed to remove credential."
       zh : "移除证书失败。"
 
+    CRED_REMOVE_FAILD_CAUSEDBY_EXIST_APP:
+      en: "Cannot remove credential when there exist apps in workspace. Try to forget apps first."
+      zh: "当前工作空间存在 App，如想继续请先移除这些 App。"
+
     SETTINGS_ERR_PROJECT_REMOVE:
       en : "Failed to remove the workspace."
       zh : "删除项目失败。"

@@ -53,7 +53,6 @@ define [
                 json.isAdmin = data.isAdmin
                 json.providerName = c.getProviderName()
                 json.name = json.alias || json.providerName
-                json.needed = applist.some ( app ) -> app?.get( 'provider' ) is json.provider
 
                 if json.isDemo then data.hasDemo = true
 
@@ -97,9 +96,14 @@ define [
             credential.destroy().then () ->
                 that.removeConfirmView?.close()
             , ( error ) ->
+                if error.error is ApiRequest.Errors.ChangeCredConfirm
+                    message = lang.IDE.CRED_REMOVE_FAILD_CAUSEDBY_EXIST_APP
+                else
+                    message = lang.IDE.SETTINGS_ERR_CRED_REMOVE
+
                 credName = credential.getProviderName()
                 that.stopModalLoading that.removeConfirmView, TplCredential.removeConfirm name: credName
-                that.showModalError that.removeConfirmView, lang.IDE.SETTINGS_ERR_CRED_REMOVE
+                that.showModalError that.removeConfirmView, message
 
         showRemoveConfirmModel: ( e ) ->
             credentialId = $( e.currentTarget ).data 'id'

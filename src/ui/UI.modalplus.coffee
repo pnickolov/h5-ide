@@ -149,11 +149,11 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                     self.tpl.addClass("bounce")
                 _.delay ->
                     self.trigger "shown", @
-                    self.isReady = true
                 , 300
             _.delay ->
                 self.resize()
-            , 400
+                self.isReady = true
+            , 300
             _.delay ->
                 self.nextOptions.forEach (option)->
                     new Modal(option)

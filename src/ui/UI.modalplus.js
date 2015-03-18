@@ -166,11 +166,37 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
         if (modals.length > 1) {
           modals.length = modals.length - number;
         } else {
-          modal.wrap.remove();
-          modals = [];
+          this.tpl.addClass("animate");
+          this.trigger("show", this);
+          if (typeof (_base = this.option).onShow === "function") {
+            _base.onShow(this);
+          }
+          _.defer(function() {
+            self.wrap.addClass("show");
+            return self.tpl.addClass("bounce");
+          });
+          _.delay(function() {
+            return self.trigger("shown", this);
+          }, 300);
         }
-        if ((_ref = modals[modals.length - 1]) != null) {
-          _ref.resize();
+        _.delay(function() {
+          self.resize();
+          return self.isReady = true;
+        }, 300);
+        _.delay(function() {
+          return self.nextOptions.forEach(function(option) {
+            return new Modal(option);
+          });
+        }, (this.option.delay || 300) + 10);
+        this.bindEvent();
+        return this;
+      },
+      close: function(number) {
+        var cb, modal, nextModal, _base;
+        modal = modals[modals.length - 1];
+        if (modal != null ? modal.pending : void 0) {
+          modal.nextCloses.push(this);
+          return false;
         }
         return typeof cb === "function" ? cb() : void 0;
       }, modal.option.delay || 300);

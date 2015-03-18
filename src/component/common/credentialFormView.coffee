@@ -62,6 +62,7 @@ define [
       @modal.toggleFooter true
 
     remove: ->
+      @updateConfirmView?.close()
       @modal?.close()
       Backbone.View.prototype.remove.apply @, arguments
 
@@ -111,15 +112,16 @@ define [
     showUpdateConfirmModel: () ->
         @updateConfirmView?.close()
         @updateConfirmView = new Modal {
-            title: 'Update Cloud Credential'
+            title: lang.IDE.UPDATE_CLOUD_CREDENTIAL
             template: MC.template.updateCredentialConfirm
             confirm:
-                text: 'Confirm to Update'
+                text: lang.IDE.SETTINGS_LABEL_UPDATE_CONFIRM
                 color: 'red'
         }
 
         @updateConfirmView.on 'confirm', ->
             @updateCredential(true)
+            @updateConfirmView.close()
         , @
 
     updateCredential: (forceUpdate = false) ->

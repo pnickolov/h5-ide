@@ -167,6 +167,19 @@ dl.settings-item {
         background : $dark-p-1;
         overflow   : auto;
 
+        .table {
+            font-size: 12px;
+        }
+
+        .table-head {
+            tr th {
+                position    : relative;
+                padding     : 6px 12px;
+                font-size   : 13px;
+                font-weight : 500;
+            }
+        }
+
         > header {
             color          : #cce;
             padding-bottom : 15px;
@@ -431,10 +444,6 @@ dl.settings-item {
 
             .memlist-item {
 
-                .t-m-content tr {
-                    height: 60px;
-                }
-
                 .cancel.link-style {
                     color       : $light-r;
                     line-height : 40px;
@@ -552,7 +561,6 @@ dl.settings-item {
     .settings-item.credit-card-info dd {
         @include displayflex;
         @include vo-flex-wrap(wrap);
-
 
         .credit-meta {
             font-size: 12px;
@@ -760,72 +768,46 @@ dl.settings-item {
 
 }
 
-
-.update-payment-ctrl{
+.update-payment-ctrl {
   padding: 10px 0;
 }
 
 .usage-report-view {
 
-  .current-usage-block {
-    display       : block;
-    width         : 180px;
-    padding       : 10px 10px 5px 10px;
-    text-align    : center;
-    background    : #000;
-    border-radius : 4px;
-    margin-top    : 8px;
+    .current-usage-block {
+        display       : block;
+        width         : 180px;
+        padding       : 10px 10px 5px 10px;
+        text-align    : center;
+        background    : #000;
+        border-radius : 4px;
+        margin-top    : 8px;
 
-    h3{
+        h3 {
             font-size: 36px;
             color: #91D21E;
         }
     }
 
-  .usage-pagination {
-    position: absolute;
-    right: 0;
-    margin-top: -28px;
+    .usage-pagination {
+        position: absolute;
+        right: 0;
+        margin-top: -28px;
 
-    .usage-date{
-      display    : inline-block;
-      padding    : 0 8px;
-      text-align : center;
-      font-size  : 12px;
+        .usage-date{
+          display    : inline-block;
+          padding    : 0 8px;
+          text-align : center;
+          font-size  : 12px;
+        }
+
+        button {
+          padding: 4px 0;
+          min-width: 28px;
+        }
     }
 
-    button {
-      padding: 4px 0;
-      min-width: 28px;
-    }
-
-  }
-
-  .table-head-fix {
-    &:before {
-      display: block;
-      position: relative;
-      content: " ";
-      margin: -1px;
-      padding-top: 1px;
-      z-index: -1;
-    }
-
-    background    : #000;
-    height        : auto;
-    min-height    : 280px;
-    border-radius : 4px;
-    margin-top    : 8px;
-
-    .full-space {
-      text-align  : center;
-      line-height : 280px;
-      color       : #777;
-      font-size   : 14px;
-    }
-
-    .table-head{
-      background: #363636;
-    }
+    .table-head-fix {
+        margin-top    : 8px;
     }
 }

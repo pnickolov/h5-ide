@@ -2068,6 +2068,13 @@ dl.settings-item {
     padding: 20px 2.5% 20px 2.5%;
     background: #2c2f4d;
     overflow: auto; }
+    .fullpage-settings .setting-content .table {
+      font-size: 12px; }
+    .fullpage-settings .setting-content .table-head tr th {
+      position: relative;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 500; }
     .fullpage-settings .setting-content > header {
       color: #cce;
       padding-bottom: 15px;
@@ -2242,8 +2249,6 @@ dl.settings-item {
       font-size: 12px; }
       .fullpage-settings .setting-content .member-setting table.table tbody td:last-of-type, .fullpage-settings .setting-content .member-setting table.table-head thead th:last-of-type {
         text-align: center; }
-    .fullpage-settings .setting-content .member-setting .memlist-item .t-m-content tr {
-      height: 60px; }
     .fullpage-settings .setting-content .member-setting .memlist-item .cancel.link-style {
       color: #ea5d5d;
       line-height: 40px; }
@@ -2473,25 +2478,7 @@ dl.settings-item {
     padding: 4px 0;
     min-width: 28px; }
 .usage-report-view .table-head-fix {
-  background: #000;
-  height: auto;
-  min-height: 280px;
-  border-radius: 4px;
   margin-top: 8px; }
-  .usage-report-view .table-head-fix:before {
-    display: block;
-    position: relative;
-    content: " ";
-    margin: -1px;
-    padding-top: 1px;
-    z-index: -1; }
-  .usage-report-view .table-head-fix .full-space {
-    text-align: center;
-    line-height: 280px;
-    color: #777;
-    font-size: 14px; }
-  .usage-report-view .table-head-fix .table-head {
-    background: #363636; }
 
 #scenes {
   width: 100%;
@@ -8598,31 +8585,11 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 #modal-state-text-expand .editable-area .ace_gutter-active-line {
   background-color: #333 !important; }
 
-#PaymentBody {
-  min-height: 150px; }
-  #PaymentBody .dl-horizontal {
-    margin: 0;
-    line-height: 30px; }
-    #PaymentBody .dl-horizontal dt, #PaymentBody .dl-horizontal dd {
-      margin-top: 0; }
-  #PaymentBody .table-head {
-    background: #363636; }
-    #PaymentBody .table-head tr th {
-      position: relative;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 500; }
-  #PaymentBody .table {
-    font-size: 12px; }
-
 .no-payment-card-info {
   width: 400px;
   margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto; }
-
-.payment-hint {
-  margin-top: 20px; }
 
 .renew-points {
   margin-top: 10px;

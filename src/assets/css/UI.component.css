@@ -2323,7 +2323,8 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .table thead th,
 .table-head-fix .table-head thead th {
   cursor: default;
-  position: relative; }
+  position: relative;
+  background: #292C2E; }
   .table thead th.sortable,
   .table-head-fix .table-head thead th.sortable {
     cursor: pointer; }
@@ -2386,15 +2387,13 @@ li.ui-timepicker-selected .ui-timepicker-duration,
   content: " "; }
 
 .sortable:after {
-  /*content: "▾";*/
   margin-top: 8px;
-  border: 5px solid rgba(0, 0, 0, 0);
+  border: 5px solid transparent;
   border-top: 5px solid #FFF; }
 
 .sortable.desc-sort:after {
-  /*content: "▴" !important;*/
   margin-top: 3px;
-  border: 5px solid rgba(0, 0, 0, 0);
+  border: 5px solid transparent;
   border-bottom: 5px solid #FFF; }
 
 .sortable.active:after {

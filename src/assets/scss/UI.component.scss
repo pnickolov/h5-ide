@@ -45,8 +45,9 @@
 
 .table thead th,
 .table-head-fix .table-head thead th {
-	cursor: default;
-	position: relative;
+	cursor     : default;
+	position   : relative;
+	background : #292C2E;
 
 	&.sortable { cursor: pointer; }
 }
@@ -123,18 +124,14 @@
 }
 
 .sortable:after {
-	/*content: "▾";*/
-
 	margin-top: 8px;
-	border: 5px solid rgba(0, 0, 0, 0);
+	border: 5px solid transparent;
 	border-top: 5px solid #FFF;
 }
 
 .sortable.desc-sort:after {
-	/*content: "▴" !important;*/
-
 	margin-top: 3px;
-	border: 5px solid rgba(0, 0, 0, 0);
+	border: 5px solid transparent;
 	border-bottom: 5px solid #FFF;
 }
 

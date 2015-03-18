@@ -62,6 +62,7 @@ define [
       @modal.toggleFooter true
 
     remove: ->
+      @updateConfirmView?.close()
       @modal?.close()
       Backbone.View.prototype.remove.apply @, arguments
 
@@ -120,6 +121,7 @@ define [
 
         @updateConfirmView.on 'confirm', ->
             @updateCredential(true)
+            @updateConfirmView.close()
         , @
 
     updateCredential: (forceUpdate = false) ->

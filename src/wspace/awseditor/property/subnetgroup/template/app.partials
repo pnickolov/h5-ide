@@ -1,6 +1,6 @@
 <!-- {{app}} -->
 <article class="property-app property-subnet-group">
-    <div class="option-group-head expand">{{ i18n "PROP.DBINSTANCE_TIT_DETAIL" }}</div>
+    <div class="option-group-head expand">{{ i18n "PROP.SUBNET_GROUP_DETAILS" }}</div>
     <div class="option-group">
         <dl class="dl-vertical">
             <dt>{{ i18n "PROP.NAME" }}</dt>

@@ -111,10 +111,10 @@ define [
     showUpdateConfirmModel: () ->
         @updateConfirmView?.close()
         @updateConfirmView = new Modal {
-            title: 'Update Cloud Credential'
+            title: lang.IDE.UPDATE_CLOUD_CREDENTIAL
             template: MC.template.updateCredentialConfirm
             confirm:
-                text: 'Confirm to Update'
+                text: lang.IDE.SETTINGS_LABEL_UPDATE_CONFIRM
                 color: 'red'
         }
 

@@ -145,6 +145,7 @@ define [
 
             @open @__currentPanel, args
 
+        refresh: -> @openCurrent.apply @, arguments
 
         __openOrHidePanel: ( e ) ->
             targetPanelName = $( e.currentTarget ).attr('data-target')

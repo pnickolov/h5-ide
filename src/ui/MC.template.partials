@@ -280,10 +280,9 @@ Additional Notes and Questions
         </div>
         <div class="stack-validation">
             <details open style="display:none;">
-                <summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
+                <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}<span class="nutshell">:<label></label></span></summary>
                 <div id="stack-run-validation-container"></div>
             </details>
-            <div class="nutshell">:<label></label></div>
             <div class="validating">
                 <div class="loading-spinner loading-spinner-small"></div>
                 <p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
@@ -661,10 +660,9 @@ Additional Notes and Questions
         {{/if}}
         <div class="stack-validation">
             <details open style="display:none;">
-                <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
+                <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}<span class="nutshell">:<label></label></span></summary>
                 <div id="stack-run-validation-container"></div>
             </details>
-            <div class="nutshell">:<label></label></div>
             <div class="validating">
                 <div class="loading-spinner loading-spinner-small"></div>
                 <p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>

@@ -57,7 +57,7 @@ define [ 'event', 'i18n!/nls/lang.js',
 
             $tabs = $ '.modal-box .tab li'
             $nutshell = $ '.modal-box .nutshell'
-            $details = $nutshell.prev 'details'
+            $details = $('.stack-validation details')
             $summary = $details.find 'summary'
 
             processNutshell = ( notShow ) ->

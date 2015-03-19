@@ -436,6 +436,8 @@ pre {
   display: none; }
 
 .combo-dd.selectbox .combo-dd-filter {
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 0;
   border: 0;
   padding-right: 20px;
@@ -1308,17 +1310,22 @@ input.selection, textarea.selection {
     -o-transition: left 0.15s ease-out;
     transition: left 0.15s ease-out; }
 
-.switcher.disabled {
+.switcher.disabled,
+.switch.disabled {
   opacity: 0.2; }
 
-.switcher.on {
+.switcher.on,
+.switch.on {
   border-color: #0E8F38;
   background: #4fb845; }
-  .switcher.on .switch-label:before {
+  .switcher.on .switch-label:before,
+  .switch.on .switch-label:before {
     opacity: 0; }
-  .switcher.on .switch-label:after {
+  .switcher.on .switch-label:after,
+  .switch.on .switch-label:after {
     opacity: 1; }
-  .switcher.on .switch-handle {
+  .switcher.on .switch-handle,
+  .switch.on .switch-handle {
     left: 23px; }
 
 #selection-tip, .selection-tip {

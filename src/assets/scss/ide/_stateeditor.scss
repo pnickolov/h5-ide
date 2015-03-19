@@ -17,7 +17,6 @@
 	cursor:      pointer;
 	color:       #aaa;
 	display:     none;
-	// background:  rgba(0,0,0,.6);
 	padding:     4px;
 	z-index:     55;
 	right:       23px;
@@ -49,7 +48,6 @@
 	height: 21px;
 	display: inline-block;
 	position: absolute;
-	/*left: -20px;*/
 	z-index: 2;
 	color: #eee;
 	background: rgba(39, 41, 44,1);
@@ -116,12 +114,10 @@
 	position: absolute;
 	right   : 0;
 	z-index : -1;
-/*	display : none;*/
 
 	max-height   : 96%;
 	width        : 400px;
 
-	// box-shadow   : 0 0 20px rgba(0,0,0,.4);
 	border       : 1px solid #222;
 	border-radius: 4px 0 0 4px;
 
@@ -145,7 +141,6 @@
 }
 
 #state-log {
-/*	display: none;*/
 	padding: 0;
 }
 
@@ -352,14 +347,6 @@
 	}
 }
 
-/*.ace_cursor {
-	border-left: 10px solid black;
-	-webkit-animation: 1s cursor-blink step-end infinite;
-	-moz-animation: 1s cursor-blink step-end infinite;
-	-ms-animation: 1s cursor-blink step-end infinite;
-	animation: 1s cursor-blink step-end infinite;
-}*/
-
 #state-editor .ace_hidden-cursors {
     opacity: 0;
 }
@@ -445,8 +432,6 @@
 #state-shadow-item {
 	width: 100%;
 	height: 30px;
-	/*border-top: 1px solid #ccc;*/
-	/*border-bottom: 1px solid #ccc;*/
 	background: rgba(60,60,60,.8);
 	position: absolute;
 	z-index: 80;
@@ -707,12 +692,8 @@
 	margin-right: 10px;
 	color: #999;
 	margin-top: 2px;
-	/*background: rgb(59, 127, 250);*/
-	/*background: #999;*/
-	/*border-radius: 4px;*/
 	border-right: 1px solid rgba(255,255,255,.1);
 	padding: 4px 0;
-	/*width: 80px;*/
 	width: 114px;
 }
 
@@ -838,8 +819,6 @@
 	position: relative;
 	overflow: hidden;
 	cursor: pointer;
-	/*background: rgba(0,0,0,.01);*/
-	/*border-bottom: 1px solid #eee;*/
 	min-height: 23px;
 	padding: 6px 0;
 }
@@ -864,12 +843,6 @@
 	color: #fff !important;
 }
 
-
-
-/*#state-editor .state-item:first-child .state-remove {
-	display: none;
-}*/
-
 #state-editor .state-item:first-child .state-add {
 
 }
@@ -893,16 +866,11 @@
 	width: 20px;
 	height: 100%;
 	text-align: center;
-	/*line-height: 26px;*/
 	color: #999;
 	background: #eee;
 	cursor: pointer;
 	float: left;
 }
-
-/*#state-editor .state-id:hover {
-	background-color: #77f;
-}*/
 
 #state-editor .state-drag {
 	left    : 0px;
@@ -1028,18 +996,6 @@
 	margin-bottom: 3px;
 	padding-left: 10px;
 }
-
-/*#state-log .state-log-item .state-log-item-header {
-	box-shadow: inset 2px 0 0 #333;
-}
-
-#state-log .state-log-item[data-state-id="Agent"] .state-log-item-header {
-	box-shadow: none !important;
-}
-
-#state-log .state-log-item.view .state-log-item-header {
-	box-shadow: inset 2px 0 0 blue;
-}*/
 
 #state-log .state-log-item.state-log .state-log-item-name:before {
 	display: block;
@@ -1234,27 +1190,6 @@
 
 .state-status-content .state-status-all-pedding {
 	display: none;
-}
-
-/*.statusbar-btn [class^="icon-state-"]
-, .statusbar-btn [class*=" icon-state-"]
-, .status-bar-modal [class^="icon-state-"]
-, .status-bar-modal [class*=" icon-state-"]
- {
-	width: 9px;
-	height: 9px;
-	border-radius: 50%;
-	display: inline-block;
-}
-*/
-.statusbar-btn .state-success {
-	border-right: 1px solid #353535;
-	margin-right: 10px;
-	padding-right: 10px;
-}
-
-.statusbar-btn b {
-	font-weight: normal;
 }
 
 .state-status-pending {
@@ -1501,52 +1436,6 @@
     margin-right: 3px;
     vertical-align: middle;
     line-height: 1;
-}
-
-.switch-label {
-	position: relative;
-	display: block;
-	height: 100%;
-}
-.switch-label:before, .switch-label:after {
-	position: absolute;
-	top: 50%;
-	margin-top: -.5em;
-	line-height: 1;
-}
-.switch-label:before {
-	content     : attr(data-off);
-	right       : 6px;
-	color       : #aaa;
-	font-variant: small-caps;
-}
-
-.switch-label:after {
-	content     : attr(data-on);
-	left        : 6px;
-	color       : white;
-	opacity     : 0;
-	font-variant: small-caps;
-}
-
-.switch.on .switch-label:before { opacity: 0; }
-.switch.on .switch-label:after  { opacity: 1; }
-
-.switch-handle {
-	position: absolute;
-	top: 3px;
-	left: 3px;
-	width: 18px;
-	height: 18px;
-	background: white;
-	border-radius: 10px;
-	-webkit-transition: left 0.15s ease-out;
-	-moz-transition: left 0.15s ease-out;
-	-o-transition: left 0.15s ease-out;
-	transition: left 0.15s ease-out;
-}
-.switch.on .switch-handle {
-	left: 96px;
 }
 
 #modal-ssl-cert-setting .modal-ssl-cert-item {

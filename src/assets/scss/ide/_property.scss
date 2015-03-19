@@ -1,39 +1,4 @@
 
-// SG ACL Property
-
-#modal-acl-rule {
-	.sg-protocol-option-input {
-		display: none;
-
-		&.show {
-			display: block;
-		}
-	}
-
-	.simple-protocol-select {
-		list-style  : none;
-		margin-left : 95px;
-		margin-top  : 20px;
-		border      : 1px dashed;
-		padding     : 5px;
-		width       : 325px;
-
-		li {
-			cursor     : pointer;
-			color      : $base-b;
-			font-size  : 12px;
-			padding    : 5px 0;
-			display    : inline-block;
-			text-align : center;
-			width      : 79px;
-
-			&:hover {
-				text-decoration: underline;
-			}
-		}
-	}
-}
-
 .container-settings {
 	.input-item{
 		margin-top: 20px;

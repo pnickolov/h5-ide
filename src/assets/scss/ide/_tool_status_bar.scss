@@ -5,7 +5,6 @@
     - Status Bar
 */
 
-
 /* Toolbar */
 
 .btn-toolbar {
@@ -152,6 +151,8 @@
   &.on {
     border-color : #0E8F38;
     background   : $base-g;
+
+    .switch-handle { left: 96px; }
   }
 
   .switch-handle {
@@ -181,4 +182,3 @@
     border-left       : 1px solid #212121;
   }
 }
-

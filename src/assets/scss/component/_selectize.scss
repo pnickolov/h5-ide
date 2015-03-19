@@ -514,10 +514,14 @@ input.selection, textarea.selection {
         transition         : left 0.15s ease-out;
     }
 }
-.switcher.disabled {
+
+.switcher.disabled,
+.switch.disabled {
     opacity: 0.2;
 }
-.switcher.on {
+
+.switcher.on,
+.switch.on {
     border-color: #0E8F38;
     background: #4fb845;
     .switch-label:before { opacity: 0; }

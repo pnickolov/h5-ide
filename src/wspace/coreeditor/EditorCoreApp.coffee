@@ -100,6 +100,7 @@ define [
 
       if not @diff()
         @view.canvas.update()
+        @view.propertyPanel.refresh()
       return
 
     loadVpcResource : ()->

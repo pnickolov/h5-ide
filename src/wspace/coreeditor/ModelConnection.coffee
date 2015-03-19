@@ -238,7 +238,7 @@ define [ "ResourceModel", "Design" ], ( ResourceModel, Design )->
         for def in protoProps.portDefs
           tags.push def.port1.name + ">" + def.port2.name
           if not protoProps.directional
-            tags.push def.port2.name + ">" + def.port2.name
+            tags.push def.port2.name + ">" + def.port1.name
 
         if not protoProps.type then protoProps.type = tags[0]
 

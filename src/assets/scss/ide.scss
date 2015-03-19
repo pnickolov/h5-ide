@@ -206,7 +206,7 @@ body {
 	max-height    : 150px;
 }
 
-.validation-content .content_wrap .content {
+.validation-content .content-wrap .content {
 	display       : none;
 	width         : 100%;
 	height        : 100%;
@@ -214,7 +214,7 @@ body {
 	box-sizing    : border-box;
 }
 
-.validation-content .content_wrap .active {
+.validation-content .content-wrap .active {
 	display: block;
 }
 
@@ -245,28 +245,38 @@ body {
 	display: none;
 }
 
-.validation-content .content_wrap .title {
+.validation-content .content {
+  display    : none;
+  width      : 100%;
+  height     : 100%;
+  min-height : 50px;
+  box-sizing : border-box;
+
+  &.active { display: block; }
+}
+
+.validation-content .title {
 	padding: 10px;
 	border-bottom: 1px solid #2a2a2a;
 	color: #ccc;
 }
 
-.validation-content .content_wrap .title.empty {
+.validation-content .title.empty {
 	color      : #999;
 	text-align : center;
 	padding    : 40px 0 20px 0;
 	border     : none;
 }
 
-.validation-content .content_wrap .title:nth-child(2n) {
+.validation-content .title:nth-child(2n) {
 	background-color: rgba(255,255,255,.03);
 }
 
-.validation-content .content_wrap .content div:last-child{
+.validation-content .content div:last-child{
 	border-bottom: 0px;
 }
 
-.validation-content .content_wrap .description {
+.validation-content .description {
 	padding: 8px 2px;
 	min-height: 80px;
 }

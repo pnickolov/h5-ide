@@ -397,51 +397,6 @@ body {
 #modal-run-stack .btn-primary {
   padding: 8px 10px; }
 
-.validation-content .tab li:last-child {
-  width: 124px;
-  border-right: none; }
-
-.validation-content .tab li:hover {
-  background: rgba(255, 255, 255, 0.1); }
-
-.validation-content .tab li.active,
-.validation-content .tab li.active:hover {
-  background: #303041;
-  color: #eee;
-  box-shadow: inset 0 1px 0 #36373A; }
-
-.validation-content .scroll-wrap-validation {
-  height: 250px;
-  border: 1px solid #151519;
-  border-top: none;
-  border-radius: 0 0 2px 2px;
-  overflow: hidden;
-  background: #303041; }
-
-#modal-validation-statusbar .validation-content .scroll-wrap-validation {
-  border: 1px solid #151519;
-  border-top: none; }
-
-.stack-validation .validation-content .scroll-wrap-validation {
-  max-height: 150px; }
-
-.validation-content .content-wrap .content {
-  display: none;
-  width: 100%;
-  height: 100%;
-  min-height: 50px;
-  box-sizing: border-box; }
-
-.validation-content .content-wrap .active {
-  display: block; }
-
-.stack-validation {
-  position: relative; }
-
-.validation-content .content ::selection {
-  background-color: #148BE6;
-  color: #fff; }
-
 .item-error-tip {
   padding: 10px;
   font-size: 13px;
@@ -456,32 +411,6 @@ body {
 
 .stack-validation .item-error-tip {
   display: none; }
-
-.validation-content .content {
-  display: none;
-  width: 100%;
-  height: 100%;
-  min-height: 50px;
-  box-sizing: border-box; }
-  .validation-content .content.active {
-    display: block; }
-
-.validation-content .title {
-  padding: 10px;
-  border-bottom: 1px solid #2a2a2a;
-  color: #ccc; }
-
-.validation-content .title.empty {
-  color: #999;
-  text-align: center;
-  padding: 40px 0 20px 0;
-  border: none; }
-
-.validation-content .title:nth-child(2n) {
-  background-color: rgba(255, 255, 255, 0.03); }
-
-.validation-content .content div:last-child {
-  border-bottom: 0px; }
 
 .validation-content .description {
   padding: 8px 2px;
@@ -7228,10 +7157,16 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 #modal-state-text-expand *::-webkit-scrollbar-thumb:hover {
   background-color: #777; }
 
+#state-editor ::selection {
+  background: #148BE6;
+  color: #fcfcfc; }
 #state-editor::selection {
-  background: rgba(0, 6, 141, 0.4);
+  background: #148BE6;
   color: #fcfcfc; }
 
+#state-log * ::selection {
+  background: #148BE6;
+  color: #fcfcfc; }
 #state-log *::selection {
   background: #148BE6;
   color: #fcfcfc; }
@@ -8595,6 +8530,86 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     - Apply App Update
 */
 /* TA */
+.validation-content.emtpy {
+  padding: 40px 0;
+  text-align: center;
+  border-radius: 2px;
+  color: #999; }
+.validation-content .scroll-wrap-validation {
+  height: 250px;
+  border: 1px solid #151519;
+  border-top: none;
+  border-radius: 0 0 2px 2px;
+  overflow: hidden;
+  background: #303041; }
+  #modal-validation-statusbar .validation-content .scroll-wrap-validation {
+    border: 1px solid #151519;
+    border-top: none; }
+  .stack-validation .validation-content .scroll-wrap-validation {
+    max-height: 150px; }
+.validation-content .tab {
+  position: relative;
+  height: 30px;
+  border: 1px solid #131313;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+  overflow: hidden; }
+  .validation-content .tab li {
+    background: #1b1b21;
+    color: #999;
+    width: 123px;
+    line-height: 30px;
+    display: block;
+    float: left;
+    padding: 0 10px;
+    border-right: 1px solid #000;
+    box-shadow: inset 0 -1px 0 #000;
+    text-align: left;
+    -webkit-transition: background 0.2s 0.2s ease-in-out;
+    -o-transition: background 0.2s 0.2s ease-in-out;
+    transition: background 0.2s 0.2s ease-in-out; }
+    .validation-content .tab li:hover {
+      background: #25252d; }
+    .validation-content .tab li:last-child {
+      width: 124px;
+      border-right: none; }
+    .validation-content .tab li.active, .validation-content .tab li.active:hover {
+      background: #303041;
+      color: #eee;
+      box-shadow: inset 0 1px 0 #36373A; }
+    #modal-validation-statusbar .validation-content .tab li {
+      width: 120px; }
+  #modal-validation-statusbar .validation-content .tab {
+    border: 1px solid #131313;
+    border-bottom: none; }
+.validation-content .content {
+  display: none;
+  width: 100%;
+  height: 100%;
+  min-height: 50px;
+  box-sizing: border-box; }
+  .validation-content .content ::selection {
+    background: #148BE6;
+    color: #fcfcfc; }
+  .validation-content .content::selection {
+    background: #148BE6;
+    color: #fcfcfc; }
+  .validation-content .content.active {
+    display: block; }
+  .validation-content .content div:last-child {
+    border-bottom: none; }
+.validation-content .title {
+  padding: 10px;
+  border-bottom: 1px solid #2a2a2a;
+  color: #ccc; }
+  .validation-content .title.emtpy {
+    color: #999;
+    text-align: center;
+    padding: 40px 0 20px 0;
+    border: none; }
+  .validation-content .title:nth-child(2n) {
+    background: #3b3b4f; }
+
 .stack-validation {
   padding: 15px 0;
   margin-top: 10px;
@@ -8617,46 +8632,13 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     .stack-validation .validating p {
       padding: 50px 0 0 50px;
       color: #888; }
-
-.nutshell {
-  color: #999; }
-  details[open] .nutshell {
-    display: none; }
-  .nutshell label {
-    margin-left: 5px;
-    cursor: pointer; }
-
-.validation-content.emtpy {
-  padding: 40px 0;
-  text-align: center;
-  border-radius: 2px;
-  color: #999; }
-.validation-content .tab {
-  position: relative;
-  height: 30px;
-  border: 1px solid #131313;
-  border-bottom: none;
-  border-radius: 2px 2px 0 0;
-  overflow: hidden; }
-  .validation-content .tab li {
-    background: #1b1b21;
-    color: #999;
-    width: 123px;
-    line-height: 30px;
-    display: block;
-    float: left;
-    padding: 0 10px;
-    border-right: 1px solid #000;
-    box-shadow: inset 0 -1px 0 #000;
-    text-align: left;
-    -webkit-transition: background 0.2s 0.2s ease-in-out;
-    -o-transition: background 0.2s 0.2s ease-in-out;
-    transition: background 0.2s 0.2s ease-in-out; }
-    #modal-validation-statusbar .validation-content .tab li {
-      width: 120px; }
-  #modal-validation-statusbar .validation-content .tab {
-    border: 1px solid #131313;
-    border-bottom: none; }
+  .stack-validation .nutshell {
+    color: #999; }
+    details[open] .stack-validation .nutshell {
+      display: none; }
+    .stack-validation .nutshell label {
+      margin-left: 5px;
+      cursor: pointer; }
 
 .openstack .OEPanelRight {
   width: 288px;

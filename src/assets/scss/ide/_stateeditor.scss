@@ -181,14 +181,12 @@
 	background-color: #777;
 }
 
-#state-editor::selection {
-	background: rgba(0, 6, 141, 0.4);
-	color: #fcfcfc;
+#state-editor {
+	@include selection;
 }
 
-#state-log *::selection {
-	background: #148BE6;
-	color: #fcfcfc;
+#state-log * {
+	@include selection;
 }
 
 #state-editor-body {

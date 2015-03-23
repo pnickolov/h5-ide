@@ -20,7 +20,7 @@
             <label for="{{id}}"></label>
         </div>
     </td>
-    <td><div class="manager-content-main">{{id}}</div></td>
+    <td>{{id}}</td>
     <td>{{AllocatedStorage}} GiB</td>
     <td>
         <div class="manager-content-main">{{#ifCond Status "creating"}}<i class="status status-yellow icon-label"></i>{{Status}} - {{PercentProgress}}%{{else}}<i class="status status-green icon-label"></i>{{Status}} {{/ifCond}}</div>

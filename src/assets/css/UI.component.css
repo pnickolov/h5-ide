@@ -3407,7 +3407,8 @@ select.select3.disabled {
   box-sizing: border-box;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
   background: #353535;
-  border: 1px solid #0f0f0f; }
+  border: 1px solid #0f0f0f;
+  left: 0; }
 
 .selectbox .scroll-wrap {
   display: none;
@@ -3471,7 +3472,12 @@ select.select3.disabled {
   font-size: 12px;
   position: relative;
   cursor: pointer;
-  display: block; }
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  -ms-text-overflow: ellipsis; }
 
 .selectbox .dropdown li:last-child {
   border-bottom: none; }

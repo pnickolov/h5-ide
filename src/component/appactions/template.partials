@@ -73,12 +73,12 @@
 
 <!-- {{cantStop}} -->
 <p>DB Instance
-    {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+    {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="warning-text">{{attributes.DBInstanceStatus}}</span>){{/each}}
     {{i18n "TOOLBAR.POP_CANT_STOP_1"}}</p>
 <p>{{i18n "TOOLBAR.POP_CANT_STOP_2"}}</p>
 
 <!-- {{terminateAppConfirm}} -->
-<div class="confirm-padding">
+<div class="mg20">
     {{#if production}}
         <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
         <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>

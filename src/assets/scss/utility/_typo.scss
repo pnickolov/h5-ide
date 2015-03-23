@@ -138,3 +138,12 @@ pre {
 	-ms-text-overflow : ellipsis;
 	display           : inline-block;
 }
+
+@mixin truncate {
+	white-space       : nowrap;
+	overflow          : hidden;
+	text-overflow     : ellipsis;
+	-o-text-overflow  : ellipsis;
+	-ms-text-overflow : ellipsis;
+	// display           : inline-block;
+}

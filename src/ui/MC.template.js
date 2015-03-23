@@ -994,7 +994,7 @@ function program6(depth0,data) {
 function program8(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <section class=\"check-final-snapshot checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">"
+  buffer += "\n            <section class=\"mgt10 checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">"
     + escapeExpression(helpers.i18n.call(depth0, "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES", {hash:{},data:data}))
     + "</label>\n            </section>\n            ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
@@ -1082,7 +1082,7 @@ function program1(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "<span class=\"resource-tag\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>(<span class=\"db-stop-status\">"
+    + "</span>(<span class=\"warning-text\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>) ";
   return buffer;

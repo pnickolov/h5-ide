@@ -1326,16 +1326,17 @@ select.select3.disabled {
 }
 
 .selectbox .dropdown {
-	display   : none;
-	position  : absolute;
-	width     : 100%;
-	min-width : 160px;
-	margin-top: 1px;
-	z-index   : 80;
-	box-sizing: border-box;
-	box-shadow: 1px 1px 5px rgba(0,0,0,.3);
-	background: #353535;
-	border    : 1px solid #0f0f0f;
+	display    : none;
+	position   : absolute;
+	width      : 100%;
+	min-width  : 160px;
+	margin-top : 1px;
+	z-index    : 80;
+	box-sizing : border-box;
+	box-shadow : 1px 1px 5px rgba(0,0,0,.3);
+	background : #353535;
+	border     : 1px solid #0f0f0f;
+	left       : 0;
 }
 .selectbox .scroll-wrap{
     display: none;
@@ -1410,6 +1411,8 @@ select.select3.disabled {
 	position     : relative;
 	cursor       : pointer;
 	display      : block;
+
+	@include truncate;
 }
 
 .selectbox .dropdown li:last-child {

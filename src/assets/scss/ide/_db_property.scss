@@ -105,5 +105,11 @@
 	cursor: pointer;
 }
 
+// RDS App Edit - Apply Immediately Checkbox
+.property-panel-wrapper.immediately > .scroll-wrap{
+  top: 69px;
+}
+
+
 @import "rds_modal";
 

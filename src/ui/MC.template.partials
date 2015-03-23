@@ -644,7 +644,7 @@ Additional Notes and Questions
             </ul>
 	    {{/if}}
         {{#if removeList.length}}
-            <section class="check-final-snapshot checkbox-wrap">
+            <section class="mgt10 checkbox-wrap">
                 <div class="checkbox">
                     <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
                     <label for="take-rds-snapshot"></label>
@@ -687,7 +687,7 @@ Additional Notes and Questions
 <!-- {{cantUpdateApp}} -->
 
 <p class="modal-text-major">{{i18n "DB_INSTANCE"}}
-    {{#each data}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>) {{/each}}
+    {{#each data}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="warning-text">{{attributes.DBInstanceStatus}}</span>) {{/each}}
     {{i18n "CANNOT_BE_MODIFIED_NOW"}}</p>
 <p>{{i18n "WAIT_FOR_DB_THEN_UPDATE"}}</p>
 

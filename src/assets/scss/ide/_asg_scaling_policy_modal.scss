@@ -1,0 +1,115 @@
+/*
+    ASG Scaling Policy Modal
+*/
+
+#asg-policy-name {
+	margin-left: 50px;
+	width: 200px;
+}
+
+#asg-policy-name[readonly] {
+	background : none;
+	border     : none;
+}
+
+#asg-termination-policy h5 {
+	color: #999;
+	font-size: 14px;
+}
+
+#asg-termination-policy .modal-control-group {
+	margin    : 10px 0;
+	background: rgba(255,255,255,.1);
+}
+
+#asg-termination-policy .modal-control-group label {
+	color: #999;
+	font-size: 12px;
+}
+
+.control-sentence {
+	font-size: 12px;
+	line-height: 40px;
+	color: #ccc;
+}
+
+#asg-termination-policy .selectbox {
+	margin: 0 5px;
+	line-height: 16px;
+}
+
+#asg-termination-policy .selection {
+	display: inline-block;
+	padding: 4px 20px 4px 5px;
+}
+
+#asg-termination-policy .policy-sns-placeholder {
+	margin-top: 8px;
+}
+#asg-termination-policy .policy-sns-placeholder .selectbox {
+	margin-left: 0;
+}
+
+#asg-termination-policy .policy-sns-placeholder .selection {
+	width: 234px;
+	@include truncate;
+}
+
+#asg-termination-policy .selectbox .dropdown {
+	margin-top: -5px;
+}
+
+#asg-policy-second,
+#asg-policy-periods,
+#asg-policy-threshold,
+#asg-policy-adjust,
+#asg-policy-cooldown,
+#asg-policy-step {
+	padding: 4px 5px;
+	text-align: center;
+	margin: 0 5px;
+	font-size: 12px;
+}
+
+#asg-policy-second,
+#asg-policy-periods {
+	width: 30px;
+}
+
+#asg-policy-threshold {
+	width: 80px;
+}
+
+#asg-policy-adjust {
+	width: 60px;
+}
+
+#asg-policy-cooldown {
+	padding: 5px;
+	width: 100px;
+}
+
+#asg-policy-step {
+	width: 100px;
+}
+
+#asg-policy-notify-label {
+	display: inline;
+}
+
+#asg-policy-statistics label,
+#asg-policy-scaling label {
+	float    : left;
+	position : relative;
+	width    : 120px;
+	top      : 6px;
+}
+
+#asg-policy-step-wrapper {
+	margin-top: 5px;
+}
+
+.icon-remove,
+.icon-edit {
+	font-size: 12px !important;
+}

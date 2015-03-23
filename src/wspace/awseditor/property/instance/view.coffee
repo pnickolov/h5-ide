@@ -8,6 +8,8 @@ define [ '../base/view',
 
     noop = ()-> null
 
+    iopsMax = 20000
+
     InstanceView = PropertyView.extend {
 
         events   :
@@ -50,7 +52,10 @@ define [ '../base/view',
             if type is "io1"
                 # Init iops
                 volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
+
                 iops = volumeSize * 10
+                if iops > iopsMax then iops = iopsMax
+
                 $("#iops-ranged").val( iops ).keyup()
             else
                 # Reset standard
@@ -115,13 +120,13 @@ define [ '../base/view',
             # parsley bind
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
-                if not val || val > 1024 || val < me.model.attributes.min_volume_size
+                if not val || val > 16384 || val < me.model.attributes.min_volume_size
                     return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
-                if val > 4000 || val < 100
+                if val > iopsMax || val < 100
                     return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
                     return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE

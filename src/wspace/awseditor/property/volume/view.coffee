@@ -8,6 +8,8 @@ define [ '../base/view',
          'i18n!/nls/lang.js'
 ], ( PropertyView, template, ide_event, lang ) ->
 
+    iopsMax = 20000
+
     VolumeView = PropertyView.extend {
 
         events   :
@@ -24,13 +26,13 @@ define [ '../base/view',
 
             $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
-                if not val || val > 1024 || val < 1
+                if not val || val > 16384 || val < 1
                     return lang.PARSLEY.VOLUME_SIZE_MUST_IN_1_1024
 
             $( '#iops-ranged' ).parsley 'custom', ( val ) ->
                 val = + val
                 volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
-                if val > 4000 || val < 100
+                if val > iopsMax || val < 100
                     return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
                     return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
@@ -41,13 +43,21 @@ define [ '../base/view',
             @processIops()
 
             type = $('#volume-type-radios input:checked').val()
-            # Get iops range when type is 'io1'(IOPS)
-            iops = if type is 'io1' then $( '#iops-ranged' ).val() else ''
 
-            if( type isnt 'io1') #IOPS
-                $( '#iops-group' ).hide()
-            else
+            if( type is 'io1') #IOPS
                 $( '#iops-group' ).show()
+
+                # Init iops
+                volumeSize = parseInt $( '#volume-size-ranged' ).val(), 10
+
+                iops = volumeSize * 10
+                if iops > iopsMax then iops = iopsMax
+
+                $("#iops-ranged").val( iops )
+
+            else
+                iops = ''
+                $( '#iops-group' ).hide()
 
             @model.setVolumeType type, iops
 
@@ -119,6 +129,7 @@ define [ '../base/view',
                 @model.setVolumeSize volumeSize
                 if iopsEnabled
                     @model.setVolumeType 'io1', $( '#iops-ranged' ).val()
+
             null
 
 

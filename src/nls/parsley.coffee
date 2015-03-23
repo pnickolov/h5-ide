@@ -144,12 +144,12 @@ module.exports =
       zh: "无效的 IP 地址"
 
     VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE:
-      en: "Volume size of this rootDevice must in the range of %s -1024 GB."
-      zh: "该根设备的卷容量必须在 %s-1024 GB 范围内。"
+      en: "Volume size of this rootDevice must in the range of %s -16384 GB."
+      zh: "该根设备的卷容量必须在 %s-16384 GB 范围内。"
 
     IOPS_MUST_BETWEEN_100_4000:
-      en: "IOPS must be between 100 and 4000"
-      zh: "IOPS 必须在 100-4000 范围内"
+      en: "IOPS must be between 100 and 20000"
+      zh: "IOPS 必须在 100-20000 范围内"
 
     IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE:
       en: "IOPS must be less than 10 times of volume size."
@@ -184,8 +184,8 @@ module.exports =
       zh: "请输入合法的URL"
 
     VOLUME_SIZE_MUST_IN_1_1024:
-      en: "Volume size must in the range of 1-1024 GB."
-      zh: "卷大小必须在 1-1024 GB 范围内。"
+      en: "Volume size must in the range of 1-16384 GB."
+      zh: "卷大小必须在 1-16384 GB 范围内。"
 
     DEVICENAME_PARAVIRTUAL:
       en: "Device name must be like /dev/hd[a-z], /dev/hd[a-z][1-15],/dev/sd[a-z] or /dev/sd[a-z][1-15]"

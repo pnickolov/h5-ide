@@ -1998,7 +1998,7 @@ dl.settings-item {
     height: 38px; }
     .dashboard-header .hovermenu:hover .dropdown-menu {
       display: block; }
-  .dashboard-header .btn.icon-visualize, .dashboard-header .hovermenu {
+  .dashboard-header .btn.icon-visualize, .dashboard-header .hovermenu, .dashboard-header .icon-new-stack {
     float: left;
     margin-left: 10px;
     position: relative; }
@@ -2787,6 +2787,67 @@ aside.dashboard-sidebar {
   display: block; }
 #dashboard-data-wrap.demo .dash-resource-wrap {
   margin-bottom: 0; }
+
+.select-stack-type > li {
+  box-sizing: border-box;
+  width: 50%;
+  float: left;
+  text-align: center;
+  background: #bbbbd4;
+  color: #878cad;
+  height: 120px;
+  position: relative;
+  cursor: pointer;
+  -webkit-transition: all, 0.3s;
+  -moz-transition: all, 0.3s;
+  -ms-transition: all, 0.3s;
+  -o-transition: all, 0.3s;
+  transition: all, 0.3s; }
+  .select-stack-type > li:hover {
+    background: #8F8FBB;
+    color: #DEDEDE; }
+  .select-stack-type > li img {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 15px auto 10px auto; }
+  .select-stack-type > li.active {
+    background: #373e76; }
+    .select-stack-type > li.active span.stack-title {
+      color: #DEDEDE; }
+    .select-stack-type > li.active:after, .select-stack-type > li.active:before {
+      display: block;
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: #2b92ea; }
+    .select-stack-type > li.active:before {
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-bottom-color: #2b92ea;
+      background: transparent;
+      position: absolute;
+      left: 50%;
+      margin-left: -10px; }
+
+.tabs-content > div {
+  padding: 25px;
+  box-sizing: border-box;
+  min-height: 120px; }
+  .tabs-content > div .control-group {
+    margin: 10px 0;
+    padding: 0 20px; }
+    .tabs-content > div .control-group > label {
+      width: 120px;
+      display: inline-block; }
+    .tabs-content > div .control-group > .selectbox {
+      width: 250px; }
+    .tabs-content > div .control-group .marathon-mark-img {
+      width: 30px;
+      margin-right: 10px; }
 
 /*
     IDE Core Editor 
@@ -6173,6 +6234,10 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   border-radius: 18px;
   line-height: 27px; }
 
+.toolbar-visual-ops-switch.switch.narrow,
+.reload-states.narrow {
+  width: 50px; }
+
 .reload-states {
   padding: 1px 8px; }
   .reload-states:before {
@@ -6186,6 +6251,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     background: #11c568; }
     .toolbar-visual-ops-switch.switch.on .switch-handle {
       left: 96px; }
+  .toolbar-visual-ops-switch.switch.on.narrow .switch-handle {
+    left: 26px; }
   .toolbar-visual-ops-switch.switch .switch-handle {
     width: 21px;
     height: 21px;

@@ -912,3 +912,53 @@ Additional Notes and Questions
 {{/if}}
 </section>
 </div>
+
+
+<!-- {{createStack}} -->
+<ul class="tabs select-stack-type clearfix">
+    <li class="tab-aws-stack active">
+        <img src="/assets/images/ide/icon-os/res-dg-server.png" alt=""/>
+        <span class="stack-title">AWS Stack</span>
+    </li>
+    <li class="tab-mesos-stack">
+        <img src="/assets/images/ide/icon-os/res-dg-server.png" alt=""/>
+        <span class="stack-title">Mesos on AWS VPC</span>
+    </li>
+</ul>
+<div class="tabs-content">
+    <div id="tab-aws-stack">
+        <div class="control-group clearfix">
+            <label>Region</label>
+            <div id="create-aws-stack-region" class="selectbox">
+                <div class="selection">{{firstRegion.alias}}({{firstRegion.id}})</div>
+                <ul class="dropdown" tabindex="-1">
+                    {{#each awsRegions}}
+                        <li class="item{{#unless @index}} selected{{/unless}}" data-value="{{id}}">{{alias}}({{id}})</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="tab-mesos-stack" class="hide">
+        <div class="control-group clearfix">
+            <label>Region</label>
+            <div id="create-mesos-stack-region" class="selectbox">
+                <div class="selection">{{firstRegion.alias}}({{firstRegion.id}})</div>
+                <ul class="dropdown" tabindex="-1">
+                    {{#each awsRegions}}
+                        <li class="item{{#unless @index}} selected{{/unless}}" data-value="{{id}}">{{alias}}({{id}})</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="control-group clearfix">
+            <label for="">Framework</label>
+            <span>
+                <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""/> <span>Marathon</span>
+                <label class="switch toolbar-visual-ops-switch create-mesos-use-marathon on narrow">
+                    <span class="switch-handle"></span>
+                </label>
+            </span>
+        </div>
+    </div>
+</div>

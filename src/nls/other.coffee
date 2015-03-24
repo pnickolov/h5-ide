@@ -2972,3 +2972,11 @@ into live resources, or import existing infrastructures."
     DASHBOARD_LOGS_TOKEN_RENAME:
       en: "%s renamed API token %s"
       zh: "%s 重命名API令牌 %s"
+
+    CREATE_STACK_TITLE:
+      en: "Create Stack"
+      zh: "创建 Stack"
+
+    CREATE_STACK_CONFIRM:
+      en: "Create Stack"
+      zh: "创建 Stack"

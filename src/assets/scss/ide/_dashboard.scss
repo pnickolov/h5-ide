@@ -23,7 +23,7 @@
     &:hover .dropdown-menu { display: block }
   }
 
-  .btn.icon-visualize, .hovermenu {
+  .btn.icon-visualize, .hovermenu,.icon-new-stack {
     float       : left;
     margin-left : 10px;
     position    : relative;
@@ -1044,4 +1044,82 @@ $bp-2: 1280px;
     #GlobalView, #regionResourceNav, #RegionResourceData, #RegionViewWrap { display : none !important; }
     #DashboardDemo { display : block; }
     .dash-resource-wrap { margin-bottom: 0; }
+}
+
+
+.select-stack-type{
+  > li{
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    text-align: center;
+    background: #bbbbd4;
+    color: #878cad;
+    height: 120px;
+    position: relative;
+    cursor: pointer;
+    -webkit-transition: all, 0.3s;
+    -moz-transition: all, 0.3s;
+    -ms-transition: all, 0.3s;
+    -o-transition: all, 0.3s;
+    transition: all, 0.3s;
+    &:hover{
+      background: #8F8FBB;
+      color: #DEDEDE;
+    }
+    img{
+      display: block;
+      width: 60px;
+      height: 60px;
+      margin: 15px auto 10px auto;
+    }
+    &.active{
+      background: #373e76;
+      span.stack-title{
+        color: #DEDEDE;
+      }
+      &:after,&:before{
+        display: block;
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: #2b92ea;
+      }
+      &:before{
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-bottom-color: #2b92ea;
+        background: transparent;
+        position: absolute;
+        left: 50%;
+        margin-left: -10px;
+      }
+    }
+  }
+}
+
+.tabs-content{
+  > div{
+    padding: 25px;
+    box-sizing: border-box;
+    min-height: 120px;
+    .control-group{
+      margin: 10px 0;
+      padding: 0 20px;
+      > label{
+        width: 120px;
+        display: inline-block;
+      }
+      > .selectbox{
+        width: 250px;
+      }
+      .marathon-mark-img{
+        width: 30px;
+        margin-right: 10px;
+      }
+    }
+  }
 }

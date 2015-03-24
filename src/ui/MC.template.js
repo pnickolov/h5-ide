@@ -1683,4 +1683,50 @@ function program3(depth0,data) {
 TEMPLATE.applyMarathonStack=Handlebars.template(__TEMPLATE__);
 
 
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n                        <li class=\"item";
+  stack1 = helpers.unless.call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" data-value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "("
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ")</li>\n                    ";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  
+  return " selected";
+  }
+
+  buffer += "<ul class=\"tabs select-stack-type clearfix\">\n    <li class=\"tab-aws-stack active\">\n        <img src=\"/assets/images/ide/icon-os/res-dg-server.png\" alt=\"\"/>\n        <span class=\"stack-title\">AWS Stack</span>\n    </li>\n    <li class=\"tab-mesos-stack\">\n        <img src=\"/assets/images/ide/icon-os/res-dg-server.png\" alt=\"\"/>\n        <span class=\"stack-title\">Mesos on AWS VPC</span>\n    </li>\n</ul>\n<div class=\"tabs-content\">\n    <div id=\"tab-aws-stack\">\n        <div class=\"control-group clearfix\">\n            <label>Region</label>\n            <div id=\"create-aws-stack-region\" class=\"selectbox\">\n                <div class=\"selection\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "("
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ")</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.awsRegions), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div id=\"tab-mesos-stack\" class=\"hide\">\n        <div class=\"control-group clearfix\">\n            <label>Region</label>\n            <div id=\"create-mesos-stack-region\" class=\"selectbox\">\n                <div class=\"selection\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "("
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ")</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.awsRegions), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                </ul>\n            </div>\n        </div>\n        <div class=\"control-group clearfix\">\n            <label for=\"\">Framework</label>\n            <span>\n                <img class=\"marathon-mark-img\" src=\"/assets/images/ide/marathon.png\" alt=\"\"/> <span>Marathon</span>\n                <label class=\"switch toolbar-visual-ops-switch create-mesos-use-marathon on narrow\">\n                    <span class=\"switch-handle\"></span>\n                </label>\n            </span>\n        </div>\n    </div>\n</div>";
+  return buffer;
+  };
+TEMPLATE.createStack=Handlebars.template(__TEMPLATE__);
+
+
 return TEMPLATE; });

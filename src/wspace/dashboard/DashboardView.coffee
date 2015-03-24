@@ -32,7 +32,7 @@ define [ "./DashboardTpl",
   Backbone.View.extend {
 
     events :
-      "click .dashboard-header .create-stack"   : "createStack"
+      "click .dashboard-header .icon-new-stack" : "createStack"
       "click .dashboard-header .import-stack"   : "importStack"
       "click .dashboard-header .icon-visualize" : "importApp"
       "click .dashboard-sidebar .dashboard-nav-log" : "updateLog"
@@ -123,14 +123,37 @@ define [ "./DashboardTpl",
       return
 
     createStack : ( evt )->
-      $tgt = $( evt.currentTarget )
-      provider = $tgt.closest("ul").attr("data-provider")
-      region   = $tgt.attr("data-region")
+      self = @
+      awsRegions = (_.findWhere self.model.supportedProviders(), {id : "aws::global"}).regions
+      firstRegion = awsRegions[0]
 
-      opsModel = @model.scene.project.createStack( region, provider )
+      # docker::marathon
 
-      @model.scene.loadSpace( opsModel )
-      return
+      createStackModal = new Modal {
+        title: lang.IDE.CREATE_STACK_TITLE
+        compact: true
+        width: 560
+        template: MC.template.createStack({firstRegion, awsRegions})
+        confirm: text: lang.IDE.CREATE_STACK_CONFIRM
+      }
+
+      createStackModal.find(".toolbar-visual-ops-switch").on "click", ()-> $(this).toggleClass("on")
+
+      createStackModal.find(".select-stack-type li").click ()->
+        createStackModal.find(".select-stack-type li").toggleClass("active")
+        createStackModal.find(".tabs-content > div").toggleClass("hide")
+
+      createStackModal.on "confirm", ()->
+        createStackModal.close()
+
+        provider = if createStackModal.find(".tab-aws-stack").hasClass("active") then "aws::global" else "docker::marathon"
+        type = if provider is "docker::marathon" then "mesos" else "aws"
+        region = createStackModal.find("#create-#{type}-stack-region li.item.selected").data("value")
+        framework = if type is "mesos" then createStackModal.find(".create-mesos-use-marathon").hasClass("on") else false
+        console.log "Creating Stack: ", region, provider, framework
+        opsModel = self.model.scene.project.createStack( region, provider, framework)
+
+        self.model.scene.loadSpace(opsModel)
 
     showCredential: ()->
       new CredentialFormView({model: @model.scene.project}).render()

@@ -553,49 +553,39 @@ div.modal-text-highlight{
 /* App Type Icon */
 
 [class^="icon-app-type-"], [class*=" icon-app-type-"] {
-	border-radius: 2px;
-	display: inline-block;
-	height: 13px;
-	width: 40px;
-	font-size: 12px;
-	line-height: 13px;
-	font-variant: small-caps;
-	font-style: normal;
-	color: #fff;
-	text-align: center;
-	padding-bottom: 2px;
+	border-radius  : 2px;
+	display        : inline-block;
+	height         : 13px;
+	width          : 40px;
+	font-size      : 12px;
+	line-height    : 13px;
+	font-variant   : small-caps;
+	font-style     : normal;
+	color          : #fff;
+	text-align     : center;
+	padding-bottom : 2px;
 }
 
 .icon-app-type-development {
 	background: #1B7FCC;
+	&:before { content: "dev";}
 }
 
-.icon-app-type-development:before {
-	content: "dev"
-}
 
 .icon-app-type-production {
 	background: #17c249;
+	&:before { content: "prod"; }
 }
 
-.icon-app-type-production:before {
-	content: "prod";
-}
 
 .icon-app-type-testing {
 	background: #ffa740;
-}
-
-.icon-app-type-testing:before {
-	content: "test";
+	&:before { content: "test" }
 }
 
 .icon-app-type-others {
 	background: #9C9FA2;
-}
-
-.icon-app-type-others:before {
-	content: "others";
+	&:before { content: "others" }
 }
 
 /* App Useage */
@@ -766,12 +756,13 @@ div.modal-text-highlight{
     display: inline-block;
     line-height: 32px;
 }
+
 .manager-content-sub {
-    color: #999;
-    font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color         : #999;
+    font-size     : 12px;
+    overflow      : hidden;
+    text-overflow : ellipsis;
+    white-space   : nowrap;
 }
 
 .mega-list-wraper-items li{
@@ -796,12 +787,6 @@ div.modal-text-highlight{
     position: absolute;
     margin-left: -10px;
     margin-top: 6px;
-}
-
-#label-total-fee b {
-    font-weight: normal;
-    font-size: 20px;
-    color: $yellow;
 }
 
 .cant-snapshot {

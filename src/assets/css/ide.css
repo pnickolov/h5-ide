@@ -720,27 +720,23 @@ div.modal-text-highlight {
 
 .icon-app-type-development {
   background: #1B7FCC; }
-
-.icon-app-type-development:before {
-  content: "dev"; }
+  .icon-app-type-development:before {
+    content: "dev"; }
 
 .icon-app-type-production {
   background: #17c249; }
-
-.icon-app-type-production:before {
-  content: "prod"; }
+  .icon-app-type-production:before {
+    content: "prod"; }
 
 .icon-app-type-testing {
   background: #ffa740; }
-
-.icon-app-type-testing:before {
-  content: "test"; }
+  .icon-app-type-testing:before {
+    content: "test"; }
 
 .icon-app-type-others {
   background: #9C9FA2; }
-
-.icon-app-type-others:before {
-  content: "others"; }
+  .icon-app-type-others:before {
+    content: "others"; }
 
 /* App Useage */
 #modal-run-stack .app-usage {
@@ -907,11 +903,6 @@ div.modal-text-highlight {
   position: absolute;
   margin-left: -10px;
   margin-top: 6px; }
-
-#label-total-fee b {
-  font-weight: normal;
-  font-size: 20px;
-  color: #ffbb0d; }
 
 .cant-snapshot {
   display: block;
@@ -8625,6 +8616,11 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       cursor: pointer; }
 
 /* Run Stack Modal */
+#label-total-fee b {
+  font-weight: normal;
+  font-size: 20px;
+  color: #ffbb0d; }
+
 .openstack .OEPanelRight {
   width: 288px;
   font-size: 12px;

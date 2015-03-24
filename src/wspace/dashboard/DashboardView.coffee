@@ -146,12 +146,12 @@ define [ "./DashboardTpl",
       createStackModal.on "confirm", ()->
         createStackModal.close()
 
-        provider = if createStackModal.find(".tab-aws-stack").hasClass("active") then "aws::global" else "docker::marathon"
-        type = if provider is "docker::marathon" then "mesos" else "aws"
+        provider = "aws::global"
+        type = if createStackModal.find(".tab-aws-stack").hasClass("active") then "aws" else "mesos"
         region = createStackModal.find("#create-#{type}-stack-region li.item.selected").data("value")
         framework = if type is "mesos" then createStackModal.find(".create-mesos-use-marathon").hasClass("on") else false
-        console.log "Creating Stack: ", region, provider, framework
-        opsModel = self.model.scene.project.createStack( region, provider, framework)
+        console.log "Creating Stack: ", region, provider, {type, framework}
+        opsModel = self.model.scene.project.createStack( region, provider, {type, framework})
 
         self.model.scene.loadSpace(opsModel)
 

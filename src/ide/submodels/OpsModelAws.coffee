@@ -178,6 +178,13 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
           groupUId   : vpcId
 
       component =
+        KP :
+          type : "AWS.EC2.KeyPair"
+          name : "DefaultKP"
+          resource : {
+            KeyName : "DefaultKP"
+            KeyFingerprint : ""
+          }
         VPC :
           type : "AWS.VPC.VPC"
           name : "vpc"

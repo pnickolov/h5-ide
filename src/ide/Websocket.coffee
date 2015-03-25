@@ -54,12 +54,15 @@ define [ "Meteor", "backbone", "event", "MC" ], ( Meteor, Backbone, ide_event )-
     # We start notifying in 5 seconds
     setTimeout ()=>
       @shouldNotify = true
-      if not @connection.status.connected
+      if not @connection.status().connected
         @statusChanged()
     , 5000
 
     @__appWideSubscripe()
     this
+
+  Websocket.prototype.close = ()->
+    @connection._stream.disconnect()
 
   # isReady is only true for a project, when its request subscription is ready.
   Websocket.prototype.onUserSubError = ( e )->

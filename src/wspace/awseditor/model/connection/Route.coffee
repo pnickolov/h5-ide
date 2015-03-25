@@ -192,10 +192,10 @@ define [ "constant", "ConnectionModel", "ComplexResModel", "Design" ], ( constan
       }
       {
         port1 :
-          name : ""
+          name : "rtb-tgt"
           type : constant.RESTYPE.RT
         port2 :
-          name : ""
+          name : "vpc-route"
           type : "ExternalVpcRouteTarget"
       }
     ]

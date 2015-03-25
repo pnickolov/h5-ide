@@ -1,3 +1,5 @@
+
+<!--{{frame}}-->
 <div class='ops-process {{#if progress}}has-progess{{/if}}'>
   <section class="processing-wrap">
     <header class="processing">{{#if title}}{{title}}{{else}}{{ i18n "PROC_TITLE" }}{{/if}}<span class="process-info">{{progress}}%</span></header>
@@ -14,12 +16,16 @@
   </section>
 
   <section class="fail hide error-info-block">
-    <header>{{ i18n "PROC_FAILED_TITLE" }}</header>
-    <p class="sub-title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
+    <header>{{ i18n "PROC_FAILED_TITLE" }} <button class="btn btn-silver btn-close-process">{{ i18n "PROC_CLOSE_TAB" }}</button></header>
     <div class="result-error-info">
-      <p class="title">{{ i18n "PROC_ERR_INFO" }}</p>
+      <p class="title">{{ i18n "PROC_RLT_FAILED_SUB_TITLE" }}</p>
       <p class="detail"></p>
     </div>
-    <button class="btn btn-silver btn-close-process right">{{ i18n "PROC_CLOSE_TAB" }}</button>
   </section>
 </div>
+
+<!--{{detailFrame}}-->
+<section class="process-detail">
+  <header><div class="pdr-3">STATUS</div><div class="pdr-1">#</div><div class="pdr-2">TASK</div></header>
+  <ul>{{#each this}}<li><div class="pdr-3"></div><div class="pdr-2"></div></li>{{/each}}</ul>
+</section>

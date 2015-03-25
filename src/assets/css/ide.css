@@ -6569,10 +6569,11 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
 
 .ops-process {
   width: 100%;
-  padding-top: 10%;
-  height: 90%;
+  padding-top: 50px;
+  height: 100%;
   background: #0a0a0a;
-  position: relative; }
+  position: relative;
+  box-sizing: border-box; }
   .ops-process header {
     text-align: center;
     font-size: 16px;
@@ -6586,11 +6587,19 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   .ops-process .error-info-block {
     text-align: left;
     max-width: 600px;
-    margin: 20px auto; }
+    margin: 0 auto; }
     .ops-process .error-info-block header {
       font-size: 16px;
       color: #eee;
-      margin-bottom: 50px; }
+      position: relative;
+      margin-bottom: 30px; }
+    .ops-process .error-info-block:after {
+      content: "";
+      display: block;
+      clear: both; }
+  .ops-process .btn-close-process {
+    position: absolute;
+    right: 0; }
   .ops-process .result-sub-title {
     font-size: 16px;
     color: #eee;
@@ -6629,19 +6638,18 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     margin-top: -20px; }
   .ops-process .success {
     opacity: 0;
-    margin-top: 20px;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    padding-top: 10%; }
+    padding-top: 65px; }
     .ops-process .success .title {
       font-size: 18px;
       color: #676767;
       text-align: center; }
   .ops-process .fadein {
     opacity: 1;
-    margin-top: 0; }
+    padding-top: 45px; }
   .ops-process .rolling-back-content {
     display: none; }
   .ops-process.rolling-back .processing header {
@@ -6696,6 +6704,71 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   z-index: 9;
   background: rgba(0, 0, 0, 0.8);
   text-align: center; }
+
+.process-detail {
+  max-width: 600px;
+  margin: auto;
+  background: #1E1E21;
+  line-height: 30px;
+  margin-top: 20px;
+  clear: both;
+  border: 1px solid #000; }
+  .process-detail > header {
+    text-align: left;
+    color: #4B4B4B;
+    height: 30px;
+    margin: 0; }
+    .process-detail > header .pdr-2 {
+      margin-left: 50px; }
+  .process-detail .pdr-3 {
+    float: right;
+    width: 100px; }
+  .process-detail .pdr-1 {
+    float: left;
+    width: 40px;
+    text-align: center; }
+  .process-detail .pdr-2 {
+    margin: 0 120px 0 0;
+    overflow: hidden;
+    text-rendering: auto;
+    white-space: nowrap;
+    text-align: left; }
+  .process-detail > ul {
+    overflow-y: scroll;
+    height: 280px;
+    counter-reset: processdetailtable;
+    color: #DADADA; }
+    .process-detail > ul > li {
+      height: 30px;
+      counter-increment: processdetailtable;
+      position: relative;
+      clear: both;
+      color: #797F7F; }
+      .process-detail > ul > li:before {
+        float: left;
+        content: counter(processdetailtable);
+        width: 40px;
+        text-align: center;
+        margin-right: 10px; }
+      .process-detail > ul > li:nth-child(2n+1) {
+        background: #2c2c33; }
+      .process-detail > ul > li:after {
+        position: absolute;
+        width: 100px;
+        right: 0;
+        top: 0; }
+    .process-detail > ul .pdr-3:after {
+      margin-left: 3px; }
+    .process-detail > ul .done:after {
+      content: "Completed"; }
+    .process-detail > ul .running:after {
+      content: "In Progress"; }
+    .process-detail > ul .pending:after {
+      content: "Pending"; }
+    .process-detail > ul .rolledback:after {
+      content: "Rolled Back"; }
+    .process-detail > ul .rolling:after {
+      content: "Rolling"; }
 
 .modal-res-diff .scroll-wrap-res-diff {
   max-height: 581px;

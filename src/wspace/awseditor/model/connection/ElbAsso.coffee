@@ -1,5 +1,5 @@
 
-define [ "constant", "ConnectionModel", "i18n!/nls/lang.js", "Design", "SGRulePopup" ], ( constant, ConnectionModel, lang, Design, SGRulePopup )->
+define [ "constant", "ConnectionModel", "i18n!/nls/lang.js", "Design" ], ( constant, ConnectionModel, lang, Design )->
 
   # Elb <==> Subnet
   ElbSubnetAsso = ConnectionModel.extend {

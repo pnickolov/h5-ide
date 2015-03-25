@@ -6,7 +6,6 @@ var os    = require('os');
 var serverTask  = require('./gulptasks/server');
 var developTask = require('./gulptasks/develop');
 var deployTask  = require('./gulptasks/deploy');
-var traceTask   = require('./gulptasks/trace');
 
 // Load user-config
 GLOBAL.gulpConfig = require('./gulpconfig.default');
@@ -19,11 +18,7 @@ if ( fs.existsSync("./gulpconfig.js") ) {
 }
 
 if ( GLOBAL.gulpConfig.pollingWatch === "auto" ) {
-  if ( os.type() === "Darwin" ) {
-    GLOBAL.gulpConfig.pollingWatch = false
-  } else {
-    GLOBAL.gulpConfig.pollingWatch = true
-  }
+  GLOBAL.gulpConfig.pollingWatch = os.type() !== "Darwin"
 }
 
 
@@ -39,6 +34,15 @@ gulp.task("watch", function(){
   serverTask();
   developTask.watch();
 });
+
+
+// Test
+gulp.task("maketest", function(){ return require('./gulptasks/test').compile(); });
+gulp.task("test",     function(){ return require('./gulptasks/test').run(); });
+
+
+// Compile gulp files
+gulp.task("makegulp", function(){ return require('./gulptasks/makegulp')(); })
 
 
 // Deploy
@@ -71,7 +75,7 @@ function argv( cmd ) {
 
 
 // Debug
-gulp.task("trace", function(){ return traceTask(); });
+gulp.task("trace", function(){ return require('./gulptasks/trace')(); });
 
 
 
@@ -96,7 +100,16 @@ gulp.task("help", function(){
   console.log( "      Compile in debug mode. Push to remote repo, default branch is `develop`\n" );
   console.log( "+ gulp release [-b BranchName]");
   console.log( "      Compile in release mode. Push to remote repo, default branch is `master`\n" );
+  console.log( "+ gulp makegulp")
+  console.log( "      Compile the gulp tasks.\n" );
+
+  console.log( "\n ===== Test =====")
+  console.log( "+ gulp test");
+  console.log( "      Run test." );
+  console.log( "+ gulp maketest");
+  console.log( "      Compile test files." );
 
   console.log( "\n ===== Debug =====")
   console.log( "+ gulp trace\n");
+
 });

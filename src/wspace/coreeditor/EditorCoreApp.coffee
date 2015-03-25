@@ -34,6 +34,9 @@ define [
     isModified    : ()-> @design and @design.modeIsAppEdit() and @design.isModified()
 
     initEditor : ()->
+      self = @
+      @listenTo @opsModel, "change:progress", ()-> self.view?.updateProgress()
+
       # Special treatment for import app
       if @opsModel.isImported()
         @updateTab()
@@ -135,7 +138,7 @@ define [
       fastUpdate = fastUpdate and not @opsModel.testState( OpsModel.State.Stopped )
 
       self = @
-      @view.listenTo @opsModel, "change:progress", @view.updateProgress
+      #@view.listenTo @opsModel, "change:progress", @view.updateProgress
       @opsModel.update( newJson, fastUpdate ).then ()->
         if fastUpdate
           self.__onAppEditDidDone()
@@ -149,7 +152,7 @@ define [
       if @isRemoved() then return
 
       @__applyingUpdate = false
-      @view.stopListening @opsModel, "change:progress", @view.updateProgress
+      #@view.stopListening @opsModel, "change:progress", @view.updateProgress
 
       if err.error is ApiRequest.Errors.AppConflict
         msg = lang.NOTIFY.ERR_APP_UPDATE_FAILED_CONFLICT
@@ -174,7 +177,7 @@ define [
 
       @__applyingUpdate = false
 
-      @view.stopListening @opsModel, "change:progress", @view.updateProgress
+      #@view.stopListening @opsModel, "change:progress", @view.updateProgress
       @view.showUpdateStatus()
 
       @design.setMode Design.MODE.App

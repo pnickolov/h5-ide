@@ -99,7 +99,7 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
       # Then we do not create the ExpandAsg
       asg = attributes.originalAsg
       for expanded in [asg].concat( asg.get("expandedList") )
-        if attributes.parent.parent() is expanded.parent().parent()
+        if attributes.parent is expanded.parent()
           return
 
       # Call Superclass's constructor to finish creating the ExpandAsg
@@ -110,7 +110,7 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
       asg = @attributes.originalAsg
 
       for expanded in [asg].concat( asg.get("expandedList") )
-        if expanded isnt @ and newParent.parent() is expanded.parent().parent()
+        if expanded isnt @ and newParent is expanded.parent()
           return false
 
       true

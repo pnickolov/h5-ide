@@ -24,6 +24,13 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       undefined
 
     __defaultJson : ()->
+      jsonType = @getJsonType()
+      if jsonType is "aws"
+        @___defaultJson()
+      else
+        @___mesosJson()
+
+    ___defaultJson : ()->
       json   = OpsModel.prototype.__defaultJson.call this
       vpcId  = MC.guid()
       vpcRef = "@{#{vpcId}.resource.VpcId}"
@@ -154,6 +161,66 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
           json.layout[ comp.uid ] = l
 
       json
+
+    ___mesosJson: ()->
+      json   = OpsModel.prototype.__defaultJson.call this
+
+      vpcId  = MC.guid()
+
+      vpcRef = "@{#{vpcId}.resource.VpcId}"
+
+      layout =
+        VPC :
+          coordinate : [5,3]
+          size       : [60,60]
+        RTB :
+          coordinate : [15,15]
+          groupUId   : vpcId
+
+      component =
+        VPC :
+          type : "AWS.VPC.VPC"
+          name : "vpc"
+          resource :
+            VpcId              : ""
+            CidrBlock          : "10.0.0.0/16"
+            DhcpOptionsId      : ""
+            EnableDnsHostnames : false
+            EnableDnsSupport   : true
+            InstanceTenancy    : "default"
+        RTB :
+          type : "AWS.VPC.RouteTable"
+          name : "RT-0"
+          resource :
+            VpcId : vpcRef
+            RouteTableId: ""
+            AssociationSet : [{
+              Main:"true"
+              SubnetId : ""
+              RouteTableAssociationId : ""
+            }]
+            PropagatingVgwSet:[]
+            RouteSet : [{
+              InstanceId           : ""
+              NetworkInterfaceId   : ""
+              Origin               : 'CreateRouteTable'
+              GatewayId            : 'local'
+              DestinationCidrBlock : '10.0.0.0/16'
+            }]
+
+      for id, comp of component
+        if id is "VPC"
+          comp.uid = vpcId
+        else
+          comp.uid = MC.guid()
+        json.component[ comp.uid ] = comp
+        if layout[ id ]
+          l = layout[id]
+          l.uid = comp.uid
+          json.layout[ comp.uid ] = l
+
+      json
+
   }, {
     supportedProviders : ["aws::global", "aws::china"]
   }

@@ -80,6 +80,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       Backbone.Model.apply this, arguments
 
     initialize : ( attr, options )->
+
+      @__setJsonType( options || {})
+
       if options and options.jsonData
         @__setJsonData options.jsonData
 
@@ -190,6 +193,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           agent         : @__jsonData.agent
           stack_id      : @__jsonData.stack_id
           host          : @__jsonData.host
+          type          : @__jsonData.type
+          framework     : @__jsonData.framework
         })
 
     # Use this method to load the newest json.
@@ -275,6 +280,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           tag  : App.user.get("tag")
         }
 
+      if json.type then @__setJsonType(json)
+
       if not json.property
         json.property = { stoppable : true }
 
@@ -309,6 +316,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         layout        : json.layout
         agent         : json.agent
         host          : json.host
+        type          : @__jsonType
+        framework     : @__jsonFramework
       }
 
       stoppable = json.property?.stoppable or true
@@ -323,6 +332,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       }
 
       @
+
+    __setJsonType: (opts = {})->
+      @__jsonType = opts.type || "aws"
+      @__jsonFramework = opts.framework || null
+      return
+
+    getJsonType: ()-> @__jsonType
+    getJsonFramework : ()-> @__jsonFramework
+    isMesos: ()-> @getJsonType() is "mesos"
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->

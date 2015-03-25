@@ -139,9 +139,10 @@ define [ "./DashboardTpl",
 
       createStackModal.find(".toolbar-visual-ops-switch").on "click", ()-> $(this).toggleClass("on")
 
-      createStackModal.find(".select-stack-type li").click ()->
-        createStackModal.find(".select-stack-type li").toggleClass("active")
-        createStackModal.find(".tabs-content > div").toggleClass("hide")
+      createStackModal.find(".select-stack-type li").click (evt)->
+        unless $(evt.currentTarget).hasClass('active')
+          createStackModal.find(".select-stack-type li").toggleClass("active")
+          createStackModal.find(".tabs-content > div").toggleClass("hide")
 
       createStackModal.on "confirm", ()->
         createStackModal.close()

@@ -23,6 +23,16 @@
     </button>
   </div>
   <div class="fixedaccordion">
+
+  {{#if isMesos}}
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">Mesos</header>
+    <div class="accordion-body">
+      <ul class="resource-list-ami"></ul>
+    </div>
+  </section>
+  {{/if}}
+
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
     <ul class="resource-list-az clearfix accordion-body">
@@ -35,6 +45,7 @@
     </ul>
   </section>
 
+  {{#unless isMesos}}
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
       <nav class="selectbox AmiTypeSelect js-toggle-dropdown">
@@ -51,6 +62,8 @@
       <ul class="resource-list-ami"></ul>
     </div>
   </section>
+  {{/unless}}
+
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
@@ -167,6 +180,14 @@
   {{name}}
 </li>{{/with}}
 {{else}}{{#if fav}}<p class="blank-slate">{{i18n "TOOLBAR.CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI"}}</p>{{/if}}{{/each}}
+
+<!-- {{mesos}} -->
+<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="MESOSMASTER" data-option='{"imageId":"{{imageId}}"}'>
+  Master
+</li>
+<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="MESOSSLAVE" data-option='{"imageId":"{{imageId}}"}'>
+  Slave
+</li>
 
 <!-- {{reuse_lc}} -->
 <div class="resource-icon-instance" >

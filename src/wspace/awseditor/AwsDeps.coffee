@@ -28,6 +28,9 @@ define [
   './model/DBSbgModel'
   './model/DBInstanceModel'
   './model/DBOgModel'
+  './model/MesosMasterModel'
+  './model/MesosSlaveModel'
+
 
   "./model/deserializeVisitor/JsonFixer"
   "./model/deserializeVisitor/EipMerge"
@@ -57,5 +60,7 @@ define [
   "./canvas/CeSgLine"
   "./canvas/CeDbInstance"
   "./canvas/CeDbSubnetGroup"
+  './canvas/CeMesosMaster'
+  './canvas/CeMesosSlave'
 
 ], ()->

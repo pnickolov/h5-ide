@@ -167,9 +167,10 @@ define [
           hasVGW = hasCGW = false
 
       @$el.html( LeftPanelTpl.panel({
-        rdsDisabled : @workspace.isRdsDisabled(),
-        hasVGW: hasVGW,
-        hasCGW: hasCGW
+        rdsDisabled : @workspace.isRdsDisabled()
+        hasVGW : hasVGW
+        hasCGW : hasCGW
+        isMesos: true
       }) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
@@ -177,7 +178,13 @@ define [
 
       @updateAZ()
       @updateSnapshot()
-      @updateAmi()
+
+      isMesosStack = true
+      if isMesosStack
+        @updateMesos()
+      else
+        @updateAmi()
+
       @updateRDSList()
       @updateRDSSnapshotList()
 
@@ -487,6 +494,11 @@ define [
 
       html = LeftPanelTpl.ami ms
       @$el.find(".resource-list-ami").html(html)#.parent().nanoScroller("reset")
+
+    updateMesos: () ->
+      data = region: @workspace.opsModel.get("region"), imageId: 'ami-9ef278f6'
+      html = LeftPanelTpl.mesos data
+      @$(".resource-list-ami").html(html)
 
     updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return

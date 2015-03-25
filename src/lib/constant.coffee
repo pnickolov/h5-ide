@@ -109,6 +109,10 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         MRTHGROUP  : "DOCKER.MARATHON.Group"
         DOCKERIMAGE: "DOCKER.IMAGE"
 
+        # Mesos
+        MESOSMASTER: "MESOS.MASTER"
+        MESOSSLAVE : "MESOS.SLAVE"
+
     RESNAME =
 
         AZ           : "Availability Zone"

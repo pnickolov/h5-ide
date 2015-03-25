@@ -31,6 +31,7 @@ define [
 
     switchToDone : ()->
       @$el.find(".success").show()
+      @$el.find(".process-detail").hide()
       self = @
       setTimeout ()->
         self.$el.find(".processing-wrap").addClass("fadeout")

@@ -103,12 +103,11 @@
 
   .success {
     opacity     : 0;
-    margin-top  : 20px;
     position    : absolute;
     top         : 0;
     left        : 0;
     width       : 100%;
-    padding-top : 10%;
+    padding-top : 65px;
 
     .title {
       font-size  : 18px;
@@ -119,7 +118,7 @@
 
   .fadein {
     opacity: 1;
-    margin-top : 0;
+    padding-top : 45px;
   }
 
   .rolling-back-content {

@@ -6638,19 +6638,18 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
     margin-top: -20px; }
   .ops-process .success {
     opacity: 0;
-    margin-top: 20px;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    padding-top: 10%; }
+    padding-top: 65px; }
     .ops-process .success .title {
       font-size: 18px;
       color: #676767;
       text-align: center; }
   .ops-process .fadein {
     opacity: 1;
-    margin-top: 0; }
+    padding-top: 45px; }
   .ops-process .rolling-back-content {
     display: none; }
   .ops-process.rolling-back .processing header {
@@ -6712,7 +6711,8 @@ label, .property-dbinstance #property-dbinstance-backup-window-group label {
   background: #1E1E21;
   line-height: 30px;
   margin-top: 20px;
-  border: 1px solid #fff; }
+  clear: both;
+  border: 1px solid #000; }
   .process-detail > header {
     text-align: left;
     color: #4B4B4B;

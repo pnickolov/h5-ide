@@ -120,9 +120,12 @@ define [
       return
 
     updateProgress : ()->
+      if not @workspace.opsModel.isProcessing() then return
+      $p = @$el.find(".ops-process")
+      if not $p.length then return
+
       pp = @workspace.opsModel.get("progress")
 
-      $p = @$el.find(".ops-process")
       $p.toggleClass("has-progess", !!pp)
 
       if @__progress > pp

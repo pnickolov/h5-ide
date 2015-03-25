@@ -162,6 +162,7 @@ define [
     render : ()->
 
       hasVGW = hasCGW = true
+      isMesos = @workspace.opsModel.isMesos()
 
       if Design.instance().region() is 'cn-north-1'
           hasVGW = hasCGW = false
@@ -170,7 +171,7 @@ define [
         rdsDisabled : @workspace.isRdsDisabled()
         hasVGW : hasVGW
         hasCGW : hasCGW
-        isMesos: true
+        isMesos: isMesos
       }) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
@@ -179,8 +180,7 @@ define [
       @updateAZ()
       @updateSnapshot()
 
-      isMesosStack = true
-      if isMesosStack
+      if isMesos
         @updateMesos()
       else
         @updateAmi()

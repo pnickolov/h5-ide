@@ -70,6 +70,12 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
 
     isNew : ()-> @get("isNew")
 
+    raw : ()->
+      for key, req of App.WS.collection.request._collection.docs || {}
+        if req.id is @requestId
+          return req.dag
+      null
+
     markAsRead : ()->
       @attributes.isNew = false
       return
@@ -88,6 +94,8 @@ define ["OpsModel", "constant", "backbone" ], ( OpsModel, constant )->
 
     updateWithRequest : ( req )->
       console.info "Updating notification", @, req
+
+      @requestId = req.id
 
       if req.time_submit < @get("startTime")
         # The incoming request is older then what we have already processed. Ignore.

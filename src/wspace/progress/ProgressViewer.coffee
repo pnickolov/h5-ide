@@ -26,7 +26,7 @@ define [
       if not @model.testState( OpsModel.State.Initializing )
         data.title = @model.getStateDesc() + " your app..."
 
-      @setElement $(ProgressTpl( data )).appendTo( attr.workspace.scene.spaceParentElement() )
+      @setElement $(ProgressTpl.frame( data )).appendTo( attr.workspace.scene.spaceParentElement() )
       return
 
     switchToDone : ()->
@@ -61,6 +61,7 @@ define [
 
           @$el.children().hide()
           @$el.find(".fail").show()
+          @$el.find(".process-detail").show()
           @$el.find(".detail").html @model.get("opsActionError").replace(/\n/g, "<br/>")
         else
           console.error "The model has changed to a state that OpsProgress doesn't recongnize", @model
@@ -73,6 +74,46 @@ define [
 
       @$el.find(".process-info").text( pro )
       @$el.find(".bar").css { width : pro }
+
+      @updateDetail()
+      return
+
+    updateDetail : ()->
+      notification = App.model.notifications().get( @model.id )
+      if not notification
+        self = @
+        App.model.notifications().once "add", ()-> self.updateDetail()
+        return
+
+      rawRequest = notification.raw()
+
+      $detail = @$el.children(".process-detail")
+      if $detail.length is 0
+        $detail = $( ProgressTpl.detailFrame(rawRequest.step || []) ).appendTo @$el
+
+      $children = $detail.children("ul").children()
+
+      if rawRequest.state is "Rollback"
+        classMap =
+          done    : "pdr-3 done icon-success"
+          running : "pdr-3 rolling icon-pending"
+          pending : "pdr-3 rolledback icon-warning"
+      else
+        classMap =
+          done     : "pdr-3 done icon-success"
+          running  : "pdr-3 running icon-pending"
+          pending  : "pdr-3 pending"
+
+
+      for step, idx in rawRequest.step
+        if step.length < 5 then continue
+
+        text  = step[2] + " " + step[4]
+        if step[3]
+          text += " (#{step[3]})"
+        $children.eq(idx).children(".pdr-2").text( text )
+        $children.eq(idx).children(".pdr-3").attr("class", classMap[step[1]])
+
       return
 
     close : ()-> @trigger "close"

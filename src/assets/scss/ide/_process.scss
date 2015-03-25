@@ -2,10 +2,11 @@
 
 .ops-process {
   width       : 100%;
-  padding-top : 10%;
-  height      : 90%;
+  padding-top : 50px;
+  height      : 100%;
   background  : #0a0a0a;
   position    : relative;
+  box-sizing  : border-box;
 
   header {
     text-align    : center;
@@ -26,13 +27,25 @@
     .error-info-block {
       text-align : left;
       max-width  : 600px;
-      margin     : 20px auto;
+      margin     : 0 auto;
 
       header {
         font-size     : 16px;
         color         : #eee;
-        margin-bottom : 50px;
+        position      : relative;
+        margin-bottom : 30px;
       }
+
+      &:after {
+        content : "";
+        display : block;
+        clear   : both;
+      }
+    }
+
+    .btn-close-process {
+      position : absolute;
+      right    : 0;
     }
 
     .result-sub-title {
@@ -176,5 +189,88 @@
     z-index    : 9;
     background : rgba(0,0,0,.8);
     text-align : center;
+  }
+}
+
+
+.process-detail {
+  max-width   : 600px;
+  margin      : auto;
+  background  : #1E1E21;
+  line-height : 30px;
+  margin-top  : 20px;
+  clear       : both;
+  border      : 1px solid #fff;
+
+  > header {
+    text-align : left;
+    color      : #4B4B4B;
+    height     : 30px;
+    margin     : 0;
+
+    .pdr-2 {
+      margin-left:50px;
+    }
+  }
+
+  .pdr-3 {
+    float : right;
+    width : 100px;
+  }
+  .pdr-1 {
+    float      : left;
+    width      : 40px;
+    text-align : center;
+  }
+  .pdr-2 {
+    margin         : 0 120px 0 0;
+    overflow       : hidden;
+    text-rendering : auto;
+    white-space    : nowrap;
+    text-align     : left;
+  }
+
+  > ul {
+    overflow-y    : scroll;
+    height        : 280px;
+    counter-reset : processdetailtable;
+    color : #DADADA;
+
+    > li {
+      height : 30px;
+      counter-increment: processdetailtable;
+      position: relative;
+      clear : both;
+      color : #797F7F;
+
+      &:before {
+        float        : left;
+        content      : counter(processdetailtable);
+        width        : 40px;
+        text-align   : center;
+        margin-right : 10px;
+      }
+
+      &:nth-child(2n+1) {
+        background : #2c2c33;
+      }
+
+      &:after {
+        position : absolute;
+        width    : 100px;
+        right    : 0;
+        top      : 0;
+      }
+    }
+
+    .pdr-3:after {
+      margin-left : 3px;
+    }
+
+    .done:after       { content : "Completed"; }
+    .running:after    { content : "In Progress"; }
+    .pending:after    { content : "Pending"; }
+    .rolledback:after { content : "Rolled Back"; }
+    .rolling:after    { content : "Rolling"; }
   }
 }

@@ -46,7 +46,7 @@ define(["jquery"], function($) {
       data.shadow.remove();
     }
     if (data.hoverZone) {
-      data.hoverZone.removeClass("dragOver").triggerHandler(data.eventPrefix + "dragleave", data);
+      data.hoverZone.removeClass("dragOver").triggerHandler("" + data.eventPrefix + "dragleave", data);
     }
     if (data.onDragCancel && evt.type === "urlroute") {
       data.onDragCancel(evt);
@@ -93,14 +93,14 @@ define(["jquery"], function($) {
     });
   };
   onMouseMove = function(evt) {
-    var data, dz, hoverZone, i, idx, len, newZone, ref, ref1, ref2;
+    var data, dz, hoverZone, idx, newZone, _i, _len, _ref, _ref1, _ref2;
     data = evt.data;
     data.pageX = evt.pageX;
     data.pageY = evt.pageY;
-    ref = data.dropZones;
-    for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
-      dz = ref[idx];
-      if ((dz.x1 <= (ref1 = evt.pageX) && ref1 <= dz.x2) && (dz.y1 <= (ref2 = evt.pageY) && ref2 <= dz.y2)) {
+    _ref = data.dropZones;
+    for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
+      dz = _ref[idx];
+      if ((dz.x1 <= (_ref1 = evt.pageX) && _ref1 <= dz.x2) && (dz.y1 <= (_ref2 = evt.pageY) && _ref2 <= dz.y2)) {
         newZone = data.dropTargets.eq(idx);
         data.zoneDimension = dz;
         break;
@@ -108,13 +108,13 @@ define(["jquery"], function($) {
     }
     hoverZone = data.hoverZone;
     if (hoverZone && newZone && newZone[0] === hoverZone[0]) {
-      newZone.triggerHandler(data.eventPrefix + "dragover", data);
+      newZone.triggerHandler("" + data.eventPrefix + "dragover", data);
     } else {
       if (hoverZone) {
-        hoverZone.removeClass("dragOver").triggerHandler(data.eventPrefix + "dragleave", data);
+        hoverZone.removeClass("dragOver").triggerHandler("" + data.eventPrefix + "dragleave", data);
       }
       if (newZone) {
-        newZone.addClass("dragOver").triggerHandler(data.eventPrefix + "dragenter", data);
+        newZone.addClass("dragOver").triggerHandler("" + data.eventPrefix + "dragenter", data);
       }
       data.shadow.toggleClass("dragOver", !!newZone);
       data.hoverZone = newZone;
@@ -134,7 +134,7 @@ define(["jquery"], function($) {
     data.pageY = evt.pageY;
     data.onDragEnd(evt);
     if (data.hoverZone) {
-      data.hoverZone.triggerHandler(data.eventPrefix + "drop", data);
+      data.hoverZone.triggerHandler("" + data.eventPrefix + "drop", data);
     }
   };
   return null;

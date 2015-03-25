@@ -133,6 +133,50 @@ define [
 
       $p.find(".process-info").text( pro )
       $p.find(".bar").css { width : pro }
+
+      @updateDetail()
+      return
+
+    updateDetail : ()->
+      $processEl = @$el.find(".ops-process")
+      if not $processEl.length then return
+
+      notification = App.model.notifications().get( @workspace.opsModel.id )
+      if not notification
+        self = @
+        App.model.notifications().once "add", ()-> self.updateDetail()
+        return
+
+      rawRequest = notification.raw()
+
+      $detail = $processEl.children(".process-detail")
+      if $detail.length is 0
+        $detail = $( OpsEditorTpl.detailFrame(rawRequest.step || []) ).appendTo $processEl
+
+      $children = $detail.children("ul").children()
+
+
+      if rawRequest.state is "Rollback"
+        classMap =
+          done    : "pdr-3 done icon-success"
+          running : "pdr-3 rolling icon-pending"
+          pending : "pdr-3 rolledback icon-warning"
+      else
+        classMap =
+          done     : "pdr-3 done icon-success"
+          running  : "pdr-3 running icon-pending"
+          pending  : "pdr-3 pending"
+
+
+      for step, idx in rawRequest.step
+        if step.length < 5 then continue
+
+        text  = step[2] + " " + step[4]
+        if step[3]
+          text += " (#{step[3]})"
+        $children.eq(idx).children(".pdr-2").text( text )
+        $children.eq(idx).children(".pdr-3").attr("class", classMap[step[1]])
+
       return
 
     showUpdateStatus : ( error, loading )->

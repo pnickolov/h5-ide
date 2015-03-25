@@ -347,7 +347,9 @@ define ["jquery"], ( $ )->
     @constructor
   ###
   class NanoScroll
-    constructor: (@el, @options) ->
+    constructor: (el, options) ->
+      @el = el
+      @options = options
       if not BROWSER_SCROLLBAR_WIDTH or not BROWSER_SCROLLBAR_HEIGHT
         [BROWSER_SCROLLBAR_WIDTH, BROWSER_SCROLLBAR_HEIGHT] = do getBrowserScrollbarSizes
       @$el = $ @el

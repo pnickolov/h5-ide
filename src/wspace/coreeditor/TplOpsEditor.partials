@@ -104,3 +104,8 @@
 {{/if}}
 </div>
 
+<!--{{detailFrame}}-->
+<section class="process-detail">
+  <header><div class="pdr-3">STATUS</div><div class="pdr-1">#</div><div class="pdr-2">TASK</div></header>
+  <ul>{{#each this}}<li><div class="pdr-3"></div><div class="pdr-2"></div></li>{{/each}}</ul>
+</section>

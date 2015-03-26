@@ -23,7 +23,7 @@ define [ "../base/main",
 
     LCModule = PropertyModule.extend {
 
-        handleTypes : [ constant.RESTYPE.LC, constant.RESTYPE.MESOSLC ]
+        handleTypes : [ constant.RESTYPE.LC ]
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id

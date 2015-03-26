@@ -114,7 +114,7 @@ define [ '../base/view'
         render : () ->
             instanceModel = Design.instance().component( @model.get 'uid' )
 
-            tpl = getTemplate instanceModel.type
+            tpl = getTemplate instanceModel.subType
             @$el.html tpl @model.attributes
 
             kpDropdown = new kp(resModel: instanceModel)

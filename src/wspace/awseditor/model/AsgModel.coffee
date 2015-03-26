@@ -1,5 +1,5 @@
 
-define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", "./connection/LcUsage" ], ( ResourceModel, ComplexResModel, Design, constant, lang, LcUsage )->
+define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", "./connection/LcUsage", "CanvasElement" ], ( ResourceModel, ComplexResModel, Design, constant, lang, LcUsage, CanvasElement )->
 
   NotificationModel = ComplexResModel.extend {
     type : constant.RESTYPE.NC
@@ -205,16 +205,17 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
 
       if _.isString( lc )
         if lc is constant.RESTYPE.MESOSLC
-          lc =  @newMesosLc()
+          lc =  @createMesosLc()
         else
           lc = @design().component( lc )
 
       new LcUsage( @, lc )
 
-    newMesosLc: ->
+    createMesosLc: ->
       MesosLcModel = Design.modelClassForType constant.RESTYPE.MESOSLC
-      new MesosLcModel parent: @, imageId: constant.MESOS_IMAGEID, createByUser: true
+      attributes = parent: @, imageId: constant.MESOS_IMAGEID
 
+      CanvasElement.createResource constant.RESTYPE.MESOSLC, attributes, { createByUser: true }
 
     getLc : ()-> @connectionTargets("LcUsage")[0]
 

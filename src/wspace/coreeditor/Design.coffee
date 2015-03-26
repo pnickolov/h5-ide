@@ -437,6 +437,8 @@ define [
         agent         : attr.agent
         name          : attr.name
         stack_id      : attr.stack_id
+        type          : attr.type
+        framework     : attr.framework
         component     : component_data
         layout        : layout_data
       }

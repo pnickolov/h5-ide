@@ -129,6 +129,7 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
     getInstanceType             : InstanceModel.prototype.getInstanceType
     getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
     getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
+    isMesosMaster               : InstanceModel.prototype.isMesosMaster
 
     serialize : ()->
       ami = @getAmi() || @get("cachedAmi")
@@ -184,6 +185,8 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
 
     handleTypes: constant.RESTYPE.LC
 
+    isMesosMaster: InstanceModel.isMesosMaster
+
     resolveFirst: true
 
     preDeserialize: ( data, layout_data ) ->
@@ -214,7 +217,14 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
           rootDeviceType : layout_data.rootDeviceType
         }
 
-      new Model( attr )
+      # Mesos Stack
+      if Design.instance().opsModel().isMesos()
+        MesosLcClass = Design.modelClassForType constant.RESTYPE.MESOSLC
+        new MesosLcClass( attr )
+
+      # Normal Stack
+      else
+        new Model( attr )
 
       null
 

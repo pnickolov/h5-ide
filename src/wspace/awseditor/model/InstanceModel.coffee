@@ -882,7 +882,9 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       if Design.instance().opsModel().isMesos()
         modelType = constant.RESTYPE[ if @isMesosMaster( data ) then 'MESOSMASTER' else 'MESOSSLAVE' ]
         model = new ( Design.modelClassForType modelType)( attr )
-      else #Normal Stack
+
+      # Normal Stack
+      else
         model = new Model( attr )
 
       # Add Keypair

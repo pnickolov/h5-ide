@@ -740,18 +740,20 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       return allResourceArray
 
     isMesosMaster: () ->
-      # Code for testing, Please replace it to real code.
-      @get( 'name' ).indexOf( 'master' ) isnt -1
-
+      states = @get('state')
+      if states and states[0] and states[0].module is 'linux.mesos.master'
+        return true
+      return false
 
   }, {
 
     handleTypes : constant.RESTYPE.INSTANCE
 
     isMesosMaster: ( data ) ->
-      # Code for testing, Please replace it to real code.
-      data.name.indexOf( 'master' ) isnt -1
-
+      states = data.state
+      if states and states[0] and states[0].module is 'linux.mesos.master'
+        return true
+      return false
 
     getInstanceType : ( ami, region )->
       if not ami or not region then return []

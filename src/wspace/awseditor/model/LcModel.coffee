@@ -186,6 +186,7 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
     handleTypes: constant.RESTYPE.LC
 
     isMesosMaster: InstanceModel.isMesosMaster
+    isMesosSlave: InstanceModel.isMesosSlave
 
     resolveFirst: true
 
@@ -218,7 +219,7 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
         }
 
       # Mesos Stack
-      if Design.instance().opsModel().isMesos()
+      if @isMesosSlave()
         MesosLcClass = Design.modelClassForType constant.RESTYPE.MESOSLC
         new MesosLcClass( attr )
 

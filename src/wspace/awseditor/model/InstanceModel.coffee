@@ -755,6 +755,10 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         return true
       return false
 
+    isMesosSlave: ( data ) ->
+      # Test code, please replace it to real code
+      true
+
     getInstanceType : ( ami, region )->
       if not ami or not region then return []
 
@@ -881,13 +885,16 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         }
 
       # Mesos Stack
-      if Design.instance().opsModel().isMesos()
-        modelType = constant.RESTYPE[ if @isMesosMaster( data ) then 'MESOSMASTER' else 'MESOSSLAVE' ]
-        model = new ( Design.modelClassForType modelType)( attr )
+      if @isMesosMaster data
+        ModelClass = Design.modelClassForType constant.RESTYPE.MESOSMASTER
+      else if @isMesosSlave data
+        ModelClass = Design.modelClassForType constant.RESTYPE.MESOSSLAVE
 
       # Normal Stack
       else
-        model = new Model( attr )
+        ModelClass = Model
+
+      model = new ModelClass( attr )
 
       # Add Keypair
       kpUid = MC.extractID( data.resource.KeyName )

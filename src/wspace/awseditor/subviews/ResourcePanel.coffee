@@ -496,7 +496,7 @@ define [
       @$el.find(".resource-list-ami").html(html)#.parent().nanoScroller("reset")
 
     updateMesos: () ->
-      data = region: @workspace.opsModel.get("region"), imageId: 'ami-9ef278f6'
+      data = region: @workspace.opsModel.get("region"), imageId: constant.MESOS_IMAGEID
       html = LeftPanelTpl.mesos data
       @$(".resource-list-ami").html(html)
 

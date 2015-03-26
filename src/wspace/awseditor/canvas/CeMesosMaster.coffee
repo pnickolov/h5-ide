@@ -17,7 +17,7 @@ define [
     ### env:dev:end ###
     type : constant.RESTYPE.MESOSMASTER
 
-    parentType  : [ constant.RESTYPE.AZ, constant.RESTYPE.SUBNET, constant.RESTYPE.ASG, "ExpandedAsg" ]
+    parentType  : [ constant.RESTYPE.AZ, constant.RESTYPE.SUBNET ]
     defaultSize : [ 9, 9 ]
 
     portPosMap : {

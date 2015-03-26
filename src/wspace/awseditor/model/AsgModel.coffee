@@ -202,9 +202,19 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
 
     setLc : ( lc )->
       if @getLc() or not lc then return
+
       if _.isString( lc )
-        lc = @design().component( lc )
+        if lc is constant.RESTYPE.MESOSLC
+          lc =  @newMesosLc()
+        else
+          lc = @design().component( lc )
+
       new LcUsage( @, lc )
+
+    newMesosLc: ->
+      MesosLcModel = Design.modelClassForType constant.RESTYPE.MESOSLC
+      new MesosLcModel parent: @, imageId: constant.MESOS_IMAGEID, createByUser: true
+
 
     getLc : ()-> @connectionTargets("LcUsage")[0]
 

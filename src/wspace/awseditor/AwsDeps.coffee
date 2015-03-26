@@ -30,6 +30,8 @@ define [
   './model/DBOgModel'
   './model/MesosMasterModel'
   './model/MesosSlaveModel'
+  './model/MesosAsgModel'
+  './model/MesosLcModel'
 
 
   "./model/deserializeVisitor/JsonFixer"
@@ -62,5 +64,7 @@ define [
   "./canvas/CeDbSubnetGroup"
   './canvas/CeMesosMaster'
   './canvas/CeMesosSlave'
+  './canvas/CeMesosAsg'
+  './canvas/CeMesosLc'
 
 ], ()->

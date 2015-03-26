@@ -166,7 +166,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       json   = OpsModel.prototype.__defaultJson.call this
 
       amiForEachRegion = [
-        {"region":"#{regionName}","imageId":"ami-9ef278f6"}
+        {"region":"us-east-1","imageId":"ami-9ef278f6"}
         {"region":"us-west-1","imageId":"ami-353f2970"}
         {"region":"eu-west-1","imageId":"ami-1a92266d"}
         {"region":"us-west-2","imageId":"ami-fba3e8cb"}

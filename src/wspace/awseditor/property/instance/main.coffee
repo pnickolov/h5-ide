@@ -27,7 +27,12 @@ define [ "../base/main",
 
         ideEvents : ideEvents
 
-        handleTypes : [ constant.RESTYPE.INSTANCE, 'component_asg_instance' ]
+        handleTypes : [
+            constant.RESTYPE.INSTANCE
+            constant.RESTYPE.MESOSMASTER
+            constant.RESTYPE.MESOSSLAVE
+            'component_asg_instance'
+        ]
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id

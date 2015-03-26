@@ -739,11 +739,9 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       return allResourceArray
 
-    isMesosMaster: () ->
-      states = @get('state')
-      if states and states[0] and states[0].module is 'linux.mesos.master'
-        return true
-      return false
+    isMesosMaster: -> Model.isMesosMaster @attributes
+    isMesosSlave : -> Model.isMesosSlave @attributes
+
 
   }, {
 

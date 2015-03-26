@@ -30,6 +30,27 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       state : null
 
+      framework: ['marathon']
+
+    setMesosState : () ->
+
+      stackName = Design.instance().get('name')
+      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER)
+      masterMap = {}
+      _.each masterModels, (master) ->
+        ipRef = '@{' + master.id + '.PrivateIpAddress}'
+        masterMap[ipRef] = @get('name')
+      @set('state', {
+        id: @get('name'),
+        module: 'linux.mesos.master',
+        parameter: {
+          cluster_name: stackName,
+          server_id: @get('name'),
+          masters_addresses: masterMap,
+          hostname: @get('name'),
+          framework: @get('framework')
+        }
+      })
 
   }, {
 

@@ -19,6 +19,25 @@ define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 
       rdIops : ""
       rdType : 'gp2'
 
+      attributes: {}
+
+    setMesosState : () ->
+
+      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER)
+      masterMap = {}
+      _.each masterModels, (master) ->
+        ipRef = '@{' + master.id + '.PrivateIpAddress}'
+        masterMap[ipRef] = @get('name')
+      @set('state', {
+        id: @get('name'),
+        module: 'linux.mesos.slave',
+        parameter: {
+          masters_addresses: masterMap,
+          attributes: {},
+          slave_ip: '@{self.PrivateIpAddress}'
+        }
+      })
+
     type : constant.RESTYPE.MESOSLC
     newNameTmpl : "slave-lc-"
 
@@ -29,4 +48,3 @@ define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 
   }
 
   Model
-

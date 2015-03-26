@@ -739,9 +739,19 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       return allResourceArray
 
+    isMesosMaster: () ->
+      # Code for testing, Please replace it to real code.
+      @get( 'name' ).indexOf( 'master' ) isnt -1
+
+
   }, {
 
     handleTypes : constant.RESTYPE.INSTANCE
+
+    isMesosMaster: ( data ) ->
+      # Code for testing, Please replace it to real code.
+      data.name.indexOf( 'master' ) isnt -1
+
 
     getInstanceType : ( ami, region )->
       if not ami or not region then return []
@@ -868,7 +878,12 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
           rootDeviceType : layout_data.rootDeviceType
         }
 
-      model = new Model( attr )
+      # Mesos Stack
+      if Design.instance().opsModel().isMesos()
+        modelType = constant.RESTYPE[ if @isMesosMaster( data ) then 'MESOSMASTER' else 'MESOSSLAVE' ]
+        model = new ( Design.modelClassForType modelType)( attr )
+      else #Normal Stack
+        model = new Model( attr )
 
       # Add Keypair
       kpUid = MC.extractID( data.resource.KeyName )

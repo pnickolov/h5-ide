@@ -1,5 +1,13 @@
 
-define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+define [
+  "ComplexResModel"
+  "./InstanceModel"
+  "Design"
+  "constant"
+  "./VolumeModel"
+  "i18n!/nls/lang.js"
+  "CloudResources"
+], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -21,6 +29,13 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
 
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
+
+    constructor: ( attributes, options ) ->
+      if options and !options.createBySubClass
+        if Model.isMesosSlave attributes
+          return new ( Design.modelClassForType constant.RESTYPE.MESOSLC ) attributes, options
+
+      ComplexResModel.apply @, arguments
 
     initialize : ( attr, option )->
       if option and option.createByUser
@@ -218,14 +233,7 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
           rootDeviceType : layout_data.rootDeviceType
         }
 
-      # Mesos Stack
-      if @isMesosSlave()
-        MesosLcClass = Design.modelClassForType constant.RESTYPE.MESOSLC
-        new MesosLcClass( attr )
-
-      # Normal Stack
-      else
-        new Model( attr )
+      new Model( attr )
 
       null
 

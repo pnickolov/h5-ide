@@ -30,7 +30,6 @@ define [
   './model/DBOgModel'
   './model/MesosMasterModel'
   './model/MesosSlaveModel'
-  './model/MesosAsgModel'
   './model/MesosLcModel'
 
 
@@ -62,9 +61,5 @@ define [
   "./canvas/CeSgLine"
   "./canvas/CeDbInstance"
   "./canvas/CeDbSubnetGroup"
-  './canvas/CeMesosMaster'
-  './canvas/CeMesosSlave'
-  './canvas/CeMesosAsg'
-  './canvas/CeMesosLc'
 
 ], ()->

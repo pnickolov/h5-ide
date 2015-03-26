@@ -5,7 +5,8 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
   Model = InstanceModel.extend {
 
-    type        : constant.RESTYPE.MESOSSLAVE
+    type        : constant.RESTYPE.INSTANCE
+    subType     : constant.RESTYPE.MESOSSLAVE
     newNameTmpl : "slave-"
 
     defaults : ()->
@@ -31,6 +32,9 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       state : null
 
       attributes: {}
+
+    constructor: ( attributes, options ) ->
+      InstanceModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
 
     setMesosState : () ->
 

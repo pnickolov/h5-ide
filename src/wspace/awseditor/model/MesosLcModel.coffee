@@ -21,6 +21,9 @@ define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 
 
       attributes: {}
 
+    constructor: ( attributes, options ) ->
+      LcModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
+
     setMesosState : () ->
 
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER)
@@ -38,7 +41,8 @@ define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 
         }
       })
 
-    type : constant.RESTYPE.MESOSLC
+    type : constant.RESTYPE.LC
+    subType: constant.RESTYPE.MESOSLC
     newNameTmpl : "slave-lc-"
 
   }, {

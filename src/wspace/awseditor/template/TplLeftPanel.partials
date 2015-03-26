@@ -182,10 +182,10 @@
 {{else}}{{#if fav}}<p class="blank-slate">{{i18n "TOOLBAR.CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI"}}</p>{{/if}}{{/each}}
 
 <!-- {{mesos}} -->
-<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="MESOSMASTER" data-option='{"imageId":"{{imageId}}"}'>
+<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}"}'>
   Master
 </li>
-<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="MESOSSLAVE" data-option='{"imageId":"{{imageId}}"}'>
+<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}"}'>
   Slave
 </li>
 <li class="resource-item asg" data-type="ASG" data-option='{"lcId": "MESOS.LC"}'><div class="resource-icon-instance">

@@ -1,5 +1,11 @@
 
-define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
+define [
+  "ComplexResModel"
+  "Design"
+  "constant"
+  "i18n!/nls/lang.js"
+  "CloudResources"
+], ( ComplexResModel, Design, constant, lang, CloudResources )->
 
   emptyArray = []
 
@@ -29,6 +35,15 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       cachedAmi : null
 
       state : null
+
+    constructor: ( attributes, options ) ->
+      if options and !options.createBySubClass
+        if Model.isMesosMaster attributes
+          return new ( Design.modelClassForType constant.RESTYPE.MESOSMASTER ) attributes, options
+        if Model.isMesosSlave attributes
+          return new ( Design.modelClassForType constant.RESTYPE.MESOSSLAVE ) attributes, options
+
+      ComplexResModel.apply @, arguments
 
     initialize : ( attr, option )->
 
@@ -882,17 +897,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
           rootDeviceType : layout_data.rootDeviceType
         }
 
-      # Mesos Stack
-      if @isMesosMaster data
-        ModelClass = Design.modelClassForType constant.RESTYPE.MESOSMASTER
-      else if @isMesosSlave data
-        ModelClass = Design.modelClassForType constant.RESTYPE.MESOSSLAVE
-
-      # Normal Stack
-      else
-        ModelClass = Model
-
-      model = new ModelClass( attr )
+      model = new Model( attr )
 
       # Add Keypair
       kpUid = MC.extractID( data.resource.KeyName )

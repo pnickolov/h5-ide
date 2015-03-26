@@ -2,11 +2,22 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view',
-         './template/stack',
-         'i18n!/nls/lang.js', 'constant', 'kp_dropdown' ], ( PropertyView, template, lang, constant, kp ) ->
+define [ '../base/view'
+         './template/stack'
+         './template/mesos_master_stack'
+         './template/mesos_slave_stack'
+         'i18n!/nls/lang.js'
+        'constant'
+        'kp_dropdown'
+], ( PropertyView, TplInstance, TplMesosMaster, TplMesosSlave, lang, constant, kp ) ->
 
     noop = ()-> null
+
+    getTemplate = ( type ) ->
+        switch type
+            when constant.RESTYPE.INSTANCE then TplInstance
+            when constant.RESTYPE.MESOSMASTER then TplMesosMaster
+            when constant.RESTYPE.MESOSSLAVE then TplMesosSlave
 
     InstanceView = PropertyView.extend {
 
@@ -101,9 +112,10 @@ define [ '../base/view',
             null
 
         render : () ->
-
-            @$el.html template @model.attributes
             instanceModel = Design.instance().component( @model.get 'uid' )
+
+            tpl = getTemplate instanceModel.type
+            @$el.html tpl @model.attributes
 
             kpDropdown = new kp(resModel: instanceModel)
             @$('#kp-placeholder').html kpDropdown.render().el

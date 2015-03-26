@@ -180,24 +180,30 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       imageId = (_.findWhere amiForEachRegion, {region: @get("region")}).imageId
       regionName = @get("region")
 
+      keysArray = ["defaultAcl", "rt_0", "vpc", "slave_lc_0", "pub_sg", "subnet_b", "defaultKp", "defaultSg", "mesos_slave", "mesos_base", "mesos_master", "subnet_a", "web_a", "web_b", "sched_a", "sched_b", "master_1", "master_1_eni", "slave_asg_0", "master_0", "master_0_eni", "master_2", "master_2_eni0", "internet_gateway", "expandedAsg"]
+      keys = {}
+      _.each keysArray, (e)->
+        keys[e+"_id"] = MC.guid()
+        return
+
       component = {
-        "8CEA58B4-197E-4A54-B490-8EFC45582DBB": {
+        defaultAcl: {
           "name": "DefaultACL",
           "type": "AWS.VPC.NetworkAcl",
-          "uid": "8CEA58B4-197E-4A54-B490-8EFC45582DBB",
+          "uid": "#{keys.defaultAcl_id}",
           "resource": {
             "AssociationSet": [{
               "NetworkAclAssociationId": "",
-              "SubnetId": "@{FABDEDD1-E3D6-4B58-9963-680A2DD52A72.resource.SubnetId}"
+              "SubnetId": "@{#{keys.web_a_id}.resource.SubnetId}"
             }, {
               "NetworkAclAssociationId": "",
-              "SubnetId": "@{BA041E65-6720-4FD2-AD73-993DC0DF6C79.resource.SubnetId}"
+              "SubnetId": "@{#{keys.web_b_id}.resource.SubnetId}"
             }, {
               "NetworkAclAssociationId": "",
-              "SubnetId": "@{6BE3D1A2-1233-4A86-AC11-B944B9E34CBF.resource.SubnetId}"
+              "SubnetId": "@{#{keys.sched_a_id}.resource.SubnetId}"
             }, {
               "NetworkAclAssociationId": "",
-              "SubnetId": "@{827F9D8A-F900-44C8-833E-D20628BF8DF5.resource.SubnetId}"
+              "SubnetId": "@{#{keys.sched_b_id}.resource.SubnetId}"
             }],
             "Default": true,
             "EntrySet": [{
@@ -258,22 +264,22 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
               }
             }],
             "NetworkAclId": "",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "Tags": [{
               "Key": "visops_default",
               "Value": "true"
             }]
           }
         },
-        "520A015A-0902-4E85-8F49-F8F86665C360": {
+        rt_0: {
           "name": "RT-0",
           "description": "",
           "type": "AWS.VPC.RouteTable",
-          "uid": "520A015A-0902-4E85-8F49-F8F86665C360",
+          "uid": "#{keys.rt_0_id}",
           "resource": {
             "PropagatingVgwSet": [],
             "RouteTableId": "",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "AssociationSet": [{
               "Main": "true",
               "RouteTableAssociationId": "",
@@ -290,7 +296,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
               "Origin": "",
               "InstanceId": "",
               "NetworkInterfaceId": "",
-              "GatewayId": "@{99392B0D-12F0-47ED-958F-6E0F9D0B5C28.resource.InternetGatewayId}"
+              "GatewayId": "@{#{keys.internet_gateway_id}.resource.InternetGatewayId}"
             }],
             "Tags": [{
               "Key": "visops_default",
@@ -298,11 +304,11 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }]
           }
         },
-        "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E": {
+        vpc: {
           "name": "mesos",
           "description": "",
           "type": "AWS.VPC.VPC",
-          "uid": "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E",
+          "uid": "#{keys.vpc_id}",
           "resource": {
             "EnableDnsSupport": true,
             "InstanceTenancy": "default",
@@ -312,9 +318,9 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "CidrBlock": "10.0.0.0/16"
           }
         },
-        "47C1B56E-E96C-418B-8F38-5BCEEE95BC18": {
+        slave_lc_0: {
           "type": "AWS.AutoScaling.LaunchConfiguration",
-          "uid": "47C1B56E-E96C-418B-8F38-5BCEEE95BC18",
+          "uid": "#{keys.slave_lc_0_id}",
           "name": "slave-lc-0",
           "description": "",
           "state": [{
@@ -378,7 +384,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "127.0.0.1 localhost\n\n@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress} master1\n@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress} master2\n@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
+              "content": "127.0.0.1 localhost\n\n@{#{keys.master_0_id}.PrivateIpAddress} master1\n@{#{keys.master_1_id}.PrivateIpAddress} master2\n@{#{keys.master_2_id}.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
               "path": "/etc/hosts"
             },
             "id": "state-8ABAE0D0-DAFD-4706-B444-5E5EF82130AB",
@@ -429,7 +435,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "zk://@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2181,@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress}:2181,@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress}:2181/mesos",
+              "content": "zk://@{#{keys.master_0_id}.PrivateIpAddress}:2181,@{#{keys.master_1_id}.PrivateIpAddress}:2181,@{#{keys.master_2_id}.PrivateIpAddress}:2181/mesos",
               "path": "/etc/mesos/zk"
             },
             "id": "state-8A5CB16A-F824-40C7-8104-F4CDDA1594CE",
@@ -512,8 +518,8 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "UserData": "",
             "LaunchConfigurationARN": "",
             "InstanceMonitoring": false,
-            "ImageId": imageId,
-            "KeyName": "@{9A09C5A2-4D66-4E2E-91AB-4F3F4E129F3E.resource.KeyName}",
+            "ImageId": "#{imageId}",
+            "KeyName": "@{#{keys.defaultKp_id}.resource.KeyName}",
             "EbsOptimized": false,
             "BlockDeviceMapping": [{
               "DeviceName": "/dev/sda1",
@@ -523,22 +529,22 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
                 "VolumeType": "gp2"
               }
             }],
-            "SecurityGroups": ["@{AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8.resource.GroupId}", "@{62A273C5-19E8-4635-8622-511E121A7340.resource.GroupId}", "@{3D3060F5-CFF8-458D-B081-C424C3063854.resource.GroupId}", "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}"],
+            "SecurityGroups": ["@{#{keys.defaultSg_id}.resource.GroupId}", "@{#{keys.pub_sg_id}.resource.GroupId}", "@{#{keys.mesos_slave_id}.resource.GroupId}", "@{#{keys.mesos_base_id}.resource.GroupId}"],
             "LaunchConfigurationName": "launch-config-0",
             "InstanceType": "t2.micro",
             "AssociatePublicIpAddress": true
           }
         },
-        "62A273C5-19E8-4635-8622-511E121A7340": {
+        pub_sg: {
           "name": "pub-sg",
           "type": "AWS.EC2.SecurityGroup",
-          "uid": "62A273C5-19E8-4635-8622-511E121A7340",
+          "uid": "#{keys.pub_sg_id}",
           "resource": {
             "Default": false,
             "GroupId": "",
             "GroupName": "pub-sg",
             "GroupDescription": "Custom Security Group",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "IpPermissions": [{
               "FromPort": "80",
               "ToPort": "80",
@@ -557,8 +563,8 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }]
           }
         },
-        "65084675-8D1A-49E0-A018-DC02479857FE": {
-          "uid": "65084675-8D1A-49E0-A018-DC02479857FE",
+        subnet_b: {
+          "uid": "#{keys.subnet_b_id}",
           "name": "#{regionName}b",
           "type": "AWS.EC2.AvailabilityZone",
           "resource": {
@@ -566,25 +572,25 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "RegionName": "#{regionName}"
           }
         },
-        "9A09C5A2-4D66-4E2E-91AB-4F3F4E129F3E": {
+        defaultKp: {
           "name": "DefaultKP",
           "type": "AWS.EC2.KeyPair",
-          "uid": "9A09C5A2-4D66-4E2E-91AB-4F3F4E129F3E",
+          "uid": "#{keys.defaultKp_id}",
           "resource": {
             "KeyFingerprint": "",
             "KeyName": "DefaultKP"
           }
         },
-        "AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8": {
+        defaultSg: {
           "name": "DefaultSG",
           "type": "AWS.EC2.SecurityGroup",
-          "uid": "AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8",
+          "uid": "#{keys.defaultSg_id}",
           "resource": {
             "Default": true,
             "GroupId": "",
             "GroupName": "DefaultSG",
             "GroupDescription": "default VPC security group",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "IpPermissions": [{
               "FromPort": "22",
               "ToPort": "22",
@@ -603,25 +609,25 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }]
           }
         },
-        "3D3060F5-CFF8-458D-B081-C424C3063854": {
+        mesos_slave: {
           "name": "mesos-slave",
           "type": "AWS.EC2.SecurityGroup",
-          "uid": "3D3060F5-CFF8-458D-B081-C424C3063854",
+          "uid": "#{keys.mesos_slave_id}",
           "resource": {
             "Default": false,
             "GroupId": "",
             "GroupName": "mesos-slave",
             "GroupDescription": "Custom Security Group",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "IpPermissions": [{
               "FromPort": "0",
               "ToPort": "65535",
-              "IpRanges": "@{3D3060F5-CFF8-458D-B081-C424C3063854.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_slave_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "31000",
               "ToPort": "32000",
-              "IpRanges": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_base_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "5051",
@@ -632,7 +638,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "IpPermissionsEgress": [{
               "FromPort": "0",
               "ToPort": "65535",
-              "IpRanges": "@{3D3060F5-CFF8-458D-B081-C424C3063854.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_slave_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }],
             "Tags": [{
@@ -641,41 +647,41 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }]
           }
         },
-        "831F4E97-2B70-4947-803C-AB64AE840C2E": {
+        mesos_base: {
           "name": "mesos-base",
           "type": "AWS.EC2.SecurityGroup",
-          "uid": "831F4E97-2B70-4947-803C-AB64AE840C2E",
+          "uid": "#{keys.mesos_base_id}",
           "resource": {
             "Default": false,
             "GroupId": "",
             "GroupName": "mesos-base",
             "GroupDescription": "Custom Security Group",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "IpPermissions": [],
             "IpPermissionsEgress": [{
               "FromPort": "5050",
               "ToPort": "5050",
-              "IpRanges": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_master_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "8080",
               "ToPort": "8080",
-              "IpRanges": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_master_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "2181",
               "ToPort": "2181",
-              "IpRanges": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_master_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "5051",
               "ToPort": "5051",
-              "IpRanges": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_master_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "31000",
               "ToPort": "32000",
-              "IpRanges": "@{3D3060F5-CFF8-458D-B081-C424C3063854.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_slave_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }],
             "Tags": [{
@@ -684,16 +690,16 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }]
           }
         },
-        "445C1E2B-4DFD-4388-8BB7-79ED1DE9745C": {
+        mesos_master: {
           "name": "mesos-master",
           "type": "AWS.EC2.SecurityGroup",
-          "uid": "445C1E2B-4DFD-4388-8BB7-79ED1DE9745C",
+          "uid": "#{keys.mesos_master_id}",
           "resource": {
             "Default": false,
             "GroupId": "",
             "GroupName": "mesos-master",
             "GroupDescription": "Mesos/Marathon master and Zookeeper",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "IpPermissions": [{
               "FromPort": "5050",
               "ToPort": "5050",
@@ -707,33 +713,33 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }, {
               "FromPort": "2888",
               "ToPort": "3888",
-              "IpRanges": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_master_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "5050",
               "ToPort": "5050",
-              "IpRanges": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_base_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "8080",
               "ToPort": "8080",
-              "IpRanges": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_base_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "2181",
               "ToPort": "2181",
-              "IpRanges": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_base_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }, {
               "FromPort": "5051",
               "ToPort": "5051",
-              "IpRanges": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_base_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }],
             "IpPermissionsEgress": [{
               "FromPort": "2888",
               "ToPort": "3888",
-              "IpRanges": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}",
+              "IpRanges": "@{#{keys.mesos_master_id}.resource.GroupId}",
               "IpProtocol": "tcp"
             }],
             "Tags": [{
@@ -742,8 +748,8 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }]
           }
         },
-        "6CEF96E2-E2F0-42E5-8601-02E6DDE5C577": {
-          "uid": "6CEF96E2-E2F0-42E5-8601-02E6DDE5C577",
+        subnet_a: {
+          "uid": "#{keys.subnet_a_id}",
           "name": "#{regionName}a",
           "type": "AWS.EC2.AvailabilityZone",
           "resource": {
@@ -751,62 +757,62 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "RegionName": "#{regionName}"
           }
         },
-        "FABDEDD1-E3D6-4B58-9963-680A2DD52A72": {
+        web_a: {
           "name": "web-a",
           "description": "",
           "type": "AWS.VPC.Subnet",
-          "uid": "FABDEDD1-E3D6-4B58-9963-680A2DD52A72",
+          "uid": "#{keys.web_a_id}",
           "resource": {
-            "AvailabilityZone": "@{6CEF96E2-E2F0-42E5-8601-02E6DDE5C577.resource.ZoneName}",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "AvailabilityZone": "@{#{keys.subnet_a_id}.resource.ZoneName}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "SubnetId": "",
             "CidrBlock": "10.0.0.0/24"
           }
         },
-        "BA041E65-6720-4FD2-AD73-993DC0DF6C79": {
+        web_b: {
           "name": "web-b",
           "description": "",
           "type": "AWS.VPC.Subnet",
-          "uid": "BA041E65-6720-4FD2-AD73-993DC0DF6C79",
+          "uid": "#{keys.web_b_id}",
           "resource": {
-            "AvailabilityZone": "@{65084675-8D1A-49E0-A018-DC02479857FE.resource.ZoneName}",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "AvailabilityZone": "@{#{keys.subnet_b_id}.resource.ZoneName}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "SubnetId": "",
             "CidrBlock": "10.0.1.0/24"
           }
         },
-        "6BE3D1A2-1233-4A86-AC11-B944B9E34CBF": {
+        sched_a: {
           "name": "sched-a",
           "description": "",
           "type": "AWS.VPC.Subnet",
-          "uid": "6BE3D1A2-1233-4A86-AC11-B944B9E34CBF",
+          "uid": "#{keys.sched_a_id}",
           "resource": {
-            "AvailabilityZone": "@{6CEF96E2-E2F0-42E5-8601-02E6DDE5C577.resource.ZoneName}",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "AvailabilityZone": "@{#{keys.subnet_a_id}.resource.ZoneName}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "SubnetId": "",
             "CidrBlock": "10.0.2.0/24"
           }
         },
-        "827F9D8A-F900-44C8-833E-D20628BF8DF5": {
+        sched_b: {
           "name": "sched-b",
           "description": "",
           "type": "AWS.VPC.Subnet",
-          "uid": "827F9D8A-F900-44C8-833E-D20628BF8DF5",
+          "uid": "#{keys.sched_b_id}",
           "resource": {
-            "AvailabilityZone": "@{65084675-8D1A-49E0-A018-DC02479857FE.resource.ZoneName}",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
+            "AvailabilityZone": "@{#{keys.subnet_b_id}.resource.ZoneName}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
             "SubnetId": "",
             "CidrBlock": "10.0.3.0/24"
           }
         },
-        "2286840C-58C1-4A0A-B592-20B62381D448": {
+        master_1: {
           "type": "AWS.EC2.Instance",
-          "uid": "2286840C-58C1-4A0A-B592-20B62381D448",
+          "uid": "#{keys.master_1_id}",
           "name": "master-1",
           "description": "",
           "index": 0,
           "number": 1,
-          "serverGroupUid": "2286840C-58C1-4A0A-B592-20B62381D448",
+          "serverGroupUid": "#{keys.master_1_id}",
           "serverGroupName": "master-1",
           "state": [{
             "parameter": {
@@ -860,7 +866,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.file"
           }, {
             "parameter": {
-              "content": "tickTime=2000\ninitLimit=10\nsyncLimit=5\ndataDir=/var/lib/zookeeper\nclientPort=2181\nserver.1=@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2888:3888\nserver.2=@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2888:3888\nserver.3=@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress}:2888:3888",
+              "content": "tickTime=2000\ninitLimit=10\nsyncLimit=5\ndataDir=/var/lib/zookeeper\nclientPort=2181\nserver.1=@{#{keys.master_0_id}.PrivateIpAddress}:2888:3888\nserver.2=@{#{keys.master_0_id}.PrivateIpAddress}:2888:3888\nserver.3=@{#{keys.master_2_id}.PrivateIpAddress}:2888:3888",
               "path": "/etc/zookeeper/conf/zoo.cfg"
             },
             "id": "state-AA502CCE-FE44-46DA-AE1D-6C7BF52D1067",
@@ -873,7 +879,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "zk://@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2181,@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress}:2181,@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress}:2181/mesos",
+              "content": "zk://@{#{keys.master_0_id}.PrivateIpAddress}:2181,@{#{keys.master_1_id}.PrivateIpAddress}:2181,@{#{keys.master_2_id}.PrivateIpAddress}:2181/mesos",
               "path": "/etc/mesos/zk"
             },
             "id": "state-3D9B852A-D035-454B-93F5-1D49C3DCF40A",
@@ -948,7 +954,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "127.0.0.1 localhost\n\n@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress} master1\n@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress} master2\n@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
+              "content": "127.0.0.1 localhost\n\n@{#{keys.master_0_id}.PrivateIpAddress} master1\n@{#{keys.master_1_id}.PrivateIpAddress} master2\n@{#{keys.master_2_id}.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
               "path": "/etc/hosts"
             },
             "id": "state-0D305423-C66B-4696-89C0-34BF97F9C630",
@@ -1034,14 +1040,14 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }],
             "Placement": {
               "Tenancy": "",
-              "AvailabilityZone": "@{6CEF96E2-E2F0-42E5-8601-02E6DDE5C577.resource.ZoneName}"
+              "AvailabilityZone": "@{#{keys.subnet_a_id}.resource.ZoneName}"
             },
             "InstanceId": "",
-            "ImageId": imageId,
-            "KeyName": "@{9A09C5A2-4D66-4E2E-91AB-4F3F4E129F3E.resource.KeyName}",
+            "ImageId": "#{imageId}",
+            "KeyName": "@{#{keys.defaultKp_id}.resource.KeyName}",
             "EbsOptimized": false,
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
-            "SubnetId": "@{6BE3D1A2-1233-4A86-AC11-B944B9E34CBF.resource.SubnetId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
+            "SubnetId": "@{#{keys.sched_a_id}.resource.SubnetId}",
             "Monitoring": "disabled",
             "NetworkInterface": [],
             "InstanceType": "t2.micro",
@@ -1051,21 +1057,21 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "SecurityGroupId": []
           }
         },
-        "D0CE2EA5-E57A-4778-A0EA-BC3F76DC85F5": {
+        master_1_eni: {
           "index": 0,
-          "uid": "D0CE2EA5-E57A-4778-A0EA-BC3F76DC85F5",
+          "uid": "#{keys.master_1_eni_id}",
           "type": "AWS.VPC.NetworkInterface",
           "name": "master-1-eni0",
-          "serverGroupUid": "D0CE2EA5-E57A-4778-A0EA-BC3F76DC85F5",
+          "serverGroupUid": "#{keys.master_1_eni_id}",
           "serverGroupName": "eni0",
           "number": 1,
           "resource": {
             "SourceDestCheck": true,
             "Description": "",
             "NetworkInterfaceId": "",
-            "AvailabilityZone": "@{6CEF96E2-E2F0-42E5-8601-02E6DDE5C577.resource.ZoneName}",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
-            "SubnetId": "@{6BE3D1A2-1233-4A86-AC11-B944B9E34CBF.resource.SubnetId}",
+            "AvailabilityZone": "@{#{keys.subnet_a_id}.resource.ZoneName}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
+            "SubnetId": "@{#{keys.sched_a_id}.resource.SubnetId}",
             "AssociatePublicIpAddress": true,
             "PrivateIpAddressSet": [{
               "PrivateIpAddress": "10.0.2.5",
@@ -1073,30 +1079,30 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
               "Primary": true
             }],
             "GroupSet": [{
-              "GroupName": "@{AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8.resource.GroupName}",
-              "GroupId": "@{AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8.resource.GroupId}"
+              "GroupName": "@{#{keys.defaultSg_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.defaultSg_id}.resource.GroupId}"
             }, {
-              "GroupName": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupName}",
-              "GroupId": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}"
+              "GroupName": "@{#{keys.mesos_master_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.mesos_master_id}.resource.GroupId}"
             }, {
-              "GroupName": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupName}",
-              "GroupId": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}"
+              "GroupName": "@{#{keys.mesos_base_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.mesos_base_id}.resource.GroupId}"
             }],
             "Attachment": {
-              "InstanceId": "@{2286840C-58C1-4A0A-B592-20B62381D448.resource.InstanceId}",
+              "InstanceId": "@{#{keys.master_1_id}.resource.InstanceId}",
               "DeviceIndex": "0",
               "AttachmentId": ""
             }
           }
         },
-        "60616F45-DEE6-4567-95E4-2DE1F23C9CD0": {
-          "uid": "60616F45-DEE6-4567-95E4-2DE1F23C9CD0",
+        slave_asg_0: {
+          "uid": "#{keys.slave_asg_0_id}",
           "name": "slave-asg-0",
           "description": "",
           "type": "AWS.AutoScaling.Group",
           "resource": {
-            "AvailabilityZones": ["@{6CEF96E2-E2F0-42E5-8601-02E6DDE5C577.resource.ZoneName}", "@{65084675-8D1A-49E0-A018-DC02479857FE.resource.ZoneName}"],
-            "VPCZoneIdentifier": "@{FABDEDD1-E3D6-4B58-9963-680A2DD52A72.resource.SubnetId} , @{BA041E65-6720-4FD2-AD73-993DC0DF6C79.resource.SubnetId}",
+            "AvailabilityZones": ["@{#{keys.subnet_a_id}.resource.ZoneName}", "@{#{keys.subnet_b_id}.resource.ZoneName}"],
+            "VPCZoneIdentifier": "@{#{keys.web_a_id}.resource.SubnetId} , @{#{keys.web_b_id}.resource.SubnetId}",
             "LoadBalancerNames": [],
             "AutoScalingGroupARN": "",
             "DefaultCooldown": "300",
@@ -1107,17 +1113,17 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "TerminationPolicies": ["Default"],
             "AutoScalingGroupName": "asg0",
             "DesiredCapacity": "1",
-            "LaunchConfigurationName": "@{47C1B56E-E96C-418B-8F38-5BCEEE95BC18.resource.LaunchConfigurationName}"
+            "LaunchConfigurationName": "@{#{keys.slave_lc_0_id}.resource.LaunchConfigurationName}"
           }
         },
-        "5B284722-5E1B-4E76-852C-D71135A7D276": {
+        master_0: {
           "type": "AWS.EC2.Instance",
-          "uid": "5B284722-5E1B-4E76-852C-D71135A7D276",
+          "uid": "#{keys.master_0_id}",
           "name": "master-0",
           "description": "",
           "index": 0,
           "number": 1,
-          "serverGroupUid": "5B284722-5E1B-4E76-852C-D71135A7D276",
+          "serverGroupUid": "#{keys.master_0_id}",
           "serverGroupName": "master-0",
           "state": [{
             "parameter": {
@@ -1171,7 +1177,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.file"
           }, {
             "parameter": {
-              "content": "tickTime=2000\ninitLimit=10\nsyncLimit=5\ndataDir=/var/lib/zookeeper\nclientPort=2181\nserver.1=@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2888:3888\nserver.2=@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2888:3888\nserver.3=@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress}:2888:3888",
+              "content": "tickTime=2000\ninitLimit=10\nsyncLimit=5\ndataDir=/var/lib/zookeeper\nclientPort=2181\nserver.1=@{#{keys.master_0_id}.PrivateIpAddress}:2888:3888\nserver.2=@{#{keys.master_0_id}.PrivateIpAddress}:2888:3888\nserver.3=@{#{keys.master_2_id}.PrivateIpAddress}:2888:3888",
               "path": "/etc/zookeeper/conf/zoo.cfg"
             },
             "id": "state-58E114EE-9DEF-41B6-AA34-7F5D9DC79853",
@@ -1184,7 +1190,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "zk://@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2181,@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress}:2181,@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress}:2181/mesos",
+              "content": "zk://@{#{keys.master_0_id}.PrivateIpAddress}:2181,@{#{keys.master_1_id}.PrivateIpAddress}:2181,@{#{keys.master_2_id}.PrivateIpAddress}:2181/mesos",
               "path": "/etc/mesos/zk"
             },
             "id": "state-B507A877-B56A-4E4B-96F8-7ED6A5428514",
@@ -1259,7 +1265,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "127.0.0.1 localhost\n\n@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress} master1\n@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress} master2\n@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
+              "content": "127.0.0.1 localhost\n\n@{#{keys.master_0_id}.PrivateIpAddress} master1\n@{#{keys.master_1_id}.PrivateIpAddress} master2\n@{#{keys.master_2_id}.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
               "path": "/etc/hosts"
             },
             "id": "state-4A2A2A0B-81FD-41DF-8242-5749B66DE673",
@@ -1345,14 +1351,14 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }],
             "Placement": {
               "Tenancy": "",
-              "AvailabilityZone": "@{6CEF96E2-E2F0-42E5-8601-02E6DDE5C577.resource.ZoneName}"
+              "AvailabilityZone": "@{#{keys.subnet_a_id}.resource.ZoneName}"
             },
             "InstanceId": "",
-            "ImageId": imageId,
-            "KeyName": "@{9A09C5A2-4D66-4E2E-91AB-4F3F4E129F3E.resource.KeyName}",
+            "ImageId": "#{imageId}",
+            "KeyName": "@{#{keys.defaultKp_id}.resource.KeyName}",
             "EbsOptimized": false,
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
-            "SubnetId": "@{6BE3D1A2-1233-4A86-AC11-B944B9E34CBF.resource.SubnetId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
+            "SubnetId": "@{#{keys.sched_a_id}.resource.SubnetId}",
             "Monitoring": "disabled",
             "NetworkInterface": [],
             "InstanceType": "t2.micro",
@@ -1362,21 +1368,21 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "SecurityGroupId": []
           }
         },
-        "CB5785F7-ECBD-41AA-9F66-308DFA5AEEB1": {
+        master_0_eni: {
           "index": 0,
-          "uid": "CB5785F7-ECBD-41AA-9F66-308DFA5AEEB1",
+          "uid": "#{keys.master_0_eni_id}",
           "type": "AWS.VPC.NetworkInterface",
           "name": "master-0-eni0",
-          "serverGroupUid": "CB5785F7-ECBD-41AA-9F66-308DFA5AEEB1",
+          "serverGroupUid": "#{keys.master_0_eni_id}",
           "serverGroupName": "eni0",
           "number": 1,
           "resource": {
             "SourceDestCheck": true,
             "Description": "",
             "NetworkInterfaceId": "",
-            "AvailabilityZone": "@{6CEF96E2-E2F0-42E5-8601-02E6DDE5C577.resource.ZoneName}",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
-            "SubnetId": "@{6BE3D1A2-1233-4A86-AC11-B944B9E34CBF.resource.SubnetId}",
+            "AvailabilityZone": "@{#{keys.subnet_a_id}.resource.ZoneName}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
+            "SubnetId": "@{#{keys.sched_a_id}.resource.SubnetId}",
             "AssociatePublicIpAddress": true,
             "PrivateIpAddressSet": [{
               "PrivateIpAddress": "10.0.2.4",
@@ -1384,30 +1390,30 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
               "Primary": true
             }],
             "GroupSet": [{
-              "GroupName": "@{AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8.resource.GroupName}",
-              "GroupId": "@{AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8.resource.GroupId}"
+              "GroupName": "@{#{keys.defaultSg_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.defaultSg_id}.resource.GroupId}"
             }, {
-              "GroupName": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupName}",
-              "GroupId": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}"
+              "GroupName": "@{#{keys.mesos_master_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.mesos_master_id}.resource.GroupId}"
             }, {
-              "GroupName": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupName}",
-              "GroupId": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}"
+              "GroupName": "@{#{keys.mesos_base_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.mesos_base_id}.resource.GroupId}"
             }],
             "Attachment": {
-              "InstanceId": "@{5B284722-5E1B-4E76-852C-D71135A7D276.resource.InstanceId}",
+              "InstanceId": "@{#{keys.master_0_id}.resource.InstanceId}",
               "DeviceIndex": "0",
               "AttachmentId": ""
             }
           }
         },
-        "EE5A9E75-7423-49B8-9A33-CAC48C84C1EE": {
+        master_2: {
           "type": "AWS.EC2.Instance",
-          "uid": "EE5A9E75-7423-49B8-9A33-CAC48C84C1EE",
+          "uid": "#{keys.master_2_id}",
           "name": "master-2",
           "description": "",
           "index": 0,
           "number": 1,
-          "serverGroupUid": "EE5A9E75-7423-49B8-9A33-CAC48C84C1EE",
+          "serverGroupUid": "#{keys.master_2_id}",
           "serverGroupName": "master-2",
           "state": [{
             "parameter": {
@@ -1461,7 +1467,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.file"
           }, {
             "parameter": {
-              "content": "tickTime=2000\ninitLimit=10\nsyncLimit=5\ndataDir=/var/lib/zookeeper\nclientPort=2181\nserver.1=@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2888:3888\nserver.2=@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2888:3888\nserver.3=@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress}:2888:3888",
+              "content": "tickTime=2000\ninitLimit=10\nsyncLimit=5\ndataDir=/var/lib/zookeeper\nclientPort=2181\nserver.1=@{#{keys.master_0_id}.PrivateIpAddress}:2888:3888\nserver.2=@{#{keys.master_0_id}.PrivateIpAddress}:2888:3888\nserver.3=@{#{keys.master_2_id}.PrivateIpAddress}:2888:3888",
               "path": "/etc/zookeeper/conf/zoo.cfg"
             },
             "id": "state-E75D8CC4-21EF-4538-B534-A708B8C1F293",
@@ -1474,7 +1480,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "zk://@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress}:2181,@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress}:2181,@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress}:2181/mesos",
+              "content": "zk://@{#{keys.master_0_id}.PrivateIpAddress}:2181,@{#{keys.master_1_id}.PrivateIpAddress}:2181,@{#{keys.master_2_id}.PrivateIpAddress}:2181/mesos",
               "path": "/etc/mesos/zk"
             },
             "id": "state-33FEC2D5-930F-410E-B55E-4084319AA28C",
@@ -1549,7 +1555,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "meta.comment"
           }, {
             "parameter": {
-              "content": "127.0.0.1 localhost\n\n@{5B284722-5E1B-4E76-852C-D71135A7D276.PrivateIpAddress} master1\n@{2286840C-58C1-4A0A-B592-20B62381D448.PrivateIpAddress} master2\n@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
+              "content": "127.0.0.1 localhost\n\n@{#{keys.master_0_id}.PrivateIpAddress} master1\n@{#{keys.master_1_id}.PrivateIpAddress} master2\n@{#{keys.master_2_id}.PrivateIpAddress} master3\n\n# The following lines are desirable for IPv6 capable hosts\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters\nff02::3 ip6-allhosts\n",
               "path": "/etc/hosts"
             },
             "id": "state-E612EDB9-C80A-453E-9276-95E24B37F93C",
@@ -1635,14 +1641,14 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             }],
             "Placement": {
               "Tenancy": "",
-              "AvailabilityZone": "@{65084675-8D1A-49E0-A018-DC02479857FE.resource.ZoneName}"
+              "AvailabilityZone": "@{#{keys.subnet_b_id}.resource.ZoneName}"
             },
             "InstanceId": "",
-            "ImageId": imageId,
-            "KeyName": "@{9A09C5A2-4D66-4E2E-91AB-4F3F4E129F3E.resource.KeyName}",
+            "ImageId": "#{imageId}",
+            "KeyName": "@{#{keys.defaultKp_id}.resource.KeyName}",
             "EbsOptimized": false,
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
-            "SubnetId": "@{827F9D8A-F900-44C8-833E-D20628BF8DF5.resource.SubnetId}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
+            "SubnetId": "@{#{keys.sched_b_id}.resource.SubnetId}",
             "Monitoring": "disabled",
             "NetworkInterface": [],
             "InstanceType": "t2.micro",
@@ -1652,21 +1658,21 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "SecurityGroupId": []
           }
         },
-        "05271095-A8CD-4751-AB2A-AB0DF2561E84": {
+        master_2_eni0: {
           "index": 0,
-          "uid": "05271095-A8CD-4751-AB2A-AB0DF2561E84",
+          "uid": "#{keys.master_2_eni0_id}",
           "type": "AWS.VPC.NetworkInterface",
           "name": "master-2-eni0",
-          "serverGroupUid": "05271095-A8CD-4751-AB2A-AB0DF2561E84",
+          "serverGroupUid": "#{keys.master_2_eni0_id}",
           "serverGroupName": "eni0",
           "number": 1,
           "resource": {
             "SourceDestCheck": true,
             "Description": "",
             "NetworkInterfaceId": "",
-            "AvailabilityZone": "@{65084675-8D1A-49E0-A018-DC02479857FE.resource.ZoneName}",
-            "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}",
-            "SubnetId": "@{827F9D8A-F900-44C8-833E-D20628BF8DF5.resource.SubnetId}",
+            "AvailabilityZone": "@{#{keys.subnet_b_id}.resource.ZoneName}",
+            "VpcId": "@{#{keys.vpc_id}.resource.VpcId}",
+            "SubnetId": "@{#{keys.sched_b_id}.resource.SubnetId}",
             "AssociatePublicIpAddress": true,
             "PrivateIpAddressSet": [{
               "PrivateIpAddress": "10.0.3.4",
@@ -1674,157 +1680,167 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
               "Primary": true
             }],
             "GroupSet": [{
-              "GroupName": "@{AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8.resource.GroupName}",
-              "GroupId": "@{AB8625F1-1CFE-4F14-9880-CE4E20F0ADE8.resource.GroupId}"
+              "GroupName": "@{#{keys.defaultSg_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.defaultSg_id}.resource.GroupId}"
             }, {
-              "GroupName": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupName}",
-              "GroupId": "@{445C1E2B-4DFD-4388-8BB7-79ED1DE9745C.resource.GroupId}"
+              "GroupName": "@{#{keys.mesos_master_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.mesos_master_id}.resource.GroupId}"
             }, {
-              "GroupName": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupName}",
-              "GroupId": "@{831F4E97-2B70-4947-803C-AB64AE840C2E.resource.GroupId}"
+              "GroupName": "@{#{keys.mesos_base_id}.resource.GroupName}",
+              "GroupId": "@{#{keys.mesos_base_id}.resource.GroupId}"
             }],
             "Attachment": {
-              "InstanceId": "@{EE5A9E75-7423-49B8-9A33-CAC48C84C1EE.resource.InstanceId}",
+              "InstanceId": "@{#{keys.master_2_id}.resource.InstanceId}",
               "DeviceIndex": "0",
               "AttachmentId": ""
             }
           }
         },
-        "99392B0D-12F0-47ED-958F-6E0F9D0B5C28": {
+        internet_gateway: {
           "name": "Internet-gateway",
           "type": "AWS.VPC.InternetGateway",
-          "uid": "99392B0D-12F0-47ED-958F-6E0F9D0B5C28",
+          "uid": "#{keys.internet_gateway_id}",
           "resource": {
             "InternetGatewayId": "",
             "AttachmentSet": [{
-              "VpcId": "@{2D221BC2-A50B-42CA-97CE-CBF5E7C6668E.resource.VpcId}"
+              "VpcId": "@{#{keys.vpc_id}.resource.VpcId}"
             }]
           }
         }
-      };
+      }
+
       layout = {
-        "520A015A-0902-4E85-8F49-F8F86665C360": {
+        rt_0: {
           "coordinate": [
             76, 8],
-          "uid": "520A015A-0902-4E85-8F49-F8F86665C360",
-          "groupUId": "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E"
+          "uid": "#{keys.rt_0_id}",
+          "groupUId": "#{keys.vpc_id}"
         },
-        "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E": {
+        vpc: {
           "coordinate": [
             8, 7],
-          "uid": "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E",
+          "uid": "#{keys.vpc_id}",
           "size": [
             83, 64]
         },
-        "47C1B56E-E96C-418B-8F38-5BCEEE95BC18": {
+        slave_lc_0: {
           "coordinate": [
             0, 0],
-          "uid": "47C1B56E-E96C-418B-8F38-5BCEEE95BC18",
+          "uid": "#{keys.slave_lc_0_id}",
           "osType": "ubuntu",
           "architecture": "x86_64",
           "rootDeviceType": "ebs"
         },
-        "65084675-8D1A-49E0-A018-DC02479857FE": {
+        subnet_b: {
           "coordinate": [
             14, 43],
-          "uid": "65084675-8D1A-49E0-A018-DC02479857FE",
-          "groupUId": "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E",
+          "uid": "#{keys.subnet_b_id}",
+          "groupUId": "#{keys.vpc_id}",
           "size": [
             55, 24]
         },
-        "6CEF96E2-E2F0-42E5-8601-02E6DDE5C577": {
+        subnet_a: {
           "coordinate": [
             14, 14],
-          "uid": "6CEF96E2-E2F0-42E5-8601-02E6DDE5C577",
-          "groupUId": "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E",
+          "uid": "#{keys.subnet_a_id}",
+          "groupUId": "#{keys.vpc_id}",
           "size": [
             55, 25]
         },
-        "FABDEDD1-E3D6-4B58-9963-680A2DD52A72": {
+        web_a: {
           "coordinate": [
             47, 17],
-          "uid": "FABDEDD1-E3D6-4B58-9963-680A2DD52A72",
-          "groupUId": "6CEF96E2-E2F0-42E5-8601-02E6DDE5C577",
+          "uid": "#{keys.web_a_id}",
+          "groupUId": "#{keys.subnet_a_id}",
           "size": [
             19, 19]
         },
-        "BA041E65-6720-4FD2-AD73-993DC0DF6C79": {
+        web_b: {
           "coordinate": [
             47, 46],
-          "uid": "BA041E65-6720-4FD2-AD73-993DC0DF6C79",
-          "groupUId": "65084675-8D1A-49E0-A018-DC02479857FE",
+          "uid": "#{keys.web_b_id}",
+          "groupUId": "#{keys.subnet_b_id}",
           "size": [
             19, 18]
         },
-        "6BE3D1A2-1233-4A86-AC11-B944B9E34CBF": {
+        sched_a: {
           "coordinate": [
             17, 17],
-          "uid": "6BE3D1A2-1233-4A86-AC11-B944B9E34CBF",
-          "groupUId": "6CEF96E2-E2F0-42E5-8601-02E6DDE5C577",
+          "uid": "#{keys.sched_a_id}",
+          "groupUId": "#{keys.subnet_a_id}",
           "size": [
             27, 19]
         },
-        "827F9D8A-F900-44C8-833E-D20628BF8DF5": {
+        sched_b: {
           "coordinate": [
             17, 46],
-          "uid": "827F9D8A-F900-44C8-833E-D20628BF8DF5",
-          "groupUId": "65084675-8D1A-49E0-A018-DC02479857FE",
+          "uid": "#{keys.sched_b_id}",
+          "groupUId": "#{keys.subnet_b_id}",
           "size": [
             28, 18]
         },
-        "2286840C-58C1-4A0A-B592-20B62381D448": {
+        master_1: {
           "coordinate": [
             32, 22],
-          "uid": "2286840C-58C1-4A0A-B592-20B62381D448",
-          "groupUId": "6BE3D1A2-1233-4A86-AC11-B944B9E34CBF",
+          "uid": "#{keys.master_1_id}",
+          "groupUId": "#{keys.sched_a_id}",
           "osType": "ubuntu",
           "architecture": "x86_64",
           "rootDeviceType": "ebs"
         },
-        "60616F45-DEE6-4567-95E4-2DE1F23C9CD0": {
+        slave_asg_0: {
           "coordinate": [
             50, 20],
-          "uid": "60616F45-DEE6-4567-95E4-2DE1F23C9CD0",
-          "groupUId": "FABDEDD1-E3D6-4B58-9963-680A2DD52A72"
+          "uid": "#{keys.slave_asg_0_id}",
+          "groupUId": "#{keys.web_a_id}"
         },
-        "5B284722-5E1B-4E76-852C-D71135A7D276": {
+        master_0: {
           "coordinate": [
             20, 22],
-          "uid": "5B284722-5E1B-4E76-852C-D71135A7D276",
-          "groupUId": "6BE3D1A2-1233-4A86-AC11-B944B9E34CBF",
+          "uid": "#{keys.master_0_id}",
+          "groupUId": "#{keys.sched_a_id}",
           "osType": "ubuntu",
           "architecture": "x86_64",
           "rootDeviceType": "ebs"
         },
-        "EE5A9E75-7423-49B8-9A33-CAC48C84C1EE": {
+        master_2: {
           "coordinate": [
             20, 51],
-          "uid": "EE5A9E75-7423-49B8-9A33-CAC48C84C1EE",
-          "groupUId": "827F9D8A-F900-44C8-833E-D20628BF8DF5",
+          "uid": "#{keys.master_2_id}",
+          "groupUId": "#{keys.sched_b_id}",
           "osType": "ubuntu",
           "architecture": "x86_64",
           "rootDeviceType": "ebs"
         },
-        "99392B0D-12F0-47ED-958F-6E0F9D0B5C28": {
+        internet_gateway: {
           "coordinate": [
             4, 8],
-          "uid": "99392B0D-12F0-47ED-958F-6E0F9D0B5C28",
-          "groupUId": "2D221BC2-A50B-42CA-97CE-CBF5E7C6668E"
+          "uid": "#{keys.internet_gateway_id}",
+          "groupUId": "#{keys.vpc_id}"
         },
-        "485EF4EC-BBFE-4E86-B159-8852CDE940F4": {
+        expandedAsg: {
           "coordinate": [
             50, 49],
-          "uid": "485EF4EC-BBFE-4E86-B159-8852CDE940F4",
-          "groupUId": "BA041E65-6720-4FD2-AD73-993DC0DF6C79",
+          "uid": "#{keys.expandedAsg_id}",
+          "groupUId": "#{keys.web_b_id}",
           "type": "ExpandedAsg",
-          "originalId": "60616F45-DEE6-4567-95E4-2DE1F23C9CD0"
+          "originalId": "#{keys.slave_asg_0_id}"
         },
         "size": [
           240, 240]
       }
 
-      json.component = component
-      json.layout = layout
+      _.each component, (value, key)->
+        componentKey = keys[key + "_id"]
+        json.component[componentKey] = value
+        return
+
+      _.each layout, (value, key)->
+        layoutKey = keys[key + "_id"]
+        if layoutKey then json.layout[layoutKey] = value
+        return
+
+      json.layout.size = layout.size
       json
 
   }, {

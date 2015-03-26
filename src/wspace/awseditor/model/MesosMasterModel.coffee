@@ -64,4 +64,6 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
   }
 
+  Model.prototype.classId = InstanceModel.prototype.classId
+
   Model

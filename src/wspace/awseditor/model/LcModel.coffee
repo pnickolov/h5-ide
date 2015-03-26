@@ -31,7 +31,7 @@ define [
     newNameTmpl : "launch-config-"
 
     constructor: ( attributes, options ) ->
-      if options and !options.createBySubClass
+      if !options or !options.createBySubClass
         if Model.isMesosSlave attributes
           return new ( Design.modelClassForType constant.RESTYPE.MESOSLC ) attributes, options
 

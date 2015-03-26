@@ -37,9 +37,15 @@ define [
       state : null
 
     constructor: ( attributes, options ) ->
-      if options and !options.createBySubClass
+      if options and options.createByUser and attributes.subType
+        subType = attributes.subType
+        delete attributes.subType
+        return new ( Design.modelClassForType constant.RESTYPE[ subType ] ) attributes, options
+
+      if !options or !options.createBySubClass
         if Model.isMesosMaster attributes
           return new ( Design.modelClassForType constant.RESTYPE.MESOSMASTER ) attributes, options
+
         if Model.isMesosSlave attributes
           return new ( Design.modelClassForType constant.RESTYPE.MESOSSLAVE ) attributes, options
 
@@ -759,7 +765,6 @@ define [
 
 
   }, {
-
     handleTypes : constant.RESTYPE.INSTANCE
 
     isMesosMaster: ( data ) ->
@@ -770,7 +775,7 @@ define [
 
     isMesosSlave: ( data ) ->
       # Test code, please replace it to real code
-      true
+      data.state and data.state.length
 
     getInstanceType : ( ami, region )->
       if not ami or not region then return []

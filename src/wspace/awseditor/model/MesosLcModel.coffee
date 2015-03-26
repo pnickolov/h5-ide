@@ -5,6 +5,10 @@ define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 
 
   Model = LcModel.extend {
 
+    type        : constant.RESTYPE.LC
+    subType     : constant.RESTYPE.MESOSLC
+    newNameTmpl : "slave-lc-"
+
     defaults : ()->
       imageId      : ""
       ebsOptimized : false
@@ -41,14 +45,12 @@ define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 
         }
       })
 
-    type : constant.RESTYPE.LC
-    subType: constant.RESTYPE.MESOSLC
-    newNameTmpl : "slave-lc-"
-
   }, {
 
     handleTypes: constant.RESTYPE.MESOSLC
 
   }
+
+  Model.prototype.classId = LcModel.prototype.classId
 
   Model

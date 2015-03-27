@@ -49,13 +49,58 @@ define [ '../base/view'
             'keyup #volume-size-ranged'       : 'sizeChanged'
 
             'change .mesos-attr'              : 'setMesosAttribute'
+            'click #add-ma-item-outside'      : 'addMesosAttrItem'
+
+        render : () ->
+            tpl = getTemplate @resModel.subType
+
+            mesosData = {
+                isMesosMaster   : @resModel.isMesosMaster()
+                isMesosSlave    : @resModel.isMesosSlave()
+                mesosAttr       : @resModel.getMesosAttributes?()
+                defaultMesosAttr: @resModel.getDefaultMesosAttributes?()
+            }
+            data = _.extend mesosData, @model.attributes
+
+            @$el.html tpl data
+
+            kpDropdown = new kp(resModel: @resModel)
+            @$('#kp-placeholder').html kpDropdown.render().el
+            @addSubView kpDropdown
+
+            @refreshIPList()
+
+            me = this
+            # parsley bind
+            $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                if not val || val > 1024 || val < me.model.attributes.min_volume_size
+                    return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
+
+            $( '#iops-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
+                if val > 4000 || val < 100
+                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
+                else if( val > 10 * volume_size)
+                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+
+            @model.attributes.name
+
+        addMesosAttrItem: ( e ) ->
+            @$( '#mesos-attribute' ).find( '.icon-add' ).eq(0).click()
+            false
 
         setMesosAttribute: ( event ) ->
             attr = {}
 
             @$( '#mesos-attribute' ).find( '.multi-ipt-row:not(.template)' ).each ->
                 $inputs = $(@).find( '.input' )
-                attr[ $inputs[ 0 ].value ] = $inputs[ 1 ].value
+                key = $inputs[ 0 ].value.trim()
+                value = $inputs[ 1 ].value
+
+                if key.length
+                    attr[ key ] = value
 
             @resModel.setMesosAttributes attr
 
@@ -120,50 +165,6 @@ define [ '../base/view'
                     $("#iops-ranged").val( iops )
                 $("#iops-ranged").keyup()
             null
-
-        render : () ->
-            tpl = getTemplate @resModel.subType
-
-            mesosData = {
-                isMesosMaster   : @resModel.isMesosMaster()
-                isMesosSlave    : @resModel.isMesosSlave()
-                mesosAttr       : @resModel.getMesosAttributes?()
-            }
-            data = _.extend mesosData, @model.attributes
-
-            @$el.html tpl data
-
-            kpDropdown = new kp(resModel: @resModel)
-            @$('#kp-placeholder').html kpDropdown.render().el
-            @addSubView kpDropdown
-
-            @refreshIPList()
-
-            me = this
-            # parsley bind
-            $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
-                val = + val
-                if not val || val > 1024 || val < me.model.attributes.min_volume_size
-                    return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
-
-            $( '#iops-ranged' ).parsley 'custom', ( val ) ->
-                val = + val
-                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
-                if val > 4000 || val < 100
-                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
-                else if( val > 10 * volume_size)
-                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
-
-            #
-
-            # currentStateData = @model.getStateData()
-
-            # if currentStateData and _.isArray(currentStateData) and currentStateData.length
-            #     @disableUserDataInput(true)
-            # else
-            #     @disableUserDataInput(false)
-
-            @model.attributes.name
 
         instanceNameChange : ( event ) ->
             target = $ event.currentTarget

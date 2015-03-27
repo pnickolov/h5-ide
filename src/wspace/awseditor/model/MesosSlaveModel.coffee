@@ -104,20 +104,17 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         _.each attrs, (attr) ->
           attrMap[attr.key] = attr.value
         return attrMap
-      return null
+      {}
 
     getMesosAttributes : () ->
+      defaultKeys = _.keys(@getDefaultMesosAttributes())
+      attrs       = @_getMesosAttributes()
+      keys        = _.keys attrs
+      customKeys  = _.difference keys, defaultKeys
 
-      readonlyKey = _.keys(@getDefaultMesosAttributes())
-      attrs = @_getMesosAttributes()
-      if attrs
-        return _.map attrs, (value, key) ->
-          return {
-            key: key
-            value: value
-            readonly: (key in readonlyKey)
-          }
-      return []
+      customKeys.unshift attrs
+
+      _.pick.apply null, customKeys
 
   }, {
 

@@ -29,10 +29,11 @@ define [ "../base/main",
             sglist_main.onUnloadSubPanel id
             null
 
-        initStack : () ->
+        initStack : ( uid ) ->
             @model = model
             @model.isApp = false
             @view  = view
+            @view.resModel = Design.instance().component uid
             null
 
         afterLoadStack : () ->

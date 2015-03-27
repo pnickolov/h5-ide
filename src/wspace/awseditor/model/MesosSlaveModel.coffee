@@ -38,13 +38,13 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
     setMesosState : (attr) ->
 
-      attributes = attr or @getDefaultMesosAttributes()
+      attributes = attr or @_getMesosAttributes() or @getDefaultMesosAttributes()
 
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMap = {}
       _.each masterModels, (master) ->
         ipRef = '@{' + master.id + '.PrivateIpAddress}'
-        masterMap[ipRef] = master.get('name')
+        masterMap[master.get('name')] = ipRef
       @set('state', [{
         id: @get('name'),
         module: 'linux.mesos.slave',
@@ -75,11 +75,17 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       defaultAttrs = @getDefaultMesosAttributes()
       @setMesosState(_.extend(attrs or {}, defaultAttrs))
 
+    _getMesosAttributes : () ->
+
+      state = @getMesosState()
+      attrs = state?.parameter?.attributes
+      return attrs if attrs
+      return null
+
     getMesosAttributes : () ->
 
       readonlyKey = _.keys(@getDefaultMesosAttributes())
-      state = @getMesosState()
-      attrs = state?.parameter?.attributes
+      attrs = @_getMesosAttributes()
       if attrs
         return _.map attrs, (value, key) ->
           return {

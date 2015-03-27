@@ -94,7 +94,7 @@ define [
 
   VisualOps.prototype.logout = ()->
     that = @
-    App.user.logout().done ()->
+    App.user.logout().finally ()->
       that.ignoreChangesWhenQuit()
       p = window.location.pathname
       if p is "/"

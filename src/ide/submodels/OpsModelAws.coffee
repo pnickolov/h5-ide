@@ -177,7 +177,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
         {"region":"sa-east-1","imageId":"ami-c79e28da"}
       ]
 
-      framework =  if @get("framework") then ["marathon"] else []
+      framework =  if @getJsonFramework() then ["marathon"] else []
       imageId = (_.findWhere amiForEachRegion, {region: @get("region")}).imageId
       regionName = @get("region")
 

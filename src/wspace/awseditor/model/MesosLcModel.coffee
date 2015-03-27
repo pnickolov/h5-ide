@@ -1,5 +1,5 @@
 
-define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources' ], ( LcModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+define [ "./LcModel", "./MesosSlaveModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources' ], ( LcModel, MesosSlaveModel, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -28,22 +28,12 @@ define [ "./LcModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 
     constructor: ( attributes, options ) ->
       LcModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
 
-    setMesosState : () ->
-
-      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER)
-      masterMap = {}
-      _.each masterModels, (master) ->
-        ipRef = '@{' + master.id + '.PrivateIpAddress}'
-        masterMap[ipRef] = @get('name')
-      @set('state', {
-        id: @get('name'),
-        module: 'linux.mesos.slave',
-        parameter: {
-          masters_addresses: masterMap,
-          attributes: {},
-          slave_ip: '@{self.PrivateIpAddress}'
-        }
-      })
+    setMesosState : MesosSlaveModel.prototype.setMesosState
+    getMesosState : MesosSlaveModel.prototype.getMesosState
+    getDefaultMesosAttributes : MesosSlaveModel.prototype.getDefaultMesosAttributes
+    setMesosAttributes : MesosSlaveModel.prototype.setMesosAttributes
+    _getMesosAttributes : MesosSlaveModel.prototype._getMesosAttributes
+    getMesosAttributes : MesosSlaveModel.prototype.getMesosAttributes
 
   }, {
 

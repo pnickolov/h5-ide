@@ -177,6 +177,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
         {"region":"sa-east-1","imageId":"ami-c79e28da"}
       ]
 
+      framework =  if @get("framework") then ["marathon"] else []
       imageId = (_.findWhere amiForEachRegion, {region: @get("region")}).imageId
       regionName = @get("region")
 
@@ -440,7 +441,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.mesos.master",
             "parameter": {
               "cluster_name": "mesos",
-              "framework": ["marathon"],
+              "framework": framework,
               "masters_addresses": [{
                 "key": "master0",
                 "value": "@{A402FA2B-28F5-45F1-BBFE-CD0DD142AE7F.PrivateIpAddress}"
@@ -534,7 +535,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.mesos.master",
             "parameter": {
               "cluster_name": "mesos",
-              "framework": ["marathon"],
+              "framework": framework,
               "masters_addresses": [{
                 "key": "master0",
                 "value": "@{A402FA2B-28F5-45F1-BBFE-CD0DD142AE7F.PrivateIpAddress}"
@@ -628,7 +629,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.mesos.master",
             "parameter": {
               "cluster_name": "mesos",
-              "framework": ["marathon"],
+              "framework": framework,
               "masters_addresses": [{
                 "key": "master0",
                 "value": "@{A402FA2B-28F5-45F1-BBFE-CD0DD142AE7F.PrivateIpAddress}"

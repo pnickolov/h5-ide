@@ -39,6 +39,7 @@
                           </div>
                       </div>
 
+                      {{#if false}}
                       <div class="region-app-stack-wrap marathon">
                           <div class="dash-region-apps-wrap">
                               <div class="dashboard-loading">
@@ -51,6 +52,7 @@
                               </div>
                           </div>
                       </div>
+                      {{/if}}
 
                       <div class="dash-resource-wrap">
                         <header class="dash-region-header">

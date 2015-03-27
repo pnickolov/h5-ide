@@ -212,9 +212,9 @@ define [ "./DashboardTpl",
 
     initRegion : ( )->
       @updateRegionAppStack("stacks", "global")
-      @updateRegionAppStack("stacks", "global", true)
+      #@updateRegionAppStack("stacks", "global", true)
       @updateRegionAppStack("apps", "global")
-      @updateRegionAppStack("apps", "global", true)
+      #@updateRegionAppStack("apps", "global", true)
       @toggleMarathonOpslist()
       @updateRegionResources()
 
@@ -262,12 +262,12 @@ define [ "./DashboardTpl",
 
     updateStacks: ()->
       @updateRegionAppStack("stacks", null)
-      @updateRegionAppStack("stacks", null, true)
+      #@updateRegionAppStack("stacks", null, true)
       @toggleMarathonOpslist()
 
     updateApps: ()->
       @updateRegionAppStack("apps", null)
-      @updateRegionAppStack("apps", null, true)
+#      @updateRegionAppStack("apps", null, true)
       @toggleMarathonOpslist()
 
     toggleMarathonOpslist: ()->

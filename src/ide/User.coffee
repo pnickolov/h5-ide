@@ -123,12 +123,13 @@ define [ "ApiRequest", "backbone", "crypto" ], ( ApiRequest )->
         return
 
     logout : ()->
+      $("#GlobalLoading").show()
       domain = { "domain" : window.location.hostname.replace("ide", ""), "path" : "/" }
       def    = { "path" : "/" }
       for ckey, cValue of $.cookie()
         $.removeCookie ckey, domain
         $.removeCookie ckey, def
-      return
+      ApiRequest("session_logout")
 
     changePassword : ( oldPwd, newPwd )->
       ApiRequest("account_update_account", { attributes : {

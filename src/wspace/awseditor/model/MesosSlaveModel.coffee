@@ -37,6 +37,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       InstanceModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosSlave(attributes)
+      @setMesosAttributes()
 
     setMesosState : () ->
 

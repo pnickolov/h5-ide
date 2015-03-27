@@ -31,27 +31,43 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       state : null
 
-      attributes: {}
+      mesos_attributes: {}
 
     constructor: ( attributes, options ) ->
       InstanceModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
+      Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
+      @setMesosState() if not Model.isMesosSlave(attributes)
 
     setMesosState : () ->
 
-      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER)
+      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMap = {}
       _.each masterModels, (master) ->
         ipRef = '@{' + master.id + '.PrivateIpAddress}'
-        masterMap[ipRef] = @get('name')
-      @set('state', {
+        masterMap[ipRef] = master.get('name')
+      @set('state', [{
         id: @get('name'),
         module: 'linux.mesos.slave',
         parameter: {
           masters_addresses: masterMap,
-          attributes: {},
+          attributes: @get('mesos_attributes'),
           slave_ip: '@{self.PrivateIpAddress}'
         }
-      })
+      }])
+
+    setMesosAttributes : (attrs) ->
+
+      defaultAttrs = {
+        'az': @parent().parent().get('name')
+        'subnet': @parent().get('name')
+        'subnet-position': 'public'
+      }
+
+      @set('mesos_attributes', _.extend(defaultAttrs, attrs))
+
+    getMesosAttributes : () ->
+
+      return @get('mesos_attributes')
 
   }, {
 

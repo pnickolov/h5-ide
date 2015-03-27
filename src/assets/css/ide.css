@@ -2809,8 +2809,7 @@ aside.dashboard-sidebar {
   .select-stack-type > li img {
     display: block;
     width: 60px;
-    height: 60px;
-    margin: 15px auto 10px auto; }
+    margin: 10px auto 10px auto; }
   .select-stack-type > li.active {
     background: #373e76; }
     .select-stack-type > li.active span.stack-title {

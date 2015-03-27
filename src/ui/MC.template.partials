@@ -917,11 +917,11 @@ Additional Notes and Questions
 <!-- {{createStack}} -->
 <ul class="tabs select-stack-type clearfix">
     <li class="tab-aws-stack active">
-        <img src="/assets/images/ide/icon-os/res-dg-server.png" alt=""/>
+        <img src="/assets/images/ide/aws_stack.png" alt=""/>
         <span class="stack-title">AWS Stack</span>
     </li>
     <li class="tab-mesos-stack">
-        <img src="/assets/images/ide/icon-os/res-dg-server.png" alt=""/>
+        <img src="/assets/images/ide/mesos_stack.png" alt=""/>
         <span class="stack-title">Mesos on AWS VPC</span>
     </li>
 </ul>

@@ -777,8 +777,10 @@ define [
       return false
 
     isMesosSlave: ( data ) ->
-      # Test code, please replace it to real code
-      data.state and data.state.length
+      states = data.state
+      if states and states[0] and states[0].module is 'linux.mesos.slave'
+        return true
+      return false
 
     getInstanceType : ( ami, region )->
       if not ami or not region then return []

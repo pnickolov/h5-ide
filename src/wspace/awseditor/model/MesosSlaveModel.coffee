@@ -40,6 +40,12 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       attributes = attr or @_getMesosAttributes() or @getDefaultMesosAttributes()
 
+      attributes = _.map attributes, (value, key) ->
+        return {
+          key: key,
+          value: value
+        }
+
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMapAry = []
       _.each masterModels, (master) ->
@@ -67,11 +73,22 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
     getDefaultMesosAttributes : () ->
 
-      return {
-        'az': @parent().parent().get('name')
-        'subnet': @parent().get('name')
-        'subnet-position': 'public'
-      }
+      if @type is constant.RESTYPE.LC
+        asgAry = @connectionTargets("LcUsage")
+        azs = []
+        _.each asgAry, (asg) ->
+          azName = _.map asg.getExpandAzs(), (az) ->
+            az.get('name')
+          azs = azs.concat(azName)
+        return {
+          'az': azs.join('|')
+        }
+      else
+        return {
+          'az': @parent().parent().get('name')
+          'subnet': @parent().get('name')
+          'subnet-position': 'public'
+        }
 
     setMesosAttributes : (attrs) ->
 
@@ -82,7 +99,11 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       state = @getMesosState()
       attrs = state?.parameter?.attributes
-      return attrs if attrs
+      if attrs
+        attrMap = {}
+        _.each attrs, (attr) ->
+          attrMap[attr.key] = attr.value
+        return attrMap
       return null
 
     getMesosAttributes : () ->

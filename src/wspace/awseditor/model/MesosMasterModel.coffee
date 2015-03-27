@@ -77,7 +77,8 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
     _getMarathon : () ->
 
       state = @getMesosState()
-      if 'marathon' in (state?.parameter?.framework)
+      framework = state?.parameter?.framework or []
+      if 'marathon' in framework
         return true
       return false
 

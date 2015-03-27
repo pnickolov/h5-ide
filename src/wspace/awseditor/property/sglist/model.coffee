@@ -12,8 +12,13 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 			parent_model = @parent_model
 
 			readonly = false
-			if design.modeIsApp() or design.modeIsAppView()
+			if design.modeIsApp() or design.modeIsAppView() then readonly = true
+
+			# read only when is mesos master or slave.
+			parent = design.component( parent_model.get("id") )
+			if parent and parent.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC] and parent.isMesos()
 				readonly = true
+
 			else if design.modeIsAppEdit()
 				if parent_model.isSGListReadOnly
 					readonly = parent_model.isSGListReadOnly()

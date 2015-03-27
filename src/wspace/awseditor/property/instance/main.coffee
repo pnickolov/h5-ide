@@ -38,9 +38,11 @@ define [ "../base/main",
                 PropertyModule.loadSubPanel "STATIC", id
             null
 
-        initStack : ()->
+        initStack : ( uid )->
             @model = model
             @view  = view
+            @view.resModel = Design.instance().component uid
+
             null
 
         afterLoadStack : ()->

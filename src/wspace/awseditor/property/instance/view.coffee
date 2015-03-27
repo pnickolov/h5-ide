@@ -49,6 +49,17 @@ define [ '../base/view'
             'keyup #iops-ranged'              : 'changeIops'
             'keyup #volume-size-ranged'       : 'sizeChanged'
 
+            'change .mesos-attr'              : 'setMesosAttribute'
+
+        setMesosAttribute: ( event ) ->
+            attr = {}
+
+            @$( '#mesos-attribute' ).find( '.multi-ipt-row:not(.template)' ).each ->
+                $inputs = $(@).find( '.input' )
+                attr[ $inputs[ 0 ].value ] = $inputs[ 1 ].value
+
+            @resModel.setMesosAttributes attr
+
         changeVolumeType : ( event ) ->
             $this = $( event.currentTarget )
 
@@ -112,12 +123,12 @@ define [ '../base/view'
             null
 
         render : () ->
-            instanceModel = Design.instance().component( @model.get 'uid' )
+            tpl = getTemplate @resModel.subType
+            data = _.extend { mesosAttr: @resModel.getMesosAttributes?() }, @model.attributes
 
-            tpl = getTemplate instanceModel.subType
-            @$el.html tpl @model.attributes
+            @$el.html tpl data
 
-            kpDropdown = new kp(resModel: instanceModel)
+            kpDropdown = new kp(resModel: @resModel)
             @$('#kp-placeholder').html kpDropdown.render().el
             @addSubView kpDropdown
 

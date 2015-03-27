@@ -93,18 +93,17 @@ define [
   VisualOps.prototype.acquireSession = ()-> @view.showSessionDialog()
 
   VisualOps.prototype.logout = ()->
-    App.user.logout()
-    @ignoreChangesWhenQuit()
+    App.user.logout().finally ()=>
+      @ignoreChangesWhenQuit()
+      p = window.location.pathname
+      if p is "/"
+        p = window.location.hash.replace("#", "/")
 
-    p = window.location.pathname
-    if p is "/"
-      p = window.location.hash.replace("#", "/")
-
-    if p and p isnt "/"
-      window.location.href = "/login?ref=" + p
-    else
-      window.location.href = "/login"
-    return
+      if p and p isnt "/"
+        window.location.href = "/login?ref=" + p
+      else
+        window.location.href = "/login"
+      return
 
   VisualOps.prototype.ignoreChangesWhenQuit = ()-> @__ICWQ = true; return
 

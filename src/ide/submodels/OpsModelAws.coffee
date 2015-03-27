@@ -441,7 +441,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.mesos.master",
             "parameter": {
               "cluster_name": "mesos",
-              "framework": framework,
+              "framework": ["marathon"],
               "masters_addresses": [{
                 "key": "master0",
                 "value": "@{A402FA2B-28F5-45F1-BBFE-CD0DD142AE7F.PrivateIpAddress}"
@@ -535,7 +535,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.mesos.master",
             "parameter": {
               "cluster_name": "mesos",
-              "framework": framework,
+              "framework": ["marathon"],
               "masters_addresses": [{
                 "key": "master0",
                 "value": "@{A402FA2B-28F5-45F1-BBFE-CD0DD142AE7F.PrivateIpAddress}"
@@ -629,7 +629,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
             "module": "linux.mesos.master",
             "parameter": {
               "cluster_name": "mesos",
-              "framework": framework,
+              "framework": ["marathon"],
               "masters_addresses": [{
                 "key": "master0",
                 "value": "@{A402FA2B-28F5-45F1-BBFE-CD0DD142AE7F.PrivateIpAddress}"
@@ -955,6 +955,13 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
 
       component = JSON.parse(componentJson)
       layout = JSON.parse(layoutJson)
+
+      # set framework option
+      _.each component, (comp)->
+        if comp.type is constant.RESTYPE.INSTANCE
+          _.each comp.state, (st)->
+            if st.module is "linux.mesos.master"
+              st.parameter.framework = framework
 
       json.component = component
       json.layout = layout

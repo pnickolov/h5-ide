@@ -4,20 +4,19 @@
 
 define [ '../base/view'
          './template/stack'
-         './template/mesos_master_stack'
-         './template/mesos_slave_stack'
+         './template/stack_mesos'
          'i18n!/nls/lang.js'
         'constant'
         'kp_dropdown'
-], ( PropertyView, TplInstance, TplMesosMaster, TplMesosSlave, lang, constant, kp ) ->
+], ( PropertyView, TplInstance, TplMesos, lang, constant, kp ) ->
 
     noop = ()-> null
 
     getTemplate = ( type ) ->
         switch type
             when constant.RESTYPE.INSTANCE    then TplInstance
-            when constant.RESTYPE.MESOSMASTER then TplMesosMaster
-            when constant.RESTYPE.MESOSSLAVE  then TplMesosSlave
+            when constant.RESTYPE.MESOSMASTER then TplMesos
+            when constant.RESTYPE.MESOSSLAVE  then TplMesos
 
     InstanceView = PropertyView.extend {
 
@@ -124,7 +123,13 @@ define [ '../base/view'
 
         render : () ->
             tpl = getTemplate @resModel.subType
-            data = _.extend { mesosAttr: @resModel.getMesosAttributes?() }, @model.attributes
+
+            mesosData = {
+                isMesosMaster   : @resModel.isMesosMaster()
+                isMesosSlave    : @resModel.isMesosSlave()
+                mesosAttr       : @resModel.getMesosAttributes?()
+            }
+            data = _.extend mesosData, @model.attributes
 
             @$el.html tpl data
 

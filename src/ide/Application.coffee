@@ -93,9 +93,8 @@ define [
   VisualOps.prototype.acquireSession = ()-> @view.showSessionDialog()
 
   VisualOps.prototype.logout = ()->
-    that = @
-    App.user.logout().finally ()->
-      that.ignoreChangesWhenQuit()
+    App.user.logout().finally ()=>
+      @ignoreChangesWhenQuit()
       p = window.location.pathname
       if p is "/"
         p = window.location.hash.replace("#", "/")

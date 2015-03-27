@@ -31,14 +31,12 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       state : null
 
-      framework: ['marathon']
-
     constructor: ( attributes, options ) ->
       InstanceModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosMaster(attributes)
 
-    setMesosState : () ->
+    setMesosState : (framework) ->
 
       stackName = Design.instance().get('name')
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
@@ -54,20 +52,27 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
           server_id: @get('name'),
           masters_addresses: masterMap,
           hostname: @get('name'),
-          framework: @get('framework')
+          framework: framework or ['marathon']
         }
       }])
 
+    getMesosState : () ->
+
+      states = @get('state')
+      if states and states[0] and states[0].module is 'linux.mesos.master'
+        return states[0]
+      return null
+
     setMarathon : (flag) ->
 
-      if flag
-        @set('framework', ['marathon'])
-      else
-        @set('framework', [])
+      @setMesosState(flag)
 
     getMarathon : () ->
-      framework = @get('framework')
-      return ('marathon' in framework)
+
+      state = @getMesosState()
+      if 'marathon' in (state?.parameter?.framework)
+        return true
+      return false
 
   }, {
 

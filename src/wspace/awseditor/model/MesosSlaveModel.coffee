@@ -31,15 +31,14 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       state : null
 
-      mesos_attributes: {}
-
     constructor: ( attributes, options ) ->
       InstanceModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosSlave(attributes)
-      @setMesosAttributes()
 
-    setMesosState : () ->
+    setMesosState : (attr) ->
+
+      attributes = attr or @getDefaultMesosAttributes()
 
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMap = {}
@@ -51,24 +50,44 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         module: 'linux.mesos.slave',
         parameter: {
           masters_addresses: masterMap,
-          attributes: @get('mesos_attributes'),
+          attributes: attributes,
           slave_ip: '@{self.PrivateIpAddress}'
         }
       }])
 
-    setMesosAttributes : (attrs) ->
+    getMesosState : () ->
 
-      defaultAttrs = {
+      states = @get('state')
+      if states and states[0] and states[0].module is 'linux.mesos.slave'
+        return states[0]
+      return null
+
+    getDefaultMesosAttributes : () ->
+
+      return {
         'az': @parent().parent().get('name')
         'subnet': @parent().get('name')
         'subnet-position': 'public'
       }
 
-      @set('mesos_attributes', _.extend(defaultAttrs, attrs))
+    setMesosAttributes : (attrs) ->
+
+      defaultAttrs = @getDefaultMesosAttributes()
+      @setMesosState(_.extend(attrs or {}, defaultAttrs))
 
     getMesosAttributes : () ->
 
-      return @get('mesos_attributes')
+      readonlyKey = _.keys(@getDefaultMesosAttributes())
+      state = @getMesosState()
+      attrs = state?.parameter?.attributes
+      if attrs
+        return _.map attrs, (value, key) ->
+          return {
+            key: key
+            value: value
+            readonly: (key in readonlyKey)
+          }
+      return []
 
   }, {
 

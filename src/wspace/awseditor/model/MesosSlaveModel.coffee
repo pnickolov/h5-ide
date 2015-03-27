@@ -41,15 +41,18 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       attributes = attr or @_getMesosAttributes() or @getDefaultMesosAttributes()
 
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
-      masterMap = {}
+      masterMapAry = []
       _.each masterModels, (master) ->
         ipRef = '@{' + master.id + '.PrivateIpAddress}'
-        masterMap[master.get('name')] = ipRef
+        masterMapAry.push({
+          key: ipRef,
+          value: master.get('name')
+        })
       @set('state', [{
         id: @get('name'),
         module: 'linux.mesos.slave',
         parameter: {
-          masters_addresses: masterMap,
+          masters_addresses: masterMapAry,
           attributes: attributes,
           slave_ip: '@{self.PrivateIpAddress}'
         }

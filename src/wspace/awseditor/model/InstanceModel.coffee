@@ -767,7 +767,6 @@ define [
     isMesosSlave : -> Model.isMesosSlave @attributes
     isMesos      : -> !!@subType
 
-
   }, {
     handleTypes : constant.RESTYPE.INSTANCE
 

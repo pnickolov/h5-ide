@@ -38,20 +38,24 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
     setMesosState : (marathon) ->
 
-      marathon = @getMarathon() if marathon is undefined
+      marathon = @_getMarathon() if marathon is undefined
       stackName = Design.instance().get('name')
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
-      masterMap = {}
+      masterMapAry = []
       _.each masterModels, (master) ->
         ipRef = '@{' + master.id + '.PrivateIpAddress}'
-        masterMap[master.get('name')] = ipRef
+        masterMapAry.push({
+          key: ipRef,
+          value: master.get('name')
+        })
       @set('state', [{
         id: @get('name'),
         module: 'linux.mesos.master',
         parameter: {
           cluster_name: stackName,
+          master_ip: '@{self.PrivateIpAddress}',
           server_id: @get('name'),
-          masters_addresses: masterMap,
+          masters_addresses: masterMapAry,
           hostname: @get('name'),
           framework: if marathon then ['marathon'] else []
         }
@@ -64,11 +68,13 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         return states[0]
       return null
 
-    setMarathon : (flag) ->
+    # must invoke Model.setMarathon
+    _setMarathon : (flag) ->
 
       @setMesosState(flag)
 
-    getMarathon : () ->
+    # must invoke Model.getMarathon
+    _getMarathon : () ->
 
       state = @getMesosState()
       if 'marathon' in (state?.parameter?.framework)
@@ -80,6 +86,22 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
     handleTypes : constant.RESTYPE.MESOSMASTER
 
     deserialize : ( data, layout_data, resolve )->
+
+    setMarathon : (flag) ->
+
+      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
+      _.each masterModels, (master) ->
+        master._setMarathon(flag)
+
+    getMarathon : () ->
+
+      haveMarathon = true
+      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
+      _.each masterModels, (master) ->
+        if not master._getMarathon()
+          haveMarathon = false
+        null
+      return haveMarathon
 
   }
 

@@ -144,7 +144,6 @@ define [
     getInstanceType             : InstanceModel.prototype.getInstanceType
     getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
     getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
-    isMesosMaster               : InstanceModel.prototype.isMesosMaster
     isMesos                     : InstanceModel.prototype.isMesos
 
     serialize : ()->

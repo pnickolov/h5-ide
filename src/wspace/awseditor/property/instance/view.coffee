@@ -14,9 +14,9 @@ define [ '../base/view'
 
     getTemplate = ( type ) ->
         switch type
-            when constant.RESTYPE.INSTANCE    then TplInstance
             when constant.RESTYPE.MESOSMASTER then TplMesos
             when constant.RESTYPE.MESOSSLAVE  then TplMesos
+            else TplInstance
 
     InstanceView = PropertyView.extend {
 

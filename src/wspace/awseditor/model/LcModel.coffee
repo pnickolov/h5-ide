@@ -145,6 +145,7 @@ define [
     getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
     getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
     isMesosMaster               : InstanceModel.prototype.isMesosMaster
+    isMesos                     : InstanceModel.prototype.isMesos
 
     serialize : ()->
       ami = @getAmi() || @get("cachedAmi")

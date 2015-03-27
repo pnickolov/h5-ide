@@ -762,6 +762,7 @@ define [
 
     isMesosMaster: -> Model.isMesosMaster @attributes
     isMesosSlave : -> Model.isMesosSlave @attributes
+    isMesos      : -> !!@subType
 
 
   }, {

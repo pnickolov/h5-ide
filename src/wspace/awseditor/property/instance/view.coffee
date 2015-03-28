@@ -53,14 +53,16 @@ define [ '../base/view'
 
         render : () ->
             tpl = getTemplate @resModel.subType
+            data = @model.toJSON()
 
-            mesosData = {
-                isMesosMaster   : @resModel.isMesosMaster()
-                isMesosSlave    : @resModel.isMesosSlave()
-                mesosAttr       : @resModel.getMesosAttributes?()
-                defaultMesosAttr: @resModel.getDefaultMesosAttributes?()
-            }
-            data = _.extend mesosData, @model.attributes
+            if @resModel.isMesos()
+                mesosData = {
+                    isMesosMaster   : @resModel.isMesosMaster()
+                    isMesosSlave    : @resModel.isMesosSlave()
+                    mesosAttr       : @resModel.getMesosAttributes?()
+                    defaultMesosAttr: @resModel.getDefaultMesosAttributes?()
+                }
+                _.extend data, mesosData
 
             @$el.html tpl data
 

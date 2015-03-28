@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lang.js', 'kp_dropdown' ], ( PropertyView, template, ide_event, constant, lang, kp ) ->
+define [ '../base/view', './template/stack', './template/stack_mesos', 'event', 'constant', 'i18n!/nls/lang.js', 'kp_dropdown' ], ( PropertyView, TplLc, TplMesos, ide_event, constant, lang, kp ) ->
 
     LanchConfigView = PropertyView.extend {
 
@@ -25,9 +25,23 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
             'keyup #iops-ranged'              : 'changeIops'
             'keyup #volume-size-ranged'       : 'sizeChanged'
 
-        render : () ->
+            'change .mesos-attr'              : 'setMesosAttribute'
+            'click #add-ma-item-outside'      : 'addMesosAttrItem'
 
-            @$el.html template @model.attributes
+        render : () ->
+            tpl = if @resModel.isMesos() then TplMesos else TplLc
+
+            data = @model.toJSON()
+
+            if @resModel.isMesos()
+                mesosData = {
+                    isMesos         : true
+                    mesosAttr       : @resModel.getMesosAttributes()
+                    defaultMesosAttr: @resModel.getDefaultMesosAttributes()
+                }
+                _.extend data, mesosData
+
+            @$el.html tpl data
 
             kpDropdown = new kp(resModel: @resModel)
 
@@ -50,6 +64,23 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
                     return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
 
             @model.attributes.name
+
+        addMesosAttrItem: ( e ) ->
+            @$( '#mesos-attribute' ).find( '.icon-add' ).eq(0).click()
+            false
+
+        setMesosAttribute: ( event ) ->
+            attr = {}
+
+            @$( '#mesos-attribute' ).find( '.multi-ipt-row:not(.template)' ).each ->
+                $inputs = $(@).find( '.input' )
+                key = $inputs[ 0 ].value.trim()
+                value = $inputs[ 1 ].value
+
+                if key.length
+                    attr[ key ] = value
+
+            @resModel.setMesosAttributes attr
 
         onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 

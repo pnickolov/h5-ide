@@ -34,8 +34,8 @@ define [
       # Show marathon app list
       @$( '.sidebar-nav-resource' ).remove()
 
-      if @workspace.opsModel.id
-        @resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()
+      #if @workspace.opsModel.id
+        #@resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()
 
 
     switchMode : ( mode )->

@@ -51,9 +51,6 @@ define ['component/exporter/Download', 'i18n!/nls/lang.js', "crypto"], ( downloa
   # genericExport() can download a file after the user clicks an `a link`.
   genericExport = ( aTag, contentJsonObject, fileName )->
     space = 4
-    ### env:prod ###
-    space = undefined
-    ### env:prod:end ###
     j = JSON.stringify contentJsonObject, undefined, space
 
     ua = window.navigator.userAgent

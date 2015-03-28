@@ -23,12 +23,12 @@ define [
       return
 
     updateResourcePanel: ->
-      if @workspace.opsModel.type is OpsModel.Type.Mesos
-        @removeLeftPanel()
+      if @workspace.opsModel.isMesos()
+        @renderMesosPanel()
       else
-        @renderMarathonApp()
+        @removeLeftPanel()
 
-    renderMarathonApp: ->
+    renderMesosPanel: ->
 
       @resourcePanel.switchPanel?()
       # Show marathon app list

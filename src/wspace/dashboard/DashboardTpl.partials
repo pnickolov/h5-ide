@@ -156,3 +156,6 @@
     <div class="main">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY"}}</div>
     <div class="sub">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY_SUB"}}</div>
 </div>
+
+<!-- {{securityText}} -->
+{{this}}

@@ -684,7 +684,9 @@ define [ 'component/stateeditor/model',
                     $valueInputs = $paraDictItem.find('.value')
 
                     _.each $keyInputs, (keyInput) ->
-                        that.initCodeEditor(keyInput, {})
+                        that.initCodeEditor(keyInput, {
+                            at: that.resAttrDataAry
+                        })
 
                     _.each $valueInputs, (valueInput) ->
                         that.initCodeEditor(valueInput, {
@@ -1378,6 +1380,7 @@ define [ 'component/stateeditor/model',
                         valueValue = that.getPlainText($valueInput)
 
                         if keyValue
+                            keyValue = that.model.replaceParaNameToUID(keyValue)
                             valueValue = that.model.replaceParaNameToUID(valueValue)
                             dictObjAry.push({
                                 key: keyValue,
@@ -1438,12 +1441,20 @@ define [ 'component/stateeditor/model',
                 stateItemObj = that.genStateItemData($stateItem)
 
                 if stateItemObj and stateItemObj.module and stateItemObj.id
-                    stateObjAry.push(stateItemObj)
+                    if not (stateItemObj.module in ['linux.mesos.master', 'linux.mesos.slave'])
+                      stateObjAry.push(stateItemObj)
 
                 null
 
             # update all state id ref
             # that.updateStateIdBySort(newOldStateIdMap)
+
+            originStateData = that.model.getStateData()
+            mesosState = []
+            if originStateData and _.isArray(originStateData) and originStateData[0]
+                if originStateData[0].module in ['linux.mesos.master', 'linux.mesos.slave']
+                    mesosState = [originStateData[0]]
+            stateObjAry = mesosState.concat(stateObjAry)
 
             return stateObjAry
 
@@ -1526,6 +1537,10 @@ define [ 'component/stateeditor/model',
                             if _.isArray(paraValue)
 
                                 _.each paraValue, (paraValueObj) ->
+
+                                    paraValueObj.key = that.model.replaceParaUIDToName(paraValueObj.key)
+                                    if paraValueObj.key and paraValueObj.key.indexOf('@{unknown') isnt -1
+                                        renderObj.err_list.push('reference')
 
                                     paraValueObj.value = that.model.replaceParaUIDToName(paraValueObj.value)
                                     if paraValueObj.value and paraValueObj.value.indexOf('@{unknown') isnt -1

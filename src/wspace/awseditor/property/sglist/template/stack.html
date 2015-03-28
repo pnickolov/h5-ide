@@ -13,7 +13,7 @@
 				{{#unless hideCheck}}
 					<div class="checkbox-wrap col1">
 						<div class="checkbox">
-							<input class="sg-list-association-check" type="checkbox" {{#if used}}checked="checked"{{/if}} id="sg-list-{{@index}}"/>
+							<input class="sg-list-association-check" type="checkbox" {{#if used}}checked="checked"{{/if}} id="sg-list-{{@index}}" {{#if disableCheck}}disabled{{/if}}/>
 							<label for="sg-list-{{@index}}"></label>
 						</div>
 					</div>

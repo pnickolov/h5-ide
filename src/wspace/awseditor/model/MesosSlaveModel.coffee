@@ -36,9 +36,18 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosSlave(attributes)
 
+    initialize: ( attr, option ) ->
+      InstanceModel.prototype.initialize.apply @, arguments
+
+      if option.createByUser or option.cloneSource
+        # Set auto assgin public ip
+        @getEmbedEni().set("assoPublicIp", true)
+
     setMesosState : (attr) ->
 
       attributes = attr or @_getMesosAttributes() or @getDefaultMesosAttributes()
+
+      delete attributes['az'] if attributes['az']
 
       attributes = _.map attributes, (value, key) ->
         return {
@@ -49,11 +58,12 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMapAry = []
       _.each masterModels, (master) ->
-        ipRef = '@{' + master.id + '.PrivateIpAddress}'
-        masterMapAry.push({
-          key: ipRef,
-          value: master.get('name')
-        })
+        if master.isMesosMaster()
+          ipRef = '@{' + master.id + '.PrivateIpAddress}'
+          masterMapAry.push({
+            key: ipRef,
+            value: master.get('name')
+          })
       @set('state', [{
         id: @get('name'),
         module: 'linux.mesos.slave',
@@ -76,12 +86,15 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       if @type is constant.RESTYPE.LC
         asgAry = @connectionTargets("LcUsage")
         azs = []
+        asgs = []
         _.each asgAry, (asg) ->
+          asgs.push(asg.get('name'))
           azName = _.map asg.getExpandAzs(), (az) ->
             az.get('name')
           azs = azs.concat(azName)
         return {
           'az': azs.join('|')
+          'asg': asgs.join(',')
         }
       else
         return {
@@ -99,21 +112,19 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       state = @getMesosState()
       attrs = state?.parameter?.attributes
-      if attrs
-        attrMap = {}
-        _.each attrs, (attr) ->
-          attrMap[attr.key] = attr.value
-        return attrMap
-      {}
+      attrs = [] if not (_.isArray(attrs) and attrs.length)
+      attrMap = {}
+      _.each attrs, (attr) ->
+        attrMap[attr.key] = attr.value
+      defaultAttrs = @getDefaultMesosAttributes()
+      return _.extend(attrMap, defaultAttrs)
 
     getMesosAttributes : () ->
       defaultKeys = _.keys(@getDefaultMesosAttributes())
       attrs       = @_getMesosAttributes()
       keys        = _.keys attrs
       customKeys  = _.difference keys, defaultKeys
-
       customKeys.unshift attrs
-
       _.pick.apply null, customKeys
 
   }, {

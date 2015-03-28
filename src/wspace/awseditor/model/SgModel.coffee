@@ -60,6 +60,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
 
     isDefault : ()-> @attributes.name is "DefaultSG"
     isVisual  : ()-> false
+    isMesos: () -> @attributes.name is "MesosSG"
 
     createIpTarget : ( ipAddress )-> new SgTargetModel( MC.getValidCIDR ipAddress )
 

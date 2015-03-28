@@ -2,7 +2,7 @@
 <button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
 <nav class="sidebar-title clearfix">
-    <button class="sidebar-nav-resource selected">{{ i18n "RES_TIT_RESOURCES" }}</button>
+    <button class="sidebar-nav-resource">{{ i18n "RES_TIT_RESOURCES" }}</button>
     <button class="sidebar-nav-container">Container</button>
 </nav>
 

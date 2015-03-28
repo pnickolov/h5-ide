@@ -669,11 +669,11 @@ define [ "./DashboardTpl",
             targetId = data.get('targetId') or ''
             targetId = null if not that.model.scene.project.getOpsModel(targetId)
 
-            _name = '<span class="name">' + data.get("username") + '</span>'
+            _name = '<span class="name">' + Template.securityText(data.get("username")) + '</span>'
             if targetId
                 _target = '<a class="target route" href="/workspace/' + projectId + '/ops/' + targetId + '">' + target + '</a>'
             else
-                _target = '<span class="target">' + target + ' </span>'
+                _target = '<span class="target">' + Template.securityText(target) + ' </span>'
 
             eventStr = lang.IDE["DASHBOARD_LOGS_#{type.toUpperCase()}_#{action.toUpperCase()}"]
             if eventStr

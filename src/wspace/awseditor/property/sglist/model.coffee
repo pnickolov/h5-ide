@@ -14,10 +14,7 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 			readonly = false
 			if design.modeIsApp() or design.modeIsAppView() then readonly = true
 
-			# read only when is mesos master or slave.
-			parent = design.component( parent_model.get("id") )
-			if parent and parent.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC] and parent.isMesos()
-				readonly = true
+
 
 			else if design.modeIsAppEdit()
 				if parent_model.isSGListReadOnly
@@ -59,6 +56,8 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 				else
 					deletable = true
 
+				hideCheck = readonly or isStackParent
+
 				assos = sg.connections( "SgAsso" )
 				# SgAsso is a connection to represent SG <=> Resource
 				# See what SG is used by this resource
@@ -68,6 +67,11 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 						enabledSGArr.push sg
 						break
 
+				# Process Mesos Sg
+				if design.opsModel().isMesos() and sg.isMesos()
+					deletable = false
+					disableCheck = true
+
 				sg_list.push {
 					uid         : sg.id
 					color       : sg.color
@@ -75,8 +79,9 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 					desc        : sg.get("description")
 					ruleCount   : sg.ruleCount()
 					memberCount : sg.getMemberList().length
-					hideCheck   : readonly or isStackParent
+					hideCheck   : hideCheck
 					deletable   : deletable
+					disableCheck: disableCheck
 					used        : enabledSG[ sg.id ]
 				}
 

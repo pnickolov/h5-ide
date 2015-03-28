@@ -9,7 +9,8 @@ define [ '../base/view',
          'event',
          'UI.modalplus',
          'i18n!/nls/lang.js'
-], ( PropertyView, template, acl_template, sub_template, ide_event, modalPlus, lang ) ->
+         'constant'
+], ( PropertyView, template, acl_template, sub_template, ide_event, modalPlus, lang, constant ) ->
 
     StackView = PropertyView.extend {
         events   :
@@ -20,13 +21,24 @@ define [ '../base/view',
             'click #stack-property-acl-list .edit' : 'openAcl'
             'click .acl-info-list .sg-list-delete-btn' : 'deleteAcl'
             'click #property-app-resdiff'          : 'toggleResDiff'
+            'click .toolbar-visual-ops-switch'     : 'toggleMarathon'
 
         render     : () ->
             if @model.isApp or @model.isAppEdit
                 title = "App - #{@model.get('name')}"
             else
                 title = "Stack - #{@model.get('name')}"
-            @$el.html( template( @model.attributes ) )
+
+            data = @model.toJSON()
+
+            if Design.instance().opsModel().isMesos()
+                mesosData = {
+                    isMesos: true
+                    marathonOn: @model.getMarathon()
+                }
+                _.extend data, mesosData
+
+            @$el.html template data
 
             if title
                 @setTitle( title )
@@ -37,6 +49,13 @@ define [ '../base/view',
                 @$( '#property-app-name' ).parsley 'custom', @checkAppName
 
             null
+
+        toggleMarathon: ( e ) ->
+            $switch = $ e.currentTarget
+            $switch.toggleClass( 'on' )
+
+            marathonOn = $switch.hasClass( 'on' )
+            @model.setMarathon marathonOn
 
         checkAppName: ( val )->
             design = Design.instance()

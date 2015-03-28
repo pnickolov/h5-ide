@@ -36,6 +36,13 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosMaster(attributes)
 
+    initialize: ( attr, option ) ->
+      InstanceModel.prototype.initialize.apply @, arguments
+
+      if option.createByUser or option.cloneSource
+        # Set auto assgin public ip
+        @getEmbedEni().set("assoPublicIp", true)
+
     setMesosState : (marathon) ->
 
       marathon = @_getMarathon() if marathon is undefined
@@ -43,11 +50,12 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMapAry = []
       _.each masterModels, (master) ->
-        ipRef = '@{' + master.id + '.PrivateIpAddress}'
-        masterMapAry.push({
-          key: ipRef,
-          value: master.get('name')
-        })
+        if master.isMesosMaster()
+          ipRef = '@{' + master.id + '.PrivateIpAddress}'
+          masterMapAry.push({
+            key: ipRef,
+            value: master.get('name')
+          })
       @set('state', [{
         id: @get('name'),
         module: 'linux.mesos.master',
@@ -92,15 +100,16 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       _.each masterModels, (master) ->
-        master._setMarathon(flag)
+        master._setMarathon(flag) if master.isMesosMaster()
 
     getMarathon : () ->
 
       haveMarathon = true
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       _.each masterModels, (master) ->
-        if not master._getMarathon()
-          haveMarathon = false
+        if master.isMesosMaster()
+          if not master._getMarathon()
+            haveMarathon = false
         null
       return haveMarathon
 

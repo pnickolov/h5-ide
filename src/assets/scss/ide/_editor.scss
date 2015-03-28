@@ -1,5 +1,5 @@
 /*
-    IDE Core Editor 
+    IDE Core Editor
 
     - Layout
     - Side Panel Show and Hide
@@ -97,6 +97,7 @@ $BottomPanelHeight    : 24px;
         color         : $base-b;
       }
   }
+  .sidebar-nav-container { display: none; }
 }
 
 @mixin activedPanelTab {

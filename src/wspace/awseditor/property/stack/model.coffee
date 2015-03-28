@@ -101,6 +101,12 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       Design.instance().set('description', description)
       return
 
+    setMarathon: (marathonOn) ->
+      Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).setMarathon marathonOn
+
+    getMarathon: ->
+      Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
+
   }
 
   new StackModel()

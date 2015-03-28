@@ -93,15 +93,16 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       _.each masterModels, (master) ->
-        master._setMarathon(flag)
+        master._setMarathon(flag) if master.isMesosMaster()
 
     getMarathon : () ->
 
       haveMarathon = true
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       _.each masterModels, (master) ->
-        if not master._getMarathon()
-          haveMarathon = false
+        if master.isMesosMaster()
+          if not master._getMarathon()
+            haveMarathon = false
         null
       return haveMarathon
 

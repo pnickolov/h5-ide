@@ -14,14 +14,14 @@ define [ '../base/view',
 
     StackView = PropertyView.extend {
         events   :
-            'change #property-stack-name'          : 'stackNameChanged'
-            'change #property-stack-description'   : 'stackDescriptionChanged'
-            'change #property-app-name'            : 'changeAppName'
-            'click #stack-property-new-acl'        : 'createAcl'
-            'click #stack-property-acl-list .edit' : 'openAcl'
-            'click .acl-info-list .sg-list-delete-btn' : 'deleteAcl'
-            'click #property-app-resdiff'          : 'toggleResDiff'
-            'click .toolbar-visual-ops-switch'     : 'toggleMarathon'
+            'change #property-stack-name'               : 'stackNameChanged'
+            'change #property-stack-description'        : 'stackDescriptionChanged'
+            'change #property-app-name'                 : 'changeAppName'
+            'click #stack-property-new-acl'             : 'createAcl'
+            'click #stack-property-acl-list .edit'      : 'openAcl'
+            'click .acl-info-list .sg-list-delete-btn'  : 'deleteAcl'
+            'click #property-app-resdiff'               : 'toggleResDiff'
+            'click .marathon-switch'                    : 'toggleMarathon'
 
         render     : () ->
             if @model.isApp or @model.isAppEdit
@@ -29,16 +29,7 @@ define [ '../base/view',
             else
                 title = "Stack - #{@model.get('name')}"
 
-            data = @model.toJSON()
-
-            if Design.instance().opsModel().isMesos()
-                mesosData = {
-                    isMesos: true
-                    marathonOn: @model.getMarathon()
-                }
-                _.extend data, mesosData
-
-            @$el.html template data
+            @$el.html template @model.toJSON()
 
             if title
                 @setTitle( title )

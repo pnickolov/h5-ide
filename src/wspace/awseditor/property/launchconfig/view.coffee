@@ -31,18 +31,7 @@ define [ '../base/view', './template/stack', './template/stack_mesos', 'event', 
 
         render : () ->
             tpl = if @resModel.isMesos() then TplMesos else TplLc
-
-            data = @model.toJSON()
-
-            if @resModel.isMesos()
-                mesosData = {
-                    isMesos         : true
-                    mesosAttr       : @resModel.getMesosAttributes()
-                    defaultMesosAttr: @resModel.getDefaultMesosAttributes()
-                }
-                _.extend data, mesosData
-
-            @$el.html tpl data
+            @$el.html tpl @model.toJSON()
 
             kpDropdown = new kp(resModel: @resModel)
 

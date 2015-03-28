@@ -1,4 +1,16 @@
 <article class="property-app">
+  {{#if isMesos}}
+  <div class="option-group-head expand">Mesos Details</div>
+  <div class="option-group">
+    <section class="property-control-group">
+      <dl class="dl-vertical">
+        <dt>Cluster Leader</dt>
+        <dd>Placeholder</dd>
+      </dl>
+    </section>
+  </div>
+  {{/if}}
+
   <div class="option-group-head expand">{{i18n "PROP.INSTANCE_DETAIL"}}
   <a href="#" class="icon-syslog tooltip property-btn-get-system-log" data-tooltip="{{i18n 'PROP.INSTANCE_TIP_GET_SYSTEM_LOG'}}" ></a>
 </div>

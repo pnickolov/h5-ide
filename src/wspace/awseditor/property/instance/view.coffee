@@ -54,18 +54,7 @@ define [ '../base/view'
 
         render : () ->
             tpl = getTemplate @resModel.subType
-            data = @model.toJSON()
-
-            if @resModel.isMesos()
-                mesosData = {
-                    isMesosMaster   : @resModel.isMesosMaster()
-                    isMesosSlave    : @resModel.isMesosSlave()
-                    mesosAttr       : @resModel.getMesosAttributes?()
-                    defaultMesosAttr: @resModel.getDefaultMesosAttributes?()
-                }
-                _.extend data, mesosData
-
-            @$el.html tpl data
+            @$el.html tpl @model.toJSON()
 
             kpDropdown = new kp(resModel: @resModel)
             @$('#kp-placeholder').html kpDropdown.render().el

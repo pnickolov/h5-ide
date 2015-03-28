@@ -19,6 +19,16 @@ define [ '../base/model', 'constant', 'event', 'i18n!/nls/lang.js' ], ( Property
 			attr.displayCount   = attr.count - 1
 			attr.description    = component.get("description")
 
+            if component.isMesos()
+                mesosData = {
+                    isMesosMaster   : component.isMesosMaster()
+                    isMesosSlave    : component.isMesosSlave()
+                    mesosAttr       : component.getMesosAttributes?()
+                    defaultMesosAttr: component.getDefaultMesosAttributes?()
+                }
+                _.extend attr, mesosData
+
+
 			eni = component.getEmbedEni()
 			attr.number_disable = eni and eni.connections('RTB_Route').length > 0
 

@@ -2849,7 +2849,7 @@ aside.dashboard-sidebar {
       margin-right: 10px; }
 
 /*
-    IDE Core Editor 
+    IDE Core Editor
 
     - Layout
     - Side Panel Show and Hide
@@ -2920,6 +2920,8 @@ aside.dashboard-sidebar {
     .sidebar-title button.selected {
       border-bottom: 2px solid #4a90e2;
       color: #4a90e2; }
+  .sidebar-title .sidebar-nav-container {
+    display: none; }
 
 .openstack .OEPanelTop .sidebar-title {
   width: 280px;

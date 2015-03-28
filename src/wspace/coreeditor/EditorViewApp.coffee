@@ -32,8 +32,8 @@ define [
 
       @resourcePanel.switchPanel?()
       # Show marathon app list
-      @$( '.sidebar-nav-resource' ).remove()
-
+      @$( '.sidebar-nav-resource' ).hide()
+      @$( '.sidebar-nav-container').show()
       #if @workspace.opsModel.id
         #@resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()
 

@@ -201,10 +201,8 @@ define [
         @$el.find('.resource-panel').addClass('hide')
         @$el.find('.container-panel').removeClass('hide')
         return
-      # clean selected
+
       $button = $(event.currentTarget)
-      $button.parents('nav').find('button').removeClass('selected')
-      $button.addClass('selected')
 
       # switch
       @$el.find('.container-panel').addClass('hide')

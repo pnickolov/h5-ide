@@ -1441,12 +1441,20 @@ define [ 'component/stateeditor/model',
                 stateItemObj = that.genStateItemData($stateItem)
 
                 if stateItemObj and stateItemObj.module and stateItemObj.id
-                    stateObjAry.push(stateItemObj)
+                    if not (stateItemObj.module in ['linux.mesos.master', 'linux.mesos.slave'])
+                      stateObjAry.push(stateItemObj)
 
                 null
 
             # update all state id ref
             # that.updateStateIdBySort(newOldStateIdMap)
+
+            originStateData = that.model.getStateData()
+            mesosState = []
+            if originStateData and _.isArray(originStateData) and originStateData[0]
+                if originStateData[0].module in ['linux.mesos.master', 'linux.mesos.slave']
+                    mesosState = [originStateData[0]]
+            stateObjAry = mesosState.concat(stateObjAry)
 
             return stateObjAry
 

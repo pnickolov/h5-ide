@@ -26,6 +26,7 @@ define [ '../base/view', './template/stack', './template/stack_mesos', 'event', 
             'keyup #volume-size-ranged'       : 'sizeChanged'
 
             'change .mesos-attr'              : 'setMesosAttribute'
+            'REMOVE_ROW .multi-input'         : 'setMesosAttribute'
             'click #add-ma-item-outside'      : 'addMesosAttrItem'
 
         render : () ->

@@ -49,6 +49,7 @@ define [ '../base/view'
             'keyup #volume-size-ranged'       : 'sizeChanged'
 
             'change .mesos-attr'              : 'setMesosAttribute'
+            'REMOVE_ROW .multi-input'         : 'setMesosAttribute'
             'click #add-ma-item-outside'      : 'addMesosAttrItem'
 
         render : () ->

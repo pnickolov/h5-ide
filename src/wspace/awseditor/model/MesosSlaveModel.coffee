@@ -36,6 +36,13 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosSlave(attributes)
 
+    initialize: ( attr, option ) ->
+      InstanceModel.prototype.initialize.apply @, arguments
+
+      if option.createByUser or option.cloneSource
+        # Set auto assgin public ip
+        @getEmbedEni().set("assoPublicIp", true)
+
     setMesosState : (attr) ->
 
       attributes = attr or @_getMesosAttributes() or @getDefaultMesosAttributes()

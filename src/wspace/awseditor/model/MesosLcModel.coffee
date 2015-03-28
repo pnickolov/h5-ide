@@ -25,6 +25,9 @@ define [ "./LcModel", "./MesosSlaveModel", "Design", "constant", "./VolumeModel"
 
       attributes: {}
 
+      # Set Auto assgin public ip value true
+      publicIp: true
+
     constructor: ( attributes, options ) ->
       LcModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)

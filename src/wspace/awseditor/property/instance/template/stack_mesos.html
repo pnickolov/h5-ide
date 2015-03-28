@@ -220,7 +220,7 @@
 		</section>
 		<section {{#if multi_enis}}class="property-control-group tooltip" data-tooltip="{{i18n 'PROP.INSTANCE_TIP_PUBLIC_IP_CANNOT_BE_ASSOCIATED'}}"{{else}}class="property-control-group"{{/if}}>
 			<div class="checkbox">
-				<input id="property-instance-public-ip" type="checkbox" disabled="disabled" checked="checked" value="None" name="property-instance-public-ip" />
+				<input id="property-instance-public-ip" type="checkbox" disabled="disabled" {{#if publicIp}}checked="checked"{{/if}} value="None" name="property-instance-public-ip" />
 				<label for="property-instance-public-ip"></label>
 			</div>
 			<label for="property-instance-public-ip">{{ i18n "PROP.INSTANCE_ENI_AUTO_PUBLIC_IP" }}</label>

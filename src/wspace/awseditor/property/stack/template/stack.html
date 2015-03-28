@@ -63,7 +63,23 @@
 		<dt><label>{{ i18n "PROP.STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
     <dt><label>{{ i18n "PROP.STACK_LBL_ID" }}</label></dt><dd>{{id}}</dd>
 	</dl>
+
+  <section class="property-control-group" data-bind="true">
+  <!-- Mesos Settings -->
+    {{#if isMesos}}
+    <span>
+      <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
+      <label class="switch toolbar-visual-ops-switch narrow {{#if marathonOn}}on{{/if}}">
+        <span class="switch-handle"></span>
+      </label>
+    </span>
+    {{/if}}
+  </section>
+
   {{/unless}}
+
+
+
 
 	<!-- SG, ACL, COST -->
 	<div class="option-group-head">{{ i18n "PROP.STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>

@@ -194,7 +194,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           stack_id      : @__jsonData.stack_id
           host          : @__jsonData.host
           type          : @__jsonData.type
-          framework     : @__jsonData.framework
         })
 
     # Use this method to load the newest json.
@@ -317,8 +316,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         agent         : json.agent
         host          : json.host
         type          : @__jsonType
-        framework     : @__jsonFramework
       }
+
+      @__jsonFramework = null
+      if json.component
+        _.each json.component, (comp)->
+          if comp.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC] and comp.state?.length
+            _.each comp.state, (state)->
+              if state.module in ["linux.mesos.slave", "linux.mesos.master"] and state.parameter.framework?.length
+                @__jsonFramework = state.parameter.framework
 
       stoppable = json.property?.stoppable or true
 

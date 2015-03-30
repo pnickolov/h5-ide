@@ -1,5 +1,5 @@
 
-define [ "CanvasLine", "constant", "CanvasManager", "i18n!/nls/lang.js", "SGRulePopup" ], ( CeLine, constant, CanvasManager, lang, SGRulePopup )->
+define [ "CanvasLine", "constant", "CanvasManager", "i18n!/nls/lang.js" ], ( CeLine, constant, CanvasManager, lang )->
 
   CeLine.extend {
     ### env:dev ###

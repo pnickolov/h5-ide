@@ -23,11 +23,9 @@
 	    <dt>{{i18n "PROP.RT_VPC_ID"}}</dt>
 	    <dd>{{vpcId}}</dd>
 	  </dl>
-
 	  	{{#if canSetMain}}
 	  	<div class="tac property-control-group">
 			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
-			<p class="hide">{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
 		</div>
 		{{/if}}
 
@@ -35,10 +33,11 @@
 		<div class="tac property-control-group">
 			{{#if isMain}}
 			    <p>{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
-			{{else}}{{#if canSetMain}}
-                <button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
-                <p class="hide">{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>{{/if}}
-			{{/if}}
+            {{/if}}
+			{{#if canSetMain}}
+            <button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
+            {{/if}}
+
 		</div>
 	{{/if}}
 

@@ -7,9 +7,10 @@ define [
   "OpsModel"
   "CloudResources"
   "constant"
+  "ApiRequest"
 
   "./AwsDeps"
-], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant )->
+], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant, ApiRequest )->
 
   CoreEditorApp.extend {
 
@@ -46,9 +47,51 @@ define [
 
       throw err
 
+    initEditor : ()->
+      CoreEditorApp.prototype.initEditor.call this
+      @mesosJobs()
+      return
+
+    cleanup : ()->
+      CoreEditorApp.prototype.cleanup.call this
+      @cleanupMesosJobs()
+      return
+
     fetchAmiData  : StackEditor.prototype.fetchAmiData
     fetchRdsData  : StackEditor.prototype.fetchRdsData
     isRdsDisabled : StackEditor.prototype.isRdsDisabled
+
+    ### Mesos ###
+    mesosJobs : ()->
+      self = @
+      @updateMesosInfo().then(()->
+        if self.isRemoved() then return
+        self.trigger "mesosInfoUpdate"
+      ).fin ()->
+        if self.isRemoved() then return
+        self.mesosSchedule = setTimeout ()->
+          self.mesosJobs()
+        , 1000 * 10
+      return
+
+    updateMesosInfo : ()->
+      @mesosSchedule = null
+      jobs = []
+      jobs.push(
+        ApiRequest("marathon_info", {
+          "key_id" : @opsModel.credentialId()
+          "app_id" : @opsModel.id
+        }).then ( data )->
+          console.log data
+      )
+
+      Q.all jobs
+
+    cleanupMesosJobs : ()->
+      if @mesosSchedule
+        clearTimeout( @mesosSchedule )
+        @mesosSchedule = null
+      return
 
   }, {
     canHandle : ( data )->

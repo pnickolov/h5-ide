@@ -29,7 +29,7 @@
       <div class="network-list-wrap">
         <div class="network-list-header">
           {{ i18n "PROP.ENI_IP_ADDRESS"}}
-          <button id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="{{i18n 'PROP.ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP.ENI_ADD_IP"}}</button>
+          {{#unless isMesos}}<button id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="{{i18n 'PROP.ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP.ENI_ADD_IP"}}</button>{{/unless}}
         </div>
         <ul class="network-list" id="property-eni-list" data-bind="true">
         </ul>

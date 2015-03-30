@@ -21,7 +21,9 @@ define [ '../base/view',
             'keyup .input-ip'                       : 'syncIPList'
 
         render     : () ->
-            @$el.html( template( @model.attributes ) )
+            attr = @model.attributes
+            attr.isMesos = Design.instance().opsModel().isMesos()
+            @$el.html( template( attr ) )
 
             @refreshIpList()
 

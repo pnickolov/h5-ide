@@ -66,7 +66,6 @@ define [
       self = @
       @updateMesosInfo().then(()->
         if self.isRemoved() then return
-        self.trigger "mesosInfoUpdate"
       ).fin ()->
         if self.isRemoved() then return
         self.mesosSchedule = setTimeout ()->
@@ -75,14 +74,17 @@ define [
       return
 
     updateMesosInfo : ()->
+      that = @
       @mesosSchedule = null
       jobs = []
+
       jobs.push(
         ApiRequest("marathon_info", {
           "key_id" : @opsModel.credentialId()
-          "app_id" : @opsModel.id
+          # "app_id" : @opsModel.id
+          "app_id" : 'app-9ebdaedd'
         }).then ( data )->
-          console.log data
+          that.opsModel.setMesosData data
       )
 
       Q.all jobs

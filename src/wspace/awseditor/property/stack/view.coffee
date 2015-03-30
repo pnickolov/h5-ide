@@ -29,7 +29,7 @@ define [ '../base/view',
             else
                 title = "Stack - #{@model.get('name')}"
 
-            @$el.html template @model.toJSON()
+            @$el.html template.main @model.toJSON()
 
             if title
                 @setTitle( title )
@@ -39,7 +39,14 @@ define [ '../base/view',
             if @model.isAppEdit
                 @$( '#property-app-name' ).parsley 'custom', @checkAppName
 
+            @renderMesosData()
+
             null
+
+        renderMesosData: ( dataModel ) ->
+            dataModel = Design.instance().opsModel().getMesosData() unless dataModel
+
+            @$( '#mesos-data-area' ).html template.mesosData dataModel.toJSON()
 
         toggleMarathon: ( e ) ->
             $switch = $ e.currentTarget

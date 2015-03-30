@@ -10,6 +10,11 @@
 
 define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant )->
 
+  MesosDataModel = Backbone.Model.extend {
+    getSlave: ( hostname ) ->
+      @get( 'slaves' ).findWhere hostname: hostname
+  }
+
   AwsOpsModel = OpsModel.extend {
 
     type : OpsModel.Type.Amazon
@@ -22,6 +27,33 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
         if comp.type is constant.RESTYPE.VPC
           return comp.resource.VpcId
       undefined
+
+    __mesosData: new MesosDataModel()
+
+    setMesosData: ( data ) ->
+      framework = data.frameworks[ 0 ]
+
+      leaderIpPortString = data.leader.split( '@' )[ 1 ]
+      leaderIpPortArray = leaderIpPortString.split ':'
+      leaderPrivateIp = leaderIpPortArray[ 0 ]
+      leaderPort = leaderIpPortArray[ 1 ]
+
+      if framework
+        marathonIpPortString = framework.webui_url.slice 7 # Remove http://
+        marathonIpPortArray = marathonIpPortString.split ':'
+        marathonIp = marathonIpPortArray[ 0 ]
+        marathonPort = marathonIpPortArray[ 1 ]
+
+      @__mesosData.set {
+        framework   : framework and 'marathon' or ''
+        leaderIp    : leaderPrivateIp
+        leaderPort  : leaderPort
+        marathonIp  : marathonIp
+        marathonPort: marathonPort
+        slaves      : data.slaves
+      }
+
+    getMesosData: -> @__mesosData
 
     __defaultJson : ()->
       jsonType = @getStackType()

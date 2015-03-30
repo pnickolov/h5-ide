@@ -2461,6 +2461,11 @@ aside.dashboard-sidebar {
         padding: 0 3px;
         border-radius: 2px;
         display: inline-block; }
+    .region-app-stack-wrap .region-resource-list i.icon-app-type-mesos {
+      background: #0099ff;
+      left: 105px; }
+      .region-app-stack-wrap .region-resource-list i.icon-app-type-mesos:before {
+        content: "mesos"; }
     .region-app-stack-wrap .region-resource-list i.icon-stack-type-mesos {
       display: inline-block;
       position: absolute;

@@ -110,7 +110,9 @@
                     <div class="loading-spinner loading-spinner-small"></div><span>{{name}} - {{stateDesc}}...</span>
                 </div>
             {{else}}
-                {{#unless ../../isMarathon}}<i class="icon-app-type-{{usage}}"></i>
+                {{#unless ../../isMarathon}}
+                    <i class="icon-app-type-{{usage}}"></i>
+                    {{#ifCond type "mesos" }} <i class="icon-app-type-mesos"></i> {{/ifCond}}
                 {{else}}
                     <i class="icon-app-type-marathon"></i>
                 {{/unless}}

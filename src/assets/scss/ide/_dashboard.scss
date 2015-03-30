@@ -640,6 +640,13 @@ $bp-2: 1280px;
       }
 
     }
+    i.icon-app-type-mesos{
+      background: #0099ff;
+      left: 105px;
+      &:before{
+        content: "mesos";
+      }
+    }
     i.icon-stack-type-mesos {
       display: inline-block;
       position: absolute;

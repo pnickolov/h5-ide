@@ -308,6 +308,10 @@ function fn_generate_coffee() {
         then
             _API_NAME="'marathon_${_CUR_API}'"
             _URL="'/${api_type}/'"
+        elif [ "${_RESOURCE_l}" == "marathon" ] && [ "${_CUR_API}" == "leader" -o "${_CUR_API}" == "info" ]
+        then
+            _API_NAME="'marathon_${_CUR_API}'"
+            _URL="'/${api_type}/'"
         else
             _API_NAME="'marathon_${_RESOURCE_l}_${_CUR_API}'"
             _URL="'/${api_type}/${RESOURCE_URL}/'"
@@ -419,6 +423,7 @@ echo "Use 'git status' or 'git diff' to see the change"
 echo
 echo "Done"
 echo
+
 
 
 

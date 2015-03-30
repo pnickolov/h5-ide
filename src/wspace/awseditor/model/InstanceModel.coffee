@@ -717,7 +717,7 @@ define [
       allResourceArray.push( { layout : layout } )
 
       if Model.isMesosMaster(@attributes) or Model.isMesosSlave(@attributes)
-        @setMesosState()
+        @setMesosState() if @setMesosState
 
       # Generate instance member.
       instances = [ @generateJSON() ]

@@ -120,8 +120,6 @@ define [
       'OPTION_CHANGE #resource-list-sort-select-snapshot' : 'resourceListSortSelectSnapshotEvent'
       'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
 
-      'click .apply'                 : 'popApplyMarathonModal'
-      'click .container-change'      : 'popApplyMarathonModal'
       'click .container-item'        : 'toggleConstraint'
       'keyup #filter-containers'     : 'filterContainers'
       'change #filter-containers'    : 'filterContainers'
@@ -211,40 +209,6 @@ define [
           @$el.find('.resource-panel').removeClass('hide')
       else
           @$el.find('.container-panel').removeClass('hide')
-
-    popApplyMarathonModal: ->
-      data = []
-      for model in @workspace.scene.project.stacks().filter((a)-> a.type is OpsModel.Type.Mesos)
-        data.push {
-          name : model.get("name")
-          id   : model.id
-        }
-
-      isApp = (Design.instance().mode() in ['appedit', 'app'])
-      data.isApp = isApp
-      modalOptions =
-          template        : MC.template.applyMarathonStack( data )
-          title           : 'Apply Marathon Stack '
-          confirm         :
-              text        : 'Apply'
-
-      @marathonModal = new Modal modalOptions
-      @marathonModal.on 'confirm', () ->
-        unless $( '#app-usage-selectbox .selected' ).length then return
-        @loadMarathon( $( '#app-usage-selectbox .selected' ).attr("data-value") )
-        @marathonModal.close()
-      , @
-
-    loadMarathon: (opsModelId)->
-      that = @
-      opsModel = App.model.getOpsModelById( opsModelId )
-
-      data = opsModel.getJsonData()
-      if data
-        @renderMarathonApp( data )
-      else
-        opsModel.fetchJsonData().then ()-> that.renderMarathonApp( opsModel.getJsonData() )
-
 
     renderMarathonApp: ( data ) ->
 

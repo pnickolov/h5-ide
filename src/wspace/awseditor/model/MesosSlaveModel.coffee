@@ -33,8 +33,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
     constructor: ( attributes, options ) ->
       InstanceModel.call @, attributes, _.extend( {}, options, createBySubClass: true )
-      Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
-      @setMesosState() if not Model.isMesosSlave(attributes)
+      @setMesosState() if not InstanceModel.isMesosSlave(attributes)
 
     initialize: ( attr, option ) ->
       InstanceModel.prototype.initialize.apply @, arguments

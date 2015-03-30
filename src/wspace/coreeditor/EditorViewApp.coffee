@@ -7,7 +7,8 @@ define [
   "i18n!/nls/lang.js"
   "ApiRequest"
   "AppAction"
-], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, ApiRequest, AppAction )->
+  "constant"
+], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, ApiRequest, AppAction, constant )->
 
   StackView.extend {
 
@@ -23,7 +24,7 @@ define [
       return
 
     updateResourcePanel: ->
-      if @workspace.opsModel.isMesos()
+      if @workspace.opsModel.isMesos() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
         @renderMesosPanel()
       else
         @removeLeftPanel()

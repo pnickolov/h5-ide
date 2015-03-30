@@ -47,7 +47,7 @@
 
   {{#unless isMesos}}
   <section class="accordion-group">
-    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
+    <header class="fixedaccordion-head ami-header">{{ i18n "RES_TIT_AMI" }}
       <nav class="selectbox AmiTypeSelect js-toggle-dropdown">
         <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
         <ul class="dropdown">

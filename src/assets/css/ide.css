@@ -3703,6 +3703,9 @@ aside.dashboard-sidebar {
     height: 46px; }
 
 /* AMI */
+.ami-header {
+  overflow: visible; }
+
 .AmiTypeSelect {
   position: absolute;
   top: 0;
@@ -3712,7 +3715,7 @@ aside.dashboard-sidebar {
     background: #25254c;
     color: #F3F3F3;
     height: 17px;
-    width: auto;
+    width: 100px;
     border: none;
     border-left: 1px solid #161616;
     border-radius: 0;

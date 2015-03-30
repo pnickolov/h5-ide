@@ -304,12 +304,13 @@ define [ "./DashboardTpl",
       else
         resources = resources.filter (f)-> f.get("provider") isnt "docker::marathon"
 
-      attr[updateType] = resources.filter(filter).map( (m)-> m.toJSON(tojson) ).reverse()
-
       # ops count for each region.
       attr.region = _.map data, (obj)->
-        obj.count = _.groupBy(attr[updateType], "region")[obj.id]?.length || 0
+        obj.count = _.filter(resources, (resource)-> return resource.get("region") is obj.id).length
         obj
+
+      attr[updateType] = resources.filter(filter).map( (m)-> m.toJSON(tojson) ).reverse()
+
       attr.globalCount = resources.length
 
       attr.projectId = self.model.scene.project.id

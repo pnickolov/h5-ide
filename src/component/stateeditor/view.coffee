@@ -465,12 +465,14 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            _.each $stateItemList, (stateItem) ->
+            $stateItemList = _.filter $stateItemList, (stateItem) ->
 
                 $stateItem = $(stateItem)
                 that.refreshStateView($stateItem)
+                return false if $stateItem.hasClass('disabled')
+                return true
 
-                null
+            $stateItemList = $($stateItemList)
 
             if not that.readOnlyMode
 
@@ -1609,6 +1611,8 @@ define [ 'component/stateeditor/model',
 
                         stateRenderObj.parameter_list = that.model.sortParaList(paraListAry, 'para_name')
 
+                        stateRenderObj.disabled = (state.module in ['linux.mesos.master', 'linux.mesos.slave'])
+
                         null
 
                     renderObj.state_list.push(stateRenderObj)
@@ -2069,7 +2073,8 @@ define [ 'component/stateeditor/model',
                                 that.setPlainText($valueInput, '')
                 )
 
-                if that.readOnlyMode
+                $stateItem = $editorElem.parents('.state-item')
+                if that.readOnlyMode or $stateItem.hasClass('disabled')
                     editor.setReadOnly(true)
 
             if $editorElem.hasClass('command-value') or $editorElem.hasClass('text-code-editor')
@@ -2949,6 +2954,8 @@ define [ 'component/stateeditor/model',
 
             that = this
 
+            items = $('#OpsEditor').find('#state-editor .state-item')
+
             item = $('#OpsEditor').find('#state-editor .state-item.focused')
 
             focused_index = $('#OpsEditor').find('#state-editor .state-item.focused').index('#OpsEditor #state-editor .state-list > li')
@@ -2959,11 +2966,15 @@ define [ 'component/stateeditor/model',
 
                 if next_item.length > 0
 
+                    return false if next_item.hasClass('disabled')
+
                     item.insertAfter next_item
 
                     new_index = focused_index + 1
 
                 else
+
+                    return false if items.eq(0).hasClass('disabled')
 
                     item.parent().prepend item
 
@@ -2975,11 +2986,15 @@ define [ 'component/stateeditor/model',
 
                 if prev_item.length > 0
 
+                    return false if prev_item.hasClass('disabled')
+
                     item.insertBefore prev_item
 
                     new_index = focused_index - 1
 
                 else
+
+                    return false if items.eq(items.length - 1).hasClass('disabled')
 
                     item.parent().append item
 
@@ -3025,6 +3040,8 @@ define [ 'component/stateeditor/model',
             that = this
 
             item = $('#OpsEditor').find('#state-editor .state-item.focused')
+
+            return if item.hasClass('disabled')
 
             if item.hasClass('selected')
 
@@ -3280,7 +3297,7 @@ define [ 'component/stateeditor/model',
 
             that = this
 
-            $('#OpsEditor').find('#state-editor .state-item').addClass('selected').find('.checkbox input').prop('checked', true)
+            $('#OpsEditor').find('#state-editor .state-item:not(.disabled)').addClass('selected').find('.checkbox input').prop('checked', true)
 
             that.updateToolbar()
 
@@ -3340,7 +3357,7 @@ define [ 'component/stateeditor/model',
                 that.$('#state-toolbar-paste').removeClass 'disabled'
             else
                 that.$('#state-toolbar-paste').addClass 'disabled'
-            if selected_length > 0 and selected_length is that.$('#state-editor .state-item').length
+            if selected_length > 0 and selected_length is that.$('#state-editor .state-item:not(.disabled)').length
                 that.$('#state-toolbar-selectAll').find('input').prop('checked', true)
             else
                 that.$('#state-toolbar-selectAll').find('input').prop('checked', false)

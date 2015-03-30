@@ -1,7 +1,8 @@
 <!-- {{stateListTpl}} -->
 {{#each state_list}}
-	<li class="state-item view {{#ifCond cmd_value '#'}}comment{{/ifCond}}" data-command="{{cmd_value}}" data-id="{{id}}">
+	<li class="state-item {{#if disabled}}disabled{{/if}} view {{#ifCond cmd_value '#'}}comment{{/ifCond}}" data-command="{{cmd_value}}" data-id="{{id}}">
 		<div class="state-toolbar">
+			{{#unless disabled}}
 			<div class="state-action-wrap">
 				<div class="state-remove icon-del tooltip" data-tooltip="{{i18n 'STATE_TIP_DELETE_STATE'}}"></div>
 				<div class="state-check tooltip" data-tooltip="{{i18n 'STATE_TIP_SELECT_STATE'}}">
@@ -11,8 +12,9 @@
 					</div>
 				</div>
 			</div>
+			{{/unless}}
 			<i class="state-status-icon status status-yellow"></i>
-			<i class="state-drag"></i>
+			{{#unless disabled}}<i class="state-drag"></i>{{/unless}}
 			<div class="state-view">
 				<div class="command-view-value"></div>
 				<div class="parameter-view-list">

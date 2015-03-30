@@ -64,7 +64,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
             key: ipRef,
             value: master.get('name')
           })
-      @set('state', [{
+      mesosState = [{
         id: @get('name'),
         module: 'linux.mesos.slave',
         parameter: {
@@ -72,7 +72,12 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
           attributes: attributes,
           slave_ip: '@{self.PrivateIpAddress}'
         }
-      }])
+      }]
+      states = @get('state') or []
+      states = _.filter states, (state) ->
+        return false if state.module in ['linux.mesos.master', 'linux.mesos.slave']
+        return true
+      @set('state', mesosState.concat(states))
 
     getMesosState : () ->
 

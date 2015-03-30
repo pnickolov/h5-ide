@@ -1110,7 +1110,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       _.each component, (comp)->
         if comp.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC]
           _.each comp.state, (st)->
-            if st.module in ["linux.mesos.master", "linux.mesos.slave"]
+            if st.module is "linux.mesos.master"
               st.parameter.framework = framework
 
       json.component = component

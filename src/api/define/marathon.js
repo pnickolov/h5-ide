@@ -12,7 +12,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'marathon_server_leader'            : { type:'marathon', url:'/marathon/server/',	method:'leader',	params:['username', 'session_id', 'app_id', 'new_election']   },
 		'marathon_subscription_list'        : { type:'marathon', url:'/marathon/subscription/',	method:'list',	params:['username', 'session_id', 'app_id']   },
 		'marathon_subscription_register'    : { type:'marathon', url:'/marathon/subscription/',	method:'register',	params:['username', 'session_id', 'app_id', 'callback_url']   },
-		'marathon_task_list'                : { type:'marathon', url:'/marathon/task/',	method:'list',	params:['username', 'session_id', 'master_ips', 'marathon_app_id', 'task_id']   },
+		'marathon_task_list'                : { type:'marathon', url:'/marathon/task/',	method:'list',	params:['username', 'session_id', 'leader_ip', 'marathon_app_id', 'task_id']   },
 		'marathon_task_kill'                : { type:'marathon', url:'/marathon/task/',	method:'kill',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'task_id']   },
 		'marathon_task_queue'               : { type:'marathon', url:'/marathon/task/',	method:'queue',	params:['username', 'session_id', 'app_id']   },
 	}

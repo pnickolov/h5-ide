@@ -62,6 +62,12 @@ define [ "constant", "ConnectionModel", "ComplexResModel", "Design" ], ( constan
     # The route is only visible if it is not routing to external resources.
     isVisual : ()-> !@getTarget( "ExternalVpcRouteTarget" )
 
+    isRemovable : ()->
+      if @getTarget( constant.RESTYPE.IGW ) and @getTarget( constant.RESTYPE.RT ).get("main") and @design().opsModel().isMesos()
+        return { error : "Cannot be deleted, subnets must connect to internet." }
+
+      true
+
     constructor : ( p1Comp, p2Comp, attr, option )->
       # If the target is an ENI, and it's embeded. Rtb will connect to its Instance
       if p1Comp.type is constant.RESTYPE.ENI

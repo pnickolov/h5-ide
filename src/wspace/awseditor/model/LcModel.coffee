@@ -174,6 +174,9 @@ define [
 
         blockDevice.push vd
 
+      if InstanceModel.isMesosMaster(@attributes) or InstanceModel.isMesosSlave(@attributes)
+        @setMesosState()
+
       component =
         type : @type
         uid  : @id
@@ -280,4 +283,3 @@ define [
   }
 
   Model
-

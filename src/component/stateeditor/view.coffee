@@ -2074,7 +2074,7 @@ define [ 'component/stateeditor/model',
                 )
 
                 $stateItem = $editorElem.parents('.state-item')
-                if that.readOnlyMode or $stateItem.hasClass('disabled')
+                if that.readOnlyMode or $stateItem.hasClass('disabled') or option?.disabled
                     editor.setReadOnly(true)
 
             if $editorElem.hasClass('command-value') or $editorElem.hasClass('text-code-editor')
@@ -3517,13 +3517,16 @@ define [ 'component/stateeditor/model',
 
             $codeArea = $('#modal-state-text-expand .editable-area')
 
+            disabled = $(originEditor.container).parents('.state-item').hasClass('disabled')
+
             # init editor
             that.initCodeEditor($codeArea[0], {
                 at: that.resAttrDataAry
             }, {
                 showGutter: true,
                 isCodeEditor: true,
-                extName: extName
+                extName: extName,
+                disabled: disabled
             })
             codeEditor = $codeArea.data('editor')
 

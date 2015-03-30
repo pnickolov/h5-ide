@@ -54,7 +54,9 @@ define [
 
       # Toolbar
       if opsModel.isStack()
-        btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle", "BtnSwitchStates"]
+        btns = ["BtnRunStack", "BtnStackOps", "BtnZoom", "BtnExport", "BtnLinestyle"]
+        unless opsModel.isMesos()
+          btns.push "BtnSwitchStates"
       else
         btns = ["BtnEditApp", "BtnAppOps", "BtnZoom", "BtnPng", "BtnLinestyle", "BtnReloadRes"]
 

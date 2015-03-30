@@ -22,6 +22,8 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
             'click .remove-vpc-peer-route a'      : 'onRemoveVPCPeerRoute'
 
         render     : () ->
+            attr = @model.attributes
+            attr.canSetMain = !@model.isMain and !Design.instance().opsModel().isMesos()
             @$el.html template @model.attributes
             @model.attributes.title
 

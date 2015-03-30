@@ -24,20 +24,20 @@
 	    <dd>{{vpcId}}</dd>
 	  </dl>
 
-	  	{{#unless isMain}}
+	  	{{#if canSetMain}}
 	  	<div class="tac property-control-group">
 			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
 			<p class="hide">{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
 		</div>
-		{{/unless}}
+		{{/if}}
 
 	{{else}}
 		<div class="tac property-control-group">
 			{{#if isMain}}
-			<p>{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
-			{{else}}
-			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
-			<p class="hide">{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
+			    <p>{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
+			{{else}}{{#if canSetMain}}
+                <button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
+                <p class="hide">{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>{{/if}}
 			{{/if}}
 		</div>
 	{{/if}}

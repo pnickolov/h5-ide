@@ -2980,3 +2980,7 @@ into live resources, or import existing infrastructures."
     CREATE_STACK_CONFIRM:
       en: "Create Stack"
       zh: "创建 Stack"
+
+    CANT_ATTACH_ENI_TO_MESOS_INSTANCE:
+      en: "ENI cannot be attached to a mesos master or slave instance."
+      zh: "Eni 不能附加到 Mesos Master 或 Mesos Slave 实例上。"

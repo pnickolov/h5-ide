@@ -8,9 +8,10 @@ define [
   "CloudResources"
   "constant"
   "ApiRequest"
+  "./model/MesosMasterModel"
 
   "./AwsDeps"
-], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant, ApiRequest )->
+], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant, ApiRequest, MesosMasterModel )->
 
   CoreEditorApp.extend {
 
@@ -80,9 +81,9 @@ define [
 
       jobs.push(
         ApiRequest("marathon_info", {
-          "key_id" : @opsModel.credentialId()
-          # "app_id" : @opsModel.id
-          "app_id" : 'app-9ebdaedd'
+          "key_id" : @opsModel.credentialId(),
+          "master_ips" : {"10.0.3.4":"52.4.160.224", "10.0.2.4":"52.4.180.240", "10.0.2.5":"52.4.31.182"}
+          # MesosMasterModel.getMasterIPs()
         }).then ( data )->
           that.opsModel.setMesosData data
       )

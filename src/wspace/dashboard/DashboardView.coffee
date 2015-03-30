@@ -291,14 +291,19 @@ define [ "./DashboardTpl",
         name : name
         count: 0
         shortName : constant.REGION_SHORT_LABEL[ id ]
+
+      # global or sub region
       if region isnt "global"
         filter = (f)-> f.get("region") is region && f.isExisting()
       else
         filter = ()-> true
+
       tojson = {thumbnail:true}
-      resources = self.model.scene.project[updateType]()
+      resources = _.clone self.model.scene.project[updateType]()
       resources.comparator = "updateTime"
       resources.sort()
+
+      #if is marathon(Deprecated)
       if isMarathon
         resources = resources.filter (f)-> f.get("provider") is "docker::marathon"
       else
@@ -315,11 +320,13 @@ define [ "./DashboardTpl",
 
       attr.projectId = self.model.scene.project.id
       attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
+
       if isMarathon
         attr.isMarathon = isMarathon
         @$el.find(".region-app-stack-wrap.marathon .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
       else
         @$el.find(".region-app-stack-wrap").not(".marathon").find(".dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+
       return
 
     updateRegionTabCount : ()->

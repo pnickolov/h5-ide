@@ -24,7 +24,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       undefined
 
     __defaultJson : ()->
-      jsonType = @getJsonType()
+      jsonType = @getStackType()
       if jsonType is "aws"
         @___defaultJson()
       else
@@ -177,7 +177,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
         {"region":"sa-east-1","imageId":"ami-c79e28da"}
       ]
 
-      framework =  if @getJsonFramework() then ["marathon"] else []
+      framework =  if @getStackFramework() then ["marathon"] else []
       imageId = (_.findWhere amiForEachRegion, {region: @get("region")}).imageId
       regionName = @get("region")
 
@@ -1108,9 +1108,9 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
 
       # set framework option
       _.each component, (comp)->
-        if comp.type is constant.RESTYPE.INSTANCE
+        if comp.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC]
           _.each comp.state, (st)->
-            if st.module is "linux.mesos.master"
+            if st.module in ["linux.mesos.master", "linux.mesos.slave"]
               st.parameter.framework = framework
 
       json.component = component

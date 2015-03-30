@@ -640,7 +640,29 @@ $bp-2: 1280px;
       }
 
     }
-
+    i.icon-stack-type-mesos {
+      display: inline-block;
+      position: absolute;
+      top: 25px;
+      width: 40px;
+      height: 14px;
+      content: "mesos";
+      left: 60px;
+      border: 1px solid #0099ff;
+      background: #0099ff;
+      color: #fff;
+      font-size: 12px;
+      line-height: 13px;
+      font-variant: small-caps;
+      font-style: normal;
+      text-align: center;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      &:after{
+        content: "mesos";
+      }
+    }
     .thumbnail {
       width         : 50px;
       height        : 33px;
@@ -770,7 +792,9 @@ $bp-2: 1280px;
 .dash-region-apps-wrap .region-resource-info span {
   margin-top: -10px;
 }
-
+.dash-region-stacks-wrap .region-resource-info span.upper-compact{
+  margin-top: -10px;
+}
 
 /* Resource Table */
 

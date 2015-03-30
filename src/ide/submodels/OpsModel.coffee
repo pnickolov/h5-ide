@@ -57,7 +57,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       requestId      : ""     # When the app is launching, this holds the request id.
       progress       : 0      # The progress of current action on the app.
       opsActionError : ""     # The failure of the lastest action.
-
+      type           : "aws"  # Whether its a marathon stack or aws stack
       # duplicateTarget : ""  # Use internally.
 
 
@@ -81,7 +81,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     initialize : ( attr, options )->
 
-      @__setJsonType( options || {})
+      type = attr.type || options.type
+      if type
+        @set("type", type || "aws")
+      if options.type
+        @__jsonFramework = options.framework
 
       if options and options.jsonData
         @__setJsonData options.jsonData
@@ -279,8 +283,6 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           tag  : App.user.get("tag")
         }
 
-      if json.type then @__setJsonType(json)
-
       if not json.property
         json.property = { stoppable : true }
 
@@ -315,7 +317,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         layout        : json.layout
         agent         : json.agent
         host          : json.host
-        type          : @__jsonType
+        type          : @.get("type")
       }
 
       @__jsonFramework = null
@@ -339,14 +341,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       @
 
-    __setJsonType: (opts = {})->
-      @__jsonType = opts.type || "aws"
-      @__jsonFramework = opts.framework || null
-      return
-
-    getJsonType: ()-> @__jsonType
-    getJsonFramework : ()-> @__jsonFramework
-    isMesos: ()-> @getJsonType() is "mesos"
+    getStackType: ()-> @get("type") || @__jsonType
+    getStackFramework : ()-> @__jsonFramework
+    isMesos: ()-> @getStackType() is "mesos"
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->

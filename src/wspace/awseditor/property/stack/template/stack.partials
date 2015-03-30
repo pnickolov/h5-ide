@@ -134,8 +134,8 @@
 {{#if this.leaderIp}}
 <dl class="dl-vertical">
   <dt>Framework</dt><dd>{{emptyStr framework}}</dd>
-  <dt>Mesos Leader UI</dt><dd><a href="http://{{leaderIp}}:{{leaderPort}}">{{leaderIp}}:{{leaderPort}}</a></dd>
-  {{#if framework}}<dt>Marathon Leader UI</dt><dd><a href="http://{{leaderIp}}:{{leaderPort}}">{{marathonIp}}:{{marathonPort}}</a></dd>{{/if}}
+  <dt>Mesos Leader UI</dt><dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{leaderIp}}:{{leaderPort}}</a></dd>
+  {{#if framework}}<dt>Marathon Leader UI</dt><dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{marathonIp}}:{{marathonPort}}</a></dd>{{/if}}
 </dl>
 {{else}}
 Mesos Data is not ready yet...

@@ -44,7 +44,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
     setMesosState : (marathon) ->
 
-      Model.getMasterIPs()
+      ipMap = Model.getMasterIPs()
       marathon = @_getMarathon() if marathon is undefined
       stackName = Design.instance().get('name')
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
@@ -120,10 +120,22 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
     getMasterIPs : () ->
 
+      mode = Design.instance().mode()
+      return {} if mode is 'stack'
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
+      eniData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.ENI, Design.instance().region())
+      ipMap = {}
       _.each masterModels, (master) ->
-        master
-      return []
+        if master.isMesosMaster()
+          eniId = master.getEmbedEni().get('appId')
+          eni = eniData.get(eniId)
+          if eni
+            privateIp = eni.get('privateIpAddress')
+            publicIp = eni.get('association')?.publicIp
+            if privateIp and publicIp
+              ipMap[privateIp] = publicIp
+        null
+      return ipMap
 
   }
 

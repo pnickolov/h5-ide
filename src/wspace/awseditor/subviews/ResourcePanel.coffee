@@ -180,7 +180,7 @@ define [
 
       if isMesos
         @updateMesos()
-        @renderMarathonApp()
+        @renderContainerList()
       else
         @updateAmi()
 
@@ -209,16 +209,6 @@ define [
           @$el.find('.resource-panel').removeClass('hide')
       else
           @$el.find('.container-panel').removeClass('hide')
-
-    renderMarathonApp: () ->
-
-      $appList = @$ '.marathon-app-list'
-      $createPanel = @$ '.marathon-app-ready'
-
-      $appList.show()
-      $createPanel.hide()
-
-      @renderContainerList()
 
     toggleConstraint: ( e ) ->
 
@@ -654,28 +644,22 @@ define [
     getContainerList: () ->
 
       mesosData = @workspace.opsModel.getMesosData()
-      leaderIp = "52.4.252.105" #mesosData.get('leaderIp') or "52.4.252.105"
-      if leaderIp
-        jobs = []
-        jobs.push(
-          ApiRequest("marathon_app_list", {
-            "key_id" : @workspace.opsModel.credentialId(),
-            "leader_ip" : leaderIp
-            # MesosMasterModel.getMasterIPs()
-          }),
-          ApiRequest("marathon_task_list", {
-            "key_id" : @workspace.opsModel.credentialId(),
-            "leader_ip" : leaderIp
-            # MesosMasterModel.getMasterIPs()
-          })
-        )
-      Q.all jobs
+      leaderIp = "52.4.252.105" #mesosData.get('leaderIp')
+      Q.all([
+        ApiRequest("marathon_app_list", {
+          "key_id" : @workspace.opsModel.credentialId(),
+          "leader_ip" : leaderIp
+        }),
+        ApiRequest("marathon_task_list", {
+          "key_id" : @workspace.opsModel.credentialId(),
+          "leader_ip" : leaderIp
+        })
+      ])
 
     renderContainerList: (json) ->
 
-        @getContainerList().then (data) ->
-          data
-
+      that = @
+      @getContainerList().then (data) ->
         tasks = {
           "tasks": [
               {
@@ -732,7 +716,51 @@ define [
         dataApp = {
           "apps": [
             {
-              "id": "/test",
+              "id": "/test1",
+              "cmd": "while sleep 10000; do date -u +%T; done",
+              "args": null,
+              "user": null,
+              "env": {},
+              "instances": 1,
+              "cpus": 0.5,
+              "mem": 128,
+              "disk": 0,
+              "executor": "",
+              "constraints": [],
+              "uris": [],
+              "storeUrls": [],
+              "ports": [
+                10000
+              ],
+              "requirePorts": false,
+              "backoffSeconds": 1,
+              "backoffFactor": 1.15,
+              "maxLaunchDelaySeconds": 3600,
+              "container": {
+                "type": "DOCKER",
+                "volumes": [],
+                "docker": {
+                  "image": "ubuntu",
+                  "privileged": false,
+                  "parameters": []
+                }
+              },
+              "healthChecks": [],
+              "dependencies": [],
+              "upgradeStrategy": {
+                "minimumHealthCapacity": 1,
+                "maximumOverCapacity": 1
+              },
+              "labels": {},
+              "version": "2015-03-30T07:51:47.753Z",
+              "tasksStaged": 0,
+              "tasksRunning": 1,
+              "tasksHealthy": 0,
+              "tasksUnhealthy": 0,
+              "deployments": []
+            },
+            {
+              "id": "/test2",
               "cmd": "while sleep 10000; do date -u +%T; done",
               "args": null,
               "user": null,
@@ -778,6 +806,9 @@ define [
           ]
         }
 
+        that.$('.marathon-app-list').show()
+        that.$('.marathon-app-ready').hide()
+
         viewData = []
         _.each dataApp.apps, (app) ->
           viewData.push({
@@ -788,8 +819,8 @@ define [
             memory: app.mem
           })
 
-        @$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)
-        @recalcAccordion()
+        that.$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)
+        that.recalcAccordion()
 
     toggleGroup: (event) ->
 

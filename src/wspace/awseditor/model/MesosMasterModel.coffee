@@ -51,6 +51,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       stackName = Design.instance().get('name')
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMapAry = []
+      masterIds = []
       _.each masterModels, (master) ->
         if master.isMesosMaster()
           ipRef = '@{' + master.id + '.PrivateIpAddress}'
@@ -58,13 +59,16 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
             key: ipRef,
             value: master.get('name')
           })
+          masterIds.push(master.get('name'))
+      masterIds = masterIds.sort()
+      serverId = String(masterIds.indexOf(@get('name')))
       mesosState = [{
-        id: @get('name'),
+        id: "state-" + @get('name'),
         module: 'linux.mesos.master',
         parameter: {
           cluster_name: stackName,
           master_ip: '@{self.PrivateIpAddress}',
-          server_id: @get('name'),
+          server_id: serverId,
           masters_addresses: masterMapAry,
           hostname: @get('name'),
           framework: if marathon then ['marathon'] else []

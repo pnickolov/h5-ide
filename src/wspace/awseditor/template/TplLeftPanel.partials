@@ -188,10 +188,10 @@
 
 <!-- {{mesos}} -->
 <li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSMASTER"}'>
-  Master
+  <div class="resource-icon-instance"></div>Master
 </li>
 <li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSSLAVE"}'>
-  Slave
+  <div class="resource-icon-instance"></div>Slave
 </li>
 <li class="resource-item asg" data-type="ASG" data-option='{"lcId": "MESOS.LC"}'><div class="resource-icon-instance">
   Slave

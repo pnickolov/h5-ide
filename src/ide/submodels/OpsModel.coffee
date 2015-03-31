@@ -88,6 +88,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         @__jsonFramework = options.framework
 
       if options and options.jsonData
+        if options.jsonData.type
+          @set("type", options.jsonData.type)
         @__setJsonData options.jsonData
 
       @__userTriggerAppProgress = false

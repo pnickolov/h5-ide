@@ -1,6 +1,6 @@
 define(['ApiRequestDefs'], function( ApiRequestDefs ){
 	var Apis = {
-		'marathon_app_list'                 : { type:'marathon', url:'/marathon/app/',	method:'list',	params:['username', 'session_id', 'app_id', 'marathon_app_id']   },
+		'marathon_app_list'                 : { type:'marathon', url:'/marathon/app/',	method:'list',	params:['username', 'session_id', 'leader_ip', 'marathon_app_id']   },
 		'marathon_app_list_version'         : { type:'marathon', url:'/marathon/app/',	method:'list_version',	params:['username', 'session_id', 'app_id', 'marathon_app_id', 'version']   },
 		'marathon_deployment_list'          : { type:'marathon', url:'/marathon/deployment/',	method:'list',	params:['username', 'session_id', 'app_id']   },
 		'marathon_deployment_delete'        : { type:'marathon', url:'/marathon/deployment/',	method:'delete',	params:['username', 'session_id', 'deployment_id']   },

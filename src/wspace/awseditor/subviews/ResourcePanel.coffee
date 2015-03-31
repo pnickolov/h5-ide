@@ -660,16 +660,16 @@ define [
         jobs.push(
           ApiRequest("marathon_app_list", {
             "key_id" : @workspace.opsModel.credentialId(),
-            "leader_ip" : {"10.0.3.4":"52.4.211.169", "10.0.2.4":"52.4.252.105", "10.0.2.5":"52.4.57.214"}
+            "leader_ip" : leaderIp
             # MesosMasterModel.getMasterIPs()
           }),
           ApiRequest("marathon_task_list", {
             "key_id" : @workspace.opsModel.credentialId(),
-            "leader_ip" : {"10.0.3.4":"52.4.211.169", "10.0.2.4":"52.4.252.105", "10.0.2.5":"52.4.57.214"}
+            "leader_ip" : leaderIp
             # MesosMasterModel.getMasterIPs()
           })
         )
-        Q.all jobs
+      Q.all jobs
 
     renderContainerList: (json) ->
 

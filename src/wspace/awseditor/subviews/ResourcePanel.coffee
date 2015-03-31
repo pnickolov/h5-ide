@@ -651,7 +651,30 @@ define [
       Backbone.View.prototype.remove.call this
       return
 
+    getContainerList: () ->
+
+      mesosData = @workspace.opsModel.getMesosData()
+      leaderIp = mesosData.get('leaderIp')
+      if leaderIp
+        jobs = []
+        jobs.push(
+          ApiRequest("marathon_app_list", {
+            "key_id" : @workspace.opsModel.credentialId(),
+            "leader_ip" : {"10.0.3.4":"52.4.211.169", "10.0.2.4":"52.4.252.105", "10.0.2.5":"52.4.57.214"}
+            # MesosMasterModel.getMasterIPs()
+          }),
+          ApiRequest("marathon_task_list", {
+            "key_id" : @workspace.opsModel.credentialId(),
+            "leader_ip" : {"10.0.3.4":"52.4.211.169", "10.0.2.4":"52.4.252.105", "10.0.2.5":"52.4.57.214"}
+            # MesosMasterModel.getMasterIPs()
+          })
+        )
+        Q.all jobs
+
     renderContainerList: (json) ->
+
+        @getContainerList().then (data) ->
+          data
 
         appMap = {}
         otherApp = []

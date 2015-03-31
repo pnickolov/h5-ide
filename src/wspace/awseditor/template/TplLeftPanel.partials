@@ -207,7 +207,7 @@
 <dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 
 <!-- {{containerList}} -->
-<input id="filter-containers" class="input filter-containers" type="text" placeholder="Filter container..."/>
+<input id="filter-containers" class="input filter-containers" type="text" placeholder="Filter app..."/>
 <ul class="container-list">
   {{#each this}}
   <li class="container-item tooltip" data-tooltip="Click to view service placement on canvas" data-name="{{id}}">

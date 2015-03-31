@@ -118,7 +118,7 @@ define [
           console.error "No DefaultKP found when initialize InstanceModel"
 
 
-        #assign DefaultSG
+        # Assign DefaultSG
         SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         defaultSg = SgModel.getDefaultSg()
         if defaultSg
@@ -127,6 +127,8 @@ define [
         else
           console.error "No DefaultSG found when initialize InstanceModel"
 
+        # Assign Mesos Sg
+        if @isMesos() then @assignMesosSg()
 
       # Always setTenancy to insure we don't have micro type for dedicated.
       tenancy = @get("tenancy")
@@ -762,6 +764,16 @@ define [
         allResourceArray.push( { component : res } )
 
       return allResourceArray
+
+    assignMesosSg: ->
+      mesosSg = Design.modelClassForType( constant.RESTYPE.SG ).find ( sg ) -> sg.isMesos()
+
+      if mesosSg
+        SgAsso = Design.modelClassForType( "SgAsso" )
+        new SgAsso( @, mesosSg )
+      else
+        console.error "No MesosSG found when initialize InstanceModel"
+
 
     isMesosMaster: -> Model.isMesosMaster @attributes
     isMesosSlave : -> Model.isMesosSlave @attributes

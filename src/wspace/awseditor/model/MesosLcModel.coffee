@@ -15,7 +15,6 @@ define [ "./LcModel", "./MesosSlaveModel", "Design", "constant", "./VolumeModel"
       instanceType : "m1.small"
       monitoring   : false
       userData     : ""
-      publicIp     : false
       state        : null
 
       # RootDevice
@@ -33,6 +32,13 @@ define [ "./LcModel", "./MesosSlaveModel", "Design", "constant", "./VolumeModel"
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosSlave(attributes)
 
+    initialize : ( attr, option )->
+      LcModel.prototype.initialize.apply @, arguments
+
+      if option and option.createByUser
+        @assignMesosSg()
+
+
     setMesosState             : MesosSlaveModel.prototype.setMesosState
     getMesosState             : MesosSlaveModel.prototype.getMesosState
     getDefaultMesosAttributes : MesosSlaveModel.prototype.getDefaultMesosAttributes
@@ -40,6 +46,7 @@ define [ "./LcModel", "./MesosSlaveModel", "Design", "constant", "./VolumeModel"
     _getMesosAttributes       : MesosSlaveModel.prototype._getMesosAttributes
     getMesosAttributes        : MesosSlaveModel.prototype.getMesosAttributes
     getMesosAppAttributes     : MesosSlaveModel.prototype.getMesosAppAttributes
+    assignMesosSg             : MesosSlaveModel.prototype.assignMesosSg
 
   }, {
 

@@ -3,7 +3,6 @@
 module.exports =
   TA:
 
-   ##### Trust Advisor
     INSTANCE:
       en: "Instance"
       zh: "实例"
@@ -391,4 +390,13 @@ module.exports =
       en: "Resource %s does not have enough quota. %s/%s used."
       zh: ""
 
-    ##### Trust Advisor
+    IS_MESOS_MASTER_MORE_THAN_3:
+      en: "The total number of <span class='validation-tag tag-mesos-master'>Master Node</span> must be greater than or equal to 3."
+      zh: "Master节点数必须大于等于3个。"
+
+    MESOS_STACK_NEED_A_SLAVE_NODE_AT_LEAST:
+      en: "Mesos Stack need a <span class='validation-tag tag-mesos-slave'>Slave Node</span> at least."
+      zh: "Mesos Stack 至少需要一个 Slave 节点。"
+
+
+

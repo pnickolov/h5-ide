@@ -166,10 +166,35 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
 		null
 
+	isMesosHasSlave = () ->
+		unless Design.instance().opsModel().isMesos() then return null
+
+		hasSlave = Design.modelClassForType( constant.RESTYPE.INSTANCE ).some ( i ) -> i.isMesosSlave()
+		hasSlaveLc = Design.modelClassForType( constant.RESTYPE.LC ).some ( i ) -> i.isMesosSlave()
+
+		if hasSlave or hasSlaveLc then return null
+
+		Helper.message.error null, i18n.MESOS_STACK_NEED_A_SLAVE_NODE_AT_LEAST
+
+	isMesosMasterMoreThan3 = () ->
+		unless Design.instance().opsModel().isMesos() then return null
+
+		masterCount = Design.modelClassForType( constant.RESTYPE.INSTANCE ).reduce ( memo, i ) ->
+			if i.isMesosMaster() then memo + 1 else memo
+		, 0
+
+		if masterCount >= 3 then return null
+
+		Helper.message.error null, i18n.IS_MESOS_MASTER_MORE_THAN_3
+
+
 
 	isEBSOptimizedForAttachedProvisionedVolume 	: isEBSOptimizedForAttachedProvisionedVolume
 	isAssociatedSGRuleExceedFitNum 				: isAssociatedSGRuleExceedFitNum
 	isConnectRoutTableButNoEIP				 	: isConnectRoutTableButNoEIP
 	isNatCheckedSourceDest						: isNatCheckedSourceDest
+	isMesosHasSlave 							: isMesosHasSlave
+	isMesosMasterMoreThan3 						: isMesosMasterMoreThan3
+
 
 

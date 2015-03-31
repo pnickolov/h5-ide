@@ -112,6 +112,7 @@
 		</section>
 	</div>
 
+    {{#if isMesosSlave}}
 	<div class="option-group-head">{{ i18n "PROP.INSTANCE_ADVANCED_DETAIL" }}</div>
 	<div class="option-group">
 		<section class="property-control-group">
@@ -136,6 +137,7 @@
 			{{/if}}
 		</section>
 	</div>
+    {{/if}}
 
   {{#if rootDevice}}
 	<div class="option-group-head">{{i18n "PROP.INSTANCE_ROOT_DEVICE"}}</div>

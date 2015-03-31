@@ -129,7 +129,7 @@
 
       {{#if hasCGW}}<li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>{{/if}}
 
-      <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+      {{#unless isMesos}}<li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>{{/unless}}
     </ul>
   </section>
 </div>

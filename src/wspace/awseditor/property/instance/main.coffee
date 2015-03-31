@@ -72,7 +72,7 @@ define [ "../base/main",
                 resModel = Design.instance().component( effective.uid )
 
 
-            @model.resModel = resModel
+            @view.resModel = @model.resModel = resModel
 
             opsModel = Design.instance().opsModel()
 

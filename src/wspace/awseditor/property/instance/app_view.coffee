@@ -38,16 +38,16 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
 
             @model.attributes.name
 
-        renderMesosData: ( dataModel = Design.instance().opsModel().getMesosData() ) ->
-            @$( '#mesos-data-area' ).html template.mesosData dataModel.toJSON()
-
+        renderMesosData: () ->
+            attrs = @resModel.getMesosAppAttributes( @model.get( 'instanceId' ) )
+            @$( '#mesos-data-area' ).html template.mesosData attrs
 
         keyPairClick: ( event ) ->
             @proccessKpStuff()
 
         proccessKpStuff: ( notOld ) ->
             if not notOld
-                kp = @model.resModel.connectionTargets( "KeypairUsage" )[0]
+                kp = @resModel.connectionTargets( "KeypairUsage" )[0]
                 isOldDefaultKp = kp and kp.isDefault() and kp.get('appId') is "DefaultKP---#{Design.instance().get('id')}"
                 isOldOtherKp = kp and not kp.isDefault()
 

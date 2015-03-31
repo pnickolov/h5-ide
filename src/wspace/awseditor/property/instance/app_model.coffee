@@ -72,7 +72,6 @@ define [ '../base/model',
                 if @resModel.isMesosSlave()
                     mesosData = {
                         isMesosSlave    : true
-                        mesosAttr       : @resModel.getMesosAppAttributes appId
                     }
                     _.extend instance, mesosData
 

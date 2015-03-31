@@ -34,7 +34,9 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             data = @model.toJSON()
             data.windows = @model.get( 'osType' ) is 'windows'
             @$el.html template.main data
-            @renderMesosData()
+
+            if @resModel.isMesosSlave()
+                @renderMesosData()
 
             @model.attributes.name
 

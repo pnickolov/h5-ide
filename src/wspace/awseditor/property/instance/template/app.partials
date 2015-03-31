@@ -216,7 +216,7 @@
 <dl class="dl-vertical">
   <dt>Attributes</dt>
   <dd>
-    {{#if this.length}}
+    {{#if this}}
     <table class="table">
       <tr>
         <th>Key</th><th>Value</th>

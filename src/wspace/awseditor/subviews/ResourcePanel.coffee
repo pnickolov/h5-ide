@@ -654,7 +654,7 @@ define [
     getContainerList: () ->
 
       mesosData = @workspace.opsModel.getMesosData()
-      leaderIp = mesosData.get('leaderIp')
+      leaderIp = "52.4.252.105" #mesosData.get('leaderIp') or "52.4.252.105"
       if leaderIp
         jobs = []
         jobs.push(
@@ -676,85 +676,120 @@ define [
         @getContainerList().then (data) ->
           data
 
-        appMap = {}
-        otherApp = []
-        dataAry = []
+        tasks = {
+          "tasks": [
+              {
+                  "appId": "/bridged-webapp",
+                  "healthCheckResults": [
+                      {
+                          "alive": true,
+                          "consecutiveFailures": 0,
+                          "firstSuccess": "2014-10-03T22:57:02.246Z",
+                          "lastFailure": null,
+                          "lastSuccess": "2014-10-03T22:57:41.643Z",
+                          "taskId": "bridged-webapp.eb76c51f-4b4a-11e4-ae49-56847afe9799"
+                      }
+                  ],
+                  "host": "10.141.141.10",
+                  "id": "bridged-webapp.eb76c51f-4b4a-11e4-ae49-56847afe9799",
+                  "ports": [
+                      31000
+                  ],
+                  "servicePorts": [
+                      9000
+                  ],
+                  "stagedAt": "2014-10-03T22:16:27.811Z",
+                  "startedAt": "2014-10-03T22:57:41.587Z",
+                  "version": "2014-10-03T22:16:23.634Z"
+              },
+              {
+                  "appId": "/bridged-webapp",
+                  "healthCheckResults": [
+                      {
+                          "alive": true,
+                          "consecutiveFailures": 0,
+                          "firstSuccess": "2014-10-03T22:57:02.246Z",
+                          "lastFailure": null,
+                          "lastSuccess": "2014-10-03T22:57:41.649Z",
+                          "taskId": "bridged-webapp.ef0b5d91-4b4a-11e4-ae49-56847afe9799"
+                      }
+                  ],
+                  "host": "10.141.141.10",
+                  "id": "bridged-webapp.ef0b5d91-4b4a-11e4-ae49-56847afe9799",
+                  "ports": [
+                      31001
+                  ],
+                  "servicePorts": [
+                      9000
+                  ],
+                  "stagedAt": "2014-10-03T22:16:33.814Z",
+                  "startedAt": "2014-10-03T22:57:41.593Z",
+                  "version": "2014-10-03T22:16:23.634Z"
+              }
+          ]
+        }
 
-        isApp = Design.instance().mode() is 'app'
+        dataApp = {
+          "apps": [
+            {
+              "id": "/test",
+              "cmd": "while sleep 10000; do date -u +%T; done",
+              "args": null,
+              "user": null,
+              "env": {},
+              "instances": 1,
+              "cpus": 0.5,
+              "mem": 128,
+              "disk": 0,
+              "executor": "",
+              "constraints": [],
+              "uris": [],
+              "storeUrls": [],
+              "ports": [
+                10000
+              ],
+              "requirePorts": false,
+              "backoffSeconds": 1,
+              "backoffFactor": 1.15,
+              "maxLaunchDelaySeconds": 3600,
+              "container": {
+                "type": "DOCKER",
+                "volumes": [],
+                "docker": {
+                  "image": "ubuntu",
+                  "privileged": false,
+                  "parameters": []
+                }
+              },
+              "healthChecks": [],
+              "dependencies": [],
+              "upgradeStrategy": {
+                "minimumHealthCapacity": 1,
+                "maximumOverCapacity": 1
+              },
+              "labels": {},
+              "version": "2015-03-30T07:51:47.753Z",
+              "tasksStaged": 0,
+              "tasksRunning": 1,
+              "tasksHealthy": 0,
+              "tasksUnhealthy": 0,
+              "deployments": []
+            }
+          ]
+        }
 
-        if json and _.keys(json).length > 0
+        viewData = []
+        _.each dataApp.apps, (app) ->
+          viewData.push({
+            id: app.id,
+            task: app.tasksRunning,
+            instance: app.instances,
+            cpu: app.cpus,
+            memory: app.mem
+          })
 
-            # analyze app
-            _.each json.component, (comp) ->
-
-                if comp.type is constant.RESTYPE.MRTHAPP
-
-                    constraints = _.map comp.resource.constraints, (constraint) ->
-                        return constraint.join(', ')
-
-                    name = comp.resource.id
-                    task = comp.resource.instances
-                    title = 'CONSTRAINTS'
-                    instanceTip = 'Instances'
-
-                    if isApp
-                        title = 'RUNNING TASKS'
-                        constraints = ["mesos-dns.9b85d1a7-c47a-11e4-865f-0ae4c5a555b7", "10.0.0.6:31388"]
-                        if name in ['mongodb', 'mongo-config']
-                            task = '2/' + task
-                            yellow = true
-                            instanceTip = 'Tasks/Instances'
-
-                    data = {
-                        color: comp.color
-                        task: task
-                        image: comp.resource.container.docker.image
-                        name: name
-                        cpu: comp.resource.cpus
-                        memory: comp.resource.mem
-                        title: title
-                        constraints: constraints
-                        yellow: yellow
-                        instanceTip: instanceTip
-                    }
-                    appMap[comp.uid] = data
-
-                    otherApp.push(comp.uid)
-
-            # analyze group
-            _.each json.component, (comp) ->
-
-                if comp.type is constant.RESTYPE.MRTHGROUP
-
-                    groupId = comp.resource.id
-                    appIds = comp.resource.apps
-                    apps = _.map appIds, (appId) ->
-                        return appMap[appId]
-                    dataAry.push({
-                        id: groupId
-                        apps: apps
-                    })
-                    otherApp = _.difference(otherApp, appIds)
-
-            otherApp = _.map otherApp, (appId) ->
-                return appMap[appId]
-
-            # no group
-            if otherApp.length
-
-                dataAry.push({
-                    id: "Default"
-                    apps: otherApp
-                })
-
-            @$('.marathon-app-list').html LeftPanelTpl.containerList({
-                project: @workspace.scene.project.id
-                id: json.id
-                name: json.name
-                groups: dataAry
-            })
-
-            @recalcAccordion()
+        @$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)
+        @recalcAccordion()
 
     toggleGroup: (event) ->
 

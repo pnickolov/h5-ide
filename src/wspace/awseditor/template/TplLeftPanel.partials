@@ -201,42 +201,31 @@
 <dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
 
 <!-- {{containerList}} -->
-<!-- <div class="container-edit">
-    <a class="target route edit-marathon-stack icon-edit" href="/workspace/{{project}}/ops/{{id}}">Edit in <span>{{name}}</span></a>
-</div> -->
 <input id="filter-containers" class="input filter-containers" type="text" placeholder="Filter container..."/>
-<!-- <div class="tip">Click container item to inspect placement on canvas.</div> -->
-<ul class="group-list">
-    {{#each groups}}
-    <li class="group-item">
-        <div class="group-header {{#unless @index}}expand{{/unless}}">{{id}}</div>
-        <ul class="container-list {{#if @index}}hide{{/if}}">
-            {{#each apps}}
-            <li class="container-item tooltip" data-tooltip="Click to view service placement on canvas" data-name="{{name}}" style="color:{{color}}">
-                <div class="task tooltip {{#if yellow}}yellow{{/if}}" data-tooltip="{{instanceTip}}">{{task}}</div>
-                <div class="info">
-                    <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
-                    <span class="name tooltip" data-tooltip="{{name}}">{{name}}</span>
-                </div>
-                <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
-                <span class="container-info">
-                    <span class="tooltip" data-tooltip="CPU">{{cpu}}</span>
-                    <span class="tooltip" data-tooltip="Memory">{{memory}}</span>
-                </span>
-            </li>
-            <li class="constraint-list hide">
-              <header>{{title}}</header>
-              <section class="constraint-info">
-                {{#each constraints}}
-                {{#ifCond @index 0}}<p class="attribute">{{this}}</p>{{/ifCond}}
-                {{#ifCond @index 1}}<p class="operator">{{this}}</p>{{/ifCond}}
-                {{#ifCond @index 2}}<p class="value">{{this}}</p>{{/ifCond}}
-                {{/each}}
-            </section>
-            </li>
-            {{/each}}
-        </ul>
-    </li>
-    {{/each}}
+<ul class="container-list">
+  {{#each this}}
+  <li class="container-item tooltip" data-tooltip="Click to view service placement on canvas" style="color:blue">
+      <div class="task tooltip">{{task}}/{{instance}}</div>
+      <div class="info">
+          <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
+          <span class="name tooltip" data-tooltip="{{id}}">{{id}}</span>
+      </div>
+      <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
+      <span class="container-info">
+          <span class="tooltip" data-tooltip="CPU">{{cpu}}</span>
+          <span class="tooltip" data-tooltip="Memory">{{memory}}</span>
+      </span>
+  </li>
+  <li class="constraint-list hide">
+    <header>{{title}}</header>
+    <section class="constraint-info">
+      {{#each constraints}}
+      {{#ifCond @index 0}}<p class="attribute">{{this}}</p>{{/ifCond}}
+      {{#ifCond @index 1}}<p class="operator">{{this}}</p>{{/ifCond}}
+      {{#ifCond @index 2}}<p class="value">{{this}}</p>{{/ifCond}}
+      {{/each}}
+  </section>
+  </li>
+  {{/each}}
 </ul>
 <!-- <div class="container-change">Change Marathon Stack…</div> -->

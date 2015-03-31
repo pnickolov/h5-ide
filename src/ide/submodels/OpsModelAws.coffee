@@ -29,32 +29,7 @@ define ["OpsModel", "ApiRequest", "constant", "Design" ], ( OpsModel, ApiRequest
 
     __mesosData: new MesosDataModel()
 
-    setMesosData: ( data ) ->
-      framework = data.frameworks[ 0 ]
-
-      ipMap = Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMasterIPs()
-
-      leaderIpPortString  = data.leader.split( '@' )[ 1 ]
-      leaderIpPortArray   = leaderIpPortString.split ':'
-      leaderPrivateIp     = leaderIpPortArray[ 0 ]
-      leaderPublicIp      = ipMap[ leaderPrivateIp ]
-      leaderPort          = leaderIpPortArray[ 1 ]
-
-      if framework
-        marathonIpPortString = framework.webui_url.slice 7 # Remove http://
-        marathonIpPortArray = marathonIpPortString.split ':'
-        marathonPrivateIp = marathonIpPortArray[ 0 ]
-        marathonPublicIp = ipMap[ marathonPrivateIp ]
-        marathonPort = marathonIpPortArray[ 1 ]
-
-      @__mesosData.set {
-        framework   : framework and 'marathon' or ''
-        leaderIp    : leaderPublicIp
-        leaderPort  : leaderPort
-        marathonIp  : marathonPublicIp
-        marathonPort: marathonPort
-        slaves      : data.slaves
-      }
+    setMesosData: ( data ) -> @__mesosData.set data
 
     getMesosData: -> @__mesosData
 

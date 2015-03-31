@@ -74,6 +74,35 @@ define [
         , 1000 * 10
       return
 
+    setMesosData: ( data ) ->
+      framework = data.frameworks[ 0 ]
+
+      ipMap = MesosMasterModel.getMasterIPs()
+
+      leaderIpPortString  = data.leader.split( '@' )[ 1 ]
+      leaderIpPortArray   = leaderIpPortString.split ':'
+      leaderPrivateIp     = leaderIpPortArray[ 0 ]
+      leaderPublicIp      = ipMap[ leaderPrivateIp ]
+      leaderPort          = leaderIpPortArray[ 1 ]
+
+      if framework
+        marathonIpPortString = framework.webui_url.slice 7 # Remove http://
+        marathonIpPortArray = marathonIpPortString.split ':'
+        marathonPrivateIp = marathonIpPortArray[ 0 ]
+        marathonPublicIp = ipMap[ marathonPrivateIp ]
+        marathonPort = marathonIpPortArray[ 1 ]
+
+      data = {
+        framework   : framework and 'marathon' or ''
+        leaderIp    : leaderPublicIp
+        leaderPort  : leaderPort
+        marathonIp  : marathonPublicIp
+        marathonPort: marathonPort
+        slaves      : data.slaves
+      }
+
+      @opsModel.setMesosData data
+
     updateMesosInfo : ()->
       that = @
       @mesosSchedule = null
@@ -85,7 +114,7 @@ define [
           "master_ips" : {"10.0.3.4":"52.4.211.169", "10.0.2.4":"52.4.252.105", "10.0.2.5":"52.4.57.214"}
           # MesosMasterModel.getMasterIPs()
         }).then ( data )->
-          that.opsModel.setMesosData data
+          that.setMesosData data
       )
 
       Q.all jobs

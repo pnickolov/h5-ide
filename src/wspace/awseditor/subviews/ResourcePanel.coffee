@@ -180,6 +180,7 @@ define [
 
       if isMesos
         @updateMesos()
+        @renderMarathonApp()
       else
         @updateAmi()
 
@@ -189,7 +190,6 @@ define [
       @updateDisableItems()
       @renderReuse()
 
-      @renderContainerList()
       return
 
     # For Demo Begin
@@ -210,21 +210,15 @@ define [
       else
           @$el.find('.container-panel').removeClass('hide')
 
-    renderMarathonApp: ( data ) ->
-
-      json = $.extend true, {}, data
-
-      # temp hack code
-      @marathonJson = json
+    renderMarathonApp: () ->
 
       $appList = @$ '.marathon-app-list'
-      $createPanel = @$ '.create-marathon-panel'
+      $createPanel = @$ '.marathon-app-ready'
 
       $appList.show()
       $createPanel.hide()
 
-      @renderContainerList(json)
-
+      @renderContainerList()
 
     toggleConstraint: ( e ) ->
 

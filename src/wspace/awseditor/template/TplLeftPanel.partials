@@ -137,10 +137,9 @@
 
 
 <div class="panel container-panel hide">
-    <div class="create create-marathon-panel">
+    <div class="marathon-app-ready">
         <img class="logo" src="/assets/images/ide/marathon.png" />
-        <div class="desc">Manage marathon framework on Mesos stack</div>
-        <button class="btn btn-blue apply">Apply Marathon</button>
+        <div class="desc">When marathon framework ready on Mesos app, will show container list at here</div>
     </div>
     <div class="marathon-app-list" class="hide"></div>
 </div>

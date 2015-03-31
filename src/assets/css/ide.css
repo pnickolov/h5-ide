@@ -9606,18 +9606,18 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .container-panel {
   height: 100%;
   position: relative; }
-  .container-panel .create {
+  .container-panel .marathon-app-ready {
     text-align: center;
     margin: 0 auto; }
-    .container-panel .create img, .container-panel .create span, .container-panel .create button {
+    .container-panel .marathon-app-ready img, .container-panel .marathon-app-ready span, .container-panel .marathon-app-ready button {
       margin: 0 auto; }
-    .container-panel .create .logo {
+    .container-panel .marathon-app-ready .logo {
       margin-top: 50px; }
-    .container-panel .create .desc {
+    .container-panel .marathon-app-ready .desc {
       margin-top: 20px;
       padding: 0 10px;
       color: #898dbc; }
-    .container-panel .create .apply {
+    .container-panel .marathon-app-ready .apply {
       margin-top: 20px; }
   .container-panel .container-edit {
     position: absolute;

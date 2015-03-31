@@ -180,7 +180,7 @@ define [
 
       if isMesos
         @updateMesos()
-        @renderContainerList()
+        @getContainerList()
       else
         @updateAmi()
 
@@ -641,176 +641,41 @@ define [
       Backbone.View.prototype.remove.call this
       return
 
-    getContainerList: () ->
-
-      mesosData = @workspace.opsModel.getMesosData()
-      leaderIp = "52.4.252.105" #mesosData.get('leaderIp')
-      Q.all([
-        ApiRequest("marathon_app_list", {
-          "key_id" : @workspace.opsModel.credentialId(),
-          "leader_ip" : leaderIp
-        }),
-        ApiRequest("marathon_task_list", {
-          "key_id" : @workspace.opsModel.credentialId(),
-          "leader_ip" : leaderIp
-        })
-      ])
-
-    renderContainerList: (json) ->
+    getContainerList: (leaderIp) ->
 
       that = @
-      @getContainerList().then (data) ->
-        tasks = {
-          "tasks": [
-              {
-                  "appId": "/bridged-webapp",
-                  "healthCheckResults": [
-                      {
-                          "alive": true,
-                          "consecutiveFailures": 0,
-                          "firstSuccess": "2014-10-03T22:57:02.246Z",
-                          "lastFailure": null,
-                          "lastSuccess": "2014-10-03T22:57:41.643Z",
-                          "taskId": "bridged-webapp.eb76c51f-4b4a-11e4-ae49-56847afe9799"
-                      }
-                  ],
-                  "host": "10.141.141.10",
-                  "id": "bridged-webapp.eb76c51f-4b4a-11e4-ae49-56847afe9799",
-                  "ports": [
-                      31000
-                  ],
-                  "servicePorts": [
-                      9000
-                  ],
-                  "stagedAt": "2014-10-03T22:16:27.811Z",
-                  "startedAt": "2014-10-03T22:57:41.587Z",
-                  "version": "2014-10-03T22:16:23.634Z"
-              },
-              {
-                  "appId": "/bridged-webapp",
-                  "healthCheckResults": [
-                      {
-                          "alive": true,
-                          "consecutiveFailures": 0,
-                          "firstSuccess": "2014-10-03T22:57:02.246Z",
-                          "lastFailure": null,
-                          "lastSuccess": "2014-10-03T22:57:41.649Z",
-                          "taskId": "bridged-webapp.ef0b5d91-4b4a-11e4-ae49-56847afe9799"
-                      }
-                  ],
-                  "host": "10.141.141.10",
-                  "id": "bridged-webapp.ef0b5d91-4b4a-11e4-ae49-56847afe9799",
-                  "ports": [
-                      31001
-                  ],
-                  "servicePorts": [
-                      9000
-                  ],
-                  "stagedAt": "2014-10-03T22:16:33.814Z",
-                  "startedAt": "2014-10-03T22:57:41.593Z",
-                  "version": "2014-10-03T22:16:23.634Z"
-              }
-          ]
-        }
+      mesosData = @workspace.opsModel.getMesosData()
+      leaderIp = "52.4.252.105" #mesosData.get('leaderIp')
+      @getMarathonAppList(leaderIp).then (data) ->
+        that.renderContainerList(data)
 
-        dataApp = {
-          "apps": [
-            {
-              "id": "/test1",
-              "cmd": "while sleep 10000; do date -u +%T; done",
-              "args": null,
-              "user": null,
-              "env": {},
-              "instances": 1,
-              "cpus": 0.5,
-              "mem": 128,
-              "disk": 0,
-              "executor": "",
-              "constraints": [],
-              "uris": [],
-              "storeUrls": [],
-              "ports": [
-                10000
-              ],
-              "requirePorts": false,
-              "backoffSeconds": 1,
-              "backoffFactor": 1.15,
-              "maxLaunchDelaySeconds": 3600,
-              "container": {
-                "type": "DOCKER",
-                "volumes": [],
-                "docker": {
-                  "image": "ubuntu",
-                  "privileged": false,
-                  "parameters": []
-                }
-              },
-              "healthChecks": [],
-              "dependencies": [],
-              "upgradeStrategy": {
-                "minimumHealthCapacity": 1,
-                "maximumOverCapacity": 1
-              },
-              "labels": {},
-              "version": "2015-03-30T07:51:47.753Z",
-              "tasksStaged": 0,
-              "tasksRunning": 1,
-              "tasksHealthy": 0,
-              "tasksUnhealthy": 0,
-              "deployments": []
-            },
-            {
-              "id": "/test2",
-              "cmd": "while sleep 10000; do date -u +%T; done",
-              "args": null,
-              "user": null,
-              "env": {},
-              "instances": 1,
-              "cpus": 0.5,
-              "mem": 128,
-              "disk": 0,
-              "executor": "",
-              "constraints": [],
-              "uris": [],
-              "storeUrls": [],
-              "ports": [
-                10000
-              ],
-              "requirePorts": false,
-              "backoffSeconds": 1,
-              "backoffFactor": 1.15,
-              "maxLaunchDelaySeconds": 3600,
-              "container": {
-                "type": "DOCKER",
-                "volumes": [],
-                "docker": {
-                  "image": "ubuntu",
-                  "privileged": false,
-                  "parameters": []
-                }
-              },
-              "healthChecks": [],
-              "dependencies": [],
-              "upgradeStrategy": {
-                "minimumHealthCapacity": 1,
-                "maximumOverCapacity": 1
-              },
-              "labels": {},
-              "version": "2015-03-30T07:51:47.753Z",
-              "tasksStaged": 0,
-              "tasksRunning": 1,
-              "tasksHealthy": 0,
-              "tasksUnhealthy": 0,
-              "deployments": []
-            }
-          ]
-        }
+    getMarathonAppList: (leaderIp) ->
+
+      ApiRequest("marathon_app_list", {
+        "key_id" : @workspace.opsModel.credentialId(),
+        "leader_ip" : leaderIp
+      })
+
+    getMarathonTaskList: (leaderIp) ->
+
+      ApiRequest("marathon_task_list", {
+        "key_id" : @workspace.opsModel.credentialId(),
+        "leader_ip" : leaderIp
+      })
+
+    renderContainerList: (data) ->
+
+      that = @
+
+      dataApps = data[1]?.apps
+
+      if dataApps and dataApps.length
 
         that.$('.marathon-app-list').show()
         that.$('.marathon-app-ready').hide()
 
         viewData = []
-        _.each dataApp.apps, (app) ->
+        _.each dataApps, (app) ->
           viewData.push({
             id: app.id,
             task: app.tasksRunning,

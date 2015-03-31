@@ -145,7 +145,7 @@
 <div class="panel container-panel hide">
     <div class="marathon-app-ready">
         <img class="logo" src="/assets/images/ide/marathon.png" />
-        <div class="desc">When marathon framework ready on Mesos app, will show container list at here</div>
+        <div class="desc">When marathon framework ready and deployed app on Mesos cluster, will show app list at here.</div>
     </div>
     <div class="marathon-app-list" class="hide"></div>
 </div>
@@ -222,6 +222,7 @@
           <span class="tooltip" data-tooltip="Memory">{{memory}}</span>
       </span>
   </li>
+  {{#if constraints}}
   <li class="constraint-list hide">
     <header>{{title}}</header>
     <section class="constraint-info">
@@ -232,6 +233,7 @@
       {{/each}}
   </section>
   </li>
+  {{/if}}
   {{/each}}
 </ul>
 <!-- <div class="container-change">Change Marathon Stack…</div> -->

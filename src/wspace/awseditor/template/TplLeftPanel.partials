@@ -210,7 +210,7 @@
 <input id="filter-containers" class="input filter-containers" type="text" placeholder="Filter container..."/>
 <ul class="container-list">
   {{#each this}}
-  <li class="container-item tooltip" data-tooltip="Click to view service placement on canvas" data-name="{{id}}" style="color:blue">
+  <li class="container-item tooltip" data-tooltip="Click to view service placement on canvas" data-name="{{id}}">
       <div class="task tooltip">{{task}}/{{instance}}</div>
       <div class="info">
           <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />

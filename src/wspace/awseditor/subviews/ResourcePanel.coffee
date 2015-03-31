@@ -646,8 +646,15 @@ define [
       that = @
       mesosData = @workspace.opsModel.getMesosData()
       leaderIp = "52.4.252.105" #mesosData.get('leaderIp')
-      @getMarathonAppList(leaderIp).then (data) ->
-        that.renderContainerList(data)
+
+      reqLoop = () ->
+        setTimeout () ->
+          that.getMarathonAppList(leaderIp).then (data) ->
+            that.renderContainerList(data)
+          .done () ->
+            reqLoop()
+        , 1000 * 10
+      reqLoop()
 
     getMarathonAppList: (leaderIp) ->
 

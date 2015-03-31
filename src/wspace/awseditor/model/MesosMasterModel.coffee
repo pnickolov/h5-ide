@@ -126,6 +126,19 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         null
       return ipMap
 
+    getCompByIp: (ip)->
+      if Design.instance().mode() is "stack"
+        return null
+
+      eniData = Design.instance().componentsOfType(constant.RESTYPE.ENI)
+      targetEni = _.find eniData, (eni)->
+        _.some eni.getIpArray(), (ipObj)->
+          ipObj.ip is ip
+
+      if not targetEni then return null
+      targetInstance = targetEni.attachedInstance()
+      targetInstance
+
   }
 
   Model.prototype.classId = InstanceModel.prototype.classId

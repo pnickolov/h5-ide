@@ -9,11 +9,14 @@ define [ "../base/main",
          "./app_view",
          "../sglist/main",
          "constant",
-         "event"
+         "event",
+         "Design"
+
+
 ], ( PropertyModule,
      model, view,
      app_model, app_view,
-     sglist_main, constant, ide_event ) ->
+     sglist_main, constant, ide_event, Design ) ->
 
     ideEvents = {}
     ideEvents[ ide_event.PROPERTY_REFRESH_ENI_IP_LIST ] = () ->
@@ -57,9 +60,24 @@ define [ "../base/main",
 
             null
 
-        initApp : () ->
+        initApp : ( instanceId ) ->
+            # The instanceId might be component uid or aws id
+
             @model = app_model
             @view  = app_view
+
+            resModel = Design.instance().component( instanceId )
+            unless resModel
+                effective = @model.effective = Design.modelClassForType(constant.RESTYPE.INSTANCE).getEffectiveId instanceId
+                resModel = Design.instance().component( effective.uid )
+
+
+            @model.resModel = resModel
+
+            opsModel = Design.instance().opsModel()
+
+            if resModel.isMesosSlave()
+                @view.listenTo opsModel.getMesosData(), 'change', view.renderMesosData
             null
 
         afterLoadApp : () ->

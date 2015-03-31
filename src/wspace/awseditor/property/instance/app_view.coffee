@@ -33,8 +33,14 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
         render : () ->
             data = @model.toJSON()
             data.windows = @model.get( 'osType' ) is 'windows'
-            @$el.html template data
+            @$el.html template.main data
+            @renderMesosData()
+
             @model.attributes.name
+
+        renderMesosData: ( dataModel = Design.instance().opsModel().getMesosData() ) ->
+            @$( '#mesos-data-area' ).html template.mesosData dataModel.toJSON()
+
 
         keyPairClick: ( event ) ->
             @proccessKpStuff()

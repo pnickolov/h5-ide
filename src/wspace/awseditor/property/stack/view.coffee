@@ -43,9 +43,7 @@ define [ '../base/view',
 
             null
 
-        renderMesosData: ( dataModel ) ->
-            dataModel = Design.instance().opsModel().getMesosData() unless dataModel
-
+        renderMesosData: ( dataModel = Design.instance().opsModel().getMesosData() ) ->
             @$( '#mesos-data-area' ).html template.mesosData dataModel.toJSON()
 
         toggleMarathon: ( e ) ->

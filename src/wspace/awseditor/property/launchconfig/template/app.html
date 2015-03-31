@@ -1,24 +1,4 @@
 <article class="property-app" data-bind="true">
-  {{#if isMesos}}
-  <div class="option-group-head expand">Mesos Details</div>
-  <div class="option-group">
-    <section class="property-control-group">
-      <label>Attributes</label>
-      <table class="table">
-        <tr>
-          <th>Key</th><th>Value</th>
-        </tr>
-        {{#each attr}}
-        <tr>
-          <td>{{@key}}</td>
-          <td>{{this}}</td>
-        </tr>
-        {{/each}}
-      </table>
-    </section>
-  </div>
-  {{/if}}
-
   <div class="option-group-head expand">{{i18n "PROP.LC_TITLE"}}</div>
   <div class="option-group">
     {{#if isEditable}}

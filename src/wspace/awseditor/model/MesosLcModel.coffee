@@ -33,12 +33,13 @@ define [ "./LcModel", "./MesosSlaveModel", "Design", "constant", "./VolumeModel"
       Model = Design.modelClassForType(constant.RESTYPE.INSTANCE)
       @setMesosState() if not Model.isMesosSlave(attributes)
 
-    setMesosState : MesosSlaveModel.prototype.setMesosState
-    getMesosState : MesosSlaveModel.prototype.getMesosState
+    setMesosState             : MesosSlaveModel.prototype.setMesosState
+    getMesosState             : MesosSlaveModel.prototype.getMesosState
     getDefaultMesosAttributes : MesosSlaveModel.prototype.getDefaultMesosAttributes
-    setMesosAttributes : MesosSlaveModel.prototype.setMesosAttributes
-    _getMesosAttributes : MesosSlaveModel.prototype._getMesosAttributes
-    getMesosAttributes : MesosSlaveModel.prototype.getMesosAttributes
+    setMesosAttributes        : MesosSlaveModel.prototype.setMesosAttributes
+    _getMesosAttributes       : MesosSlaveModel.prototype._getMesosAttributes
+    getMesosAttributes        : MesosSlaveModel.prototype.getMesosAttributes
+    getMesosAppAttributes     : MesosSlaveModel.prototype.getMesosAppAttributes
 
   }, {
 

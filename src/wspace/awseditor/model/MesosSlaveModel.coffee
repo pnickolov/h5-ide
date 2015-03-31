@@ -131,6 +131,13 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       customKeys.unshift attrs
       _.pick.apply null, customKeys
 
+    getMesosAppAttributes: ( appId = @get 'appId' ) ->
+      allInstance = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region())
+      thisAppDataModel = allInstance?.get(appId)
+      privateIp = thisAppDataModel?.get('networkInterfaceSet')?[ 0 ]?.privateIpAddress
+
+      @design().opsModel().getMesosData().getSlave( privateIp )
+
   }, {
 
     handleTypes : constant.RESTYPE.MESOSSLAVE

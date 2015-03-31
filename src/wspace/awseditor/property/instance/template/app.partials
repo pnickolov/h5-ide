@@ -1,12 +1,9 @@
+<!--{{main}}-->
 <article class="property-app">
-  {{#if isMesos}}
+  {{#if isMesosSlave}}
   <div class="option-group-head expand">Mesos Details</div>
   <div class="option-group">
-    <section class="property-control-group">
-      <dl class="dl-vertical">
-        <dt>Cluster Leader</dt>
-        <dd>Placeholder</dd>
-      </dl>
+    <section class="property-control-group" id="mesos-data-area">
     </section>
   </div>
   {{/if}}
@@ -214,3 +211,25 @@
   <div class="option-group sg-group"></div>
 
 </article>
+
+<!--{{mesosData}}-->
+<dl class="dl-vertical">
+  <dt>Attributes</dt>
+  <dd>
+    {{#if this.length}}
+    <table class="table">
+      <tr>
+        <th>Key</th><th>Value</th>
+      </tr>
+      {{#each this}}
+      <tr>
+        <td>{{@key}}</td>
+        <td>{{this}}</td>
+      </tr>
+      {{/each}}
+    </table>
+    {{else}}
+    Mesos Data is not ready yet...
+    {{/if}}
+  </dd>
+</dl>

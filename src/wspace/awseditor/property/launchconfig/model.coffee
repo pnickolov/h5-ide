@@ -42,6 +42,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
           mesosAttr       : @lc.getMesosAttributes()
           defaultMesosAttr: @lc.getDefaultMesosAttributes()
         }
+
         _.extend data, mesosData
 
       @set data

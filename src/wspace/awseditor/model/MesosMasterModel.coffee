@@ -134,14 +134,33 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       if Design.instance().mode() is "stack"
         return null
 
-      eniData = Design.instance().componentsOfType(constant.RESTYPE.ENI)
+      design = Design.instance()
+      eniData = design.componentsOfType(constant.RESTYPE.ENI)
       targetEni = _.find eniData, (eni)->
         _.some eni.getIpArray(), (ipObj)->
           ipObj.ip is ip
 
-      if not targetEni then return null
-      targetInstance = targetEni.attachedInstance()
-      targetInstance
+      if not targetEni
+        vpcId = design.componentsOfType(constant.RESTYPE.VPC)[0].get("appId")
+        instanceData = CloudResources(design.credentialId(), constant.RESTYPE.INSTANCE, design.region())
+        targetInstance = _.find instanceData.where({"vpcId": vpcId}), (instance)->
+          instance.get("privateIpAddress") is ip
+
+        if not targetInstance then return null
+        asgResList = CloudResources( design.credentialId(), constant.RESTYPE.ASG, design.region())
+
+        targetAsgId = _.find asgResList.toJSON(), (asg)->
+          _.some asg.Instances, (instance)->
+            instance.InstanceId is targetInstance.get("instanceId")
+        .id
+
+        targetAsg = _.find design.componentsOfType(constant.RESTYPE.ASG), (asg)->
+          asg.get("appId") is targetAsgId
+        return targetAsg.getLc()
+
+      else
+        targetInstance = targetEni.attachedInstance()
+        return targetInstance
 
   }
 

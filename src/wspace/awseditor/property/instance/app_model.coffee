@@ -58,7 +58,7 @@ define [ '../base/model',
             if @effective
                 @set 'uid', @effective.uid
                 @set 'mid', @effective.mid
-                appId = instanceId
+                appId = @effective.mid
             else
                 appId = @resModel.get 'appId'
 

@@ -110,13 +110,14 @@
     </div>
   </section>
 
-  <section class="accordion-group">
+  {{#unless isMesos}}<section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
     <ul class="resource-list-asg clearfix accordion-body">
       <li class="tooltip resource-item elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
       <li class="tooltip resource-item asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
     </ul>
   </section>
+  {{/unless}}
 
   <section class='accordion-group'>
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VPC" }}</header>
@@ -129,7 +130,12 @@
 
       {{#if hasCGW}}<li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>{{/if}}
 
-      {{#unless isMesos}}<li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>{{/unless}}
+      {{#unless isMesos}}
+          <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+      {{else}}
+          <li class="tooltip resource-item elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
+      {{/unless}}
+
     </ul>
   </section>
 </div>

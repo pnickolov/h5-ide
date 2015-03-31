@@ -136,7 +136,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       thisAppDataModel = allInstance?.get(appId)
       privateIp = thisAppDataModel?.get('networkInterfaceSet')?[ 0 ]?.privateIpAddress
 
-      @design().opsModel().getMesosData().getSlave( privateIp )?.attributes
+      @design().opsModel().getMesosData().getSlave( privateIp )
 
   }, {
 

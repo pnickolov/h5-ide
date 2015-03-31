@@ -41,8 +41,8 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             @model.attributes.name
 
         renderMesosData: () ->
-            attrs = @resModel.getMesosAppAttributes( @model.get( 'instanceId' ) )
-            @$( '#mesos-data-area' ).html template.mesosData attrs
+            slaveAttr = @resModel.getMesosAppAttributes( @model.get( 'instanceId' ) )
+            @$( '#mesos-data-area' ).html template.mesosData slaveAttr
 
         keyPairClick: ( event ) ->
             @proccessKpStuff()

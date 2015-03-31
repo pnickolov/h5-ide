@@ -42,10 +42,12 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         # Set auto assgin public ip
         @getEmbedEni().set("assoPublicIp", true)
 
-    setMesosState : (marathon) ->
+        # Set Framework
+        @setMarathon Model.getMarathon()
+
+    setMesosState : (marathon = Model.getMarathon()) ->
 
       ipMap = Model.getMasterIPs()
-      marathon = @_getMarathon() if marathon is undefined
       stackName = Design.instance().get('name')
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       masterMapAry = []
@@ -82,12 +84,12 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       return null
 
     # must invoke Model.setMarathon
-    _setMarathon : (flag) ->
+    setMarathon : (flag) ->
 
       @setMesosState(flag)
 
     # must invoke Model.getMarathon
-    _getMarathon : () ->
+    getMarathon : () ->
 
       state = @getMesosState()
       framework = state?.parameter?.framework or []
@@ -102,30 +104,17 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
     deserialize : ( data, layout_data, resolve )->
 
     setMarathon : (flag) ->
-
-      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
-      _.each masterModels, (master) ->
-        master._setMarathon(flag) if master.isMesosMaster()
+      @each masterModels, (master) -> master.setMarathon(flag) if master.isMesosMaster()
 
     getMarathon : () ->
-
-      haveMarathon = true
-      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
-      _.each masterModels, (master) ->
-        if master.isMesosMaster()
-          if not master._getMarathon()
-            haveMarathon = false
-        null
-      return haveMarathon
+      @some (master) -> master.isMesosMaster() and master.getMarathon()
 
     getMasterIPs : () ->
-
       mode = Design.instance().mode()
       return {} if mode is 'stack'
-      masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
       eniData = CloudResources(Design.instance().credentialId(), constant.RESTYPE.ENI, Design.instance().region())
       ipMap = {}
-      _.each masterModels, (master) ->
+      @each (master) ->
         if master.isMesosMaster()
           eniId = master.getEmbedEni().get('appId')
           eni = eniData.get(eniId)

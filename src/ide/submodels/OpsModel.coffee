@@ -435,6 +435,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           provider   : toRunJson.provider
           usage      : toRunJson.usage
           updateTime : +(new Date())
+          type       : toRunJson.type
         })
 
     # Duplicate the stack

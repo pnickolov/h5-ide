@@ -180,7 +180,7 @@ define [
 
       if isMesos
         @updateMesos()
-        @getContainerList()
+        @workspace.opsModel.getMesosData().on 'change', @getContainerList, @
       else
         @updateAmi()
 
@@ -616,12 +616,11 @@ define [
         Q.all([
           that.getMarathonAppList(leaderIp).then (data) ->
             appData = data
-          ,
           that.getMarathonTaskList(leaderIp).then (data) ->
             taskData = data
         ]).then (data) ->
           that.renderContainerList(appData, taskData) if appData
-        .done () ->
+        .fin ->
           setTimeout () ->
             reqLoop()
           , 1000 * 10

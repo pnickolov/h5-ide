@@ -75,6 +75,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
       return
 
     iconUrl : ()->
+      if @model.isMesos() then return 'ide/ami/mesos-slave.png'
+
       ami = @model.getAmi() || @model.get("cachedAmi")
 
       if not ami

@@ -436,6 +436,23 @@ define(['backbone', 'i18n!/nls/lang.js'], function(Backbone, lang) {
     abnormal: function() {
       var _ref;
       return (_ref = this.option.mode) === "panel" || _ref === "fullscreen";
+    },
+    loading: function(revert) {
+      if (!revert) {
+        this._title = this.find(".modal-header h3").text();
+        this.setTitle(lang.PROP.LBL_LOADING);
+        this._content = this.find(".modal-body").children();
+        this.setContent(MC.template.loadingSpinner());
+        return this.toggleFooter(false);
+      } else {
+        if (!this._title) {
+          throw new Error("The modal was not in loading state.");
+          return false;
+        }
+        this.setTitle(this._title);
+        this.setContent(this._content);
+        return this.toggleFooter(true);
+      }
     }
   });
   return Modal;

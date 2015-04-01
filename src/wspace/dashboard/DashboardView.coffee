@@ -147,7 +147,6 @@ define [ "./DashboardTpl",
 
       createStackModal.on "confirm", ()->
 
-        createStackModal.toggleFooter(false)
         type = if createStackModal.find(".tab-aws-stack").hasClass("active") then "aws" else "mesos"
         region = createStackModal.find("#create-#{type}-stack-region li.item.selected").data("value")
         framework = if type is "mesos" then createStackModal.find(".create-mesos-use-marathon").hasClass("on") else false
@@ -155,7 +154,7 @@ define [ "./DashboardTpl",
         provider = "aws::global"
         amiId = null
 
-        createStackModal.setContent MC.template.loadingSpinner()
+        createStackModal.loading()
         self.getPreBakedAmiId(region, type).then (result)->
           amiId = result
         , (err)->

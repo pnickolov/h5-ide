@@ -13,6 +13,7 @@
 				</div>
 			</div>
 			{{/unless}}
+			{{#if disabled}}<i class="state-disabled-icon icon-del"></i>{{/if}}
 			<i class="state-status-icon status status-yellow"></i>
 			{{#unless disabled}}<i class="state-drag"></i>{{/unless}}
 			<div class="state-view">

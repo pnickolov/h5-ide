@@ -76,7 +76,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       states = _.filter states, (state) ->
         return false if state.module in ['linux.mesos.master', 'linux.mesos.slave']
         return true
-      @set('state', mesosState.concat(states))
+      @set('state', states.concat(mesosState))
 
     getMesosState : () ->
 
@@ -104,7 +104,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         return {
           'az': @parent().parent().get('name')
           'subnet': @parent().get('name')
-          'subnet-position': 'public'
+          'subnet-position': if @parent().isPublic() then 'public' else 'private'
         }
 
     setMesosAttributes : (attrs) ->

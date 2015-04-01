@@ -1217,11 +1217,14 @@ define [ 'component/stateeditor/model',
                 }]
             }))
 
-            $focusState = that.$stateList.find('.state-item.focused')
+            $focusState = that.$stateList.find('.state-item.focused:not(.disabled)')
             if $focusState.length
                 $newStateItem = $(newStateHTML).insertAfter($focusState)
             else
-                $newStateItem = $(newStateHTML).appendTo(that.$stateList)
+                if $stateItem.length and $stateItem.hasClass('disabled')
+                    $newStateItem = $(newStateHTML).insertBefore($stateItem)
+                else
+                    $newStateItem = $(newStateHTML).appendTo(that.$stateList)
 
             that.clearFocusedItem()
 
@@ -2726,22 +2729,34 @@ define [ 'component/stateeditor/model',
 
             returnInsertPos = null
 
+            $lastStateItem = that.$stateList.find('.state-item:last')
+
             if _.isNumber(insertPos)
 
                 if insertPos <= -1
                     $newStateItems = $(newStateItems).prependTo(that.$stateList)
                     returnInsertPos = -1
                 else
-                    if $currentStateItems[insertPos]
-                        $newStateItems = $(newStateItems).insertAfter($currentStateItems[insertPos])
+                    $currentItem = $($currentStateItems[insertPos])
+                    if $currentItem
+                        if $currentItem.hasClass('disabled')
+                            $newStateItems = $(newStateItems).insertBefore($currentItem)
+                        else
+                            $newStateItems = $(newStateItems).insertAfter($currentItem)
                         returnInsertPos = insertPos
                     else
-                        $newStateItems = $(newStateItems).appendTo(that.$stateList)
+                        if $lastStateItem.hasClass('disabled')
+                            $newStateItems = $(newStateItems).insertAfter($lastStateItem)
+                        else
+                            $newStateItems = $(newStateItems).appendTo(that.$stateList)
                         returnInsertPos = that.$stateList.length - 1
 
             else
 
-                $newStateItems = $(newStateItems).appendTo(that.$stateList)
+                if $lastStateItem.hasClass('disabled')
+                    $newStateItems = $(newStateItems).insertBefore($lastStateItem)
+                else
+                    $newStateItems = $(newStateItems).appendTo(that.$stateList)
                 returnInsertPos = that.$stateList.length - 1
 
             that.bindStateListEvent($newStateItems)

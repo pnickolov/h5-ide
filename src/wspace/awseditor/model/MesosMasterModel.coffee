@@ -78,7 +78,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       states = _.filter states, (state) ->
         return false if state.module in ['linux.mesos.master', 'linux.mesos.slave']
         return true
-      @set('state', mesosState.concat(states))
+      @set('state', states.concat(mesosState))
 
     getMesosState : () ->
 

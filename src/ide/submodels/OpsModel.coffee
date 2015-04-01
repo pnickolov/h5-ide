@@ -86,6 +86,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         @set("type", type || "aws")
       if options.type
         @__jsonFramework = options.framework
+        @__jsonScale     = options.scale
 
       if options and options.jsonData
         if options.jsonData.type

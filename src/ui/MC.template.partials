@@ -941,6 +941,17 @@ Additional Notes and Questions
     </div>
     <div id="tab-mesos-stack" class="hide">
         <div class="control-group clearfix">
+            <label for="mesos-scale">Scale</label>
+            <div id="mesos-scale" class="selectbox">
+                <div class="selection">Small</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected" data-value="small">Small</li>
+                    <li class="item" data-value="medium">Medium</li>
+                    <li class="item" data-value="large">Large</li>
+                </ul>
+            </div>
+        </div>
+        <div class="control-group clearfix">
             <label>Region</label>
             <div id="create-mesos-stack-region" class="selectbox">
                 <div class="selection">{{firstRegion.alias}}({{firstRegion.id}})</div>

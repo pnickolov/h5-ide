@@ -151,8 +151,9 @@ define [ "./DashboardTpl",
         type = if createStackModal.find(".tab-aws-stack").hasClass("active") then "aws" else "mesos"
         region = createStackModal.find("#create-#{type}-stack-region li.item.selected").data("value")
         framework = if type is "mesos" then createStackModal.find(".create-mesos-use-marathon").hasClass("on") else false
+        scale = createStackModal.find("#mesos-scale li.item.selected").data("value")
         console.log "Creating Stack: ", region, provider, {type, framework}
-        opsModel = self.model.scene.project.createStack( region, provider, {type, framework})
+        opsModel = self.model.scene.project.createStack( region, provider, {type, framework, scale})
 
         self.model.scene.loadSpace(opsModel)
 
@@ -195,6 +196,7 @@ define [ "./DashboardTpl",
           orderedList = _.sortBy resList, (res)->
             -res.data.length
           data[key] = orderedList
+          return
 
 
       @$el.find("#GlobalView").html( dataTemplate.globalResources( data ) )

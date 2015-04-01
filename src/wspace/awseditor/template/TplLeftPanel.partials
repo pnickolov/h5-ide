@@ -188,11 +188,11 @@
 
 <!-- {{mesos}} -->
 {{#unless isAppEdit}}
-<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSMASTER"}'>
+<li class="resource-item instance mesos" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSMASTER"}'>
   <div class="resource-icon-instance"></div>Master
 </li>
 {{/unless}}
-<li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSSLAVE"}'>
+<li class="resource-item instance mesos" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSSLAVE"}'>
   <div class="resource-icon-instance"></div>Slave
 </li>
 <li class="resource-item asg" data-type="ASG" data-option='{"lcId": "MESOS.LC"}'><div class="resource-icon-instance">

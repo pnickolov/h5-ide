@@ -213,6 +213,9 @@
   &.instance, &.dbinstance {
     padding-top : 5px;
     height      : 132px;
+    &.mesos{
+      height: 80px;
+    }
   }
 
   &.dbsnapshot,

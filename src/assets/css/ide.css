@@ -3433,6 +3433,8 @@ aside.dashboard-sidebar {
   .resource-item.instance, .resource-item.dbinstance {
     padding-top: 5px;
     height: 132px; }
+    .resource-item.instance.mesos, .resource-item.dbinstance.mesos {
+      height: 80px; }
   .resource-item.dbsnapshot, .resource-item.dockerimage {
     padding-top: 5px;
     height: 90px; }

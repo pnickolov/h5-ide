@@ -11,7 +11,7 @@
 define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant )->
 
   MesosDataModel = Backbone.Model.extend {
-    getSlave: ( hostname ) -> _.findWhere @get( 'slaves' ), hostname: '10.0.0.222'
+    getSlave: ( hostname ) -> _.findWhere @get( 'slaves' ), hostname: hostname
   }
 
   AwsOpsModel = OpsModel.extend {

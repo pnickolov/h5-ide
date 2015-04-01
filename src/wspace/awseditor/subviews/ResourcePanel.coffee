@@ -606,7 +606,7 @@ define [
 
       that = @
       mesosData = @workspace.opsModel.getMesosData()
-      leaderIp = "52.4.252.105" #mesosData.get('leaderIp')
+      leaderIp = mesosData.get('leaderIp')
 
       appData = null
       taskData = null

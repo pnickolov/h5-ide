@@ -68,10 +68,10 @@ define [ "../base/main",
 
             resModel = Design.instance().component( instanceId )
             unless resModel
-                effective = @model.effective = Design.modelClassForType(constant.RESTYPE.INSTANCE).getEffectiveId instanceId
+                effective = Design.modelClassForType(constant.RESTYPE.INSTANCE).getEffectiveId instanceId
                 resModel = Design.instance().component( effective.uid )
 
-
+            @model.effective = effective
             @view.resModel = @model.resModel = resModel
 
             opsModel = Design.instance().opsModel()

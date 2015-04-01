@@ -8117,7 +8117,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   left: 42px; }
 
 #state-editor-model .state-disabled-icon {
-  display: none !important;
+  display: none;
   position: absolute;
   top: 8px;
   left: 42px; }

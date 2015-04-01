@@ -61,7 +61,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
           })
           masterIds.push(master.get('name'))
       masterIds = masterIds.sort()
-      serverId = String(masterIds.indexOf(@get('name')))
+      serverId = String(masterIds.indexOf(@get('name')) + 1)
       mesosState = [{
         id: "state-" + @get('name'),
         module: 'linux.mesos.master',

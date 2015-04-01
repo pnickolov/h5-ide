@@ -8117,12 +8117,16 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   left: 42px; }
 
 #state-editor-model .state-disabled-icon {
+  display: none !important;
   position: absolute;
   top: 8px;
   left: 42px; }
 
 #state-editor-model.se-model-stack .state-status-icon {
   display: none !important; }
+
+#state-editor-model.se-model-stack .state-disabled-icon {
+  display: block; }
 
 #state-editor-model.se-model-appedit .state-status-icon {
   /*left: 34px;*/ }

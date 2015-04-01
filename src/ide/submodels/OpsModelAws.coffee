@@ -38,7 +38,8 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       if jsonType is "aws"
         @___defaultJson()
       else
-        @___mesosJson()
+        scale = @__jsonScale || "small"
+        @___mesosJson(scale)
 
     ___defaultJson : ()->
       json   = OpsModel.prototype.__defaultJson.call this

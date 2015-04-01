@@ -50,6 +50,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       ipMap = Model.getMasterIPs()
       stackName = Design.instance().get('name')
       masterModels = Design.modelClassForType(constant.RESTYPE.MESOSMASTER).allObjects()
+
       masterMapAry = []
       masterIds = []
       _.each masterModels, (master) ->

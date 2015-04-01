@@ -649,17 +649,6 @@ define [
       dataApps = appData[1]?.apps
       dataTasks = taskData[1]?.tasks
 
-      # dataTasks = [
-      #     {
-      #         "appId": "/apptest",
-      #         "host": "10.0.0.4"
-      #     },
-      #     {
-      #         "appId": "/otherapp",
-      #         "host": "10.0.1.4"
-      #     }
-      # ]
-
       hostAppMap = {}
       if dataTasks and dataTasks.length
         _.each dataTasks, (task) ->

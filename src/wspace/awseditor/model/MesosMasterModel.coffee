@@ -60,12 +60,13 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
             key: ipRef,
             value: master.get('name')
           })
-          masterIds.push(master.get('name'))
+          masterIds.push(master.id)
       masterIds = masterIds.sort()
-      serverId = String(masterIds.indexOf(@get('name')) + 1)
+      serverId = String(masterIds.indexOf(@id) + 1)
 
       masterMapAry = _.sortBy masterMapAry, (masterMap) ->
-        return masterIds.indexOf(masterMap.value)
+        uid = MC.extractID(masterMap.key)
+        return masterIds.indexOf(uid)
 
       mesosState = [{
         id: "state-" + @get('name'),

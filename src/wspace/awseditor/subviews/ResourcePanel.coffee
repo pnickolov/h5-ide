@@ -238,55 +238,16 @@ define [
 
     highlightCanvas: (event) ->
 
-      # get name -> uid map
-      nameMap = {}
-      # temp code
-      json = Design.instance().serialize()
-      _.each json.component, (comp) ->
-        nameMap[comp.name] = comp.uid
-
-      # switch highlight
-      prodModelNames1 = ['subne-web-prod-1a', 'subnet--web-4prod-1b']
-      prodModelNames2 = ['app-prod-1a-0', 'app-prod-1b-0']
-      prodModelNames3 = ['subnet-db-prod-1a', 'subnet-db-prod-10b']
-
-      qaModelNames1 = ['subne-web-staging-1a', 'subne-web-staging-1b']
-      qaModelNames2 = ['subnet-qa-1a', 'subnet-qa-1b']
-      qaModelNames3 = ['subnet-db-qa-1a', 'subnet-db-qa-1b']
-
-      if event
-
-          $container = $(event.currentTarget)
-          name = $container.data('name')
-
-          if name in ['prod_nginx']
-            modelIds = _.map prodModelNames1, (name) ->
-              return nameMap[name]
-
-          else if name in ['prod_requestworker', 'prod_mongos']
-            modelIds = _.map prodModelNames2, (name) ->
-              return nameMap[name]
-
-          else if name in ['prod_mongodb', 'prod_mongo-config', 'prod_zookeeper']
-            modelIds = _.map prodModelNames3, (name) ->
-              return nameMap[name]
-
-          else if name in ['qa_nginx']
-            modelIds = _.map qaModelNames1, (name) ->
-              return nameMap[name]
-
-          else if name in ['qa_requestworker', 'qa_mongos']
-            modelIds = _.map qaModelNames2, (name) ->
-              return nameMap[name]
-
-          else if name in ['qa_mongodb', 'qa_mongo-config', 'qa_zookeeper']
-            modelIds = _.map qaModelNames3, (name) ->
-              return nameMap[name]
-
-          if modelIds
-            models = _.map modelIds, (id) ->
-              return Design.instance().component(id)
-            @workspace.view.highLightModels(models)
+      $item = $(event.currentTarget)
+      hosts = $item.data('hosts')
+      hostAry = hosts.split(',')
+      models = []
+      MasterModel = Design.modelClassForType(constant.RESTYPE.MESOSMASTER)
+      _.each hostAry, (host) ->
+        if host
+          model = MasterModel.getCompByIp(host)
+          models.push(model) if model
+      @workspace.view.highLightModels(models) if models.length
 
     resourceListSortSelectRdsEvent : (event) ->
 
@@ -647,25 +608,25 @@ define [
       mesosData = @workspace.opsModel.getMesosData()
       leaderIp = "52.4.252.105" #mesosData.get('leaderIp')
 
-      dataApps = null
-      dataTasks = null
+      appData = null
+      taskData = null
 
       reqLoop = () ->
 
         Q.all([
           that.getMarathonAppList(leaderIp).then (data) ->
-            dataApps = data
+            appData = data
           ,
           that.getMarathonTaskList(leaderIp).then (data) ->
-            dataTasks = data
+            taskData = data
         ]).then (data) ->
-          that.renderContainerList(dataApps, dataTasks) if dataApps
+          that.renderContainerList(appData, taskData) if appData
         .done () ->
           setTimeout () ->
             reqLoop()
           , 1000 * 10
 
-      reqLoop()
+      reqLoop() if leaderIp
 
     getMarathonAppList: (leaderIp) ->
 
@@ -681,11 +642,31 @@ define [
         "leader_ip" : leaderIp
       })
 
-    renderContainerList: (data) ->
+    renderContainerList: (appData, taskData) ->
 
       that = @
 
-      dataApps = data[1]?.apps
+      dataApps = appData[1]?.apps
+      dataTasks = taskData[1]?.tasks
+
+      # dataTasks = [
+      #     {
+      #         "appId": "/apptest",
+      #         "host": "10.0.0.4"
+      #     },
+      #     {
+      #         "appId": "/otherapp",
+      #         "host": "10.0.1.4"
+      #     }
+      # ]
+
+      hostAppMap = {}
+      if dataTasks and dataTasks.length
+        _.each dataTasks, (task) ->
+          appId = task.appId
+          host = task.host
+          hostAppMap[appId] = [] if not hostAppMap[appId]
+          hostAppMap[appId].push(host)
 
       if dataApps and dataApps.length
 
@@ -699,7 +680,8 @@ define [
             task: app.tasksRunning,
             instance: app.instances,
             cpu: app.cpus,
-            memory: app.mem
+            memory: app.mem,
+            hosts: (hostAppMap[app.id] or []).join(',')
           })
 
         that.$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)

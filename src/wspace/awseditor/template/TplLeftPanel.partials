@@ -187,9 +187,11 @@
 {{else}}{{#if fav}}<p class="blank-slate">{{i18n "TOOLBAR.CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI"}}</p>{{/if}}{{/each}}
 
 <!-- {{mesos}} -->
+{{#unless isAppEdit}}
 <li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSMASTER"}'>
   <div class="resource-icon-instance"></div>Master
 </li>
+{{/unless}}
 <li class="resource-item instance" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSSLAVE"}'>
   <div class="resource-icon-instance"></div>Slave
 </li>

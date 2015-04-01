@@ -442,7 +442,7 @@ define [
       @$el.find(".resource-list-ami").html(html)#.parent().nanoScroller("reset")
 
     updateMesos: () ->
-      data = region: @workspace.opsModel.get("region"), imageId: constant.MESOS_IMAGEID
+      data = region: @workspace.opsModel.get("region"), imageId: constant.MESOS_IMAGEID, isAppEdit: Design.instance().modeIsAppEdit()
       html = LeftPanelTpl.mesos data
       @$(".resource-list-ami").html(html)
 

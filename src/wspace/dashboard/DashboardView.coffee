@@ -156,15 +156,21 @@ define [ "./DashboardTpl",
         amiId = null
 
         createStackModal.setContent MC.template.loadingSpinner()
-        self.getPreBakedAmiId(region).then (result)->
+        self.getPreBakedAmiId(region, type).then (result)->
           amiId = result
+        , (err)->
+          console.log err
         .finally ()->
           console.log "Creating Stack: ", region, provider, {type, framework, scale, amiId}
           createStackModal.close()
           opsModel = self.model.scene.project.createStack( region, provider, {type, framework, scale, amiId})
           self.model.scene.loadSpace(opsModel)
 
-    getPreBakedAmiId: (region)->
+    getPreBakedAmiId: (region, type)->
+      defer = new Q.defer()
+      if type is "aws"
+        defer.resolve()
+        return defer.promise
       ApiRequest("aws_aws", {region_names: [region], fields: ["prebaked_ami", "quickstart"]}).then (result)->
         amiId = null
         result = result[0]
@@ -173,6 +179,7 @@ define [ "./DashboardTpl",
             ami.id in result.prebaked_ami and ami.osType is "ubuntu" and ami.virtualizationType is "hvm"
           amiId = targetAmi.id
           return amiId
+
 
     showCredential: ()->
       new CredentialFormView({model: @model.scene.project}).render()

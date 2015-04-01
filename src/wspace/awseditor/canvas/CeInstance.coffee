@@ -41,21 +41,27 @@ define [
     suppressEvent : ()-> false
 
     iconUrl : ()->
-      ami = @model.getAmi() || @model.get("cachedAmi")
-
-      if not ami
-        m = @model
-        instance = CloudResources( m.design().credentialId(), m.type, m.design().region() ).get( m.get("appId") )
-        if instance
-          instance = instance.attributes
-          if instance.platform and instance.platform is "windows"
-            url = "ide/ami/windows.#{instance.architecture}.#{instance.rootDeviceType}.png"
-          else
-            url = "ide/ami/linux-other.#{instance.architecture}.#{instance.rootDeviceType}.png"
-        else
-          url = "ide/ami/ami-not-available.png"
+      if @model.isMesosMaster()
+        url = 'ide/ami/mesos-master.png'
+      else if @model.isMesosSlave()
+        url = 'ide/ami/mesos-slave.png'
       else
-        url = "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+        ami = @model.getAmi() || @model.get("cachedAmi")
+
+        if not ami
+          m = @model
+          instance = CloudResources( m.design().credentialId(), m.type, m.design().region() ).get( m.get("appId") )
+          if instance
+            instance = instance.attributes
+            if instance.platform and instance.platform is "windows"
+              url = "ide/ami/windows.#{instance.architecture}.#{instance.rootDeviceType}.png"
+            else
+              url = "ide/ami/linux-other.#{instance.architecture}.#{instance.rootDeviceType}.png"
+          else
+            url = "ide/ami/ami-not-available.png"
+        else
+          url = "ide/ami/#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+
       url
 
     listenModelEvents : ()->

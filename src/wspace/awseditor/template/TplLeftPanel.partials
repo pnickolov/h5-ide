@@ -189,11 +189,11 @@
 <!-- {{mesos}} -->
 {{#unless isAppEdit}}
 <li class="resource-item instance mesos" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSMASTER"}'>
-  <div class="resource-icon-instance"></div>Master
+  <div class="resource-icon-instance"><img src="/assets/images/ide/ami/mesos-master.png" width='39' height='27' /></div>Master
 </li>
 {{/unless}}
 <li class="resource-item instance mesos" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSSLAVE"}'>
-  <div class="resource-icon-instance"></div>Slave
+  <div class="resource-icon-instance"><img src="/assets/images/ide/ami/mesos-slave.png" width='39' height='27' /></div>Slave
 </li>
 <li class="resource-item asg" data-type="ASG" data-option='{"lcId": "MESOS.LC"}'><div class="resource-icon-instance">
   Slave

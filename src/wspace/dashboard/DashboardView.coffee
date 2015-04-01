@@ -4,6 +4,7 @@ define [ "./DashboardTpl",
          "constant",
          "./VisualizeDialog",
          "CloudResources",
+         "ApiRequest"
          "AppAction",
          "UI.modalplus",
          "i18n!/nls/lang.js",
@@ -11,7 +12,7 @@ define [ "./DashboardTpl",
          "Credential"
          "credentialFormView"
          "UI.bubble",
-         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog, Credential, CredentialFormView )->
+         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, ApiRequest, AppAction, Modal, lang, ProjectLog, Credential, CredentialFormView )->
 
   Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
     ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
@@ -145,17 +146,33 @@ define [ "./DashboardTpl",
           createStackModal.find(".tabs-content > div").toggleClass("hide")
 
       createStackModal.on "confirm", ()->
-        createStackModal.close()
 
-        provider = "aws::global"
+        createStackModal.toggleFooter(false)
         type = if createStackModal.find(".tab-aws-stack").hasClass("active") then "aws" else "mesos"
         region = createStackModal.find("#create-#{type}-stack-region li.item.selected").data("value")
         framework = if type is "mesos" then createStackModal.find(".create-mesos-use-marathon").hasClass("on") else false
         scale = createStackModal.find("#mesos-scale li.item.selected").data("value")
-        console.log "Creating Stack: ", region, provider, {type, framework}
-        opsModel = self.model.scene.project.createStack( region, provider, {type, framework, scale})
+        provider = "aws::global"
+        amiId = null
 
-        self.model.scene.loadSpace(opsModel)
+        createStackModal.setContent MC.template.loadingSpinner()
+        self.getPreBakedAmiId(region).then (result)->
+          amiId = result
+        .finally ()->
+          console.log "Creating Stack: ", region, provider, {type, framework, scale, amiId}
+          createStackModal.close()
+          opsModel = self.model.scene.project.createStack( region, provider, {type, framework, scale, amiId})
+          self.model.scene.loadSpace(opsModel)
+
+    getPreBakedAmiId: (region)->
+      ApiRequest("aws_aws", {region_names: [region], fields: ["prebaked_ami", "quickstart"]}).then (result)->
+        amiId = null
+        result = result[0]
+        if result.quickstart and result.prebaked_ami
+          targetAmi = _.find result.quickstart , (ami)->
+            ami.id in result.prebaked_ami and ami.osType is "ubuntu" and ami.virtualizationType is "hvm"
+          amiId = targetAmi.id
+          return amiId
 
     showCredential: ()->
       new CredentialFormView({model: @model.scene.project}).render()

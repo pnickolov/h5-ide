@@ -87,6 +87,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       if options.type
         @__jsonFramework = options.framework
         @__jsonScale     = options.scale
+        @__amiId         = options.amiId
 
       if options and options.jsonData
         if options.jsonData.type
@@ -344,9 +345,10 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       @
 
-    getStackType: ()-> @get("type") || @__jsonType
+    getStackType      : ()-> @get("type") || @__jsonType
     getStackFramework : ()-> @__jsonFramework
-    isMesos: ()-> @getStackType() is "mesos"
+    getAmiId          : ()-> @__amiId
+    isMesos           : ()-> @getStackType() is "mesos"
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->

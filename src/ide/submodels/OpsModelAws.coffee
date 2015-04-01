@@ -1368,7 +1368,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       ]
 
       framework =  if @getStackFramework() then ["marathon"] else []
-      imageId = (_.findWhere amiForEachRegion, {region: @get("region")}).imageId
+      imageId = @getAmiId() || (_.findWhere amiForEachRegion, {region: @get("region")}).imageId
       regionName = @get("region")
 
       component = defaultStack.component

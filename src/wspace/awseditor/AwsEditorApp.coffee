@@ -110,9 +110,8 @@ define [
 
       jobs.push(
         ApiRequest("marathon_info", {
-          "key_id" : @opsModel.credentialId(),
-          "master_ips" : {"10.0.3.4":"52.4.211.169", "10.0.2.4":"52.4.252.105", "10.0.2.5":"52.4.57.214"}
-          # MesosMasterModel.getMasterIPs()
+          "key_id" : @opsModel.credentialId()
+          "master_ips" : MesosMasterModel.getMasterIPs()
         }).then ( data )->
           that.setMesosData data
       )

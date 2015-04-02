@@ -643,6 +643,7 @@ define [
 
     renderContainerList: (appData, taskData) ->
 
+      if not @workspace.isAwake() then return
       that = @
 
       dataApps = appData[1]?.apps
@@ -669,7 +670,7 @@ define [
             instance: app.instances,
             cpu: app.cpus,
             memory: app.mem,
-            hosts: (hostAppMap[app.id] or []).join(',')
+            hosts: (_.uniq (hostAppMap[app.id] or [])).join(',')
           })
 
         that.tempTaskFlag = that.$el.find("li.container-item.selected").data("name")

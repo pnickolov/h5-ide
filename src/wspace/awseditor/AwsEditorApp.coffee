@@ -60,11 +60,13 @@ define [
 
     awake: () ->
       CoreEditorApp.prototype.awake.call this
-      @mesosJobs()
+      if @__inited then @mesosJobs()
+      null
 
     sleep: () ->
       CoreEditorApp.prototype.sleep.call this
       @cleanupMesosJobs()
+      null
 
 
     fetchAmiData  : StackEditor.prototype.fetchAmiData
@@ -73,15 +75,20 @@ define [
 
     ### Mesos ###
     mesosJobs : ()->
+      unless @opsModel.isMesos() then return
+
       self = @
       @updateMesosInfo().then(()->
         if self.isRemoved() then return
       ).fin ()->
         if self.isRemoved() then return
         if !self.isAwake() then return
+
         self.mesosSchedule = setTimeout ()->
           self.mesosJobs()
         , 1000 * 10
+
+        null
       return
 
     setMesosData: ( data ) ->

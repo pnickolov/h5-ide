@@ -776,7 +776,7 @@ define [
 
 
     isMesosMaster: -> @subType is constant.RESTYPE.MESOSMASTER
-    isMesosSlave : -> @subType is constant.RESTYPE.MESOSSLAVE
+    isMesosSlave : -> @subType in [ constant.RESTYPE.MESOSSLAVE, constant.RESTYPE.MESOSLC ]
     isMesos      : -> !!@subType
 
   }, {

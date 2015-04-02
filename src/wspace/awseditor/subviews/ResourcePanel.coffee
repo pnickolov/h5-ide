@@ -165,6 +165,10 @@ define [
       if Design.instance().region() is 'cn-north-1'
           hasVGW = hasCGW = false
 
+      if Design.instance().get('state') is "Stopped"
+        # Shouldn't loop
+        return false
+
       @$el.html( LeftPanelTpl.panel({
         rdsDisabled : @workspace.isRdsDisabled()
         hasVGW : hasVGW

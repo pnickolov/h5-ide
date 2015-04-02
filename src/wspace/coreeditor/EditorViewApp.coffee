@@ -24,7 +24,7 @@ define [
       return
 
     updateResourcePanel: ->
-      if @workspace.opsModel.isMesos() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
+      if @workspace.opsModel.isMesos() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon() and Design.instance().get('state') isnt "Stopped"
         @renderMesosPanel()
       else
         @removeLeftPanel()

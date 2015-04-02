@@ -50,7 +50,7 @@ define [
 
     initEditor : ()->
       CoreEditorApp.prototype.initEditor.call this
-      @mesosJobs()
+      if @opsModel.isMesos() then @mesosJobs()
       return
 
     cleanup : ()->

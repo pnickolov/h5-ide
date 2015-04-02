@@ -83,22 +83,34 @@
   cursor: pointer;
 }
 
-.property-content #mesos-health-checks-list .elb-property-listener{
-  .property-control-group .input{
-    width: 210px;
+.property-content {
+  #mesos-health-checks-list .elb-property-listener{
+    .property-control-group .input{
+      width: 210px;
+    }
+    .selectbox{
+      width: 240px;
+    }
   }
-  .selectbox{
-    width: 240px;
+
+  #mesos-health-checks-list .elb-property-listener:only-child {
+    .mesos-health-check-item-remove {
+      display: none;
+    }
+    .property-control-group .input{
+      width: 230px;
+    }
+    .selectbox {
+      width: 260px;
+    }
   }
+
+  .mesos-marathon-switch {
+    line-height: 30px;
+    .marathon-mark-img { height: 40px; }
+  }
+
 }
-.property-content #mesos-health-checks-list .elb-property-listener:only-child{
-  .mesos-health-check-item-remove {
-    display: none;
-  }
-  .property-control-group .input{
-    width: 230px;
-  }
-  .selectbox{
-    width: 260px;
-  }
-}
+
+
+

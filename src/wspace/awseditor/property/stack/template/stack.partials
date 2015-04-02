@@ -78,12 +78,12 @@
   <!-- Mesos Settings -->
   {{#if isMesos}}
   <section class="property-control-group" data-bind="true">
-    <span>
+    <div class="mesos-marathon-switch">
       <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
       <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
         <span class="switch-handle"></span>
       </label>
-    </span>
+    </div>
   </section>
   {{/if}}
 

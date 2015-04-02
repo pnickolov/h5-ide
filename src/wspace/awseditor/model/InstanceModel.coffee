@@ -775,8 +775,8 @@ define [
         console.error "No MesosSG found when initialize InstanceModel"
 
 
-    isMesosMaster: -> Model.isMesosMaster @attributes
-    isMesosSlave : -> Model.isMesosSlave @attributes
+    isMesosMaster: -> @subType is constant.RESTYPE.MESOSMASTER
+    isMesosSlave : -> @subType is constant.RESTYPE.MESOSSLAVE
     isMesos      : -> !!@subType
 
   }, {

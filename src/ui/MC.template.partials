@@ -943,11 +943,23 @@ Additional Notes and Questions
         <div class="control-group clearfix">
             <label for="mesos-scale">Scale</label>
             <div id="mesos-scale" class="selectbox">
-                <div class="selection">Small</div>
+                <div class="selection">
+                    <div class="main truncate">Small</div>
+                    <div class="sub"><span>3 T2.Small master node,</span><span>5-50 T2.Small slave ASG</span></div>
+                </div>
                 <ul class="dropdown" tabindex="-1">
-                    <li class="item selected tooltip" data-value="small" data-tooltip="3 T2.Small Master Node <br/> 5-50 Slave Auto Scaling Group" data-tooltip-type="html">Small</li>
-                    <li class="item" data-value="medium">Medium</li>
-                    <li class="item" data-value="large">Large</li>
+                    <li class="item selected tooltip" data-value="small" data-tooltip="3 T2.Small Master Node <br/>3 T2.Small Master Node" data-tooltip-type="html">
+                        <div class="main truncate">Small</div>
+                        <div class="sub"><span>3 T2.Small master node,</span><span>5-50 T2.Small slave ASG</span></div>
+                    </li>
+                    <li class="item" data-value="medium">
+                        <div class="main truncate">Medium</div>
+                        <div class="sub"><span>5 M3.Large master node,</span><span> 10-200 C4.Large slave ASG</span></div>
+                    </li>
+                    <li class="item" data-value="large">
+                        <div class="main truncate">Large</div>
+                        <div class="sub"><span>5 M3.2xLarge master node,</span><span> 10-1000 C4.2xLarge slave ASG</span></div>
+                    </li>
                 </ul>
             </div>
         </div>

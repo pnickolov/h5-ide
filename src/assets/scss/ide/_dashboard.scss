@@ -1145,10 +1145,21 @@ $bp-2: 1280px;
       }
       > .selectbox{
         width: 250px;
+        .main{
+          font-size: 14px;
+          color: #ffffff;
+        }
+        .sub{
+          color: #cccccc;
+          font-size: 12px;
+        }
       }
       .marathon-mark-img{
         width: 30px;
         margin-right: 10px;
+      }
+      #mesos-scale{
+        width: 340px;
       }
     }
   }

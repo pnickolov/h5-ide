@@ -2873,9 +2873,17 @@ aside.dashboard-sidebar {
       display: inline-block; }
     .tabs-content > div .control-group > .selectbox {
       width: 250px; }
+      .tabs-content > div .control-group > .selectbox .main {
+        font-size: 14px;
+        color: #ffffff; }
+      .tabs-content > div .control-group > .selectbox .sub {
+        color: #cccccc;
+        font-size: 12px; }
     .tabs-content > div .control-group .marathon-mark-img {
       width: 30px;
       margin-right: 10px; }
+    .tabs-content > div .control-group #mesos-scale {
+      width: 340px; }
 
 /*
     IDE Core Editor

@@ -184,7 +184,7 @@ define [
 
       if isMesos
         @updateMesos()
-        if @workspace.design.modeIsApp()
+        if @workspace.design.modeIsApp() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
           @workspace.opsModel.getMesosData().on 'change', @getContainerList, @
       else
         @updateAmi()

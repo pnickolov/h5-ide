@@ -58,6 +58,15 @@ define [
       @cleanupMesosJobs()
       return
 
+    awake: () ->
+      CoreEditorApp.prototype.awake.call this
+      @mesosJobs()
+
+    sleep: () ->
+      CoreEditorApp.prototype.sleep.call this
+      @cleanupMesosJobs()
+
+
     fetchAmiData  : StackEditor.prototype.fetchAmiData
     fetchRdsData  : StackEditor.prototype.fetchRdsData
     isRdsDisabled : StackEditor.prototype.isRdsDisabled
@@ -69,6 +78,7 @@ define [
         if self.isRemoved() then return
       ).fin ()->
         if self.isRemoved() then return
+        if !self.isAwake() then return
         self.mesosSchedule = setTimeout ()->
           self.mesosJobs()
         , 1000 * 10

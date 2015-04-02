@@ -247,6 +247,11 @@ define [
       _.each hostAry, (host) ->
         if host
           model = MasterModel.getCompByIp(host)
+          if model.type is constant.RESTYPE.LC
+            asgModel = model.connectionTargets("LcUsage")[0]
+            expandedList = asgModel.get("expandedList") || []
+            for expandedAsg in expandedList
+              models.push expandedAsg.getLc()
           models.push(model) if model
       @workspace.view.highLightModels(models) if models.length
 

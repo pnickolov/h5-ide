@@ -242,4 +242,8 @@ define [
       $("body")[0].addEventListener("click", oneTimeClicked, true)
       @canvas.highLightModels(models)
       return
+
+    removeHighlight: ()->
+      self = @
+      self.canvas.removeHighLight()
   }

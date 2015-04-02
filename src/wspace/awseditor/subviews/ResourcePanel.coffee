@@ -672,8 +672,18 @@ define [
             hosts: (hostAppMap[app.id] or []).join(',')
           })
 
+        that.tempTaskFlag = that.$el.find("li.container-item.selected").data("name")
+
         that.$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)
         that.recalcAccordion()
+
+        # recover selected item state
+        task = that.$el.find(".container-item[data-name='#{that.tempTaskFlag}']")
+        if that.tempTaskFlag and task
+          task.addClass("selected")
+        else
+          @workspace.view.removeHighlight()
+
 
     toggleGroup: (event) ->
 

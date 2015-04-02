@@ -264,6 +264,10 @@ module.exports =
       en: "Associate Elastic IP to primary IP"
       zh: "关联弹性 IP"
 
+    MASTER_NODE_CANNOT_BE_DELETED:
+      en: "Master node cannot be deleted."
+      zh: "Master node 不能删除。"
+
 
 
 

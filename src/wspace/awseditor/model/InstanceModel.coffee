@@ -534,6 +534,9 @@ define [
       null
 
     isRemovable : ()->
+      if @design().modeIsAppEdit() and @isMesosMaster()
+        return error : lang.CANVAS.MASTER_NODE_CANNOT_BE_DELETED
+
       state = @get("state")
       if (state and _.isArray(state) and state.length > 0) or
         ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)

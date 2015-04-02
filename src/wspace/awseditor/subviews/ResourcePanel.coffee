@@ -610,9 +610,9 @@ define [
 
       appData = null
       taskData = null
+      interval = 30 * 1000
 
       reqLoop = () ->
-
         Q.all([
           that.getMarathonAppList(leaderIp).then (data) ->
             appData = data
@@ -623,7 +623,7 @@ define [
         .finally () ->
           setTimeout () ->
             reqLoop()
-          , 1000 * 10
+          , interval
 
       reqLoop() if leaderIp
 

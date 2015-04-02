@@ -77,7 +77,9 @@ define [
     mesosJobs : ()->
       unless @opsModel.isMesos() then return
 
+      interval = 30 * 1000
       self = @
+
       @updateMesosInfo().then(()->
         if self.isRemoved() then return
       ).fin ()->
@@ -86,7 +88,7 @@ define [
 
         self.mesosSchedule = setTimeout ()->
           self.mesosJobs()
-        , 1000 * 10
+        , interval
 
         null
       return

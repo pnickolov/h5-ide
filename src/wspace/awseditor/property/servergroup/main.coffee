@@ -39,9 +39,11 @@ define [ "../base/main",
                 PropertyModule.loadSubPanel "STATIC", id
             null
 
-        initAppEdit : ()->
+        initAppEdit: ( uid )->
             @model = app_model
             @model.isAppEdit = true
+            @model.resModel = Design.instance().component uid
+
             @view  = app_view
             null
 

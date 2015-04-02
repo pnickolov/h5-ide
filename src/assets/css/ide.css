@@ -9682,7 +9682,10 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     color: #cacce1; }
   .container-panel .marathon-app-list {
     position: relative;
-    height: 100%; }
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 40px;
+    box-sizing: border-box; }
     .container-panel .marathon-app-list .group-list {
       height: 100%;
       padding-bottom: 160px;

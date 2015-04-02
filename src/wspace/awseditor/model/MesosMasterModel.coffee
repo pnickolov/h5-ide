@@ -114,7 +114,7 @@ define [ "./InstanceModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
     deserialize : ( data, layout_data, resolve )->
 
     setMarathon : (flag) ->
-      @each masterModels, (master) -> master.setMarathon(flag) if master.isMesosMaster()
+      @each (master) -> master.setMarathon(flag) if master.isMesosMaster()
 
     getMarathon : () ->
       @some (master) -> master.isMesosMaster() and master.getMarathon()

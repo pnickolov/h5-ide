@@ -135,8 +135,8 @@
 <dl class="dl-vertical">
   <dt>Framework</dt><dd>{{emptyStr framework}}</dd>
   <dt>Mesos Leader UI</dt><dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{leaderIp}}:{{leaderPort}}</a></dd>
-  {{#if framework}}<dt>Marathon Leader UI</dt><dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{marathonIp}}:{{marathonPort}}</a></dd>{{/if}}
+  {{#if framework}}<dt>Marathon Leader UI</dt><dd><a target="_blank" href="http://{{marathonIp}}:{{marathonPort}}">{{marathonIp}}:{{marathonPort}}</a></dd>{{/if}}
 </dl>
 {{else}}
-Mesos Data is not ready yet...
+<dl class="dl-vertical"><dt>Mesos Data is not ready yet...</dt></dl>
 {{/if}}

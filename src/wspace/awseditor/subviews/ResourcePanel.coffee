@@ -184,7 +184,8 @@ define [
 
       if isMesos
         @updateMesos()
-        @workspace.opsModel.getMesosData().on 'change', @getContainerList, @
+        if @workspace.design.modeIsApp()
+          @workspace.opsModel.getMesosData().on 'change', @getContainerList, @
       else
         @updateAmi()
 
@@ -606,13 +607,15 @@ define [
 
       that = @
       mesosData = @workspace.opsModel.getMesosData()
-      leaderIp = mesosData.get('leaderIp')
 
       appData = null
       taskData = null
       interval = 30 * 1000
 
       reqLoop = () ->
+        leaderIp = mesosData.get('leaderIp')
+        unless leaderIp then return
+
         Q.all([
           that.getMarathonAppList(leaderIp).then (data) ->
             appData = data
@@ -625,7 +628,7 @@ define [
             reqLoop()
           , interval
 
-      reqLoop() if leaderIp
+      reqLoop()
 
     getMarathonAppList: (leaderIp) ->
 

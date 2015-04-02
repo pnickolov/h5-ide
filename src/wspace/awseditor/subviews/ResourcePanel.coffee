@@ -620,11 +620,7 @@ define [
             taskData = data
         ]).then (data) ->
           that.renderContainerList(appData, taskData) if appData
-<<<<<<< HEAD
-        .fin ->
-=======
         .finally () ->
->>>>>>> fix data request issue for res panel
           setTimeout () ->
             reqLoop()
           , 1000 * 10

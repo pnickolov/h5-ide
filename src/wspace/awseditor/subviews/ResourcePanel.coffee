@@ -620,16 +620,20 @@ define [
       reqLoop = () ->
         leaderIp = mesosData.get('leaderIp')
         unless leaderIp then return
-
-        Q.all([
-          that.getMarathonAppList(leaderIp).then (data) ->
-            appData = data
-          that.getMarathonTaskList(leaderIp).then (data) ->
-            taskData = data
-        ]).then (data) ->
+        if that.workspace.isAwake()
+          deferArray = [
+            that.getMarathonAppList(leaderIp).then (data) ->
+              appData = data
+            that.getMarathonTaskList(leaderIp).then (data) ->
+              taskData = data
+          ]
+        else
+          deferArray = []
+        Q.all(deferArray).then (data) ->
           that.renderContainerList(appData, taskData) if appData
         .finally () ->
-          setTimeout () ->
+          clearTimeout that.timeOutLoop
+          that.timeOutLoop = setTimeout () ->
             reqLoop()
           , interval
 

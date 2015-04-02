@@ -176,16 +176,22 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
         Helper.message.error null, i18n.MESOS_STACK_NEED_A_SLAVE_NODE_AT_LEAST
 
-    isMesosMasterMoreThan3 = ->
+    isMesosMasterCountLegal = ->
         unless Design.instance().opsModel().isMesos() then return null
 
+        errors = []
         masterCount = Design.modelClassForType( constant.RESTYPE.INSTANCE ).reduce ( memo, i ) ->
             if i.isMesosMaster() then memo + 1 else memo
         , 0
 
-        if masterCount >= 3 then return null
+        if masterCount < 3
+            errors.push Helper.message.error 'IS_MESOS_MASTER_MORE_THAN_3', i18n.IS_MESOS_MASTER_MORE_THAN_3
 
-        Helper.message.error null, i18n.IS_MESOS_MASTER_MORE_THAN_3
+        if masterCount % 2 is 0
+            errors.push Helper.message.error 'MASTER_NUMBER_MUST_BE_ODD', i18n.MASTER_NUMBER_MUST_BE_ODD
+
+        errors
+
 
     isMesosMasterPlacedInPublicSubnet = ->
         privateMasters = Design.modelClassForType( constant.RESTYPE.INSTANCE ).filter ( i ) ->
@@ -202,14 +208,12 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
 
 
 
-
-
     isEBSOptimizedForAttachedProvisionedVolume  : isEBSOptimizedForAttachedProvisionedVolume
     isAssociatedSGRuleExceedFitNum              : isAssociatedSGRuleExceedFitNum
     isConnectRoutTableButNoEIP                  : isConnectRoutTableButNoEIP
     isNatCheckedSourceDest                      : isNatCheckedSourceDest
     isMesosHasSlave                             : isMesosHasSlave
-    isMesosMasterMoreThan3                      : isMesosMasterMoreThan3
+    isMesosMasterCountLegal                     : isMesosMasterCountLegal
     isMesosMasterPlacedInPublicSubnet           : isMesosMasterPlacedInPublicSubnet
 
 

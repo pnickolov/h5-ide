@@ -237,6 +237,7 @@ define [
       oneTimeClicked = ( evt )->
         console.log "hide highlight."
         self.canvas.removeHighLight()
+        self.resourcePanel.removeHighlight()
         $("body")[0].removeEventListener("click", oneTimeClicked, true)
 
       $("body")[0].addEventListener("click", oneTimeClicked, true)

@@ -216,12 +216,8 @@ define [
 
       $item = $ e.currentTarget
 
-      @$( '.container-item' ).each ->
-        $c = $( @ )
-        if $c[0] is $item[0]
-          $c.addClass 'selected'
-        else
-          $c.removeClass 'selected'
+      @$( '.container-item' ).removeClass 'selected'
+      $item.addClass("selected")
 
       $constraint = $item.next '.constraint-list'
 
@@ -684,6 +680,8 @@ define [
         else
           @workspace.view.removeHighlight()
 
+    removeHighlight: ()->
+      @$(".container-item.selected").removeClass("selected")
 
     toggleGroup: (event) ->
 

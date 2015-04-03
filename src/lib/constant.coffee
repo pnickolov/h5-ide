@@ -441,7 +441,17 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
             Address          : true
             Port             : true
 
-    MESOS_IMAGEID = 'ami-9ef278f6'
+    MESOS_AMI_IDS = [
+      {"region":"us-east-1","imageId":"ami-9ef278f6"}
+      {"region":"us-west-1","imageId":"ami-353f2970"}
+      {"region":"eu-west-1","imageId":"ami-1a92266d"}
+      {"region":"us-west-2","imageId":"ami-fba3e8cb"}
+      {"region":"eu-central-1","imageId":"ami-929caa8f"}
+      {"region":"ap-southeast-2","imageId":"ami-5fe28d65"}
+      {"region":"ap-northeast-1","imageId":"ami-9d7f479c"}
+      {"region":"ap-southeast-1","imageId":"ami-a6a083f4"}
+      {"region":"sa-east-1","imageId":"ami-c79e28da"}
+    ]
 
 
     #public
@@ -474,4 +484,4 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     DB_ENGINE_ARY           : DB_ENGINE_ARY
     DB_DEFAULTSETTING       : DB_DEFAULTSETTING
 
-    MESOS_IMAGEID           : MESOS_IMAGEID
+    MESOS_AMI_IDS           : MESOS_AMI_IDS

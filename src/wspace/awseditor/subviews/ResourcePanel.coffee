@@ -183,6 +183,8 @@ define [
       @updateSnapshot()
 
       if isMesos
+        if @workspace.opsModel.getMesosData()
+          @getContainerList()
         @updateMesos()
         if @workspace.design.modeIsApp() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
           @workspace.opsModel.getMesosData().on 'change', @getContainerList, @
@@ -196,8 +198,6 @@ define [
       @renderReuse()
 
       return
-
-    # For Demo Begin
 
     switchPanel : (event) ->
       if not event
@@ -409,7 +409,10 @@ define [
       @$el.find(".resource-list-ami").html(html)#.parent().nanoScroller("reset")
 
     updateMesos: () ->
-      data = region: @workspace.opsModel.get("region"), imageId: constant.MESOS_IMAGEID, isAppEdit: Design.instance().modeIsAppEdit()
+      region = @workspace.design.region()
+      imageId = (_.findWhere constant.MESOS_AMI_IDS, {region}).imageId
+      isAppEdit = Design.instance().modeIsAppEdit()
+      data = { region, imageId, isAppEdit }
       html = LeftPanelTpl.mesos data
       @$(".resource-list-ami").html(html)
 
@@ -608,7 +611,7 @@ define [
       Backbone.View.prototype.remove.call this
       return
 
-    getContainerList: (leaderIp) ->
+    getContainerList: () ->
 
       that = @
       mesosData = @workspace.opsModel.getMesosData()
@@ -631,6 +634,8 @@ define [
           deferArray = []
         Q.all(deferArray).then (data) ->
           that.renderContainerList(appData, taskData) if appData
+        .fail ()->
+          that.renderMarathonNotReady()
         .finally () ->
           clearTimeout that.timeOutLoop
           that.timeOutLoop = setTimeout () ->
@@ -653,11 +658,18 @@ define [
         "leader_ip" : leaderIp
       })
 
+    renderMarathonNotReady: ()->
+      if @workspace.__mesosIsReady
+        return false
+
+      @$('.marathon-app-ready').show().html LeftPanelTpl.mesosNotReady
+
+
     renderContainerList: (appData, taskData) ->
 
       if not @workspace.isAwake() then return
       that = @
-
+      @workspace.__mesosIsReady = true
       dataApps = appData[1]?.apps
       dataTasks = taskData[1]?.tasks
 
@@ -686,8 +698,10 @@ define [
           })
 
         that.tempTaskFlag = that.$el.find("li.container-item.selected").data("name")
-
+        __tempFilterWord = that.$("#filter-containers").val()
         that.$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)
+        that.$("#filter-containers").val(__tempFilterWord)
+        that.filterContainers()
         that.recalcAccordion()
 
         # recover selected item state
@@ -696,6 +710,9 @@ define [
           task.addClass("selected")
         else
           @workspace.view.removeHighlight()
+      else
+        that.$('.marathon-app-list').hide()
+        that.$('.marathon-app-ready').show().html LeftPanelTpl.emptyContainer()
 
     removeHighlight: ()->
       @$(".container-item.selected").removeClass("selected")
@@ -710,8 +727,8 @@ define [
         else
             $container.addClass('hide')
 
-    filterContainers: (evt)->
-      keyword = $(evt.currentTarget).val().toLowerCase()
+    filterContainers: ()->
+      keyword = @$("#filter-containers").val().toLowerCase()
       $(".container-list .container-item").each (index, item)->
         containerName = $(item).data("name").toLowerCase()
         shouldShow =  containerName.indexOf(keyword) >= 0

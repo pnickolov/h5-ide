@@ -151,7 +151,9 @@
 .toolbar-visual-ops-switch.switch {
   border   : 1px solid #ccc;
   position : relative;
-
+  &.create-mesos-use-marathon, &.marathon-switch{
+    margin-top: 0;
+  }
   &.on {
     border-color : #0E8F38;
     background   : $base-g;

@@ -147,9 +147,15 @@ define [ "ApiRequest",
       return
 
     render : ()->
+      mapper = (region)->
+        region.data = _.filter region.data, (app)->
+          app.provider in ["aws::global", "aws::china", "os::awcloud_bj"] # todo: Project filter
+        region
+      apps = _.map @project.apps().groupByRegion(), mapper
+      stacks = _.map @project.stacks().groupByRegion(), mapper
       @$el.html ProjectTpl.assetList({
-        apps    : @project.apps().groupByRegion()
-        stacks  : @project.stacks().groupByRegion()
+        apps    : apps
+        stacks  : stacks
         showApp : @showApp
       })
   }

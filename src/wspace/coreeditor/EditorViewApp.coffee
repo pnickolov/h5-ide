@@ -66,14 +66,6 @@ define [
         hideClose    : true
         onCancel     : ()-> self.workspace.remove(); return
         onConfirm    : ()->
-
-          newName = modal.tpl.find("#ImportSaveAppName").val()
-          $("ul.ws-tabs li.active").remove()
-          App.loadUrl("workspace/0f1bd360-c866-4852-94ec-a5c781f6a86f/ops/app-503dbed0")
-          $("ul.ws-tabs li").last().find("span").text(newName + " - app")
-          modal.close()
-          return false
-
           $ipt = modal.tpl.find("#ImportSaveAppName")
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val
@@ -118,9 +110,6 @@ define [
               modal.tpl.find(".modal-confirm").removeAttr("disabled")
             return
       })
-
-      modal.find("#importAsMesos").click ()->
-        $(".import-as-mesos-wrap").toggle($(this).is(":checked"))
       return
 
     toggleProcessing : ()->
@@ -274,5 +263,10 @@ define [
           modal.close()
           return
       })
+
+    showMarathonNotReady: ()->
+      if @workspace.__marathonIsReady
+        return false
+      @resourcePanel.renderMarathonNotReady()
 
   }

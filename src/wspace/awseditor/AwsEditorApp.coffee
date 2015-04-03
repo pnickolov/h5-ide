@@ -120,6 +120,7 @@ define [
         slaves      : data.slaves
       }
 
+      @view.workspace.__marathonIsReady = true
       @opsModel.setMesosData data
 
     updateMesosInfo : ()->
@@ -133,6 +134,8 @@ define [
           "master_ips" : MesosMasterModel.getMasterIPs()
         }).then ( data )->
           that.setMesosData data
+        , (err)->
+          that.view.showMarathonNotReady()
       )
 
       Q.all jobs

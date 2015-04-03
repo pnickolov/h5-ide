@@ -213,7 +213,8 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
 
     createMesosLc: ->
       MesosLcModel = Design.modelClassForType constant.RESTYPE.MESOSLC
-      attributes = parent: @, imageId: constant.MESOS_IMAGEID
+      regionName = @design().region()
+      attributes = parent: @, imageId: (_.findWhere constant.MESOS_AMI_IDS, {region: regionName}).imageId
 
       CanvasElement.createResource constant.RESTYPE.MESOSLC, attributes, { createByUser: true }
 

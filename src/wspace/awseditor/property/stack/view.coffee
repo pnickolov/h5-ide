@@ -44,7 +44,7 @@ define [ '../base/view',
             null
 
         renderMesosData: ( dataModel = Design.instance().opsModel().getMesosData() ) ->
-            @$( '#mesos-data-area' ).html template.mesosData dataModel.toJSON()
+            @$( '#mesos-data-area' ).html template.mesosData _.extend { isAppEdit: @model.isAppEdit }, dataModel.toJSON()
 
         toggleMarathon: ( e ) ->
             $switch = $ e.currentTarget

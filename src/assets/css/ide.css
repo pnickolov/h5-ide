@@ -2951,7 +2951,8 @@ aside.dashboard-sidebar {
     text-align: center;
     float: left;
     cursor: pointer;
-    color: #b0b0b0; }
+    color: #b0b0b0;
+    line-height: 1; }
     .sidebar-title button:hover {
       color: #fff; }
     .sidebar-title button.selected {
@@ -6289,6 +6290,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .toolbar-visual-ops-switch.switch {
   border: 1px solid #ccc;
   position: relative; }
+  .toolbar-visual-ops-switch.switch.create-mesos-use-marathon, .toolbar-visual-ops-switch.switch.marathon-switch {
+    margin-top: 0; }
   .toolbar-visual-ops-switch.switch.on {
     border-color: #0E8F38;
     background: #11c568; }
@@ -6746,10 +6749,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 230px; }
 .property-content #mesos-health-checks-list .elb-property-listener:only-child .selectbox {
   width: 260px; }
-.property-content .mesos-marathon-switch {
-  line-height: 30px; }
-  .property-content .mesos-marathon-switch .marathon-mark-img {
-    height: 40px; }
+.property-content .mesos-marathon-switch .marathon-mark-img {
+  height: 30px; }
 
 .ops-process {
   width: 100%;
@@ -8688,9 +8689,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 #mesos-master-port, #marathon-master-port {
   width: 50px; }
-
-#importAsMesosWrap .modal-control-group > label {
-  width: 170px; }
 
 /*
     Run Stack/Apply App Update/TA

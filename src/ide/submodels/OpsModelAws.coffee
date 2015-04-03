@@ -18,6 +18,11 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
 
     type : OpsModel.Type.Amazon
 
+    initialize: ( attr, options ) ->
+      OpsModel.prototype.initialize.apply @, arguments
+      @__mesosData = new MesosDataModel()
+      return
+
     getMsrId : ()->
       msrId = OpsModel.prototype.getMsrId.call this
       if msrId then return msrId
@@ -26,8 +31,6 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
         if comp.type is constant.RESTYPE.VPC
           return comp.resource.VpcId
       undefined
-
-    __mesosData: new MesosDataModel()
 
     setMesosData: ( data ) -> @__mesosData.set data
 

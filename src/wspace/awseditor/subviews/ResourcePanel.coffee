@@ -635,7 +635,7 @@ define [
         Q.all(deferArray).then (data) ->
           that.renderContainerList(appData, taskData) if appData
         .fail ()->
-          that.renderMesosNotReady()
+          that.renderMarathonNotReady()
         .finally () ->
           clearTimeout that.timeOutLoop
           that.timeOutLoop = setTimeout () ->
@@ -658,7 +658,7 @@ define [
         "leader_ip" : leaderIp
       })
 
-    renderMesosNotReady: ()->
+    renderMarathonNotReady: ()->
       if @workspace.__mesosIsReady
         return false
 

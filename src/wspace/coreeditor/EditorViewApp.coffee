@@ -264,4 +264,9 @@ define [
           return
       })
 
+    showMarathonNotReady: ()->
+      if @workspace.__marathonIsReady
+        return false
+      @resourcePanel.renderMarathonNotReady()
+
   }

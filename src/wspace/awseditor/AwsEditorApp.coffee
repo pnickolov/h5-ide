@@ -120,6 +120,7 @@ define [
         slaves      : data.slaves
       }
 
+      @workspace.__marathonIsReady = true
       @opsModel.setMesosData data
 
     updateMesosInfo : ()->

@@ -45,6 +45,7 @@ define [ "Design", "constant" ], ( Design, constant ) ->
 				if sg.isElbSg() and not ( isELBParent or isStackParent )
 					continue
 
+				disableCheck = false
 				sgChecked = !!SgAssoModel.findExisting( sg, resource )
 
 				needShow = isStackParent or ( not readonly ) or sgChecked

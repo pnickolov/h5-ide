@@ -8689,9 +8689,6 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 #mesos-master-port, #marathon-master-port {
   width: 50px; }
 
-#importAsMesosWrap .modal-control-group > label {
-  width: 170px; }
-
 /*
     Run Stack/Apply App Update/TA
 

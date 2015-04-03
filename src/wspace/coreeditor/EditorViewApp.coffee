@@ -66,9 +66,6 @@ define [
         hideClose    : true
         onCancel     : ()-> self.workspace.remove(); return
         onConfirm    : ()->
-
-          newName = modal.tpl.find("#ImportSaveAppName").val()
-          $("ul.ws-tabs li.active").remove()
           $ipt = modal.tpl.find("#ImportSaveAppName")
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val
@@ -113,9 +110,6 @@ define [
               modal.tpl.find(".modal-confirm").removeAttr("disabled")
             return
       })
-
-      modal.find("#importAsMesos").click ()->
-        $(".import-as-mesos-wrap").toggle($(this).is(":checked"))
       return
 
     toggleProcessing : ()->

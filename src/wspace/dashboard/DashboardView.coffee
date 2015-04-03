@@ -152,18 +152,10 @@ define [ "./DashboardTpl",
         framework = if type is "mesos" then createStackModal.find(".create-mesos-use-marathon").hasClass("on") else false
         scale = createStackModal.find("#mesos-scale li.item.selected").data("value")
         provider = "aws::global"
-        amiId = null
-
-        createStackModal.loading()
-        self.getPreBakedAmiId(region, type).then (result)->
-          amiId = result
-        , (err)->
-          console.log err
-        .finally ()->
-          console.log "Creating Stack: ", region, provider, {type, framework, scale, amiId}
-          createStackModal.close()
-          opsModel = self.model.scene.project.createStack( region, provider, {type, framework, scale, amiId})
-          self.model.scene.loadSpace(opsModel)
+        console.log "Creating Stack: ", region, provider, {type, framework, scale}
+        createStackModal.close()
+        opsModel = self.model.scene.project.createStack( region, provider, {type, framework, scale})
+        self.model.scene.loadSpace(opsModel)
 
     getPreBakedAmiId: (region, type)->
       defer = new Q.defer()

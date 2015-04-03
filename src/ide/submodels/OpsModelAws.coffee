@@ -197,21 +197,9 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
 
       json   = OpsModel.prototype.__defaultJson.call this
 
-      amiForEachRegion = [
-        {"region":"us-east-1","imageId":"ami-9ef278f6"}
-        {"region":"us-west-1","imageId":"ami-353f2970"}
-        {"region":"eu-west-1","imageId":"ami-1a92266d"}
-        {"region":"us-west-2","imageId":"ami-fba3e8cb"}
-        {"region":"eu-central-1","imageId":"ami-929caa8f"}
-        {"region":"ap-southeast-2","imageId":"ami-5fe28d65"}
-        {"region":"ap-northeast-1","imageId":"ami-9d7f479c"}
-        {"region":"ap-southeast-1","imageId":"ami-a6a083f4"}
-        {"region":"sa-east-1","imageId":"ami-c79e28da"}
-      ]
-
       framework =  if @getStackFramework() then ["marathon"] else []
-      imageId = @getAmiId() || (_.findWhere amiForEachRegion, {region: @get("region")}).imageId
       regionName = @get("region")
+      imageId = (_.findWhere constant.MESOS_AMI_IDS, {region: regionName}).imageId
 
       component = defaultStack.component
       layout = defaultStack.layout
@@ -231,7 +219,7 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
         layoutJson = layoutJson.replace(new RegExp(key, "g"), guid)
 
       # replace region-id in subnet
-      _.each _.pluck(amiForEachRegion, "region"), (region)->
+      _.each _.pluck(constant.MESOS_AMI_IDS, "region"), (region)->
         componentJson = componentJson.replace(new RegExp(region, "g"), regionName)
 
       # replace to dist imageId

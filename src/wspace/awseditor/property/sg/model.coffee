@@ -136,7 +136,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyM
             @sortSGRule()
             null
 
-        readonly: -> @component.isMesos()
+        readonly: -> @component.isMesos() and Design.instance().opsModel().isMesos()
 
     }
 

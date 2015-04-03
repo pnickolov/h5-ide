@@ -954,11 +954,11 @@ Additional Notes and Questions
                     </li>
                     <li class="item" data-value="medium">
                         <div class="main truncate">Medium</div>
-                        <div class="sub">10 instances (2 cpu, 3.75GB mem), with AutoScaling up to 200 instances</div>
+                        <div class="sub">50 instances (2 cpu, 3.75GB mem), with AutoScaling up to 200 instances</div>
                     </li>
                     <li class="item" data-value="large">
                         <div class="main truncate">Large</div>
-                        <div class="sub">10 instances (8 cpu, 15GB mem), with AutoScaling up to 1000 instances</div>
+                        <div class="sub">200 instances (8 cpu, 15GB mem), with AutoScaling up to 1000 instances</div>
                     </li>
                 </ul>
             </div>

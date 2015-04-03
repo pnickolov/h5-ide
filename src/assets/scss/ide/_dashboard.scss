@@ -381,7 +381,7 @@
 
 .dash-region-header {
       height         : 48px;
-      line-height    : 48px; 
+      line-height    : 48px;
       padding-bottom : 10px;
       position       : relative;
       border-bottom  : 1px solid $base-grey;
@@ -409,7 +409,7 @@
 }
 
 .region-resource-tab {
-    
+
       display      : inline-block;
       width        : 200px;
 
@@ -519,7 +519,7 @@ aside.dashboard-sidebar {
         cursor        : default;
 
         &:hover {
-            background: desaturate(lighten($base-p, 65%), 12%); 
+            background: desaturate(lighten($base-p, 65%), 12%);
         }
 
         .avatar {
@@ -707,7 +707,7 @@ $bp-2: 1280px;
       width         : 100%;
       box-sizing    : border-box;
 
-      span { 
+      span {
         width : 20vw;
         color : $light-p;
       }
@@ -1151,7 +1151,7 @@ $bp-2: 1280px;
         }
         .sub{
           color: #cccccc;
-          font-size: 12px;
+          font-size: 10px;
         }
       }
       .marathon-mark-img{

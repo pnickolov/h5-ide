@@ -709,6 +709,7 @@ define [
         else
           @workspace.view.removeHighlight()
       else
+        that.$('.marathon-app-list').hide()
         that.$('.marathon-app-ready').show().html LeftPanelTpl.emptyContainer()
 
     removeHighlight: ()->

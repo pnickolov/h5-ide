@@ -515,9 +515,11 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 		Helper.message.error uid, i18n.ERROR_ELB_INTERNET_SHOULD_ATTACH_TO_PUBLIC_SB, elb.get 'name'
 
 	isNameExceedLimit = ( uid ) ->
-
 		limit = 23
 		elb = Design.instance().component uid
+
+		if elb.get( 'appId' ) then return null
+
 		elbName = elb.get('name')
 		if elbName and elbName.length > limit
 			return Helper.message.error uid, i18n.ERROR_ELB_NAME_EXCEED_LIMIT, elbName, limit

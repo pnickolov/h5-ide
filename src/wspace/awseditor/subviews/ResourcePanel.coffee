@@ -409,7 +409,10 @@ define [
       @$el.find(".resource-list-ami").html(html)#.parent().nanoScroller("reset")
 
     updateMesos: () ->
-      data = region: @workspace.opsModel.get("region"), imageId: constant.MESOS_IMAGEID, isAppEdit: Design.instance().modeIsAppEdit()
+      region = @workspace.design.region()
+      imageId = (_.findWhere constant.MESOS_AMI_IDS, {region}).imageId
+      isAppEdit = Design.instance().modeIsAppEdit()
+      data = { region, imageId, isAppEdit }
       html = LeftPanelTpl.mesos data
       @$(".resource-list-ami").html(html)
 

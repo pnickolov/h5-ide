@@ -1,11 +1,3 @@
-<!-- {{keys}} -->
-{{#each data}}
-    <li class="item{{#if selected}} selected{{/if}}" data-id="{{DBParameterGroupFamily}}" tabindex="-1">
-            <div class="manager-content-main" data-id="{{DBParameterGroupFamily}}">{{DBEngineVersionDescription}}</div>
-    </li>
-{{/each}}
-
-
 <!-- {{content}} -->
 {{#each items}}
     <tr class="item" data-id="">

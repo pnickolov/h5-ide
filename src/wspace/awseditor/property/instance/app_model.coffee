@@ -48,35 +48,32 @@ define [ '../base/model',
             @set 'loginCmd', cmd_line
 
 
-        init : ( instance_id )->
-
-            @set 'id', instance_id
-            @set 'uid', instance_id
-
-            myInstanceComponent = Design.instance().component( instance_id )
-
-            # The instance_id might be component uid or aws id
-            if myInstanceComponent
-                instance_id = myInstanceComponent.get 'appId'
-            else
-                effective = Design.modelClassForType(constant.RESTYPE.INSTANCE).getEffectiveId instance_id
-                myInstanceComponent = Design.instance().component( effective.uid )
-                @set 'uid', effective.uid
-                @set 'mid', effective.mid
-
-            if myInstanceComponent
-                @set 'description', myInstanceComponent.get("description")
-                @set 'name', myInstanceComponent.get("name")
-
-            if not myInstanceComponent
+        init : ( instanceId )->
+            if not @resModel
                 console.warn "instance.app_model.init(): can not find InstanceModel"
+
+            @set 'id', instanceId
+            @set 'uid', instanceId
+
+            if @effective
+                @set 'uid', @effective.uid
+                @set 'mid', @effective.mid
+                appId = instanceId
+            else
+                appId = @resModel.get 'appId'
 
             app_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region())
 
-            if app_data?.get(instance_id)?.toJSON()
-                instance = $.extend true, {}, app_data.get(instance_id)?.toJSON()
-                instance.name = if myInstanceComponent then myInstanceComponent.get 'name' else instance_id
-                rdName = myInstanceComponent.getAmiRootDeviceName()
+            if app_data?.get(appId)?.toJSON()
+                instance = $.extend true, {}, app_data.get(appId)?.toJSON()
+                instance.name = if @resModel then @resModel.get 'name' else appId
+                rdName = @resModel.getAmiRootDeviceName()
+
+                if @resModel.isMesosSlave()
+                    mesosData = {
+                        isMesosSlave    : true
+                    }
+                    _.extend instance, mesosData
 
                 # Possible value : running, stopped, pending...
                 instance.state = MC.capitalize instance.instanceState.name
@@ -109,9 +106,7 @@ define [ '../base/model',
 
                 this.set instance
 
-                this.resModel = myInstanceComponent
-
-                @setOsTypeAndLoginCmd instance_id
+                @setOsTypeAndLoginCmd appId
 
             else
                 return false

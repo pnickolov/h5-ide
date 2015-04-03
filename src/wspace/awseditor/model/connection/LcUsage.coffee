@@ -5,7 +5,7 @@ define [ "ConnectionModel", "constant" ], ( ConnectionModel, constant )->
     type : "LcUsage"
 
     remove : ()->
-      lc = @getTarget constant.RESTYPE.LC
+      lc = @getOtherTarget constant.RESTYPE.ASG
 
       ConnectionModel.prototype.remove.apply this, arguments
 

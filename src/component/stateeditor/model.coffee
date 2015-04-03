@@ -20,6 +20,9 @@ define [ 'MC', 'constant', 'CloudResources', "Design", "ApiRequest", "OpsModel",
 
 			resModel = Design.instance().component(resUID)
 
+			if resModel and resModel.isMesos and resModel.isMesos()
+				resModel.setMesosState()
+
 			return if not (resModel and resModel.serialize)
 
 			resId = options.resId or resModel.get('appId')

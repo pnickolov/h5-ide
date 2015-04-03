@@ -28,6 +28,10 @@ define [
   './model/DBSbgModel'
   './model/DBInstanceModel'
   './model/DBOgModel'
+  './model/MesosMasterModel'
+  './model/MesosSlaveModel'
+  './model/MesosLcModel'
+
 
   "./model/deserializeVisitor/JsonFixer"
   "./model/deserializeVisitor/EipMerge"

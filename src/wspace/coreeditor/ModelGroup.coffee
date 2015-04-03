@@ -77,8 +77,8 @@ define [ "Design", "ComplexResModel" ], ( Design, ComplexResModel )->
       @set("__children", children)
 
       child.off "destroy", @removeChild, @
-      child.attributes.__parent = null
-      null
+      child.set("__parent", null)
+      return
 
     children : ()-> this.get("__children") || []
 

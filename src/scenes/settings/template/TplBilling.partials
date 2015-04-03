@@ -23,7 +23,7 @@
     <dl class="settings-item credit-card-info">
         <dt>{{i18n "CREDIT_CARD_INFORMATION"}}</dt>
         <dd>
-            <div class="payment-credit-middle">
+            <div class="payment-credit-middle payment-credit-card">
 
             </div>
             <div class="credit-meta">
@@ -74,14 +74,14 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody class="t-m-content">
+                                <tbody>
                                 {{#each paymentHistory}}
                                     <tr class="item" data-id="{{@index}}">
                                         <td>{{formatTime updated_at "yyyy-MM-d"}}</td>
                                         <td>$ {{or ending_balance total_balance}}</td>
                                         <td>{{#if success}}{{i18n "PAYMENT_PAID"}}{{else}}<span class="link-red">{{i18n "PAYMENT_FAILED"}}</span>{{/if}}</td>
                                         <td>
-                                            <a class="payment-receipt link-blue" href="#">{{i18n "PAYMENT_VIEW_RECEIPT"}}</a></td>
+                                            <a class="payment-receipt" href="#">{{i18n "PAYMENT_VIEW_RECEIPT"}}</a></td>
                                     </tr>
                                 {{/each}}
                                 </tbody>

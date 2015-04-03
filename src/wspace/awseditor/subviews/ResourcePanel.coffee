@@ -2,6 +2,7 @@
 define [
   "CloudResources"
   "Design"
+  "UI.modalplus"
   "../template/TplLeftPanel"
   "constant"
   'dhcp_manage'
@@ -17,9 +18,8 @@ define [
   'ApiRequest'
   'OpsModel'
   "backbone"
-  "UI.nanoscroller"
   "UI.dnd"
-], ( CloudResources, Design, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
+], ( CloudResources, Design, Modal, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -105,6 +105,7 @@ define [
   Backbone.View.extend {
 
     events :
+      "click nav button"             : "switchPanel"
       "click .btn-fav-ami"           : "toggleFav"
       "OPTION_CHANGE .AmiTypeSelect" : "changeAmiType"
       "click .BrowseCommunityAmi"    : "browseCommunityAmi"
@@ -118,6 +119,12 @@ define [
 
       'OPTION_CHANGE #resource-list-sort-select-snapshot' : 'resourceListSortSelectSnapshotEvent'
       'OPTION_CHANGE #resource-list-sort-select-rds-snapshot' : 'resourceListSortSelectRdsEvent'
+
+      'click .container-item'        : 'toggleConstraint'
+      'keyup #filter-containers'     : 'filterContainers'
+      'change #filter-containers'    : 'filterContainers'
+      'click .group-header'          : 'toggleGroup'
+
 
     initialize : (options)->
       _.extend this, options
@@ -153,14 +160,20 @@ define [
     render : ()->
 
       hasVGW = hasCGW = true
+      isMesos = @workspace.opsModel.isMesos()
 
       if Design.instance().region() is 'cn-north-1'
           hasVGW = hasCGW = false
 
+      if Design.instance().get('state') is "Stopped"
+        # Shouldn't loop
+        return false
+
       @$el.html( LeftPanelTpl.panel({
-        rdsDisabled : @workspace.isRdsDisabled(),
-        hasVGW: hasVGW,
-        hasCGW: hasCGW
+        rdsDisabled : @workspace.isRdsDisabled()
+        hasVGW : hasVGW
+        hasCGW : hasCGW
+        isMesos: isMesos
       }) )
 
       @$el.toggleClass("hidden", @__leftPanelHidden || false)
@@ -168,15 +181,79 @@ define [
 
       @updateAZ()
       @updateSnapshot()
-      @updateAmi()
+
+      if isMesos
+        @updateMesos()
+        if @workspace.design.modeIsApp() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
+          @workspace.opsModel.getMesosData().on 'change', @getContainerList, @
+      else
+        @updateAmi()
+
       @updateRDSList()
       @updateRDSSnapshotList()
 
       @updateDisableItems()
       @renderReuse()
 
-      @$el.find(".nano").nanoScroller()
       return
+
+    # For Demo Begin
+
+    switchPanel : (event) ->
+      if not event
+        @$el.find('.resource-panel').addClass('hide')
+        @$el.find('.container-panel').removeClass('hide')
+        return
+
+      $button = $(event.currentTarget)
+
+      # switch
+      @$el.find('.container-panel').addClass('hide')
+      @$el.find('.resource-panel').addClass('hide')
+      if $button.hasClass('sidebar-nav-resource')
+          @$el.find('.resource-panel').removeClass('hide')
+      else
+          @$el.find('.container-panel').removeClass('hide')
+
+    toggleConstraint: ( e ) ->
+
+      amimationDuration = 150
+
+      $item = $ e.currentTarget
+
+      @$( '.container-item' ).removeClass 'selected'
+      $item.addClass("selected")
+
+      $constraint = $item.next '.constraint-list'
+
+      if $constraint.is(':visible')
+        #$constraint.stop().slideUp()
+      else
+        @$( '.constraint-list' ).each ->
+          $c = $( @ )
+          if $c.is(':visible') then $c.stop().slideUp(amimationDuration)
+
+        $constraint.stop().slideDown(amimationDuration)
+
+      @highlightCanvas(e)
+
+    highlightCanvas: (event) ->
+
+      $item = $(event.currentTarget)
+      hosts = $item.data('hosts')
+      hostAry = hosts.split(',')
+      models = []
+      MasterModel = Design.modelClassForType(constant.RESTYPE.MESOSMASTER)
+      _.each hostAry, (host) ->
+        if host
+          model = MasterModel.getCompByIp(host)
+          if model.type is constant.RESTYPE.LC
+            asgModel = model.connectionTargets("LcUsage")[0]
+            expandedList = asgModel.get("expandedList") || []
+            for expandedAsg in expandedList
+              models.push expandedAsg.getLc()
+          models.push(model) if model
+      @workspace.view.highLightModels(models) if models.length
 
     resourceListSortSelectRdsEvent : (event) ->
 
@@ -329,7 +406,12 @@ define [
       ms.region = @workspace.opsModel.get("region")
 
       html = LeftPanelTpl.ami ms
-      @$el.find(".resource-list-ami").html(html).parent().nanoScroller("reset")
+      @$el.find(".resource-list-ami").html(html)#.parent().nanoScroller("reset")
+
+    updateMesos: () ->
+      data = region: @workspace.opsModel.get("region"), imageId: constant.MESOS_IMAGEID, isAppEdit: Design.instance().modeIsAppEdit()
+      html = LeftPanelTpl.mesos data
+      @$(".resource-list-ami").html(html)
 
     updateDisableItems : ( resModel )->
       if not @workspace.isAwake() then return
@@ -400,28 +482,20 @@ define [
       @__openedAccordion = $accordion.index()
 
       $expanded = $accordion.siblings ".expanded"
-      $body     = $accordion.children ".accordion-body"
 
       $accordionWrap   = $accordion.closest ".fixedaccordion"
-      $accordionParent = $accordionWrap.parent()
+      $accordionParent = $accordionWrap.parents('.OEPanelLeft')
 
-      $visibleAccordion = $accordionWrap.children().filter ()->
-        $(this).css('display') isnt 'none'
-
-      height = $accordionParent.outerHeight() - 39 - $visibleAccordion.length * $target.outerHeight()
-
-      $body.outerHeight height
+      titleHeight = $target.outerHeight()
+      height      = $accordionParent.outerHeight() - 82 - ($accordionWrap.children().length-1) * titleHeight
 
       if noAnimate
-        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
-        $expanded.removeClass("expanded")
+        $accordion.innerHeight(height).addClass("expanded")#.children(".nano").nanoScroller("reset")
+        $expanded.innerHeight(titleHeight).removeClass("expanded")
         return false
 
-      $body.slideDown 200, ()->
-        $accordion.addClass("expanded").children(".nano").nanoScroller("reset")
-
-      $expanded.children(".accordion-body").slideUp 200, ()->
-        $expanded.closest(".accordion-group").removeClass("expanded")
+      $accordion.animate {height:height+"px"}, 200, ()-> $accordion.addClass("expanded")
+      $expanded.animate {height:titleHeight+"px"}, 200, ()-> $expanded.removeClass("expanded")
       false
 
     recalcAccordion : () ->
@@ -429,10 +503,17 @@ define [
       if not leftpane.length
         return
 
-      $accordions = leftpane.children(".fixedaccordion").children()
+      $accordions = leftpane.find(".fixedaccordion").children()
+      titleHeight = $accordions.children(".fixedaccordion-head").outerHeight()
+      height = leftpane.outerHeight() - 82 - $accordions.length * titleHeight
+      $accordions.children(".accordion-body").innerHeight(height)
+
       $accordion  = $accordions.filter(".expanded")
       if $accordion.length is 0
         $accordion = $accordions.eq( @__openedAccordion || 0 )
+
+      $accordion.innerHeight(height+titleHeight)
+      $accordion.siblings().innerHeight(titleHeight)
 
       $target = $accordion.removeClass( 'expanded' ).children( '.fixedaccordion-head' )
       this.updateAccordion( { currentTarget : $target[0] }, true )
@@ -452,7 +533,7 @@ define [
     manageRdsSnapshot : ()-> new RdsSnapshotManager().render()
 
     refreshPanelData : ( evt )->
-      $tgt = $( evt.currentTarget )
+      $tgt = $( evt.currentTarget ).find(".icon-refresh")
       if $tgt.hasClass("reloading") then return
 
       $tgt.addClass("reloading")
@@ -526,5 +607,116 @@ define [
       @subViews = null
       Backbone.View.prototype.remove.call this
       return
+
+    getContainerList: (leaderIp) ->
+
+      that = @
+      mesosData = @workspace.opsModel.getMesosData()
+
+      appData = null
+      taskData = null
+      interval = 30 * 1000
+
+      reqLoop = () ->
+        leaderIp = mesosData.get('leaderIp')
+        unless leaderIp then return
+        if that.workspace.isAwake()
+          deferArray = [
+            that.getMarathonAppList(leaderIp).then (data) ->
+              appData = data
+            that.getMarathonTaskList(leaderIp).then (data) ->
+              taskData = data
+          ]
+        else
+          deferArray = []
+        Q.all(deferArray).then (data) ->
+          that.renderContainerList(appData, taskData) if appData
+        .finally () ->
+          clearTimeout that.timeOutLoop
+          that.timeOutLoop = setTimeout () ->
+            reqLoop()
+          , interval
+
+      reqLoop()
+
+    getMarathonAppList: (leaderIp) ->
+
+      ApiRequest("marathon_app_list", {
+        "key_id" : @workspace.opsModel.credentialId(),
+        "leader_ip" : leaderIp
+      })
+
+    getMarathonTaskList: (leaderIp) ->
+
+      ApiRequest("marathon_task_list", {
+        "key_id" : @workspace.opsModel.credentialId(),
+        "leader_ip" : leaderIp
+      })
+
+    renderContainerList: (appData, taskData) ->
+
+      if not @workspace.isAwake() then return
+      that = @
+
+      dataApps = appData[1]?.apps
+      dataTasks = taskData[1]?.tasks
+
+      hostAppMap = {}
+      if dataTasks and dataTasks.length
+        _.each dataTasks, (task) ->
+          appId = task.appId
+          host = task.host
+          hostAppMap[appId] = [] if not hostAppMap[appId]
+          hostAppMap[appId].push(host)
+
+      if dataApps and dataApps.length
+
+        that.$('.marathon-app-list').show()
+        that.$('.marathon-app-ready').hide()
+
+        viewData = []
+        _.each dataApps, (app) ->
+          viewData.push({
+            id: app.id,
+            task: app.tasksRunning,
+            instance: app.instances,
+            cpu: app.cpus,
+            memory: app.mem,
+            hosts: (_.uniq (hostAppMap[app.id] or [])).join(',')
+          })
+
+        that.tempTaskFlag = that.$el.find("li.container-item.selected").data("name")
+
+        that.$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)
+        that.recalcAccordion()
+
+        # recover selected item state
+        task = that.$el.find(".container-item[data-name='#{that.tempTaskFlag}']")
+        if that.tempTaskFlag and task
+          task.addClass("selected")
+        else
+          @workspace.view.removeHighlight()
+
+    removeHighlight: ()->
+      @$(".container-item.selected").removeClass("selected")
+
+    toggleGroup: (event) ->
+
+        $header = $(event.currentTarget)
+        $header.toggleClass('expand')
+        $container = $header.next '.container-list'
+        if $header.hasClass('expand')
+            $container.removeClass('hide')
+        else
+            $container.addClass('hide')
+
+    filterContainers: (evt)->
+      keyword = $(evt.currentTarget).val().toLowerCase()
+      $(".container-list .container-item").each (index, item)->
+        containerName = $(item).data("name").toLowerCase()
+        shouldShow =  containerName.indexOf(keyword) >= 0
+        if not shouldShow and $(item).hasClass("selected")
+          $(item).next().hide()
+        $(item).toggle(shouldShow)
 
   }

@@ -15,6 +15,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
   OpsModelType =
     OpenStack : "OpenstackOps"
     Amazon    : "AwsOps"
+    Mesos     : "Mesos"
 
   OpsModelState =
     UnRun        : 0
@@ -56,7 +57,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       requestId      : ""     # When the app is launching, this holds the request id.
       progress       : 0      # The progress of current action on the app.
       opsActionError : ""     # The failure of the lastest action.
-
+      type           : "aws"  # Whether its a marathon stack or aws stack
       # duplicateTarget : ""  # Use internally.
 
 
@@ -79,7 +80,18 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       Backbone.Model.apply this, arguments
 
     initialize : ( attr, options )->
+
+      type = attr.type || options.type
+      if type
+        @set("type", type || "aws")
+      if options.type
+        @__jsonFramework = options.framework
+        @__jsonScale     = options.scale
+        @__amiId         = options.amiId
+
       if options and options.jsonData
+        if options.jsonData.type
+          @set("type", options.jsonData.type)
         @__setJsonData options.jsonData
 
       @__userTriggerAppProgress = false
@@ -156,6 +168,9 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
     # Get the Most Significant Resource id.
     getMsrId : ()-> @get("importMsrId") || undefined
 
+    # Hardcode for demo
+    getMarathonStackId: -> 'stack-334a97bd'
+
     getThumbnail  : ()-> ThumbUtil.fetch(@get("id"))
     saveThumbnail : ( thumb )->
       if thumb
@@ -167,7 +182,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
     # Use this method to access the real json of the opsModel
     getJsonData : ()->
-      {
+      base = {
         id          : @get("id") or ""
         name        : @get("name")
         region      : @get("region")
@@ -177,13 +192,17 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         time_update : @get("updateTime")
         description : @get("description")
         property    : { stoppable : @get("stoppable") }
-
-        resource_diff : @__jsonData.resource_diff
-        component     : @__jsonData.component
-        layout        : @__jsonData.layout
-        agent         : @__jsonData.agent
-        stack_id      : @__jsonData.stack_id
       }
+      if @__jsonData
+        _.extend(base, {
+          resource_diff : @__jsonData.resource_diff
+          component     : @__jsonData.component
+          layout        : @__jsonData.layout
+          agent         : @__jsonData.agent
+          stack_id      : @__jsonData.stack_id
+          host          : @__jsonData.host
+          type          : @__jsonData.type
+        })
 
     # Use this method to load the newest json.
     # Returns a promise that will be fulfilled when the json is loaded.
@@ -301,7 +320,17 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         component     : json.component
         layout        : json.layout
         agent         : json.agent
+        host          : json.host
+        type          : @.get("type")
       }
+
+      @__jsonFramework = null
+      if json.component
+        _.each json.component, (comp)->
+          if comp.type in [constant.RESTYPE.INSTANCE, constant.RESTYPE.LC] and comp.state?.length
+            _.each comp.state, (state)->
+              if state.module in ["linux.mesos.slave", "linux.mesos.master"] and state.parameter.framework?.length
+                @__jsonFramework = state.parameter.framework
 
       stoppable = json.property?.stoppable or true
 
@@ -315,6 +344,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       }
 
       @
+
+    getStackType      : ()-> @get("type") || @__jsonType
+    getStackFramework : ()-> @__jsonFramework
+    getAmiId          : ()-> @__amiId
+    isMesos           : ()-> @getStackType() is "mesos"
 
     # Save the stack in server, returns a promise
     save : ( newJson, thumbnail )->
@@ -406,6 +440,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           provider   : toRunJson.provider
           usage      : toRunJson.usage
           updateTime : +(new Date())
+          type       : toRunJson.type
         })
 
     # Duplicate the stack

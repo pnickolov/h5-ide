@@ -105,6 +105,8 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js" ], ( constant, Conne
       # Eni can only be attached to an instance.
       if eni.connections("EniAttachment").length > 0 then return false
 
+      if instance.isMesos()
+        return lang.IDE.CANT_ATTACH_ENI_TO_MESOS_INSTANCE
 
       maxEniCount = instance.getMaxEniCount()
       # Instance have an embed eni

@@ -13,6 +13,8 @@ define [
     ### env:dev:end ###
     type : "SVG"
 
+    model : null
+
     initialize : ( options )->
       @canvas = options.canvas
       return

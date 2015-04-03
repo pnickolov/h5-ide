@@ -26,11 +26,14 @@ define [
 
       # Watch model's change
       @listenTo @model, "change:name", @render
+      @listenTo @model, "change:__parent", @__updateTopLevel
 
       @listenModelEvents()
 
       @ensureStickyPos()
       return
+
+    __updateTopLevel : ()-> @canvas.markItemAsTopLevel( @, @isTopLevel() )
 
     listenModelEvents : ()->
 
@@ -424,7 +427,9 @@ define [
 
     changeParent : ( newParent, x, y )->
 
-      if newParent is @parent() or newParent is null
+      if not newParent then newParent = @canvas.getSvgItem()
+
+      if newParent is @parent()
         if @model.x() is x and @model.y() is y then return
         @moveBy( x - @model.x(), y - @model.y() )
         return
@@ -433,8 +438,6 @@ define [
       if @model.get("appId")
         notification "error", lang.NOTIFY.WARN_OPERATE_NOT_SUPPORT_YET
         return
-
-      if not @parent() and newParent then return
 
       parentModel = newParent.model
       res = @model.isReparentable( parentModel )
@@ -445,7 +448,10 @@ define [
         return
 
       if res is true
-        parentModel.addChild( @model )
+        if parentModel
+          parentModel.addChild( @model )
+        else
+          @model.parent().removeChild( @model )
         @moveBy( x - @model.x(), y - @model.y() )
       return
 

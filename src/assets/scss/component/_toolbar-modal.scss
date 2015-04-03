@@ -89,18 +89,6 @@ $dark-blue: #001324;
 				    content       : '';
 				    border-bottom : 2px solid #0D49CA;
 				    width         : 100%;
-
-
-					// width: 0;
-					// height: 0;
-					// border-style: solid;
-					// border-width: 8px 6px 0 6px;
-					// border-color: $dark-blue transparent transparent transparent;
-
-					// position:    absolute;
-					// bottom:      -8px;
-					// left:        50%;
-					// margin-left: -4px;
 					z-index:     80;
 				}
 			}
@@ -132,6 +120,10 @@ $dark-blue: #001324;
 				}
 
 				@include bg-transition;
+
+				&.icon-del:hover {
+					color: $base-r;
+				}
 			}
 
 		.btn-blue {

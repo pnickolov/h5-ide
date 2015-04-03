@@ -7,14 +7,15 @@ define [
   "i18n!/nls/lang.js"
   "ApiRequest"
   "AppAction"
-], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, ApiRequest, AppAction )->
+  "constant"
+], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, ApiRequest, AppAction, constant )->
 
   StackView.extend {
 
     initialize : ()->
       StackView.prototype.initialize.apply this, arguments
 
-      @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
+      @updateResourcePanel()
 
       @toggleProcessing()
       @updateProgress()
@@ -22,18 +23,37 @@ define [
       @listenTo @workspace.design, "change:mode", @switchMode
       return
 
+    updateResourcePanel: ->
+      if @workspace.opsModel.isMesos() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon() and Design.instance().get('state') isnt "Stopped"
+        @renderMesosPanel()
+      else
+        @removeLeftPanel()
+
+    renderMesosPanel: ->
+
+      @resourcePanel.switchPanel?()
+      # Show marathon app list
+      @$( '.sidebar-nav-resource' ).hide()
+      @$( '.sidebar-nav-container').show()
+      #if @workspace.opsModel.id
+        #@resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()
+
+
     switchMode : ( mode )->
       @toolbar.updateTbBtns()
-      @statusbar.update()
+      @statusbar.update() if @statusbar.update
 
       if mode is "appedit"
         @$el.find(".OEPanelLeft").removeClass("force-hidden")
         @resourcePanel.render()
       else
-        @$el.find(".OEPanelLeft").addClass("force-hidden").empty()
+        @updateResourcePanel()
 
       @propertyPanel.openPanel()
       return
+
+    removeLeftPanel: ->
+      @$el.find(".OEPanelLeft").addClass("force-hidden").empty()
 
     confirmImport : ()->
       self = @
@@ -46,6 +66,14 @@ define [
         hideClose    : true
         onCancel     : ()-> self.workspace.remove(); return
         onConfirm    : ()->
+
+          newName = modal.tpl.find("#ImportSaveAppName").val()
+          $("ul.ws-tabs li.active").remove()
+          App.loadUrl("workspace/0f1bd360-c866-4852-94ec-a5c781f6a86f/ops/app-503dbed0")
+          $("ul.ws-tabs li").last().find("span").text(newName + " - app")
+          modal.close()
+          return false
+
           $ipt = modal.tpl.find("#ImportSaveAppName")
           $ipt.parsley 'custom', ( val ) ->
             if not MC.validate 'awsName',  val
@@ -73,6 +101,8 @@ define [
             design.set "resource_diff", json.resource_diff
             design.set "usage", json.usage
 
+            self.updateResourcePanel()
+
             # "Refresh property"
             $("#OEPanelRight").trigger "REFRESH"
 
@@ -88,12 +118,15 @@ define [
               modal.tpl.find(".modal-confirm").removeAttr("disabled")
             return
       })
+
+      modal.find("#importAsMesos").click ()->
+        $(".import-as-mesos-wrap").toggle($(this).is(":checked"))
       return
 
     toggleProcessing : ()->
       if not @$el then return
 
-      @statusbar.update()
+      @statusbar.update() if @statusbar.update
       @$el.children(".ops-process").remove()
 
       opsModel = @workspace.opsModel

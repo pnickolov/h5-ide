@@ -165,7 +165,8 @@ define [
       if it.isGroup()
         groupRects.push it.effectiveRect()
       else
-        rects.push it.rect()
+        for el in it.$el
+          rects.push it.rect( el )
 
     if not groupRects.length then return rects
 
@@ -232,8 +233,16 @@ define [
 
     rects.concat cleanRects
 
+  CanvasViewProto.highLightModels = ( models )->
+    @removeHighLight()
+    if not _.isArray( models ) then models = [models]
+    self = @
+    items = _.map models, (m)-> self.getItem( m.id )
+    @highLightItems(items)
+    return
+
   # Add item by dnd
-  CanvasViewProto.hightLightItems  = ( items )->
+  CanvasViewProto.highLightItems  = ( items )->
     rects    = getNonOverlapRects( _.uniq(items) )
     polygons = getPolygonsFromRect( rects )
     path     = getPathFromPolygons( polygons )
@@ -244,10 +253,15 @@ define [
     filler = "M0,0L#{w},0L#{w},#{h}L0,#{h}Z"
 
     @__highLightCliper = @svg.clip().attr("id", "hlClipper").add( @svg.path(filler+path).attr("clip-rule","evenodd") )
-    @__highLightRect   = @svg.rect(0,0).attr({id:"hlArea",width:"100%", height:"100%"}).clipWith( @__highLightCliper )
+    @__highLightRect   = @svg.group().add([
+      @svg.rect(0,0).attr({id:"hlArea",width:"100%", height:"100%"})
+      @svg.path(path).attr({id:"hlAreaBorder"})
+    ]).clipWith( @__highLightCliper )
+
+    # $("#hlAreaBorder").append('<animate attributeName="stroke-width" attributeType="XML" values="0px;16px;16px;16px;0px" dur="0.5s" repeatCount="1"></animate>')
     return
 
-  CanvasViewProto.removeHightLight = ( items )->
+  CanvasViewProto.removeHighLight = ( items )->
     if @__highLightRect then @__highLightRect.remove()
     if @__highLightCliper then @__highLightCliper.remove()
     @__highLightRect = @__highLightCliper = null

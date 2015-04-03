@@ -1,21 +1,38 @@
 <!-- {{panel}} -->
 <button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
 
-<header class="sidebar-title"> {{ i18n "RES_TIT_RESOURCES" }}
-  <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}"></i>
-  <ul class="dropdown-menu resources-dropdown-wrapper">
-    <li data-action="keypair" class="icon-kp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_KEY_PAIR"}}</span></li>
-    <li data-action="snapshot" class="icon-ebs-snap"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_EBS_SNAPSHOT"}}</span></li>
-    <li data-action="sns" class="icon-sns"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SNS_SUBSCRIPTION"}}</span></li>
-    <li data-action="sslcert" class="icon-cert"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SERVER_CERTIFICATE"}}</span></li>
-    <li data-action="dhcp" class="icon-dhcp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DHCP_OPTION_SETS"}}</span></li>
-    <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_PARAMETER_GROUPS"}}</span></li>
-    <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_SNAPSHOT"}}</span></li>
-  </ul>
-  <i class="refresh-resource-panel icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>
-</header>
+<nav class="sidebar-title clearfix">
+    <button class="sidebar-nav-resource">{{ i18n "RES_TIT_RESOURCES" }}</button>
+    <button class="sidebar-nav-container">Container</button>
+</nav>
 
-<div class="fixedaccordion accordion-default">
+<div class="resource-panel">
+  <div class="sidebar-tool">
+    <button class="refresh-resource-panel"><i class="icon-refresh tooltip" data-tooltip="{{i18n "RES_TIP_REFRESH_RESOURCE_LIST"}}"></i>Refresh</button>
+    <button>
+        <i class="icon-resources js-toggle-dropdown menu-manage-shard-res tooltip" data-tooltip="{{ i18n "RES_TIP_SHARED_RESOURCES" }}">Manage...</i>
+        <ul class="dropdown-menu resources-dropdown-wrapper">
+          <li data-action="keypair" class="icon-kp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_KEY_PAIR"}}</span></li>
+          <li data-action="snapshot" class="icon-ebs-snap"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_EBS_SNAPSHOT"}}</span></li>
+          <li data-action="sns" class="icon-sns"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SNS_SUBSCRIPTION"}}</span></li>
+          <li data-action="sslcert" class="icon-cert"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_SERVER_CERTIFICATE"}}</span></li>
+          <li data-action="dhcp" class="icon-dhcp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DHCP_OPTION_SETS"}}</span></li>
+          <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_PARAMETER_GROUPS"}}</span></li>
+          <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_SNAPSHOT"}}</span></li>
+        </ul>
+    </button>
+  </div>
+  <div class="fixedaccordion">
+
+  {{#if isMesos}}
+  <section class="accordion-group">
+    <header class="fixedaccordion-head">Mesos</header>
+    <div class="accordion-body">
+      <ul class="resource-list-ami"></ul>
+    </div>
+  </section>
+  {{/if}}
+
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_AZ" }}</header>
     <ul class="resource-list-az clearfix accordion-body">
@@ -28,9 +45,10 @@
     </ul>
   </section>
 
+  {{#unless isMesos}}
   <section class="accordion-group">
-    <header class="fixedaccordion-head">{{ i18n "RES_TIT_AMI" }}
-      <nav class="selectbox resource-select AmiTypeSelect js-toggle-dropdown">
+    <header class="fixedaccordion-head ami-header">{{ i18n "RES_TIT_AMI" }}
+      <nav class="selectbox AmiTypeSelect js-toggle-dropdown">
         <div class="selection">{{ i18n "RES_LBL_QUICK_START_AMI" }}</div>
         <ul class="dropdown">
           <li class="item selected" data-id="QuickStartAmi">{{ i18n "RES_LBL_QUICK_START_AMI" }}</li>
@@ -39,40 +57,41 @@
         </ul>
       </nav>
     </header>
-    <div class="accordion-body nano">
-      <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
-      <ul class="nano-content resource-list-ami"></ul>
+    <button class="btn btn-primary BrowseCommunityAmi">{{ i18n "RES_BTN_BROWSE_COMMUNITY_AMI" }}</button>
+    <div class="accordion-body">
+      <ul class="resource-list-ami"></ul>
     </div>
   </section>
+  {{/unless}}
+
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VOL" }}</header>
-    <div class="accordion-body nano">
-      <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
-      <div class="nano-content">
-        <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
-        <ul class="clearfix"><li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li></ul>
-        <div class="resource-list-head">
-          {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
-          <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
-            <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
-            <ul class="dropdown">
-              <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
-              <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
-            </ul>
-          </div>
+    <button class="btn btn-primary ManageSnapshot ManageEbsSnapshot">{{ i18n "RES_TIT_SNAPSHOT_MANAGE"}}</button>
+    <div class="accordion-body">
+      <div class="resource-list-head">{{i18n "RES_LBL_NEW_BLANK_VOL"}}</div>
+      <ul class="clearfix"><li class="tooltip resource-item volume" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_VOLUME" }}' data-type="VOL">{{i18n "RES_LBL_NEW_VOL"}}</li></ul>
+      <div class="resource-list-head">
+        {{i18n "RES_LBL_NEW_VOL_FROM_SNAPSHOT"}}
+        <div class="selectbox resource-list-sort-select dark" id="resource-list-sort-select-snapshot">
+          <div class="selection">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</div>
+          <ul class="dropdown">
+            <li class="item selected focused" data-id="date">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_DATE"}}</li>
+            <li class="item" data-id="storge">{{i18n "TOOLBAR.CLOUD_RESOURCE_SORT_BY_STORAGE"}}</li>
+          </ul>
         </div>
-        <ul class="resource-list-snapshot"></ul>
       </div>
+      <ul class="resource-list-snapshot"></ul>
     </div>
   </section>
 
   <section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_RDS" }}</header>
-    <div class="accordion-body nano {{#if rdsDisabled}}disableRds{{/if}}">
+    <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
+    <div class="accordion-body {{#if rdsDisabled}}disableRds{{/if}}">
       <div class="disableRds-content">{{ i18n "RES_MSG_RDS_DISABLED"}}</div>
-      <button class="btn btn-primary ManageSnapshot ManageRdsSnapshot">{{ i18n "RES_TIT_RDS_SNAPSHOT_MANAGE"}}</button>
-      <div class="nano-content">
+
+      <div>
         <div class="resource-list-head">{{i18n "RES_LBL_NEW_RDS_INSTANCE"}}</div>
         <ul class="resource-list-rds"></ul>
         <div class="resource-list-head">
@@ -91,13 +110,14 @@
     </div>
   </section>
 
-  <section class="accordion-group">
+  {{#unless isMesos}}<section class="accordion-group">
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_ELB_ASG" }}</header>
     <ul class="resource-list-asg clearfix accordion-body">
       <li class="tooltip resource-item elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
       <li class="tooltip resource-item asg" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ASG" }}' data-type="ASG">{{ i18n "RES_LBL_NEW_ASG" }}</li>
     </ul>
   </section>
+  {{/unless}}
 
   <section class='accordion-group'>
     <header class="fixedaccordion-head">{{ i18n "RES_TIT_VPC" }}</header>
@@ -110,9 +130,24 @@
 
       {{#if hasCGW}}<li class="tooltip resource-item cgw" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_CGW"}}' data-type="CGW">{{ i18n "RES_LBL_NEW_CGW" }}</li>{{/if}}
 
-      <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+      {{#unless isMesos}}
+          <li class="tooltip resource-item eni" data-tooltip='{{i18n "RES_TIP_DRAG_NEW_ENI"}}' data-type="ENI">{{ i18n "RES_LBL_NEW_ENI" }}</li>
+      {{else}}
+          <li class="tooltip resource-item elb" data-tooltip='{{ i18n "RES_TIP_DRAG_NEW_ELB" }}' data-type="ELB">{{ i18n "RES_LBL_NEW_ELB" }}</li>
+      {{/unless}}
+
     </ul>
   </section>
+</div>
+</div>
+
+
+<div class="panel container-panel hide">
+    <div class="marathon-app-ready">
+        <img class="logo" src="/assets/images/ide/marathon.png" />
+        <div class="desc">When marathon framework ready and deployed app on Mesos cluster, will show app list at here.</div>
+    </div>
+    <div class="marathon-app-list" class="hide"></div>
 </div>
 
 <!-- {{snapshot}} -->
@@ -151,11 +186,63 @@
 </li>{{/with}}
 {{else}}{{#if fav}}<p class="blank-slate">{{i18n "TOOLBAR.CLOUD_RESOURCE_BROWSE_COMMUNITY_AMI"}}</p>{{/if}}{{/each}}
 
+<!-- {{mesos}} -->
+{{#unless isAppEdit}}
+<li class="resource-item instance mesos" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"}' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSMASTER"}'>
+  <div class="resource-icon-instance">
+    <img src="/assets/images/ide/ami/mesos-master.png" width='39' height='27' />
+  </div>
+  Master
+</li>
+{{/unless}}
+<li class="resource-item instance mesos" data-bubble-template="resPanelAmiInfo" data-bubble-data='{"region":"{{../../region}}","imageId":"{{imageId}}"' data-type="INSTANCE" data-option='{"imageId":"{{imageId}}", "subType": "MESOSSLAVE"}'>
+  <div class="resource-icon-instance">
+    <img src="/assets/images/ide/ami/mesos-slave.png" width='39' height='27' />
+  </div>
+  Slave
+</li>
+<li class="resource-item asg" data-type="ASG" data-option='{"lcId": "MESOS.LC"}'>
+  <div class="resource-icon-instance"><img src="/assets/images/ide/ami/mesos-slave.png" /></div>
+Slave Auto Scaling Group
+</li>
+
 <!-- {{reuse_lc}} -->
-<div class="resource-icon resource-icon-instance" >
+<div class="resource-icon-instance" >
   <img src="/assets/images/ide/ami/{{cachedAmi.osType}}.{{cachedAmi.architecture}}.{{cachedAmi.rootDeviceType}}.png"/>
 </div>{{i18n "TOOLBAR.CLOUD_RESOURCE_AUTO_SCALING_GROUP"}} ({{name}})
 
 <!-- {{resourcePanelBubble}} -->
 <div class="bubble-head">{{or id ID}}</div>
 <dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>
+
+<!-- {{containerList}} -->
+<input id="filter-containers" class="input filter-containers" type="text" placeholder="Filter app..."/>
+<ul class="container-list">
+  {{#each this}}
+  <li class="container-item tooltip" data-tooltip="Click to view app placement on canvas" data-hosts="{{hosts}}" data-name="{{id}}">
+      <div class="task tooltip">{{task}}/{{instance}}</div>
+      <div class="info">
+          <img class="container-icon" src="/assets/images/ide/icon-mrth/icn-{{image}}.png" width="32" {{#if image}}height="32"{{/if}} />
+          <span class="name tooltip" data-tooltip="{{id}}">{{id}}</span>
+      </div>
+      <img class="container-info-icon" src="/assets/images/ide/icon-mrth/cvs-appicon.png" width="120" height="32" />
+      <span class="container-info">
+          <span class="tooltip" data-tooltip="CPU">{{cpu}}</span>
+          <span class="tooltip" data-tooltip="Memory">{{memory}}</span>
+      </span>
+  </li>
+  {{#if constraints}}
+  <li class="constraint-list hide">
+    <header>{{title}}</header>
+    <section class="constraint-info">
+      {{#each constraints}}
+      {{#ifCond @index 0}}<p class="attribute">{{this}}</p>{{/ifCond}}
+      {{#ifCond @index 1}}<p class="operator">{{this}}</p>{{/ifCond}}
+      {{#ifCond @index 2}}<p class="value">{{this}}</p>{{/ifCond}}
+      {{/each}}
+  </section>
+  </li>
+  {{/if}}
+  {{/each}}
+</ul>
+<!-- <div class="container-change">Change Marathon Stack…</div> -->

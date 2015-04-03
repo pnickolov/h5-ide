@@ -4,6 +4,7 @@ define [ "./DashboardTpl",
          "constant",
          "./VisualizeDialog",
          "CloudResources",
+         "ApiRequest"
          "AppAction",
          "UI.modalplus",
          "i18n!/nls/lang.js",
@@ -11,7 +12,7 @@ define [ "./DashboardTpl",
          "Credential"
          "credentialFormView"
          "UI.bubble",
-         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, AppAction, Modal, lang, ProjectLog, Credential, CredentialFormView )->
+         "backbone" ], ( Template, ImportDialog, dataTemplate, constant, VisualizeDialog, CloudResources, ApiRequest, AppAction, Modal, lang, ProjectLog, Credential, CredentialFormView )->
 
   Handlebars.registerHelper "awsAmiIcon", ( credentialId, amiId, region )->
     ami = CloudResources(credentialId, constant.RESTYPE.AMI, region ).get( amiId )
@@ -32,7 +33,7 @@ define [ "./DashboardTpl",
   Backbone.View.extend {
 
     events :
-      "click .dashboard-header .create-stack"   : "createStack"
+      "click .dashboard-header .icon-new-stack" : "createStack"
       "click .dashboard-header .import-stack"   : "importStack"
       "click .dashboard-header .icon-visualize" : "importApp"
       "click .dashboard-sidebar .dashboard-nav-log" : "updateLog"
@@ -69,10 +70,10 @@ define [ "./DashboardTpl",
       @logCol.on('change add', @updateLog, this)
 
       @render()
-      @listenTo @model.scene.project, "update:stack", ()-> self.updateRegionAppStack("stacks")
-      @listenTo @model.scene.project, "update:app", ()-> self.updateRegionAppStack("apps")
-      @listenTo @model.scene.project, "change:stack", ()-> self.updateRegionAppStack("stacks")
-      @listenTo @model.scene.project, "change:app", ()-> self.updateRegionAppStack("apps")
+      @listenTo @model.scene.project, "update:stack", -> @updateStacks()
+      @listenTo @model.scene.project, "update:app", -> @updateApps()
+      @listenTo @model.scene.project, "change:stack", -> @updateStacks()
+      @listenTo @model.scene.project, "change:app", -> @updateApps()
       @listenTo @model.scene.project, "update:credential", ()-> self.updateDemoView()
       @listenTo @model.scene.project, "change:credential", ()-> self.updateDemoView()
 
@@ -123,14 +124,61 @@ define [ "./DashboardTpl",
       return
 
     createStack : ( evt )->
-      $tgt = $( evt.currentTarget )
-      provider = $tgt.closest("ul").attr("data-provider")
-      region   = $tgt.attr("data-region")
+      self = @
+      awsRegions = (_.findWhere self.model.supportedProviders(), {id : "aws::global"}).regions
+      firstRegion = awsRegions[0]
 
-      opsModel = @model.scene.project.createStack( region, provider )
+      # docker::marathon
 
-      @model.scene.loadSpace( opsModel )
-      return
+      createStackModal = new Modal {
+        title: lang.IDE.CREATE_STACK_TITLE
+        compact: true
+        width: 560
+        template: MC.template.createStack({firstRegion, awsRegions})
+        confirm: text: lang.IDE.CREATE_STACK_CONFIRM
+      }
+
+      createStackModal.find(".toolbar-visual-ops-switch").on "click", ()-> $(this).toggleClass("on")
+
+      createStackModal.find(".select-stack-type li").click (evt)->
+        unless $(evt.currentTarget).hasClass('active')
+          createStackModal.find(".select-stack-type li").toggleClass("active")
+          createStackModal.find(".tabs-content > div").toggleClass("hide")
+
+      createStackModal.on "confirm", ()->
+
+        type = if createStackModal.find(".tab-aws-stack").hasClass("active") then "aws" else "mesos"
+        region = createStackModal.find("#create-#{type}-stack-region li.item.selected").data("value")
+        framework = if type is "mesos" then createStackModal.find(".create-mesos-use-marathon").hasClass("on") else false
+        scale = createStackModal.find("#mesos-scale li.item.selected").data("value")
+        provider = "aws::global"
+        amiId = null
+
+        createStackModal.loading()
+        self.getPreBakedAmiId(region, type).then (result)->
+          amiId = result
+        , (err)->
+          console.log err
+        .finally ()->
+          console.log "Creating Stack: ", region, provider, {type, framework, scale, amiId}
+          createStackModal.close()
+          opsModel = self.model.scene.project.createStack( region, provider, {type, framework, scale, amiId})
+          self.model.scene.loadSpace(opsModel)
+
+    getPreBakedAmiId: (region, type)->
+      defer = new Q.defer()
+      if type is "aws"
+        defer.resolve()
+        return defer.promise
+      ApiRequest("aws_aws", {region_names: [region], fields: ["prebaked_ami", "quickstart"]}).then (result)->
+        amiId = null
+        result = result[0]
+        if result.quickstart and result.prebaked_ami
+          targetAmi = _.find result.quickstart , (ami)->
+            ami.id in result.prebaked_ami and ami.osType is "ubuntu" and ami.virtualizationType is "hvm"
+          amiId = targetAmi.id
+          return amiId
+
 
     showCredential: ()->
       new CredentialFormView({model: @model.scene.project}).render()
@@ -166,7 +214,13 @@ define [ "./DashboardTpl",
         data = { loading : true }
       else
         @__globalLoading = false
-        data = @model.getAwsResData()
+        data = {}
+        _.each @model.getAwsResData(), (resList, key)->
+          orderedList = _.sortBy resList, (res)->
+            -res.data.length
+          data[key] = orderedList
+          return
+
 
       @$el.find("#GlobalView").html( dataTemplate.globalResources( data ) )
       if @region is "global"
@@ -183,7 +237,10 @@ define [ "./DashboardTpl",
 
     initRegion : ( )->
       @updateRegionAppStack("stacks", "global")
+      #@updateRegionAppStack("stacks", "global", true)
       @updateRegionAppStack("apps", "global")
+      #@updateRegionAppStack("apps", "global", true)
+      @toggleMarathonOpslist()
       @updateRegionResources()
 
     switchRegion: (evt)->
@@ -228,11 +285,30 @@ define [ "./DashboardTpl",
       $("#region-resource-app-wrap, #region-resource-stack-wrap").children("li[data-id='#{ops.id}']").find(".region-resource-progess").css("width",ops.get("progress")+"%")
       return
 
-    updateRegionAppStack : (updateType="stack", region)->
+    updateStacks: ()->
+      @updateRegionAppStack("stacks", null)
+      #@updateRegionAppStack("stacks", null, true)
+      @toggleMarathonOpslist()
+
+    updateApps: ()->
+      @updateRegionAppStack("apps", null)
+#      @updateRegionAppStack("apps", null, true)
+      @toggleMarathonOpslist()
+
+    toggleMarathonOpslist: ()->
+      $marathonWrap = @$el.find(".region-app-stack-wrap.marathon")
+      hasMarathonOps = $marathonWrap.find(".region-resource-list li").size() > 0
+
+      $marathonWrap.toggle(hasMarathonOps)
+
+    updateRegionAppStack : (updateType="stacks", region, isMarathon = false)->
       if updateType not in ["stacks", "apps"]
         return false
       if not region
-        region = @[updateType + "Region"]
+        if isMarathon
+          region = "global"
+        else
+          region = @[updateType + "Region"]
       self = @
       attr = { apps:[], stacks:[], region : @region }
       data = _.map constant.REGION_LABEL, ( name, id )->
@@ -240,25 +316,42 @@ define [ "./DashboardTpl",
         name : name
         count: 0
         shortName : constant.REGION_SHORT_LABEL[ id ]
+
+      # global or sub region
       if region isnt "global"
         filter = (f)-> f.get("region") is region && f.isExisting()
       else
         filter = ()-> true
+
       tojson = {thumbnail:true}
-      resources = self.model.scene.project[updateType]()
+      resources = _.clone self.model.scene.project[updateType]()
       resources.comparator = "updateTime"
       resources.sort()
-      attr[updateType] = resources.filter(filter).map( (m)-> m.toJSON(tojson) ).reverse()
+
+      #if is marathon(Deprecated)
+      if isMarathon
+        resources = resources.filter (f)-> f.get("provider") is "docker::marathon"
+      else
+        resources = resources.filter (f)-> f.get("provider") isnt "docker::marathon"
 
       # ops count for each region.
       attr.region = _.map data, (obj)->
-        obj.count = resources.groupBy("region")[obj.id]?.length || 0
+        obj.count = _.filter(resources, (resource)-> return resource.get("region") is obj.id).length
         obj
+
+      attr[updateType] = resources.filter(filter).map( (m)-> m.toJSON(tojson) ).reverse()
+
       attr.globalCount = resources.length
 
       attr.projectId = self.model.scene.project.id
       attr.currentRegion = _.find(data, (e)-> e.id is region)||{id: "global", shortName: lang.IDE.DASH_BTN_GLOBAL}
-      @$el.find("#region-app-stack-wrap .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+
+      if isMarathon
+        attr.isMarathon = isMarathon
+        @$el.find(".region-app-stack-wrap.marathon .dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+      else
+        @$el.find(".region-app-stack-wrap").not(".marathon").find(".dash-region-#{updateType}-wrap").replaceWith( dataTemplate["region_" + updateType](attr))
+
       return
 
     updateRegionTabCount : ()->
@@ -609,11 +702,11 @@ define [ "./DashboardTpl",
             targetId = data.get('targetId') or ''
             targetId = null if not that.model.scene.project.getOpsModel(targetId)
 
-            _name = '<span class="name">' + data.get("username") + '</span>'
+            _name = '<span class="name">' + Template.securityText(data.get("username")) + '</span>'
             if targetId
                 _target = '<a class="target route" href="/workspace/' + projectId + '/ops/' + targetId + '">' + target + '</a>'
             else
-                _target = '<span class="target">' + target + ' </span>'
+                _target = '<span class="target">' + Template.securityText(target) + ' </span>'
 
             eventStr = lang.IDE["DASHBOARD_LOGS_#{type.toUpperCase()}_#{action.toUpperCase()}"]
             if eventStr

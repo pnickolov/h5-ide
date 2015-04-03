@@ -1,0 +1,60 @@
+/*
+    ASG - IDE Property Panel
+*/
+
+.property-asg-size {
+	width   : 45%;
+	display : inline-block;
+
+	&:nth-child(2) { margin-left: 8%; }
+}
+
+.termination-policy-brief {
+	font-size: 13px;
+	color: #999;
+}
+
+.asg-p-tag {
+	display       : inline-block;
+	font-size     : 12px;
+	color         : $base-grey;
+	word-wrap     : normal;
+	background    : $base-p;
+	border-radius : 4px;
+	border        : 1px solid $bg-p;
+	padding       : 1px 3px;
+	margin        : 4px 2px 0 0;
+	cursor        : default;
+	box-shadow    : inset 0 1px 1px rgba(255,255,255,.05);
+
+	&:hover { color: #fff; }
+
+	&.asg-p-trigger-ALARM { color: $base-r; }
+	&.asg-p-trigger-INSUFFICIANT_DATA { color: $yellow; }
+	&.asg-p-trigger-OK { color: $base-g; }
+}
+
+.asg-p-action {
+	display  : none;
+	cursor   : pointer;
+	position : absolute;
+	right    : 10px;
+	top      : 10px;
+
+	color: #666;
+
+	.mega-list-wraper li:hover &,
+	.property-term-p:hover & { display: inline-block; }
+
+	.icon-del:hover { color: $light-r; }
+	.icon-edit:hover { color: $base-b; }
+}
+
+.property-asg-notification-wrap > div {
+	margin-top: 5px;
+
+	&:last-of-type { margin-bottom: 15px; }
+}
+
+@import "termination_policy_modal";
+@import "asg_scaling_policy_modal";

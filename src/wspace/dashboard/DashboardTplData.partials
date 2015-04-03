@@ -84,19 +84,21 @@
 
 <!-- {{region_apps}} -->
 <div class="dash-region-apps-wrap">
-    <label class="region-resource-tab">
-        <span>{{apps.length}} <small>{{i18n "DASH_LBL_APP"}}</small></span>
-    </label>
-    <nav class="dash-region-navigation" data-type="apps">
-        <button class="js-toggle-dropdown">
-            <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
-        </button>
-        <ul id="region-switch-list" class="dropdown-menu">
-            <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}} <span>{{globalCount}}</span></li>
-            {{#each region}}
-                <li data-region="{{id}}">{{shortName}} <span>{{count}}</span></li>{{/each}}
-        </ul>
-    </nav>
+    <header class="dash-region-header">
+        <label class="region-resource-tab">
+            {{apps.length}}<b>{{#if isMarathon}}Docker App{{else}}{{i18n "DASH_LBL_APP"}}{{/if}}</b>
+        </label>
+        <nav class="dash-region-navigation {{#if isMarathon}}hide{{/if}}" data-type="apps">
+            <button class="js-toggle-dropdown">
+                <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
+            </button>
+            <ul id="region-switch-list" class="dropdown-menu">
+                <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}} <span>{{globalCount}}</span></li>
+                {{#each region}}
+                    <li data-region="{{id}}">{{shortName}} <span>{{count}}</span></li>{{/each}}
+            </ul>
+        </nav>
+    </header>
 
     <ul id="region-resource-app-wrap" class="region-resource-list">
         {{#each apps}}
@@ -105,15 +107,20 @@
                 <div class="thumbnail app-thumbnail"></div>
                 <div class="region-resource-progess-wrap"><div class="region-resource-progess" style="width:{{progress}}%;"></div></div>
                 <div class="region-resource-info truncate" title="{{name}}">
-                    <div class="loading-spinner loading-spinner-small"></div>{{name}} - {{stateDesc}}...
+                    <div class="loading-spinner loading-spinner-small"></div><span>{{name}} - {{stateDesc}}...</span>
                 </div>
             {{else}}
-                {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
+                {{#unless ../../isMarathon}}
+                    <i class="icon-app-type-{{usage}}"></i>
+                    {{#ifCond type "mesos" }} <i class="icon-app-type-mesos"></i> {{/ifCond}}
+                {{else}}
+                    <i class="icon-app-type-marathon"></i>
+                {{/unless}}
                 <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
                 <div class="region-resource-info">
-                    <i class="icon-terminate terminate-app"></i>
+                    <i class="icon-terminate terminate-app tooltip" data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_TERMINATE_APP"}}"></i>
                     {{#if stoppable}}
-                        {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
+                        {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app tooltip"  data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_STOP_APP"}}"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
                     {{/if}}
                     <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate" title="{{name}}">{{name}}</span>
                 </div>
@@ -126,29 +133,32 @@
 
 <!--{{region_stacks}}-->
 <div class="dash-region-stacks-wrap">
-    <label class="region-resource-tab">
-        <span class="stack">{{stacks.length}} <small>{{i18n "DASH_LBL_STACK"}}</small></span>
-    </label>
-    <nav class="dash-region-navigation" data-type="stacks">
-        <button class="js-toggle-dropdown">
-            <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
-        </button>
+    <header class="dash-region-header">
+        <label class="region-resource-tab stack">
+            {{stacks.length}}<b>{{#if isMarathon}}Docker Stack{{else}}{{i18n "DASH_LBL_STACK"}}{{/if}}</b>
+        </label>
+        <nav class="dash-region-navigation {{#if isMarathon}}hide{{/if}}" data-type="stacks">
+            <button class="js-toggle-dropdown">
+                <i class="icon-caret-down right"></i><span>{{currentRegion.shortName}}</span>
+            </button>
 
-        <ul id="region-switch-list" class="dropdown-menu">
-            <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}} <span>{{globalCount}}</span></li>
-            {{#each region}}
-                <li data-region="{{id}}">{{shortName}} <span>{{count}}</span></li>{{/each}}
-        </ul>
-    </nav>
+            <ul id="region-switch-list" class="dropdown-menu">
+                <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}} <span>{{globalCount}}</span></li>
+                {{#each region}}
+                    <li data-region="{{id}}">{{shortName}} <span>{{count}}</span></li>{{/each}}
+            </ul>
+        </nav>
+    </header>
     <ul id="region-resource-stack-wrap" class="region-resource-list">
         {{#each stacks}}
             <li data-id="{{id}}">
                 <a class="route" href="/workspace/{{../projectId}}/ops/{{id}}">
+                    {{#ifCond type "mesos" }} <i class="icon-stack-type-mesos"></i> {{/ifCond}}
                     <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
                     <div class="region-resource-info">
                         <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
                         <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
-                        <span class="truncate">{{name}}</span>
+                        <span class="{{#ifCond type "mesos" }}upper-compact {{/ifCond}}truncate">{{name}}</span>
                     </div>
                 </a>
             </li>

@@ -1,6 +1,15 @@
+<!--{{main}}-->
 <article class="property-app">
+  {{#if isMesosSlave}}
+  <div class="option-group-head expand">Mesos Details</div>
+  <div class="option-group">
+    <section class="property-control-group" id="mesos-data-area">
+    </section>
+  </div>
+  {{/if}}
+
   <div class="option-group-head expand">{{i18n "PROP.INSTANCE_DETAIL"}}
-  <a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="{{i18n 'PROP.INSTANCE_TIP_GET_SYSTEM_LOG'}}" ></a>
+  <a href="#" class="icon-syslog tooltip property-btn-get-system-log" data-tooltip="{{i18n 'PROP.INSTANCE_TIP_GET_SYSTEM_LOG'}}" ></a>
 </div>
   <div class="option-group">
     <dl class="dl-vertical">
@@ -202,3 +211,43 @@
   <div class="option-group sg-group"></div>
 
 </article>
+
+<!--{{mesosData}}-->
+<dl class="dl-vertical">
+  {{#if this}}
+  <dt>ID</dt><dd>{{id}}</dd>
+  <dt>Active</dt><dd>{{#if active}}true{{else}}false{{/if}}</dd>
+  <dt></dt><dd></dd>
+  <dt>Attributes</dt>
+  <dd>
+    <table class="table">
+      <tr>
+        <th>Key</th><th>Value</th>
+      </tr>
+      {{#each attributes}}
+      <tr>
+        <td>{{@key}}</td>
+        <td>{{this}}</td>
+      </tr>
+      {{/each}}
+    </table>
+  </dd>
+  <dt>Resources</dt>
+  <dd>
+    <table class="table">
+      <tr>
+        <th>Key</th><th>Value</th>
+      </tr>
+      {{#each resources}}
+      <tr>
+        <td>{{@key}}</td>
+        <td>{{this}}</td>
+      </tr>
+      {{/each}}
+    </table>
+  </dd>
+  {{else}}
+  <dt>Mesos Data is not ready yet...</dt>
+  <dd></dd>
+  {{/if}}
+</dl>

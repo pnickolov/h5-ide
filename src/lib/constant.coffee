@@ -104,6 +104,16 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSNQ       : "OS::Neutron::Quota"
         OSCQ       : "OS::Cinder::Quota"
 
+        # Marathon
+        MRTHAPP    : "DOCKER.MARATHON.App"
+        MRTHGROUP  : "DOCKER.MARATHON.Group"
+        DOCKERIMAGE: "DOCKER.IMAGE"
+
+        # Mesos
+        MESOSMASTER: "MESOS.MASTER"
+        MESOSSLAVE : "MESOS.SLAVE"
+        MESOSASG   : "MESOS.ASG"
+        MESOSLC    : "MESOS.LC"
 
     RESNAME =
 
@@ -431,6 +441,8 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
             Address          : true
             Port             : true
 
+    MESOS_IMAGEID = 'ami-9ef278f6'
+
 
     #public
     AWS_RESOURCE_KEY        : AWS_RESOURCE_KEY
@@ -461,3 +473,5 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     DB_ENGINTYPE            : DB_ENGINTYPE
     DB_ENGINE_ARY           : DB_ENGINE_ARY
     DB_DEFAULTSETTING       : DB_DEFAULTSETTING
+
+    MESOS_IMAGEID           : MESOS_IMAGEID

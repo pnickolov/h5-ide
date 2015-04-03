@@ -13,7 +13,7 @@
 
 	<div class="scroll-wrap scroll-wrap-validation" style="height:200px;">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-		<div class="content_wrap scroll-content">
+		<div class="scroll-content">
 			<div class="update-tip"></div>
 			<div class="status-item">
 				<p class="no-item">{{i18n "PROP.NO_FAILED_ITEM_PERIOD"}}</p>

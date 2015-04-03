@@ -1,3 +1,5 @@
+/* Font Family */
+
 @font-face
 {
 	font-family: 'Lato';
@@ -31,6 +33,31 @@
              "WenQuanYi Micro Hei", sans-serif;
 }
 
+/* Hack custom fonts loading */
+
+@media (min-width: 1px) {
+	body {
+		font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	}
+
+	.locale-en {
+		font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+	}
+
+	.locale-zh {
+		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
+	}
+
+	.locale-zh button,
+	.locale-zh input,
+	.locale-zh select,
+	.locale-zh textarea {
+		font-family: 'Lato', 'Helvetica Neue', 'Microsoft Yahei', Arial, sans-serif;
+	}
+}
+
+/* Basic Typesetting */
+
 body {
 	font-family : Lato, "Helvetica Neue", "Helvetica", Arial, "Hiragino Sans GB", "Microsoft YaHei",
              "WenQuanYi Micro Hei", sans-serif;;
@@ -38,13 +65,18 @@ body {
 	font-size   : 14px;
 }
 
-a {
-	color: $base-b;
-	text-decoration: none;
+@mixin a-style {
+	color           : $base-b;
+	text-decoration : none;
+	cursor          : pointer;
 
 	&:hover {
-		color: adjust_hue(lighten($base-b,20%),-10deg);
+		color: adjust_hue(lighten($base-b,10%),-10deg);
 	}
+}
+
+a {
+	@include a-style;
 }
 
 h1 {
@@ -67,13 +99,51 @@ p {
 	font-size: 1em;
 }
 
-code, {
-	background : #000;
-	color      : $dark-g;
-	font-size  : 14px;
-	font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important;
+code, pre {
+	background    : #000;
+	color         : $dark-g;
+	font-size     : 14px;
+	border-radius : 3px;
+
+	@include font-mono;
 }
 
 pre {
-	background : #000;
+	white-space: pre-wrap;
+	word-break: break-all;
+	word-wrap: break-word;
+	display: block;
+	padding: 9.5px;
+	margin: 10px 0;
+	font-size: 13px;
+	line-height: 20px;
+}
+
+/* Conditional Style */
+
+
+.link-style {
+	cursor : pointer;
+
+	&:hover {
+		text-decoration : underline;
+	}
+}
+
+.truncate {
+	white-space       : nowrap;
+	overflow          : hidden;
+	text-overflow     : ellipsis;
+	-o-text-overflow  : ellipsis;
+	-ms-text-overflow : ellipsis;
+	display           : inline-block;
+}
+
+@mixin truncate {
+	white-space       : nowrap;
+	overflow          : hidden;
+	text-overflow     : ellipsis;
+	-o-text-overflow  : ellipsis;
+	-ms-text-overflow : ellipsis;
+	// display           : inline-block;
 }

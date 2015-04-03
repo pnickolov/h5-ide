@@ -55,8 +55,9 @@ define [ "ResourceModel", "Design" ], ( ResourceModel, Design )->
   ###
   ConnectionModel = ResourceModel.extend {
 
-    node_line : true
-    type      : "Framework_CN"
+    node_line   : true
+    type        : "Framework_CN"
+    directional : false # Indicate this line is directional. So that only port1 can connet to port2
 
     constructor : ( p1Comp, p2Comp, attr, option ) ->
 
@@ -131,7 +132,7 @@ define [ "ResourceModel", "Design" ], ( ResourceModel, Design )->
             @__port1Comp = p1Comp
             @__port2Comp = p2Comp
             break
-          else if def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
+          else if not @directional and def.port1.type is p2Comp.type and def.port2.type is p1Comp.type
             @__portDef   = def
             @__port1Comp = p2Comp
             @__port2Comp = p1Comp
@@ -234,14 +235,10 @@ define [ "ResourceModel", "Design" ], ( ResourceModel, Design )->
         if not _.isArray( protoProps.portDefs )
           protoProps.portDefs = [ protoProps.portDefs ]
 
-        # Ensure port1 is always smaller than port2
         for def in protoProps.portDefs
-          if def.port1.name > def.port2.name
-            tmp = def.port1
-            def.port1 = def.port2
-            def.port2 = tmp
-
           tags.push def.port1.name + ">" + def.port2.name
+          if not protoProps.directional
+            tags.push def.port2.name + ">" + def.port1.name
 
         if not protoProps.type then protoProps.type = tags[0]
 

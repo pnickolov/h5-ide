@@ -1,0 +1,69 @@
+<dl class="dl-vertical container-app">
+      <dt>Image</dt>
+      <dd>{{docker.image}}</dd>
+      <dt>Network</dt>
+      <dd>{{docker.network}}</dd>
+      <dt>Privileged</dt>
+      <dd>{{#if docker.privileged}}true{{else}}false{{/if}}</dd>
+      <dt>Port Mappings</dt>
+      <dd>
+            {{#if docker.portMappings.length}}
+            <table class="table">
+                  <tr>
+                        <th>Host</th>
+                        <th>Container</th>
+                        <th>Service Port</th>
+                  </tr>
+                  {{#each docker.portMappings}}
+                  <tr>
+                        <td>{{hostPort}}</td>
+                        <td>{{containerPort}}/{{protocol}}</td>
+                        <td>{{servicePort}}</td>
+                  </tr>
+                  {{/each}}
+            </table>
+            {{else}}
+            -
+            {{/if}}
+      </dd>
+
+      <dt>Volumes</dt>
+      <dd>
+            {{#if volumes.length}}
+            <table class="table">
+                  <tr>
+                        <th>Host Path</th>
+                        <th>Container Path</th>
+                  </tr>
+                  {{#each volumes}}
+                  <tr>
+                        <td>{{hostPath}}</td>
+                        <td>{{containerPath}}:{{mode}}</td>
+                  </tr>
+                  {{/each}}
+            </table>
+            {{else}}
+            -
+            {{/if}}
+      </dd>
+
+      <dt>Volumes</dt>
+      <dd>
+            {{#if docker.parameters.length}}
+            <table class="table">
+                  <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                  </tr>
+                  {{#each docker.parameters}}
+                  <tr>
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                  </tr>
+                  {{/each}}
+            </table>
+            {{else}}
+            -
+            {{/if}}
+      </dd>
+</dl>

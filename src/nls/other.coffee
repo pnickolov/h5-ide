@@ -1105,6 +1105,14 @@ VisualOps API. You cannot UNDO this action.'
       en: "Connect to Router"
       zh: ""
 
+    PORT_TIP_U:
+      en: "Connect to another app or group this item depends on"
+      zh: ""
+
+    PORT_TIP_V:
+      en: "Connect to another app or group depends on this item"
+      zh: ""
+
 
 
   ##### Modal Confirm Stop/Terminate App
@@ -2977,6 +2985,14 @@ into live resources, or import existing infrastructures."
       en: "AMI %s is removed from Favourite AMI."
       zh: "AMI %s 已从 AMI 收藏夹中移除。"
 
+    CREATE_STACK_TITLE:
+      en: "Create Stack"
+      zh: "创建 Stack"
 
+    CREATE_STACK_CONFIRM:
+      en: "Create Stack"
+      zh: "创建 Stack"
 
-
+    CANT_ATTACH_ENI_TO_MESOS_INSTANCE:
+      en: "ENI cannot be attached to a mesos master or slave instance."
+      zh: "Eni 不能附加到 Mesos Master 或 Mesos Slave 实例上。"

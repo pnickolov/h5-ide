@@ -43,6 +43,12 @@ define [ "constant",
       new AclAsso( this, Design.instance().component( uid ) )
       null
 
+    isPublic: ->
+        rtb = @connectionTargets('RTB_Asso')[ 0 ]
+        rtbConn = rtb.connectionTargets('RTB_Route')
+        igw = _.where rtbConn, type: constant.RESTYPE.IGW
+        igw.length > 0
+
     isReparentable : ( newParent )->
       for child in @children()
         if child.type is constant.RESTYPE.INSTANCE or child.type is constant.RESTYPE.ENI

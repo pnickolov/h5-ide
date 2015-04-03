@@ -15,7 +15,7 @@
   <header class="option-group-head">{{ i18n "PROP.ACL_TIT_RULE" }}<span class="property-head-num-wrap">({{component.rule_number}})</span></header>
   <article class="option-group">
     <div class="rule-list-sort property-control-group">
-      <h5>{{ i18n "PROP.ACL_RULE_SORT_BY" }}</h5>
+      <label>{{ i18n "PROP.ACL_RULE_SORT_BY" }}</label>
       <div class="selectbox" id="acl-sort-rule-select">
         <div class="selection">{{ i18n "PROP.ACL_RULE_SORT_BY_NUMBER" }}</div>
         <ul class="dropdown" tabindex="-1">
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <ul class="property-list acl-rule-list" id="acl-rule-list" >
+    <ul class="mega-list-wraper acl-rule-list" id="acl-rule-list" >
       {{#each component.entrySet.item}}
       <li rule-num="{{ruleAction}}" rule-engress="{{egress}}">
         <div class="acl-rule-number" data-id="{{ruleNumber}}"><span class="tooltip" data-tooltip='{{ i18n "PROP.ACL_TIP_RULE_NUMBER" }}'>{{ruleNumber}}</span></div>
@@ -53,7 +53,7 @@
 
 
   <header class="option-group-head expand">{{ i18n "PROP.ACL_TIT_ASSOC" }}<span class="property-head-num-wrap">({{component.asso_number}})</span></header>
-  <ul class="option-group property-list">
+  <ul class="option-group mega-list-wraper">
     {{#each component.associationSet.item}}
       <li>{{subnetDisplay}}</li>
     {{/each}}

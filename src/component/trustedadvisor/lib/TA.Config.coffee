@@ -40,6 +40,7 @@ define({
             stack: [ '~isHaveNotExistAMI' ] # `~` means work in stack mode only.
             kp: [ 'longLiveNotice' ]
             dbinstance: [ 'isOgValid', 'isHaveEnoughIPForDB' ]
+            instance: [ 'isMesosMasterCountLegal', 'isMesosHasSlave', 'isMesosMasterPlacedInPublicSubnet' ]
 
         openstack:
             ossubnet: [ 'subnetHasPortShouldConncectedOut', 'isSubnetCIDRConflict' ]

@@ -6,7 +6,7 @@
 <!-- {{startAppConfirm}} -->
 <div class="modal-center-align-helper">
     <div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_START_APP"}}</div>
-    <ul class="modal-list-items">
+    <ul class="mega-list-wraper-items">
         {{#if hasEC2Instance}}
             <li>
                 {{i18n "TOOLBAR.POP_START_CONFIRM_LIST_1"}}
@@ -43,7 +43,7 @@
 {{else}}
     <div class="modal-center-align-helper" style="padding: 20px">
         <div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_STOP_APP_LEFT"}} {{appName}} {{i18n "TOOLBAR.POP_BODY_STOP_APP_RIGHT"}}</div>
-        <ul class="modal-list-items">
+        <ul class="mega-list-wraper-items">
             {{#if hasEC2Instance}}
                 <li>
                     {{i18n "TOOLBAR.POP_STOP_CONFIRM_LIST_1"}}
@@ -73,12 +73,12 @@
 
 <!-- {{cantStop}} -->
 <p>DB Instance
-    {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+    {{#each cantStop}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span class="warning-text">{{attributes.DBInstanceStatus}}</span>){{/each}}
     {{i18n "TOOLBAR.POP_CANT_STOP_1"}}</p>
 <p>{{i18n "TOOLBAR.POP_CANT_STOP_2"}}</p>
 
 <!-- {{terminateAppConfirm}} -->
-<div class="confirm-padding">
+<div class="mg20">
     {{#if production}}
         <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_MSG' }}</p>
         <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>

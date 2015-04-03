@@ -15,21 +15,20 @@
 	        <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
 		</section>
 
-		<section class="property-control-group clearfix">
-			<div class="left property-asg-size">
+		<section class="property-control-group">
+			<div class="property-asg-size">
 				<label class="left" for="property-asg-min">{{ i18n "PROP.ASG_MIN_SIZE" }}</label>
 				<input class="input" type="text" id="property-asg-min" value="{{minSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
 			</div>
-			<div class="right property-asg-size">
+			<div class="property-asg-size">
 				<label class="left" for="property-asg-max">{{ i18n "PROP.ASG_MAX_SIZE" }}</label>
 				<input class="input" type="text" id="property-asg-max" value="{{maxSize}}" maxlength="255" data-type="digits" data-ignore="true" data-required-rollback="true">
 			</div>
-	  </section>
-
-		<section class="property-control-group property-asg-size">
-			<label class="left" for="property-asg-capacity">{{ i18n "PROP.ASG_DESIRE_CAPACITY" }}</label>
-			<input class="input" type="text" id="property-asg-capacity" value="{{capacity}}" maxlength="255" data-type="digits" data-ignore="true">
-		</section>
+			<div class="property-asg-size">
+				<label class="left" for="property-asg-capacity">{{ i18n "PROP.ASG_DESIRE_CAPACITY" }}</label>
+				<input class="input" type="text" id="property-asg-capacity" value="{{capacity}}" maxlength="255" data-type="digits" data-ignore="true">
+			</div>
+	 	</section>
 
 		<section class="property-control-group">
 			<label class="left" for="property-asg-cooldown">{{ i18n "PROP.ASG_COOL_DOWN" }}</label>
@@ -39,14 +38,14 @@
 
 		<section class="property-control-group clearfix">
 			<label clas="left">{{i18n "PROP.ASG_HEALTH_CHECK_TYPE"}}</label>
-			<div class="asg-radio-group">
+			<div class="mgt5">
 				<div class="radio">
 					<input id="property-asg-ec2" type="radio" value="ec2" {{#if isEC2HealthCheck}}checked="true"{{/if}} name="property-asg-hc-option" />
 					<label for="property-asg-ec2"></label>
 				</div>
 				<label for="property-asg-ec2">EC2</label>
 			</div>
-			<div {{#unless has_elb}}data-tooltip="{{ i18n 'PROP.ASG_HAS_ELB_WARN'}}" class="asg-radio-group tooltip"{{else}}class="asg-radio-group"{{/unless}}>
+			<div {{#unless has_elb}}data-tooltip="{{ i18n 'PROP.ASG_HAS_ELB_WARN'}}" class="mgt5 tooltip"{{else}}class="mgt5"{{/unless}}>
 				<div class="radio">
 					<input id="property-asg-elb" type="radio" {{#unless has_elb}}disabled="disabled"{{/unless}} value="elb" {{#unless isEC2HealthCheck}}checked="true"{{/unless}} name="property-asg-hc-option" />
 					<label for="property-asg-elb"></label>
@@ -71,7 +70,7 @@
 			<div class="asg-p-action"><i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_TERMINATION_EDIT'}}" id="property-asg-term-edit"></i></div>
 		</section>
 
-		<ul id="property-asg-policies" class="property-list">
+		<ul id="property-asg-policies" class="mega-list-wraper">
 			<li class="pos-r hide">
         <h5 class="property-asg-policy-name name"></h5>
 				<span class="asg-p-metric asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ALARM_METRIC'}}"></span>
@@ -81,7 +80,7 @@
         <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ADJUSTMENT'}}"></span>
         <div class="asg-p-action">
 	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_EDIT'}}"></i>
-	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
+	        <i class="icon-remove icon-del tooltip mgl5" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
         </div>
       </li>
       {{#each policies}}
@@ -94,14 +93,14 @@
         <span class="asg-p-adjust asg-p-tag" title="{{i18n 'PROP.ASG_POLICY_TLT_ADJUSTMENT'}}">{{adjustment}} {{adjustmentType}}</span>
         <div class="asg-p-action">
 	        <i class="icon-edit tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_EDIT'}}"></i>
-	        <i class="icon-remove icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
+	        <i class="icon-del tooltip" data-tooltip="{{i18n 'PROP.ASG_POLICY_TLT_REMOVE'}}"></i>
         </div>
       </li>
       {{/each}}
 
 		</ul>
 		<div class="property-control-group tac">
-			<button class="btn btn-blue {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="{{i18n 'PROP.ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES'}}">{{i18n "PROP.ASG_BTN_ADD_SCALING_POLICY"}}</button>
+			<button class="btn btn-blue btn-long {{#unless can_add_policy}}disabled tooltip{{/unless}}" id="property-asg-policy-add" data-tooltip="{{i18n 'PROP.ASG_TIP_YOU_CAN_ONLY_ADD_25_SCALING_POLICIES'}}">{{i18n "PROP.ASG_BTN_ADD_SCALING_POLICY"}}</button>
 		</div>
 	</div>
 

@@ -7,6 +7,10 @@ module.exports =
       en: "Create new stack"
       zh: "创建 Stack"
 
+    DASH_CREATE_NEW_MESOS_STACK:
+      en: "Create new marathon stack"
+      zh: "创建 Mesos Stack"
+
     DASH_IMPORT_JSON:
       en: "Import stack"
       zh: "导入 Stack"
@@ -56,12 +60,12 @@ module.exports =
       zh: "未管理的"
 
     DASH_LBL_APP:
-      en: "App"
-      zh: "App"
+      en: "AWS App"
+      zh: "AWS App"
 
     DASH_LBL_STACK:
-      en: "Stack"
-      zh: "Stack"
+      en: "AWS Stack"
+      zh: "AWS Stack"
 
     DASH_LBL_RECENT_EDITED_STACK:
       en: "Recently Edited Stack"

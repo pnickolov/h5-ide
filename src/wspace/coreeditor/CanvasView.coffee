@@ -394,6 +394,8 @@ define [
       @__toAddLines = null
       return
 
+    items : ()-> _.uniq(_.values( @__itemMap ))
+
     addSvgItem : ()->
       SvgItemClass = CanvasElement.getClassByType( "SVG" )
       item = new SvgItemClass({canvas:@})
@@ -427,9 +429,7 @@ define [
       @__itemMap[ resourceModel.id ] = item
       @__itemMap[ item.cid ] = item
 
-      if item.isTopLevel()
-        # Make sure group is after item.
-        @__itemTopLevel[ if item.isGroup() then "push" else "unshift"]( item )
+      @markItemAsTopLevel( item, item.isTopLevel() )
 
       if resourceModel.node_line
         @__itemLineMap[ item.cid ] = item
@@ -449,11 +449,19 @@ define [
       delete @__itemLineMap[ item.cid ]
       delete @__itemNodeMap[ item.cid ]
 
-      idx = @__itemTopLevel.indexOf( item )
-      if idx >= 0 then @__itemTopLevel.splice( idx, 1 )
+      @markItemAsTopLevel( item, false )
 
       item.remove()
       item.canvas = null
+      return
+
+    markItemAsTopLevel : ( item, toplevel )->
+      idx = @__itemTopLevel.indexOf( item )
+      if toplevel
+        # Make sure group is after item.
+        if idx < 0 then @__itemTopLevel[ if item.isGroup() then "push" else "unshift" ]( item )
+      else
+        if idx >= 0 then @__itemTopLevel.splice( idx, 1 )
       return
 
     getItem : ( id )-> @__itemMap[ id ]
@@ -600,8 +608,8 @@ define [
 
     ###
     # Highlight some items ( Implemented in CavasViewEffect )
-    hightLightItems  : ( items )->
-    removeHightLight : ()->
+    highLightItems  : ( items )->
+    removeHighLight : ()->
     ###
 
   }, {

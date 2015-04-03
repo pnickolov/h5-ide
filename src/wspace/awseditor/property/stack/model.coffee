@@ -30,6 +30,13 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
         opsEnable : agentData.enabled
       }
 
+      if Design.instance().opsModel().isMesos()
+        mesosData = {
+          isMesos: true
+          marathonOn: @getMarathon()
+        }
+        @set mesosData
+
       vpc = Design.modelClassForType( constant.RESTYPE.VPC ).theVPC()
       if vpc then @set "vpcid", vpc.get("appId")
 
@@ -100,6 +107,12 @@ define ['../base/model', 'constant', "Design" ], ( PropertyModel, constant, Desi
       @set "description", description
       Design.instance().set('description', description)
       return
+
+    setMarathon: (marathonOn) ->
+      Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).setMarathon marathonOn
+
+    getMarathon: ->
+      Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
 
   }
 

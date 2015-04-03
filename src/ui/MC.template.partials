@@ -226,7 +226,33 @@ Additional Notes and Questions
       http://docs.amazonwebservices.com/AmazonVPC/latest/NetworkAdminGuide
   - XSL Version: 2009-07-15-1119716
 
-
+<!-- {{modalRunMesos}} -->
+<section id="modal-run-mesos">
+  <div class="modal-control-group clearfix" data-bind="true">
+      <label class="label" for="app-name">Deployment Name</label>
+      <input id="app-name" class="input modal-input-value" type="text" value="{{name}}" data-ignore="true">
+      <div class="runtime-error" id="runtime-error-appname"></div>
+  </div>
+	<div class="modal-control-group clearfix">
+	  <label class="label var-label">Specify the variable value for this deployment:</label>
+	  <ul class="para-list">
+	  	<li class="para-item">
+		  <input class="input key" value="$env" disabled />
+		  <input class="input value" />
+		</li>
+		<li class="para-item">
+		  <input class="input key" value="$ver" disabled />
+		  <input class="input value" />
+	    </li>
+	  </ul>
+	</div>
+  <div class="modal-control-group clearfix" data-bind="true">
+      <label class="label url-label" for="app-url">Specify the URL of your Mesos Cluster’s Master:</label>
+      <input id="app-url" class="input" type="text">
+      <div class="runtime-error" id="runtime-error-appurl"></div>
+  </div>
+  <div class="mesos-tip">You need to have a running Mesos Cluster first, either using VisualOps Mesos Sample Stack or your own deployment.</div>
+</section>
 <!-- {{modalRunStack}} -->
 <section id="modal-run-stack">
     <div class="payment-wrapper">
@@ -254,10 +280,9 @@ Additional Notes and Questions
         </div>
         <div class="stack-validation">
             <details open style="display:none;">
-                <summary>{{i18n "TOOLBAR.STACK_VALIDATION"}}</summary>
+                <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}<span class="nutshell">:<label></label></span></summary>
                 <div id="stack-run-validation-container"></div>
             </details>
-            <div class="nutshell">:<label></label></div>
             <div class="validating">
                 <div class="loading-spinner loading-spinner-small"></div>
                 <p>{{i18n "TOOLBAR.VALIDATING_STACK"}}</p>
@@ -270,7 +295,7 @@ Additional Notes and Questions
             <div class="price" id="label-total-fee"><b>${{total_fee}}</b> {{i18n "PER_MONTH"}}</div>
         </div>
         {{#ifCond paymentState "pastdue"}}
-            <div class="payment-warning">
+            <div class="warning-text">
                 {{i18n "PAYMENT_WARNNING_IN_MODAL" paymentUpdate.url}}
             </div>
         {{/ifCond}}
@@ -284,9 +309,9 @@ Additional Notes and Questions
 <!-- {{sgRuleList}} -->
 {{#each this}}
 {{#if ../deletable}}
-<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r sg-create-rule-item">
+<li data-uid="{{ruleSetId}}" data-protocol="{{protocol}}" data-port="{{port}}" data-relation="{{relation}}" data-relationid="{{relationId}}" data-direction="{{direction}}" class="pos-r">
 {{else}}
-<li class="sg-create-rule-item modal-list-body">
+<li>
 {{/if}}
 <div class="rule-list-row">
 	<div class='rule-direction-icon tooltip icon-{{direction}}' data-tooltip='{{#ifCond direction "inbound"}}{{ i18n "PROP.SG_TIP_INBOUND" }}{{else}}{{ i18n "PROP.SG_TIP_OUTBOUND" }}{{/ifCond}}'></div>
@@ -296,7 +321,7 @@ Additional Notes and Questions
 	<div><span class="rule-protocol tooltip" data-tooltip='{{ i18n "PROP.SG_TIP_PROTOCOL" }}' >{{protocol}}</span></div>
 	<div class='rule-port tooltip' data-tooltip='{{ i18n "PROP.SG_TIP_PORT_CODE" }}'>{{port}}</div>
 </div>
-{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip" data-tooltip='{{ i18n "PROP.SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
+{{#if ../deletable}}<a href="#" class="sg-rule-delete icon-remove tooltip rule-remove-icon" data-tooltip='{{ i18n "PROP.SG_TIP_REMOVE_RULE" }}'></a>{{/if}}
 </li>{{/each}}
 
 <!-- {{groupedSgRuleList}} -->
@@ -310,8 +335,9 @@ Additional Notes and Questions
 <article class="scroll-wrap delete-sgrule-dialog">
 <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
 <div class="scroll-content">
-{{#each this}}<ul>
-<header class="modal-list-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</header>
+{{#each this}}
+<header class="mega-list-wraper-header"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</header>
+<ul class="mega-list-wraper">
 {{{content}}}
 </ul>{{/each}}
 </div>
@@ -591,19 +617,6 @@ Additional Notes and Questions
 	</div>
 </div>
 
-
-<!-- {{statusbar}} -->
-<div>
-	<div class="info">{{i18n "LAST_SAVED"}} <span class="stack-save-time">-</span></div>
-	<ul class="statusbar-btn-list">
-		<li class="statusbar-btn btn-state">
-			<span class="state-success"><i class="status status-green icon-label"></i><b>0</b></span>
-			<span class="state-failed"><i class="status status-red icon-label"></i><b>0</b></span>
-		</li>
-		<li class="statusbar-btn btn-ta-valid">{{i18n "LBL_VALIDATE"}}</li>
-	</ul>
-</div>
-
 <!-- {{updateApp}} -->
 <div id="app-apply-update">
     <div class="payment-wrapper">
@@ -631,7 +644,7 @@ Additional Notes and Questions
             </ul>
 	    {{/if}}
         {{#if removeList.length}}
-            <section class="check-final-snapshot checkbox-wrap">
+            <section class="mgt10 checkbox-wrap">
                 <div class="checkbox">
                     <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
                     <label for="take-rds-snapshot"></label>
@@ -647,10 +660,9 @@ Additional Notes and Questions
         {{/if}}
         <div class="stack-validation">
             <details open style="display:none;">
-                <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}</summary>
+                <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}<span class="nutshell">:<label></label></span></summary>
                 <div id="stack-run-validation-container"></div>
             </details>
-            <div class="nutshell">:<label></label></div>
             <div class="validating">
                 <div class="loading-spinner loading-spinner-small"></div>
                 <p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
@@ -675,7 +687,7 @@ Additional Notes and Questions
 <!-- {{cantUpdateApp}} -->
 
 <p class="modal-text-major">{{i18n "DB_INSTANCE"}}
-    {{#each data}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="db-stop-status">{{attributes.DBInstanceStatus}}</span>) {{/each}}
+    {{#each data}}{{#if @index}}, {{/if}}<span class="resource-tag">{{attributes.DBInstanceIdentifier}}</span>(<span class="warning-text">{{attributes.DBInstanceStatus}}</span>) {{/each}}
     {{i18n "CANNOT_BE_MODIFIED_NOW"}}</p>
 <p>{{i18n "WAIT_FOR_DB_THEN_UPDATE"}}</p>
 
@@ -806,7 +818,7 @@ Additional Notes and Questions
         </tr>
         </tbody>
     </table>
-    <a href="https://www.visualops.io/pricing" class="link-blue" target="_blank">{{i18n "PRICING_IN_DETAIL"}}</a>
+    <a href="https://www.visualops.io/pricing" target="_blank">{{i18n "PRICING_IN_DETAIL"}}</a>
     <div class="payment-modal-wrap">
         <a href="{{url}}" class="btn btn-blue btn-xlarge">{{i18n "PROVIDE_BILLING_INFORMATION"}} <i class="icon-caret-right"></i></a>
     </div>
@@ -865,4 +877,111 @@ Additional Notes and Questions
 	<p class="modal-text-major">
 		{{i18n "SETTINGS_CRED_UPDATE_CONFIRM_TEXT"}}
 	</p>
+</div>
+
+
+<!-- {{applyMarathonStack}} -->
+<div id="modal-run-mesos">
+<section class="apply-marathon-stack">
+	<div class="modal-control-group clearfix">
+  <label class="label url-label">Link to a Marathon stack designed with VisualOps:</label>
+  <div id="app-usage-selectbox" class="selectbox">
+    <div class="selection">Select existing Marathon stack …</div>
+    <ul class="dropdown" tabindex="-1">{{#each this}}<li class="item" data-value="{{id}}"></i>{{name}}</li>{{/each}}</ul>
+  </div>
+</div>
+{{#if isApp}}
+<div class="modal-control-group clearfix">
+	<label class="label var-label">Specify the variable value for this deployment:</label>
+	<ul class="para-list">
+		<li class="para-item">
+		<input class="input key" value="$env" disabled />
+		<input class="input value" />
+	</li>
+	<li class="para-item">
+		<input class="input key" value="$ver" disabled />
+		<input class="input value" />
+	</li>
+	</ul>
+</div>
+<div class="modal-control-group clearfix" data-bind="true">
+	<label class="label url-label" for="app-url">Specify the URL of your Mesos Cluster’s Master:</label>
+	<input id="app-url" class="input" type="text">
+	<div class="runtime-error" id="runtime-error-appurl"></div>
+</div>
+{{/if}}
+</section>
+</div>
+
+
+<!-- {{createStack}} -->
+<ul class="tabs select-stack-type clearfix">
+    <li class="tab-aws-stack active">
+        <img src="/assets/images/ide/aws_stack.png" alt=""/>
+        <span class="stack-title">AWS Stack</span>
+    </li>
+    <li class="tab-mesos-stack">
+        <img src="/assets/images/ide/mesos_stack.png" alt=""/>
+        <span class="stack-title">Mesos on AWS VPC</span>
+    </li>
+</ul>
+<div class="tabs-content">
+    <div id="tab-aws-stack">
+        <div class="control-group clearfix">
+            <label>Region</label>
+            <div id="create-aws-stack-region" class="selectbox">
+                <div class="selection">{{firstRegion.alias}}({{firstRegion.id}})</div>
+                <ul class="dropdown" tabindex="-1">
+                    {{#each awsRegions}}
+                        <li class="item{{#unless @index}} selected{{/unless}}" data-value="{{id}}">{{alias}}({{id}})</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="tab-mesos-stack" class="hide">
+        <div class="control-group clearfix">
+            <label for="mesos-scale">Scale</label>
+            <div id="mesos-scale" class="selectbox">
+                <div class="selection">
+                    <div class="main truncate">Small</div>
+                    <div class="sub"><span>3 T2.Small master node,</span><span>5-50 T2.Small slave ASG</span></div>
+                </div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="item selected tooltip" data-value="small" data-tooltip="3 T2.Small Master Node <br/>3 T2.Small Master Node" data-tooltip-type="html">
+                        <div class="main truncate">Small</div>
+                        <div class="sub"><span>3 T2.Small master node,</span><span>5-50 T2.Small slave ASG</span></div>
+                    </li>
+                    <li class="item" data-value="medium">
+                        <div class="main truncate">Medium</div>
+                        <div class="sub"><span>5 M3.Large master node,</span><span> 10-200 C4.Large slave ASG</span></div>
+                    </li>
+                    <li class="item" data-value="large">
+                        <div class="main truncate">Large</div>
+                        <div class="sub"><span>5 M3.2xLarge master node,</span><span> 10-1000 C4.2xLarge slave ASG</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="control-group clearfix">
+            <label>Region</label>
+            <div id="create-mesos-stack-region" class="selectbox">
+                <div class="selection">{{firstRegion.alias}}({{firstRegion.id}})</div>
+                <ul class="dropdown" tabindex="-1">
+                    {{#each awsRegions}}
+                        <li class="item{{#unless @index}} selected{{/unless}}" data-value="{{id}}">{{alias}}({{id}})</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="control-group clearfix">
+            <label for="">Framework</label>
+            <span>
+                <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""/> <span>Marathon</span>
+                <label class="switch toolbar-visual-ops-switch create-mesos-use-marathon on narrow">
+                    <span class="switch-handle"></span>
+                </label>
+            </span>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,146 @@
+/*
+    Instance & ENI Property - IDE Property Panel
+	
+	- Instance/Server Group Name Wrap
+	- AMI Property Block
+	- ENI IP List
+
+*/
+
+/* Instance/Server Group Name Wrap */
+
+.property-instance-name-wrap {
+	height     : 31px;
+
+    .name-count-wrap {
+		float       : right;
+		height      : 27px;
+		line-height : 27px;
+		padding     : 0 10px;
+		background  : #555;
+		border      : 1px solid #313131;
+		border-left : none;
+	}
+
+	&.single .name-count-wrap { display: none; }
+}
+
+/* AMI Property Block */
+
+.property-ami-label {
+	padding    : 6px 0;
+	height     : 26px;
+	overflow   : hidden;
+}
+
+.property-ami-icon {
+	margin  : -5px 5px -5px -5px;
+	padding : 11px 2px;
+
+	background    : #7A7A7A;
+	border-radius : 4px 0 0 4px;
+	box-shadow    : inset 1px 1px 0 0 rgba(255,255,255,.05),2px 0 0 0 rgba(0,0,0,.1);
+}
+
+/* ENI IP List */
+
+.network-list-wrap {
+	border: 1px solid #242424;
+}
+
+.network-list-header {
+	background    : #464646;
+	height        : 20px;
+	line-height   : 20px;
+	padding       : 8px;
+	border-radius : 2px 2px 0 0;
+	color         : #eee;
+	box-shadow    : inset 0 1px rgba(255,255,255,.1);
+	border-bottom : 1px solid #242424;
+
+	.btn-small { 
+		line-height: 20px;
+		margin-top: -2px;
+	}
+}
+
+.network-list {
+	background: #f0f0f0;
+	
+	.input-ip-item {
+		position : relative;
+		padding  : 8px;
+		height   : 20px;
+
+		&:nth-child(2n+1) {
+			background: #fcfcfc;
+		}
+
+		.name {
+			width: 150px;
+			float: left;
+		}
+
+		.input-ip {
+			border-radius    : 2px;
+			width            : 36px;
+			height           : 20px;
+			padding          : 3px 2px 5px 5px;
+			background-color : #F0F0F0;
+			font-size        : 12px;
+			border           : 1px solid #CCC;
+			margin-top       : -4px;
+			color            : #999;
+
+			&:hover[disabled],
+			&[disabled] {
+				background   : none;
+				border       : none;
+				color        : #999;
+				padding      : 0;
+				height       : 16px;
+			}
+
+			&:hover {
+				background-color : #fcfcfc;
+				color            : #999;
+				border           : 1px solid $base-b;
+			}
+
+			&:focus {
+				background-color: #fff;
+				color: #666;
+				border: 1px solid $dark-b;
+			}
+		}
+	}
+
+	.input-wrap.disabled {
+		.input-ip-prefix:after {
+			content : "x";
+		}
+
+		.input-ip {
+			display : none;
+		}
+	}
+
+	.toggle-eip {
+		position: absolute;
+		right: 30px;
+		top: 50%;
+		margin-top: -7px;
+	}
+
+	.icon-remove {
+		position   : absolute;
+		right      : 5px;
+		top        : 50%;
+		margin-top : -9px;
+		cursor     : pointer;
+
+		&:hover { color: $base-r; }
+	}
+}
+
+@import "change_ami";

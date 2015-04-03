@@ -9,6 +9,9 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js" ], ( Compl
     type : constant.RESTYPE.IGW
 
     isRemovable : ()->
+      if @design().opsModel().isMesos()
+        return { error : "Cannot be deleted, subnets must connect to internet." }
+
       # Deleting IGW when ELB/EIP in VPC, should show error
       ElbModel   = Design.modelClassForType( constant.RESTYPE.ELB )
       cannotDel  = ElbModel.allObjects().some ( elb )-> not elb.get("internal")

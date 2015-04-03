@@ -13,15 +13,16 @@ define [ '../base/model',
 	ServerGroupModel = PropertyModel.extend {
 
 		init : ( uid ) ->
-
 			@set 'uid', uid
 			@set 'readOnly', not @isAppEdit
 
-			myInstanceComponent = Design.instance().component( uid )
+			@set 'isMesos', @resModel.isMesos()
+			@set 'isMesosMaster', @resModel.isMesosMaster()
+			@set 'isMesosSlave', @resModel.isMesosSlave()
 
 			# Find out AMI
-			ami_id = myInstanceComponent.get("imageId")
-			ami    = myInstanceComponent.getAmi() or myInstanceComponent.get("cachedAmi")
+			ami_id = @resModel.get("imageId")
+			ami    = @resModel.getAmi() or @resModel.get("cachedAmi")
 
 			if ami
 				@set 'ami', {
@@ -35,28 +36,28 @@ define [ '../base/model',
 				notification 'warning', sprintf lang.NOTIFY.ERR_AMI_NOT_FOUND, ami_id
 
 			#root device
-			rd = myInstanceComponent.getBlockDeviceMapping()
+			rd = @resModel.getBlockDeviceMapping()
 			if rd.length is 1
 				@set "rootDevice", rd[0]
 
 			# Find out Instance Type
-			tenancy = myInstanceComponent.get 'tenancy' isnt 'dedicated'
+			tenancy = @resModel.get 'tenancy' isnt 'dedicated'
 
 			# Ebs Optimized
-			@set 'instance_type', myInstanceComponent.getInstanceTypeList()
-			@set 'ebs_optimized', myInstanceComponent.get("ebsOptimized")
-			@set 'can_set_ebs',   myInstanceComponent.isEbsOptimizedEnabled()
-			routeCount = myInstanceComponent.connectionTargets( 'RTB_Route' ).length
+			@set 'instance_type', @resModel.getInstanceTypeList()
+			@set 'ebs_optimized', @resModel.get("ebsOptimized")
+			@set 'can_set_ebs',   @resModel.isEbsOptimizedEnabled()
+			routeCount = @resModel.connectionTargets( 'RTB_Route' ).length
 
 			if routeCount
 				@set 'number_disable', true
 
 
-			@set 'number', myInstanceComponent.get 'count'
-			@set 'name',   myInstanceComponent.get 'name'
-			@set 'monitoring', myInstanceComponent.get 'monitoring'
-			@set 'description', myInstanceComponent.get 'description'
-			@set 'displayCount', myInstanceComponent.get('count') - 1
+			@set 'number', @resModel.get 'count'
+			@set 'name',   @resModel.get 'name'
+			@set 'monitoring', @resModel.get 'monitoring'
+			@set 'description', @resModel.get 'description'
+			@set 'displayCount', @resModel.get('count') - 1
 
 			@getGroupList()
 			@getEni()

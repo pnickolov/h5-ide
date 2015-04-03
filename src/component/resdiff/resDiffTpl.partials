@@ -4,7 +4,7 @@
 	<h5>{{i18n "TOOLBAR.WHAT_HAVE_BEEN_CHANGED"}}</h5>
 	<div class="scroll-wrap scroll-wrap-res-diff" style="max-height: 350px;">
 		<div class="scrollbar-veritical-wrap" style="display: block;"><div class="scrollbar-veritical-thumb"></div></div>
-		<article class="content_wrap scroll-content"></article>
+		<article class="content-wrap scroll-content"></article>
 	</div>
 </div>
 <!-- {{resDiffGroup}} -->

@@ -5,12 +5,7 @@
   <header class="dashboard-header">
     <button class="icon-refresh refreshResource">{{i18n "DASH_TPL_JUST_NOW"}}</button>
 
-    <div class="hovermenu">
-      <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}<i class="icon-caret-down"></i></button>
-      <div class="dropdown-menu">
-        {{#each providers}}<ul data-provider="{{id}}">{{#each regions}}<li data-region="{{id}}" class='create-stack'>{{name}} - {{alias}}</li>{{/each}}</ul>{{/each}}
-      </div>
-    </div>
+      <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}</button>
 
       <div class="hovermenu">
         <button class="btn btn-primary icon-import">{{i18n "DASH_IMPORT_JSON"}}<i class="icon-caret-down"></i></button>
@@ -31,7 +26,7 @@
               <section id="dashboard-data-wrap">
                   <!-- Region view -->
                   <section id="RegionView">
-                      <div id="region-app-stack-wrap">
+                      <div class="region-app-stack-wrap">
                           <div class="dash-region-apps-wrap">
                               <div class="dashboard-loading">
                                   <div class="loading-spinner"></div>
@@ -43,21 +38,39 @@
                               </div>
                           </div>
                       </div>
+
+                      {{#if false}}
+                      <div class="region-app-stack-wrap marathon">
+                          <div class="dash-region-apps-wrap">
+                              <div class="dashboard-loading">
+                                  <div class="loading-spinner"></div>
+                              </div>
+                          </div>
+                          <div class="dash-region-stacks-wrap">
+                              <div class="dashboard-loading">
+                                  <div class="loading-spinner"></div>
+                              </div>
+                          </div>
+                      </div>
+                      {{/if}}
+
                       <div class="dash-resource-wrap">
-                          <label class="region-resource-tab">
-                              <span>Resource Table</span>
-                          </label>
-                          <nav class="dash-region-navigation" data-type="resource">
-                              <button class="js-toggle-dropdown">
-                                  <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
-                              </button>
-                              <ul id="region-switch-list" class="dropdown-menu">
-                                  <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
-                                  {{#each providers}}{{#each regions}}
-                                      <li data-region="{{id}}">{{alias}}</li>
-                                  {{/each}}{{/each}}
-                              </ul>
-                          </nav>
+                        <header class="dash-region-header">
+                            <label class="region-resource-tab">
+                                Resource Table
+                            </label>
+                            <nav class="dash-region-navigation" data-type="resource">
+                                <button class="js-toggle-dropdown">
+                                    <i class="icon-caret-down right"></i><span>{{i18n "DASH_BTN_GLOBAL"}}</span>
+                                </button>
+                                <ul id="region-switch-list" class="dropdown-menu">
+                                    <li data-region="global">{{i18n "DASH_BTN_GLOBAL"}}</li>
+                                    {{#each providers}}{{#each regions}}
+                                        <li data-region="{{id}}">{{alias}}</li>
+                                    {{/each}}{{/each}}
+                                </ul>
+                            </nav>
+                          </header>
                           <ul id="GlobalView" style="display: none;"></ul>
                           <div id="RegionViewWrap">
                               <nav class="" id="RegionResourceNav">
@@ -143,3 +156,6 @@
     <div class="main">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY"}}</div>
     <div class="sub">{{i18n "DASHBOARD_PANEL_LOGS_NO_ACTIVITY_SUB"}}</div>
 </div>
+
+<!-- {{securityText}} -->
+{{this}}

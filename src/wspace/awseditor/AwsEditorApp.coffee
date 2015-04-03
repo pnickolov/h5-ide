@@ -7,9 +7,11 @@ define [
   "OpsModel"
   "CloudResources"
   "constant"
+  "ApiRequest"
+  "./model/MesosMasterModel"
 
   "./AwsDeps"
-], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant )->
+], ( CoreEditorApp, AppView, DesignAws, StackEditor, OpsModel, CloudResources, constant, ApiRequest, MesosMasterModel )->
 
   CoreEditorApp.extend {
 
@@ -46,9 +48,100 @@ define [
 
       throw err
 
+    initEditor : ()->
+      CoreEditorApp.prototype.initEditor.call this
+      if @opsModel.isMesos() then @mesosJobs()
+      return
+
+    cleanup : ()->
+      CoreEditorApp.prototype.cleanup.call this
+      @cleanupMesosJobs()
+      return
+
+    awake: () ->
+      CoreEditorApp.prototype.awake.call this
+      if @__inited then @mesosJobs()
+      null
+
+    sleep: () ->
+      CoreEditorApp.prototype.sleep.call this
+      @cleanupMesosJobs()
+      null
+
+
     fetchAmiData  : StackEditor.prototype.fetchAmiData
     fetchRdsData  : StackEditor.prototype.fetchRdsData
     isRdsDisabled : StackEditor.prototype.isRdsDisabled
+
+    ### Mesos ###
+    mesosJobs : ()->
+      unless @opsModel.isMesos() then return
+
+      interval = 30 * 1000
+      self = @
+
+      @updateMesosInfo().then(()->
+        if self.isRemoved() then return
+      ).fin ()->
+        if self.isRemoved() then return
+        if !self.isAwake() then return
+
+        self.mesosSchedule = setTimeout ()->
+          self.mesosJobs()
+        , interval
+
+        null
+      return
+
+    setMesosData: ( data ) ->
+      framework = data.frameworks[ 0 ]
+
+      ipMap = MesosMasterModel.getMasterIPs()
+
+      leaderIpPortString  = data.leader.split( '@' )[ 1 ]
+      leaderIpPortArray   = leaderIpPortString.split ':'
+      leaderPrivateIp     = leaderIpPortArray[ 0 ]
+      leaderPublicIp      = ipMap[ leaderPrivateIp ]
+      leaderPort          = leaderIpPortArray[ 1 ]
+
+      if framework
+        marathonIpPortString = framework.webui_url.slice 7 # Remove http://
+        marathonIpPortArray = marathonIpPortString.split ':'
+        marathonPrivateIp = marathonIpPortArray[ 0 ]
+        marathonPublicIp = ipMap[ marathonPrivateIp ]
+        marathonPort = marathonIpPortArray[ 1 ]
+
+      data = {
+        framework   : framework and 'marathon' or ''
+        leaderIp    : leaderPublicIp
+        leaderPort  : leaderPort
+        marathonIp  : marathonPublicIp
+        marathonPort: marathonPort
+        slaves      : data.slaves
+      }
+
+      @opsModel.setMesosData data
+
+    updateMesosInfo : ()->
+      that = @
+      @mesosSchedule = null
+      jobs = []
+
+      jobs.push(
+        ApiRequest("marathon_info", {
+          "key_id" : @opsModel.credentialId()
+          "master_ips" : MesosMasterModel.getMasterIPs()
+        }).then ( data )->
+          that.setMesosData data
+      )
+
+      Q.all jobs
+
+    cleanupMesosJobs : ()->
+      if @mesosSchedule
+        clearTimeout( @mesosSchedule )
+        @mesosSchedule = null
+      return
 
   }, {
     canHandle : ( data )->

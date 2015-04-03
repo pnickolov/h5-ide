@@ -34,7 +34,7 @@ define [ "ApiRequest",
     create : ()->
       # credit: song
       modal = @modal
-      modal.tpl.find(".new-project-err").hide()
+      modal.tpl.find(".billing-info-err").hide()
 
       $create = modal.tpl.find(".new-project-create")
 
@@ -90,7 +90,7 @@ define [ "ApiRequest",
           try
             msgObj = JSON.parse(error.result)
             if _.isArray(msgObj.errors)
-              modal.tpl.find(".new-project-err").show().html msgObj.errors.join('<br/>')
+              modal.tpl.find(".billing-info-err").show().html msgObj.errors.join('<br/>')
           catch err
             notification 'error', error.result or error.msg
           # modal.tpl.find(".new-project-info").toggleClass("error", true).html( error.msg )
@@ -142,7 +142,7 @@ define [ "ApiRequest",
       $tgt.parent().children().removeClass("selected")
       $tgt.addClass("selected")
       id = $tgt.attr("data-id")
-      @$el.find(".hp-asset-list-wrap").children().hide().filter( "[data-id='#{id}']" ).show()
+      @$el.find(".ph-asset-list-wrap").children().hide().filter( "[data-id='#{id}']" ).show()
       @showApp = id is "app"
       return
 

@@ -1,0 +1,99 @@
+<div class="container">
+    <div class="input-item">
+        <label class="left">Image</label>
+        <input class="input" name="image" value="{{docker.image}}" type="text" required disabled>
+    </div>
+    <div class="input-item">
+        <label class="left">Network</label>
+        <select name="network" class="select3">
+            <option value="BRIDGE" {{#ifCond docker.network 'BRIDGE'}}selected{{/ifCond}}>BRIDGE</option>
+            <option value="HOST" {{#ifCond docker.network 'HOST'}}selected{{/ifCond}}>HOST</option>
+        </select>
+    </div>
+    <div class="input-item port-mappings">
+        <label class="left">Port Mappings <a href="#" class="icon-add" id="add-item-outside"></a></label>
+        <div class="titles {{#unless docker.portMappings}}hide{{/unless}}">
+            <span>Host</span><span>Container</span><span>Service Port</span>
+        </div>
+        <div class="multi-input">
+            <div class="multi-ipt-row template">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" placeholder="0" type="text" data-name="hostPort" required/>
+                    <input class="input" placeholder="80/tcp" type="text" data-name="container" required/>
+                    <input class="input" placeholder="80" type="text" data-name="servicePort" required/>
+                </span>
+            </div>
+            {{#each docker.portMappings}}
+            <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" placeholder="0" type="text" data-name="hostPort" value="{{hostPort}}" required/>
+                    <input class="input" placeholder="80/tcp" type="text" data-name="container" value="{{containerPort}}/{{protocol}}" required/>
+                    <input class="input" placeholder="80" type="text" data-name="servicePort" value="{{servicePort}}" required/>
+                </span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="input-item volumes">
+        <label class="left">Volumes <a href="#" class="icon-add" id="add-item-outside"></a></label>
+        <div class="titles {{#unless volumes}}hide{{/unless}}">
+            <span>Host Path</span><span>Container Path</span>
+        </div>
+        <div class="multi-input">
+            <div class="multi-ipt-row template">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" placeholder="/host/path" type="text" data-name="hostPath" required/>
+                    <input class="input" placeholder="/mount/point:ro" type="text" data-name="containerPath" required/>
+                </span>
+            </div>
+            {{#each volumes}}
+            <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" placeholder="/host/path" type="text" data-name="hostPath" value="{{hostPath}}"required/>
+                    <input class="input" placeholder="/mount/point:ro" type="text" data-name="containerPath" value="{{containerPath}}:{{mode}}" required/>
+                </span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="input-item parameters">
+        <label class="left">Parameters <a href="#" class="icon-add" id="add-item-outside"></a></label>
+        <div class="titles {{#unless docker.parameters}}hide{{/unless}}">
+            <span>Key</span><span>Value</span>
+        </div>
+        <div class="multi-input">
+            <div class="multi-ipt-row template">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" type="text" data-name="key" required/>
+                    <input class="input" type="text" data-name="value" required/>
+                </span>
+            </div>
+            {{#each docker.parameters}}
+            <div class="multi-ipt-row">
+                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
+                <span class="ipt-wrapper">
+                    <input class="input" type="text" data-name="key" value="{{key}}" required/>
+                    <input class="input" type="text" data-name="value" value="{{value}}" required/>
+                </span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="input-item privileged">
+        <div class="checkbox">
+            <input type="checkbox" id="cb-privileged" {{#if docker.privileged}}checked="checked"{{/if}}>
+            <label for="cb-privileged"></label>
+        </div>
+        <label for="cb-privileged">Privileged</label>
+    </div>
+
+
+</div>

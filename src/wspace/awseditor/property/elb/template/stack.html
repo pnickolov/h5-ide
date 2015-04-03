@@ -69,35 +69,18 @@
 		<section class="property-control-group">
 			<label for="property-elb-idle-timeout" >{{ i18n "PROP.ELB_IDLE_TIMEOUT" }}</label>
 			<input class="input input-short mgt5"  type="text" value="{{idleTimeout}}" name="property-elb-idle-timeout" id="property-elb-idle-timeout" data-required="true" data-type="digits" data-min="1" data-max="3600" data-ignore="true"/>
-			<label class="elb-property-right-text" for="property-elb-idle-timeout" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+			<label class="mgl5" for="property-elb-idle-timeout" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
 		</section>
 	</div>
-
-	<!--
-	<div class="option-group-head">Advanced Configuration</div>
-	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">
-		<section class="property-control-group">
-			<label>Proxy Protocol</label>
-			<div class="mgt5">
-				<div class="checkbox">
-					<input id="elb-advanced-proxy-protocol-select" type="checkbox" {{#if otherPoliciesMap.EnableProxyProtocol}}checked="checked"{{/if}}/>
-					<label for="elb-advanced-proxy-protocol-select"></label>
-				</div>
-				<label for="elb-advanced-proxy-protocol-select">Enable Proxy Protocol</label>
-				<div id="elb-advanced-proxy-protocol-select-tip" class="property-info {{#unless otherPoliciesMap.EnableProxyProtocol}}hide{{/unless}}">If you have a Proxy Protocol enabled proxy server in front of your load balancer, then you must not enable Proxy Protocol on your load balancer.</div>
-			</div>
-		</section>
-	</div>
-	-->
 
 	<div class="option-group-head"> {{ i18n "PROP.ELB_LISTENER_DETAIL" }} </div>
-	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="property-list">
+	<div class="option-group" data-bind="true"> <ul id="elb-property-listener-list" class="mega-list-wraper">
 		{{#each listeners}}
 		<li class="elb-property-listener">
 			<div class="elb-property-listener-item-remove icon-remove tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_REMOVE_LISTENER'}}"></div>
 
 			<div class="property-control-group listener-item clearfix">
-				<div class="elb-property-listener-item-1">
+				<div>
 					<label class="left">{{i18n "PROP.ELB_LOAD_BALENCER_PROTOCOL"}}</label>
 					<div class="selectbox elb-property-elb-protocol">
 						<div class="selection">{{protocol}}</div>
@@ -109,7 +92,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="elb-property-listener-item-2">
+				<div>
 					<label class="left">{{i18n "PROP.PORT"}}</label>
 					<input class="input elb-property-elb-port tooltip" data-tooltip="{{i18n 'PROP.ELB_TIP_25_80_443OR1024TO65535'}}" type="text" value="{{port}}" data-ignore="true" data-required="true" data-type="digits" maxlength="5"/>
 				</div>
@@ -141,29 +124,7 @@
 		</li>
 		{{/each}}
 		</ul>
-		<a href="#" id="elb-property-listener-content-add" class="add-to-list action-link">{{ i18n "PROP.ELB_BTN_ADD_LISTENER"}}</a>
-<!-- 		<section class="property-control-group" id="property-control-group-cert-setting">
-			<label class="left">{{ i18n "PROP.ELB_SERVER_CERTIFICATE" }}</label>
-			<div class="selectbox" id="sslcert-select">
-				<div class="selection"></div>
-				<div style="height: 120px; width:260px;" class="dropdown scroll-wrap scrollbar-auto-hide  clearfix">
-					<div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-					<div class="scroll-content">
-						<ul>
-							<li class="item{{#if noSSLCert}} selected{{/if}}">None</li>
-							{{#each sslCertItem}}
-								<li class="item{{#if selected}} selected{{/if}}" data-id="{{uid}}">
-									{{name}}{{#unless disableCertEdit}}<span class="icon-edit"></span>{{/unless}}<span class="icon-remove"></span>
-								</li>
-							{{/each}}
-						</ul>
-					</div>
-				</div>
-				<div class="editor">
-					<a href="#" class="editbtn">Add New Certificate...</a>
-				</div>
-			</div>
-		</section> -->
+		<a href="#" id="elb-property-listener-content-add" class="add-to-list">{{ i18n "PROP.ELB_BTN_ADD_LISTENER"}}</a>
 	</div>
 
 	<div class="option-group-head"> {{ i18n "PROP.ELB_HEALTH_CHECK_DETAILS" }} </div>
@@ -195,12 +156,12 @@
 		<section class="property-control-group">
 			<label for="property-elb-health-interval" >{{ i18n "PROP.ELB_HEALTH_CHECK_INTERVAL" }}</label>
 			<input class="input input-short mgt5"  type="text" value="{{ healthCheckInterval }}" name="property-elb-health-interval" id="property-elb-health-interval" data-required="true" data-type="digits" data-ignore="true"/>
-			<label class="elb-property-right-text" for="property-elb-health-interval" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+			<label class="mgl5" for="property-elb-health-interval" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
 		</section>
 		<section class="property-control-group">
 			<label for="property-elb-health-timout" >{{ i18n "PROP.ELB_HEALTH_CHECK_RESPOND_TIMEOUT" }}</label>
 			<input class="input input-short mgt5"  type="text" value="{{ healthCheckTimeout }}" name="property-elb-health-timeout" id="property-elb-health-timeout" data-required="true" data-type="digits" data-ignore="true"/>
-			<label class="elb-property-right-text" for="property-elb-health-timeout" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
+			<label class="mgl5" for="property-elb-health-timeout" >{{i18n "PROP.ELB_HEALTH_CHECK_INTERVAL_SECONDS"}}</label>
 		</section>
 
 		<section class="property-control-group">

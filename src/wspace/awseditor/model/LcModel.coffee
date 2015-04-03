@@ -1,5 +1,13 @@
 
-define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeModel", 'i18n!/nls/lang.js', 'CloudResources' ], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+define [
+  "ComplexResModel"
+  "./InstanceModel"
+  "Design"
+  "constant"
+  "./VolumeModel"
+  "i18n!/nls/lang.js"
+  "CloudResources"
+], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
 
   emptyArray = []
 
@@ -21,6 +29,13 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
 
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
+
+    constructor: ( attributes, options ) ->
+      if !options or !options.createBySubClass
+        if Model.isMesosSlave attributes
+          return new ( Design.modelClassForType constant.RESTYPE.MESOSLC ) attributes, options
+
+      ComplexResModel.apply @, arguments
 
     initialize : ( attr, option )->
       if option and option.createByUser
@@ -129,6 +144,9 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
     getInstanceType             : InstanceModel.prototype.getInstanceType
     getInstanceTypeConfig       : InstanceModel.prototype.getInstanceTypeConfig
     getInstanceTypeList         : InstanceModel.prototype.getInstanceTypeList
+    isMesos                     : InstanceModel.prototype.isMesos
+    isMesosMaster               : InstanceModel.prototype.isMesosMaster
+    isMesosSlave                : InstanceModel.prototype.isMesosSlave
 
     serialize : ()->
       ami = @getAmi() || @get("cachedAmi")
@@ -158,6 +176,9 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
 
         blockDevice.push vd
 
+      if InstanceModel.isMesosMaster(@attributes) or InstanceModel.isMesosSlave(@attributes)
+        @setMesosState()
+
       component =
         type : @type
         uid  : @id
@@ -183,6 +204,9 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
   }, {
 
     handleTypes: constant.RESTYPE.LC
+
+    isMesosMaster: InstanceModel.isMesosMaster
+    isMesosSlave: InstanceModel.isMesosSlave
 
     resolveFirst: true
 
@@ -261,4 +285,3 @@ define [ "ComplexResModel", "./InstanceModel", "Design", "constant", "./VolumeMo
   }
 
   Model
-

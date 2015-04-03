@@ -1,0 +1,238 @@
+/*
+    SG & ACL Property - IDE Property Panel
+	
+	- SG/ACL General Style
+	  - Icons
+	  - Rule List
+	- Rule List Sorting
+	- SG/ACL List
+	- ACL Rule List
+
+*/
+
+/* SG ACL General Style */
+
+.sg-color {
+	display       : inline-block;
+	width         : 10px;
+	height        : 10px;
+	border-radius : 2px;
+	margin-right  : 5px;
+}
+
+.icon-allow {
+	color: $base-g;
+}
+
+.icon-deny {
+	color: $light-r;
+}
+
+.rule-remove-icon {
+	display    : none;
+	position   : absolute;
+	top        : 50%;
+	margin-top : -6px;
+	right      : 5px;
+	cursor     : pointer;
+	color      : #666;
+
+	&:hover { color: $light-r; }
+}
+
+#sg-rule-list,
+.acl-rule-list {
+
+	li:hover .rule-remove-icon {
+		display : block;
+	}
+}
+
+.rule-list-row {
+	height    : 20px;
+	font-size : 12px;
+
+	> div {
+		float       : left;
+		width       : 65px;
+		line-height : 20px;
+		height      : 20px;
+	}
+
+	.rule-port:empty { display: none; }
+
+	.rule-reference,
+	.port {
+		width: 160px;
+	}
+
+	.rule-protocol {
+		font-size      : 12px;
+		color          : #148BE6;
+		text-transform : uppercase;
+
+		border-radius : 2px;
+		border        : 1px solid #148BE6;
+
+		padding : 0 3px;
+	}
+}
+
+/* Rule List Sorting */
+
+.rule-list-sort {
+	label {
+		width: 60px;
+	}
+
+	.selectbox {
+		width   : 195px; 
+		display : inline-block;
+	}
+}
+
+/* SG/ACL List */
+
+.sg-group .tab {
+	background    : rgba(0,0,0,.2);
+	padding       : 5px;
+	height        : 30px;
+	border-bottom : 1px solid #0E0E10;
+
+	li {
+		width : 130px;
+		float : left;
+
+		height      : 30px;
+		line-height : 30px;
+		text-align  : center;
+
+		cursor : pointer;
+
+		border-radius: 4px;
+
+		@include transit($method: background, $dur: .2s);
+
+		&:last-child {
+			margin-left: 10px;
+		}
+
+		&.active,
+		&:hover {
+			color: #fff;
+			background: #000;
+		}
+	}
+}
+
+.tab-item {
+	display: none;
+
+	&.active { display: block; }
+}
+
+$infoListItemHeight: 72px;
+
+.acl-sg-info-list {
+
+	> li {
+		padding: 0 !important;
+
+		@include displayflex;
+		align-items: center;
+
+
+     	height     : $infoListItemHeight;
+     	box-sizing : border-box;
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+
+	.col1 {
+		width       : 26px;
+		margin-left : 10px;
+
+		& + .col2 {
+			width : 210px;
+		}
+	}
+
+	.col2 {
+		padding-left : 10px;
+		width        : 238px;
+		word-wrap    : break-word;
+
+		> div {
+			width: 210px;
+		}
+
+		.col2-1 {
+			color: #e0e0e0;
+		}
+		.col2-2 {
+			color: #bbb;
+			font-size: 12px;
+		}
+		.col2-3 {
+			color: #999;
+			font-size: 12px;
+		}
+	}
+
+	.col3 {
+		text-align : center;
+
+		cursor      : pointer;
+		width       : 40px;
+		height      : $infoListItemHeight;
+		line-height : $infoListItemHeight;
+
+		@include transit($method:background,$dur:.2s);
+
+		&:hover {
+			background-color: rgba(0,0,0,.2);
+		}
+	}
+}
+
+.icon-btn-details {
+	color  : #606060;
+
+	&:hover {
+		color: $base-b;
+	}
+}
+
+
+/* ACL Rule List */
+
+.acl-rule-list li {
+	padding: 0;
+
+	.acl-rule-details {
+		padding  : 10px;
+	}
+
+	.acl-rule-number {
+		width       : 100%;
+		height      : 20px;
+		line-height : 20px;
+		font-size   : 12px;
+
+		background : $bg-p;
+		padding    : 0 10px;
+
+		border-top    : 1px solid darken($bg-p,5%);
+		border-bottom : 1px solid darken($bg-p,5%);
+	}
+
+	.acl-rule-allow-cb {
+		width      : 62px;
+		height     : 16px;
+		display    : inline-block;
+	}
+}
+
+@import "sg_modal";

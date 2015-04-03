@@ -377,4 +377,20 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             @
         abnormal: ()->
             @option.mode in ["panel", "fullscreen"]
+
+        loading: (revert)->
+            unless revert
+              @_title = @find(".modal-header h3").text()
+              @setTitle(lang.PROP.LBL_LOADING)
+              @_content = @.find(".modal-body").children()
+              @setContent(MC.template.loadingSpinner())
+              @toggleFooter(false)
+            else
+              if not @_title
+                throw new Error("The modal was not in loading state.")
+                return false
+              @setTitle(@_title)
+              @setContent @_content
+              @toggleFooter(true)
+
     Modal

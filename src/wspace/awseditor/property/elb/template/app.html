@@ -29,26 +29,25 @@
   </div>
 
   <div class="option-group-head">{{i18n "PROP.ELB_LISTENER_DETAIL"}}</div>
-  <div class="option-group">
-    <ul class="property-list">
+  <ul class="option-group mega-list-wraper elb-property-listener-app">
     {{#each listenerDisplay}}
-      <li class="clearfix">
-        <div class="app-panel-li-col2-1">
+      <li>
+        <div>
           <label>{{i18n "PROP.ELB_ELB_PROTOCOL"}}</label>
           <div>{{Listener.Protocol}}</div>
         </div>
 
-        <div class="app-panel-li-col2-2">
+        <div>
           <label>{{i18n "PROP.PORT"}}</label>
           <div>{{Listener.LoadBalancerPort}}</div>
         </div>
 
-        <div class="app-panel-li-col2-1">
+        <div>
           <label>{{i18n "PROP.ELB_INSTANCE_PROTOCOL"}}</label>
           <div>{{Listener.InstanceProtocol}}</div>
         </div>
 
-        <div class="app-panel-li-col2-2">
+        <div>
           <label>{{i18n "PROP.PORT"}}</label>
           <div>{{Listener.InstancePort}}</div>
         </div>
@@ -60,8 +59,7 @@
         {{/if}}
       </li>
     {{/each}}
-    </ul>
-  </div>
+  </ul>
 
   <div class="option-group-head">{{i18n "PROP.ELB_HEALTH_CHECK_DETAILS"}}</div>
   <div class="option-group">
@@ -86,29 +84,27 @@
 
   {{#if distribution.length}}
   <div class="option-group-head">{{i18n "PROP.ELB_INSTANCES"}}</div>
-  <ul class="option-group property-list">
+  <ul class="option-group mega-list-wraper">
     {{#each distribution}}
       <li>
         <div class="list-row">
             <i class="status status-{{#if health}}green{{else}}red{{/if}} icon-label"></i>
             <span class="app-panel-li-main">{{zone}}</span>
         </div>
-        <div class="list-row">
-          <ul class="elb-property-instance-list">
-            {{#each this.instance}}
-              <li>
-                <div class="instance-info">
-                  {{#if instance_name}}<div class="instance-name">{{instance_name}}</div>{{/if}}
-                  <div class="instance-id {{#unless instance_name}}instance-id-down{{/unless}}">({{instance_id}})</div>
-                </div>
-                <div class="instance-state">
-                  {{#if instance_state}}InService{{else}}OutOfService{{/if}}
-                  {{#unless instance_state}}<a class="elb-info-icon tooltip icon-info" data-tooltip="{{instance_state_desc}}"></a>{{/unless}}
-                </div>
-              </li>
-            {{/each}}
-          </ul>
-        </div>
+        <ul class="elb-property-instance-list">
+          {{#each this.instance}}
+            <li>
+              <div class="instance-info">
+                {{#if instance_name}}<div class="instance-name">{{instance_name}}</div>{{/if}}
+                <div class="instance-id {{#unless instance_name}}instance-id-down{{/unless}}">({{instance_id}})</div>
+              </div>
+              <div class="instance-state">
+                {{#if instance_state}}InService{{else}}OutOfService{{/if}}
+                {{#unless instance_state}}<a class="elb-info-icon tooltip icon-info" data-tooltip="{{instance_state_desc}}"></a>{{/unless}}
+              </div>
+            </li>
+          {{/each}}
+        </ul>
       </li>
     {{/each}}
   </ul>

@@ -1,3 +1,4 @@
+<!--{{main}}-->
 <article>
 
   {{#unless isStack}}
@@ -8,17 +9,17 @@
     </section>
     {{/if}}
     <dl class="dl-horizontal dl-region-type property-control-group">
-      <dt><label>{{ i18n "PROP.STACK_LBL_REGION" }}</label></dt>
+      <dt>{{ i18n "PROP.STACK_LBL_REGION" }}</dt>
       <dd>{{region}}</dd>
-      <dt><label>{{ i18n "PROP.STACK_LBL_TYPE" }}</label></dt>
+      <dt>{{ i18n "PROP.STACK_LBL_TYPE" }}</dt>
       <dd>{{type}}</dd>
-      <dt><label>{{ i18n "PROP.APP_LBL_ID" }}</label></dt>
+      <dt>{{ i18n "PROP.APP_LBL_ID" }}</dt>
       <dd>{{id}}</dd>
       {{#if usage}}
-      <dt><label>{{ i18n "PROP.STACK_LBL_USAGE" }}</label></dt>
-      <dd style="text-transform: capitalize">{{usage}}</dd>
+      <dt>{{ i18n "PROP.STACK_LBL_USAGE" }}</dt>
+      <dd class="capitalize">{{usage}}</dd>
       {{/if}}
-      <dt><label>{{ i18n "PROP.DESCRIPTION"}}</label></dt>
+      <dt>{{ i18n "PROP.DESCRIPTION"}}</dt>
       <dd>{{description}}</dd>
     </dl>
 
@@ -49,6 +50,16 @@
       <label for="property-app-resdiff">{{ i18n "PROP.APP_LBL_RESDIFF"}}</label><i class="icon-info tooltip" data-tooltip="{{ i18n 'PROP.APP_TIP_RESDIFF'}}"></i>
     </section>
     {{/if}}
+
+    {{#if isMesos}}
+    <div class="option-group-head expand">Mesos Settings</div>
+    <div class="option-group">
+      <section class="property-control-group" id="mesos-data-area">
+      </section>
+    </div>
+    {{/if}}
+
+
   {{else}}
 	<section class="property-control-group" data-bind="true">
 		<label class="left" for="property-stack-name">{{ i18n "PROP.STACK_LBL_NAME" }}</label>
@@ -63,7 +74,23 @@
 		<dt><label>{{ i18n "PROP.STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
     <dt><label>{{ i18n "PROP.STACK_LBL_ID" }}</label></dt><dd>{{id}}</dd>
 	</dl>
+
+  <!-- Mesos Settings -->
+  {{#if isMesos}}
+  <section class="property-control-group" data-bind="true">
+    <div class="mesos-marathon-switch">
+      <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
+      <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
+        <span class="switch-handle"></span>
+      </label>
+    </div>
+  </section>
+  {{/if}}
+
   {{/unless}}
+
+
+
 
 	<!-- SG, ACL, COST -->
 	<div class="option-group-head">{{ i18n "PROP.STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
@@ -74,8 +101,8 @@
 	<div class="option-group-head pos-r">{{ i18n "PROP.STACK_TIT_ACL" }}<span class="acl-info-list-num property-head-num-wrap">({{networkAcls.length}})</span>
 	</div>
 	<div class="option-group">
-    <ul class="acl-sg-info-list acl-info-list property-list" id="stack-property-acl-list"></ul>
-    {{#unless isApp}}<a href="#" class="add-to-list action-link" id="stack-property-new-acl">{{ i18n "PROP.STACK_BTN_CREATE_NEW_ACL" }}</a>{{/unless}}
+    <ul class="acl-sg-info-list acl-info-list mega-list-wraper" id="stack-property-acl-list"></ul>
+    {{#unless isApp}}<a href="#" class="add-to-list" id="stack-property-new-acl">{{ i18n "PROP.STACK_BTN_CREATE_NEW_ACL" }}</a>{{/unless}}
   </div>
 	{{/if}}
 
@@ -102,3 +129,14 @@
 	</div>
 
 </article>
+
+<!--{{mesosData}}-->
+{{#if this.leaderIp}}
+<dl class="dl-vertical">
+  <dt>Framework</dt><dd>{{emptyStr framework}}</dd>
+  <dt>Mesos Leader UI</dt><dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{leaderIp}}:{{leaderPort}}</a></dd>
+  {{#if framework}}<dt>Marathon Leader UI</dt><dd><a target="_blank" href="http://{{marathonIp}}:{{marathonPort}}">{{marathonIp}}:{{marathonPort}}</a></dd>{{/if}}
+</dl>
+{{else}}
+<dl class="dl-vertical"><dt>Mesos Data is not ready yet...</dt></dl>
+{{/if}}

@@ -35,6 +35,16 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
       data.uid = uid
       data.isEditable = @isAppEdit
       data.app_view = Design.instance().modeIsAppView()
+
+      if @lc.isMesos()
+        mesosData = {
+          isMesos         : true
+          mesosAttr       : @lc.getMesosAttributes()
+          defaultMesosAttr: @lc.getDefaultMesosAttributes()
+        }
+
+        _.extend data, mesosData
+
       @set data
 
       @set "displayAssociatePublicIp", true
@@ -49,6 +59,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
       agentData = design.get('agent')
       @set "stackAgentEnable", agentData.enabled
 
+
+
       if @isApp
         @getAppLaunch( uid )
         kp = @lc.connectionTargets( 'KeypairUsage' )[ 0 ]
@@ -59,6 +71,8 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
         if rootDevice.length is 1
           @set "rootDevice", rootDevice[0]
         return
+
+
 
       null
 

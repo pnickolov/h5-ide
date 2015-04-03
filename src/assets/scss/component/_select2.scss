@@ -15,14 +15,7 @@ Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
 .select2-drop,
 .select2-search,
 .select2-search input {
-  /*
-    Force border-box so that % widths fit the parent
-    container without overlap because of margin/padding.
-    More Info : http://www.quirksmode.org/css/box.html
-  */
-  -webkit-box-sizing: border-box; /* webkit */
-     -moz-box-sizing: border-box; /* firefox */
-          box-sizing: border-box; /* css3 */
+    box-sizing: border-box; /* css3 */
 }
 
 .select2-container .select2-choice {
@@ -134,10 +127,8 @@ Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
     border: 1px solid #aaa;
     border-top: 0;
 
-    border-radius: 0 0 4px 4px;
-
-    -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
-            box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+    border-radius : 0 0 4px 4px;
+    box-shadow    : 0 4px 5px rgba(0, 0, 0, .15);
 }
 
 .select2-drop.select2-drop-above {
@@ -145,10 +136,8 @@ Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
     border-top: 1px solid #aaa;
     border-bottom: 0;
 
-    border-radius: 4px 4px 0 0;
-
-    -webkit-box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
-            box-shadow: 0 -4px 5px rgba(0, 0, 0, .15);
+    border-radius : 4px 4px 0 0;
+    box-shadow    : 0 -4px 5px rgba(0, 0, 0, .15);
 }
 
 .select2-drop-active {
@@ -245,9 +234,6 @@ Version: 3.4.8 Timestamp: Thu May  1 09:50:32 EDT 2014
 .select2-container-active .select2-choices {
     // border: 1px solid #5897fb;
     outline: none;
-
-    //-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
-            // box-shadow: 0 0 5px rgba(0, 0, 0, .3);
 }
 
 .select2-dropdown-open .select2-choice {
@@ -450,8 +436,7 @@ disabled look for disabled choices in the results dropdown
     border: 1px solid $base-b;
     outline: none;
 
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .3);
-            box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .3);
 }
 .select2-container-multi .select2-choices li {
     float: left;

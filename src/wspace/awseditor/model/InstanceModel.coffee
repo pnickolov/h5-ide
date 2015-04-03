@@ -1,5 +1,11 @@
 
-define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudResources' ], ( ComplexResModel, Design, constant, lang, CloudResources )->
+define [
+  "ComplexResModel"
+  "Design"
+  "constant"
+  "i18n!/nls/lang.js"
+  "CloudResources"
+], ( ComplexResModel, Design, constant, lang, CloudResources )->
 
   emptyArray = []
 
@@ -29,6 +35,21 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       cachedAmi : null
 
       state : null
+
+    constructor: ( attributes, options ) ->
+      if options and options.createByUser and attributes.subType
+        subType = attributes.subType
+        delete attributes.subType
+        return new ( Design.modelClassForType constant.RESTYPE[ subType ] ) attributes, options
+
+      if !options or !options.createBySubClass
+        if Model.isMesosMaster attributes
+          return new ( Design.modelClassForType constant.RESTYPE.MESOSMASTER ) attributes, options
+
+        if Model.isMesosSlave attributes
+          return new ( Design.modelClassForType constant.RESTYPE.MESOSSLAVE ) attributes, options
+
+      ComplexResModel.apply @, arguments
 
     initialize : ( attr, option )->
 
@@ -97,7 +118,7 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
           console.error "No DefaultKP found when initialize InstanceModel"
 
 
-        #assign DefaultSG
+        # Assign DefaultSG
         SgModel = Design.modelClassForType( constant.RESTYPE.SG )
         defaultSg = SgModel.getDefaultSg()
         if defaultSg
@@ -106,6 +127,8 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
         else
           console.error "No DefaultSG found when initialize InstanceModel"
 
+        # Assign Mesos Sg
+        if @isMesos() then @assignMesosSg()
 
       # Always setTenancy to insure we don't have micro type for dedicated.
       tenancy = @get("tenancy")
@@ -511,6 +534,9 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       null
 
     isRemovable : ()->
+      if @design().modeIsAppEdit() and @isMesosMaster()
+        return error : lang.CANVAS.MASTER_NODE_CANNOT_BE_DELETED
+
       state = @get("state")
       if (state and _.isArray(state) and state.length > 0) or
         ($('#state-editor-model').is(':visible') and $('#state-editor-model .state-list .state-item').length >= 1)
@@ -695,6 +721,9 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
       # Add this instance' layout first.
       allResourceArray.push( { layout : layout } )
 
+      if Model.isMesosMaster(@attributes) or Model.isMesosSlave(@attributes)
+        @setMesosState() if @setMesosState
+
       # Generate instance member.
       instances = [ @generateJSON() ]
       i = instances.length
@@ -739,9 +768,34 @@ define [ "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", 'CloudRes
 
       return allResourceArray
 
-  }, {
+    assignMesosSg: ->
+      mesosSg = Design.modelClassForType( constant.RESTYPE.SG ).find ( sg ) -> sg.isMesos()
 
+      if mesosSg
+        SgAsso = Design.modelClassForType( "SgAsso" )
+        new SgAsso( @, mesosSg )
+      else
+        console.error "No MesosSG found when initialize InstanceModel"
+
+
+    isMesosMaster: -> @subType is constant.RESTYPE.MESOSMASTER
+    isMesosSlave : -> @subType in [ constant.RESTYPE.MESOSSLAVE, constant.RESTYPE.MESOSLC ]
+    isMesos      : -> !!@subType
+
+  }, {
     handleTypes : constant.RESTYPE.INSTANCE
+
+    isMesosMaster: ( data ) ->
+      states = data.state
+      if states and states[0] and states[0].module is 'linux.mesos.master'
+        return true
+      return false
+
+    isMesosSlave: ( data ) ->
+      states = data.state
+      if states and states[0] and states[0].module is 'linux.mesos.slave'
+        return true
+      return false
 
     getInstanceType : ( ami, region )->
       if not ami or not region then return []

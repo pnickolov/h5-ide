@@ -57,7 +57,7 @@
                                 {{/each}}
                             </tr>
                         </thead>
-                        <tbody class="t-m-content">
+                        <tbody>
                         </tbody>
                     </table>
                     {{#unless useCustomScroll}}

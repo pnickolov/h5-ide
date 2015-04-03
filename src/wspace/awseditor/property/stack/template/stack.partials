@@ -54,17 +54,17 @@
     {{#if isMesos}}
     <div class="option-group-head expand">Mesos Settings</div>
     <div class="option-group">
-      {{#if isAppEdit}}
+<!--       {{#if isAppEdit}}
       <section class="property-control-group" data-bind="true">
-    <div class="mesos-marathon-switch">
-      <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
-      <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
-        <span class="switch-handle"></span>
-      </label>
-    </div>
-  </section>
+        <div class="mesos-marathon-switch">
+          <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
+          <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
+            <span class="switch-handle"></span>
+          </label>
+        </div>
+      </section>
       {{/if}}
-      <section class="property-control-group" id="mesos-data-area">
+ -->      <section class="property-control-group" id="mesos-data-area">
       </section>
     </div>
     {{/if}}
@@ -143,9 +143,7 @@
 <!--{{mesosData}}-->
 {{#if this.leaderIp}}
 <dl class="dl-vertical">
-  {{#unless isAppEdit}}
   <dt>Framework</dt><dd>{{emptyStr framework}}</dd>
-  {{/unless}}
   <dt>Mesos Leader UI</dt><dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{leaderIp}}:{{leaderPort}}</a></dd>
   {{#if framework}}<dt>Marathon Leader UI</dt><dd><a target="_blank" href="http://{{marathonIp}}:{{marathonPort}}">{{marathonIp}}:{{marathonPort}}</a></dd>{{/if}}
 </dl>

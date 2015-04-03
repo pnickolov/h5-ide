@@ -634,6 +634,8 @@ define [
           deferArray = []
         Q.all(deferArray).then (data) ->
           that.renderContainerList(appData, taskData) if appData
+        .fail ()->
+          that.renderMesosNotReady()
         .finally () ->
           clearTimeout that.timeOutLoop
           that.timeOutLoop = setTimeout () ->
@@ -657,7 +659,7 @@ define [
       })
 
     renderMesosNotReady: ()->
-      if @__mesosIsReady
+      if @workspace.__mesosIsReady
         return false
 
       @$('.marathon-app-ready').show().html LeftPanelTpl.mesosNotReady
@@ -667,7 +669,7 @@ define [
 
       if not @workspace.isAwake() then return
       that = @
-      @__mesosIsReady = true
+      @workspace.__mesosIsReady = true
       dataApps = appData[1]?.apps
       dataTasks = taskData[1]?.tasks
 

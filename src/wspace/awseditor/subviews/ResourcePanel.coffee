@@ -183,6 +183,8 @@ define [
       @updateSnapshot()
 
       if isMesos
+        if @workspace.opsModel.getMesosData()
+          @getContainerList()
         @updateMesos()
         if @workspace.design.modeIsApp() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon()
           @workspace.opsModel.getMesosData().on 'change', @getContainerList, @
@@ -196,8 +198,6 @@ define [
       @renderReuse()
 
       return
-
-    # For Demo Begin
 
     switchPanel : (event) ->
       if not event
@@ -611,7 +611,7 @@ define [
       Backbone.View.prototype.remove.call this
       return
 
-    getContainerList: (leaderIp) ->
+    getContainerList: () ->
 
       that = @
       mesosData = @workspace.opsModel.getMesosData()
@@ -656,11 +656,18 @@ define [
         "leader_ip" : leaderIp
       })
 
+    renderMesosNotReady: ()->
+      if @__mesosIsReady
+        return false
+
+      @$('.marathon-app-ready').show().html LeftPanelTpl.mesosNotReady
+
+
     renderContainerList: (appData, taskData) ->
 
       if not @workspace.isAwake() then return
       that = @
-
+      @__mesosIsReady = true
       dataApps = appData[1]?.apps
       dataTasks = taskData[1]?.tasks
 
@@ -699,6 +706,8 @@ define [
           task.addClass("selected")
         else
           @workspace.view.removeHighlight()
+      else
+        that.$('.marathon-app-ready').show().html LeftPanelTpl.emptyContainer()
 
     removeHighlight: ()->
       @$(".container-item.selected").removeClass("selected")

@@ -144,7 +144,8 @@
 
 <div class="panel container-panel hide">
     <div class="marathon-app-ready">
-        <img class="logo" src="/assets/images/ide/marathon.png" />
+        <div class="loading-bounce"><div class="bounce-one"></div><div class="bounce-two"></div></div>
+        <div class="desc">Trying to load marathon apps list...</div>
         <div class="desc">When marathon framework ready and deployed app on Mesos cluster, will show app list at here.</div>
     </div>
     <div class="marathon-app-list" class="hide"></div>
@@ -246,3 +247,13 @@ Slave Auto Scaling Group
   {{/each}}
 </ul>
 <!-- <div class="container-change">Change Marathon Stack…</div> -->
+
+<!--{{emptyContainer}}-->
+<img class="logo" src="/assets/images/ide/marathon.png">
+<div class="desc">Marathon framework is ready now, but no app is deployed on Mesos cluster</div>
+<div class="desc">App list will show here when deployed on Mesos cluster.</div>
+
+<!--{{mesosNotReady}}-->
+<img class="logo" src="/assets/images/ide/marathon.png">
+<div class="desc">Marathon framework is not ready yet.</div>
+<div class="desc">When marathon framework ready and deployed app on Mesos cluster, will show app list at here.</div>

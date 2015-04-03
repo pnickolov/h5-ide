@@ -250,10 +250,9 @@ Slave Auto Scaling Group
 
 <!--{{emptyContainer}}-->
 <img class="logo" src="/assets/images/ide/marathon.png">
-<div class="desc">Marathon framework is ready now, but no app is deployed on Mesos cluster</div>
-<div class="desc">App list will show here when deployed on Mesos cluster.</div>
+<div class="desc">Marathon framework is ready, but there's no app deployed on Mesos cluster.</div>
 
 <!--{{mesosNotReady}}-->
 <img class="logo" src="/assets/images/ide/marathon.png">
 <div class="desc">Marathon framework is not ready yet.</div>
-<div class="desc">When marathon framework ready and deployed app on Mesos cluster, will show app list at here.</div>
+<div class="desc">App list will be available once marathon framework and the apps are ready on the Mesos cluster.</div>

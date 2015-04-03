@@ -165,7 +165,8 @@ define [
       if it.isGroup()
         groupRects.push it.effectiveRect()
       else
-        rects.push it.rect()
+        for el in it.$el
+          rects.push it.rect( el )
 
     if not groupRects.length then return rects
 

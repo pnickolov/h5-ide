@@ -698,8 +698,10 @@ define [
           })
 
         that.tempTaskFlag = that.$el.find("li.container-item.selected").data("name")
-
+        __tempFilterWord = that.$("#filter-containers").val()
         that.$('.marathon-app-list').html LeftPanelTpl.containerList(viewData)
+        that.$("#filter-containers").val(__tempFilterWord)
+        that.filterContainers()
         that.recalcAccordion()
 
         # recover selected item state
@@ -725,8 +727,8 @@ define [
         else
             $container.addClass('hide')
 
-    filterContainers: (evt)->
-      keyword = $(evt.currentTarget).val().toLowerCase()
+    filterContainers: ()->
+      keyword = @$("#filter-containers").val().toLowerCase()
       $(".container-list .container-item").each (index, item)->
         containerName = $(item).data("name").toLowerCase()
         shouldShow =  containerName.indexOf(keyword) >= 0

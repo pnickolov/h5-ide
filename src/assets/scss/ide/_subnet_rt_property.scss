@@ -1,0 +1,78 @@
+/*
+    Subnet & RT Property - IDE Property Panel
+	
+	- Subnet Property
+	- RT Property
+	
+*/
+
+/* Subnet Property */
+
+.subnet-cidr-wrapper {
+	clear : both;
+
+	.cidr-prefix {
+		display        : inline-block;
+		width          : 50px;
+		vertical-align : middle;
+		margin-right   : 6px;
+	}
+
+	.cidr-rest {
+		width : 140px !important;
+	}
+}
+
+
+/* RT Property */
+
+.route-list {
+	> li {
+		width   : auto;
+		padding : 0;
+
+		&.have-vpc-peer-route {
+			border-bottom: 1px $base-r solid;
+		}
+
+		> table {
+			width : 100%;
+		}
+	}
+
+	.route-readonly {
+		color : #777;
+	}
+
+	.remove-vpc-peer-route {
+		font-size: 13px;
+		background-color: $base-r;
+		color: #fff;
+		padding: 3px;
+		a {
+			color: #fff;
+			cursor: pointer;
+			text-decoration:underline;
+		}
+	}
+}
+
+.route-target {
+	height      : 20px;
+	line-height : 20px;
+}
+
+.route-label {
+	background     : rgba(0,0,0,.05);
+	border-right   : 1px solid #4b4b4b;
+	width          : 70px;
+	padding        : 5px 8px;
+	font-size      : 13px;
+	color          : #999;
+	vertical-align : top;
+}
+
+.route-target-resource,
+.route-destination-input {
+	padding: 5px 10px;
+}

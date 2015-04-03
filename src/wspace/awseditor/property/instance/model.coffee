@@ -4,228 +4,238 @@
 
 define [ '../base/model', 'constant', 'event', 'i18n!/nls/lang.js' ], ( PropertyModel, constant, ide_event, lang ) ->
 
-	InstanceModel = PropertyModel.extend {
+    InstanceModel = PropertyModel.extend {
 
-		init : ( uid ) ->
+        init : ( uid ) ->
 
-			component = Design.instance().component( uid )
+            component = Design.instance().component( uid )
 
-			attr = component?.toJSON()
-			attr.uid = uid
-			attr.classic_stack  = false
-			attr.can_set_ebs    = component.isEbsOptimizedEnabled()
-			attr.instance_type  = component.getInstanceTypeList()
-			attr.tenancy        = component.isDefaultTenancy()
-			attr.displayCount   = attr.count - 1
-			attr.description    = component.get("description")
-
-			eni = component.getEmbedEni()
-			attr.number_disable = eni and eni.connections('RTB_Route').length > 0
+            attr = component?.toJSON()
+            attr.uid = uid
+            attr.classic_stack  = false
+            attr.can_set_ebs    = component.isEbsOptimizedEnabled()
+            attr.instance_type  = component.getInstanceTypeList()
+            attr.tenancy        = component.isDefaultTenancy()
+            attr.displayCount   = attr.count - 1
+            attr.description    = component.get("description")
 
-			# If Vpc is dedicated, instance should be dedicated.
-			vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects()[0]
-			attr.force_tenacy = vpc and not vpc.isDefaultTenancy()
-
-			# if stack enable agent
-			design = Design.instance()
-			agentData = design.get('agent')
-			attr.stackAgentEnable = agentData.enabled
-
-			@set attr
+            if component.isMesos()
+                mesosData = {
+                    isMesosMaster   : component.isMesosMaster()
+                    isMesosSlave    : component.isMesosSlave()
+                    mesosAttr       : component.getMesosAttributes?()
+                    defaultMesosAttr: component.getDefaultMesosAttributes?()
+                }
+                _.extend attr, mesosData
+
+
+            eni = component.getEmbedEni()
+            attr.number_disable = eni and eni.connections('RTB_Route').length > 0
 
-			@getAmi()
-			@getKeyPair()
-			@getEni()
-			null
+            # If Vpc is dedicated, instance should be dedicated.
+            vpc = Design.modelClassForType( constant.RESTYPE.VPC ).allObjects()[0]
+            attr.force_tenacy = vpc and not vpc.isDefaultTenancy()
+
+            # if stack enable agent
+            design = Design.instance()
+            agentData = design.get('agent')
+            attr.stackAgentEnable = agentData.enabled
+
+            @set attr
 
-		getKeyPair : ()->
-			selectedKP = Design.instance().component(@get("uid")).connectionTargets("KeypairUsage")[0]
+            @getAmi()
+            @getKeyPair()
+            @getEni()
+            null
 
-			if selectedKP
-				@set "keypair", selectedKP.getKPList()
-			null
+        getKeyPair : ()->
+            selectedKP = Design.instance().component(@get("uid")).connectionTargets("KeypairUsage")[0]
 
-		addKP : ( kp_name ) ->
+            if selectedKP
+                @set "keypair", selectedKP.getKPList()
+            null
 
-			KpModel = Design.modelClassForType( constant.RESTYPE.KP )
+        addKP : ( kp_name ) ->
 
-			for kp in KpModel.allObjects()
-				if kp.get("name") is kp_name
-					return false
+            KpModel = Design.modelClassForType( constant.RESTYPE.KP )
 
-			kp = new KpModel( { name : kp_name } )
-			kp.id
+            for kp in KpModel.allObjects()
+                if kp.get("name") is kp_name
+                    return false
 
-		setKP : ( kp_uid ) ->
-			design  = Design.instance()
-			instance = design.component( @get("uid") )
-			design.component( kp_uid ).assignTo( instance )
-			null
+            kp = new KpModel( { name : kp_name } )
+            kp.id
 
-		setCount : ( val ) ->
-			Design.instance().component( @get("uid") ).setCount( val )
+        setKP : ( kp_uid ) ->
+            design  = Design.instance()
+            instance = design.component( @get("uid") )
+            design.component( kp_uid ).assignTo( instance )
+            null
 
-		setEbsOptimized : ( value )->
-			Design.instance().component( @get("uid") ).set( "ebsOptimized", value )
+        setCount : ( val ) ->
+            Design.instance().component( @get("uid") ).setCount( val )
 
-		setTenancy : ( value ) ->
-			Design.instance().component( @get("uid") ).setTenancy( value )
+        setEbsOptimized : ( value )->
+            Design.instance().component( @get("uid") ).set( "ebsOptimized", value )
 
-		setMonitoring : ( value ) ->
-			Design.instance().component( @get("uid") ).set( "monitoring", value )
+        setTenancy : ( value ) ->
+            Design.instance().component( @get("uid") ).setTenancy( value )
 
-		setUserData : ( value ) ->
-			Design.instance().component( @get("uid") ).set( "userData", value )
+        setMonitoring : ( value ) ->
+            Design.instance().component( @get("uid") ).set( "monitoring", value )
 
-		setEniDescription: ( value ) ->
-			Design.instance().component( @get("uid") ).getEmbedEni().set("description", value)
+        setUserData : ( value ) ->
+            Design.instance().component( @get("uid") ).set( "userData", value )
 
-		setSourceCheck : ( value ) ->
-			Design.instance().component( @get("uid") ).getEmbedEni().set("sourceDestCheck", value)
+        setEniDescription: ( value ) ->
+            Design.instance().component( @get("uid") ).getEmbedEni().set("description", value)
 
-		setPublicIp : ( value ) ->
-			Design.instance().component( @get("uid") ).getEmbedEni().set("assoPublicIp", value)
-			if value
-				Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+        setSourceCheck : ( value ) ->
+            Design.instance().component( @get("uid") ).getEmbedEni().set("sourceDestCheck", value)
 
-		getAmi : () ->
-			ami_id = @get("imageId")
-			comp   = Design.instance().component( @get("uid") )
-			ami    = comp.getAmi()
+        setPublicIp : ( value ) ->
+            Design.instance().component( @get("uid") ).getEmbedEni().set("assoPublicIp", value)
+            if value
+                Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
 
-			if not ami
-				data = {
-					name        : ami_id + " is not available."
-					icon        : "ami-not-available.png"
-					unavailable : true
-				}
-			else
-				data = {
-					name : ami.name or ami.description or ami.id
-					icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
-				}
+        getAmi : () ->
+            ami_id = @get("imageId")
+            comp   = Design.instance().component( @get("uid") )
+            ami    = comp.getAmi()
 
-			@set 'instance_ami', data
+            if not ami
+                data = {
+                    name        : ami_id + " is not available."
+                    icon        : "ami-not-available.png"
+                    unavailable : true
+                }
+            else
+                data = {
+                    name : ami.name or ami.description or ami.id
+                    icon : ami.osType + "." + ami.architecture + "." + ami.rootDeviceType + ".png"
+                }
 
-			if ami and ami.blockDeviceMapping and not $.isEmptyObject(ami.blockDeviceMapping)
-				rdName = ami.rootDeviceName
-				rdEbs = ami.blockDeviceMapping[ rdName ]
+            @set 'instance_ami', data
 
-				if rdName and not rdEbs
-				#rootDeviceName is partition
-					_.each ami.blockDeviceMapping, (value,key) ->
-						if rdName.indexOf(key) isnt -1 and not rdEbs
-							rdEbs  = value
-							rdName = key
-						null
+            if ami and ami.blockDeviceMapping and not $.isEmptyObject(ami.blockDeviceMapping)
+                rdName = ami.rootDeviceName
+                rdEbs = ami.blockDeviceMapping[ rdName ]
 
-				deviceType = comp.get("rdType")
+                if rdName and not rdEbs
+                #rootDeviceName is partition
+                    _.each ami.blockDeviceMapping, (value,key) ->
+                        if rdName.indexOf(key) isnt -1 and not rdEbs
+                            rdEbs  = value
+                            rdName = key
+                        null
 
-				rootDevice =
-					name : rdName
-					size : parseInt( comp.get("rdSize"), 10 )
-					iops : comp.get("rdIops")
-					encrypted : rdEbs.encrypted
-					isStandard: deviceType is 'standard'
-					isIo1 : deviceType is 'io1'
-					isGp2 : deviceType is 'gp2'
+                deviceType = comp.get("rdType")
 
+                rootDevice =
+                    name : rdName
+                    size : parseInt( comp.get("rdSize"), 10 )
+                    iops : comp.get("rdIops")
+                    encrypted : rdEbs.encrypted
+                    isStandard: deviceType is 'standard'
+                    isIo1 : deviceType is 'io1'
+                    isGp2 : deviceType is 'gp2'
 
 
 
-				if rootDevice.size < 10
-					rootDevice.iops = ""
-					rootDevice.iopsDisabled = true
-				@set "rootDevice", rootDevice
 
-			@set "min_volume_size", comp.getAmiRootDeviceVolumeSize()
+                if rootDevice.size < 10
+                    rootDevice.iops = ""
+                    rootDevice.iopsDisabled = true
+                @set "rootDevice", rootDevice
 
-			null
+            @set "min_volume_size", comp.getAmiRootDeviceVolumeSize()
 
-		canSetInstanceType : ( value ) ->
-			instance   = Design.instance().component( @get("uid") )
-			eni_number = instance.connectionTargets("EniAttachment").length + 1
-			config     = instance.getInstanceTypeConfig( value )
+            null
 
-			max_eni_num = if config then config.max_eni else 2
+        canSetInstanceType : ( value ) ->
+            instance   = Design.instance().component( @get("uid") )
+            eni_number = instance.connectionTargets("EniAttachment").length + 1
+            config     = instance.getInstanceTypeConfig( value )
 
-			if eni_number <= 2 or eni_number <= max_eni_num
-				return true
+            max_eni_num = if config then config.max_eni else 2
 
-			return sprintf lang.PROP.WARN_EXCEED_ENI_LIMIT, value, max_eni_num
+            if eni_number <= 2 or eni_number <= max_eni_num
+                return true
 
-		setInstanceType  : ( value ) ->
-			instance = Design.instance().component( @get("uid") )
-			instance.setInstanceType( value )
+            return sprintf lang.PROP.WARN_EXCEED_ENI_LIMIT, value, max_eni_num
 
-			# Update IP List
-			@getEni()
-			instance.isEbsOptimizedEnabled()
+        setInstanceType  : ( value ) ->
+            instance = Design.instance().component( @get("uid") )
+            instance.setInstanceType( value )
 
-		getEni : () ->
-			instance = Design.instance().component(@get("uid"))
+            # Update IP List
+            @getEni()
+            instance.isEbsOptimizedEnabled()
 
-			eni = instance.getEmbedEni()
-			if not eni then return
+        getEni : () ->
+            instance = Design.instance().component(@get("uid"))
 
-			eni_obj     = eni.toJSON()
-			eni_obj.ips = eni.getIpArray()
-			eni_obj.ips[0].unDeletable = true
+            eni = instance.getEmbedEni()
+            if not eni then return
 
-			@set "eni", eni_obj
-			@set "multi_enis", instance.connections("EniAttachment").length > 0
-			null
+            eni_obj     = eni.toJSON()
+            eni_obj.ips = eni.getIpArray()
+            eni_obj.ips[0].unDeletable = true
 
+            @set "eni", eni_obj
+            @set "multi_enis", instance.connections("EniAttachment").length > 0
+            null
 
 
 
-		attachEip : ( eip_index, attach ) ->
-			Design.instance().component( @get("uid") ).getEmbedEni().setIp( eip_index, null, null, attach )
-			@attributes.eni.ips[ eip_index ].hasEip = attach
 
-			if attach
-				Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
-			null
+        attachEip : ( eip_index, attach ) ->
+            Design.instance().component( @get("uid") ).getEmbedEni().setIp( eip_index, null, null, attach )
+            @attributes.eni.ips[ eip_index ].hasEip = attach
 
-		removeIp : ( index ) ->
-			Design.instance().component( @get("uid") ).getEmbedEni().removeIp( index )
-			null
+            if attach
+                Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+            null
 
-		addIp : () ->
-			comp = Design.instance().component( @get("uid") ).getEmbedEni()
-			comp.addIp()
+        removeIp : ( index ) ->
+            Design.instance().component( @get("uid") ).getEmbedEni().removeIp( index )
+            null
 
-			ips = comp.getIpArray()
-			ips[0].unDeletable = true
+        addIp : () ->
+            comp = Design.instance().component( @get("uid") ).getEmbedEni()
+            comp.addIp()
 
-			@get("eni").ips = ips
-			null
+            ips = comp.getIpArray()
+            ips[0].unDeletable = true
 
-		isValidIp : ( ip )->
-			Design.instance().component( @get("uid") ).getEmbedEni().isValidIp( ip )
+            @get("eni").ips = ips
+            null
 
-		canAddIP : ()->
-			Design.instance().component( @get("uid") ).getEmbedEni().canAddIp()
+        isValidIp : ( ip )->
+            Design.instance().component( @get("uid") ).getEmbedEni().isValidIp( ip )
 
-		setIp : ( idx, ip, autoAssign )->
-			Design.instance().component( @get("uid") ).getEmbedEni().setIp( idx, ip, autoAssign )
-			null
+        canAddIP : ()->
+            Design.instance().component( @get("uid") ).getEmbedEni().canAddIp()
 
-		getStateData : () ->
-			Design.instance().component( @get("uid") ).getStateData()
+        setIp : ( idx, ip, autoAssign )->
+            Design.instance().component( @get("uid") ).getEmbedEni().setIp( idx, ip, autoAssign )
+            null
 
-		setIops : ( iops )->
-			Design.instance().component( @get("uid") ).set("rdIops", iops)
-			null
+        getStateData : () ->
+            Design.instance().component( @get("uid") ).getStateData()
 
-		setVolumeType: ( type ) ->
-			Design.instance().component( @get("uid") ).set("rdType", type)
-			null
+        setIops : ( iops )->
+            Design.instance().component( @get("uid") ).set("rdIops", iops)
+            null
 
+        setVolumeType: ( type ) ->
+            Design.instance().component( @get("uid") ).set("rdType", type)
+            null
 
-		setVolumeSize : ( size )->
-			Design.instance().component( @get("uid") ).set("rdSize", size)
-			null
-	}
 
-	new InstanceModel()
+        setVolumeSize : ( size )->
+            Design.instance().component( @get("uid") ).set("rdSize", size)
+            null
+    }
+
+    new InstanceModel()

@@ -1,0 +1,24 @@
+<!-- {{panel}} -->
+<button class="tooltip sidebar-hider icon-caret-left HideOEPanelLeft" data-tooltip='{{ i18n "RES_TIP_TOGGLE_RESOURCE_PANEL" }}'></button>
+<header class="sidebar-title">{{ i18n "RES_TIT_RESOURCES" }}</header>
+<section class="marathon-resource-panel">
+    <div class="resource-list-head">Marathon App</div>
+    <ul class="resource-list-az clearfix">
+        <li class="tooltip resource-item marathon-group" data-tooltip="Drag to the canvas to use this image" data-type="MRTHGROUP">
+            <div class="res-name">App Group</div>
+        </li>
+    </ul>
+    <div class="resource-list-head">Docker Container</div>
+    <ul class="nano-content resource-list-docker-image"></ul>
+</section>
+
+<!-- {{docker_image}} -->
+{{#each this}}
+<li class="resource-item dockerimage bubble" data-type="MRTHAPP" data-option='{"image":"{{name}}","name":"{{name}}"}' data-bubble-template="resPanelImageDocker" data-bubble-data='{{bubble}}'>
+  <div class="resource-icon-docker-image"><img src="/assets/images/ide/icon-mrth/icn-{{name}}.png" width="32" height="32" /></div>{{name}}
+</li>
+{{/each}}
+
+<!-- {{resourcePanelBubble}} -->
+<div class="bubble-head">{{or id ID}}</div>
+<dl class="bubble-content dl-horizontal">{{#each this}}<dt>{{@key}}</dt><dd>{{this}}</dd>{{/each}}</dl>

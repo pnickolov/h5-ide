@@ -164,6 +164,7 @@ define [
 
     importVpc : ( event )->
       if $(event.currentTarget).hasClass('disabled') then return false
+
       $tgt = $(event.currentTarget)
       if $tgt.hasClass(".disabled") then return false
 

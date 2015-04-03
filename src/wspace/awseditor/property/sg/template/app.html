@@ -19,7 +19,7 @@
   <div class="option-group">
 
     <div class="rule-list-sort property-control-group">
-      <h5>{{ i18n "PROP.SG_RULE_SORT_BY" }}</h5>
+      <label>{{ i18n "PROP.SG_RULE_SORT_BY" }}</label>
       <div class="selectbox" id="sg-rule-filter-select">
         <div class="selection">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</div>
         <ul class="dropdown" tabindex="-1">
@@ -30,14 +30,14 @@
       </div>
     </div>
 
-    <ul class="sg-rule-list property-list" id="sg-rule-list"></ul>
+    <ul class="mega-list-wraper sg-rule-list" id="sg-rule-list"></ul>
   </div>
 
   <div class="option-group-head expand">{{ i18n "PROP.SG_TIT_MEMBER" }}
     <span class="property-head-num-wrap">(<span>{{members.length}}</span>)</span>
   </div>
   <div class="option-group">
-    <ul class="sg-member-list property-list">
+    <ul class="sg-member-list mega-list-wraper">
       {{#each members}} <li class="sg-member-name">{{this}}</li> {{/each}}
     </ul>
   </div>

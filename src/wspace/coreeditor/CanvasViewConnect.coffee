@@ -10,7 +10,7 @@ define [ "CanvasView", "Design", "CanvasManager",  "CanvasElement", "i18n!/nls/l
 
     data.context.__clearDragScroll()
 
-    data.context.removeHightLight()
+    data.context.removeHighLight()
     data.context.hideHintMessage()
 
     if data.marker
@@ -79,7 +79,7 @@ define [ "CanvasView", "Design", "CanvasManager",  "CanvasElement", "i18n!/nls/l
       x2 : co.left + @$el.outerWidth()
       y2 : co.top  + @$el.outerHeight()
 
-    @hightLightItems( targetItems )
+    @highLightItems( targetItems )
     @showHintMessage( $port.attr("data-tooltip") )
 
     $.extend d, {

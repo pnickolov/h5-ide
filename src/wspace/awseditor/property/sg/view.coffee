@@ -24,7 +24,7 @@ define [ '../base/view',
 
 
         render : () ->
-            tpl = if @model.isReadOnly then app_template else template
+            tpl = if @model.modeIsApp then app_template else template
 
             @$el.html tpl @model.toJSON()
             @refreshSgruleList()

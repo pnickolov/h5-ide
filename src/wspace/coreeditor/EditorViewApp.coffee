@@ -7,14 +7,15 @@ define [
   "i18n!/nls/lang.js"
   "ApiRequest"
   "AppAction"
-], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, ApiRequest, AppAction )->
+  "constant"
+], ( StackView, OpsModel, OpsEditorTpl, Modal, lang, ApiRequest, AppAction, constant )->
 
   StackView.extend {
 
     initialize : ()->
       StackView.prototype.initialize.apply this, arguments
 
-      @$el.find(".OEPanelLeft").addClass( "force-hidden" ).empty()
+      @updateResourcePanel()
 
       @toggleProcessing()
       @updateProgress()
@@ -22,18 +23,37 @@ define [
       @listenTo @workspace.design, "change:mode", @switchMode
       return
 
+    updateResourcePanel: ->
+      if @workspace.opsModel.isMesos() and Design.modelClassForType( constant.RESTYPE.MESOSMASTER ).getMarathon() and Design.instance().get('state') isnt "Stopped"
+        @renderMesosPanel()
+      else
+        @removeLeftPanel()
+
+    renderMesosPanel: ->
+
+      @resourcePanel.switchPanel?()
+      # Show marathon app list
+      @$( '.sidebar-nav-resource' ).hide()
+      @$( '.sidebar-nav-container').show()
+      #if @workspace.opsModel.id
+        #@resourcePanel.loadMarathon @workspace.opsModel.getMarathonStackId()
+
+
     switchMode : ( mode )->
       @toolbar.updateTbBtns()
-      @statusbar.update()
+      @statusbar.update() if @statusbar.update
 
       if mode is "appedit"
         @$el.find(".OEPanelLeft").removeClass("force-hidden")
         @resourcePanel.render()
       else
-        @$el.find(".OEPanelLeft").addClass("force-hidden").empty()
+        @updateResourcePanel()
 
       @propertyPanel.openPanel()
       return
+
+    removeLeftPanel: ->
+      @$el.find(".OEPanelLeft").addClass("force-hidden").empty()
 
     confirmImport : ()->
       self = @
@@ -73,6 +93,8 @@ define [
             design.set "resource_diff", json.resource_diff
             design.set "usage", json.usage
 
+            self.updateResourcePanel()
+
             # "Refresh property"
             $("#OEPanelRight").trigger "REFRESH"
 
@@ -93,7 +115,7 @@ define [
     toggleProcessing : ()->
       if not @$el then return
 
-      @statusbar.update()
+      @statusbar.update() if @statusbar.update
       @$el.children(".ops-process").remove()
 
       opsModel = @workspace.opsModel
@@ -241,5 +263,10 @@ define [
           modal.close()
           return
       })
+
+    showMarathonNotReady: ()->
+      if @workspace.__marathonIsReady
+        return false
+      @resourcePanel.renderMarathonNotReady()
 
   }

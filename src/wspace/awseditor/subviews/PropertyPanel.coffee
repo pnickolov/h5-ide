@@ -256,7 +256,7 @@ define [
       supports = false
       design   = @workspace.design
 
-      if type is "component_server_group" or type is CONST.RESTYPE.LC or type is CONST.RESTYPE.INSTANCE
+      if type in [ "component_server_group", CONST.RESTYPE.LC, CONST.RESTYPE.INSTANCE, CONST.RESTYPE.MESOSMASTER, CONST.RESTYPE.MESOSSLAVE, CONST.RESTYPE.MESOSLC ]
         if Design.instance().attributes.agent.enabled
           supports = true
           $('#state-editor-body').trigger('SAVE_STATE')
@@ -265,7 +265,7 @@ define [
         if design.modeIsApp()
           if type is "component_server_group"
             supports = false
-          if type is CONST.RESTYPE.LC
+          if type in [ CONST.RESTYPE.LC, CONST.RESTYPE.MESOSLC ]
             supports = @workspace.opsModel.testState( OpsModel.State.Stopped )
 
       @$el.toggleClass( "no-state", not supports )

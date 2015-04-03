@@ -200,8 +200,10 @@
   fill: #439beb;
 }
 .server-number {
-  fill: #fff;
-  font-size: 11px;
+  fill      : #fff;
+  font-size : 11px;
+
+  @include font-mono;
 }
 .volume-number {
   fill: #74B1FD;
@@ -895,6 +897,44 @@ marker {
 
 #hlArea {
   fill-opacity:0.5;
+  // -webkit-animation : fillEffect .5s ease-in-out;
+  // animation         : fillEffect .5s ease-in-out;
+}
+#hlAreaBorder {
+  stroke            : $base-b;
+  stroke-width      : 2px;
+  -webkit-animation : borderEffect .5s ease-in;
+  animation         : borderEffect .5s ease-in;
+  opacity           : 1;
+}
+
+// @-webkit-keyframes fillEffect {
+//   0%   { fill-opacity:0;}
+//   50%  { fill-opacity:0.2;}
+//   100% { fill-opacity:0.5;}
+// }
+
+// @keyframes fillEffect {
+//   0%   { fill-opacity:0;}
+//   50%  { fill-opacity:0.2;}
+//   100% { fill-opacity:0.5;}
+// }
+
+
+@-webkit-keyframes borderEffect {
+  0%   { stroke-width:100px; opacity: 0;}
+  34%  { stroke-width:50px; opacity: .2;}
+  50%  { stroke-width:30px; opacity: .5;}
+  70%  { stroke-width:10px; opacity: .8;}
+  100% { stroke-width:1px; opacity: 1;}
+}
+
+@keyframes borderEffect {
+  0%   { stroke-width:100px; opacity: 0;}
+  34%  { stroke-width:50px; opacity: .2;}
+  50%  { stroke-width:30px; opacity: .5;}
+  70%  { stroke-width:10px; opacity: .8;}
+  100% { stroke-width:1px; opacity: 1;}
 }
 
 .canvas-message {
@@ -919,3 +959,122 @@ marker {
 
   &[data-type="bottom"] { top : auto; bottom : 8px; }
 }
+
+.DOCKER-MARATHON-Group {
+  .group-label-bg {
+    fill: #E5E5ED;
+  }
+  .group {
+    stroke: #E5E5ED;
+    stroke-width: 2;
+  }
+
+  &:hover, &.highlight {
+    .group { stroke: #C6C4C4; stroke-width : 4px; }
+  }
+
+  .group-label {
+    fill: #888CAD;
+  }
+}
+
+.DOCKER-MARATHON-App {
+  &.selected .marathon-app-bg {
+    stroke-width:1px;
+    stroke:#1D8DEA;
+    display:block;
+  }
+  &:hover{
+    .marathon-app-bg {
+      display:block;
+    }
+  }
+  .marathon-app-bg {
+    fill:#CCDAE5;
+    display:none;
+  }
+  .marathon-app-bottom {
+    fill: #fff;
+    stroke-width: 1px;
+    stroke:#B1B1B1;
+  }
+  .marathon-app-line{
+    fill: #E3E3E3;
+  }
+  .marathon-app-top {
+    fill: #f7f7f7;
+    stroke-width: 1px;
+    stroke:#B1B1B1;
+  }
+  .node-label {
+    text-anchor: initial;
+  }
+  .cpu-label, .memory-label {
+    font-size : 12px;
+    fill      : $dark-grey;
+
+    @include font-mono;
+  }
+
+  .server-number-group.mismatch {
+    .server-number-bg {
+      fill:#F8E71C;
+      stroke:#E58904;
+      stroke-width:1px;
+    }
+    .server-number {
+      fill:#E58904;
+    }
+  }
+}
+
+.port-marathon {
+  stroke:#7ed321;
+  stroke-width:2px;
+  fill:#7ed321;
+  &:hover{
+    fill:none;
+  }
+}
+
+.MarathonDepIn, .MarathonDepOut {
+  stroke: #7FD321;
+  stroke-dasharray: 10,10;
+  stroke-linecap: square;
+}
+.draw-line {
+  &.app-dep-in, &.app-dep-out, &.group-dep-in, &.group-dep-out { stroke: #7FD321; }
+}
+marker {
+  &.app-dep-in, &.app-dep-out, &.group-dep-in, &.group-dep-out { fill: #7FD321; }
+}
+
+.OEPanelCenter.marathon {
+  .marathon-cvs-ph {
+    display        : none;
+    pointer-events : none;
+    width          : 300px;
+    height         : 300px;
+    background     : red;
+    position       : absolute;
+    top            : 100px;
+    left           : 100px;
+  }
+  // &.empty .marathon-cvs-ph { display : block; }
+}
+
+#overlayer {
+  width    : 100%;
+  height   : 100%;
+  position : absolute;
+  top      : 0;
+  left     : 0;
+  z-index  : 80;
+}
+
+.grabbing {
+  cursor: -webkit-grabbing !important;
+  cursor: -moz-grabbing !important;
+  cursor: grabbing !important;
+}
+

@@ -16,7 +16,7 @@ define [ "ResourceModel", "ComplexResModel", "constant" ], ( ResourceModel, Comp
       alarmData      : {
         id                 : MC.guid()
         alarmName          : ""
-        namespace          : "AWS/AutoScaling"
+        namespace          : "AWS/EC2"
         metricName         : "CPUUtilization"
         comparisonOperator : ">="
         evaluationPeriods  : "2"
@@ -37,7 +37,7 @@ define [ "ResourceModel", "ComplexResModel", "constant" ], ( ResourceModel, Comp
     setAlarm : ( alarmData )->
       @set "alarmData", $.extend {
         id        : @attributes.alarmData.id
-        namespace : "AWS/AutoScaling"
+        namespace : "AWS/EC2"
         unit      : ""
         appId     : @attributes.alarmData.appId
         alarmName : @attributes.alarmData.alarmName
@@ -51,7 +51,7 @@ define [ "ResourceModel", "ComplexResModel", "constant" ], ( ResourceModel, Comp
       alarmData = @get("alarmData")
 
       period = parseInt( alarmData.period, 10 )
-      if not ( period <= 300 and alarmData.namespace is "AWS/AutoScaling" )
+      if not ( period <= 300 and alarmData.namespace is "AWS/EC2" )
         return null
 
       for p in priceMap.cloudwatch.types

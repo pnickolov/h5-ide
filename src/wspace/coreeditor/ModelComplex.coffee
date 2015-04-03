@@ -57,7 +57,7 @@ define [ "Design", "ResourceModel", "constant" ], ( Design, ResourceModel, const
       if attributes and attributes.__parent
         # Reset __parent here, so that addChild() can succeed
         @set '__parent', null
-        attributes.__parent.addChild( this )
+        attributes.__parent.addChild?( this )
       null
 
     setName : ( name )->

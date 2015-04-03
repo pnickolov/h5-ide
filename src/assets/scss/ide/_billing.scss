@@ -1,0 +1,147 @@
+/*
+    Provide/Update Billing Info 
+
+    - New Project & Update Billing Common Style
+    - Update Billing Specific Style
+    - New Project Modal
+*/
+
+/* New Project & Update Billing Common Style */
+
+.update-payment-wrap label,
+.new-project-billing-wrap label {
+  font-size     : 12px;
+  color         : #999;
+  margin-bottom : 4px;
+  display       : block;
+}
+
+.billing-info-tip {
+	position   : absolute;
+	top        : 17px;
+	right      : 0;
+
+	text-align : right;
+	color      : $base-g;
+
+	&.icon-password { font-size: 12px !important; }
+}
+
+.billing-info-item {
+    display : inline-block;
+    margin  : 5px 0;
+}
+
+.billing-info-item-owner {
+	width    : 49.5%;
+
+	input { width: 35%; }
+
+	input:first-of-type { margin-right: 2%; }
+}
+
+.billing-info-item-email {
+	width: 49.5%;
+
+	input { width: 200px; }
+}
+
+.billing-info-item-card {
+	width: 49.5%;
+
+	input { width: 200px; }
+}
+.billing-info-item-cvv {
+	width: 17%;
+
+	input { width: 50px; }
+}
+
+.billing-info-item-date {
+	width: 32%;
+
+	input { width: 118px; }
+}
+
+.billing-info-err {
+    display    : none;
+    text-align : left;
+}
+
+/* Update Billing Specific Style */
+
+.update-payment-wrap {
+  max-width: 500px;
+
+  .billing-info-tip {
+    bottom: 17px;
+    right: 19px;
+    top: initial;
+  }
+}
+
+/* New Project Modal */
+
+
+.new-project-modal  {
+
+  .modal-footer { padding: 24px 0 5px 0; }
+
+  .new-project-name-wrap {
+    padding: 20px 10px;
+    border-bottom: 1px solid #40446C;
+    border-radius: 0;
+  }
+
+  label {
+    color        : #eee;
+    width        : 140px;
+    margin-right : 10px;
+    display      : inline-block;
+  }
+
+  #new-project-name {
+    width: 288px;
+  }
+
+  #new-project-name:valid + .new-project-billing-wrap {
+    max-height    : 500px;
+    padding       : 10px 0;
+    margin-top    : 20px;
+    border-top    : 1px solid #000;
+    border-bottom : 1px solid #000;
+    height        : auto;
+    opacity       : 1;
+  }
+
+  .new-project-billing-wrap {
+    position   : relative;
+    padding    : 0;
+    margin-top : 0;
+    max-height : 0;
+    overflow   : hidden;
+    opacity    : 0;
+
+    @include transit($method:max-height,$dur:.3s);
+
+    h4 {
+      font-size   : 14px;
+      color       : lighten($light-p-2,20%);
+      line-height : 28px;
+
+    }
+
+  }
+
+  .new-project-info {
+    font-size      : 13px;
+    color          : $base-grey;
+    line-height    : 18px;
+    font-weight    : 100;
+    letter-spacing : .2px;
+    background     : $base-p;
+    padding        : 4px 6px;
+    border-radius  : 4px;
+    margin         : 6px 0;
+  }
+}

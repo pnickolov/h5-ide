@@ -1,0 +1,171 @@
+/* Browse Community AMI Modal */
+
+.icon-ami-os {
+  &:before {
+    content      : " ";
+    float        : left;
+    width        : 24px;
+    height       : 24px;
+    margin-right : 5px;
+    background   : image-url('ide/icon/icn-amios.png') left top no-repeat;
+  }
+
+  &.centos:before { background-position: -24px 0; }
+  &.debian:before { background-position: -48px 0; }
+  &.fedora:before      { background-position: -72px 0; }
+  &.gentoo:before      { background-position: -96px 0; }
+  &.opensuse:before    { background-position: -120px 0; }
+  &.ubuntu:before      { background-position: -144px 0; }
+  &.redhat:before      { background-position: -168px 0; }
+  &.windows:before     { background-position: -192px 0; }
+  &.linux-other:before { background-position: -216px 0; }
+}
+
+.ami-content-wrap {
+    @include displayflex;
+    @include vo-flex-wrap(wrap);
+    position: relative;
+
+    div { box-sizing: border-box; }
+}
+
+#ami-search-option {
+	width      : 30%;
+	padding    : 10px;
+}
+
+#ami-data-wrap {
+	height: 100%;
+	border-left: 1px solid #222;
+	width: 70%;
+}
+
+#btn-search-ami {
+	width: 100%;
+}
+
+.ami-option-group {
+	margin: 10px 0;
+
+	h5 {
+		font-size: 12px;
+		margin-bottom: 10px;
+	}
+
+	button {
+		width     : 114px;
+		font-size : 12px;
+		padding   : 4px 0;
+
+		&:hover {
+			background-color: #353A3F;
+		}
+
+		&.active {
+			background-color: #148BE6;
+
+			&:hover {
+				background-color: #34A3F8;
+			}
+		}
+	}
+}
+
+#community-ami-input {
+	border-radius : 3px;
+	margin-bottom : 5px;
+	font-size     : 12px;
+	padding       : 8px 5px 8px 10px;
+	width         : 215px;
+}
+
+#selectbox-ami-platform {
+	margin : 5px 0;
+	width  : 232px;
+
+	.item {
+		font-size  : 12px;
+		display    : block;
+		cursor     : pointer;
+		padding    : 8px;
+		line-height: 23px;
+	}
+
+	.selection {
+		border-radius : 3px;
+		padding       : 8px 10px;
+		line-height   : 24px;
+	}
+}
+
+#ami-table-wrap .scroll-wrap {
+	height: 322px;
+}
+
+#ami-table-wrap .table {
+	font-size: 12px;
+}
+
+#ami-table-wrap .table tr td {
+	vertical-align: middle;
+}
+
+#ami-table-wrap .ami-table-name {
+	display: block;
+}
+
+#ami-table-wrap .toggle-fav {
+	position : static;
+	margin   : 0 2px;
+	cursor   : pointer;
+}
+
+#ami-table-wrap .table-head thead th {
+	line-height: 16px;
+	text-align: center;
+	padding: 10px 0;
+	border: none;
+	font-size: 12px;
+	font-weight: 500;
+	color: #F3F3F3;
+	background: #292C2E;
+}
+
+#ami-table-wrap .table-head thead th:hover {
+	background-color: #2E3338;
+}
+
+.ami-meta {
+	font-size   : 12px;
+	color       : #999;
+	line-height : 24px;
+
+	span {
+		margin-left: 28px;
+	}
+}
+
+#community-ami-page {
+	position: relative;
+	bottom: 0;
+	height: 45px;
+	background-color: #292C2E;
+	border-top: 1px solid #000;
+	width: 604px;
+}
+
+#community-ami-page .pagination {
+	position: absolute;
+	top: 12px;
+	right: 10px;
+	font-size: 12px;
+	color: #999;
+}
+
+#community-ami-page .page-tip {
+	left: 10px;
+	color: #999;
+	font-size: 12px;
+	top: 15px;
+	position: absolute;
+}

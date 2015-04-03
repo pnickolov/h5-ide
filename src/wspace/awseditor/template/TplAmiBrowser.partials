@@ -1,9 +1,7 @@
 <!-- {{dialog}} -->
-<div class="content-wrap" style="position:relative;">
+<div class="ami-content-wrap" style="position:relative;">
   <div id="ami-search-option">
-    <div>
-      <input id="community-ami-input" class="input" type="text" placeholder="{{{i18n "AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID"}}}" />
-    </div>
+    <input id="community-ami-input" class="input" type="text" placeholder="{{{i18n "AMI_LBL_ALL_SEARCH_AMI_BY_NAME_OR_ID"}}}" />
 
     <div id="selectbox-ami-platform" class="selectbox">
       <div class="selection">{{i18n "AMI_LBL_ALL_PLATFORMS"}}</div>

@@ -15,7 +15,8 @@
 
 
 .combo-dd.selectbox .combo-dd-filter {
-  width         : 232px;
+  width         : 100%;
+  box-sizing    : border-box;
   border-radius : 0;
   border        : 0;
   padding-right : 20px;
@@ -23,7 +24,7 @@
 }
 
 .combo-dd.selectbox .combo-dd-filter:focus {
-  width         : 232px;
+  // width         : 232px;
   border-radius : 0;
   border        : 0;
   padding-right : 20px;

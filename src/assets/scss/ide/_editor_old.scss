@@ -1,0 +1,109 @@
+$LeftPanelWidth       : 246px;
+$RightPanelWidth      : 288px;
+$RightStatePanelWidth : 654px;
+$TopPanelHeight       : 40px;
+$BottomPanelHeight    : 24px;
+
+@mixin slide($direction :  left) {
+  -webkit-transition: $direction .1s ease-out;
+  -moz-transition: $direction .1s ease-out;
+  -ms-transition: $direction .1s ease-out;
+  -o-transition: $direction .1s ease-out;
+  transition: $direction .1s ease-out;
+}
+
+@mixin width {
+  -webkit-transition: width .1s ease-out;
+  -moz-transition: width .1s ease-out;
+  -ms-transition: width .1s ease-out;
+  -o-transition: width .1s ease-out;
+  transition: width .1s ease-out;
+}
+
+// Sidebar and Layout
+
+
+
+
+
+
+
+
+
+
+.sidebar-title {
+  padding : 0 10px;
+  height  : 39px;
+
+  font-size   : 16px;
+  line-height : 39px;
+  color       : #b0b0b0;
+
+  background-color : lighten($bg-p, 5%);
+  border-bottom    : 1px solid darken($bg-p, 5%);
+  box-shadow       : inset 0 1px 0 rgba(255,255,255,.05);
+
+  &.open .menu-manage-shard-res {
+      color            : lighten($base-p,20%);
+      background-color : rgba(0, 0, 0, 0.3);
+  }
+
+  nav {
+    padding: 0;
+    button {
+        font-size      : 14px;
+        margin         : 0;
+        padding-top    : 10px;
+        padding-bottom : 10px;
+        width          : 50%;
+        text-align     : center;
+        float          : left;
+        cursor         : pointer;
+        color          : #b0b0b0;
+
+        &:hover { color: #fff; }
+
+        &.selected {
+          border-bottom : 2px solid $base-b;
+          color         : $base-b;
+        }
+    }
+  }
+
+  i {
+    width      : 40px;
+    height     : 40px;
+    float      : right;
+    cursor     : pointer;
+    text-align : center;
+
+    &:hover {
+      color            : lighten($base-p,20%);
+      background-color : rgba(0, 0, 0, 0.3);
+    }
+
+    &.disabled {
+      color  : #666;
+      cursor : default;
+
+      &:hover {
+        color: #666;
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+
+
+.refresh-resource-panel {
+  line-height: 37px;
+  -webkit-transform-origin : 20px 20px;
+     -moz-transform-origin : 20px 20px;
+          transform-origin : 20px 20px;
+
+  &.reloading:hover { background : none; }
+}
+
+
+

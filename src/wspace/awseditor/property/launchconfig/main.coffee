@@ -23,16 +23,17 @@ define [ "../base/main",
 
     LCModule = PropertyModule.extend {
 
-        handleTypes : constant.RESTYPE.LC
+        handleTypes : [ constant.RESTYPE.LC ]
 
         onUnloadSubPanel : ( id )->
             sglist_main.onUnloadSubPanel id
             null
 
-        initStack : () ->
+        initStack : ( uid ) ->
             @model = model
             @model.isApp = false
             @view  = view
+            @view.resModel = Design.instance().component uid
             null
 
         afterLoadStack : () ->

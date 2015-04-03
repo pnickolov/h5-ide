@@ -56,6 +56,11 @@ define [ '../base/main',
             @model.isAppEdit = false
             @model.isStack = false
             @view  = view
+
+            opsModel = Design.instance().opsModel()
+            if opsModel.isMesos()
+                @view.listenTo opsModel.getMesosData(), 'change', view.renderMesosData
+
             null
 
         afterLoadApp : () ->

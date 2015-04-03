@@ -369,11 +369,11 @@ define [
     # This method creates a new stack in IDE, and returns that model.
     # The stack is not automatically stored in server.
     # You need to call save() after that.
-    createStack : ( region, provider = Credential.PROVIDER.AWSGLOBAL )->
+    createStack : ( region, provider = Credential.PROVIDER.AWSGLOBAL, attr = {} )->
       @stacks().add new OpsModel({
         region   : region
         provider : provider
-      })
+      }, attr)
 
     createStackByJson : ( json, updateLayout = false )->
       @stacks().add( new OpsModel({
@@ -409,6 +409,7 @@ define [
           state      : OpsModel.State[ ops.state ] || OpsModel.State.UnRun
           stoppable  : not (ops.property and ops.property.stoppable is false)
           unlimited  : ops.before_charge
+          type       : ops.type
         }
       r
 

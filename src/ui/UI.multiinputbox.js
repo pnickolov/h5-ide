@@ -37,6 +37,7 @@ var multiinputbox = {
     if ( !tmpl ) {
       var $clone = $("<p>").append($wrapper.children().eq(0).clone());
       $clone.find("input").removeAttr("value");
+      $clone.find(".multi-ipt-row").removeClass('template');
       tmpl = $clone.html();
       $wrapper.data("row-tmpl", tmpl);
     }

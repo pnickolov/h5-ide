@@ -1,0 +1,459 @@
+/*
+    IDE Global Header 
+
+	- Global Header
+    - Header Popup
+      - Project List
+      - Assect List
+      - Notification List
+      - User Menu
+      - Global Style
+    - Tabbar
+*/
+
+/* Global Header */
+
+.project-header {
+  background    : #36343c;
+  height        : 49px;
+  border-bottom : 1px solid #202020;
+  position      : relative;
+  z-index       : 5;
+
+  > nav {
+    position   : absolute;
+    top        : 0;
+    right      : 0;
+    width      : 278px;
+    height     : 100%;
+    background : #36343c;
+    text-align : right;
+  }
+
+  .ph-nav-btn {
+    height         : 100%;
+    min-width      : 20px;
+    line-height    : 50px;
+    color          : #ddd;
+    padding        : 0 20px;
+    text-align     : center;
+    border-left    : 1px solid #202020;
+    box-sizing     : content-box;
+    cursor         : pointer;
+    display        : inline-block;
+    vertical-align : top;
+
+    &:hover {
+      color : $pink-p;
+      background : rgba(0,0,0,0.2);
+    }
+  }
+
+  .icon-notification {
+    position : relative;
+    &[data-count=""]:after { display : none; }
+    &:after {
+      content       : attr(data-count);
+      position      : absolute;
+      left          : 50%;
+      top           : 8px;
+      background    : $light-r;
+      display       : inline-block;
+      height        : 1em;
+      line-height   : 1em;
+      padding       : 2px 5px;
+      border-radius : 8px;
+      font-size     : 10px;
+      color         : #fff;
+    }
+  }
+
+  .icon-support { width : 70px; }
+
+  .icon-support:before { margin-right : 5px; }
+
+  .user-menu {
+    width : 60px;
+  }
+
+  .asset-list:before {
+    font-size   : 24px;
+    line-height : 50px;
+  }
+
+  .project-list, .asset-list {
+    border-left  : none;
+    border-right : 1px solid #202020;
+    padding      : 0 10px;
+    float        : left;
+  }
+
+  .project-list {
+    width      : 146px; // The size of .project-list affects the margin of the .ws-tabbar
+    text-align : left;
+    position   : relative;
+    margin     : 0;
+
+    &:before {
+      position : absolute;
+      right    : 5px;
+      top      : 17px;
+    }
+  }
+}
+
+/* Global Header Popup */  
+
+.hp-popup-overlay {
+  position : absolute;
+  top      : 0;
+  left     : 0;
+  right    : 0;
+  bottom   : 0;
+  z-index  : 100;
+}
+
+/* Notification List */
+
+.ph-notify-list {
+  left  : auto;
+  right : 30px;
+  width : 360px;
+  max-height : 87%;
+  overflow-y : auto;
+
+  li {
+    padding       : 10px 10px 10px 30px;
+    height        : auto;
+    font-size     : 13px;
+    color         : #eee;
+    border-bottom : 1px solid #111;
+    position      : relative;
+
+    &.success:before,
+    &.processing:before,
+    &.failure:before,
+    &.rollingback:before {
+      font-family : 'MCIcon';
+      position    : absolute;
+      left        : 10px;
+      top         : 14px;
+    }
+
+    &.success:before { content: "\F13A"; color: $base-g;}
+    &.failure:before { content: "\F139"; color: $light-r;}
+    &.processing:before, &.rollingback:before { content: "\F137"; color: #ccc; }
+  }
+
+  .ph-notify-timestamp {
+    font-size     : 12px;
+    color         : #999;
+    position      : relative;
+    margin-bottom : 0;
+
+    span {
+      position : absolute;
+      right    : 0;
+    }
+  }
+
+  .ph-notify-error {
+    background    : $bg-p;
+    border-radius : 3px;
+    font-size     : 12px;
+    color         : $light-r;
+    box-sizing    : border-box;
+    padding       : 6px 5px;
+  }
+
+
+  > ul + .ph-notify-list-empty { display : none; }
+  > ul:empty + .ph-notify-list-empty {
+    display    : block;
+    padding    : 20px;
+    text-align : center;
+    font-size  : 14px;
+    color      : $dark-grey;
+  }
+}
+
+/* Project List */
+
+.ph-project-list {
+  border-right : 1px solid #202020;
+  border-top   : 1px solid #202020;
+  left         : 0;
+
+  .selected {
+    position         : relative;
+    background-color : $dark-p-1;
+    color            : #fff;
+    box-shadow       : inset 4px 0 $light-p-2;
+  }
+
+  li > a + a {
+    position    : absolute;
+    right       : 10px;
+    top         : 10px;
+    width       : 20px;
+    height      : 20px;
+    text-align  : center;
+    line-height : 26px;
+    padding     : 0;
+    color       : $dark-grey;
+
+    &:hover { color: $base-grey; }
+  }
+
+}
+
+/* Asset List */
+
+.ph-asset-list {
+  width      : 210px;
+  left       : 0;
+  background : #232224;
+  bottom     : 0;
+  box-shadow : 0 10px 10px rgba(0,0,0,.8);
+
+  > nav {
+    background : #111;
+    height     : 36px;
+    font-size  : 14px;
+  }
+
+  .ph-asset-list-wrap {
+    position   : absolute;
+    top        : 60px;
+    bottom     : 0;
+    width      : 100%;
+    overflow-y : auto;
+    overflow-x : hidden;
+  }
+
+  .off-canvas-tab {
+    float : left;
+    height: 100%;
+    width : 50%;
+    color : #ccc;
+    cursor: pointer;
+
+    &:hover {
+      color     : #fff;
+    }
+
+    &.selected {
+      border-bottom: 2px solid $base-b;
+      color: $base-b;
+    }
+  }
+
+  .nav-empty {
+    margin        : 5px auto;
+    padding       : 15px;
+    width         : 160px;
+    color         : #AAA;
+    background    : #111;
+    border-radius : 5px;
+    font-size     : 12px;
+  }
+
+  ul > li:hover { background : none; }
+
+  .nav-group-title {
+    height      : 35px;
+    line-height : 35px;
+    color       : #999;
+    padding     : 0 17px;
+    font-size   : 14px;
+  }
+
+  .nav-item-list {
+    > a {
+      display     : block;
+      height      : 44px;
+      line-height : 44px;
+      display     : block;
+      padding     : 0 22px 0 48px;
+      color       : #ccc;
+      font-size   : 13px;
+      cursor      : pointer;
+      position    : relative;
+      width       : 140px;
+
+      background-position : 18px 11px;
+
+      &:hover {
+        background-color: rgba(0,0,0,0.5);
+      }
+
+      i[class^="icon-app-type-"], [class*=" icon-app-type-"] {
+        position : absolute;
+        top      : 14px;
+        right    : 5px;
+      }
+    }
+  }
+}
+
+/* User Menu */
+
+.hp-usermenu {
+  left  : auto;
+  right : 0;
+  border-left : 1px solid #202020;
+}
+
+/* General Style */
+
+.header-popup {
+  position   : absolute;
+  background : #36343C;
+  top        : 49px;
+  z-index    : 100;
+
+  box-shadow : 0 2px 5px rgba(0, 0, 0, 0.5);
+  color      : #ddd;
+  border     : 1px solid $bg-p;
+
+  font-size : 12px;
+
+  li > a.selected {
+    pointer-events:none;
+  }
+
+  li > a {
+    display : block;
+    padding : 0 30px 0 16px;
+    width   : 165px;
+    color   : $base-grey;
+
+    &:hover { color: $base-b; }
+  }
+
+  > li {
+    padding       : 0;
+    line-height   : 40px;
+    height        : 40px;
+    border-bottom : 1px solid #202020;
+    cursor        : pointer;
+    position      : relative;
+  }
+
+  li:hover {
+    background : rgba(0,0,0,.2);
+  }
+
+  li.padding {
+    padding : 0 16px;
+  }
+
+  .create-new-project {
+    color     : $base-b;
+    font-size : 14px;
+
+    &:hover {
+      color: $light-b;
+    }
+
+    &:before {
+      margin-right: 4px;
+    }
+  }
+}
+
+
+/* Tabbar */
+
+.ws-tabbar {
+  margin-left : 205px;
+
+  padding     : 10px 0 0 10px;
+  width       : 10000px;
+  white-space : nowrap;
+  position    : relative;
+  height      : 39px;
+
+  > ul {
+    float : left;
+  }
+
+  > ul > li {
+    float       : left;
+    height      : 39px;
+    line-height : 39px;
+
+    box-sizing: border-box;
+
+    color : #8b8b8b;
+    background-color : #404040;
+    background-position : 4px 9px;
+
+    padding    : 0 0 0 32px;
+
+    border        : 1px solid #010101;
+    border-bottom : none;
+    border-left   : none;
+    cursor        : pointer;
+
+    -webkit-transition: background-color .2s, box-shadow .2s;
+    -moz-transition:    background-color .2s, box-shadow .2s;
+    -ms-transition:     background-color .2s, box-shadow .2s;
+    -o-transition:      background-color .2s, box-shadow .2s;
+    transition:         background-color .2s, box-shadow .2s;
+
+    &.active,
+    &.active:hover {
+      background-color : #202020;
+      color            : #fff;
+      font-weight      : bold;
+      box-shadow       : inset 0 3px 0 #9F62D1;
+    }
+
+    &.active, &:hover {
+      .icon-close { visibility: inherit; }
+    }
+
+    &:hover {
+      background-color: #494949;
+    }
+
+    .icon-close {
+      position    : absolute;
+      right       : 3px;
+      top         : 12px;
+      width       : 16px;
+      height      : 16px;
+      line-height : 16px;
+      float       : right;
+      visibility  : hidden;
+      color       : #999;
+      cursor      : pointer;
+
+      &:hover {
+        color : #F09595;
+      }
+    }
+
+    &[data-placeholder] {
+      background : none;
+      border     : none;
+    }
+  }
+
+  .truncate {
+    margin-right : 12px;
+  }
+
+  .ws-fixed-tabs { border-left : 1px solid #010101; }
+
+  .ws-tabs > li {
+    position : relative;
+    cursor   : pointer !important;
+
+    .truncate {
+      display : block;
+      margin-right : 22px;
+    }
+  }
+}

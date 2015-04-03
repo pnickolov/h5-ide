@@ -33,15 +33,23 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
         render : () ->
             data = @model.toJSON()
             data.windows = @model.get( 'osType' ) is 'windows'
-            @$el.html template data
+            @$el.html template.main data
+
+            if @resModel.isMesosSlave()
+                @renderMesosData()
+
             @model.attributes.name
+
+        renderMesosData: () ->
+            slaveAttr = @resModel.getMesosAppAttributes( @model.get( 'instanceId' ) )
+            @$( '#mesos-data-area' ).html template.mesosData slaveAttr
 
         keyPairClick: ( event ) ->
             @proccessKpStuff()
 
         proccessKpStuff: ( notOld ) ->
             if not notOld
-                kp = @model.resModel.connectionTargets( "KeypairUsage" )[0]
+                kp = @resModel.connectionTargets( "KeypairUsage" )[0]
                 isOldDefaultKp = kp and kp.isDefault() and kp.get('appId') is "DefaultKP---#{Design.instance().get('id')}"
                 isOldOtherKp = kp and not kp.isDefault()
 

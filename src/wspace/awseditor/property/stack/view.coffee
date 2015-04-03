@@ -7,25 +7,29 @@ define [ '../base/view',
          './template/acl',
          './template/sub',
          'event',
+         'UI.modalplus',
          'i18n!/nls/lang.js'
-], ( PropertyView, template, acl_template, sub_template, ide_event, lang ) ->
+         'constant'
+], ( PropertyView, template, acl_template, sub_template, ide_event, modalPlus, lang, constant ) ->
 
     StackView = PropertyView.extend {
         events   :
-            'change #property-stack-name'          : 'stackNameChanged'
-            'change #property-stack-description'   : 'stackDescriptionChanged'
-            'change #property-app-name'            : 'changeAppName'
-            'click #stack-property-new-acl'        : 'createAcl'
-            'click #stack-property-acl-list .edit' : 'openAcl'
-            'click .acl-info-list .sg-list-delete-btn' : 'deleteAcl'
-            'click #property-app-resdiff'          : 'toggleResDiff'
+            'change #property-stack-name'               : 'stackNameChanged'
+            'change #property-stack-description'        : 'stackDescriptionChanged'
+            'change #property-app-name'                 : 'changeAppName'
+            'click #stack-property-new-acl'             : 'createAcl'
+            'click #stack-property-acl-list .edit'      : 'openAcl'
+            'click .acl-info-list .sg-list-delete-btn'  : 'deleteAcl'
+            'click #property-app-resdiff'               : 'toggleResDiff'
+            'click .marathon-switch'                    : 'toggleMarathon'
 
         render     : () ->
             if @model.isApp or @model.isAppEdit
                 title = "App - #{@model.get('name')}"
             else
                 title = "Stack - #{@model.get('name')}"
-            @$el.html( template( @model.attributes ) )
+
+            @$el.html template.main @model.toJSON()
 
             if title
                 @setTitle( title )
@@ -35,7 +39,19 @@ define [ '../base/view',
             if @model.isAppEdit
                 @$( '#property-app-name' ).parsley 'custom', @checkAppName
 
+            @renderMesosData()
+
             null
+
+        renderMesosData: ( dataModel = Design.instance().opsModel().getMesosData() ) ->
+            @$( '#mesos-data-area' ).html template.mesosData _.extend { isAppEdit: @model.isAppEdit }, dataModel.toJSON()
+
+        toggleMarathon: ( e ) ->
+            $switch = $ e.currentTarget
+            $switch.toggleClass( 'on' )
+
+            marathonOn = $switch.hasClass( 'on' )
+            @model.setMarathon marathonOn
 
         checkAppName: ( val )->
             design = Design.instance()

@@ -9,7 +9,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyM
         init : ( uid ) ->
             @component = component = Design.instance().component( uid )
 
-            if @isReadOnly
+            if @modeIsApp
                 @appInit uid
                 return
 
@@ -26,7 +26,8 @@ define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyM
                 members      : members
                 rules        : rules
                 color        : component.color
-                ruleEditable : true
+                ruleEditable : !@readonly()
+                readonly     : @readonly()
             }
 
             @sortSGRule()
@@ -134,6 +135,8 @@ define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyM
 
             @sortSGRule()
             null
+
+        readonly: -> @component.isMesos() and Design.instance().opsModel().isMesos()
 
     }
 

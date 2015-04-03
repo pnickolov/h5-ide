@@ -592,7 +592,7 @@ module.exports =
       zh: "我们即将放弃对 EC2 Classic 和 Default VPC 的支持。 我们已经禁止了在这些平台上的创建Stack，运行 App，和修改 App 操作。 您仍然可以管理已存在的 App。 点击此处阅读详细说明。"
 
     TIP_SG_LINE_STYLE:
-      en: "SecurityGroup Line Style"
+      en: "Security Group Line Style"
       zh: "安全组连线类型"
 
     TIP_LINESTYLE:

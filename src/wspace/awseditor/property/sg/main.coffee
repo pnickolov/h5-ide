@@ -10,21 +10,21 @@ define [ '../base/main', './model', './view' ], ( PropertyModule, model, view ) 
 
         initStack : () ->
             @model = model
-            @model.isReadOnly = false
+            @model.modeIsApp = false
             @model.isAppEdit  = false
             @view  = view
             null
 
         initApp : ()->
             @model = model
-            @model.isReadOnly = true
+            @model.modeIsApp = true
             @model.isAppEdit  = false
             @view  = view
             null
 
         initAppEdit : ()->
             @model = model
-            @model.isReadOnly = false
+            @model.modeIsApp = false
             @model.isAppEdit  = true
             @view = view
             null

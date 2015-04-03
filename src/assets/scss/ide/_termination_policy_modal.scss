@@ -1,0 +1,60 @@
+/*
+    ASG Termination Policy Modal
+*/
+
+.drag-sort-list {
+	width  : 300px;
+	margin : 0 auto;
+
+	li {
+		border      : 1px solid #1d1d1d;
+		color       : #555;
+		background  : #333;
+		line-height : 30px;
+		padding-left: 6px;
+		margin-top  : -1px;
+
+		@include transit($method: background, $dur: .2s);
+		
+		&:hover,
+		&.enabled:hover { background: $dark-p-1; }
+
+		&.enabled { background: none; color: #ccc; }
+	}
+
+	.list-name {
+		cursor  : pointer;
+		width   : 230px;
+		display : inline-block;
+	}
+
+	.checkbox {
+		margin-top    : -3px;
+		border-right  : 1px solid #1d1d1d;
+		padding-right : 8px;
+	}
+
+	.drag-handle {
+		width  : 16px;
+		height : 16px;
+		float  : right;
+		margin : 2px 6px 0 0;
+		display: none;
+		color  : #999;
+		cursor : move;
+
+		&:hover { color: $base-b; }
+	}
+
+
+	.enabled .drag-handle { display: block; }
+
+	.sortable-placeholder {
+		line-height   : 30px;
+		height        : 30px;
+		background    : $base-p;
+		border        : 1px dotted #ccc;
+		border-bottom : none;
+	}
+
+}

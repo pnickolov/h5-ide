@@ -23,7 +23,7 @@
     &:hover .dropdown-menu { display: block }
   }
 
-  .btn.icon-visualize, .hovermenu {
+  .btn.icon-visualize, .hovermenu,.icon-new-stack {
     float       : left;
     margin-left : 10px;
     position    : relative;
@@ -71,8 +71,14 @@
     > ul {
       float         : left;
       background    : #f8f8f8;
-      border-radius : 2px;
+      border-radius : 0 0 2px 2px;
       box-shadow    : 1px 5px 8px rgba(0, 0, 0, 0.5);
+
+      &[data-provider="docker::marathon"] {
+        border-radius : 2px 2px 0 0;
+        width         : 190px;
+        border-bottom : 1px solid #ddd;
+      }
     }
 
     li {
@@ -332,11 +338,61 @@
     color      : #999;
 }
 
+
+#region-switch-list {
+    position      : absolute;
+    background    : #FFF;
+    top           : 48px;
+    right         : 10px;
+    z-index       : 35;
+    border        : 1px solid #CCC;
+    box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
+    border-radius : 2px;
+    width         : 163px;
+    text-align    : left;
+
+    > li {
+      display   : block;
+      padding   : 0 10px;
+      font-size : 14px;
+      color     : #666;
+      cursor    : pointer;
+      position  : relative;
+
+      &:hover { background-color: lighten($base-p, 63%); color: #148BE6; }
+
+      span {
+        position      : absolute;
+        right         : 10px;
+        top           : 17px;
+        color         : #fff;
+        font-size     : 12px;
+        height        : 16px;
+        min-width     : 20px;
+        max-width     : 30px;
+        line-height   : 16px;
+        border-radius : 3px;
+        text-align    : center;
+        // border     : 1px solid $light-b;
+        background    : lighten($light-p, 20%);
+      }
+    }
+}
+
+.dash-region-header {
+      height         : 48px;
+      line-height    : 48px;
+      padding-bottom : 10px;
+      position       : relative;
+      border-bottom  : 1px solid $base-grey;
+}
+
 .dash-region-navigation {
-  text-align : right;
-  position   : absolute;
-  right      : 0;
-  top        : 4px;
+  text-align  : right;
+  float       : right;
+  // position : absolute;
+  // right    : 0;
+  // top      : 4px;
 
   button {
     height        : 40px;
@@ -347,69 +403,33 @@
     cursor        : pointer;
 
     &:hover {
-      background: rgba(0,0,0,.03);
+      color: $base-b;
     }
   }
 }
 
-#region-switch-list {
-    position      : absolute;
-    background    : #FFF;
-    top           : 44px;
-    right         : 0;
-    z-index       : 35;
-    border        : 1px solid #CCC;
-    box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.1);
-    border-radius : 2px;
-    width         : 163px;
-    text-align    : left;
-
-    > li {
-      display   : block;
-      padding   : 15px 10px;
-      font-size : 14px;
-      color     : #666;
-      cursor    : pointer;
-      position  : relative;
-
-      &:hover { background-color: #eee; color: #148BE6; }
-
-      span {
-        position      : absolute;
-        right         : 10px;
-        top           : 16px;
-        color         : lighten($light-p-2,40%);
-        font-size     : 12px;
-        height        : 16px;
-        min-width     : 20px;
-        max-width     : 30px;
-        line-height   : 16px;
-        border-radius : 3px;
-        text-align    : center;
-        // border     : 1px solid $light-b;
-        background    : #eee;
-      }
-    }
-}
-
 .region-resource-tab {
-    > span {
-      display     : inline-block;
-      width       : 160px;
-      height      : 48px;
-      line-height : 49px;
-      position    : relative;
-      text-align  : center;
-      background  : #F3F3F3;
-      font-size   : 21px;
-      color       : #666;
-      background  : image-url("ide/global-region-app-stack-m.png") 10px top no-repeat;
-      > small {
-        font-size : 14px;
-        color : #ccc;
+
+      display      : inline-block;
+      width        : 200px;
+
+      position     : relative;
+      text-align   : left;
+      background   : #F3F3F3;
+      font-size    : 21px;
+      // font-weight  : 200;
+      color        : #666;
+      padding-left : 50px;
+      background   : image-url("ide/global-region-app-stack-m.png") 10px top no-repeat;
+
+      > b {
+        font-weight : 400;
+        margin      : 0 10px 0 5px;
+        color       : #aaa;
       }
+
       &.stack { background-position : 10px -50px; }
-    }
+
 }
 
 
@@ -430,7 +450,7 @@ $dashSideWidth: 20vw;
 
 article.dashboard-content {
   width      : 100 - $dashSideWidth;
-  background : #f0f0f0;
+  background : #F4F4F7;
 
   @include v-scroll;
 }
@@ -441,6 +461,7 @@ aside.dashboard-sidebar {
   border-left : 1px #ddd solid;
   height      : 100%;
   position: relative;
+
   nav {
     overflow      : auto;
     background    : #eee;
@@ -462,23 +483,32 @@ aside.dashboard-sidebar {
       display     : inline-block;
       max-width   : 50%;
       width       : 50%;
+      color       : $dark-grey;
 
       &.selected {
         border-bottom: 2px solid $base-b;
         width: 100%;
       }
+
+      &:only-child {
+        max-width     : 100%;
+        text-align    : left;
+        border-bottom : none;
+        padding       : 0 20px;
+        cursor        : default;
+      }
     }
 
   .dashboard-log-wrap {
-    //   @include v-scroll;
+    @include v-scroll;
     //   height : 100%;
-    bottom: 58px;
-    top: 40px;
-    right: 0;
-    width: 100%;
-    left: 0;
-    overflow: auto;
-    position: absolute;
+      bottom      : 58px;
+      top         : 40px;
+      right       : 0;
+      width       : 100%;
+      left        : 0;
+      // overflow : auto;
+      position    : absolute;
     }
 
   .dashboard-log {
@@ -489,7 +519,7 @@ aside.dashboard-sidebar {
         cursor        : default;
 
         &:hover {
-            background-color: transparentize($light-b, .95);
+            background: desaturate(lighten($base-p, 65%), 12%);
         }
 
         .avatar {
@@ -538,219 +568,205 @@ aside.dashboard-sidebar {
 
 /* Stack App List */
 
-$dashWrapHeight: 30.5vw;
+$dashWrapHeight: 360px;
 
 $bp-1: 1024px;
 $bp-2: 1280px;
 
-#region-app-stack-wrap {
+.region-app-stack-wrap {
+  height: $dashWrapHeight;
   @include displayflex;
   @include vo-flex-wrap(wrap);
 
-  align-items: stretch;
-  -webkit-align-items: stretch;
+  align-items         : stretch;
+  -webkit-align-items : stretch;
 
-  // height     : $dashWrapHeight + 3;
-  height: auto;
+  margin-top : 10px;
 
-  width      : 80vw;
-  margin-top : 20px;
-
-  // @media (max-width: $bp-1) {
-  //   height: $dashWrapHeight*2 +10;
-  // }
-
-  // @media (min-width: $bp-2) {
-  //     height: $dashWrapHeight/3*2 + 4.3;
-  // }
+  &.marathon{
+    height: $dashWrapHeight - 60px;
+    .region-resource-list {
+      height: $dashWrapHeight - 130px;
+    }
+  }
 
   > div {
-    width     : 38.5vw;
-    // height : auto;
-    // height    : $dashWrapHeight;
-    margin    : 0 1vw;
-    position  : relative;
+    width         : 38vw;
+    margin        : 0 1vw;
+    position      : relative;
+    background    : #fff;
+    border-radius : 2px;
+    padding       : 6px;
+    box-sizing    : border-box;
+    box-shadow    : 0 2px 0 $base-grey;
 
-    &:first-of-type { margin-right: .5vw; }
-    &:last-of-type { margin-left: .5vw; }
-
-    // @media (min-width: $bp-2) {
-    //   height: $dashWrapHeight/3*2 +.2;
-    // }
-
-    @media (max-width: $bp-1) {
-      width: 78vw;
-      // height: $dashWrapHeight;
-
-      &:first-of-type { margin-right: 1vw; }
-      &:last-of-type { margin-left: 1vw; }
-    }
-
+    &:first-of-type { margin-right: 1vw; }
+    &:last-of-type { margin-left: .2vw; }
   }
 
-  #region-resource-stack-wrap,
-  #region-resource-app-wrap {
+  .region-resource-list {
     @include v-scroll;
+    height: $dashWrapHeight - 70px;
 
-    height            : auto;
-    max-height        : $dashWrapHeight;
-    // min-height        : 16.3vw;
-    // padding        : 10px;
-    box-sizing        : border-box;
-    background        : #fff;
-    -webkit-transform : translate3d(0,0,0);
+    li {
+      line-height : 48px;
+      height      : 48px;
+      // position    : relative;
 
-    border        : 1px solid #ccc;
-    border-radius : 3px;
+      padding       : 6px 10px;
+      border-radius : 4px;
 
-    @media (min-width: $bp-2) {
-      max-height: $dashWrapHeight/3*2 + .3;
-    }
-  }
-}
+      @include transit($method: background, $dur: .2s);
 
-#region-resource-app-wrap.region-resource-list .region-resource-info > span {
-  max-width: 55px;
+      &:hover { background: desaturate(lighten($base-p, 65%), 12%); }
 
-    @media (min-width: $bp-1) and (max-width: $bp-2) {
-      max-width: 90px;
-    }
+      a { display: block; width: 100%; height: 100%; position: relative;}
 
-    @media (min-width: 1660px) {
-       max-width: 90px;
-    }
-
-    @media (max-width: 960px) {
-      max-width: 112px;
-    }
-}
-
-.region-resource-list {
-
-    @include displayflex;
-    @include vo-flex-wrap(wrap);
-
-
-    align-items: flex-start;
-    -webkit-align-items: flex-start;
-
-    > li {
-      margin-left   : 1.6%;
-      margin-top    : 10px;
-      display       : block;
-      width         : 31%;
-      cursor        : pointer;
-      background    : #323e49;
-      border-radius : 5px;
-      position      : relative;
-
-      &:hover { background: darken(#323e49, 5%); }
-
-      &.disabled {
-        cursor  : default;
-        opacity : .8;
-        &:hover { background: #323e49; }
+      [class^="icon-app-type-"], [class*=" icon-app-type-"] {
+        position : absolute;
+        top      : 28px;
+        left     : 60px;
       }
 
-      &:last-child { margin-bottom : 15px; }
-
+      .icon-app-type-marathon:before {
+        content       : "marathon";
+        font-variant  : small-caps;
+        color         : $base-g;
+        font-size     : 12px;
+        border        : 1px solid $base-g;
+        padding       : 0 3px;
+        border-radius : 2px;
+        display       : inline-block;
+      }
 
     }
-
-    .loading-spinner {
-      width    : 12px;
-      height   : 12px;
-      position : static;
-      float    : left;
-      margin   : 5px 5px 0 0;
+    i.icon-app-type-mesos{
+      background: #2aaae2;
+      left: 105px;
+      &:before{
+        content: "mesos";
+      }
     }
-
-
+    i.icon-stack-type-mesos {
+      display: inline-block;
+      position: absolute;
+      top: 25px;
+      width: 40px;
+      height: 14px;
+      content: "mesos";
+      left: 60px;
+      border: 1px solid #2aaae2;
+      background: #2aaae2;
+      color: #fff;
+      font-size: 12px;
+      line-height: 13px;
+      font-variant: small-caps;
+      font-style: normal;
+      text-align: center;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      &:after{
+        content: "mesos";
+      }
+    }
     .thumbnail {
-      height          : 0;
-      padding-bottom  : 65%;
+      width         : 50px;
+      height        : 33px;
+      border        : 1px solid #ccc;
+      border-radius : 4px;
+      display       : inline-block;
+      box-sizing    : border-box;
+      overflow      : hidden;
+
+      // display       : none;
+
       background      : #55626f image-url("ide/thumbnail-stack-placehoder@2x.png") center center no-repeat;
       background-size : 100% auto;
-      overflow        : hidden;
-      border-radius   : 5px 5px 0 0;
+
+      position   : absolute;
+      left       : 0;
+      top        : 50%;
+      margin-top : -16px;
 
       &.app-thumbnail {
         background-image : image-url("ide/thumbnail-app-placehoder@2x.png");
         background-size  : 100% auto;
       }
 
-      img {
-        width  : 100%;
-        height : auto;
-
-        border        : 1px solid #55626e;
-        border-bottom : none;
-        border-radius : 5px 5px 0 0;
-        background    : #fff;
-
-        -webkit-box-sizing : border-box;
-           -moz-box-sizing : border-box;
-                box-sizing : border-box;
-      }
+      img { vertical-align: top; }
     }
 
+    .region-resource-info {
+      display       : inline-block;
+      font-size     : 16px;
+      // font-weight   : 300;
+      position      : relative;
+      padding-right : 80px;
+      margin-left   : 60px;
+      width         : 100%;
+      box-sizing    : border-box;
 
-    [class^="icon-app-type-"], [class*=" icon-app-type-"] {
-      position : absolute;
-      top      : 5px;
-      right    : 5px;
-    }
-
-    @media (max-width: 960px) {
-      > li {
-        width: 31%;
-      }
-    }
-
-    @media (min-width: $bp-1) and (max-width: $bp-2) {
-      > li {
-        width  : 48%;
-      }
-    }
-
-    @media (min-width: 960px) and (max-width: $bp-1) {
-      > li {
-        width : 22.5%;
+      span {
+        width : 20vw;
+        color : $light-p;
       }
 
-      .blank-widget {
-        padding  : 14.55% 0 27px 0;
+      i {
+        position : absolute;
+        color    : lighten($dark-grey, 20%);
+
+        &:first-of-type { right: 90px; }
+        &:last-of-type { right: 60px; }
+
+        &:hover { color: $base-b; }
+
+        &.icon-terminate, &.icon-forget-app, &.icon-delete { &:hover { color: #ec3c38; } }
       }
-    }
 
-    .blank-widget {
-      margin   : 15px 1.6%;
-      padding  : 11.7% 0 27px 0;
-      position : relative;
-      width    : 100%;
-
-      > div {
-        position   : absolute;
-        top        : 50%;
-        left       : 0;
-        width      : 100%;
-        text-align : center;
-
-        -webkit-transform : translate(0, -50%);
-           -moz-transform : translate(0, -50%);
-                transform : translate(0, -50%);
+      > .icon-pending:before {
+        font-size    : 10px;
+        line-height  : 10px;
+        height       : 10px;
+        color        : #999;
+        margin-right : 4px;
       }
+
+      > .running, > .stopped {
+        padding-left : 20px;
+        background   : image-url('ide/icon-app-running-16x16.png') left center no-repeat; }
+      > .stopped {
+        background-image : image-url('ide/icon-app-stopped-16x16.png');
+      }
+
+      .loading-spinner {
+        width    : 12px;
+        height   : 12px;
+        position : absolute;
+        top      : -40px;
+        left     : 0;
+
+        + span {
+          margin-left : 20px;
+          margin-top  : -7px;
+          display     : block;
+        }
+      }
+
+
     }
 
     .region-resource-progess-wrap {
       position      : absolute;
-      left          : 0;
+      left          : 60px;
+      top           : 30px;
       right         : 0;
       bottom        : 0;
-      border-radius : 0 0 5px 5px;
+      border-radius : 5px;
       overflow      : hidden;
-      height        : 27px;
+      height        : 10px;
       z-index       : 1;
+      background    : #E7E7E5;
       + .region-resource-info {
         position : relative;
         z-index  : 2;
@@ -776,70 +792,16 @@ $bp-2: 1280px;
               animation: progress-bar 2s linear infinite;
     }
 
-    .region-resource-info {
-      padding-left  : 12px;
-      position      : relative;
-      height        : 27px;
-      line-height   : 27px;
-      color         : #eee;
-      font-size     : 12px;
-      display       : block;
+  }
 
-      &:before { font-size : 12px; margin-right : 2px; }
-
-      > i {
-        float       : right;
-        border-left : 1px solid #2d2d2d;
-        width       : 30px;
-        height      : 27px;
-        line-height : 30px;
-
-        text-align  : center;
-        color: #ddd;
-
-        &:hover {
-          background : #2d2d2d;
-          color      : #fefefe;
-        }
-
-        &:first-child { border-radius : 0 0 5px 0; }
-      }
-
-      i.icon-terminate, i.icon-forget-app, i.icon-delete { &:hover { color: #ec3c38; } }
-
-      > span {
-        max-width : 67px;
-
-        @media (min-width: $bp-1) and (max-width: $bp-2) {
-          max-width: 110px;
-        }
-
-        @media (min-width: 1660px) {
-           max-width: 110px;
-        }
-
-        @media (max-width: 960px) {
-          max-width: 130px;
-        }
-      }
-
-      > .icon-pending:before {
-        font-size    : 10px;
-        line-height  : 10px;
-        height       : 10px;
-        color        : #999;
-        margin-right : 4px;
-      }
-
-      > .running, > .stopped {
-        padding-left : 14px;
-        background   : image-url('ide/icon-app-running-16x16.png') left center no-repeat; }
-      > .stopped {
-        background-image : image-url('ide/icon-app-stopped-16x16.png');
-      }
-    }
 }
 
+.dash-region-apps-wrap .region-resource-info span {
+  margin-top: -10px;
+}
+.dash-region-stacks-wrap .region-resource-info span.upper-compact{
+  margin-top: -10px;
+}
 
 /* Resource Table */
 
@@ -888,14 +850,26 @@ $bp-2: 1280px;
     .snss         .resource-count { background-position : left -55px * 8 - 2; }
 }
 
+.dash-resource-wrap {
+  background    : #fff;
+  border-radius : 2px;
+  // padding       : 5px;
+  box-sizing    : border-box;
+  box-shadow    : 0 2px 0 #eeeef0;
+  width         : 77.2vw;
+  margin-left   : 1vw;
+
+  .dash-region-header {
+    padding : 10px 5px;
+  }
+}
+
 #GlobalView {
 
   @include displayflex;
 
     .dashboard-loading {
       background : #fff;
-      box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
-      border     : 1px solid #ccc;
       position   : relative;
       width      : 100%;
       height     : 600px;
@@ -903,17 +877,14 @@ $bp-2: 1280px;
 
 
     > li {
-      width      : 16%;
-      margin     : 0.4%;
-      border     : 1px solid #ccc;
-      background : #f6f6f6;
-      box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
-      font-size  : 20px;
+      width        : 16.7%;
+      border-right : 1px solid $base-grey;
+      background   : #fcfcfe;
+      font-size    : 20px;
 
       box-sizing : border-box;
 
-      &:first-child { margin-left: 0; }
-      &:last-child { margin-right: 0; }
+      &:last-child { border-right: none; }
 
       @media (max-width: 1000px) {
         font-size : 18px;
@@ -932,7 +903,7 @@ $bp-2: 1280px;
       padding    : 1.5em 0;
 
       > h5 {
-        color       : #676767;
+        color       : $dark-grey;
         font-size   : 0.8em;
         line-height : 2em;
         margin-top  : 0.5em;
@@ -940,36 +911,30 @@ $bp-2: 1280px;
     }
 
     .global-resource-li {
-      border-top : 1px solid #ddd;
+      border-top : 1px solid lighten($base-grey, 2%);
       padding    : 8% 10%;
       cursor     : pointer;
 
-      &:hover { background : #fcfcfc; }
+      &:hover { background : #ececef; }
 
       .count {
-        float     : right;
-        font-size : 1.5em;
+        float       : right;
+        font-size   : 1.5em;
+        font-weight : 200;
       }
 
       > h4 {
         color     : #148BE6;
-        font-size : 0.9em;
+        font-size : .7em;
       }
 
       > h5 {
         color      : #b2b2b2;
-        font-size  : 0.6em;
+        font-size  : .6em;
         margin-top : 3px;
       }
     }
 }
-
-#RegionViewWrap {
-    box-shadow : 1px 1px 5px rgba(0, 0, 0, 0.1);
-    border     : 1px solid #bbb;
-    background : #edf1f3;
-}
-
 
 #RegionResourceNav {
     border-bottom : 1px solid #323E49;
@@ -1021,16 +986,13 @@ $bp-2: 1280px;
       .count-bubble {
         border-radius : 4px;
         padding       : 2px 6px;
-        background    : #F0F0F0;
-        color         : #148BE6;
+        background    : #5BB3FC;
+        color         : #fff;
         top           : 8px;
         left          : 50%;
         margin-left   : 15px;
         position      : absolute;
         font-size     : 14px;
-        box-shadow    : 1px 1px 5px rgba(0, 0, 0, 0.3),inset 0 1px 0px rgba(255,255,255,.8);
-        border        : 1px solid #ccc;
-        text-shadow   : 0 1px 0 #fff;
       }
     }
 }
@@ -1056,7 +1018,6 @@ $bp-2: 1280px;
 
     .scroll-wrap { height: 420px; }
 
-    .table { background : #edf1f3; }
     .table td { vertical-align: middle; }
     .table-head th {
       padding     : 10px 15px;
@@ -1072,13 +1033,13 @@ $bp-2: 1280px;
 
     td {
       padding: 15px;
-      background-color : #edf1f3 !important;
+      background-color : #fafafc !important;
       border: none;
       color: #676767;
     }
 
     tr:nth-child(odd) > td {
-      background-color : #e8ebed !important;
+      background-color : #fdfdff !important;
     }
 
     .dashboard-eip {
@@ -1098,7 +1059,7 @@ $bp-2: 1280px;
       background-color : #EDF9FF;
       border-radius    : 3px;
       padding          : 10px 0;
-      margin-bottom    : 10px;
+      margin-bottom    : 5px;
       line-height      : 1.5em;
       font-size        : 16px;
     }
@@ -1114,4 +1075,92 @@ $bp-2: 1280px;
     #GlobalView, #regionResourceNav, #RegionResourceData, #RegionViewWrap { display : none !important; }
     #DashboardDemo { display : block; }
     .dash-resource-wrap { margin-bottom: 0; }
+}
+
+
+.select-stack-type{
+  > li{
+    box-sizing: border-box;
+    width: 50%;
+    float: left;
+    text-align: center;
+    background: #bbbbd4;
+    color: #878cad;
+    height: 120px;
+    position: relative;
+    cursor: pointer;
+    -webkit-transition: all, 0.3s;
+    -moz-transition: all, 0.3s;
+    -ms-transition: all, 0.3s;
+    -o-transition: all, 0.3s;
+    transition: all, 0.3s;
+    &:hover{
+      background: #8F8FBB;
+      color: #DEDEDE;
+    }
+    img{
+      display: block;
+      width: 60px;
+      margin: 10px auto 10px auto;
+    }
+    &.active{
+      background: #373e76;
+      span.stack-title{
+        color: #DEDEDE;
+      }
+      &:after,&:before{
+        display: block;
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: #2b92ea;
+      }
+      &:before{
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-bottom-color: #2b92ea;
+        background: transparent;
+        position: absolute;
+        left: 50%;
+        margin-left: -10px;
+      }
+    }
+  }
+}
+
+.tabs-content{
+  > div{
+    padding: 25px;
+    box-sizing: border-box;
+    min-height: 120px;
+    .control-group{
+      margin: 10px 0;
+      padding: 0 20px;
+      > label{
+        width: 120px;
+        display: inline-block;
+      }
+      > .selectbox{
+        width: 250px;
+        .main{
+          font-size: 14px;
+          color: #ffffff;
+        }
+        .sub{
+          color: #cccccc;
+          font-size: 12px;
+        }
+      }
+      .marathon-mark-img{
+        width: 30px;
+        margin-right: 10px;
+      }
+      #mesos-scale{
+        width: 340px;
+      }
+    }
+  }
 }

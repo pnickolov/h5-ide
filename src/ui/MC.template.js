@@ -352,12 +352,26 @@ TEMPLATE.configurationDownload=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<section id=\"modal-run-mesos\">\n  <div class=\"modal-control-group clearfix\" data-bind=\"true\">\n      <label class=\"label\" for=\"app-name\">Deployment Name</label>\n      <input id=\"app-name\" class=\"input modal-input-value\" type=\"text\" value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" data-ignore=\"true\">\n      <div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n  </div>\n	<div class=\"modal-control-group clearfix\">\n	  <label class=\"label var-label\">Specify the variable value for this deployment:</label>\n	  <ul class=\"para-list\">\n	  	<li class=\"para-item\">\n		  <input class=\"input key\" value=\"$env\" disabled />\n		  <input class=\"input value\" />\n		</li>\n		<li class=\"para-item\">\n		  <input class=\"input key\" value=\"$ver\" disabled />\n		  <input class=\"input value\" />\n	    </li>\n	  </ul>\n	</div>\n  <div class=\"modal-control-group clearfix\" data-bind=\"true\">\n      <label class=\"label url-label\" for=\"app-url\">Specify the URL of your Mesos Cluster’s Master:</label>\n      <input id=\"app-url\" class=\"input\" type=\"text\">\n      <div class=\"runtime-error\" id=\"runtime-error-appurl\"></div>\n  </div>\n  <div class=\"mesos-tip\">You need to have a running Mesos Cluster first, either using VisualOps Mesos Sample Stack or your own deployment.</div>\n</section>";
+  return buffer;
+  };
+TEMPLATE.modalRunMesos=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <div class=\"payment-warning\">\n                "
+  buffer += "\n            <div class=\"warning-text\">\n                "
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_WARNNING_IN_MODAL", ((stack1 = (depth0 && depth0.paymentUpdate)),stack1 == null || stack1 === false ? stack1 : stack1.url), {hash:{},data:data}))
     + "\n            </div>\n        ";
   return buffer;
@@ -370,8 +384,8 @@ function program1(depth0,data) {
     + "\" data-ignore=\"true\">\n            <div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n        </div>\n        <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n            <label for=\"\">$DefaultKeyPair</label>\n            <div id=\"kp-runtime-placeholder\"></div>\n            <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n        </div>\n        <div class=\"modal-control-group app-usage-group clearfix\">\n            <label for=\"\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.APP_USAGE", {hash:{},data:data}))
     + "</label>\n            <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                    <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                    <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                    <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                </ul>\n            </div>\n        </div>\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>"
-    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.STACK_VALIDATION", {hash:{},data:data}))
-    + "</summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"nutshell\">:<label></label></div>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
+    + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
+    + "<span class=\"nutshell\">:<label></label></span></summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.VALIDATING_STACK", {hash:{},data:data}))
     + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">"
     + escapeExpression(helpers.i18n.call(depth0, "ESTIMATED_AWS_COST", {hash:{},data:data}))
@@ -442,14 +456,14 @@ function program2(depth0,data) {
     + escapeExpression(((stack1 = (depth0 && depth0.relationId)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-direction=\""
     + escapeExpression(((stack1 = (depth0 && depth0.direction)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"pos-r sg-create-rule-item\">\n";
+    + "\" class=\"pos-r\">\n";
   return buffer;
   }
 
 function program4(depth0,data) {
   
   
-  return "\n<li class=\"sg-create-rule-item modal-list-body\">\n";
+  return "\n<li>\n";
   }
 
 function program6(depth0,data) {
@@ -488,7 +502,7 @@ function program14(depth0,data) {
 function program16(depth0,data) {
   
   var buffer = "";
-  buffer += "<a href=\"#\" class=\"sg-rule-delete icon-remove tooltip\" data-tooltip='"
+  buffer += "<a href=\"#\" class=\"sg-rule-delete icon-remove tooltip rule-remove-icon\" data-tooltip='"
     + escapeExpression(helpers.i18n.call(depth0, "PROP.SG_TIP_REMOVE_RULE", {hash:{},data:data}))
     + "'></a>";
   return buffer;
@@ -535,11 +549,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "<ul>\n<header class=\"modal-list-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
+  buffer += "\n<header class=\"mega-list-wraper-header\"><span class=\"sg-color sg-color-rule-header\" style=\"background-color:"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerColor)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\"></span>"
     + escapeExpression(((stack1 = (depth0 && depth0.ownerName)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</header>\n";
+    + "</header>\n<ul class=\"mega-list-wraper\">\n";
   stack1 = ((stack1 = (depth0 && depth0.content)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</ul>";
@@ -937,22 +951,6 @@ TEMPLATE.loadingTransparent=Handlebars.template(__TEMPLATE__);
 __TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div>\n	<div class=\"info\">"
-    + escapeExpression(helpers.i18n.call(depth0, "LAST_SAVED", {hash:{},data:data}))
-    + " <span class=\"stack-save-time\">-</span></div>\n	<ul class=\"statusbar-btn-list\">\n		<li class=\"statusbar-btn btn-state\">\n			<span class=\"state-success\"><i class=\"status status-green icon-label\"></i><b>0</b></span>\n			<span class=\"state-failed\"><i class=\"status status-red icon-label\"></i><b>0</b></span>\n		</li>\n		<li class=\"statusbar-btn btn-ta-valid\">"
-    + escapeExpression(helpers.i18n.call(depth0, "LBL_VALIDATE", {hash:{},data:data}))
-    + "</li>\n	</ul>\n</div>";
-  return buffer;
-  };
-TEMPLATE.statusbar=Handlebars.template(__TEMPLATE__);
-
-
-__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
-  this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   var buffer = "", stack1, escapeExpression=this.escapeExpression, functionType="function", self=this;
 
 function program1(depth0,data) {
@@ -996,7 +994,7 @@ function program6(depth0,data) {
 function program8(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <section class=\"check-final-snapshot checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">"
+  buffer += "\n            <section class=\"mgt10 checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">"
     + escapeExpression(helpers.i18n.call(depth0, "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES", {hash:{},data:data}))
     + "</label>\n            </section>\n            ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
@@ -1054,7 +1052,7 @@ function program13(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
-    + "</summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"nutshell\">:<label></label></div>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
+    + "<span class=\"nutshell\">:<label></label></span></summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
     + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">"
     + escapeExpression(helpers.i18n.call(depth0, "ESTIMATED_AWS_COST", {hash:{},data:data}))
@@ -1084,7 +1082,7 @@ function program1(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "<span class=\"resource-tag\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>(<span class=\"db-stop-status\">"
+    + "</span>(<span class=\"warning-text\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>) ";
   return buffer;
@@ -1536,7 +1534,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     + escapeExpression(helpers.i18n.call(depth0, "INSTANCE_HOURS_CONSUMED_OVER_XXX", (depth0 && depth0.freePointsPerMonth), {hash:{},data:data}))
     + "</td>\n            <td class=\"align-right\"><strong>$0.01</strong>/"
     + escapeExpression(helpers.i18n.call(depth0, "PAYMENT_INSTANT_HOUR", {hash:{},data:data}))
-    + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" class=\"link-blue\" target=\"_blank\">"
+    + "</td>\n        </tr>\n        </tbody>\n    </table>\n    <a href=\"https://www.visualops.io/pricing\" target=\"_blank\">"
     + escapeExpression(helpers.i18n.call(depth0, "PRICING_IN_DETAIL", {hash:{},data:data}))
     + "</a>\n    <div class=\"payment-modal-wrap\">\n        <a href=\""
     + escapeExpression(((stack1 = (depth0 && depth0.url)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1649,6 +1647,86 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   return buffer;
   };
 TEMPLATE.updateCredentialConfirm=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "<li class=\"item\" data-value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\"></i>"
+    + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</li>";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  
+  return "\n<div class=\"modal-control-group clearfix\">\n	<label class=\"label var-label\">Specify the variable value for this deployment:</label>\n	<ul class=\"para-list\">\n		<li class=\"para-item\">\n		<input class=\"input key\" value=\"$env\" disabled />\n		<input class=\"input value\" />\n	</li>\n	<li class=\"para-item\">\n		<input class=\"input key\" value=\"$ver\" disabled />\n		<input class=\"input value\" />\n	</li>\n	</ul>\n</div>\n<div class=\"modal-control-group clearfix\" data-bind=\"true\">\n	<label class=\"label url-label\" for=\"app-url\">Specify the URL of your Mesos Cluster’s Master:</label>\n	<input id=\"app-url\" class=\"input\" type=\"text\">\n	<div class=\"runtime-error\" id=\"runtime-error-appurl\"></div>\n</div>\n";
+  }
+
+  buffer += "<div id=\"modal-run-mesos\">\n<section class=\"apply-marathon-stack\">\n	<div class=\"modal-control-group clearfix\">\n  <label class=\"label url-label\">Link to a Marathon stack designed with VisualOps:</label>\n  <div id=\"app-usage-selectbox\" class=\"selectbox\">\n    <div class=\"selection\">Select existing Marathon stack …</div>\n    <ul class=\"dropdown\" tabindex=\"-1\">";
+  stack1 = helpers.each.call(depth0, depth0, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "</ul>\n  </div>\n</div>\n";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isApp), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</section>\n</div>";
+  return buffer;
+  };
+TEMPLATE.applyMarathonStack=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n                        <li class=\"item";
+  stack1 = helpers.unless.call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" data-value=\""
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">"
+    + escapeExpression(((stack1 = (depth0 && depth0.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "("
+    + escapeExpression(((stack1 = (depth0 && depth0.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ")</li>\n                    ";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  
+  return " selected";
+  }
+
+  buffer += "<ul class=\"tabs select-stack-type clearfix\">\n    <li class=\"tab-aws-stack active\">\n        <img src=\"/assets/images/ide/aws_stack.png\" alt=\"\"/>\n        <span class=\"stack-title\">AWS Stack</span>\n    </li>\n    <li class=\"tab-mesos-stack\">\n        <img src=\"/assets/images/ide/mesos_stack.png\" alt=\"\"/>\n        <span class=\"stack-title\">Mesos on AWS VPC</span>\n    </li>\n</ul>\n<div class=\"tabs-content\">\n    <div id=\"tab-aws-stack\">\n        <div class=\"control-group clearfix\">\n            <label>Region</label>\n            <div id=\"create-aws-stack-region\" class=\"selectbox\">\n                <div class=\"selection\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "("
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ")</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.awsRegions), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div id=\"tab-mesos-stack\" class=\"hide\">\n        <div class=\"control-group clearfix\">\n            <label for=\"mesos-scale\">Scale</label>\n            <div id=\"mesos-scale\" class=\"selectbox\">\n                <div class=\"selection\">\n                    <div class=\"main truncate\">Small</div>\n                    <div class=\"sub\">5 - 50 instances (1 cpu, 2GB mem)</div>\n                </div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    <li class=\"item selected\" data-value=\"small\" data-tooltip-type=\"html\">\n                        <div class=\"main truncate\">Small</div>\n                        <div class=\"sub\">5 - 50 instances (1 cpu, 2GB mem)</div>\n                    </li>\n                    <li class=\"item\" data-value=\"medium\">\n                        <div class=\"main truncate\">Medium</div>\n                        <div class=\"sub\">50 - 200 instances (2 cpu, 3.75GB mem)</div>\n                    </li>\n                    <li class=\"item\" data-value=\"large\">\n                        <div class=\"main truncate\">Large</div>\n                        <div class=\"sub\">200 - 1000 instances (8 cpu, 15GB mem)</div>\n                    </li>\n                </ul>\n            </div>\n        </div>\n        <div class=\"control-group clearfix\">\n            <label>Region</label>\n            <div id=\"create-mesos-stack-region\" class=\"selectbox\">\n                <div class=\"selection\">"
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.alias)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "("
+    + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.firstRegion)),stack1 == null || stack1 === false ? stack1 : stack1.id)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ")</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    ";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.awsRegions), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                </ul>\n            </div>\n        </div>\n        <div class=\"control-group clearfix\">\n            <label for=\"\">Framework</label>\n            <span>\n                <img class=\"marathon-mark-img\" src=\"/assets/images/ide/marathon.png\" alt=\"\"/> <span>Marathon</span>\n                <label class=\"switch toolbar-visual-ops-switch create-mesos-use-marathon on narrow\">\n                    <span class=\"switch-handle\"></span>\n                </label>\n            </span>\n        </div>\n    </div>\n</div>";
+  return buffer;
+  };
+TEMPLATE.createStack=Handlebars.template(__TEMPLATE__);
 
 
 return TEMPLATE; });

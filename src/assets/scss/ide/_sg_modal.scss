@@ -1,0 +1,430 @@
+/*
+    SG/ACL-Related Modal
+
+    - Create SG Rule by Connecting Ports Modal
+    - Normal Add SG Rule Modal
+    - Delete SG Line from Canvas Modal
+    - ACL Rule Modal
+    
+*/
+
+/* Create SG Rule by Connecting Ports Modal */
+
+#sg-rule-create-modal {
+	width  : 500px;
+	background: rgb(44,44,44);
+}
+
+#sg-rule-create-modal .selectbox .selection {
+	font-size: 14px;
+}
+
+.sg-rule-create-h, #sg-rule-create-modal {
+	background         : rgb(32,32,32);
+	border-radius      : 3px;
+	position           : relative;
+	left               : 0;
+	-webkit-transition : left .3s ease-in-out;
+	   -moz-transition: left .3s ease-in-out;
+	    -ms-transition: left .3s ease-in-out;
+	     -o-transition: left .3s ease-in-out;
+	        transition: left .3s ease-in-out;
+}
+
+.sg-node-wrap {
+	background   : #222;
+	padding      : 15px 10px;
+	border-radius: 4px;
+}
+
+.sg-node-wrap > label {
+	float       : left;
+	width       : 50px;
+	height      : 32px;
+	line-height : 32px;
+}
+
+#sg-create-sg-out, #sg-create-sg-in {
+	float  : left;
+	width  : 200px;
+	height : 40px;
+}
+
+#sg-create-direction {
+	float       : left;
+	margin-left : 20px;
+	width       : 180px;
+}
+
+#sg-create-sg-in {
+	margin-left : 50px;
+}
+
+#sg-create-sg-in .selection {
+	width: 180px;
+	padding-right: 13px;
+}
+
+.sg-create-selection {
+	height     : 30px;
+	padding    : 5px;
+	border     : 1px solid rgba(0,0,0,0.2);
+	box-sizing : border-box;
+}
+
+.sg-create-sg-color {
+	width         : 14px;
+	height        : 14px;
+	float         : left;
+	margin-top    : 2px;
+	margin-right  : 4px;
+	border-radius : 2px;
+}
+
+.sg-create-proto-label {
+	float : left;
+	width : 150px;
+	margin-right : 20px;
+}
+
+.sg-proto-option-wrap {
+	height : 150px;
+}
+
+.sg-proto-option {
+	width : 150px;
+	float : left;
+	margin-right : 20px;
+}
+
+.sg-create-proto-inputs {
+	margin-left : 170px;
+}
+
+.sg-create-proto-inputs .sg-proto-input {
+	display: none;
+}
+
+.sg-create-proto-inputs .sg-proto-input .input {
+	width: 302px;
+}
+
+#sg-proto-ipt-all {
+	line-height : 31px;
+}
+
+.sg-proto-input .selectbox {
+	margin-bottom : 10px;
+	display    : block;
+}
+
+.sg-proto-input .sg-proto-input-sub {
+	display : none;
+}
+
+.sg-rule-create-add-wrap {
+	height : 360px;
+}
+.sg-rule-create-done-wrap {
+	display  : none;
+	height   : 360px;
+	position : relative;
+}
+
+.sg-rule-create-done-wrap .btn-modal-close {
+	position : absolute;
+	right    : 10px;
+	bottom   : 10px;
+}
+
+.done .sg-rule-create-done-wrap {
+	display : block;
+}
+
+.done .sg-rule-create-add-wrap {
+	display : none;
+}
+
+#sg-rule-create-outward {
+	display : none;
+}
+
+.outward #sg-rule-create-inward {
+	display : none;
+}
+.outward #sg-rule-create-outward {
+	display : block;
+}
+
+.sg-rule-create-sidebar {
+	height     : 100%;
+	position   : absolute;
+	width      : 202px;
+	top        : 0;
+	z-index    : -1;
+	padding    : 20px 0;
+
+    box-sizing: border-box;
+}
+
+.sidebar-wrap {
+	height        : 100%;
+	background    : #4e4e4e;
+	border        : 1px solid #202020;
+	border-radius : 5px 0 0 5px;
+}
+
+.sg-create-sb-h {
+	background    : #333;
+	padding       : 5px;
+	box-shadow    : inset 0 1px 0 rgba(255,255,255,.05);
+	border-radius : 5px 0 0 0;
+}
+
+.sg-create-sb-h .num-wrap {
+	margin-left: 4px;
+	color: #777;
+	font-size: 12px;
+}
+
+.sg-create-group {
+	display     : block;
+	line-height : 16px;
+	height      : 16px;
+	padding     : 2px;
+	background    : #272727;
+	font-size     : 12px;
+	border-top    : 1px solid #202020;
+	border-bottom : 1px solid #202020;
+	box-shadow    : inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.sg-create-rule-list .sg-create-rule-item {
+	border-bottom : 1px solid #333;
+	padding       : 5px 10px;
+	position      : relative;
+	background    : #414141;
+	font-size     : 12px;
+}
+
+.sg-create-rule-list .sg-create-group {
+	width       : 196px;
+}
+
+.sg-create-rule-list .sg-color {
+	margin: 3px 5px;
+}
+
+.sg-create-rule-list .rule-list-row .sg-color {
+	margin: 3px 3px 0 0;
+}
+
+.sg-create-rule-list .rule-reference {
+	width: 100px;
+}
+
+.sg-create-rule-item .sg-rule-delete {
+	position    : absolute;
+	right       : 10px;
+	top         : 50%;
+	margin-top  : -8px;
+	line-height : 16px;
+	color       : #999;
+	display     : none;
+}
+
+.sg-create-rule-item:hover .sg-rule-delete {
+	display: block;
+}
+
+.sg-create-rule-item .sg-rule-delete:hover {
+	color: $light-r;
+}
+
+.btn.sg-rule-create-readd {
+	width: 200px;
+}
+
+#sg-rule-self-ref {
+	border-radius: 4px;
+	background-color: #283138;
+	padding: 10px;
+}
+
+#sg-rule-self-ref .icon-info {
+	color: #148BE6;
+}
+
+/* Normal Add SG Rule Modal */
+
+.radio-group-horizontal {
+	display: inline-block;
+	margin-top: 10px;
+	width: 115px;
+	margin-right: 8px;
+}
+
+.radio-group-horizontal:last-child {
+	margin-right: 0;
+}
+
+#sg-add-model-source-select .selection {
+	width: 69px;
+}
+
+#modal-sg-rule .modal-body{
+	padding: 10px;
+	width: 450px;
+}
+#modal-sg-rule .title {
+	width: 100px;
+	display: inline-block;
+	color: #999;
+	line-height: 30px;
+}
+#modal-sg-rule .context {
+	display: inline-block;
+	color: #999;
+}
+#modal-sg-rule .radio span {
+	margin-left: 25px;
+}
+#modal-sg-rule label.left {
+	width: 80px;
+	line-height: 35px;
+}
+
+#modal-sg-rule .selectbox .sg-color {
+	box-shadow : none;
+	margin-top : 5px;
+}
+
+#modal-sg-rule .selection .sg-color {
+	margin-top: 3px;
+}
+
+.modal-body .modal-protocol-select {
+	display: inline-block;
+	float  : left;
+}
+
+.modal-body .modal-protocol-select .selection {
+	width: 68px;
+}
+
+#modal-sg-rule #modal-protocol-select {
+	width: 100%;
+	margin: 0;
+}
+#modal-sg-rule #sg-protocol-select-result input {
+	width: 230px;
+	display: inline-block;
+}
+#modal-sg-rule .sg-protocol-option-input {
+	display: none;
+	width: 100%;
+	margin: 0;
+}
+#modal-sg-rule .sg-protocol-option-input.show {
+	display: block;
+}
+#modal-sg-rule .protocol-icmp-sub-select {
+	display: none;
+	width: 244px;
+	margin: 0;
+}
+
+#modal-sg-rule .protocol-icmp-sub-select .selection {
+	width: 232px;
+}
+
+#sg-protocol-all {
+	line-height: 32px;
+}
+
+.protocol-icmp-sub-select  .selection {
+	width: 228px;
+}
+
+#protocol-icmp-main-select {
+	width: 244px;
+	margin: 0 0 10px 0;
+}
+
+#sg-protocol-select-result {
+	display    : inline-block;
+	width      : 240px;
+	margin-left: 10px;
+}
+#modal-sg-rule .protocol-icmp-sub-select.shown {
+	display: block;
+}
+
+#securitygroup-modal-description {
+	display: inline-block;
+	width: 229px;
+	margin-left: 7px;
+}
+
+/* Delete SG Rule Modal */
+
+.delete-sgrule-dialog {
+	max-height: 300px;
+}
+
+/* ACL Rule Modal */
+
+#modal-acl-rule {
+	.sg-protocol-option-input {
+		display: none;
+
+		&.show {
+			display: block;
+		}
+	}
+
+	.simple-protocol-select {
+		list-style  : none;
+		margin-left : 95px;
+		margin-top  : 20px;
+		border      : 1px dashed;
+		padding     : 5px;
+		width       : 325px;
+
+		li {
+			cursor     : pointer;
+			color      : $base-b;
+			font-size  : 12px;
+			padding    : 5px 0;
+			display    : inline-block;
+			text-align : center;
+			width      : 79px;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+#acl-add-model-source-select .selection {
+	width: 68px;
+	margin-right: 7px;
+}
+
+#acl-add-model-source-select .selection {
+	margin: 0;
+}
+
+#modal-acl-source-input {
+	margin-left: 7px;
+	width: 230px !important;
+}
+
+#modal-acl-rule .sg-protocol-option-input .input {
+	width: 230px;
+}
+
+#modal-acl-rule .protocol-icmp-sub-select .selection {
+	width: 232px;
+}

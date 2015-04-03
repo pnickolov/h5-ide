@@ -293,6 +293,8 @@ define [
     credential   : ()-> @__opsModel.credential()
     credentialId : ()-> @__opsModel.credentialId()
 
+    opsModel : ()-> @__opsModel
+
     modeIsStack   : ()->  @__mode == Design.MODE.Stack
     modeIsApp     : ()->  @__mode == Design.MODE.App
     modeIsAppView : ()->  false
@@ -428,12 +430,14 @@ define [
         time_update   : @__opsModel.get("updateTime")
         usage         : @__opsModel.get("usage")
         version       : OpsModel.LatestVersion
+        host          : attr.host
         property      : attr.property || {}
         description   : attr.description
         resource_diff : attr.resource_diff
         agent         : attr.agent
         name          : attr.name
         stack_id      : attr.stack_id
+        type          : attr.type
         component     : component_data
         layout        : layout_data
       }
@@ -514,12 +518,9 @@ define [
     instance : ()-> __instance
     modelClassForType : ( type )-> __modelClassMap[ type ]
     modelClassForPorts : ( port1, port2 )->
-      if port1 < port2
-        type = port1 + ">" + port2
-      else
-        type = port2 + ">" + port1
-
-      __modelClassMap[ type ]
+      l = __modelClassMap[ port1 + ">" + port2 ]
+      if l then return l
+      __modelClassMap[ port2 + ">" + port1 ]
 
     lineModelClasses : ()->
       if @__lineModelClasses then return @__lineModelClasses

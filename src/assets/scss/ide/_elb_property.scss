@@ -1,0 +1,135 @@
+/*
+    ELB Property - IDE Property Panel
+	
+	- ELB Stack Property
+	- ELB App Property
+*/
+
+/* ELB Stack Property */
+
+#elb-property-listener-list .elb-property-listener {
+	padding  : 0;
+	position : relative;
+}
+
+.sslcert-placeholder .selectbox { width: 240px; }
+
+.elb-property-listener-item-remove {
+	position : absolute;
+	right    : 0;
+
+	width       : 32px;
+	height      : 100%;
+	color       : #555;
+
+	background-color : rgba(0,0,0,.05);
+	border-left      : 1px #313131 solid;
+
+	cursor : pointer;
+
+	&:before { 
+		display    : inline-block;
+		width      : 100%;
+		height     : 16px;
+		top        : 50%;
+		margin-top : -8px;
+		position   : absolute;
+		text-align : center;
+	}
+
+
+	&:hover { 
+		background : rgba(0,0,0,.1);
+		color      : $base-r;
+	}
+}
+
+.elb-property-listener .listener-item {
+	.selectbox {
+		width: 130px !important;
+
+		.item { width: 142px; }
+	}
+
+	input { width: 80px !important; }
+
+	> div { float: left; }
+
+	> div:first-child { width: 150px; }
+	> div:last-child {
+		width       : 50px;
+		margin-left : 10px;
+	}
+}
+
+#property-elb-health-path { 
+	padding-left: 18px; 
+
+	&[disabled] {
+		color: transparent;
+
+		+ .elb-pingpath-prefix { display: none; }
+	}
+}
+
+.elb-pingpath-prefix {
+	position    : absolute;
+	height      : 31px;
+	line-height : 31px;
+	padding     : 0 0 0 7px;
+	top         : 0;
+	left        : 0;
+}
+
+.elb-info-icon {
+	margin-top: 3px;
+	float: right;
+}
+
+.elb-property-instance-list {
+	margin-top: 5px;
+
+	li  {
+		@include displayflex;
+		font-size: 12px;
+		padding: 5px 0;
+
+		.instance-info { width: 60%; margin-right: 5%; }
+		.instance-state { width: 35%; }
+
+		.instance-name { color: #eee; word-break: break-all; }
+		.instance-id { color: #888; }
+	}
+
+	.elb-info-icon { margin-top: 0; }
+}
+
+.elb-connection-draining-input-group {
+  margin-top  : 10px;
+  margin-left : 25px;
+}
+
+#elb-connection-draining-input {
+	width  : 60px;
+	margin : 0 5px;
+}
+
+/* ELB App Property */
+
+.elb-property-listener-app li {
+	@include displayflex;
+	@include vo-flex-wrap($values: wrap);
+	
+	> div:nth-child(2n) { width: 30%; }
+	> div:nth-child(2n+1) { width: 65%; margin-right: 5%; }
+
+	label { font-size: 12px; color: #999; }
+
+	> div.elb-property-listener-app-cert { width: 100%; }
+	
+	.app-panel-li-col2-full label {
+		font-size : 12px;
+		color     : #999;
+	}
+}
+

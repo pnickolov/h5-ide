@@ -1,4 +1,10 @@
-@import "compass";
+/*
+    IDE Core Editor
+
+    - Layout
+    - Side Panel Show and Hide
+    - App View - Failed to Pay Limitation
+*/
 
 $LeftPanelWidth       : 246px;
 $RightPanelWidth      : 288px;
@@ -6,36 +12,26 @@ $RightStatePanelWidth : 654px;
 $TopPanelHeight       : 40px;
 $BottomPanelHeight    : 24px;
 
-@mixin slide($direction :  left) {
-  -webkit-transition: $direction .1s ease-out;
-  -moz-transition: $direction .1s ease-out;
-  -ms-transition: $direction .1s ease-out;
-  -o-transition: $direction .1s ease-out;
-  transition: $direction .1s ease-out;
-}
+/* Side Panel Layout */
 
-@mixin width {
-  -webkit-transition: width .1s ease-out;
-  -moz-transition: width .1s ease-out;
-  -ms-transition: width .1s ease-out;
-  -o-transition: width .1s ease-out;
-  transition: width .1s ease-out;
-}
-
-// Sidebar and Layout
 .OEPanelLeft, .OEPanelRight {
   position   : absolute;
   z-index    : 3;
   background : $bg-p;
   top        : 0;
   bottom     : 0;
+
+  &::selection {
+    background: transparent;
+  }
+
 }
 
 .OEPanelLeft {
   width : $LeftPanelWidth;
   left  : 0;
 
-  @include slide(left);
+  @include transit($method:left, $dur:.1s);
 
   &.force-hidden {
     display : none;
@@ -47,10 +43,6 @@ $BottomPanelHeight    : 24px;
       content : "\F124";
     }
   }
-
-  & ::selection {
-    background : transparent;
-  }
 }
 
 .OEPanelRight {
@@ -58,7 +50,7 @@ $BottomPanelHeight    : 24px;
   width   : $RightPanelWidth;
   z-index : 8;
 
-  @include slide(right);
+  @include transit($method:right, $dur:.1s);
 
   &.hidden {
     right: -$RightPanelWidth;
@@ -74,12 +66,136 @@ $BottomPanelHeight    : 24px;
   &.no-transition {
     @include transition( none );
   }
+}
 
-  &::selection {
-    background: transparent;
+.sidebar-title {
+  padding : 0 10px;
+  height  : 39px;
+
+  font-size   : 16px;
+  line-height : 40px;
+  color       : #b0b0b0;
+
+  background-color : lighten($bg-p, 5%);
+  border-bottom    : 1px solid darken($bg-p, 5%);
+  box-shadow       : inset 0 1px 0 rgba(255,255,255,.05);
+
+  button {
+      margin         : 0;
+      padding-top    : 10px;
+      padding-bottom : 9px;
+      width          : 50%;
+      text-align     : center;
+      float          : left;
+      cursor         : pointer;
+      color          : #b0b0b0;
+      line-height    : 1;
+
+      &:hover { color: #fff; }
+
+      &.selected {
+        border-bottom : 2px solid $base-b;
+        color         : $base-b;
+      }
+  }
+  .sidebar-nav-container { display: none; }
+}
+
+@mixin activedPanelTab {
+    border-bottom: 2px solid $base-b;
+    color: $base-b;
+}
+
+.openstack .OEPanelTop .sidebar-title {
+
+  width        : 280px;
+  padding-left : 0;
+  float        : right;
+  border-bottom: none;
+  box-sizing   : border-box;
+  box-shadow   : none;
+
+  &.resource .resource { @include activedPanelTab; }
+  &.property .property { @include activedPanelTab; }
+  &.state    .state    { @include activedPanelTab; }
+  &.config   .config   { @include activedPanelTab; }
+
+  a {
+    width      : 25%;
+    float      : left;
+    cursor     : pointer;
+    height     : 100%;
+    box-sizing : border-box;
+
+    color      : $light-p-1;
+    text-align : center;
+
+    &::selection { background: transparent; }
+
+    &.state span {
+        font-size      : 12px;
+        display        : inline-block;
+        color          : #000;
+        position       : absolute;
+        max-width      : 22px;
+        min-width      : 12px;
+        height         : 14px;
+        line-height    : 14px;
+        overflow       : hidden;
+        text-overflow  : ellipsis;
+        background     : rgba(255,255,255,.2);
+        top            : 11px;
+        right          : 6px;
+        padding        : 2px;
+        border-radius  : 4px;
+        letter-spacing : -1px;
+        text-align     : center;
+    }
+
+  }
+
+  a:hover {
+    color: #fff;
+  }
+
+  &[data-mode="app"] a {
+    width: 33%;
+    &.resource { display: none; }
   }
 
 }
+
+.sidebar-hider {
+  position   : absolute;
+  top        : 50%;
+  margin-top : -27px;
+  padding    : 18px 3px;
+  box-shadow : 0 0 6px rgba(0, 0, 0, 0.3), inset 1px 1px 0 rgba(255,255,255,.1);
+  border     : 1px solid #676767;
+  color      : #fff;
+  background : #666;
+  cursor     : pointer;
+
+  &:before { font-size : 14px; }
+
+  &:hover {
+    background : #777;
+  }
+}
+
+.HideOEPanelLeft {
+  left          : 100%;
+  border-left   : none;
+  border-radius : 0 3px 3px 0;
+}
+
+.HideOEPanelRight {
+  right         : 100%;
+  border-right  : none;
+  border-radius : 3px 0 0 3px;
+}
+
+/* Middle Panel Layout */
 
 .OEMiddleWrap {
   position : absolute;
@@ -89,11 +205,11 @@ $BottomPanelHeight    : 24px;
   bottom   : 0;
   right    : 0;
 
-  -webkit-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
-  -moz-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
-  -ms-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
-  -o-transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
-  transition: width .1s ease-out, left .1s ease-out, right .1s ease-out;
+  -webkit-transition : width .1s ease-in-out, left .1s ease-in-out, right .1s ease-in-out;
+  -moz-transition    : width .1s ease-in-out, left .1s ease-in-out, right .1s ease-in-out;
+  -ms-transition     : width .1s ease-in-out, left .1s ease-in-out, right .1s ease-in-out;
+  -o-transition      : width .1s ease-in-out, left .1s ease-in-out, right .1s ease-in-out;
+  transition         : width .1s ease-in-out, left .1s ease-in-out, right .1s ease-in-out;
 }
 
 .OEPanelTop {
@@ -157,93 +273,8 @@ $BottomPanelHeight    : 24px;
   transition-property: right;
 }
 
-.sidebar-title {
-  padding-left : 10px;
-  height  : 39px;
 
-  font-size   : 16px;
-  line-height : 39px;
-  color       : #b0b0b0;
-
-  background-color : lighten($bg-p, 5%);
-  border-bottom    : 1px solid darken($bg-p, 5%);
-  box-shadow       : inset 0 1px 0 rgba(255,255,255,.05);
-
-  &.open .menu-manage-shard-res {
-      color            : lighten($base-p,20%);
-      background-color : rgba(0, 0, 0, 0.3);
-  }
-
-  i {
-    width      : 40px;
-    height     : 40px;
-    float      : right;
-    cursor     : pointer;
-    text-align : center;
-
-    &:hover {
-      color            : lighten($base-p,20%);
-      background-color : rgba(0, 0, 0, 0.3);
-    }
-
-    &.disabled {
-      color  : #666;
-      cursor : default;
-
-      &:hover {
-        color: #666;
-        background-color: transparent;
-      }
-    }
-  }
-}
-
-.refresh-resource-panel {
-  line-height: 37px;
-  -webkit-transform-origin : 20px 20px;
-     -moz-transform-origin : 20px 20px;
-          transform-origin : 20px 20px;
-
-  &.reloading:hover { background : none; }
-}
-
-.sidebar-hider {
-  position   : absolute;
-  top        : 50%;
-  margin-top : -27px;
-  padding    : 18px 3px;
-  box-shadow : 0 0 6px rgba(0, 0, 0, 0.3), inset 1px 1px 0 rgba(255,255,255,.1);
-  border     : 1px solid #676767;
-  color      : #fff;
-  background : #666;
-  cursor     : pointer;
-
-  &:before { font-size : 14px; }
-
-  &:hover {
-    background : #777;
-  }
-}
-
-.HideOEPanelLeft {
-  left          : 100%;
-  border-left   : none;
-  border-radius : 0 3px 3px 0;
-}
-
-.HideOEPanelRight {
-  right         : 100%;
-  border-right  : none;
-  border-radius : 3px 0 0 3px;
-}
-
-
-#OpsEditor {
-  .disabled-event-layout {
-    z-index : 6;
-  }
-}
-
+/* App View Failed to Pay */
 .ops-apppm-wrapper {
   position      : absolute;
   width         : 300px;
@@ -265,3 +296,8 @@ $BottomPanelHeight    : 24px;
     width: 260px;
   }
 }
+
+@import "resource_panel";
+@import "property_panel";
+@import "canvas";
+@import "tool_status_bar";

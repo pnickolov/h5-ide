@@ -1,39 +1,38 @@
 {{#unless is_stack_sg}}
-<ul class="tab sg-info-list-tab">
+<ul class="tab">
 	<li data-tab-target="#item-group" class="active">{{ i18n "PROP.SGLIST_TAB_GROUP" }}</li>
 	<li data-tab-target="#item-rule">{{ i18n "PROP.SGLIST_TAB_RULE" }}</li>
 </ul>
 {{/unless}}
 
-<div class="tab-content">
+<div class="sg-info-list-tab-content tab-content">
 	<div id="item-group" class="active tab-item pos-r">
-		<ul class="acl-sg-info-list property-list" id="sg-info-list">
+		<ul class="acl-sg-info-list mega-list-wraper" id="sg-info-list">
 			{{#each sg_list}}
-			<li class="clearfix" data-uid="{{uid}}">
+			<li data-uid="{{uid}}">
 				{{#unless hideCheck}}
 					<div class="checkbox-wrap col1">
 						<div class="checkbox">
-							<input class="sg-list-association-check" type="checkbox" {{#if used}}checked="checked"{{/if}} id="sg-list-{{@index}}"/>
+							<input class="sg-list-association-check" type="checkbox" {{#if used}}checked="checked"{{/if}} id="sg-list-{{@index}}" {{#if disableCheck}}disabled{{/if}}/>
 							<label for="sg-list-{{@index}}"></label>
 						</div>
 					</div>
 				{{/unless}}
-				<div class="col3 sg-edit-icon tooltip icon-btn-details" data-tooltip='{{ i18n "PROP.SGLIST_TIP_VIEW_DETAIL" }}'></div>
-
 				<div class="col2">
 					<div class="col2-1 truncate"><div class="sg-color" style="background-color:{{color}}" ></div><span class="sg-name">{{name}}</span></div>
 					<div class="col2-2 truncate">{{desc}}</div>
 					<div class="col2-3 truncate">{{ruleCount}} {{ i18n "PROP.SGLIST_LBL_RULE" }}, {{memberCount}} {{ i18n "PROP.SGLIST_LBL_MEMBER" }}{{#if deletable}} | <a class="sg-list-delete-btn" data-name="{{name}}" data-count="{{memberCount}}">{{ i18n "PROP.SGLIST_LNK_DELETE" }}</a>{{/if}}</div>
 				</div>
+				<div class="col3 sg-edit-icon tooltip icon-btn-details" data-tooltip='{{ i18n "PROP.SGLIST_TIP_VIEW_DETAIL" }}'></div>
 			</li>
 			{{/each}}
 		</ul>
-		{{#unless readonly}}<a href="javascript:void(0)" class="add-to-list action-link" id="add-sg-btn">{{ i18n "PROP.SGLIST_BTN_CREATE_NEW_SG" }}</a>{{/unless}}
+		{{#unless readonly}}<a href="javascript:void(0)" class="add-to-list" id="add-sg-btn">{{ i18n "PROP.SGLIST_BTN_CREATE_NEW_SG" }}</a>{{/unless}}
 	</div>
 
 	<div id="item-rule" class="tab-item">
 		<div class="rule-list-sort property-control-group">
-			<h5>{{ i18n "PROP.SG_RULE_SORT_BY" }}</h5>
+			<label>{{ i18n "PROP.SG_RULE_SORT_BY" }}</label>
 			<div class="selectbox" id="sg-rule-filter-select">
 				<div class="selection">{{ i18n "PROP.SG_RULE_SORT_BY_DIRECTION" }}</div>
 				<ul class="dropdown" tabindex="-1">
@@ -43,6 +42,6 @@
 				</ul>
 			</div>
 		</div>
-		<ul class="sg-rule-list property-list" id="sglist-rule-list"> </ul>
+		<ul class="mega-list-wraper" id="sglist-rule-list"> </ul>
 	</div>
 </div>

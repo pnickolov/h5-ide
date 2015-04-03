@@ -314,11 +314,18 @@ define(["jquery"], function($) {
 					var children = function() { return $(nlist.container).children().not(nlist.draggedItem); };
 					var fixed = children().not(opts.itemSelector).each(function(i) { this.idx = children().index(this); });
 
+					// added by song
+					// return if elm has been disabled
+					var $listElm = $(nlist.pos[ei].elm);
+					if ($listElm.hasClass('disabled')) {
+						return false;
+					}
+
 					//if moving draggedItem up or left place placeHolder before list item the dragged item is hovering over otherwise place it after
 					if (lastPos == null || lastPos.top > list.draggedItem.offset().top || lastPos.left > list.draggedItem.offset().left)
-						$(nlist.pos[ei].elm).before(list.placeHolderItem);
+						$listElm.before(list.placeHolderItem);
 					else
-						$(nlist.pos[ei].elm).after(list.placeHolderItem);
+						$listElm.after(list.placeHolderItem);
 
 					//restore fixed items location
 					fixed.each(function() {

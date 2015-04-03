@@ -76,7 +76,7 @@
 
 <!-- {{appTemplate}} -->
 <div class="option-group-head expand">
-    Server Details<a href="#" class="icon-syslog tooltip property-btn-get-system-log action-link" data-tooltip="Get System Log"></a>
+    Server Details<a href="#" class="icon-syslog tooltip property-btn-get-system-log" data-tooltip="Get System Log"></a>
 </div>
 <div class="option-group">
     <dl class="dl-vertical">

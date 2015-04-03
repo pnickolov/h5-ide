@@ -1,0 +1,194 @@
+/*
+    IDE Editor Toolbar & Status Bar
+
+    - Toolbar
+    - Status Bar
+*/
+
+/* Toolbar */
+
+.btn-toolbar {
+  width    : 34px;
+  height   : 32px;
+  line-height: 32px;
+  position : relative;
+  float    : left;
+
+
+  text-align : center;
+  color      : #ccc;
+  font-size  : 16px;
+
+  padding : 4px 4px 3px;
+
+  cursor     : pointer;
+  box-sizing : content-box;
+
+  &.seperator {
+    border-right : 1px solid #000;
+  }
+
+  &:hover,
+  &.open .selection {
+    color      : $pink-p;
+    background : rgba(0,0,0,.3);
+  }
+
+  &[disabled] {
+    color      : #676767;
+    background : none;
+    cursor     : default;
+  }
+
+  &.selectbox {
+    width  : 52px;
+    padding: 0;
+    height : 40px;
+
+    .selection {
+	  font-size    : 16px;
+	  padding      : 0 18px 0 10px;
+	  float        : left;
+
+	  border       : none;
+	  background   : transparent;
+
+	  line-height  : 40px;
+	  display      : inline-block;
+	  width        : 24px;
+	  box-sizing   : content-box;
+
+	  &:hover { background: transparent; color: $pink-p;}
+
+    > span:before { margin: 0 80px 0 4px; }
+
+    }
+  }
+
+  .dropdown {
+  	top         : 38px;
+  	width       : auto;
+  	min-width   : initial;
+  	line-height : 24px;
+  	text-align  : left;
+
+    > li > span:before { margin: 0 8px 0 2px; }
+
+	  > li:before {
+	  	padding-right : 0.5em;
+		vertical-align: -1px;
+	  }
+
+	  > li:last-child {
+		border-bottom: none;
+	  }
+	}
+
+  &.icon-cancel-update-app {
+    color: $light-r;
+
+    &:hover {
+      color            : #fff;
+      background-color : $light-r;
+      border-bottom    : 1px solid $base-r;
+    }
+  }
+}
+
+.toolbar-btn-primary {
+  width         : 112px;
+  color         : #f3f3f3;
+  background    : $base-g;
+  border-bottom : 1px solid $dark-g;
+
+  &:hover {
+    color      : #fff;
+    background : $dark-g;
+  }
+
+  &[disabled] {
+    background    : rgb(75, 75, 75);
+    border-right  : #ccc;
+    border-bottom : 1px solid transparent;
+    color         : #ccc;
+  }
+
+  &.icon-export-png {
+    background    : $base-b;
+    border-bottom : 1px solid $dark-b;
+    width         : 160px;
+    &:hover { background: $dark-b; }
+  }
+
+  &:before {
+    margin-right : 5px;
+  }
+}
+
+.toolbar-visual-ops-switch.switch,
+.reload-states {
+  margin    : 6px 8px 0 0;
+  float     : right;
+  width     : 120px;
+  height    : 27px;
+  font-size : 12px;
+  border-radius : 18px;
+  line-height   : 27px;
+}
+
+.toolbar-visual-ops-switch.switch.narrow,
+.reload-states.narrow {
+  width: 50px;
+}
+.reload-states {
+  padding       : 1px 8px;
+
+  &:before {
+    margin-right: 5px;
+  }
+}
+
+.toolbar-visual-ops-switch.switch {
+  border   : 1px solid #ccc;
+  position : relative;
+  &.create-mesos-use-marathon, &.marathon-switch{
+    margin-top: 0;
+  }
+  &.on {
+    border-color : #0E8F38;
+    background   : $base-g;
+
+    .switch-handle { left: 96px; }
+  }
+
+  &.on.narrow{
+    .switch-handle { left: 26px; }
+  }
+
+  .switch-handle {
+    width         : 21px;
+    height        : 21px;
+    border-radius : 50%;
+  }
+}
+
+.icon-hide-sg.selected {
+  @extend .btn-toolbar:hover;
+}
+
+/* Status Bar */
+
+.status-bar {
+  .info { float: left; margin-left: 10px; }
+  .status-bar-btn {
+    text-align        : center;
+    float             : right;
+    cursor            : pointer;
+    padding           : 0 10px;
+    color             : #eee;
+    border            : none;
+    border-radius     : 0;
+    box-shadow        : inset 1px 0 rgba(255,255,255,.1);
+    border-left       : 1px solid #212121;
+  }
+}

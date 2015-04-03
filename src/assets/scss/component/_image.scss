@@ -1,0 +1,74 @@
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio:2), (min--moz-device-pixel-ratio:2), (-o-min-device-pixel-ratio:2/1), (min-device-pixel-ratio: 2) {
+    & { @content; }
+  }
+}
+
+.toggle-eip {
+	cursor: pointer;
+	width: 14px;
+	height: 17px;
+	background: url('../images/ide/icon/icn-eipoff.png') no-repeat;
+}
+
+.toggle-eip.associated {
+	background: url('../images/ide/icon/icn-eipon.png') no-repeat;
+}
+
+
+/* Tabbar Icon */
+
+.icon-dashboard {
+	background: url('../images/ide/icon-dashboard.png') center center no-repeat;
+}
+
+.icon-stack {
+	background: url('../images/ide/icon-stack.png') center center no-repeat;
+}
+
+.icon-app-running,
+.icon-app-Running {
+	background: url('../images/ide/icon-app-running.png') center center no-repeat;
+}
+
+.icon-app-stopped,
+.icon-app-Stopped {
+	background: url('../images/ide/icon-app-stopped.png') center center no-repeat;
+}
+
+.icon-app-pending {
+	background: url('../images/ide/icon-app-pending.png') center center no-repeat;
+}
+
+/* Nav Icon */
+.icon-stack-nav,
+.icon-stack-tabbar {
+	background: url('../images/ide/icon-stack.png') center center no-repeat;
+}
+
+/* Payment */
+
+.payment-credit-card {
+  width  : 100%;
+  height : 100px;
+
+  background: url("../images/ide/creditcard-normal.png") center center no-repeat;
+
+  @include retina() {
+      & {
+        background-image : url("../images/ide/creditcard-normal@2x.png");
+        background-size:  image-width("../images/ide/creditcard-normal.png") auto; 
+      }
+    }
+
+  &.payment-failed {
+    background: url("../images/ide/creditcard-failed.png") center center no-repeat;
+
+    @include retina() {
+      & {
+        background-image : url("../images/ide/creditcard-failed@2x.png");
+        background-size: image-width("../images/ide/creditcard-failed.png") auto; 
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
 #  View(UI logic) for design/property/instacne
 #############################
 
-define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lang.js', 'kp_dropdown' ], ( PropertyView, template, ide_event, constant, lang, kp ) ->
+define [ '../base/view', './template/stack', './template/stack_mesos', 'event', 'constant', 'i18n!/nls/lang.js', 'kp_dropdown' ], ( PropertyView, TplLc, TplMesos, ide_event, constant, lang, kp ) ->
 
     iopsMax = 20000
 
@@ -26,6 +26,53 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
             'click #volume-type-radios input' : 'changeVolumeType'
             'keyup #iops-ranged'              : 'changeIops'
             'keyup #volume-size-ranged'       : 'sizeChanged'
+
+            'change .mesos-attr'              : 'setMesosAttribute'
+            'REMOVE_ROW .multi-input'         : 'setMesosAttribute'
+            'click #add-ma-item-outside'      : 'addMesosAttrItem'
+
+        render : () ->
+            tpl = if @resModel.isMesos() then TplMesos else TplLc
+            @$el.html tpl @model.toJSON()
+
+            kpDropdown = new kp(resModel: @resModel)
+
+            @addSubView kpDropdown
+            @$('#kp-placeholder').html kpDropdown.render().el
+
+            me = this
+            # parsley bind
+            $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                if not val || val > 16384 || val < me.model.attributes.min_volume_size
+                    return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
+
+            $( '#iops-ranged' ).parsley 'custom', ( val ) ->
+                val = + val
+                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
+                if val > iopsMax || val < 100
+                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
+                else if( val > 10 * volume_size)
+                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+
+            @model.attributes.name
+
+        addMesosAttrItem: ( e ) ->
+            @$( '#mesos-attribute' ).find( '.icon-add' ).eq(0).click()
+            false
+
+        setMesosAttribute: ( event ) ->
+            attr = {}
+
+            @$( '#mesos-attribute' ).find( '.multi-ipt-row:not(.template)' ).each ->
+                $inputs = $(@).find( '.input' )
+                key = $inputs[ 0 ].value.trim()
+                value = $inputs[ 1 ].value
+
+                if key.length
+                    attr[ key ] = value
+
+            @resModel.setMesosAttributes attr
 
         onChangeDescription : (event) -> @model.setDesc $(event.currentTarget).val()
 
@@ -91,40 +138,6 @@ define [ '../base/view', './template/stack', 'event', 'constant', 'i18n!/nls/lan
                     $("#iops-ranged").val( iops )
                 $("#iops-ranged").keyup()
             null
-
-        render : () ->
-
-            @$el.html template @model.attributes
-
-            instanceModel = Design.instance().component( @model.get 'uid' )
-            kpDropdown = new kp(resModel: instanceModel)
-
-            @addSubView kpDropdown
-            @$('#kp-placeholder').html kpDropdown.render().el
-
-            me = this
-            # parsley bind
-            $( '#volume-size-ranged' ).parsley 'custom', ( val ) ->
-                val = + val
-                if not val || val > 16384 || val < me.model.attributes.min_volume_size
-                    return sprintf lang.PARSLEY.VOLUME_SIZE_OF_ROOTDEVICE_MUST_IN_RANGE, me.model.attributes.min_volume_size
-
-            $( '#iops-ranged' ).parsley 'custom', ( val ) ->
-                val = + val
-                volume_size = parseInt( $( '#volume-size-ranged' ).val(), 10 )
-                if val > iopsMax || val < 100
-                    return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
-                else if( val > 10 * volume_size)
-                    return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
-
-            # currentStateData = @model.getStateData()
-
-            # if currentStateData and _.isArray(currentStateData) and currentStateData.length
-            #     @disableUserDataInput(true)
-            # else
-            #     @disableUserDataInput(false)
-
-            @model.attributes.name
 
         publicIpChange : ( event ) ->
             @model.setPublicIp event.currentTarget.checked

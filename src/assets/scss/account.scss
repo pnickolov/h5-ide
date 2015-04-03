@@ -147,51 +147,6 @@ p {
 	pointer-events: none;
 }
 
-.grabbing {
-	cursor: -webkit-grabbing !important;
-	cursor: -moz-grabbing !important;
-	cursor: grabbing !important;
-}
-
-.text-left {
-	text-align: left;
-}
-
-.text-right {
-	text-align: right;
-}
-
-.text-center {
-	text-align: center;
-}
-
-pre {
-	white-space: pre-wrap;
-	word-break: break-all;
-	word-wrap: break-word;
-	display: block;
-	padding: 9.5px;
-	margin: 10px 0;
-	font-size: 13px;
-	line-height: 20px;
-	font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-}
-
-code {
-	padding: 3px 4px;
-	color: #D14;
-	background-color: #F7F7F9;
-	border: 1px solid #E1E1E8;
-	font-family: Menlo,Monaco,"Courier New",monospace;
-	font-size: 12px;
-	border-radius: 3px;
-}
-
-abbr {
-	cursor: help;
-	border-bottom: 1px dotted #999;
-}
-
 body {
 	margin: 0;
 	font-size: 14px;

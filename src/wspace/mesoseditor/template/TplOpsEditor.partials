@@ -1,0 +1,93 @@
+<!-- {{toolbar.BtnActionPng}} -->
+<button class="btn-toolbar tooltip icon-export-png toolbar-btn-primary" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}' data-analytics-plus="export_vis_png">{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}</button>
+
+<!-- {{toolbar.BtnZoom}} -->
+<button class="btn-toolbar icon-zoom-in tooltip" data-tooltip='{{ i18n "TOOLBAR.TIP_ZOOM_IN" }}'></button>
+<button class="btn-toolbar icon-zoom-out seperator tooltip" data-tooltip='{{ i18n "TOOLBAR.TIP_ZOOM_OUT" }}'></button>
+
+<!-- {{toolbar.BtnLinestyle}} -->
+<div class="selectbox btn-toolbar toolbar-line-style">
+  <button class="selection tooltip" data-tooltip="{{ i18n "TOOLBAR.TIP_SG_LINE_STYLE" }}"></button>
+  <ul class="dropdown">
+    <li class='item' data-id="0"><span class="icon-straight">{{ i18n "TOOLBAR.LBL_LINESTYLE_STRAIGHT" }}</span></li>
+    <li class='item' data-id="1"><span class="icon-elbow">{{ i18n "TOOLBAR.LBL_LINESTYLE_ELBOW" }}</span></li>
+    <li class='item' data-id="2"><span class="icon-bezier-q">{{ i18n "TOOLBAR.LBL_LINESTYLE_CURVE" }}</span></li>
+  </ul>
+</div>
+
+<!-- {{toolbar.BtnEditApp}} -->
+<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
+
+<!-- {{toolbar.BtnRunStack}} -->
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
+
+<!-- {{toolbar.BtnStackOps}} -->
+<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_DELETE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOLBAR.TIP_DUPLICATE_STACK" }}'></button>
+<button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_CREATE_STACK" }}'></button>
+
+<!-- {{toolbar.BtnExport}} -->
+<div class="selectbox btn-toolbar seperator">
+  <button class="selection tooltip icon-send" data-tooltip='{{ i18n "TOOLBAR.EXPORT" }}'></button>
+  <ul class="dropdown">
+    <li data-analytics-plus="export_png" class="icon-export-png">{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}</li>
+    <li data-analytics-plus="export_json" class="icon-export-json">{{ i18n "TOOLBAR.EXPORT_AS_JSON" }}</li>
+  </ul>
+</div>
+
+<!-- {{toolbar.BtnAppOps}} -->
+<button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
+
+<!-- {{toolbar.BtnPng}} -->
+<button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}'></button>
+
+<!-- {{toolbar.BtnReloadRes}} -->
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_REOURCES'}}"></button>
+
+<!-- {{confirm.enableState}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "TOOLBAR.CONFIRM_ENABLE_STATE"}}</div>
+    </div>
+</div>
+
+<!-- {{export.JSON}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper" style="padding:40px 20px;">
+        <div class="modal-text-major"></div>
+        <div class="modal-text-minor">{{i18n "TOOLBAR.POP_BODY_EXPORT_AS_JSON"}}</div>
+    </div>
+</div>
+<div class="modal-footer">
+    <a class="btn btn-blue" href="{{data}}" target="_blank">{{i18n "TOOLBAR.POP_BTN_DOWNLOAD"}}</a>
+    <button id="tpl-cancel" class="btn modal-close btn-silver">{{i18n "TOOLBAR.POP_BTN_CANCEL"}}</button>
+</div>
+
+<!-- {{export.PNG}} -->
+<div class="loading-spinner"></div>
+<section style="margin:10px 10px 0;max-height:420px;overflow:hidden;text-align:center;display:none;"></section>
+<div class="modal-footer">
+    <a class="btn btn-blue" style="display: inline-block;">{{i18n "TOOLBAR.LBL_DOWNLOAD"}}</a>
+    <button class="btn modal-close btn-silver">{{i18n "TOOLBAR.LBL_CANCEL"}}</button>
+</div>
+
+<!-- {{modal.cancelUpdate}} -->
+<div class="modal-text-wraper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "TOOLBAR.CANCEL_UPDATE_CONFIRM"}}</div>
+        <div class="modal-text-major">{{i18n "TOOLBAR.DISCARD_UPDATE_CHANGE"}}</div>
+    </div>
+</div>
+
+<!-- {{modal.confliction}} -->
+<div class="modal-text-wrapper">
+    <div class="modal-center-align-helper">
+        <div class="modal-text-major">{{i18n "IDE.CONTENT_OPS_CONFLICT"}}</div>
+    </div>
+</div>
+
+<!-- {{canvas.placeholder}} -->
+<div class="marathon-cvs-ph">Drop stuff to create stack.</div>

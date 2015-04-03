@@ -1,16 +1,54 @@
+/*
+    IDE Resorce Panel
 
-// Resource Panel
+  - General Style
+    - Refresh & Manage Shared Resource
+	  - Resource Item
+	  - Resource List: Head, Sort, Body
+	  - Drag-n-Drop Style
+	- Resource-specific Styles
 
-$dndDuration : .2s;
+*/
+
+@import "browse_ami";
+
+/* Refresh & Manage Shared Resource */
+
+.sidebar-tool button {
+  color  : $dark-grey;
+  margin : 0 16px;
+  cursor : pointer;
+  line-height: 37px;
+
+  &:hover {
+    color: $light-p-2;
+  }
+
+  i {
+    font-style: normal;
+
+    &:before {
+      margin-right : 8px;
+      display      : inline-block;
+    }
+  }
+}
+
+.refresh-resource-panel {
+  -webkit-transform-origin : 20px 20px;
+     -moz-transform-origin : 20px 20px;
+          transform-origin : 20px 20px;
+
+  &.reloading:hover { background : none; }
+}
 
 .resources-dropdown-wrapper {
   position      : absolute;
-  left          : 206px;
+  left          : 244px;
   top           : 39px;
   width         : 364px;
   margin-top    : 1px;
   z-index       : 80;
-  // box-sizing : border-box;
   box-shadow    : 1px 1px 5px rgba(0,0,0,.3);
   border        : 1px solid #0f0f0f;
   color         : #d0d0d0;
@@ -21,7 +59,6 @@ $dndDuration : .2s;
   }
 
   > li {
-    border-bottom    : 1px solid rgba(0, 0, 0, 0.2);
     padding          : 15px 5px;
     width            : 80px;
     height           : 60px;
@@ -61,6 +98,7 @@ $dndDuration : .2s;
       width      : 80px;
       color      : #999;
       line-height: 16px;
+      left       : 5px;
     }
   }
 
@@ -69,31 +107,23 @@ $dndDuration : .2s;
   }
 }
 
+/* Resource List Sort */
 
-.AmiTypeSelect {
-  position    : absolute;
-  top         : 0;
-  right       : 0;
-  line-height : 20px;
+.resource-list-head {
+  font-size     : 12px;
+  margin-bottom : 10px;
+  width         : 100%;
+  border-bottom : 1px #666 solid;
+  height        : 18px;
 
-  &:hover .selection { background: #234F77; }
-}
-
-.resource-icon {
-  position: relative;
-  width: 60px;
-  height: 60px;
-  background: #ccc;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-color: transparent;
+  ul + & { margin-top: 10px; }
 }
 
 .resource-list-sort-select {
-  margin-top: -5px;
-  float: right;
-  width: 84px;
-  margin-right: -7px;
+  margin-top   : -5px;
+  float        : right;
+  width        : 84px;
+  margin-right : -7px;
 
   .selection {
     padding-right : 18px;
@@ -110,43 +140,60 @@ $dndDuration : .2s;
   }
 }
 
-.resource-list-head {
-  font-size: 12px;
-  margin-bottom: 10px;
-  width: 100%;
-  border-bottom: 1px #666 solid;
-  height: 18px;
-  float: left;
+/* Fixed Accordion in Resource Panel */
+
+.fixedaccordion-head {
+	height      : 37px;
+	line-height : 37px;
+	padding     : 0 10px;
+  position    : relative;
+  z-index     : 10;
+
+	.expanded & {
+		background-color : desaturate($dark-p,10%);
+		color            : #fff;
+		box-shadow       : inset 2px 0 lighten($base-p, 20%);
+		cursor           : default;
+	}
 }
 
-.resourcetem-list-ami {
-  position : relative;
 
-  .blank-slate {
-    position: absolute;
-    font-size  : 12px;
-    color      : #999;
-    text-align : center;
-    top : 40%;
+.fixedaccordion {
+  .accordion-group {
+    overflow : hidden;
+  }
+  .accordion-body {
+  	background-color : $bg-p;
+  	border-bottom    : 1px solid #1B1B1B;
+  	position         : relative;
+  	box-sizing       : border-box;
+  	width            : 100%;
+  	padding          : 10px 5px;
+    display          : block;
+
+  	@include v-scroll;
   }
 }
 
+
+/* Resource Item */
+
 .resource-item {
-  width         : 70px;
-  padding-top   : 65px;
-  margin        : 0 5px 5px 0;
-  border-radius : 4px;
-  cursor        : pointer;
-  float         : left;
-  font-size     : 12px;
-  text-align    : center;
-  // height        : 3em;
-  word-wrap     : break-word;
-  overflow      : hidden;
-  line-height   : 1.2em;
-  color         : #eee;
-  position      : relative;
-  background : transparent center 5px no-repeat;
+  width          : 32%;
+  padding-top    : 65px;
+  margin         : 0 .5% .5% 0;
+  border-radius  : 4px;
+  cursor         : pointer;
+  display        : inline-block;
+  vertical-align : top;
+  font-size      : 12px;
+  text-align     : center;
+  word-wrap      : break-word;
+  overflow       : hidden;
+  line-height    : 1.2em;
+  color          : #eee;
+  position       : relative;
+  background     : transparent center 5px no-repeat;
 
   cursor: -moz-grab;
   cursor: -webkit-grab;
@@ -163,20 +210,22 @@ $dndDuration : .2s;
     background-color : transparent;
   }
 
-  &.instance {
-    position: relative;
-  }
-
   &.instance, &.dbinstance {
     padding-top : 5px;
     height      : 132px;
+    &.mesos{
+      height: 80px;
+    }
   }
-  &.dbsnapshot {
+
+  &.dbsnapshot,
+  &.dockerimage {
     padding-top : 5px;
     height : 90px;
   }
 
-  &.az       { background-image: image-url('ide/icon/res-az.png'); position: relative; }
+  &.marathon-group { background-image:image-url("ide/icon/res-mg.png");}
+  &.az       { background-image: image-url('ide/icon/res-az.png'); }
   &.volume   { background-image: image-url('ide/icon/res-vol.png'); }
   &.eni      { background-image: image-url('ide/icon/res-eni.png'); }
   &.subnet   { background-image: image-url('ide/icon/res-subnet.png'); }
@@ -184,7 +233,7 @@ $dndDuration : .2s;
   &.igw      { background-image: image-url('ide/icon/res-igw.png'); }
   &.vgw      { background-image: image-url('ide/icon/res-vgw.png'); }
   &.cgw      { background-image: image-url('ide/icon/res-cgw.png'); }
-  &.asg      { background-image: image-url('ide/icon/res-asg.png'); position: relative; }
+  &.asg      { background-image: image-url('ide/icon/res-asg.png'); }
   &.elb      { background-image: image-url('ide/icon/res-elb.png'); }
   &.snapshot { background-image: image-url('ide/icon/res-snapshot.png'); }
   &.subnetgroup { background-image: image-url('ide/icon/res-subnetg.png'); }
@@ -209,72 +258,37 @@ $dndDuration : .2s;
   }
 }
 
-.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
-  padding-top : 12px;
-  height : 60px - 12px;
-  background : image-url('ide/icon/res-instance.png') center no-repeat;
-
-  #DndItem & {
-    padding-top : 28px;
-    height      : 62px;
-    position    : relative;
-  }
-
-  #DndItem.asg & {
-    left        : 16px;
-    top         : 16px;
-    height      : 31px;
-    width       : 38px;
-    padding-top : 7px;
-    border : 1px solid #bbb;
-    -webkit-transition : all ease-in $dndDuration;
-       -moz-transition : all ease-in $dndDuration;
-            transition : all ease-in $dndDuration;
-  }
-
-  #DndItem.asg.dragOver & {
-    left   : 47px;
-    top    : 51px;
-    width  : 53px;
-    height : 46px;
-  }
-}
-
-.resource-item.asg > .resource-icon-instance {
-  background    : #fff;
-  border-radius : 4px;
-  position      : absolute;
-
-  left        : 17px;
-  top         : 17px;
-  width       : 36px;
-  height      : 30px;
-  padding-top : 6px;
-}
-
+.resource-icon-instance   { background-image : image-url('ide/icon/res-instance.png'); }
 .resource-icon-dbinstance { background-image : image-url('ide/icon/res-rds.png'); }
 .resource-icon-dbsnapshot { background-image : image-url('ide/icon/res-rdssnap.png'); }
+.resource-icon-docker-image {
+  position         : relative;
+  background-image : none;
 
-.ebs-size {
-  margin-top  : -1.5em;
-  color       : #676767;
-  height      : 1.5em;
+  &:before {
+    border        : 2px solid rgb(168, 206, 229);
+    background    : #405bc7;
+    border-radius : 50%;
+    width         : 48px;
+    height        : 48px;
+    content       : "";
+    display       : inline-block;
+    box-sizing    : border-box;
+    margin-top    : 12px;
+  }
+
+  img {
+    width    : 30px;
+    height   : 30px;
+    position : absolute;
+    top      : 21px;
+    left     : 20px;
+  }
 }
 
-.rds-snapshot-size {
-  color       : #676767;
-  line-height : 2em;
-  margin-top  : 2px;
-}
+/* Drag-n-Drop Style */
 
-.az-name {
-  font-size      : 16px;
-  color          : #999;
-  height         : 60px;
-  line-height    : 60px;
-  margin-top     : -60px;
-  text-transform : uppercase;
-}
+$dndDuration : .2s;
 
 #DndItem {
   position         : absolute;
@@ -302,9 +316,7 @@ $dndDuration : .2s;
      -moz-transition-property : line-height, padding-left, width, height, color;
           transition-property : line-height, padding-left, width, height, color;
 
-  -webkit-background-size : 80px;
-     -moz-background-size : 80px;
-          background-size : 80px;
+  background-size : 80px;
 
   &.oslistener { background-image: image-url("ide/icon-os/res-dg-listener.png"); }
   &.ospool     { background-image: image-url("ide/icon-os/res-dg-pool.png"); }
@@ -334,10 +346,12 @@ $dndDuration : .2s;
       background : image-url("ide/icon-os/res-dg-pool.png");
       width : 80px;
       height : 80px;
-      -webkit-background-size : 80px;
-         -moz-background-size : 80px;
-              background-size : 80px;
+      background-size : 80px;
     }
+  }
+
+  .resource-icon-docker-image > img {
+    left : 24px;
   }
 
   &.rtb, &.igw, &.vgw { width:80px; height:80px; }
@@ -356,7 +370,7 @@ $dndDuration : .2s;
     display : none;
   }
 
-  &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet {
+  &.az, &.asg,  &.subnet, &.subnetgroup, &.ossubnet, &.marathon-group {
     background-image : none;
     color        : #eee;
     line-height  : 1em;
@@ -397,6 +411,19 @@ $dndDuration : .2s;
       &:before {
         width  : 166px;
         height : 166px;
+      }
+    }
+  }
+
+  &.marathon-group {
+    &:before { border-color: #CFCDDB; }
+    &.dragOver {
+      width  : 220px;
+      height : 157px;
+      color  : #888CAD;
+      &:before {
+        width  : 200px;
+        height : 148px;
       }
     }
   }
@@ -519,51 +546,91 @@ $dndDuration : .2s;
   }
 }
 
-.resource-select.selectbox {
+.resource-icon-instance, .resource-icon-dbinstance, .resource-icon-dbsnapshot {
+  padding-top         : 12px;
+  height              : 60px - 12px;
+  background-position : center;
+  background-repeat   : no-repeat;
+
+  #DndItem & {
+    padding-top : 28px;
+    height      : 62px;
+    position    : relative;
+  }
+
+  #DndItem.asg & {
+    left        : 16px;
+    top         : 16px;
+    height      : 31px;
+    width       : 38px;
+    padding-top : 7px;
+    border : 1px solid #bbb;
+    -webkit-transition : all ease-in $dndDuration;
+       -moz-transition : all ease-in $dndDuration;
+            transition : all ease-in $dndDuration;
+  }
+
+  #DndItem.asg.dragOver & {
+    left   : 47px;
+    top    : 51px;
+    width  : 53px;
+    height : 46px;
+  }
+}
+
+
+/* AMI */
+
+.ami-header { overflow: visible; }
+
+.AmiTypeSelect {
+  position    : absolute;
+  top         : 0;
+  right       : 0;
+  line-height : 20px;
 
   .selection {
     background    : $dark-p;
     color         : #F3F3F3;
     height        : 17px;
-    width         : auto;
+    width         : 100px;
     border        : none;
     border-left   : 1px solid #161616;
     border-radius : 0;
     box-shadow    : none;
 
     padding           : 10px 20px 10px 10px;
-    -webkit-transition: background .2s ease-in-out;
-    -moz-transition   : background .2s ease-in-out;
-    -ms-transition    : background .2s ease-in-out;
-    -o-transition     : background .2s ease-in-out;
-    transition        : background .2s ease-in-out;
 
     &:after {
       border-top-color: #fff;
     }
   }
+}
 
-  .dropdown {
-    background: #4f4f4f;
-    border: 1px solid #333;
+.resource-list-ami {
+  position : relative;
+  height   : 100%;
+
+  .blank-slate {
+    position: absolute;
+    font-size  : 12px;
+    color      : #999;
+    text-align : center;
+    top : 40%;
   }
-
 }
 
+/* Toggle Fav AMI */
 
-.resource-list > li:hover .btn-fav-ami {
-  display: block;
-}
-
-/* toggleicon */
 .btn-fav-ami, .toggle-fav {
   width      : 20px;
   height     : 20px;
+  top        : 0;
+  right      : 0;
+  cursor     : pointer;
   background : image-url('ide/fav-btn-off.png') center no-repeat;
 
   &:hover {
-    top        : 0;
-    right      : 0;
     width      : 20px;
     height     : 20px;
     background-image : image-url('ide/fav-btn-off-hover.png');
@@ -572,28 +639,57 @@ $dndDuration : .2s;
   &.fav       { background-image: image-url('ide/fav-btn.png'); }
   &.fav:hover { background-image: image-url('ide/fav-btn-hover.png'); }
 }
+
 .btn-fav-ami {
   position : absolute;
-  top      : 0px;
-  right    : 0px;
+}
+
+/* Other Resource Specifics */
+
+.resource-item.asg > .resource-icon-instance {
+  background    : #fff;
+  border-radius : 4px;
+  position      : absolute;
+
+  left        : 20px;
+  top         : 17px;
+  width       : 36px;
+  height      : 30px;
+  padding-top : 6px;
+}
+
+.ebs-size {
+  margin-top  : -1.5em;
+  color       : #676767;
+  height      : 1.5em;
+}
+
+.rds-snapshot-size {
+  color       : #676767;
+  line-height : 2em;
+  margin-top  : 2px;
+}
+
+.az-name {
+  font-size      : 16px;
+  color          : #999;
+  height         : 60px;
+  line-height    : 60px;
+  margin-top     : -60px;
+  text-transform : uppercase;
 }
 
 .BrowseCommunityAmi, .ManageSnapshot {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  border: none;
-  border-radius: 0;
-  z-index : 3;
+  position      : absolute;
+  bottom        : 0;
+  left          : 0;
+  width         : 100%;
+  border        : none;
+  border-radius : 0;
+  z-index       : 3;
 
-  & + .nano-content {
-    padding-bottom : 30px;
-    &:after {
-      display : block;
-      content : " ";
-      clear : both;
-    }
+  & + div {
+    padding-bottom : 30px !important;
   }
 }
 
@@ -604,193 +700,4 @@ $dndDuration : .2s;
 .disableRds {
   .disableRds-content { display : block; color: #ff9c00;}
   .ManageRdsSnapshot, .nano-content { display : none; }
-}
-
-// Property Panel
-.OEPanelRight{
-
-  .sidebar-title {
-    border-left : 1px solid darken($bg-p, 5%);
-    padding     : 0;
-  }
-
-  .property-tab {
-    width  : 49%;
-    height : 39px;
-    cursor : pointer;
-    color  : #b0b0b0;
-  }
-
-
-  #btn-switch-property {
-    border-bottom : 3px solid $base-b;
-    color         : $base-b;
-  }
-
-  #btn-switch-state:hover {
-    color: #eee;
-  }
-
-  #btn-switch-state {
-    color: #4fb845;
-  }
-
-  &.no-state {
-    #btn-switch-state {
-      display: none;
-    }
-
-    #btn-switch-property {
-      color         : #b0b0b0;
-      border-bottom : 3px solid transparent;
-      float         : left;
-      width         : auto;
-      background    : none;
-      text-align    : left;
-      padding-left  : 10px;
-      cursor        : default;
-    }
-  }
-
-  &.state {
-    #btn-switch-property {
-      color: #b0b0b0;
-      border-bottom: 3px solid transparent;
-      &:hover {
-        color      : #eee;
-      }
-    }
-
-    #btn-switch-state {
-      border-bottom: 3px solid $base-b;
-      color: $base-b;
-    }
-  }
-}
-
-.property-sidebar-title {
-  font-size    : 13px;
-  text-shadow  : none;
-  padding-left : 10px;
-  color        : #999;
-
-  height     : 32px;
-  line-height: 32px;
-  position   : relative;
-  z-index    : 2;
-  display    : block !important;
-
-  cursor        : default;
-  box-shadow    : 0 1px 5px rgba(0,0,0,.3);
-  border-bottom : 1px solid #000;
-}
-
-.property-panel-wrapper {
-  width      : 100%;
-  height     : 100%;
-  left       : 0;
-  bottom     : 0;
-  position   : absolute;
-  background : desaturate(lighten($bg-p, 2%),3%); /* for zoomed out */
-
-  .scroll-wrap {
-    position : absolute;
-    top      : 33px;
-    bottom   : 0;
-    width    : 100%;
-  }
-}
-
-.property-panel-wrapper.immediately > .scroll-wrap{
-  top: 69px;
-}
-
-.accordion-body.nano {
-  padding : 0;
-  .nano-content {
-    overflow-x : hidden;
-    top        : 10px;
-    left       : 10px;
-    right      : 10px;
-  }
-}
-
-
-// Ami Browser
-.icon-ami-os {
-  &:before {
-    content      : " ";
-    float        : left;
-    width        : 24px;
-    height       : 24px;
-    margin-right : 5px;
-    background   : image-url('ide/icon/icn-amios.png') left top no-repeat;
-  }
-
-  &.centos:before { background-position: -24px 0; }
-  &.debian:before { background-position: -48px 0; }
-  &.fedora:before      { background-position: -72px 0; }
-  &.gentoo:before      { background-position: -96px 0; }
-  &.opensuse:before    { background-position: -120px 0; }
-  &.ubuntu:before      { background-position: -144px 0; }
-  &.redhat:before      { background-position: -168px 0; }
-  &.windows:before     { background-position: -192px 0; }
-  &.linux-other:before { background-position: -216px 0; }
-}
-
-// Change AMI Panel
-#changeAmi {
-  width: 130px;
-}
-
-#changeAmiDropZone {
-  width        : 194px;
-  height       : 194px;
-  background   : rgba(0,0,0,.4);
-  text-align   : center;
-  position     : relative;
-  margin-left  : 30px;
-  border-radius: 2px;
-  border       : 3px dashed #666;
-  margin-bottom: 20px;
-
-  &.dragOver { border-color: #fff; }
-  p {
-    position  : absolute;
-    margin-top: 80px;
-    left      : 45px;
-    color     : #666;
-  }
-
-  .resource-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -30px;
-  }
-
-  .resource-label {
-    margin-top  : 18px;
-    width       : 120px;
-    margin-left : -30px;
-    font-size   : 12px;
-  }
-}
-
-#cancelChangeAmi {
-  text-align: center;
-  width: 100%;
-}
-
-#confirmChangeAmi {
-  width: 180px;
-  margin-left: 40px;
-}
-
-#changeAmiWarning {
-  color: #ec3c38;
-  background: rgba(236, 60, 56, 0.1);
-  padding: 5px;
-  border-radius: 4px;
-  border: 1px solid #9e2622;
 }

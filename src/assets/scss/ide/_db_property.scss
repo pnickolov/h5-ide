@@ -1,0 +1,115 @@
+/*
+    DB Instance Property - IDE Property Panel
+	
+	- DB Instance Property
+*/
+
+/* DB Instance Property */
+
+.property-engine-label {
+	text-align         : center;
+	line-height        : 27px;
+	height             : 27px;
+	width              : 80px;
+	color              : #8B8787;
+	background         : #444343;
+
+	border             : 1px solid #1a1a1a;
+	border-right       : none;
+	border-radius      : 4px 0 0 4px;
+}
+
+.property-engineversion-label {
+	padding    : 6px 0;
+	height     : 29px;
+	overflow   : hidden;
+	box-sizing : border-box;
+	width      : 179px;
+}
+
+.property-engineversion-dropdown {
+	left : 81px;
+	width: 180px !important;
+
+	li {
+		width: 162px !important;
+	}
+}
+
+.property-dbinstance-status-icon-warning { color: $base-r; top:0; }
+
+.property-dbinstance-status-icon-warning, 
+.property-dbinstance-status-loading {
+	position : absolute;
+	right    : 5px;
+	top      : -44px;
+}
+
+#property-dbinstance-class-select .dropdown {
+	top: 49px;
+}
+
+#property-dbinstance-engine-version-select .scroll-wrap {
+	width: 178px;
+}
+
+#property-dbinstance-maintenance-window-group label, 
+#property-dbinstance-backup-window-group label {
+	width: 73px;
+}
+
+#property-dbinstance-maintenance-window-start-day-select,
+#property-dbinstance-maintenance-window-duration,
+#property-dbinstance-backup-window-duration {
+	width: 85px;
+}
+
+.property-dbinstance-optiongroup-placeholder {
+	.item .icon-edit {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		margin-top: -8px;
+		margin-right: 10px;
+
+		&:hover { color: $base-b; }
+	}
+	.option-preview {
+		width         : 208px;
+		overflow      : hidden;
+		text-overflow : ellipsis;
+		color         : #aaa;
+	}
+}
+
+#property-dbinstance-promote-replica {
+	margin  : 0 auto;
+	display : block;
+}
+
+.apply-immediately-section {
+	line-height : 18px;
+	background  : $light-p-2;
+
+	label {
+	    color  : #fff;
+	    border : 1px solid rgba(0,0,0,0);
+    }
+
+    a.icon-info{
+        vertical-align : middle;
+    }
+}
+
+.db-og-in-app {
+	cursor: pointer;
+}
+
+// RDS App Edit - Apply Immediately Checkbox
+.property-panel-wrapper.immediately > .scroll-wrap{
+  top: 69px;
+}
+
+
+@import "rds_modal";
+

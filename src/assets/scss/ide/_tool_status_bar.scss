@@ -151,6 +151,7 @@
 .toolbar-visual-ops-switch.switch {
   border   : 1px solid #ccc;
   position : relative;
+  margin-top: 0;
 
   &.on {
     border-color : #0E8F38;

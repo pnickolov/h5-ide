@@ -146,7 +146,7 @@
     <div class="marathon-app-ready">
         <div class="loading-bounce"><div class="bounce-one"></div><div class="bounce-two"></div></div>
         <div class="desc">Trying to load marathon apps list...</div>
-        <div class="desc">When marathon framework ready and deployed app on Mesos cluster, will show app list at here.</div>
+        <div class="desc">App list will be available once marathon framework and the apps are ready on the Mesos cluster.</div>
     </div>
     <div class="marathon-app-list" class="hide"></div>
 </div>

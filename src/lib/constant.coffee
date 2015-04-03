@@ -441,8 +441,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
             Address          : true
             Port             : true
 
-    MESOS_IMAGEID = 'ami-9ef278f6'
-
     MESOS_AMI_IDS = [
       {"region":"us-east-1","imageId":"ami-9ef278f6"}
       {"region":"us-west-1","imageId":"ami-353f2970"}
@@ -485,7 +483,5 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     DB_ENGINTYPE            : DB_ENGINTYPE
     DB_ENGINE_ARY           : DB_ENGINE_ARY
     DB_DEFAULTSETTING       : DB_DEFAULTSETTING
-
-    MESOS_IMAGEID           : MESOS_IMAGEID # TODO: Remove it.
 
     MESOS_AMI_IDS           : MESOS_AMI_IDS

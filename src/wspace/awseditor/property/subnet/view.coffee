@@ -28,6 +28,7 @@ define [ '../base/view',
         render : () ->
             @$el.html template @model.attributes
             @refreshACLList()
+            @validateCidr()
 
             @model.attributes.name
 
@@ -52,9 +53,11 @@ define [ '../base/view',
             @disabledAllOperabilityArea( true )
             null
 
-        onBlurCIDR : ( event ) ->
-
-            inputElem = $(event.currentTarget)
+        validateCidr: ( event ) ->
+            if event
+                inputElem = $(event.currentTarget)
+            else
+                inputElem = @$( '#property-cidr-block' )
 
             # if blank
             cidrPrefix = $("#property-cidr-prefix").html()
@@ -77,42 +80,48 @@ define [ '../base/view',
                     if error.shouldRemove is false
                         removeInfo = ""
 
-            if mainContent
+            unless mainContent then return subnetCIDR
 
-                if not @modal?.isOpen()
+            if not @modal?.isOpen()
 
-                    that = this
+                that = this
 
-                    cidrModal = MC.template.setupCIDRConfirm({
-                        main_content   : mainContent
-                        desc_content   : descContent
-                        remove_content : removeInfo
-                    })
+                cidrModal = MC.template.setupCIDRConfirm({
+                    main_content   : mainContent
+                    desc_content   : descContent
+                    remove_content : removeInfo
+                })
 
-                    @modal = new modalPlus {
-                        title: lang.IDE.SET_UP_CIDR_BLOCK
-                        width: 420
-                        template: cidrModal
-                        confirm: text: "OK", color: "blue"
-                        disableClose: true
-                        cancel: hide: true
-                    }
+                @modal = new modalPlus {
+                    title: lang.IDE.SET_UP_CIDR_BLOCK
+                    width: 420
+                    template: cidrModal
+                    confirm: text: "OK", color: "blue"
+                    disableClose: true
+                    cancel: hide: true
+                }
 
-                    modal = @modal
+                modal = @modal
 
-                    $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{removeInfo}</a>""")
-                    .appendTo(modal.find(".modal-footer"))
+                $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{removeInfo}</a>""")
+                .appendTo(modal.find(".modal-footer"))
 
-                    modal.on "close", () -> inputElem.focus()
-                    modal.on "confirm", ()-> modal.close()
-                    modal.find("#cidr-removed").on "click", () ->
-                        Design.instance().component( that.model.get("uid") ).remove()
-                        that.disabledAllOperabilityArea(false)
-                        modal.close()
+                modal.on "close", () -> inputElem.focus()
+                modal.on "confirm", ()-> modal.close()
+                modal.find("#cidr-removed").on "click", () ->
+                    Design.instance().component( that.model.get("uid") ).remove()
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
 
-            else
-                @model.setCidr subnetCIDR
-                @disabledAllOperabilityArea(false)
+            return false
+
+
+        onBlurCIDR : ( event ) ->
+            subnetCidr = @validateCidr( event )
+            unless subnetCidr then return
+
+            @model.setCidr subnetCidr
+            @disabledAllOperabilityArea(false)
 
 
         createAcl : ()->

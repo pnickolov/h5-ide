@@ -28,7 +28,7 @@ define [ '../base/view',
         render : () ->
             @$el.html template @model.attributes
             @refreshACLList()
-            @validateCidr()
+            @validateCidr true
 
             @model.attributes.name
 
@@ -53,12 +53,7 @@ define [ '../base/view',
             @disabledAllOperabilityArea( true )
             null
 
-        validateCidr: ( event ) ->
-            if event
-                inputElem = $(event.currentTarget)
-            else
-                inputElem = @$( '#property-cidr-block' )
-
+        validateCidr: ( init ) ->
             # if blank
             cidrPrefix = $("#property-cidr-prefix").html()
             cidrSuffix = $("#property-cidr-block").val()
@@ -81,6 +76,10 @@ define [ '../base/view',
                         removeInfo = ""
 
             unless mainContent then return subnetCIDR
+
+            if init
+                @focusCidrFirsttime()
+                return false
 
             if not @modal?.isOpen()
 
@@ -106,7 +105,8 @@ define [ '../base/view',
                 $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{removeInfo}</a>""")
                 .appendTo(modal.find(".modal-footer"))
 
-                modal.on "close", () -> inputElem.focus()
+                modal.on "close", () -> that.$( '#property-cidr-block' ).focus()
+
                 modal.on "confirm", ()-> modal.close()
                 modal.find("#cidr-removed").on "click", () ->
                     Design.instance().component( that.model.get("uid") ).remove()
@@ -115,9 +115,15 @@ define [ '../base/view',
 
             return false
 
+        focusCidrFirsttime: ->
+            _.defer ->
+                $cidr = @$( '#property-cidr-block' )
+                $cidr.focus()
+                len = $cidr.val().length
+                $cidr[ 0 ].setSelectionRange len, len
 
         onBlurCIDR : ( event ) ->
-            subnetCidr = @validateCidr( event )
+            subnetCidr = @validateCidr()
             unless subnetCidr then return
 
             @model.setCidr subnetCidr

@@ -14,18 +14,22 @@
 
 /* Refresh & Manage Shared Resource */
 
+.sidebar-tool { @include displayflex; }
+
 .sidebar-tool button {
-  color  : $dark-grey;
-  margin : 0 16px;
-  cursor : pointer;
-  line-height: 37px;
+  color       : $dark-grey;
+  width       : 50%;
+  cursor      : pointer;
+  line-height : 37px;
 
   &:hover {
     color: $light-p-2;
   }
 
   i {
-    font-style: normal;
+    font-style : normal;
+    display    : inline-block;
+    height     : 100%;
 
     &:before {
       margin-right : 8px;

@@ -326,7 +326,7 @@ Additional Notes and Questions
 
 <!-- {{groupedSgRuleList}} -->
 {{#each groups}}
-<h3 class="truncate sg-create-group"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
+<h3 class="truncate"><span class="sg-color sg-color-rule-header" style="background-color:{{ownerColor}}"></span>{{ownerName}}</h3>
 <ul class="sg-rule-list">{{{content}}}</ul>
 {{/each}}
 

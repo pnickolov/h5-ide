@@ -758,7 +758,7 @@ g.shadow { opacity : 0.8; pointer-events: none; }
   text-align : center;
 
 
-  &:nth-child(4n+1) { clear : left; margin-left : 10px; }
+  &:nth-child(4n+1) { clear : left; margin-left: 5px; }
 
   &.selected, &:hover { background-color : #F3F9FF; }
   &.selected { border-color : #659FFF; }

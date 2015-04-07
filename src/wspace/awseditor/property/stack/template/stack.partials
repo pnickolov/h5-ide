@@ -64,7 +64,7 @@
         </div>
       </section>
       {{/if}}
- -->      <section class="property-control-group" id="mesos-data-area">
+ -->      <section id="mesos-data-area">
       </section>
     </div>
     {{/if}}

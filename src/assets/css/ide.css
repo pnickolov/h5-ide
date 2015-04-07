@@ -5919,7 +5919,7 @@ g.shadow {
   text-align: center; }
   .vpp-instance:nth-child(4n+1) {
     clear: left;
-    margin-left: 10px; }
+    margin-left: 5px; }
   .vpp-instance.selected, .vpp-instance:hover {
     background-color: #F3F9FF; }
   .vpp-instance.selected {
@@ -6905,7 +6905,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   line-height: 30px;
   margin-top: 20px;
   clear: both;
-  border: 1px solid #000; }
+  border: 1px solid #000;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
   .process-detail > header {
     text-align: left;
     color: #4B4B4B;
@@ -6913,6 +6914,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     margin: 0; }
     .process-detail > header .pdr-2 {
       margin-left: 50px; }
+  .process-detail .icon-success {
+    color: #11c568; }
   .process-detail .pdr-3 {
     float: right;
     width: 100px; }
@@ -6930,7 +6933,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     overflow-y: scroll;
     height: 280px;
     counter-reset: processdetailtable;
-    color: #DADADA; }
+    color: #DADADA;
+    font-size: 12px; }
     .process-detail > ul > li {
       height: 30px;
       counter-increment: processdetailtable;

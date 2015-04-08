@@ -106,6 +106,7 @@ define [ '../base/view',
                 .appendTo(modal.find(".modal-footer"))
 
                 modal.on "close", () -> that.$( '#property-cidr-block' ).focus()
+                modal.on "closed", () -> that.$( '#property-cidr-block' ).focus()
 
                 modal.on "confirm", ()-> modal.close()
                 modal.find("#cidr-removed").on "click", () ->
@@ -164,6 +165,8 @@ define [ '../base/view',
                     that.model.removeAcl( aclUID )
                     that.refreshACLList()
                     modal.close()
+                modal.on "close", ()-> $('#property-cidr-block').focus()
+                modal.on "closed", ()-> $('#property-cidr-block').focus()
             else
                 @model.removeAcl( aclUID )
                 @refreshACLList()

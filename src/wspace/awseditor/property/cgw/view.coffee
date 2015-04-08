@@ -108,8 +108,8 @@ define [ 'i18n!/nls/lang.js', '../base/view', './template/stack', 'constant', "D
                 .appendTo(modal.find(".modal-footer"))
                 modal.on "confirm", ()->
                     modal.close()
-                modal.on "close", ()->
-                    $('#property-cgw-ip').focus()
+                modal.on "close", ()-> $('#property-cgw-ip').focus()
+                modal.on "closed", ()-> $('#property-cgw-ip').focus()
                 modal.find("#cidr-removed").on "click",(e)->
                     e.preventDefault()
                     console.log "Not Work....."

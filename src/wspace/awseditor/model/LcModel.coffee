@@ -98,6 +98,9 @@ define [
 
       true
 
+    isPublic: -> @get 'publicIp'
+
+
     isDefaultTenancy : ()-> true
 
     # Use by CanvasElement(change members to groupMembers)
@@ -116,6 +119,18 @@ define [
           }
 
       amis || []
+
+    getAsgs: -> @connectionTargets( "LcUsage" )
+
+    getAsgsIncludeExpanded: ->
+      asgsIncludeExpanded = []
+      asgs = @getAsgs()
+
+      _.each asgs, ( asg ) ->
+        asgsIncludeExpanded = asgsIncludeExpanded.concat asg.get("expandedList")
+
+      asgsIncludeExpanded.concat asgs
+
 
     remove : ()->
       # Remove attached volumes when this lc is last lc

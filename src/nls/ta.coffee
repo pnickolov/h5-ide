@@ -406,4 +406,8 @@ module.exports =
       en: "The total number of Master node must be odd."
       zh: "Master node 的数量必须是奇数。"
 
+    SUBNET_CONNECTIVITY:
+      en: "%s must associate with a Route Table which routes to Internet Gateway so that EIP and Public IP within the subnets can work."
+      zh: "%s 必须连接到一个能够路由到互联网网关的路由表，才能使这些 Subnet 中的弹性 IP 和 公网 IP 正常工作。"
+
 

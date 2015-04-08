@@ -167,6 +167,7 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
 
                 modal.on "confirm", ()-> modal.close()
                 modal.on "close", () -> inputElem.focus()
+                modal.on "closed", () -> inputElem.focus()
                 modal.find("#cidr-removed").on "click", () ->
                     Design.instance().component(dataRef)?.remove()
                     that.disabledAllOperabilityArea(false)

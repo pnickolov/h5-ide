@@ -206,6 +206,32 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
         nameStr = nameStr.slice 0, -2
         Helper.message.error null, i18n.MASTER_NODE_MUST_BE_PLACED_IN_A_PUBLIC_SUBNET, nameStr
 
+    isInstanceOrLcConnectable = ->
+        lonelySb = []
+
+        Design.modelClassForType( constant.RESTYPE.INSTANCE ).each ( i ) ->
+            sb = i.parent()
+            if i.isPublic() and !sb.isPublic() then lonelySb.push sb
+
+        Design.modelClassForType( constant.RESTYPE.LC ).each ( lc ) ->
+            if lc.isPublic()
+                asgs = lc.getAsgsIncludeExpanded()
+                for asg in asgs
+                    sb = asg.parent()
+                    if !sb.isPublic() then lonelySb.push sb
+
+        lonelySb = _.uniq lonelySb
+
+        unless lonelySb.length then return null
+
+        nameStr = ''
+        for sb in lonelySb
+            nameStr += "Subnet <span class='validation-tag tag-subnet'>#{sb.get('name')}</span>, "
+
+        nameStr = nameStr.slice 0, -2
+        Helper.message.error null, i18n.SUBNET_CONNECTIVITY, nameStr
+
+
 
 
     isEBSOptimizedForAttachedProvisionedVolume  : isEBSOptimizedForAttachedProvisionedVolume
@@ -215,5 +241,6 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
     isMesosHasSlave                             : isMesosHasSlave
     isMesosMasterCountLegal                     : isMesosMasterCountLegal
     isMesosMasterPlacedInPublicSubnet           : isMesosMasterPlacedInPublicSubnet
+    isInstanceOrLcConnectable                   : isInstanceOrLcConnectable
 
 

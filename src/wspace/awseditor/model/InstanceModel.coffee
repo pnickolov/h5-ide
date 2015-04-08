@@ -268,6 +268,9 @@ define [
     hasAutoAssignPublicIp: () ->
       @getEmbedEni().get 'assoPublicIp'
 
+    isPublic: ->
+      @hasAutoAssignPublicIp() or @getEmbedEni().hasEip()
+
     setCount : ( count )->
       @set "count", count
 

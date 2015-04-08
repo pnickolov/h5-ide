@@ -175,7 +175,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
             modal.pending = true
             modal.trigger "close", @
             modal.option.onClose?(@)
-
             if modals.length > 1
                 if modal.option.mode is "panel"
                     modal.tpl.removeClass("bounce")
@@ -189,6 +188,7 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 modal.tpl.remove()
                 modal.trigger "closed", @
                 modal.pending = false
+                modal.isClosed = true
                 if modals.length > 1
                     modals.length = modals.length - number
                 else
@@ -201,7 +201,6 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 modal.nextCloses.forEach (modalToClose)->
                   modalToClose.close()
             , (modal.option.delay||300)+10
-            modal.isClosed = true
             @
 
 
@@ -230,6 +229,8 @@ define ['backbone', 'i18n!/nls/lang.js'], (Backbone, lang)->
                 @wrap.off "click"
                 @wrap.on "click", (e)->
                     if e.target is e.currentTarget
+                        modal = modals[modals.length - 1]
+                        if modal.pending then return false
                         self.close()
             $(window).resize ->
                 unless self.isClosed

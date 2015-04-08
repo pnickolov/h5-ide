@@ -220,6 +220,11 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
                     sb = asg.parent()
                     if !sb.isPublic() then lonelySb.push sb
 
+        Design.modelClassForType( constant.RESTYPE.ENI ).each ( eni ) ->
+            if !eni.embedInstance() and eni.hasEip()
+                sb = eni.parent()
+                lonelySb.push sb unless sb.isPublic()
+
         lonelySb = _.uniq lonelySb
 
         unless lonelySb.length then return null

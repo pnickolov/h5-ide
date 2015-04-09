@@ -109,7 +109,7 @@
     {{else}}
         {{#if production}}
             <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{i18n "TOOLBAR.FORGET_CONFIRM_INSTRUCTION"}}</p>
-            <p>{{ i18n 'POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL' }}</p>
+            <p>{{ i18n 'POP_CONFIRM_FORGET_PROD_APP_INPUT_LBL' }}</p>
             <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
         {{else}}
             <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOLBAR.FORGET_APP_CONFIRM"}}</div></div>

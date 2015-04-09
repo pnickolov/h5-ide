@@ -198,6 +198,7 @@
   margin-top  : 20px;
   clear       : both;
   border      : 1px solid #000;
+  @include font-mono;
 
   > header {
     text-align : left;
@@ -209,6 +210,8 @@
       margin-left:50px;
     }
   }
+  
+  .icon-success { color: $base-g; }
 
   .pdr-3 {
     float : right;
@@ -231,7 +234,8 @@
     overflow-y    : scroll;
     height        : 280px;
     counter-reset : processdetailtable;
-    color : #DADADA;
+    color         : #DADADA;
+    font-size     : 12px;
 
     > li {
       height : 30px;

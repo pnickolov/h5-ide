@@ -3289,15 +3289,24 @@ aside.dashboard-sidebar {
   position: absolute; }
 
 /* Refresh & Manage Shared Resource */
+.sidebar-tool {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; }
+
 .sidebar-tool button {
   color: #898dbc;
-  margin: 0 16px;
+  width: 50%;
   cursor: pointer;
   line-height: 37px; }
   .sidebar-tool button:hover {
     color: #51568e; }
   .sidebar-tool button i {
-    font-style: normal; }
+    font-style: normal;
+    display: inline-block;
+    height: 100%; }
     .sidebar-tool button i:before {
       margin-right: 8px;
       display: inline-block; }
@@ -4422,7 +4431,7 @@ aside.dashboard-sidebar {
   transition: left .3s ease-in-out; }
 
 .sg-node-wrap {
-  background: #222;
+  background: #2b2b35;
   padding: 15px 10px;
   border-radius: 4px; }
 
@@ -4483,7 +4492,8 @@ aside.dashboard-sidebar {
   display: none; }
 
 .sg-create-proto-inputs .sg-proto-input .input {
-  width: 302px; }
+  width: 302px;
+  height: 23px; }
 
 #sg-proto-ipt-all {
   line-height: 31px; }
@@ -4534,7 +4544,7 @@ aside.dashboard-sidebar {
 
 .sidebar-wrap {
   height: 100%;
-  background: #4e4e4e;
+  background: #32323d;
   border: 1px solid #202020;
   border-radius: 5px 0 0 5px; }
 
@@ -4549,17 +4559,6 @@ aside.dashboard-sidebar {
   color: #777;
   font-size: 12px; }
 
-.sg-create-group {
-  display: block;
-  line-height: 16px;
-  height: 16px;
-  padding: 2px;
-  background: #272727;
-  font-size: 12px;
-  border-top: 1px solid #202020;
-  border-bottom: 1px solid #202020;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04); }
-
 .sg-create-rule-list .sg-create-rule-item {
   border-bottom: 1px solid #333;
   padding: 5px 10px;
@@ -4567,11 +4566,19 @@ aside.dashboard-sidebar {
   background: #414141;
   font-size: 12px; }
 
-.sg-create-rule-list .sg-create-group {
-  width: 196px; }
+.sg-create-rule-list h3 {
+  width: 196px;
+  display: block;
+  line-height: 16px;
+  height: 16px;
+  padding: 2px;
+  background: #272727;
+  font-size: 12px;
+  border-top: 1px solid #202020;
+  border-bottom: 1px solid #202020; }
 
 .sg-create-rule-list .sg-color {
-  margin: 3px 5px; }
+  margin: 0 5px; }
 
 .sg-create-rule-list .rule-list-row .sg-color {
   margin: 3px 3px 0 0; }
@@ -4579,7 +4586,15 @@ aside.dashboard-sidebar {
 .sg-create-rule-list .rule-reference {
   width: 100px; }
 
-.sg-create-rule-item .sg-rule-delete {
+.sg-create-rule-list .sg-rule-list li {
+  padding: 3px 5px;
+  border-bottom: 1px solid #202027; }
+  .sg-create-rule-list .sg-rule-list li:hover {
+    background: #373743; }
+    .sg-create-rule-list .sg-rule-list li:hover .sg-rule-delete {
+      display: block; }
+
+.sg-rule-delete {
   position: absolute;
   right: 10px;
   top: 50%;
@@ -4587,12 +4602,8 @@ aside.dashboard-sidebar {
   line-height: 16px;
   color: #999;
   display: none; }
-
-.sg-create-rule-item:hover .sg-rule-delete {
-  display: block; }
-
-.sg-create-rule-item .sg-rule-delete:hover {
-  color: #ea5d5d; }
+  .sg-rule-delete:hover {
+    color: #dd4c4c; }
 
 .btn.sg-rule-create-readd {
   width: 200px; }
@@ -5910,7 +5921,7 @@ g.shadow {
   text-align: center; }
   .vpp-instance:nth-child(4n+1) {
     clear: left;
-    margin-left: 10px; }
+    margin-left: 5px; }
   .vpp-instance.selected, .vpp-instance:hover {
     background-color: #F3F9FF; }
   .vpp-instance.selected {
@@ -6896,7 +6907,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   line-height: 30px;
   margin-top: 20px;
   clear: both;
-  border: 1px solid #000; }
+  border: 1px solid #000;
+  font-family: "Consolas","Monaco","Ubuntu Mono",monospace !important; }
   .process-detail > header {
     text-align: left;
     color: #4B4B4B;
@@ -6904,6 +6916,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     margin: 0; }
     .process-detail > header .pdr-2 {
       margin-left: 50px; }
+  .process-detail .icon-success {
+    color: #11c568; }
   .process-detail .pdr-3 {
     float: right;
     width: 100px; }
@@ -6921,7 +6935,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     overflow-y: scroll;
     height: 280px;
     counter-reset: processdetailtable;
-    color: #DADADA; }
+    color: #DADADA;
+    font-size: 12px; }
     .process-detail > ul > li {
       height: 30px;
       counter-increment: processdetailtable;

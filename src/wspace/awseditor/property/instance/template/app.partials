@@ -2,9 +2,7 @@
 <article class="property-app">
   {{#if isMesosSlave}}
   <div class="option-group-head expand">Mesos Details</div>
-  <div class="option-group">
-    <section class="property-control-group" id="mesos-data-area">
-    </section>
+  <div class="option-group" id="mesos-data-area">
   </div>
   {{/if}}
 

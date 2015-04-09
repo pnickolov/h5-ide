@@ -1137,9 +1137,15 @@ VisualOps API. You cannot UNDO this action.'
       en: " Terminating it will make your service unavailable. Any auto scaling group will be deleted when application is stopped."
       zh: " 终止此 App 将导致服务不可用， 所有的Auto Scaling 组都将被删除。"
 
+    POP_CONFIRM_FORGET_PROD_APP_INPUT_LBL:
+      en: "Please type in the name of this app to confirm forgetting it."
+      zh: "请输入此 APP 的名字来确认释放。"
+
     POP_CONFIRM_TERMINATE_PROD_APP_INPUT_LBL:
       en: "Please type in the name of this app to confirm terminating it."
       zh: "请输入此 APP 的名字来确认终止。"
+
+
 
     ##### Modal Import JSON
 

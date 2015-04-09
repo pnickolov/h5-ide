@@ -1000,6 +1000,8 @@ $bp-2: 1280px;
 #RegionResourceData {
     min-height : 460px;
 
+    .table { background-color: transparent; }
+
     .table-app-link {
       cursor : pointer;
       color : #148BE6;

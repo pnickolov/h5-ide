@@ -32,7 +32,7 @@
 }
 
 .sg-node-wrap {
-	background   : #222;
+	background   : lighten($bg-p,5%);
 	padding      : 15px 10px;
 	border-radius: 4px;
 }
@@ -106,7 +106,8 @@
 }
 
 .sg-create-proto-inputs .sg-proto-input .input {
-	width: 302px;
+	width  : 302px;
+	height : 23px;
 }
 
 #sg-proto-ipt-all {
@@ -169,7 +170,7 @@
 
 .sidebar-wrap {
 	height        : 100%;
-	background    : #4e4e4e;
+	background    : lighten($bg-p,8%);
 	border        : 1px solid #202020;
 	border-radius : 5px 0 0 5px;
 }
@@ -187,18 +188,6 @@
 	font-size: 12px;
 }
 
-.sg-create-group {
-	display     : block;
-	line-height : 16px;
-	height      : 16px;
-	padding     : 2px;
-	background    : #272727;
-	font-size     : 12px;
-	border-top    : 1px solid #202020;
-	border-bottom : 1px solid #202020;
-	box-shadow    : inset 0 1px 0 rgba(255,255,255,.04);
-}
-
 .sg-create-rule-list .sg-create-rule-item {
 	border-bottom : 1px solid #333;
 	padding       : 5px 10px;
@@ -207,12 +196,20 @@
 	font-size     : 12px;
 }
 
-.sg-create-rule-list .sg-create-group {
+.sg-create-rule-list h3 {
 	width       : 196px;
+	display     : block;
+	line-height : 16px;
+	height      : 16px;
+	padding     : 2px;
+	background    : #272727;
+	font-size     : 12px;
+	border-top    : 1px solid #202020;
+	border-bottom : 1px solid #202020;
 }
 
 .sg-create-rule-list .sg-color {
-	margin: 3px 5px;
+	margin: 0 5px;
 }
 
 .sg-create-rule-list .rule-list-row .sg-color {
@@ -223,7 +220,18 @@
 	width: 100px;
 }
 
-.sg-create-rule-item .sg-rule-delete {
+.sg-create-rule-list .sg-rule-list li {
+	padding: 3px 5px;
+	border-bottom: 1px solid $bg-p;
+
+	&:hover {
+		background: lighten($bg-p, 10%);
+
+		.sg-rule-delete { display: block; }
+	}
+}
+
+.sg-rule-delete {
 	position    : absolute;
 	right       : 10px;
 	top         : 50%;
@@ -231,14 +239,8 @@
 	line-height : 16px;
 	color       : #999;
 	display     : none;
-}
 
-.sg-create-rule-item:hover .sg-rule-delete {
-	display: block;
-}
-
-.sg-create-rule-item .sg-rule-delete:hover {
-	color: $light-r;
+	&:hover { color: $base-r; }
 }
 
 .btn.sg-rule-create-readd {

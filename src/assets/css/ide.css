@@ -2749,6 +2749,8 @@ aside.dashboard-sidebar {
 
 #RegionResourceData {
   min-height: 460px; }
+  #RegionResourceData .table {
+    background-color: transparent; }
   #RegionResourceData .table-app-link {
     cursor: pointer;
     color: #148BE6;

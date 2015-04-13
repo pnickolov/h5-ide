@@ -41,6 +41,7 @@ define({
             kp: [ 'longLiveNotice' ]
             dbinstance: [ 'isOgValid', 'isHaveEnoughIPForDB' ]
             instance: [ 'isMesosMasterCountLegal', 'isMesosHasSlave', 'isMesosMasterPlacedInPublicSubnet', 'isInstanceOrLcConnectable' ]
+            subnet: [ 'isCidrConflict' ]
 
         openstack:
             ossubnet: [ 'subnetHasPortShouldConncectedOut', 'isSubnetCIDRConflict' ]

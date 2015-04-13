@@ -79,15 +79,9 @@ define [
         $("#import-json-error").html result
         return
 
-      if @type is "stack" and result.AWSTemplateFormatVersion
-        error = lang.IDE.POP_IMPORT_FORMAT_ERROR
-      else if @type is "cf" and not result.AWSTemplateFormatVersion
-        error = lang.IDE.POP_IMPORT_FORMAT_ERROR
-
-      if not error
-        if result.AWSTemplateFormatVersion
-          @handleCFTemplate( result )
-          return
+      if @type is "cf"
+        @handleCFTemplate( result )
+        return
 
       opsModel = @project.createStackByJson( result )
       App.loadUrl( opsModel.url() )

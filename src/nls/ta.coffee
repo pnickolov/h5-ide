@@ -21,6 +21,10 @@ module.exports =
       en: "Subnet <span class='validation-tag tag-subnet'>%s</span> is attached with a Load Balancer. Its mask must be smaller than /27."
       zh: "子网 <span class='validation-tag tag-subnet'>%s</span> 被附加了一个负载均衡器．它的子网掩码必须小于 /27。"
 
+    ERROR_CIDR_CONFLICT:
+      en: "Subnet <span class='validation-tag'>%s</span>'s CIDR(%s) conflict with subnet <span class='validation-tag'>%s</span>'s CIDR(%s)"
+      zh: "子网 <span class='validation-tag'>%s</span> 的CIDR(%s)与子网 <span class='validation-tag'>%s</span> 的CIDR(%s)冲突"
+
     # Instance
     NOTICE_INSTANCE_NOT_EBS_OPTIMIZED_FOR_ATTACHED_PROVISIONED_VOLUME:
       en: "Instance <span class='validation-tag tag-instance'>%s</span> has an attached Provisioned IOPS volume but is not EBS-Optimized."
@@ -409,5 +413,3 @@ module.exports =
     SUBNET_CONNECTIVITY:
       en: "%s must associate with a Route Table which routes to Internet Gateway so that EIP and Public IP within the subnets can work."
       zh: "%s 必须连接到一个能够路由到互联网网关的路由表，才能使这些 Subnet 中的弹性 IP 和 公网 IP 正常工作。"
-
-

@@ -747,6 +747,13 @@ module.exports =
       en: "Took %s min."
       zh: "花费 %s 分钟"
 
+    FIX_THE_ERROR_TO_LAUNCH_APP:
+      en: "Fix the error to launch app"
+      zh: "启动 App 之前请先修复所有错误"
+
+    FIX_THE_ERROR_TO_UPDATE:
+      en: "Fix the error to update"
+      zh: "Update 之前请先修复所有错误"
 
 
 

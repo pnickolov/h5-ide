@@ -66,9 +66,14 @@ define [
       @modal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
 
       # load TA
+      taPassed = false
       TA.loadModule('stack').then ()=>
+        taPassed = true
         @modal.resize()
-        @modal?.toggleConfirm false
+      .catch () =>
+        @modal.find('.modal-confirm').addClass('disabled').addClass('tooltip').attr('data-tooltip', lang.TOOLBAR.FIX_THE_ERROR_TO_LAUNCH_APP)
+      .fin () =>
+        @modal.toggleConfirm false
 
       appNameDom = @modal.tpl.find('#app-name')
       checkAppNameRepeat = @checkAppNameRepeat.bind @
@@ -77,6 +82,8 @@ define [
 
       self = @
       @modal.on 'confirm', ()=>
+        unless taPassed then return
+
         @hideError()
         if Design.instance().project().isDemoMode()
           if Design.instance().project().amIAdmin()

@@ -48,8 +48,10 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 		else
 			elbName = elbComp.name
 			tipInfo = sprintf lang.TA.ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG, elbName
+			level = constant.TA.ERROR
+			level = constant.TA.WARNING if Design.instance().mode() is 'appedit'
 			# return
-			level: constant.TA.ERROR
+			level: level
 			info: tipInfo
 			uid: elbUID
 

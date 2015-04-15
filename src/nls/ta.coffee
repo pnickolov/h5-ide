@@ -64,6 +64,10 @@ module.exports =
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no instance or auto scaling group added to it."
       zh: "没有实例或Auto Scaling 组被关联到负载均衡器 <span class='validation-tag tag-elb'>%s</span> 上。"
 
+    ERROR_ELB_NO_ATTACH_SUBNET:
+      en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> has no subnet associated with it."
+      zh: "没有子网被关联到负载均衡器 <span class='validation-tag tag-elb'>%s</span> 上。"
+
     WARNING_ELB_NO_ATTACH_TO_MULTI_AZ:
       en: "Load Balancer <span class='validation-tag tag-elb'>%s</span> is attached to only 1 availability zone. Attach load balancer to multiple availability zones can improve fault tolerance."
       zh: "负载均衡器 <span class='validation-tag tag-elb'>%s</span> 只关联到了一个可用区域上，若关联到多个可用区域上能够提升容错性。"

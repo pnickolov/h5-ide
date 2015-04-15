@@ -48,12 +48,21 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 		else
 			elbName = elbComp.name
 			tipInfo = sprintf lang.TA.ERROR_ELB_NO_ATTACH_INSTANCE_OR_ASG, elbName
-			level = constant.TA.ERROR
-			level = constant.TA.WARNING if Design.instance().mode() is 'appedit'
 			# return
-			level: level
+			level: constant.TA.WARNING
 			info: tipInfo
 			uid: elbUID
+
+	isHaveSubnetAttached = (elbUID) ->
+
+		elbComp = Design.instance().component(elbUID)
+		if elbComp.connections('ElbSubnetAsso').length is 0
+			return {
+				level: constant.TA.ERROR
+				info: sprintf(lang.TA.ERROR_ELB_NO_ATTACH_SUBNET, elbComp.get('name'))
+				uid: elbUID
+			}
+		return null
 
 	isAttachELBToMultiAZ = (elbUID) ->
 
@@ -541,3 +550,4 @@ define [ 'constant', 'MC','i18n!/nls/lang.js', 'TaHelper', 'CloudResources'], ( 
 	isSSLCertExist : isSSLCertExist
 	isInternetElbRouteOut : isInternetElbRouteOut
 	isNameExceedLimit : isNameExceedLimit
+	isHaveSubnetAttached : isHaveSubnetAttached

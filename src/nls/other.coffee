@@ -2223,7 +2223,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "没有错误、警告和提示。"
 
     LENGTH_ERROR:
-      en: "%s error(s), "
+      en: "%s error(s)"
       zh: "%s 个错误"
 
     LENGTH_WARNING:
@@ -3002,3 +3002,5 @@ into live resources, or import existing infrastructures."
     CANT_ATTACH_ENI_TO_MESOS_INSTANCE:
       en: "ENI cannot be attached to a mesos master or slave instance."
       zh: "Eni 不能附加到 Mesos Master 或 Mesos Slave 实例上。"
+
+

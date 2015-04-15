@@ -63,7 +63,7 @@ define [ 'event', 'i18n!/nls/lang.js',
             processNutshell = ( notShow ) ->
                 contentArr = []
                 if error.length
-                    contentArr.push sprintf lang.IDE.LENGTH_ERROR, error.len
+                    contentArr.push sprintf lang.IDE.LENGTH_ERROR, error.length
                     _.defer () ->
                         modal.position()
 

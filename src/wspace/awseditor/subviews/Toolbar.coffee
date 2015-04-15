@@ -434,6 +434,8 @@ define [
 
     applyAppEdit    : ()->
       that = @
+      taPassed = false
+
       oldJson = @workspace.opsModel.getJsonData()
       newJson = @workspace.design.serialize usage: 'updateApp'
 
@@ -509,6 +511,8 @@ define [
             that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
 
         that.updateModal.on 'confirm', ->
+          unless taPassed then return
+
           if not Design.instance().credential()
             Design.instance().project().showCredential()
             return false
@@ -525,13 +529,15 @@ define [
 
         that.appAction.renderKpDropdown(that.updateModal)
         TA.loadModule('stack').then ->
-          that.updateModal and that.updateModal.toggleConfirm false
-          that.updateModal?.resize()
-        , (err)->
+          taPassed = true
+        .catch (err)->
           console.log err
-          that.updateModal and that.updateModal.toggleConfirm true
-          that.updateModal and that.updateModal.tpl.find("#take-rds-snapshot").off 'change'
+          that.updateModal?.tpl.find("#take-rds-snapshot").off 'change'
+          that.updateModal?.find('.modal-confirm').addClass('disabled').addClass('tooltip').attr('data-tooltip', lang.TOOLBAR.FIX_THE_ERROR_TO_UPDATE)
+        .fin ->
           that.updateModal?.resize()
+          that.updateModal?.toggleConfirm false
+
         return
 
     opsOptionChanged: ->

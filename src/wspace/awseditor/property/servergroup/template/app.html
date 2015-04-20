@@ -92,6 +92,16 @@
 
       <p class="{{#unless monitoring}}hide{{/unless}} property-info" id="property-cloudwatch-warn">{{ i18n "PROP.INSTANCE_CW_WARN" }}<a target="_blank" href="http://aws.amazon.com/cloudwatch">{{i18n "PROP.SG_AMAZON_CLOUD_WATCH_PRODUCT_PAGE"}}</a></p>
     </section>
+      {{#ifCond ami.type "ebs"}}
+      <section class="property-control-group">
+          {{#if stackAgentEnable}}
+          <div class="property-info">{{i18n "PROP.INSTANCE_USERDATA_DISABLED_TO_INSTALL_VISUALOPS"}} <a href="{{ i18n 'PROP.AGENT_USER_DATA_URL' }}" target="_blank">{{i18n "PROP.INSTANCE_VIEW_AGENT_USER_DATA_URL_TEXT"}}</a>.</div>
+          {{else}}
+          <label for="property-instance-user-data">{{ i18n "PROP.INSTANCE_USER_DATA" }}</label>
+          <textarea id="property-instance-user-data">{{userData}}</textarea>
+          {{/if}}
+      </section>
+      {{/ifCond}}
   </div>
 
   {{#if rootDevice}}

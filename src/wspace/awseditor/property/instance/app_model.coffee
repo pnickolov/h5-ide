@@ -51,7 +51,6 @@ define [ '../base/model',
         init : ( instanceId )->
             if not @resModel
                 console.warn "instance.app_model.init(): can not find InstanceModel"
-
             @set 'id', instanceId
             @set 'uid', instanceId
 
@@ -61,7 +60,10 @@ define [ '../base/model',
                 appId = instanceId
             else
                 appId = @resModel.get 'appId'
-
+            if @resModel
+                @set "userData", @resModel.get("userData")
+                component  = Design.instance().component( instanceId )
+                @set "userDataEnabled" , (not Design.instance().get("agent").enabled and component.getAmi().rootDeviceType is "ebs")
             app_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region())
 
             if app_data?.get(appId)?.toJSON()

@@ -29,6 +29,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             "click #property-app-keypair" : "keyPairClick"
             "click #property-app-ami" : "openAmiPanel"
             "click .property-btn-get-system-log" : "openSysLogModal"
+            "click #property-user-data-detail" : "viewUserDataDetail"
 
         render : () ->
             data = @model.toJSON()
@@ -175,6 +176,17 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             , ()->
                 that.refreshSysLog()
             return false
+
+        viewUserDataDetail: ()->
+            userData = @model.get("userData")
+            @userDataLog = new modalPlus({
+              template: MC.template.modalInstanceSysLog {log_content: MC.template.convertBreaklines({content:userData})}
+              width: 900
+              title: lang.PROP.INSTANCE_USER_DATA
+              confirm: hide: true
+            }).tpl.attr("id", "modal-instance-sys-log")
+            @userDataLog.find('.instance-sys-log-content').html(MC.template.convertBreaklines({content:userData})).show()
+            @userDataLog.find('.instance-sys-log-loading').hide()
 
         refreshSysLog : (result) ->
 

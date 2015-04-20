@@ -256,6 +256,10 @@ module.exports =
       en: "User Data"
       zh: "用户数据"
 
+    INSTANCE_USER_DATA_DETAIL:
+      en: "View User Data Detail"
+      zh: "查看详细用户数据"
+
     INSTANCE_USER_DATA_DISABLE:
       en: "Can't edit user data when instance state exist"
       zh: "Instance State 存在的情况下无法编辑 user data"

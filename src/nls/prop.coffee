@@ -256,6 +256,14 @@ module.exports =
       en: "User Data"
       zh: "用户数据"
 
+    RESOURCE_TAGS:
+      en: "Tags"
+      zh: "资源标签"
+
+    RESOURCE_NO_TAGS:
+      en: "This resource has no tags"
+      zh: "该资源没有标签"
+
     INSTANCE_USER_DATA_DETAIL:
       en: "View User Data Detail"
       zh: "查看详细用户数据"

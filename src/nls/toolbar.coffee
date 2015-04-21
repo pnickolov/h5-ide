@@ -568,7 +568,7 @@ module.exports =
       zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
 
     TIP_REFRESH_REOURCES:
-      en: "Refresh Reources"
+      en: "Refresh Resources"
       zh: "刷新资源"
 
     TIP_JSON_DIFF:

@@ -62,12 +62,11 @@ define [ '../base/model',
                 appId = @resModel.get 'appId'
             if @resModel
                 @set "userData", @resModel.get("userData")
-                component  = Design.instance().component( instanceId )
-                @set "userDataEnabled" , (not Design.instance().get("agent").enabled and component.getAmi().rootDeviceType is "ebs")
             app_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.INSTANCE, Design.instance().region())
 
             if app_data?.get(appId)?.toJSON()
                 instance = $.extend true, {}, app_data.get(appId)?.toJSON()
+                @set "userDataEnabled" , (not Design.instance().get("agent").enabled and instance.rootDeviceType is "ebs")
                 instance.name = if @resModel then @resModel.get 'name' else appId
                 rdName = @resModel.getAmiRootDeviceName()
 

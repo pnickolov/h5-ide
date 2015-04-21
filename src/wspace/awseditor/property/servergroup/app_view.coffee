@@ -27,7 +27,7 @@ define [ '../base/view',
 
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-source-check'      : 'sourceCheckChange'
-            'change #property-instance-user-data'         : 'updateUserData'
+            #'change #property-instance-user-data'         : 'updateUserData'
 
         render : ( ) ->
             # Render

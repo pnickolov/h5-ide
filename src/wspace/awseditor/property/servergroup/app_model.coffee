@@ -53,14 +53,13 @@ define [ '../base/model',
 			if routeCount
 				@set 'number_disable', true
 
-
 			@set 'number', @resModel.get 'count'
 			@set 'name',   @resModel.get 'name'
 			@set 'monitoring', @resModel.get 'monitoring'
 			@set 'description', @resModel.get 'description'
 			@set 'displayCount', @resModel.get('count') - 1
 			@set 'userData', @resModel.get("userData")
-			@set "stackAgentEnable", Design.instance().get("agent").enabled
+			#@set "stackAgentEnable", Design.instance().get("agent").enabled
 
 			@getGroupList()
 			@getEni()

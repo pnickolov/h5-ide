@@ -2158,6 +2158,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "System log is not ready yet. Please try in a short while."
       zh: "系统日志还没有准备好， 请稍后重试。"
 
+    USER_DATA_FETCH_FAILED:
+      en: "Failed to get user data, please try again later."
+      zh: "获取用户数据失败， 请稍后重试。"
+
     PROVIDE_BILLING_INFORMATION:
       en: "Provide Billing Information"
       zh: "提供账单信息"

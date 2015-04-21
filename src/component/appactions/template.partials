@@ -25,7 +25,7 @@
     </ul>
     {{#if lostDBSnapshot.length}}
         <div class="modal-shrink">
-            <div class="sub-gray">{{i18n "TOOLBAR.POP_START_WARNNING"}}</div>
+            <div class="sub-gray">{{i18n "TOOLBAR.POP_START_WARNING"}}</div>
             <div class="error">
                 {{i18n "TOOLBAR.POP_START_MISSING_SNAPSHOT_1"}} {{#each lostDBSnapshot}}{{#if index}}, {{/if}}{{name}}{{/each}} {{i18n "TOOLBAR.POP_START_MISSING_SNAPSHOT_2"}}
             </div>

@@ -35,7 +35,7 @@ module.exports =
       en: "Enable VisualOps will override your custom User Data. Are you sure to continue?"
       zh: "开启 VisualOps 将覆盖您的 User Data，确定继续么?"
 
-    EXPORT_CLOUDFORMATION_WARNNING:
+    EXPORT_CLOUDFORMATION_WARNING:
       en: "DB Instance using custom Option Group is not supported in CloudFormation Template. Default Option Group will be used instead."
       zh: "数据库实例的自定义选项组在 CloudFormation 里不支持，将使用默认的选项组。"
 
@@ -423,7 +423,7 @@ module.exports =
       en: "Auto Scaling Group will be recreated when the app is started."
       zh: "Auto Scaling 组将会在 App 启动的时候重新创建。"
 
-    POP_START_WARNNING:
+    POP_START_WARNING:
       en: "Warning"
       zh: "警告"
 
@@ -567,7 +567,7 @@ module.exports =
       en: "If any of the instance(s) has been automatically assigned public IP, the IP will change after restart.",
       zh: "重启后，已分配公有IP地址的实例将会被重新分配。"
 
-    TIP_REFRESH_REOURCES:
+    TIP_REFRESH_RESOURCES:
       en: "Refresh Resources"
       zh: "刷新资源"
 

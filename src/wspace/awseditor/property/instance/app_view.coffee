@@ -206,8 +206,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
         refreshSysLog : (result, errMessage) ->
           $('#modal-instance-sys-log .instance-sys-log-loading').hide()
           if errMessage
-            $("#modal-instance-sys-log .instance-sys-log-info").text(errMessage)
-            $('#modal-instance-sys-log .instance-sys-log-info').show()
+            $("#modal-instance-sys-log .instance-sys-log-info").text(errMessage).show()
           else
             logContent = Base64.decode(result)
             $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')

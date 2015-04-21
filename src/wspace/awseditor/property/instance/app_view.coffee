@@ -208,6 +208,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
           if errMessage
             $("#modal-instance-sys-log .instance-sys-log-info").text(errMessage).show()
           else
+            result = result || ""
             logContent = Base64.decode(result)
             $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
             $contentElem.html MC.template.convertBreaklines({content:logContent})

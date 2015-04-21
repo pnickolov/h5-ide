@@ -68,6 +68,10 @@
 
       <dt>{{i18n "PROP.INSTANCE_CLOUDWATCH_DETAILED_MONITORING"}}</dt>
       <dd>{{monitoringState}}</dd>
+      {{#if userDataEnabled}}
+      <dt>{{i18n "PROP.INSTANCE_USER_DATA"}}</dt>
+      <dd><a href="#" id="property-user-data-detail">{{i18n "PROP.INSTANCE_USER_DATA_DETAIL"}}</a></dd>
+      {{/if}}
 
     </dl>
 

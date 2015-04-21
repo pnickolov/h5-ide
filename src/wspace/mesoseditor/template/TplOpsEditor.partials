@@ -45,7 +45,7 @@
 <button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}'></button>
 
 <!-- {{toolbar.BtnReloadRes}} -->
-<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_REOURCES'}}"></button>
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_RESOURCES'}}"></button>
 
 <!-- {{confirm.enableState}} -->
 <div class="modal-text-wraper">

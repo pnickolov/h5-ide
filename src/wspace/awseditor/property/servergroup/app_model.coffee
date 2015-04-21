@@ -29,6 +29,7 @@ define [ '../base/model',
 					id   : ami_id
 					name : ami.name or ami.description or ami.id
 					icon : "#{ami.osType}.#{ami.architecture}.#{ami.rootDeviceType}.png"
+					type : ami.rootDeviceType
 				}
 
 				@set 'type_editable', ami.rootDeviceType isnt "instance-store"
@@ -52,12 +53,13 @@ define [ '../base/model',
 			if routeCount
 				@set 'number_disable', true
 
-
 			@set 'number', @resModel.get 'count'
 			@set 'name',   @resModel.get 'name'
 			@set 'monitoring', @resModel.get 'monitoring'
 			@set 'description', @resModel.get 'description'
 			@set 'displayCount', @resModel.get('count') - 1
+			@set 'userData', @resModel.get("userData")
+			#@set "stackAgentEnable", Design.instance().get("agent").enabled
 
 			@getGroupList()
 			@getEni()
@@ -146,6 +148,7 @@ define [ '../base/model',
 		attachEip : instance_model.attachEip
 		setMonitoring : instance_model.setMonitoring
 		setSourceCheck : instance_model.setSourceCheck
+		setUserData    : instance_model.setUserData
 	}
 
 	new ServerGroupModel()

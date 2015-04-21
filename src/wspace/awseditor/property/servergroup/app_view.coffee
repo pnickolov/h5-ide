@@ -27,6 +27,7 @@ define [ '../base/view',
 
             'change #property-instance-enable-cloudwatch' : 'cloudwatchSelect'
             'change #property-instance-source-check'      : 'sourceCheckChange'
+            #'change #property-instance-user-data'         : 'updateUserData'
 
         render : ( ) ->
             # Render
@@ -54,6 +55,8 @@ define [ '../base/view',
         updateInstanceList : () ->
             $("#prop-appedit-ami-list").html ami_list_template @model.attributes
             null
+
+        updateUserData:  instance_view.userdataChange
 
         countChange : ( event ) ->
             target = $ event.currentTarget

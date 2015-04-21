@@ -51,7 +51,7 @@
 <button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}'></button>
 
 <!-- {{toolbar.BtnReloadRes}} -->
-<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_REOURCES'}}"></button>
+<button class="btn-toolbar tooltip icon-refresh seperator" data-tooltip="{{i18n 'TOOLBAR.TIP_REFRESH_RESOURCES'}}"></button>
 
 
 <!-- {{toolbar.BtnSwitchStates}} -->
@@ -74,7 +74,7 @@
 <div class="modal-text-wraper">
     <div class="modal-center-align-helper">
         {{#if hasCustomOG}}
-            <div class="modal-text-highlight">{{i18n "TOOLBAR.EXPORT_CLOUDFORMATION_WARNNING"}}</div>{{/if}}
+            <div class="modal-text-highlight">{{i18n "TOOLBAR.EXPORT_CLOUDFORMATION_WARNING"}}</div>{{/if}}
         <div class="modal-text-minor">{{i18n "TOOLBAR.POP_EXPORT_CF_INFO"}}</div>
     </div>
 </div>

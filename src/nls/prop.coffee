@@ -266,7 +266,7 @@ module.exports =
 
     INSTANCE_CW_WARN:
       en: "Data is available in 1-minute periods at an additional cost. For information about pricing, go to the "
-      zh: "数据在一分钟内可用需要额外的花费．要获取价格信息，请访问 "
+      zh: "1分钟内即可用的数据需要额外花费．要获取价格信息，请访问 "
 
     AGENT_USER_DATA_URL:
       en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"

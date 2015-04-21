@@ -175,7 +175,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
                 that.refreshSysLog( data.GetConsoleOutputResponse?.output )
                 that.sysLogModal.resize()
             , ()->
-                that.refreshSysLog()
+                that.refreshSysLog(null, lang.IDE.SYSTEM_LOG_NOT_READY)
                 that.sysLogModal.resize()
             return false
 
@@ -197,24 +197,22 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             }).then (data)->
               console.log data
               userData = data?.DescribeInstanceAttributeResponse?.userData?.value
-              self.refreshSysLog(userData, lang.IDE.USER_DATA_FETCH_FAILED)
+              self.refreshSysLog(userData)
               self.userDataLog.resize()
             , ()->
               self.refreshSysLog(null, lang.IDE.USER_DATA_FETCH_FAILED)
               self.userDataLog.resize()
 
         refreshSysLog : (result, errMessage) ->
-            if errMessage
-              $("#modal-instance-sys-log .instance-sys-log-info").text(errMessage)
-            $('#modal-instance-sys-log .instance-sys-log-loading').hide()
-            if result
-              logContent = Base64.decode(result)
-              $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
-              $contentElem.html MC.template.convertBreaklines({content:logContent})
-              $contentElem.show()
-            else
-              $('#modal-instance-sys-log .instance-sys-log-info').show()
-
+          $('#modal-instance-sys-log .instance-sys-log-loading').hide()
+          if errMessage
+            $("#modal-instance-sys-log .instance-sys-log-info").text(errMessage)
+            $('#modal-instance-sys-log .instance-sys-log-info').show()
+          else
+            logContent = Base64.decode(result)
+            $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
+            $contentElem.html MC.template.convertBreaklines({content:logContent})
+            $contentElem.show()
     }
 
     new InstanceAppView()

@@ -128,6 +128,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyM
                 groupId     : currentAppSG.groupId
                 ownerId     : currentAppSG.ownerId
                 vpcId       : currentAppSG.vpcId
+                tagSet      : currentAppSG.tagSet
                 members     : members
                 rules       : rules
 

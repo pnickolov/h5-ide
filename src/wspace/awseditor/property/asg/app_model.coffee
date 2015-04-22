@@ -31,7 +31,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
             @set 'awsResName', asg_data.AutoScalingGroupName
             @set 'arn', asg_data.id
             @set 'createTime', asg_data.CreatedTime
-
+            @set "tagSet", asg_data.tagSet
             if asg_data.TerminationPolicies and asg_data.TerminationPolicies
                 @set 'term_policy_brief', asg_data.TerminationPolicies.join(" > ")
 

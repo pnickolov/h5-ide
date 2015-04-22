@@ -25,4 +25,24 @@
             </dl>
             {{/each}}
     </div>
+    <div class="option-group-head">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        <div class="tagTable">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
 </article>
+
+
+<!--{{tagSets}}-->
+<table class="table cost-estimation-table">
+    <tbody>
+    {{#each tagSet}}
+        <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
+    {{else}}
+        <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
+    {{/each}}
+    </tbody>
+</table>

@@ -151,7 +151,7 @@ module.exports =
       en: "Key Pair Name"
       zh: "密钥对名称"
 
-    KP_CREATED_NEED_TO_DOWNLAOD:
+    KP_CREATED_NEED_TO_DOWNLOAD:
       en: "Key pair <span></span> is created. You have to download the private key file (*.pem file) before you can continue. Store it in a secure and accessible location. You will not be able to download the file again after it's created."
       zh: "密钥对 <span></span> 创建完成, 您需要下载私钥(*.pem 文件)才能继续, 请将其保存于安全的位置, 创建完成之后您将无法再次下载。"
 
@@ -160,7 +160,7 @@ module.exports =
       zh: "确认删除"
 
     KP_CONFIRM_DELETE_2:
-      en: "selected %s key paires?"
+      en: "selected %s key pairs?"
       zh: "已选择的 %s 个密钥对吗?"
 
     KP_CONFIRM_DELETE_3:
@@ -405,7 +405,7 @@ module.exports =
       zh: "<p>此 AMI 不可用, 可能已经被所有者删除或者不再与您的 AWS 账号共享。 </p><p>请选择其他的 AMI。</p>"
 
     AMI_APP_NOT_AVAILABLE:
-      en: "This AMI's infomation is unavailable."
+      en: "This AMI's information is unavailable."
       zh: "此 AMI 的信息不可用。"
 
     STACK_AMAZON_ARN:
@@ -1269,7 +1269,7 @@ module.exports =
       zh: "加密的"
 
     VOLUME_NOT_ENCRYPTED_STATE:
-      en: "Encrypted"
+      en: "Not Encrypted"
       zh: "不加密的"
 
     VOLUME_TYPE_STANDARD:
@@ -1641,7 +1641,7 @@ module.exports =
       zh: "界限"
 
     ASG_POLICY_TLT_PERIOD:
-      en: "Evaluation Period x Periords"
+      en: "Evaluation Period x Periods"
       zh: "评估时间"
 
     ASG_POLICY_TLT_ACTION:
@@ -1693,7 +1693,7 @@ module.exports =
       zh: "终止实例失败"
 
     ASG_LBL_VALIDATE_SNS:
-      en: "Validating a configuraed SNS Topic"
+      en: "Validating a configured SNS Topic"
       zh: "验证SNS主题"
 
     ASG_MSG_NO_NOTIFICATION_WARN:
@@ -1705,7 +1705,7 @@ module.exports =
       zh: "现在SNS还没有设置订阅信息，请去Stack属性框设置，以便收到通知"
 
     ASG_MSG_DROP_LC:
-      en: "Drop AMI from Resrouce Panel to create Launch Configuration"
+      en: "Drop AMI from Resource Panel to create Launch Configuration"
       zh: "请拖拽AMI来建立启动配置"
 
     ASG_TERMINATION_EDIT:
@@ -2117,7 +2117,7 @@ module.exports =
       zh: "自动备份"
 
     DBINSTANCE_LAST_RESTORE:
-      en: "Lastest Restore Time"
+      en: "Latest Restore Time"
       zh: "最新还原时间"
 
     DBINSTANCE_SECURITY_GROUP:
@@ -2173,7 +2173,7 @@ module.exports =
       zh: "查看 AWS 相关文档"
 
     DBINSTANCE_NOT_AVAILABLE:
-      en: "This DB instance is not in availabe status. To apply modification made for this instance, wait for its status to be available."
+      en: "This DB instance is not in available status. To apply modification made for this instance, wait for its status to be available."
       zh: "此数据库不在可用状态，请等待状态可用后应用改变。"
 
     DBINSTANCE_READ_REPLICA:
@@ -2225,7 +2225,7 @@ module.exports =
       zh: "分配存储"
 
     DBINSTANCE_SCALLING_NOT_SUPPORT:
-      en: "Scalling storage after launch a DB Instance is currently not supported for SQL Server."
+      en: "Scaling storage after launch a DB Instance is currently not supported for SQL Server."
       zh: "启动数据库实例后伸缩存储目前不支持 SQL 数据库"
 
     DBINSTANCE_CURRENT_ALLOCATED_STORAGE:
@@ -2372,7 +2372,7 @@ module.exports =
       zh: "选择 SNS 主题"
 
     ASG_POLICY_CPU:
-      en: "CPU Utillization"
+      en: "CPU Utilization"
       zh: "CPU利用率"
 
     ASG_POLICY_DISC_READS:
@@ -2804,7 +2804,7 @@ module.exports =
       zh: "阅读 AWS 文档"
 
     RDS_NO_BACKUP_TIP:
-      en: "There is no availabe backup to use yet. Please try later."
+      en: "There is no available backup to use yet. Please try later."
       zh: "尚无可用备份，请稍后重试"
 
     RDS_RESTORE_DB_TIP:
@@ -3179,7 +3179,7 @@ module.exports =
       zh: "持续的"
 
     PERMENANT:
-      en: "PERMENANT"
+      en: "PERMANENT"
       zh: "永久的"
 
     OPTION:

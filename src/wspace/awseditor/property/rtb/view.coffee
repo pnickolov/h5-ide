@@ -23,7 +23,7 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
 
         render     : () ->
             attr = @model.attributes
-            attr.canSetMain = !@model.isMain and !Design.instance().opsModel().isMesos()
+            attr.canSetMain = !attr.isMain and !Design.instance().opsModel().isMesos()
             @$el.html template @model.attributes
             @model.attributes.title
 

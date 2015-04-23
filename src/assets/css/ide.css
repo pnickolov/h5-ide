@@ -5038,6 +5038,9 @@ aside.dashboard-sidebar {
 .property-panel-wrapper.immediately > .scroll-wrap {
   top: 69px; }
 
+.tagTable {
+  padding: 1px; }
+
 /*
     RDS-related Modal
 

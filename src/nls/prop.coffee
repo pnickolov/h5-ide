@@ -256,13 +256,25 @@ module.exports =
       en: "User Data"
       zh: "用户数据"
 
+    RESOURCE_TAGS:
+      en: "Tags"
+      zh: "资源标签"
+
+    RESOURCE_NO_TAGS:
+      en: "This resource has no tags"
+      zh: "该资源没有标签"
+
+    INSTANCE_USER_DATA_DETAIL:
+      en: "View User Data Detail"
+      zh: "查看详细用户数据"
+
     INSTANCE_USER_DATA_DISABLE:
       en: "Can't edit user data when instance state exist"
       zh: "Instance State 存在的情况下无法编辑 user data"
 
     INSTANCE_CW_WARN:
       en: "Data is available in 1-minute periods at an additional cost. For information about pricing, go to the "
-      zh: "数据在一分钟内可用需要额外的花费．要获取价格信息，请访问 "
+      zh: "1分钟内即可用的数据需要额外花费．要获取价格信息，请访问 "
 
     AGENT_USER_DATA_URL:
       en: "https://github.com/MadeiraCloud/OpsAgent/blob/develop/scripts/userdata.sh"

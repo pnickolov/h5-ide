@@ -40,7 +40,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!/nls/lang.js' ], ( Property
             design = Design.instance()
             agentData = design.get('agent')
             attr.stackAgentEnable = agentData.enabled
-
+            attr.userData = component.get( "userData" )
             @set attr
 
             @getAmi()

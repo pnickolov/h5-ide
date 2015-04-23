@@ -280,10 +280,6 @@ module.exports =
       en: "Failed to add AMI to Favorite"
       zh: "收藏AMI失败"
 
-    RES_MSG_INFO_REMVOE_FAVORITE_AMI_SUCCESS:
-      en: "AMI is removed from Favorite AMI"
-      zh: "AMI 已从收藏列表中移除"
-
     RES_MSG_ERR_REMOVE_FAVORITE_AMI_FAILED:
       en: "Failed to remove AMI from Favorite"
       zh: "AMI 从收藏列表移除失败"
@@ -616,8 +612,8 @@ VisualOps API. You cannot UNDO this action.'
       zh : "<span>系统中存在正在运行或已经停止的 App。</span>确定要更新 AWS 证书吗？"
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
-      en : "If you continue to use the new credential, existing apps might become unmanageable. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to FORGET or TERMINATE existing apps first."
-      zh : "继续操作，会导致现存的 App 失去管理。如果这个新 AWS 证书 没有足够的权限管理现存的 App，我们强烈建议您先移除或终结掉这些存在的 App。"
+      en : "If you continue to use the new credential, existing apps might become unmanageable by VisualOps. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to FORGET or TERMINATE existing apps first."
+      zh : "如果继续操作，可能将导致已经存在的 App 无法被 VisualOps 管理。如果这个新 AWS 证书没有足够的权限管理现存的 App，我们强烈建议您先移除或终结掉这些存在的 App。"
 
     SETTINGS_LABEL_UPDATE_CONFIRM:
       en: "Confirm to update"
@@ -1058,7 +1054,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: '连接到自定义网关来创建 VPN'
 
     PORT_TIP_I:
-      en: 'Connect to Virtua Private Gateway to create VPN'
+      en: 'Connect to Virtual Private Gateway to create VPN'
       zh: '连接到虚拟私有网关创建 VPN'
 
     PORT_TIP_J:
@@ -1079,31 +1075,31 @@ VisualOps API. You cannot UNDO this action.'
 
     PORT_TIP_N:
       en: "Connect to Port"
-      zh: ""
+      zh: "连接到端口"
 
     PORT_TIP_O:
-      en: "Connect to Load Balancer to regeister as member"
-      zh: ""
+      en: "Connect to Load Balancer to register as member"
+      zh: "连接到负载均衡以注册为成员"
 
     PORT_TIP_P:
       en: "Connect to Pool"
-      zh: ""
+      zh: "连接到池"
 
     PORT_TIP_Q:
       en: "Connect to Listener"
-      zh: ""
+      zh: "连接到 Listener"
 
     PORT_TIP_R:
       en: "Connect to Server"
-      zh: ""
+      zh: "连接到 Server"
 
     PORT_TIP_S:
       en: "Connect to Subnet"
-      zh: ""
+      zh: "连接到子网"
 
     PORT_TIP_T:
       en: "Connect to Router"
-      zh: ""
+      zh: "连接到路由"
 
     PORT_TIP_U:
       en: "Connect to another app or group this item depends on"
@@ -2157,6 +2153,10 @@ VisualOps API. You cannot UNDO this action.'
     SYSTEM_LOG_NOT_READY:
       en: "System log is not ready yet. Please try in a short while."
       zh: "系统日志还没有准备好， 请稍后重试。"
+
+    USER_DATA_FETCH_FAILED:
+      en: "Failed to get user data, please try again later."
+      zh: "获取用户数据失败， 请稍后重试。"
 
     PROVIDE_BILLING_INFORMATION:
       en: "Provide Billing Information"

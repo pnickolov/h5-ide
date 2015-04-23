@@ -29,6 +29,7 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
             "click #property-app-keypair" : "keyPairClick"
             "click #property-app-ami" : "openAmiPanel"
             "click .property-btn-get-system-log" : "openSysLogModal"
+            "click #property-user-data-detail" : "viewUserDataDetail"
 
         render : () ->
             data = @model.toJSON()
@@ -171,29 +172,47 @@ define [ '../base/view', './template/app', 'i18n!/nls/lang.js', 'ApiRequest', 'k
                 region_name : Design.instance().region()
                 instance_id : instanceId
             }).then ( data )->
-                that.refreshSysLog( data.GetConsoleOutputResponse )
+                that.refreshSysLog( data.GetConsoleOutputResponse?.output )
+                that.sysLogModal.resize()
             , ()->
-                that.refreshSysLog()
+                that.refreshSysLog(null, lang.IDE.SYSTEM_LOG_NOT_READY)
+                that.sysLogModal.resize()
             return false
 
-        refreshSysLog : (result) ->
+      viewUserDataDetail: ()->
+            userData = @model.get("userData")
+            self = @
+            @userDataLog = new modalPlus({
+              template: MC.template.modalInstanceSysLog {log_content: MC.template.convertBreaklines({content:userData})}
+              width: 900
+              title: lang.PROP.INSTANCE_USER_DATA
+              confirm: hide: true
+            }).tpl.attr("id", "modal-instance-sys-log")
 
-            $('#modal-instance-sys-log .instance-sys-log-loading').hide()
+            ApiRequest("ins_DescribeInstanceAttribute", {
+              key_id: Design.instance().credentialId()
+              region_name: Design.instance().region()
+              instance_id: self.model.get("id")
+              attribute_name: "userData"
+            }).then (data)->
+              console.log data
+              userData = data?.DescribeInstanceAttributeResponse?.userData?.value
+              self.refreshSysLog(userData)
+              self.userDataLog.resize()
+            , ()->
+              self.refreshSysLog(null, lang.IDE.USER_DATA_FETCH_FAILED)
+              self.userDataLog.resize()
 
-            if result and result.output
-
-                logContent = Base64.decode(result.output)
-                $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
-
-                $contentElem.html MC.template.convertBreaklines({content:logContent})
-                $contentElem.show()
-
-            else
-
-                $('#modal-instance-sys-log .instance-sys-log-info').show()
-
-            @sysLogModal.resize()
-
+        refreshSysLog : (result, errMessage) ->
+          $('#modal-instance-sys-log .instance-sys-log-loading').hide()
+          if errMessage
+            $("#modal-instance-sys-log .instance-sys-log-info").text(errMessage).show()
+          else
+            result = result || ""
+            logContent = Base64.decode(result)
+            $contentElem = $('#modal-instance-sys-log .instance-sys-log-content')
+            $contentElem.html MC.template.convertBreaklines({content:logContent})
+            $contentElem.show()
     }
 
     new InstanceAppView()

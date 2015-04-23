@@ -110,7 +110,14 @@
             {{/if}}
         </dl>
     </div>
-
+    <div class="option-group-head">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        <div class="tagTable">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
     <div class="option-group-head">{{ i18n "PROP.STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
     <div class="option-group sg-group"></div>
 </article>
@@ -153,3 +160,14 @@
 
 <!-- {{list_empty}} -->
 <div class="text-center no-data">{{i18n "PROP.RDS_NO_RECORDS_FOUND"}}</div>
+
+<!--{{tagSets}}-->
+<table class="table cost-estimation-table">
+    <tbody>
+    {{#each tagSet}}
+        <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
+    {{else}}
+        <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
+    {{/each}}
+    </tbody>
+</table>

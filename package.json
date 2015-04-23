@@ -1,7 +1,7 @@
 {
   "name": "madeira_cloud_ide",
   "repository": "https://github.com/MadeiraCloud/h5-ide",
-  "version": "3.144.1558",
+  "version": "3.146.1554",
   "devDependencies": {
     "chokidar": "^1.0.0-rc4",
     "deep-extend": "^0.2.11",

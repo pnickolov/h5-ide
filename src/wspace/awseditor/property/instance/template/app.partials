@@ -72,7 +72,8 @@
       <dt>{{i18n "PROP.INSTANCE_USER_DATA"}}</dt>
       <dd><a href="#" id="property-user-data-detail">{{i18n "PROP.INSTANCE_USER_DATA_DETAIL"}}</a></dd>
       {{/if}}
-
+      <dt>{{i18n "PROP.RESOURCE_TAGS"}}</dt>
+      <dd>{{resourceTags}}</dd>
     </dl>
 
     <dl class="dl-vertical">
@@ -89,7 +90,22 @@
       <dd>{{emptyStr blockDevice}}</dd>
     </dl>
   </div>
-
+    {{#if tagSet}}
+    <div class="option-group-head">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        <table class="table cost-estimation-table">
+            <tbody>
+            {{#each tagSet}}
+                <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
+            {{else}}
+                <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{/if}}
   {{#if rootDevice}}
   <div class="option-group-head">{{i18n "PROP.INSTANCE_ROOT_DEVICE"}}</div>
   <div class="option-group">

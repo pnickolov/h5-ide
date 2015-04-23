@@ -58,5 +58,20 @@
       <li>{{subnetDisplay}}</li>
     {{/each}}
   </ul>
-
+  {{#if tagSet}}
+  <div class="option-group-head">
+      {{i18n "PROP.RESOURCE_TAGS"}}
+  </div>
+  <div class="option-group">
+      <table class="table cost-estimation-table">
+          <tbody>
+          {{#each tagSet}}
+          <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
+          {{else}}
+          <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
+          {{/each}}
+          </tbody>
+      </table>
+  </div>
+  {{/if}}
 </article>

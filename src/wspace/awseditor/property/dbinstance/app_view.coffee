@@ -35,7 +35,38 @@ define [
         data.description = @resModel.get("description")
         data.name = @resModel.get 'name'
         @$el.html template.appView data
+        @renderTagSet()
         @resModel.get 'name'
+
+    renderTagSet: (failed)->
+        if failed
+            @$el.find(".tagTable").html "<p>Failed to fetch database Instance tags, please try again later.</p>"
+            return false
+        if @tagSet
+            @$el.find(".tagTable").html template.tagSets {tagSet: @tagSet}
+        else
+            that = @
+            region = @resModel.design().region()
+            accountNumber = Design.instance().credential().get("awsAccount").split("-").join("")
+            resourceType = "db"
+            name = @model.get("id")
+            arn = "arn:aws:rds:#{region}:#{accountNumber}:#{resourceType}:#{name}"
+            ApiRequest("rds_ListTagsForResource", {
+              key_id : Design.instance().credentialId()
+              region_name: region
+              resource_name: arn
+            }).then (result)->
+                tagSet = {}
+                tags = result.ListTagsForResourceResponse.ListTagsForResourceResult.TagList.Tag || []
+                if not tags.length and not _.isArray tags
+                  tags = [tags]
+                _.each tags, (value)->
+                  tagSet[value.Key] = value.Value
+                that.tagSet = tagSet
+                that.renderTagSet()
+            , ()->
+              that.renderTagSet(true)
+
 
     renderLogList: ( logList ) ->
         that = @

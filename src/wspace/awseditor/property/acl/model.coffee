@@ -2,7 +2,7 @@
 #  View Mode for design/property/acl
 #############################
 
-define [ '../base/model', "Design", 'constant', 'i18n!/nls/lang.js' ], ( PropertyModel, Design, constant, lang ) ->
+define [ '../base/model', "Design", 'constant', 'CloudResources', 'i18n!/nls/lang.js' ], ( PropertyModel, Design, constant, CloudResources, lang ) ->
 
     icmpTypeMap = {
         "0": "Echo Reply(0)",
@@ -78,14 +78,16 @@ define [ '../base/model', "Design", 'constant', 'i18n!/nls/lang.js' ], ( Propert
         init : (uid) ->
 
             aclObj = Design.instance().component( uid )
-
+            acl_data = {}
+            if aclObj.get("appId")
+              acl_data = CloudResources( Design.instance().credentialId(), constant.RESTYPE.ACL, Design.instance().region()).get(aclObj.get('appId'))?.toJSON()
             assos = _.map aclObj.connectionTargets( "AclAsso" ), ( subnet )->
                 {
                     name : subnet.get('name')
                     cidr : subnet.get('cidr')
                 }
 
-            @set {
+            datas =  {
                 uid          : uid
                 isDefault    : aclObj.isDefault()
                 appId        : aclObj.get("appId")
@@ -95,6 +97,8 @@ define [ '../base/model', "Design", 'constant', 'i18n!/nls/lang.js' ], ( Propert
                 isApp        : @isApp
                 associations : _.sortBy assos, name
             }
+            app_data = $.extend true, datas, acl_data
+            @set app_data
 
             @getRules()
             @sortRules()

@@ -19,7 +19,7 @@
         <label for="create-kp-name">{{i18n "PROP.KP_NAME"}}</label>
         <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters" autofocus>
     </div>
-    <div class="after-create hide">{{{i18n "PROP.KP_CREATED_NEED_TO_DOWNLAOD"}}}</div>
+    <div class="after-create hide">{{{i18n "PROP.KP_CREATED_NEED_TO_DOWNLOAD"}}}</div>
     <div class="init action">
         <button class="btn btn-blue do-action" data-action="create">{{i18n "PROP.LBL_CREATE"}}</button>
         <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>

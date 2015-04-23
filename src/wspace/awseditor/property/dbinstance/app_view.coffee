@@ -22,6 +22,7 @@ define [
 
     initialize: ->
         @isSafari = $("body").hasClass("safari")
+        return
 
     render : () ->
 
@@ -38,34 +39,38 @@ define [
         @renderTagSet()
         @resModel.get 'name'
 
-    renderTagSet: (failed)->
-        if failed
-            @$el.find(".tagTable").html "<p>Failed to fetch database Instance tags, please try again later.</p>"
-            return false
-        if @tagSet
-            @$el.find(".tagTable").html template.tagSets {tagSet: @tagSet}
-        else
-            that = @
-            region = @resModel.design().region()
-            accountNumber = Design.instance().credential().get("awsAccount").split("-").join("")
-            resourceType = "db"
-            name = @model.get("id")
-            arn = "arn:aws:rds:#{region}:#{accountNumber}:#{resourceType}:#{name}"
-            ApiRequest("rds_ListTagsForResource", {
-              key_id : Design.instance().credentialId()
-              region_name: region
-              resource_name: arn
-            }).then (result)->
-                tagSet = {}
-                tags = result.ListTagsForResourceResponse.ListTagsForResourceResult.TagList.Tag || []
-                if not tags.length and not _.isArray tags
-                  tags = [tags]
-                _.each tags, (value)->
-                  tagSet[value.Key] = value.Value
-                that.tagSet = tagSet
-                that.renderTagSet()
-            , ()->
-              that.renderTagSet(true)
+    renderTagSet: (failed, reason)->
+      if failed and reason
+        @$el.find(".tagTable").html "<div class='dl-vertical'>" + reason + "</div>"
+        return false
+      if @tagSet
+        @$el.find(".tagTable").html template.tagSets {tagSet: @tagSet}
+      else
+        that = @
+        region = @resModel.design().region()
+        accountNumber = Design.instance().credential().get("awsAccount").split("-").join("")
+        if (/^\d+$/).test(accountNumber) is false
+          that.renderTagSet(true, lang.PROP.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
+          return false
+        resourceType = "db"
+        name = @model.get("id")
+        arn = "arn:aws:rds:#{region}:#{accountNumber}:#{resourceType}:#{name}"
+        ApiRequest("rds_ListTagsForResource", {
+          key_id : Design.instance().credentialId()
+          region_name: region
+          resource_name: arn
+        }).then (result)->
+          tagSet = {}
+          tags = result.ListTagsForResourceResponse.ListTagsForResourceResult.TagList.Tag || []
+          if not tags.length and not _.isArray tags
+            tags = [tags]
+          _.each tags, (value)->
+            tagSet[value.Key] = value.Value
+            null
+          that.tagSet = tagSet
+          that.renderTagSet()
+        , ()->
+          that.renderTagSet(true, lang.PROP.DB_DB_SUBGROUP_FAILED_FETCHING_TAGS)
 
 
     renderLogList: ( logList ) ->

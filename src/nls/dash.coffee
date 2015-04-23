@@ -677,7 +677,7 @@ module.exports =
       zh: "创建Stack出错"
 
     DASH_POP_FALE_LOAD_RESOURCE_PLEASE_RETRY:
-      en: "Failed to load region information. Please try agian."
+      en: "Failed to load region information. Please try again."
       zh: "加载地区资源失败，请重试。"
 
     DASH_POP_BTN_RETRY:

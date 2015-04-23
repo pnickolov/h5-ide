@@ -44,7 +44,7 @@ module.exports =
       zh: "请输入不超过86400的数字。"
 
     DUPLICATED_POLICY_NAME:
-      en: "Duplicated policy name in this autoscaling group"
+      en: "Duplicated policy name in this auto scaling group"
       zh: "在 Auto Scaling 组中已存在该策略名。"
 
     ASG_SIZE_MUST_BE_EQUAL_OR_GREATER_THAN_1:

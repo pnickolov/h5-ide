@@ -129,7 +129,7 @@ module.exports =
       zh: "对不起，AWS出现了一些技术问题"
 
     CONSTANT_MSG_E_ERROR:
-      en: "Sorry, we're experiencing techincal difficulty"
+      en: "Sorry, we're experiencing technical difficulty"
       zh: "对不起，我们出现了技术问题"
 
     CONSTANT_MSG_E_UNKNOW:

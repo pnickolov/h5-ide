@@ -59,7 +59,7 @@ module.exports =
       zh: "完成App( %s )的资源刷新。"
 
     INFO_APP_REFRESH_FAILED:
-      en: "Refreshing resources for app( %s ) falied. Please try again."
+      en: "Refreshing resources for app( %s ) failed. Please try again."
       zh: "刷新App( %s )的资源失败, 请点击刷新按钮来重试。"
 
     INFO_APP_REFRESH_START:

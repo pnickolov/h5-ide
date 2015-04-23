@@ -40,7 +40,7 @@ module.exports =
       zh: "VisualOps 已禁用"
 
     STATE_TIP_NO_SE:
-      en: "The component does'nt have state editor."
+      en: "The component doesn't have state editor."
       zh: "该组件不支持 State 编辑器"
 
     STATE_TIP_GROUP:
@@ -423,15 +423,19 @@ module.exports =
     RELOAD_STATE_INVALID_REQUEST:
       en: "Sorry, but the request is not valid."
       zh: "抱歉，请求无效"
+
     RELOAD_STATE_NETWORKERROR:
       en: "Network error, please try again later."
       zh: "网络错误，请稍候重试"
+
     RELOAD_STATE_INTERNAL_SERVER_ERROR:
       en: "Sorry, Internal server error, please try again later."
       zh: "抱歉，内部网络错误，请稍候重试"
+
     RELOAD_STATE_SUCCESS:
       en: "States reloaded successfully!"
       zh: "State 重载成功"
+
     RELOAD_STATE_NOT_READY:
       en: "App Agent is not ready yet, Please try again later."
       zh: "App Agent 尚未准备好，请稍后重试"

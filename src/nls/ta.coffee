@@ -184,7 +184,7 @@ module.exports =
 
     # CGW
     ERROR_CGW_CHECKING_IP_CONFLICT:
-      en: "Checking Customer Gateway IP Address confliction with existing resource..."
+      en: "Checking Customer Gateway IP Address conflict with existing resource..."
       zh: "正在检查客户网关 IP 地址与已存在的资源是否冲突..."
 
     ERROR_CGW_IP_CONFLICT:
@@ -297,7 +297,7 @@ module.exports =
       zh: "VPC 使用了不存在的 DHCP 选项集。应指定一个默认、自动分配、或者存在的选项集给它。"
 
     WARNING_VPC_CANNOT_USE_DEFAULT_DHCP_WHEN_USE_VISUALOPS:
-      en: "VPC can not use default(none) dhcpoptions when use visualops"
+      en: "VPC can not use default(none) DHCP options when use visualops"
       zh: "使用 State 时，VPC 不能使用默认的 DHCP 选项。"
 
     ERROR_RDS_DB_T1_MICRO_DEFAULT_OPTION:

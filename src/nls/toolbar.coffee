@@ -612,7 +612,7 @@ module.exports =
       zh: "曲线"
 
     LBL_LINESTYLE_SMOOTH_QUADRATIC_BELZIER:
-      en: "Smooth quadratic Belzier curve"
+      en: "Smooth quadratic Bézier curve"
       zh: "光滑的二次贝塞尔曲线"
 
     LBL_LINESTYLE_HIDE_SG:
@@ -672,7 +672,7 @@ module.exports =
       zh: "显示未使用的地区"
 
     FORGET_VISUALOPS_CANT:
-      en: "This app is created by VisualOps with Instance State. For apps with Instance State, forgetting is not supprted yet."
+      en: "This app is created by VisualOps with Instance State. For apps with Instance State, forgetting is not supported yet."
       zh: "此 App 是用 VisualOps 创建的，里面有 State，目前不支持释放。"
 
     FORGET_CONFIRM_INSTRUCTION:

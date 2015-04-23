@@ -132,7 +132,7 @@ module.exports =
       zh: "默认"
 
     INSTANCE_TENANCY_DELICATED:
-      en: "Delicated"
+      en: "Dedicated"
       zh: "专用"
 
     INSTANCE_ROOT_DEVICE_TYPE:
@@ -2293,7 +2293,7 @@ module.exports =
       zh: "启用自动备份"
 
     DBINSTANCE_BACKUP_RETENTION_PERIOD:
-      en: "Backup Retantion Period"
+      en: "Backup Retention Period"
       zh: "备份保留周期"
 
     DBINSTANCE_BACK_RETANTION_PERIOD_DAY:
@@ -2692,7 +2692,7 @@ module.exports =
       zh: "替换的 AMI 平台不支持．要使用 %s AMI，请创建一个新的实例以替换"
 
     STATICSUB_VALIDATION_AMI_INSTANCETYPE_NOT_VALID:
-      en: "%s does not support previousely used instance type %s. Please change another AMI."
+      en: "%s does not support previously used instance type %s. Please change another AMI."
       zh: "%s 不支持之前使用的实例类型 %s．请更换其他 AMI"
 
     SUBNET_CIDR_VALIDATION_REQUIRED:

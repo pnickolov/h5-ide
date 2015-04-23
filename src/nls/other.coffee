@@ -1070,7 +1070,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: '连接到负载均衡'
 
     PORT_TIP_M:
-      en: 'Connect to route table to assoicate'
+      en: 'Connect to route table to associate'
       zh: '连接到路由表'
 
     PORT_TIP_N:
@@ -1166,7 +1166,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: " 或者选择一个文件。"
 
     POP_IMPORT_ERROR:
-      en: "An error occured when reading the file. Please try again."
+      en: "An error occurred when reading the file. Please try again."
       zh: "读取文件出错，请重试。"
 
     POP_IMPORT_FORMAT_ERROR:
@@ -1257,7 +1257,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "编辑选项组"
 
     RDS_SOME_ERROR_OCCURED:
-      en: "Some error occured"
+      en: "Some error occurred"
       zh: "出错了"
 
     RDS_PORT_CHANGE_REQUIRES_APPLIED_IMMEDIATELY:
@@ -1827,7 +1827,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "MAC 地址"
 
     BUBBLE_NETWORKINTERFACEID:
-      en: "Netword Interface ID"
+      en: "Network Interface ID"
       zh: "网络接口 ID"
 
     BUBBLE_OWNERID:
@@ -2842,7 +2842,7 @@ into live resources, or import existing infrastructures."
       zh: "此电子邮件无效, 请输入有效的电子邮件。"
 
     TITLE_OPS_CONFLICT:
-      en: "Confliction Detected"
+      en: "Conflict Detected"
       zh: "版本冲突"
 
     CONTENT_OPS_CONFLICT:

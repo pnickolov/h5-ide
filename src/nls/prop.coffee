@@ -2947,9 +2947,13 @@ module.exports =
       en: "Instance Creation Name"
       zh: "实例创建名称"
 
+    DB_DB_SUBGROUP_FAILED_FETCHING_TAGS:
+      en: "Failed to fetch resource tags, please try again later."
+      zh: "获取资源标签失败， 请稍后重试。"
+
     DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID:
-      en: "Please update your Account Number with number"
-      zh: "请更新您的 Account Number"
+      en: "Please update your account number with numbers."
+      zh: "请更新您的 Account Number 为数字"
 
     DB_CONFIRM_PROMOTE:
       en: "Confirm"

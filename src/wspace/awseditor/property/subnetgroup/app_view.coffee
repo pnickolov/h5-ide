@@ -25,9 +25,9 @@ define [ '../base/view'
       @renderTagSet()
       data.name
 
-    renderTagSet: (failed)->
-      if failed
-        @$el.find(".tagTable").html "<p>Failed to fetch database Instance tags, please try again later.</p>"
+    renderTagSet: (failed, reason)->
+      if failed and reason
+        @$el.find(".tagTable").html "<div class='dl-vertical'>" + reason + "</div>"
         return false
       if @tagSet
         @$el.find(".tagTable").html template.tagSets {tagSet: @tagSet}
@@ -35,6 +35,9 @@ define [ '../base/view'
         that = @
         region = Design.instance().region()
         accountNumber = Design.instance().credential().get("awsAccount").split("-").join("")
+        if (/^\d+$/).test(accountNumber) is false
+          that.renderTagSet(true, lang.PROP.DB_SNAPSHOT_ACCOUNT_NUMBER_INVALID)
+          return false
         resourceType = "subgrp"
         name = @appModel.get("id")
         arn = "arn:aws:rds:#{region}:#{accountNumber}:#{resourceType}:#{name}"
@@ -49,10 +52,11 @@ define [ '../base/view'
             tags = [tags]
           _.each tags, (value)->
             tagSet[value.Key] = value.Value
+            null
           that.tagSet = tagSet
           that.renderTagSet()
         , ()->
-          that.renderTagSet(true)
+          that.renderTagSet(true, lang.PROP.DB_DB_SUBGROUP_FAILED_FETCHING_TAGS)
 
     getAzSb: ->
       azSb = {}

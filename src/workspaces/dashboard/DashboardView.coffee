@@ -294,8 +294,8 @@ define [
           ApiRequest("stack_import_cloudformation", {
             cf_template : reader.result
           }).then ( data )->
-            data.provider   = "aws::china"
-            data.region     = "cn-north-1"
+            data.provider   = "aws::global"
+            data.region     = "us-east-1"
             App.importJson( data, true )
             modal.close()
           , ()->
@@ -427,7 +427,7 @@ define [
         id = $tgt.attr("data-vpcid")
         region = $tgt.closest("ul").attr("data-region")
         self.visModal.close()
-        App.openOps App.model.createImportOps( region, "aws::china", id )
+        App.openOps App.model.createImportOps( region, "aws::global", id )
         false
       return
 

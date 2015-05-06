@@ -177,7 +177,7 @@ init = ->
                     location.href = "/workspace/#{projectId}"
                 else if retCode is 120 # link is for other user
                     render '#expire-template', {other_user: true}
-                else if retCode is 118 # user not registered yet
+                else if retCode is 115 # user not registered yet
                     $.cookie("invitation", hashArray[1], { expires: 7, path: '/' })
                     window.location.href = "/register"
                 else # invalid or expired link (format issue or user leave workspace)

@@ -35,7 +35,6 @@ define [], ()->
     UserRemovedUser       : 114 # User {0} removed
     UserNoUser            : 115 # User {0} not existed
     UserInvalidEmail      : 116 # Invalid email {0}
-    UserNotRegistered     : 118 # User not registered # check invitation
     SessionInvalidSessio  : 120 # Invalid session {0}/{1}
     SessionInvalidId      : 121 # Invalid session {0}
     SessionFailedCreate   : 122 # Can not create session {0} - {1}

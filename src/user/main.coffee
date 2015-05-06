@@ -277,6 +277,7 @@ init = ->
             if hashArray[0] == 'success'
                 render "#success-template"
                 $('#register-get-start').click ->
+                    $.removeCookie("invitation")
                     window.location = getRef()
                     return
                     #console.log('Getting start...')
@@ -456,7 +457,22 @@ init = ->
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 #console.log('Success!!!!!')
-                                ajaxRegister([$username.val(), $password.val(), $email.val(), {first_name: $firstName.val(), last_name: $lastName.val(), timezone: timezone}],(statusCode)-> # params needs to be confirmed.
+                                invitation = $.cookie("invitation")
+                                params = [
+                                  $username.val(),
+                                  $password.val()
+                                  $email.val(),
+                                  {
+                                    first_name: $firstName.val(),
+                                    last_name: $lastName.val(),
+                                    timezone: timezone
+                                  }
+                                ]
+
+                                if invitation # user from invitation page. delete after success.
+                                  params.invitation_key = invitation
+
+                                ajaxRegister(params ,(statusCode)-> # params needs to be confirmed.
                                     resetRegForm(true)
                                     $("#register-status").show().text langsrc.SERVICE['ERROR_CODE_'+statusCode+'_MESSAGE']
                                     return false

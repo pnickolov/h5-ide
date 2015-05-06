@@ -2623,6 +2623,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "There is no user \"%s\""
       zh: "未找到用户 “%s”"
 
+    SETTING_MEMBER_USER_INVITED:
+      en: "Invitation Email has been sent to \"%s\""
+      zh: "邀请邮件已经发送给 \"%s\""
+
     WORKSPACE_DEMO_TIP:
       en: "This workspace is currently in Demo mode. Set up your own cloud credential to run stack
 into live resources, or import existing infrastructures."

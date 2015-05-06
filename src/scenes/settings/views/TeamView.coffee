@@ -195,6 +195,7 @@ define ['backbone',
                 @memberCol.inviteMember(mail).then ()->
                     $mail.val('')
                     that.loadMemList () ->
+                        notification "info", sprintf(lang.IDE.SETTING_MEMBER_USER_INVITED, mail)
                         $invite.text(originTxt)
                         $invite.prop 'disabled', false
                 .fail (data) ->

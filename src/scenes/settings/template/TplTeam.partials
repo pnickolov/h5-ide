@@ -76,7 +76,7 @@
     <td class="checkbox-row">
         {{#unless me}}
         <div class="checkbox">
-            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" class="one-cb">
+            <input id="sslcert-select-{{id}}" type="checkbox" data-id="{{id}}" class="one-cb" {{#ifCond state 'inactive'}}disabled="disabled"{{/ifCond}}>
             <label for="sslcert-select-{{id}}"></label>
         </div>
         {{/unless}}

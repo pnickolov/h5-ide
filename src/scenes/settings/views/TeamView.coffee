@@ -57,9 +57,7 @@ define ['backbone',
                             mail: Base64.decode(data.email)
                         })
                     else
-                        $search.html TplTeam.nomatch({
-                            name: mail
-                        })
+                        $search.html TplTeam.nomatch({name: mail})
                 .done () ->
                     $search.show()
             else

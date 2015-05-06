@@ -102,7 +102,7 @@ gotoRef = ->
 getParams = ->
   params = {}
   queryString = window.location.search || ""
-  queryString.split("?")[1].split("&").forEach (value)->
+  (queryString.split("?")[1] || "").split("&").forEach (value)->
     return false unless value
     array = value.split("=")
     params[array[0]] = array[1]

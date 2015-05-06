@@ -23,7 +23,7 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
             that = @
             ApiRequest('project_update_role', {
                 project_id: @get('projectId'),
-                member_id: @id,
+                member_email: @get("email"),
                 new_role: newRole
             }).then ()->
                 that.set('role', newRole)
@@ -33,7 +33,7 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
             that = @
             ApiRequest('project_cancel_invitation', {
                 project_id: @get('projectId'),
-                member_id: @id
+                member_email: @get("email")
             }).then () ->
                 that.collection?.remove(that)
 
@@ -80,12 +80,12 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
                 that.limit = data[0]
                 members = data[1]
                 models = _.map members, (member) ->
-                    userName = Base64.decode(member.username)
+                    userName = Base64.decode(member.username || "")
                     currentUserName = App.user.get('username')
                     email = Base64.decode(member.email)
                     avatar = CryptoJS.MD5(email.trim().toLowerCase()).toString()
                     return new that.model({
-                        id: member.id,
+                        id: member.id || ("fake-" + Math.round(Math.random()*100000)),
                         avatar: "https://www.gravatar.com/avatar/#{avatar}",
                         username: userName,
                         email: email,

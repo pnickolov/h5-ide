@@ -551,7 +551,9 @@ textarea {
 .modal-toolbar .checkbox input:disabled + label,
 .modal-toolbar .radio input[disabled] + label,
 .modal-toolbar .checkbox input:disabled + label,
-.modal-toolbar .radio input[disabled] + label{
+.modal-toolbar .radio input[disabled] + label,
+.member-setting .checkbox input:disabled + label,
+.member-setting .checkbox input[disabled] + label{
 	opacity : 0.3;
 }
 

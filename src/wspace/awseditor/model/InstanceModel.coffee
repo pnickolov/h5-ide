@@ -118,17 +118,20 @@ define [
           console.error "No DefaultKP found when initialize InstanceModel"
 
 
-        # Assign DefaultSG
-        SgModel = Design.modelClassForType( constant.RESTYPE.SG )
-        defaultSg = SgModel.getDefaultSg()
-        if defaultSg
-          SgAsso = Design.modelClassForType( "SgAsso" )
-          new SgAsso( this, defaultSg )
-        else
-          console.error "No DefaultSG found when initialize InstanceModel"
-
         # Assign Mesos Sg
-        if @isMesos() then @assignMesosSg()
+        if @isMesos()
+          @assignMesosSg()
+        else
+          # Assign DefaultSG
+          SgModel = Design.modelClassForType( constant.RESTYPE.SG )
+          defaultSg = SgModel.getDefaultSg()
+          if defaultSg
+            SgAsso = Design.modelClassForType( "SgAsso" )
+            new SgAsso( this, defaultSg )
+          else
+            console.error "No DefaultSG found when initialize InstanceModel"
+
+
 
       # Always setTenancy to insure we don't have micro type for dedicated.
       tenancy = @get("tenancy")
@@ -772,16 +775,17 @@ define [
       return allResourceArray
 
     assignMesosSg: ->
-      isMesosMaster = @isMesosMaster()
-      mesosSg = Design.modelClassForType( constant.RESTYPE.SG ).find ( sg ) ->
-        if isMesosMaster
-          sg.isMesosMaster()
-        else
-          sg.isMesosSlave()
+      SgAsso = Design.modelClassForType( "SgAsso" )
+      mesosBaseSg = Design.modelClassForType( constant.RESTYPE.SG ).find ( sg ) -> sg.isMesosBase()
 
-      if mesosSg
-        SgAsso = Design.modelClassForType( "SgAsso" )
-        new SgAsso( @, mesosSg )
+      if mesosBaseSg
+        new SgAsso @, mesosBaseSg
+
+        if @isMesosMaster()
+          mesosMasterSg = Design.modelClassForType( constant.RESTYPE.SG ).find ( sg ) -> sg.isMesosMaster()
+          if mesosMasterSg then new SgAsso @, mesosMasterSg
+
+
       else
         console.error "No MesosSG found when initialize InstanceModel"
 

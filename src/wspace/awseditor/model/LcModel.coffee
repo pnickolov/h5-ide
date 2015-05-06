@@ -46,8 +46,9 @@ define [
         Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( this )
 
         # Default Sg
-        SgAsso = Design.modelClassForType( "SgAsso" )
-        new SgAsso( Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg(), this )
+        unless @isMesos()
+          SgAsso = Design.modelClassForType( "SgAsso" )
+          new SgAsso( Design.modelClassForType( constant.RESTYPE.SG ).getDefaultSg(), this )
 
       if not @get("rdSize")
         #append root device

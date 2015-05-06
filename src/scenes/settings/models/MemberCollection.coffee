@@ -80,7 +80,7 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
                 that.limit = data[0]
                 members = data[1]
                 models = _.map members, (member) ->
-                    userName = Base64.decode(member.username)
+                    userName = Base64.decode(member.username || "")
                     currentUserName = App.user.get('username')
                     email = Base64.decode(member.email)
                     avatar = CryptoJS.MD5(email.trim().toLowerCase()).toString()

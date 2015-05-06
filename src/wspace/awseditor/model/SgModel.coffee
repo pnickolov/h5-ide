@@ -61,7 +61,7 @@ define [ "ComplexResModel", "ResourceModel", "./connection/SgRuleSet", "./connec
     isDefault : ()-> @attributes.name is "DefaultSG"
     isVisual  : ()-> false
     isMesos: () -> @attributes.name in [ 'MesosSG', 'MesosMaster' ]
-    isMesosSlave: () -> @attributes.name is 'MesosSG'
+    isMesosBase: () -> @attributes.name is 'MesosSG'
     isMesosMaster: () -> @attributes.name is 'MesosMaster'
 
     createIpTarget : ( ipAddress )-> new SgTargetModel( MC.getValidCIDR ipAddress )

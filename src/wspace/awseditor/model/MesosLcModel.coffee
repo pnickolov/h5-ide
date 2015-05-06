@@ -48,6 +48,8 @@ define [ "./LcModel", "./MesosSlaveModel", "Design", "constant", "./VolumeModel"
     getMesosAppAttributes     : MesosSlaveModel.prototype.getMesosAppAttributes
     assignMesosSg             : MesosSlaveModel.prototype.assignMesosSg
 
+    isRemovable : -> error : lang.CANVAS.ERR_DEL_LC
+
   }, {
 
     handleTypes: constant.RESTYPE.MESOSLC

@@ -185,7 +185,10 @@ init = ->
                 else if retCode is 110 # existing user need login
                     gotoRef()
                 else if retCode is 115 # user not registered yet
-                    location.href = "/register?invitation=#{hashArray[1]}"
+                    if $.cookie("session_id")
+                      render '#expire-template', {other_user: true}
+                    else
+                      location.href = "/register?invitation=#{hashArray[1]}"
                 else # invalid or expired link (format issue or user leave workspace)
                     render '#expire-template'
             , () ->

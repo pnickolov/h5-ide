@@ -772,7 +772,12 @@ define [
       return allResourceArray
 
     assignMesosSg: ->
-      mesosSg = Design.modelClassForType( constant.RESTYPE.SG ).find ( sg ) -> sg.isMesos()
+      isMesosMaster = @isMesosMaster()
+      mesosSg = Design.modelClassForType( constant.RESTYPE.SG ).find ( sg ) ->
+        if isMesosMaster
+          sg.isMesosMaster()
+        else
+          sg.isMesosSlave()
 
       if mesosSg
         SgAsso = Design.modelClassForType( "SgAsso" )

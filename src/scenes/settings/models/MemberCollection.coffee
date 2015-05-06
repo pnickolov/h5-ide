@@ -23,7 +23,7 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
             that = @
             ApiRequest('project_update_role', {
                 project_id: @get('projectId'),
-                member_id: @id,
+                member_email: @get("email"),
                 new_role: newRole
             }).then ()->
                 that.set('role', newRole)
@@ -33,7 +33,7 @@ define ['ApiRequest', 'backbone', 'crypto'], (ApiRequest) ->
             that = @
             ApiRequest('project_cancel_invitation', {
                 project_id: @get('projectId'),
-                member_id: @id
+                member_email: @get("email")
             }).then () ->
                 that.collection?.remove(that)
 

@@ -470,7 +470,7 @@ init = ->
                                 ]
 
                                 if invitation # user from invitation page. delete after success.
-                                  params.invitation_key = invitation
+                                  params[3].invitation_key = invitation
 
                                 ajaxRegister(params ,(statusCode)-> # params needs to be confirmed.
                                     resetRegForm(true)

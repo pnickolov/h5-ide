@@ -304,7 +304,7 @@ init = ->
             invitationCode = getParams().invitation || ""
             inviteEmail = if invitationCode then atob(invitationCode).split("&")[1] else ""
             if inviteEmail and invitationCode # in invitation process.
-              $email.val(atob(inviteEmail))
+              $email.val(atob(inviteEmail)).attr("disabled", "disabled")
             $password = $('#register-password')
             usernameTimeout = undefined
             emailTimeout = undefined

@@ -99,6 +99,15 @@ gotoRef = ->
     ref = location.pathname + location.hash
     location.href = "/login?ref=#{ref}"
 
+getParams = ->
+  params = {}
+  queryString = window.location.search || ""
+  queryString.split("?")[1].split("&").forEach (value)->
+    return false unless value
+    array = value.split("=")
+    params[array[0]] = array[1]
+  return params
+
 getSearch = -> (window.location.search || "")
 # init the page . load i18n source file
 loadLang = (cb)->
@@ -162,10 +171,6 @@ init = ->
 
     userRoute(
         "invite": ( pathArray, hashArray ) ->
-            if !checkAllCookie()
-                gotoRef()
-                return
-
             deepth = 'INVITE'
             hashTarget = hashArray[0]
             unless hashTarget is 'member' then return
@@ -177,9 +182,10 @@ init = ->
                     location.href = "/workspace/#{projectId}"
                 else if retCode is 120 # link is for other user
                     render '#expire-template', {other_user: true}
+                else if retCode is 110 # existing user need login
+                    gotoRef()
                 else if retCode is 115 # user not registered yet
-                    $.cookie("invitation", hashArray[1], { expires: 7, path: '/' })
-                    window.location.href = "/register"
+                    location.href = "/register?invitation=#{hashArray[1]}"
                 else # invalid or expired link (format issue or user leave workspace)
                     render '#expire-template'
             , () ->
@@ -277,7 +283,11 @@ init = ->
             if hashArray[0] == 'success'
                 render "#success-template"
                 $('#register-get-start').click ->
-                    $.removeCookie("invitation")
+                    invitationCode = getParams().invitation
+                    if invitationCode
+                      projectId = atob(invitationCode).split("&")[0]
+                      window.location = "/workspace/#{projectId}"
+                      return
                     window.location = getRef()
                     return
                     #console.log('Getting start...')
@@ -291,6 +301,10 @@ init = ->
             $lastName  = $("#register-lastname")
             $username = $('#register-username')
             $email = $('#register-email')
+            invitationCode = getParams().invitation || ""
+            inviteEmail = if invitationCode then atob(invitationCode).split("&")[1] else ""
+            if inviteEmail and invitationCode # in invitation process.
+              $email.val(atob(inviteEmail))
             $password = $('#register-password')
             usernameTimeout = undefined
             emailTimeout = undefined
@@ -457,7 +471,6 @@ init = ->
                                 return false
                             if (usernameAvl&&emailAvl&&passwordAvl)
                                 #console.log('Success!!!!!')
-                                invitation = $.cookie("invitation")
                                 params = [
                                   $username.val(),
                                   $password.val()
@@ -468,7 +481,7 @@ init = ->
                                     timezone: timezone
                                   }
                                 ]
-
+                                invitation = getParams().invitation
                                 if invitation # user from invitation page. delete after success.
                                   params[3].invitation_key = invitation
 
@@ -533,7 +546,7 @@ checkInviteKey = ( key ) ->
     api {
         url: '/project/'
         method: 'check_invitation'
-        data: [ $.cookie('session_id'), key ]
+        data: [ key, $.cookie('session_id') ]
     }
 
 setCredit = (result)->

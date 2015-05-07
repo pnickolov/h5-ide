@@ -185,7 +185,10 @@ init = ->
                 else if retCode is 110 # existing user need login
                     gotoRef()
                 else if retCode is 115 # user not registered yet
-                    location.href = "/register?invitation=#{hashArray[1]}"
+                    if $.cookie("session_id")
+                      render '#expire-template', {other_user: true}
+                    else
+                      location.href = "/register?invitation=#{hashArray[1]}"
                 else # invalid or expired link (format issue or user leave workspace)
                     render '#expire-template'
             , () ->
@@ -251,8 +254,12 @@ init = ->
             $("#login-register").find("a").attr("href", "/register/"+getSearch())
             $user = $("#login-user")
             $password = $("#login-password")
+            invitationCode = hashArray[ 1 ] || ""
+            inviteEmail = if invitationCode then atob(invitationCode).split("&")[1] else ""
+            if inviteEmail and invitationCode # in invitation process.
+              $user.val(atob(inviteEmail)).attr("disabled", "disabled")
             submitBtn = $("#login-btn").attr('disabled',false)
-            $("#login-form input").eq(0).focus()
+            $("#login-form input").not(":disabled").eq(0).focus()
             checkValid = ->
                 if $(@).val().trim() then $(@).parent().removeClass('error')
             $user.on 'keyup', checkValid

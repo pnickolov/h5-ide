@@ -254,6 +254,10 @@ init = ->
             $("#login-register").find("a").attr("href", "/register/"+getSearch())
             $user = $("#login-user")
             $password = $("#login-password")
+            invitationCode = getParams().invitation || ""
+            inviteEmail = if invitationCode then atob(invitationCode).split("&")[1] else ""
+            if inviteEmail and invitationCode # in invitation process.
+              $user.val(atob(inviteEmail)).attr("disabled", "disabled")
             submitBtn = $("#login-btn").attr('disabled',false)
             $("#login-form input").eq(0).focus()
             checkValid = ->

@@ -254,7 +254,7 @@ init = ->
             $("#login-register").find("a").attr("href", "/register/"+getSearch())
             $user = $("#login-user")
             $password = $("#login-password")
-            invitationCode = getParams().invitation || ""
+            invitationCode = hashArray[ 1 ] || ""
             inviteEmail = if invitationCode then atob(invitationCode).split("&")[1] else ""
             if inviteEmail and invitationCode # in invitation process.
               $user.val(atob(inviteEmail)).attr("disabled", "disabled")

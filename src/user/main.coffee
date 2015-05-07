@@ -259,7 +259,7 @@ init = ->
             if inviteEmail and invitationCode # in invitation process.
               $user.val(atob(inviteEmail)).attr("disabled", "disabled")
             submitBtn = $("#login-btn").attr('disabled',false)
-            $("#login-form input").eq(0).focus()
+            $("#login-form input").not(":disabled").eq(0).focus()
             checkValid = ->
                 if $(@).val().trim() then $(@).parent().removeClass('error')
             $user.on 'keyup', checkValid

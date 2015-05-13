@@ -736,7 +736,13 @@ window.Base64 =  {_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0
   // Since we're pretty sure the DOM is OK when this file is loaded, we just trigger an fake `DOMContentLoaded` event on document.
   if ( window.CustomEvent ) {
     // IE9, IE10 doesn't support CustomEvent
-  	document.dispatchEvent( new CustomEvent("DOMContentLoaded") );
+    try {
+  		document.dispatchEvent( new CustomEvent("DOMContentLoaded") );
+    } catch(e) {
+    	var eo = document.createEvent('Event');
+      eo.initEvent("DOMContentLoaded", true, true);
+      document.dispatchEvent( eo );
+    }
   }
 
 

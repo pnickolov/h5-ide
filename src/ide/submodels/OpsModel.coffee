@@ -331,7 +331,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
               if state.module in ["linux.mesos.slave", "linux.mesos.master"] and state.parameter.framework?.length
                 @__jsonFramework = state.parameter.framework
 
-      stoppable = json.property?.stoppable or true
+      stoppable = if json.property?.stoppable? then json.property.stoppable else true
 
       @set {
         name        : json.name     || @get("name")

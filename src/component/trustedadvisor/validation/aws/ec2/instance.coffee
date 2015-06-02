@@ -214,7 +214,7 @@ define [ 'constant', 'MC', 'Design', 'TaHelper' ], ( constant, MC, Design, Helpe
             if i.isPublic() and !sb.isPublic() then lonelySb.push sb
 
         Design.modelClassForType( constant.RESTYPE.LC ).each ( lc ) ->
-            if lc.isPublic()
+            if lc.isPublic() and !lc.get('appId')
                 asgs = lc.getAsgsIncludeExpanded()
                 for asg in asgs
                     sb = asg.parent()

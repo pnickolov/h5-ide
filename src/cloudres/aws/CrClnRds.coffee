@@ -73,6 +73,9 @@ define [
         data = data || []
         if not _.isArray( data ) then data = [data]
 
+        # Hide aurora until supported
+        data = _.reject data, ( d ) -> d.Engine is 'aurora'
+
         engines = {}
         for d in data
           d.id = d.Engine + " " + d.EngineVersion

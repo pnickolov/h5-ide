@@ -140,10 +140,6 @@ module.exports =
       en:"Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has no launch configuration."
       zh:"Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 没有启动配置。"
 
-    WARNING_ELB_HEALTH_NOT_CHECK:
-      en: "Auto Scaling Group <span class='validation-tag tag-asg'>%s</span> has connected to Load Balancer but the Load Balancer health check is not enabled."
-      zh: "Auto Scaling 组 <span class='validation-tag tag-asg'>%s</span> 连接到的负载均衡器的健康检查没有被启用。"
-
     ERROR_HAS_EIP_NOT_HAS_IGW:
       en: "VPC has instance with Elastic IP must have an Internet Gateway."
       zh: "VPC 中有分配了弹性 IP 的实例，但 VPC 没有 Internet 网关。"

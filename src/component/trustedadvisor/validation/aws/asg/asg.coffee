@@ -15,20 +15,6 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
         uid     : uid
 
 
-    isELBHasHealthCheck = ( uid ) ->
-        asg =  MC.canvas_data.component[ uid ]
-
-        isConnectELB = MC.canvas_data.component[ uid ].resource.LoadBalancerNames.length > 0
-        if not isConnectELB or isConnectELB and asg.resource.HealthCheckType is 'ELB'
-            return null
-
-        tipInfo = sprintf lang.TA.WARNING_ELB_HEALTH_NOT_CHECK, asg.name
-
-        # return
-        level   : constant.TA.WARNING
-        info    : tipInfo
-        uid     : uid
-
     isNotificationNotHasTopic = ( uid ) ->
         asg = Design.instance().component uid
         notification = asg.getNotiObject()
@@ -119,7 +105,6 @@ define [ 'constant', 'MC', 'i18n!/nls/lang.js', 'TaHelper', 'CloudResources' ], 
 
     # public
     isHasLaunchConfiguration    : isHasLaunchConfiguration
-    isELBHasHealthCheck         : isELBHasHealthCheck
     isNotificationNotHasTopic   : isNotificationNotHasTopic
     isPolicyNotHasTopic         : isPolicyNotHasTopic
     isTopicNonexist             : isTopicNonexist

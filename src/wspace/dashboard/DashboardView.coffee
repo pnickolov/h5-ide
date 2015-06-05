@@ -180,7 +180,7 @@ define [ "./DashboardTpl",
         type    : $(evt.currentTarget).attr("data-type")
         project : @model.scene.project
       })
-      false
+      true
 
     importApp : ()->
       new AppAction({project: @model.scene.project}).showPayment().then (result)=>

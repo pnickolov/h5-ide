@@ -575,11 +575,7 @@ $bp-2: 1280px;
 
 .region-app-stack-wrap {
   height: $dashWrapHeight;
-  @include displayflex;
-  @include vo-flex-wrap(wrap);
-
-  align-items         : stretch;
-  -webkit-align-items : stretch;
+  padding : 0 1vw;
 
   margin-top : 10px;
 
@@ -591,8 +587,9 @@ $bp-2: 1280px;
   }
 
   > div {
-    width         : 38vw;
-    margin        : 0 1vw;
+    float         : left;
+    width         : 49.5%;
+    margin        : 0;
     position      : relative;
     background    : #fff;
     border-radius : 2px;
@@ -600,8 +597,7 @@ $bp-2: 1280px;
     box-sizing    : border-box;
     box-shadow    : 0 2px 0 $base-grey;
 
-    &:first-of-type { margin-right: 1vw; }
-    &:last-of-type { margin-left: .2vw; }
+    &:first-of-type { margin-right: 1%; }
   }
 
   .region-resource-list {

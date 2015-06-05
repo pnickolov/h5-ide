@@ -4757,7 +4757,7 @@ aside.dashboard-sidebar {
 
 /*
     ELB Property - IDE Property Panel
-	
+
 	- ELB Stack Property
 	- ELB App Property
 */
@@ -4765,9 +4765,6 @@ aside.dashboard-sidebar {
 #elb-property-listener-list .elb-property-listener {
   padding: 0;
   position: relative; }
-
-.sslcert-placeholder .selectbox {
-  width: 240px; }
 
 .elb-property-listener-item-remove {
   position: absolute;

@@ -25,7 +25,7 @@
     overflow      : hidden;
     background    : desaturate($dark-p, 20%);
 
-    #modal-validation-statusbar & { border: 1px solid darken($bg-p, 5%); border-top : none; }
+    .modal-validation-statusbar & { border: 1px solid darken($bg-p, 5%); border-top : none; }
     .stack-validation & { max-height: 150px; }
   }
 
@@ -59,12 +59,12 @@
         box-shadow : inset 0 1px 0 #36373A;
       }
 
-      #modal-validation-statusbar & {
+      .modal-validation-statusbar & {
         width: 120px;
       }
     }
 
-    #modal-validation-statusbar & {
+    .modal-validation-statusbar & {
       border        : 1px solid #131313;
       border-bottom : none;
     }
@@ -76,7 +76,7 @@
     height        : 100%;
     min-height    : 50px;
     box-sizing    : border-box;
-    
+
     @include selection;
 
     &.active { display: block; }
@@ -109,7 +109,7 @@
 
   summary { cursor: pointer; display: inline-block; color: #ccc; }
   summary:focus { outline: none; }
-  
+
   .validating {
     height        : 116px;
     background    : rgba(0,0,0,.2);
@@ -127,7 +127,7 @@
   .nutshell {
     color: #999;
 
-    details[open] & { display: none; } 
+    details[open] & { display: none; }
     label { margin-left: 5px; cursor: pointer; }
   }
 }

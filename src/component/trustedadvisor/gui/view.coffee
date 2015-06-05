@@ -8,26 +8,23 @@ define [ 'event', 'i18n!/nls/lang.js',
 ], ( ide_event, lang, template, modal_template ) ->
 
     TrustedAdvisorView = Backbone.View.extend {
-
-        el         : '.status-bar-modal'
-
         events     :
             'click .modal-close'   : 'closedPopup'
 
         render     : ( type, status ) ->
-            console.log 'pop-up:trusted advisor run render', status
-
             if type is 'stack'
                 $('#stack-run-validation-container').html template( @model.attributes )
                 $('.validating').hide()
                 @processDetails()
                 $('.stack-validation details').show()
             else if type is 'statusbar'
+                @setElement $( '#OpsEditor .status-bar-modal' )
+
                 @$el.html modal_template()
-                @$el.find( '#modal-validation-statusbar' ).html template( @model.attributes )
+                data = _.extend timestamp: Date.now(), @model.attributes
+                @$( '.modal-validation-statusbar' ).html template data
+
                 @processStatusBarDetails()
-                #
-                $('.status-bar-modal').show()
             else if type is 'openstack'
               $('.validating').hide()
               false
@@ -110,10 +107,8 @@ define [ 'event', 'i18n!/nls/lang.js',
 
         closedPopup : ->
             if @$el.html()
-                console.log 'closedPopup'
                 @$el.empty()
                 this.trigger 'CLOSE_POPUP'
-                $( '.status-bar-modal' ).hide()
 
     }
 

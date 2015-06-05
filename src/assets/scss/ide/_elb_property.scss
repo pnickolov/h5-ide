@@ -1,6 +1,6 @@
 /*
     ELB Property - IDE Property Panel
-	
+
 	- ELB Stack Property
 	- ELB App Property
 */
@@ -11,8 +11,6 @@
 	padding  : 0;
 	position : relative;
 }
-
-.sslcert-placeholder .selectbox { width: 240px; }
 
 .elb-property-listener-item-remove {
 	position : absolute;
@@ -27,7 +25,7 @@
 
 	cursor : pointer;
 
-	&:before { 
+	&:before {
 		display    : inline-block;
 		width      : 100%;
 		height     : 16px;
@@ -38,7 +36,7 @@
 	}
 
 
-	&:hover { 
+	&:hover {
 		background : rgba(0,0,0,.1);
 		color      : $base-r;
 	}
@@ -62,8 +60,8 @@
 	}
 }
 
-#property-elb-health-path { 
-	padding-left: 18px; 
+#property-elb-health-path {
+	padding-left: 18px;
 
 	&[disabled] {
 		color: transparent;
@@ -119,14 +117,14 @@
 .elb-property-listener-app li {
 	@include displayflex;
 	@include vo-flex-wrap($values: wrap);
-	
+
 	> div:nth-child(2n) { width: 30%; }
 	> div:nth-child(2n+1) { width: 65%; margin-right: 5%; }
 
 	label { font-size: 12px; color: #999; }
 
 	> div.elb-property-listener-app-cert { width: 100%; }
-	
+
 	.app-panel-li-col2-full label {
 		font-size : 12px;
 		color     : #999;

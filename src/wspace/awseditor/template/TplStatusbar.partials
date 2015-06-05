@@ -1,6 +1,6 @@
 <!-- {{frame}} -->
 <ul class="status-bar"></ul>
-<div class="status-bar-modal" style="display: none;"></div>
+<div class="status-bar-modal"></div>
 
 <!-- {{lastSaved}} -->
 {{i18n "IDE.LAST_SAVED"}} <span class="stack-save-time">-<span>

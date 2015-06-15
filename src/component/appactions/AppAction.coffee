@@ -104,7 +104,7 @@ define [
         @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
         @json = @workspace.design.serialize usage: 'runStack'
         usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
-        if usage = "custom"
+        if usage is "custom"
           usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
         @json.usage = usage
         @json.name = appNameDom.val()

@@ -278,7 +278,7 @@ Additional Notes and Questions
                     <li class="item" data-value="custom"><i class="icon-app-type-custom" data-value="custom"></i>Custom</li>
                 </ul>
             </div>
-            <input type="text" class="input custom-app-usage" placeholder="custom">
+            <input type="text" class="input custom-app-usage" placeholder="custom" maxlength="32" />
         </div>
         <div class="stack-validation">
             <details open style="display:none;">

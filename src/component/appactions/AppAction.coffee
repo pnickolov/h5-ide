@@ -105,7 +105,7 @@ define [
         @json = @workspace.design.serialize usage: 'runStack'
         usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
         if usage = "custom"
-          usage = $selectbox.parent().find("input.custom-app-usage").val() || "custom"
+          usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
         @json.usage = usage
         @json.name = appNameDom.val()
         @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->

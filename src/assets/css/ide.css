@@ -747,6 +747,11 @@ div.modal-text-highlight {
   .icon-app-type-others:before {
     content: "others"; }
 
+.icon-app-type-custom {
+  background: #FF6C40; }
+  .icon-app-type-custom:before {
+    content: "custom"; }
+
 /* App Useage */
 #modal-run-stack .app-usage {
   padding: 15px;

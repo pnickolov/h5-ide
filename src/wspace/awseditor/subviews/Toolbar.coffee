@@ -514,7 +514,7 @@ define [
         $selectbox.on "OPTION_CHANGE", (evt, _, result)->
           $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
         if oldJson.usage in ["testing", "development", "production", "others"]
-          $selectbox.find(".dropdown li.item[data-value='"+ oldJson.usage +"']").click()
+          $selectbox.find(".dropdown li.item[data-value='"+oldJson.usage+"']").click()
         else
           $selectbox.find(".dropdown li.item[data-value='custom']").click()
           $selectbox.parent().find("input.custom-app-usage").val(oldJson.usage)

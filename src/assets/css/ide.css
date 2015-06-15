@@ -752,6 +752,15 @@ div.modal-text-highlight {
   .icon-app-type-custom:before {
     content: "custom"; }
 
+[class^="icon-app-type-"]:not([class="icon-app-type-development"]):not([class="icon-app-type-production"]):not([class="icon-app-type-testing"]):not([class="icon-app-type-others"]):not([class="icon-app-type-custom"]) {
+  background: #FF6C40;
+  min-width: 45px;
+  width: auto;
+  line-height: 12px;
+  padding: 1px; }
+  [class^="icon-app-type-"]:not([class="icon-app-type-development"]):not([class="icon-app-type-production"]):not([class="icon-app-type-testing"]):not([class="icon-app-type-others"]):not([class="icon-app-type-custom"]):before {
+    content: attr(data-type); }
+
 /* App Useage */
 #modal-run-stack .app-usage {
   padding: 15px;

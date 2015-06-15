@@ -92,7 +92,7 @@ define [
         json.name  = $ipt.val()
 
         usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value') || "testing"
-        if usage = "custom"
+        if usage is "custom"
           usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
         json.usage = usage
         json.resource_diff = $("#MonitorImportApp").is(":checked")

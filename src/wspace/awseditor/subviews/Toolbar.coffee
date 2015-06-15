@@ -513,7 +513,9 @@ define [
         $selectbox = that.updateModal.find("#app-usage-selectbox.selectbox")
         $selectbox.on "OPTION_CHANGE", (evt, _, result)->
           $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
-        if oldJson.usage not in ["testing", "development", "production", "others"]
+        if oldJson.usage in ["testing", "development", "production", "others"]
+          $selectbox.find(".dropdown li.item[data-value='"+ oldJson.usage +"']").click()
+        else
           $selectbox.find(".dropdown li.item[data-value='custom']").click()
           $selectbox.parent().find("input.custom-app-usage").val(oldJson.usage)
 
@@ -528,7 +530,7 @@ define [
               return false
           newJson = that.workspace.design.serialize usage: 'updateApp'
           usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
-          if usage = "custom"
+          if usage is "custom"
             usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
           newJson.usage = usage
 

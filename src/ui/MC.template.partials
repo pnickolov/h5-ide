@@ -627,6 +627,20 @@ Additional Notes and Questions
             <div id="kp-runtime-placeholder"></div>
             <div class="runtime-error" id="runtime-error-kp"></div>
         </div>
+        <div class="modal-control-group app-usage-group clearfix update-app">
+            <label for="">{{i18n "TOOLBAR.APP_USAGE"}}</label>
+            <div id="app-usage-selectbox" class="selectbox">
+                <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+                <ul class="dropdown" tabindex="-1">
+                    <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+                    <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+                    <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+                    <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+                    <li class="item" data-value="custom"><i class="icon-app-type-custom" data-value="custom"></i>Custom</li>
+                </ul>
+            </div>
+            <input type="text" class="input custom-app-usage" placeholder="custom" maxlength="32" />
+        </div>
 	    {{#if isRunning}}
             <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
 	    {{else}}

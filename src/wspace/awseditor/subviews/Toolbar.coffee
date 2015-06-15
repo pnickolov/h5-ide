@@ -510,6 +510,10 @@ define [
           that.updateModal.tpl.find("#take-rds-snapshot").attr("checked", false).on "change", ->
             that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
 
+        $selectbox = that.updateModal.find("#app-usage-selectbox.selectbox")
+        $selectbox.on "OPTION_CHANGE", (evt, _, result)->
+          $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
+
         that.updateModal.on 'confirm', ->
           unless taPassed then return
 
@@ -520,6 +524,11 @@ define [
           if not that.defaultKpIsSet()
               return false
           newJson = that.workspace.design.serialize usage: 'updateApp'
+          usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+          if usage = "custom"
+            usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
+          newJson.usage = usage
+
           that.workspace.applyAppEdit( newJson, not result.compChange )
           that.updateModal?.close()
 

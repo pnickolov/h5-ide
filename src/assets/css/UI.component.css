@@ -778,6 +778,8 @@ pre {
 .modal-control-group {
   padding: 10px;
   border-radius: 4px; }
+  .modal-control-group.update-app {
+    padding: 0; }
 
 .modal-control-group > label {
   width: 140px;

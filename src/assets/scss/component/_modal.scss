@@ -277,6 +277,9 @@
 .modal-control-group {
 	padding       : 10px;
 	border-radius : 4px;
+  	&.update-app{
+	  padding: 0;
+	}
 }
 
 .modal-control-group > label {

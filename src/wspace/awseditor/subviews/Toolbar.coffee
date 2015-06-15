@@ -513,6 +513,9 @@ define [
         $selectbox = that.updateModal.find("#app-usage-selectbox.selectbox")
         $selectbox.on "OPTION_CHANGE", (evt, _, result)->
           $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
+        if oldJson.usage not in ["testing", "development", "production", "others"]
+          $selectbox.find(".dropdown li.item[data-value='custom']").click()
+          $selectbox.parent().find("input.custom-app-usage").val(oldJson.usage)
 
         that.updateModal.on 'confirm', ->
           unless taPassed then return

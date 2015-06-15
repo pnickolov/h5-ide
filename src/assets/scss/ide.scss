@@ -221,6 +221,17 @@ body {
   font-size: 28px;
 }
 
+#modal-run-stack {
+  .custom-app-usage{
+	display: none;
+	width: 145px;
+	&.show{
+	  display: inline-block;
+	}
+  }
+}
+
+
 #modal-run-mesos {
 	.url-label, .var-label {
 		width: auto;

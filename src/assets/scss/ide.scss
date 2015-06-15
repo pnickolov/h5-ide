@@ -600,6 +600,11 @@ div.modal-text-highlight{
 	&:before { content: "others" }
 }
 
+.icon-app-type-custom {
+  	background: #FF6C40;
+  	&:before { content: "custom" }
+}
+
 /* App Useage */
 #modal-run-stack .app-usage {
 	padding: 15px;

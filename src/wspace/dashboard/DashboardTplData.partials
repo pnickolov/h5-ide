@@ -111,7 +111,7 @@
                 </div>
             {{else}}
                 {{#unless ../../isMarathon}}
-                    <i class="icon-app-type-{{usage}}"></i>
+                    <i class="icon-app-type-{{usage}}" data-type="{{usage}}"></i>
                     {{#ifCond type "mesos" }} <i class="icon-app-type-mesos"></i> {{/ifCond}}
                 {{else}}
                     <i class="icon-app-type-marathon"></i>

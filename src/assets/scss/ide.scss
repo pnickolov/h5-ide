@@ -221,14 +221,15 @@ body {
   font-size: 28px;
 }
 
-#modal-run-stack {
-  .custom-app-usage{
-	display: none;
-	width: 145px;
-	&.show{
-	  display: inline-block;
-	}
+#app-usage-selectbox + .custom-app-usage{
+  display: none;
+  width: 145px;
+  &.show{
+	display: inline-block;
   }
+}
+#ImportSaveAppName{
+  width: 265px;
 }
 
 

@@ -441,11 +441,14 @@ body {
   color: #aeb3f2;
   font-size: 28px; }
 
-#modal-run-stack .custom-app-usage {
+#app-usage-selectbox + .custom-app-usage {
   display: none;
   width: 145px; }
-  #modal-run-stack .custom-app-usage.show {
+  #app-usage-selectbox + .custom-app-usage.show {
     display: inline-block; }
+
+#ImportSaveAppName {
+  width: 265px; }
 
 #modal-run-mesos .url-label, #modal-run-mesos .var-label {
   width: auto;

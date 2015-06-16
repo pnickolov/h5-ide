@@ -190,16 +190,7 @@ define [ "constant", "ConnectionModel", "i18n!/nls/lang.js", "Design" ], ( const
         instanceArray.push { InstanceId : @createRef( "InstanceId", i ) }
       null
   }, {
-    isConnectable : ( comp1, comp2 )->
-      if comp1.design().modeIsAppEdit()
-        if comp1.type is constant.RESTYPE.LC
-          lc = comp1
-        else if comp2.type is constant.RESTYPE.LC
-          lc = comp2
-
-        if lc and lc.get("appId")
-          return lang.NOTIFY.WARN_ASG_CAN_ONLY_CONNECT_TO_ELB_ON_LAUNCH
-
+    isConnectable : ()->
       true
   }
 

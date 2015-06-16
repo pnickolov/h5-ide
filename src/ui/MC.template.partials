@@ -622,7 +622,7 @@ Additional Notes and Questions
 <!-- {{updateApp}} -->
 <div id="app-apply-update">
     <div class="payment-wrapper">
-        <div class="scroll-wrap" style="max-height:455px;">
+        <div class="scroll-wrap" style="max-height:455px;min-height:210px;">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
             <div class="scroll-content">
                 <div class="modal-control-group default-kp-group clearfix" style="display:none;">

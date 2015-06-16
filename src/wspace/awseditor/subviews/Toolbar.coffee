@@ -445,7 +445,8 @@ define [
       })
 
       result = differ.getDiffInfo()
-      if not result.compChange and not result.layoutChange and not result.stateChange
+      usageChanged = oldJson.usage != newJson.usage
+      if not result.compChange and not result.layoutChange and not result.stateChange and not usageChanged
         return @workspace.applyAppEdit()
 
       removes = differ.removedComps
@@ -513,11 +514,11 @@ define [
         $selectbox = that.updateModal.find("#app-usage-selectbox.selectbox")
         $selectbox.on "OPTION_CHANGE", (evt, _, result)->
           $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
-        if oldJson.usage in ["testing", "development", "production", "others"]
-          $selectbox.find(".dropdown li.item[data-value='"+oldJson.usage+"']").click()
+        if newJson.usage in ["testing", "development", "production", "others"]
+          $selectbox.find(".dropdown li.item[data-value='"+newJson.usage+"']").click()
         else
           $selectbox.find(".dropdown li.item[data-value='custom']").click()
-          $selectbox.parent().find("input.custom-app-usage").val(oldJson.usage)
+          $selectbox.parent().find("input.custom-app-usage").val(newJson.usage)
 
         that.updateModal.on 'confirm', ->
           unless taPassed then return

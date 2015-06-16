@@ -16,8 +16,13 @@
       <dt>{{ i18n "PROP.APP_LBL_ID" }}</dt>
       <dd>{{id}}</dd>
       {{#if usage}}
-      <dt>{{ i18n "PROP.STACK_LBL_USAGE" }}</dt>
-      <dd class="capitalize">{{usage}}</dd>
+          {{#if isAppEdit}}
+              <dt>{{ i18n "PROP.STACK_LBL_USAGE"}}</dt>
+              <dd><input class="input" maxlength="32" data-required-rollback="true" value="{{usage}}" type="text" id="property-app-usage"/></dd>
+          {{else}}
+              <dt>{{ i18n "PROP.STACK_LBL_USAGE" }}</dt>
+              <dd>{{usage}}</dd>
+          {{/if}}
       {{/if}}
       <dt>{{ i18n "PROP.DESCRIPTION"}}</dt>
       <dd>{{description}}</dd>

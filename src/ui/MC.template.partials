@@ -275,8 +275,10 @@ Additional Notes and Questions
                     <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
                     <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
                     <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+                    <li class="item" data-value="custom"><i class="icon-app-type-custom" data-value="custom"></i>Custom</li>
                 </ul>
             </div>
+            <input type="text" class="input custom-app-usage" placeholder="custom" maxlength="32" />
         </div>
         <div class="stack-validation">
             <details open style="display:none;">
@@ -620,52 +622,71 @@ Additional Notes and Questions
 <!-- {{updateApp}} -->
 <div id="app-apply-update">
     <div class="payment-wrapper">
-        <div class="modal-control-group default-kp-group clearfix" style="display:none;">
-            <label for="kp-runtime-placeholder">$DefaultKeyPair</label>
-            <div id="kp-runtime-placeholder"></div>
-            <div class="runtime-error" id="runtime-error-kp"></div>
-        </div>
-	    {{#if isRunning}}
-            <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
-	    {{else}}
-            <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
-            <p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
-	    {{/if}}
-        <div class="scroll-wrap" style="max-height:256px;">
+        <div class="scroll-wrap" style="max-height:455px;min-height:210px;">
             <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
-            <div class="scroll-content res_diff_tree" id="app-update-summary-table">
-            </div>
-        </div>
-	    {{#if notification}}
-            <ul class="error-message-wrapper">
-			    {{#each notification}}
-                    <li class="error-message">{{this}}</li>
-			    {{/each}}
-            </ul>
-	    {{/if}}
-        {{#if removeList.length}}
-            <section class="mgt10 checkbox-wrap">
-                <div class="checkbox">
-                    <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
-                    <label for="take-rds-snapshot"></label>
+            <div class="scroll-content">
+                <div class="modal-control-group default-kp-group clearfix" style="display:none;">
+                    <label for="kp-runtime-placeholder">$DefaultKeyPair</label>
+                    <div id="kp-runtime-placeholder"></div>
+                    <div class="runtime-error" id="runtime-error-kp"></div>
                 </div>
-                <label for="take-rds-snapshot">{{i18n "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES"}}</label>
-            </section>
-            {{#if notReadyDB.length}}
-                <p class="cant-snapshot">{{i18n "DB_INSTANCE"}}
-                    {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span
-                            class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
-                    {{i18n "CANNOT_TAKE_FINAL_SNAPSHOT"}}</p>
-            {{/if}}
-        {{/if}}
-        <div class="stack-validation">
-            <details open style="display:none;">
-                <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}<span class="nutshell">:<label></label></span></summary>
-                <div id="stack-run-validation-container"></div>
-            </details>
-            <div class="validating">
-                <div class="loading-spinner loading-spinner-small"></div>
-                <p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
+                <div class="modal-control-group app-usage-group clearfix update-app">
+                    <label for="">{{i18n "TOOLBAR.APP_USAGE"}}</label>
+                    <div id="app-usage-selectbox" class="selectbox">
+                        <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+                        <ul class="dropdown" tabindex="-1">
+                            <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+                            <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+                            <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+                            <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+                            <li class="item" data-value="custom"><i class="icon-app-type-custom" data-value="custom"></i>Custom</li>
+                        </ul>
+                    </div>
+                    <input type="text" class="input custom-app-usage" placeholder="custom" maxlength="32" />
+                </div>
+                {{#if isRunning}}
+                    <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING'}}</h3>
+                {{else}}
+                    <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
+                    <p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
+                {{/if}}
+                <div class="scroll-wrap" style="max-height:256px;">
+                    <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
+                    <div class="scroll-content res_diff_tree" id="app-update-summary-table">
+                    </div>
+                </div>
+                {{#if notification}}
+                    <ul class="error-message-wrapper">
+                        {{#each notification}}
+                            <li class="error-message">{{this}}</li>
+                        {{/each}}
+                    </ul>
+                {{/if}}
+                {{#if removeList.length}}
+                    <section class="mgt10 checkbox-wrap">
+                        <div class="checkbox">
+                            <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
+                            <label for="take-rds-snapshot"></label>
+                        </div>
+                        <label for="take-rds-snapshot">{{i18n "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES"}}</label>
+                    </section>
+                    {{#if notReadyDB.length}}
+                        <p class="cant-snapshot">{{i18n "DB_INSTANCE"}}
+                            {{#each notReadyDB}}{{#if @index}}, {{/if}}{{attributes.DBInstanceIdentifier}}(<span
+                                    class="db-stop-status">{{attributes.DBInstanceStatus}}</span>){{/each}}
+                            {{i18n "CANNOT_TAKE_FINAL_SNAPSHOT"}}</p>
+                    {{/if}}
+                {{/if}}
+                <div class="stack-validation">
+                    <details open style="display:none;">
+                        <summary>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATION'}}<span class="nutshell">:<label></label></span></summary>
+                        <div id="stack-run-validation-container"></div>
+                    </details>
+                    <div class="validating">
+                        <div class="loading-spinner loading-spinner-small"></div>
+                        <p>{{ i18n 'POP_CONFIRM_UPDATE_VALIDATING'}}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

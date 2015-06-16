@@ -17,6 +17,7 @@ define [ '../base/view',
             'change #property-stack-name'               : 'stackNameChanged'
             'change #property-stack-description'        : 'stackDescriptionChanged'
             'change #property-app-name'                 : 'changeAppName'
+            'change #property-app-usage'                : 'changeUsage'
             'click #stack-property-new-acl'             : 'createAcl'
             'click #stack-property-acl-list .edit'      : 'openAcl'
             'click .acl-info-list .sg-list-delete-btn'  : 'deleteAcl'
@@ -65,6 +66,11 @@ define [ '../base/view',
             $target = $ e.currentTarget
             if $target.parsley 'validate'
                 Design.instance().set 'name', $target.val()
+
+        changeUsage: (e)->
+            $target = $ e.currentTarget
+            if $target.parsley "validate"
+              Design.instance().set "usage", $target.val()
 
         toggleResDiff: ( e ) -> Design.instance().set 'resource_diff', e.currentTarget.checked
 

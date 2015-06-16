@@ -59,57 +59,68 @@ define [
       self = @
 
       modal = new Modal({
-        title        : lang.TOOLBAR.APP_IMPORTED
-        template     : OpsEditorTpl.modal.confirmImport({ name : @workspace.opsModel.get("name") })
-        confirm      : { text : "Done" }
-        disableClose : true
-        hideClose    : true
-        onCancel     : ()-> self.workspace.remove(); return
-        onConfirm    : ()->
-          $ipt = modal.tpl.find("#ImportSaveAppName")
-          $ipt.parsley 'custom', ( val ) ->
-            if not MC.validate 'awsName',  val
-              return lang.PARSLEY.SHOULD_BE_A_VALID_STACK_NAME
-
-            apps = self.workspace.scene.project.apps().where({name:val})
-            if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
-              return
-
-            sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'App', val
-
-          if not $ipt.parsley 'validate'
-            return
-
-          modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
-          json       = self.workspace.design.serialize()
-          json.name  = $ipt.val()
-          json.usage = $("#app-usage-selectbox").find(".item.selected").attr('data-value') || "testing"
-          json.resource_diff = $("#MonitorImportApp").is(":checked")
-
-          self.workspace.opsModel.importApp(json).then ()->
-            design = self.workspace.design
-
-            design.set "name", json.name
-            design.set "resource_diff", json.resource_diff
-            design.set "usage", json.usage
-
-            self.updateResourcePanel()
-
-            # "Refresh property"
-            $("#OEPanelRight").trigger "REFRESH"
-
-            modal.close()
-          , ( err )->
-
-            if err.error is ApiRequest.Errors.AppAlreadyImported
-              notification "error", "The vpc `#{self.workspace.opsModel.getMsrId()}` has alreay been imported by other user."
-              modal.close()
-              self.workspace.remove()
-            else
-              notification "error", msg
-              modal.tpl.find(".modal-confirm").removeAttr("disabled")
-            return
+          title: lang.TOOLBAR.APP_IMPORTED
+          template: OpsEditorTpl.modal.confirmImport({name: @workspace.opsModel.get("name")})
+          confirm: {text: "Done"}
+          disableClose: true
+          hideClose: true
+          onCancel: ()-> self.workspace.remove(); return
       })
+
+      # Bind App Usage
+      $selectbox = modal.find("#app-usage-selectbox.selectbox")
+      $selectbox.on "OPTION_CHANGE", (evt, _, result)->
+        $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
+
+      modal.on "confirm", ()->
+        $ipt = modal.tpl.find("#ImportSaveAppName")
+        $ipt.parsley 'custom', ( val ) ->
+          if not MC.validate 'awsName',  val
+            return lang.PARSLEY.SHOULD_BE_A_VALID_STACK_NAME
+
+          apps = self.workspace.scene.project.apps().where({name:val})
+          if apps.length is 1 and apps[0] is self.workspace.opsModel or apps.length is 0
+            return
+
+          sprintf lang.PARSLEY.TYPE_NAME_CONFLICT, 'App', val
+
+        if not $ipt.parsley 'validate'
+          return
+
+        modal.tpl.find(".modal-confirm").attr("disabled", "disabled")
+        json       = self.workspace.design.serialize()
+        json.name  = $ipt.val()
+
+        usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value') || "testing"
+        if usage is "custom"
+          usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
+        json.usage = usage
+        json.resource_diff = $("#MonitorImportApp").is(":checked")
+
+        self.workspace.opsModel.importApp(json).then ()->
+          design = self.workspace.design
+
+          design.set "name", json.name
+          design.set "resource_diff", json.resource_diff
+          design.set "usage", json.usage
+
+          self.updateResourcePanel()
+
+          # "Refresh property"
+          $("#OEPanelRight").trigger "REFRESH"
+
+          modal.close()
+        , ( err )->
+
+          if err.error is ApiRequest.Errors.AppAlreadyImported
+            notification "error", "The vpc `#{self.workspace.opsModel.getMsrId()}` has alreay been imported by other user."
+            modal.close()
+            self.workspace.remove()
+          else
+            notification "error", msg
+            modal.tpl.find(".modal-confirm").removeAttr("disabled")
+          return
+
       return
 
     toggleProcessing : ()->

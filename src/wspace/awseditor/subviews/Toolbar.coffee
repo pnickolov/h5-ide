@@ -445,7 +445,8 @@ define [
       })
 
       result = differ.getDiffInfo()
-      if not result.compChange and not result.layoutChange and not result.stateChange
+      usageChanged = oldJson.usage != newJson.usage
+      if not result.compChange and not result.layoutChange and not result.stateChange and not usageChanged
         return @workspace.applyAppEdit()
 
       removes = differ.removedComps
@@ -510,6 +511,15 @@ define [
           that.updateModal.tpl.find("#take-rds-snapshot").attr("checked", false).on "change", ->
             that.updateModal.tpl.find(".modal-confirm").prop 'disabled', $(this).is(":checked")
 
+        $selectbox = that.updateModal.find("#app-usage-selectbox.selectbox")
+        $selectbox.on "OPTION_CHANGE", (evt, _, result)->
+          $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
+        if newJson.usage in ["testing", "development", "production", "others"]
+          $selectbox.find(".dropdown li.item[data-value='"+newJson.usage+"']").click()
+        else
+          $selectbox.find(".dropdown li.item[data-value='custom']").click()
+          $selectbox.parent().find("input.custom-app-usage").val(newJson.usage)
+
         that.updateModal.on 'confirm', ->
           unless taPassed then return
 
@@ -520,6 +530,11 @@ define [
           if not that.defaultKpIsSet()
               return false
           newJson = that.workspace.design.serialize usage: 'updateApp'
+          usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+          if usage is "custom"
+            usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
+          newJson.usage = usage
+
           that.workspace.applyAppEdit( newJson, not result.compChange )
           that.updateModal?.close()
 

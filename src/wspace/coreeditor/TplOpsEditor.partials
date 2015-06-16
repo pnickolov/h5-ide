@@ -61,8 +61,10 @@
             <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
             <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
             <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+            <li class="item" data-value="custom"><i class="icon-app-type-custom" data-value="custom"></i>Custom</li>
         </ul>
     </div>
+    <input type="text" class="input custom-app-usage" placeholder="custom" maxlength="32" />
 </div>
 
 <section style="margin:5px 5px 20px 8px;">

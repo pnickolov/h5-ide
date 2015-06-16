@@ -65,6 +65,11 @@ define [
       @modal.find("#label-total-fee").find('b').text costString
       @modal.find("#label-visualops-fee").find('b').text("$#{cost.visualOpsFee}")
 
+      # Bind App Usage
+      $selectbox = @modal.find("#app-usage-selectbox.selectbox")
+      $selectbox.on "OPTION_CHANGE", (evt, _, result)->
+        $selectbox.parent().find("input.custom-app-usage").toggleClass("show", result.value is "custom")
+
       # load TA
       taPassed = false
       TA.loadModule('stack').then ()=>
@@ -98,7 +103,10 @@ define [
 
         @modal.tpl.find(".btn.modal-confirm").attr("disabled", "disabled")
         @json = @workspace.design.serialize usage: 'runStack'
-        @json.usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+        usage = $("#app-usage-selectbox").find(".dropdown .item.selected").data('value')
+        if usage is "custom"
+          usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
+        @json.usage = usage
         @json.name = appNameDom.val()
         @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
           self.modal.close()

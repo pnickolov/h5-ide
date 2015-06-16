@@ -221,6 +221,18 @@ body {
   font-size: 28px;
 }
 
+#app-usage-selectbox + .custom-app-usage{
+  display: none;
+  width: 145px;
+  &.show{
+	display: inline-block;
+  }
+}
+#ImportSaveAppName{
+  width: 265px;
+}
+
+
 #modal-run-mesos {
 	.url-label, .var-label {
 		width: auto;
@@ -559,7 +571,6 @@ div.modal-text-highlight{
 	width          : 40px;
 	font-size      : 12px;
 	line-height    : 13px;
-	font-variant   : small-caps;
 	font-style     : normal;
 	color          : #fff;
 	text-align     : center;
@@ -586,6 +597,20 @@ div.modal-text-highlight{
 .icon-app-type-others {
 	background: #9C9FA2;
 	&:before { content: "others" }
+}
+
+.icon-app-type-custom {
+  	background: #FF6C40;
+  	&:before { content: "custom" }
+}
+
+[class^="icon-app-type-"]:not([class="icon-app-type-development"]):not([class="icon-app-type-production"]):not([class="icon-app-type-testing"]):not([class="icon-app-type-others"]):not([class="icon-app-type-custom"]){
+  background: #FF6C40;
+  min-width: 45px;
+  width: auto;
+  line-height: 12px;
+  padding: 1px;
+  &:before { content: attr(data-type)}
 }
 
 /* App Useage */

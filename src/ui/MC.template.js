@@ -383,7 +383,7 @@ function program1(depth0,data) {
     + escapeExpression(((stack1 = (depth0 && depth0.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" data-ignore=\"true\">\n            <div class=\"runtime-error\" id=\"runtime-error-appname\"></div>\n        </div>\n        <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n            <label for=\"\">$DefaultKeyPair</label>\n            <div id=\"kp-runtime-placeholder\"></div>\n            <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n        </div>\n        <div class=\"modal-control-group app-usage-group clearfix\">\n            <label for=\"\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.APP_USAGE", {hash:{},data:data}))
-    + "</label>\n            <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                    <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                    <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                    <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                </ul>\n            </div>\n        </div>\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>"
+    + "</label>\n            <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                <ul class=\"dropdown\" tabindex=\"-1\">\n                    <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                    <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                    <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                    <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                    <li class=\"item\" data-value=\"custom\"><i class=\"icon-app-type-custom\" data-value=\"custom\"></i>Custom</li>\n                </ul>\n            </div>\n            <input type=\"text\" class=\"input custom-app-usage\" placeholder=\"custom\" maxlength=\"32\" />\n        </div>\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
     + "<span class=\"nutshell\">:<label></label></span></summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.VALIDATING_STACK", {hash:{},data:data}))
@@ -956,63 +956,63 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = "";
-  buffer += "\n            <h3 class=\"modal-text-major\">"
+  buffer += "\n                    <h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_RUNNING", {hash:{},data:data}))
-    + "</h3>\n	    ";
+    + "</h3>\n                ";
   return buffer;
   }
 
 function program3(depth0,data) {
   
   var buffer = "";
-  buffer += "\n            <h3 class=\"modal-text-major\">"
+  buffer += "\n                    <h3 class=\"modal-text-major\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED", {hash:{},data:data}))
-    + "</h3>\n            <p class=\"modal-text-minor\" style=\"margin-top:10px;\">"
+    + "</h3>\n                    <p class=\"modal-text-minor\" style=\"margin-top:10px;\">"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED", {hash:{},data:data}))
-    + "</p>\n	    ";
+    + "</p>\n                ";
   return buffer;
   }
 
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <ul class=\"error-message-wrapper\">\n			    ";
+  buffer += "\n                    <ul class=\"error-message-wrapper\">\n                        ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.notification), {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            </ul>\n	    ";
+  buffer += "\n                    </ul>\n                ";
   return buffer;
   }
 function program6(depth0,data) {
   
   var buffer = "";
-  buffer += "\n                    <li class=\"error-message\">"
+  buffer += "\n                            <li class=\"error-message\">"
     + escapeExpression((typeof depth0 === functionType ? depth0.apply(depth0) : depth0))
-    + "</li>\n			    ";
+    + "</li>\n                        ";
   return buffer;
   }
 
 function program8(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <section class=\"mgt10 checkbox-wrap\">\n                <div class=\"checkbox\">\n                    <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                    <label for=\"take-rds-snapshot\"></label>\n                </div>\n                <label for=\"take-rds-snapshot\">"
+  buffer += "\n                    <section class=\"mgt10 checkbox-wrap\">\n                        <div class=\"checkbox\">\n                            <input id=\"take-rds-snapshot\" type=\"checkbox\" checked=\"checked\" name=\"dns-resolution\">\n                            <label for=\"take-rds-snapshot\"></label>\n                        </div>\n                        <label for=\"take-rds-snapshot\">"
     + escapeExpression(helpers.i18n.call(depth0, "TAKE_FINAL_SNAPSHOT_FOR_DB_INSTANCES", {hash:{},data:data}))
-    + "</label>\n            </section>\n            ";
+    + "</label>\n                    </section>\n                    ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.notReadyDB)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(9, program9, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        ";
+  buffer += "\n                ";
   return buffer;
   }
 function program9(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n                <p class=\"cant-snapshot\">"
+  buffer += "\n                        <p class=\"cant-snapshot\">"
     + escapeExpression(helpers.i18n.call(depth0, "DB_INSTANCE", {hash:{},data:data}))
-    + "\n                    ";
+    + "\n                            ";
   stack1 = helpers.each.call(depth0, (depth0 && depth0.notReadyDB), {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                    "
+  buffer += "\n                            "
     + escapeExpression(helpers.i18n.call(depth0, "CANNOT_TAKE_FINAL_SNAPSHOT", {hash:{},data:data}))
-    + "</p>\n            ";
+    + "</p>\n                    ";
   return buffer;
   }
 function program10(depth0,data) {
@@ -1021,7 +1021,7 @@ function program10(depth0,data) {
   stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceIdentifier)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "(<span\n                            class=\"db-stop-status\">"
+    + "(<span\n                                    class=\"db-stop-status\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.attributes)),stack1 == null || stack1 === false ? stack1 : stack1.DBInstanceStatus)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span>)";
   return buffer;
@@ -1041,20 +1041,22 @@ function program13(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div id=\"app-apply-update\">\n    <div class=\"payment-wrapper\">\n        <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n            <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n            <div id=\"kp-runtime-placeholder\"></div>\n            <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n        </div>\n	    ";
+  buffer += "<div id=\"app-apply-update\">\n    <div class=\"payment-wrapper\">\n        <div class=\"scroll-wrap\" style=\"max-height:455px;min-height:210px;\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\">\n                <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n                    <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n                    <div id=\"kp-runtime-placeholder\"></div>\n                    <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n                </div>\n                <div class=\"modal-control-group app-usage-group clearfix update-app\">\n                    <label for=\"\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.APP_USAGE", {hash:{},data:data}))
+    + "</label>\n                    <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                        <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                        <ul class=\"dropdown\" tabindex=\"-1\">\n                            <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                            <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                            <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                            <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                            <li class=\"item\" data-value=\"custom\"><i class=\"icon-app-type-custom\" data-value=\"custom\"></i>Custom</li>\n                        </ul>\n                    </div>\n                    <input type=\"text\" class=\"input custom-app-usage\" placeholder=\"custom\" maxlength=\"32\" />\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n            </div>\n        </div>\n	    ";
+  buffer += "\n                <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n                    <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                    <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n                    </div>\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.notification), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        ";
+  buffer += "\n                ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.removeList)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        <div class=\"stack-validation\">\n            <details open style=\"display:none;\">\n                <summary>"
+  buffer += "\n                <div class=\"stack-validation\">\n                    <details open style=\"display:none;\">\n                        <summary>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATION", {hash:{},data:data}))
-    + "<span class=\"nutshell\">:<label></label></span></summary>\n                <div id=\"stack-run-validation-container\"></div>\n            </details>\n            <div class=\"validating\">\n                <div class=\"loading-spinner loading-spinner-small\"></div>\n                <p>"
+    + "<span class=\"nutshell\">:<label></label></span></summary>\n                        <div id=\"stack-run-validation-container\"></div>\n                    </details>\n                    <div class=\"validating\">\n                        <div class=\"loading-spinner loading-spinner-small\"></div>\n                        <p>"
     + escapeExpression(helpers.i18n.call(depth0, "POP_CONFIRM_UPDATE_VALIDATING", {hash:{},data:data}))
-    + "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">"
+    + "</p>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"payment-wrapper-right\">\n        <div class=\"estimate clearfix\">\n            <div class=\"title\">"
     + escapeExpression(helpers.i18n.call(depth0, "ESTIMATED_AWS_COST", {hash:{},data:data}))
     + "</div>\n            <div class=\"price\" id=\"label-total-fee\"><b>"
     + escapeExpression(helpers.i18n.call(depth0, "MONEY_SYMBOL", {hash:{},data:data}))

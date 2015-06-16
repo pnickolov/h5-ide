@@ -299,7 +299,14 @@ define [
       for p in apiDef.params
         v = ApiRequestDefs.AutoFill(p)
         if v is null then v = ""
-        phtml += "<input placeholder='#{p}' class='tooltip' value='#{v}' data-tooltip='#{p}'/>"
+        if p is "key_id"
+          v = App.model.projects().where( {name: "My Workspace"} )[0].credentials().models[0].id
+          phtml += "<select placeholder='#{p}' class='tooltip' value='#{v}' data-tooltip='#{p}'>"
+          for project in App.model.projects().models
+            phtml += "<option value ='#{project.credentials().models[0].id}'>#{project.credentials().models[0].id}(#{project.get('name')})</option>"
+          phtml += "</select>"
+        else
+          phtml += "<input placeholder='#{p}' class='tooltip' value='#{v}' data-tooltip='#{p}'/>"
       $("#ApiParamsWrap").html phtml
 
       @trigger "apiChanged", val
@@ -310,6 +317,15 @@ define [
       if not apiDef then return
       params = {}
       for ch in $("#ApiParamsWrap").children("input")
+        v = ch.value
+        if not v then continue
+        k = $(ch).attr("placeholder")
+        try
+          params[k] = JSON.parse v
+        catch e
+          params[k] = v
+      #key_id
+      for ch in $("#ApiParamsWrap").children("select")
         v = ch.value
         if not v then continue
         k = $(ch).attr("placeholder")

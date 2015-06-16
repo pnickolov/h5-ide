@@ -428,7 +428,7 @@ define [
         region        : @__opsModel.get("region")
         provider      : @__opsModel.get("provider")
         time_update   : @__opsModel.get("updateTime")
-        usage         : @__opsModel.get("usage")
+        usage         : attr.usage
         version       : OpsModel.LatestVersion
         host          : attr.host
         property      : attr.property || {}

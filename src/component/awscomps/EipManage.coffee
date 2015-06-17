@@ -10,69 +10,6 @@ define [
 ], (toolbar_modal, modalplus, template, constant, Backbone, CloudResources, lang) ->
   Backbone.View.extend
 
-    getModalOptions: ->
-      that = @
-      region = Design.instance().get('region')
-      regionName = constant.REGION_SHORT_LABEL[region]
-
-      title: sprintf lang.IDE.MANAGE_EIP_IN_AREA, regionName
-      resourceName: lang.PROP.RESOURCE_NAME_EIP
-      context: that
-      buttons: [
-        {
-          icon: 'new-stack'
-          type: 'create'
-          name: lang.IDE.COMPONENT_CREATE_EIP
-        }
-        {
-          icon: 'del'
-          type: 'delete'
-          disabled: true
-          name: lang.IDE.COMPONENT_DELETE_EIP
-        }
-        {
-          icon: 'refresh'
-          type: 'refresh'
-          name: ''
-        }
-      ]
-      columns: [
-        {
-          sortable: true
-          width: "35%" # or 40%
-          name: "Elastic IP"
-        }
-        {
-          width: "15%"
-          sortable: true
-          name: "Instance"
-        }
-        {
-          width: "15%"
-          sortable: true
-          name: "Private IP"
-        }
-        {
-          width: "15%"
-          sortable: true
-          name: "Domain"
-        }
-        {
-          width: "15%"
-          sortable: true
-          name: "Network Interface"
-        }
-      ]
-
-    initModal: () ->
-      new toolbar_modal @getModalOptions()
-      @modal.on 'close', () ->
-        @remove()
-      , @
-      @modal.on 'slidedown', @renderSlides, @
-      @modal.on 'action', @doAction, @
-      @modal.on 'refresh', @refresh, @
-
     initialize: (options) ->
       _.extend @, options
 
@@ -90,6 +27,15 @@ define [
       @collection.on 'update', @renderKeys, @
       @listenTo Design.instance().credential(), "update", @credChanged
       @listenTo Design.instance().credential(), "change", @credChanged
+
+    initModal: () ->
+      new toolbar_modal @getModalOptions()
+      @modal.on 'close', () ->
+        @remove()
+      , @
+      @modal.on 'slidedown', @renderSlides, @
+      @modal.on 'action', @doAction, @
+      @modal.on 'refresh', @refresh, @
 
     credChanged: ()->
       @collection.fetchForce()
@@ -214,3 +160,57 @@ define [
           data.selectedCount = checkedAmount
 
         modal.setSlide tpl data
+
+    getModalOptions: ->
+      that = @
+      region = Design.instance().get('region')
+      regionName = constant.REGION_SHORT_LABEL[region]
+
+      title: sprintf lang.IDE.MANAGE_EIP_IN_AREA, regionName
+      resourceName: lang.PROP.RESOURCE_NAME_EIP
+      context: that
+      buttons: [
+        {
+          icon: 'new-stack'
+          type: 'create'
+          name: lang.IDE.COMPONENT_CREATE_EIP
+        }
+        {
+          icon: 'del'
+          type: 'delete'
+          disabled: true
+          name: lang.IDE.COMPONENT_DELETE_EIP
+        }
+        {
+          icon: 'refresh'
+          type: 'refresh'
+          name: ''
+        }
+      ]
+      columns: [
+        {
+          sortable: true
+          width: "35%" # or 40%
+          name: "Elastic IP"
+        }
+        {
+          width: "15%"
+          sortable: true
+          name: "Instance"
+        }
+        {
+          width: "15%"
+          sortable: true
+          name: "Private IP"
+        }
+        {
+          width: "15%"
+          sortable: true
+          name: "Domain"
+        }
+        {
+          width: "15%"
+          sortable: true
+          name: "Network Interface"
+        }
+      ]

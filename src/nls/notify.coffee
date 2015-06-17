@@ -44,6 +44,10 @@ module.exports =
       en: "Failed to delete key pair. Please try again later."
       zh: "删除密钥对失败，请稍后重试。"
 
+    FAILED_TO_RELEASE_EIP:
+      en: "Failed to release Elastic IP, please try again later."
+      zh: "释放弹性 IP 失败， 请稍后重试。"
+
     WARN_CANNT_AUTO_ASSIGN_CIDR_FOR_SUBNET:
       en : "Cannot auto assign CIDR block for subnets. Please manually update subnets' CIDR block before changing VPC's CIDR block."
       zh : "不能为子网自动分配 CIDR，在更改 VPC 的 CIDR 之前先请手动功能新子网的 CIDR "
@@ -158,6 +162,14 @@ module.exports =
     SELECTED_KEYPAIRS_ARE_DELETED:
       en: "Selected %s key pairs are deleted."
       zh: "选中的密钥对 %s 删除成功。"
+
+    SELECTED_EIP_ARE_DELETED:
+      en: "Selected %s Elastic IP are released successfully."
+      zh: " 选中的 %s 个弹性 IP 释放成功。"
+
+    EIP_XXX_IS_CREATED:
+      en: "Elastic IP %s is created successfully!"
+      zh: "弹性 IP %s 创建成功！"
 
     XXX_IS_IMPORTED:
       en: "%s is imported."

@@ -183,6 +183,25 @@ module.exports =
       en: "AZ & subnet"
       zh: "可用区和子网"
 
+    EIP_DOMAIN:
+      en: "Elastic IP Domain"
+      zh: "弹性IP 域"
+
+    EIP_CONFIRM_RELEASE_1:
+      en: "Confirm to release "
+      zh: "确定释放"
+
+    EIP_CONFIRM_RELEASE_2:
+      en: "selected %s Elastic IPs?"
+      zh: "已选择的 %s 个弹性IP 吗？"
+
+    EIP_CONFIRM_RELEASE_3:
+      en: "Elastic IP %s?"
+      zh: "弹性 IP (%s) 吗？"
+
+    EIP_CONFIRM_TO_CREATE:
+      en: "Are you sure you want to allocate a new IP address?"
+      zh: "确定要分配新的弹性 IP 吗？"
 
     OG_NO_OPTION_GROUP:
       en: "No Option Group"
@@ -3437,6 +3456,10 @@ module.exports =
     RESOURCE_NAME_KEYPAIR:
       en: "keypair"
       zh: "密钥对"
+
+    RESOURCE_NAME_EIP:
+      en: "Elastic IP"
+      zh: "弹性 IP"
 
     RESOURCE_NAME_PARAMETER_GROUP:
       en: "RDS Parameter Group"

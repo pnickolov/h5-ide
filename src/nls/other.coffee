@@ -2242,6 +2242,10 @@ VisualOps API. You cannot UNDO this action.'
       en: "Manage Key Pairs in %s"
       zh: "管理%s区的密钥对"
 
+    MANAGE_EIP_IN_AREA:
+      en: "Manage Elastic IPs in %s"
+      zh: "管理%s区的弹性 IP"
+
     MANAGE_SNAPSHOT_IN_AREA:
       en: "Manage Snapshots in %s"
       zh: "管理%s区的快照"

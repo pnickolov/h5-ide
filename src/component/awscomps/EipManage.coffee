@@ -15,25 +15,20 @@ define [
       region = Design.instance().get('region')
       regionName = constant.REGION_SHORT_LABEL[region]
 
-      title: sprintf lang.IDE.MANAGE_KP_IN_AREA, regionName
-      resourceName: lang.PROP.RESOURCE_NAME_KEYPAIR
+      title: sprintf lang.IDE.MANAGE_EIP_IN_AREA, regionName
+      resourceName: lang.PROP.RESOURCE_NAME_EIP
       context: that
       buttons: [
         {
           icon: 'new-stack'
           type: 'create'
-          name: lang.IDE.COMPONENT_CREATE_KEYPAIR
-        }
-        {
-          icon: 'import'
-          type: 'import'
-          name: lang.IDE.COMPONENT_IMPORT_KEY_PAIR
+          name: lang.IDE.COMPONENT_CREATE_EIP
         }
         {
           icon: 'del'
           type: 'delete'
           disabled: true
-          name: lang.IDE.COMPONENT_DELETE_KEY_PAIR
+          name: lang.IDE.COMPONENT_DELETE_EIP
         }
         {
           icon: 'refresh'
@@ -44,12 +39,28 @@ define [
       columns: [
         {
           sortable: true
-          width: "40%" # or 40%
-          name: lang.IDE.COMPONENT_KEY_PAIR_COL_NAME
+          width: "35%" # or 40%
+          name: "Elastic IP"
         }
         {
-          sortable: false
-          name: lang.IDE.COMPONENT_KEY_PAIR_COL_FINGERPRINT
+          width: "15%"
+          sortable: true
+          name: "Instance"
+        }
+        {
+          width: "15%"
+          sortable: true
+          name: "Private IP"
+        }
+        {
+          width: "15%"
+          sortable: true
+          name: "Domain"
+        }
+        {
+          width: "15%"
+          sortable: true
+          name: "Network Interface"
         }
       ]
 
@@ -72,7 +83,6 @@ define [
       if Design.instance().credential() and not Design.instance().credential().isDemo()
         that = @
         @collection.fetch().then ->
-          console.log @collection.toJSON()
           that.renderKeys()
       else
         @modal.render 'nocredential'
@@ -89,19 +99,10 @@ define [
     renderKeys: () ->
       if not @collection.isReady()
         return false
-      data = keys: @collection.toJSON()
+      data = keys: _.filter @collection.toJSON(), (eip)->
+        eip.category is Design.instance().region()
       @modal.setContent template.keys data
       @
-
-    events:
-      'click #kp-create': 'renderCreate'
-      'click #kp-import': 'renderImport'
-      'click #kp-delete': 'renderDelete'
-      'click #kp-refresh': 'refresh'
-      'click .cancel': 'cancel'
-
-    downloadKp: ->
-      @__downloadKp and @__downloadKp()
 
     doAction: (action, checked) ->
       @[action] and @[action](@validate(action), checked)
@@ -109,10 +110,7 @@ define [
     validate: (action) ->
       switch action
         when 'create'
-          return not @M$('#create-kp-name').parsley 'validate'
-        when 'import'
-          return not @M$('#import-kp-name').parsley 'validate'
-
+          return false
 
     switchAction: (state) ->
       if not state
@@ -124,33 +122,6 @@ define [
         else
           $(@).hide()
 
-    genDownload: (name, str) ->
-      @__downloadKp = ->
-        if $("body").hasClass("safari")
-          blob = null
-        else
-          blob = new Blob [str]
-
-        if not blob
-          options =
-            template: template.safari_download keypair: str
-            title: lang.IDE.TITLE_KEYPAIR_CONTENT
-            disableFooter: true
-            disableClose: true
-            width: '855px'
-            height: '473px'
-            compact: true
-
-          new modalplus options
-          $('.safari-download-textarea').select()
-
-          return
-
-        download(blob, name)
-
-
-      @__downloadKp
-
     genDeleteFinish: (times) ->
       success = []
       error = []
@@ -160,10 +131,10 @@ define [
         that.cancel()
         if success.length is 1
           console.debug success
-          notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.keyName
+          notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.id
           return
         else if success.length > 1
-          notification 'info', sprintf lang.NOTIFY.SELECTED_KEYPAIRS_ARE_DELETED, success.length
+          notification 'info', sprintf lang.NOTIFY.SELECTED_EIP_ARE_DELETED, success.length
           return
 
         if not that.collection.toJSON().length
@@ -174,7 +145,7 @@ define [
         _.each error, (s) ->
           console.log(s)
         if error.length > 0
-          notification 'error', lang.NOTIFY.FAILED_TO_DELETE_KP
+          notification 'error', lang.NOTIFY.FAILED_TO_RELEASE_EIP
 
       (res) ->
         console.debug res
@@ -188,24 +159,16 @@ define [
     create: (invalid) ->
       that = @
       if not invalid
-        keyName = @M$('#create-kp-name').val()
+        domain = "vpc"
+        region = Design.instance().region()
         @switchAction 'processing'
-        @collection.create({keyName}).save()
+        @collection.create({domain, region}).save()
         .then (res) ->
-          that.needDownload true
-          that.genDownload "#{res.attributes.keyName}.pem", res.attributes.keyMaterial
-          that.switchAction 'download'
-          that.M$('.before-create').hide()
-          that.M$('.after-create').find('span').text(res.attributes.keyName).end().show()
-
+          notification "info", sprintf lang.NOTIFY.EIP_XXX_IS_CREATED, res.attributes.id
+          that.cancel()
         , (err) ->
           that.modal.error err.awsResult or err.reason or err.msg
           that.switchAction()
-
-    download: () ->
-      @needDownload false
-      @__downloadKp and @__downloadKp()
-      null
 
     delete: (invalid, checked) ->
       count = checked.length
@@ -214,32 +177,7 @@ define [
       @switchAction 'processing'
       that = @
       _.each checked, (c) =>
-        @collection.findWhere(keyName: c.data.name.toString()).destroy().then onDeleteFinish, onDeleteFinish
-    import: (invalid) ->
-      that = @
-      if not invalid
-        keyName = @M$('#import-kp-name').val()
-        @switchAction 'processing'
-        try
-          keyContent = if Base64?.encode then Base64.encode(that.__upload.getData()) else window.btoa(that.__upload.getData())
-        catch
-          @modal.error 'Key is not in valid OpenSSH public key format'
-          that.switchAction 'init'
-          return
-
-
-        @collection.create({keyName: keyName, keyData: keyContent}).save()
-        .then (res) ->
-          notification 'info', sprintf lang.NOTIFY.XXX_IS_IMPORTED, keyName
-          that.cancel()
-        , (err) ->
-          if err.awsResult and err.awsResult.indexOf('Length exceeds maximum of 2048') >= 0
-            msg = 'Length exceeds maximum of 2048'
-          else
-            msg = err.awsResult or err.error_message or err.reason or err.msg
-
-          that.modal.error msg
-          that.switchAction 'ready'
+        @collection.findWhere(publicIp: c.data.name.toString()).destroy().then onDeleteFinish, onDeleteFinish
 
     cancel: ->
       @modal.cancel()
@@ -259,7 +197,7 @@ define [
       that = @
       modal = @modal
 
-      create: (tpl, checked) ->
+      create: (tpl) ->
         modal.setSlide tpl
 
       "delete": (tpl, checked) ->
@@ -271,19 +209,8 @@ define [
         data = {}
 
         if checkedAmount is 1
-          data.selecteKeyName = checked[0].data.name
+          data.selecteEip = checked[0].data.name
         else
           data.selectedCount = checkedAmount
 
         modal.setSlide tpl data
-
-      import: (tpl, checked) ->
-        modal.setSlide tpl
-        that.__upload and that.__upload.remove()
-        that.__upload = new upload({type: lang.IDE.LBL_PUBLIC_KEY})
-        that.__upload.on 'load', that.afterImport, @
-        that.M$('.import-zone').html that.__upload.render().el
-
-
-    afterImport: (result) ->
-      @switchAction 'ready'

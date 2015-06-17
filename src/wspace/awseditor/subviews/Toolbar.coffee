@@ -456,7 +456,6 @@ define [
       _.each components, (e)->
         dbInstanceList.push e.resource.DBInstanceIdentifier if e.type is constant.RESTYPE.DBINSTANCE
 
-      DBInstances = CloudResources(that.workspace.opsModel.credentialId(),constant.RESTYPE.DBINSTANCE, Design.instance().get("region"))
       @updateModal = new Modal
         title: lang.IDE.HEAD_INFO_LOADING
         template: MC.template.loadingSpinner
@@ -496,6 +495,14 @@ define [
           notReadyDB: removeListNotReady
           removeList: removeList
         })
+
+        ## Release EIP Confirm
+        eipsToRelease = _.filter removes, (e)->
+          e.type is constant.RESTYPE.EIP
+        console.log(eipsToRelease)
+        if eipsToRelease.length
+          that.updateModal.tpl.find("#release-eips-placeholder").html MC.template.releaseEipCheck({eipsToRelease})
+
         that.updateModal.tpl.find(".modal-header").find("h3").text(lang.IDE.UPDATE_APP_MODAL_TITLE)
         that.updateModal.tpl.find('.modal-confirm').prop("disabled", true).text (if Design.instance().credential() then lang.IDE.UPDATE_APP_CONFIRM_BTN else lang.IDE.UPDATE_APP_MODAL_NEED_CREDENTIAL)
         that.updateModal.resize()
@@ -535,7 +542,8 @@ define [
             usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
           newJson.usage = usage
 
-          that.workspace.applyAppEdit( newJson, not result.compChange )
+          release_eip = that.updateModal.tpl.find("#release-eip-checkbox").is(":checked")
+          that.workspace.applyAppEdit( newJson, not result.compChange, {release_eip} )
           that.updateModal?.close()
 
         if result.compChange

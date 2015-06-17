@@ -19,7 +19,7 @@
           <li data-action="dhcp" class="icon-dhcp"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DHCP_OPTION_SETS"}}</span></li>
           <li data-action="rdspg" class="icon-pg {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_PARAMETER_GROUPS"}}</span></li>
           <li data-action="rdssnapshot" class="icon-rds-snap {{#if rdsDisabled}}disabled{{/if}}"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_DB_SNAPSHOT"}}</span></li>
-          <li data-action="eip" class="icon-rds-snap"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_EIP"}}</span></li>
+          <li data-action="eip" class="icon-eip"><span>{{i18n "TOOLBAR.CLOUD_RESOURCE_EIP"}}</span></li>
         </ul>
     </button>
   </div>

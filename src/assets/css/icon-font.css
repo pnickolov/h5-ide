@@ -4,7 +4,7 @@
   font-style: normal;
   src: url('/assets/fonts/icon.eot');
   src: url('/assets/fonts/../fonts/icon.eot?#iefix') format("embedded-opentype"), url("../fonts/icon.woff") format("woff"), url("../fonts/icon.ttf") format("truetype"); }
-
+.icon-eip:before,
 .icon-play:before,
 .icon-stop:before,
 .icon-save:before,
@@ -92,251 +92,254 @@
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
 
+.icon-eip:before {
+  content: "\f109"; }
+
 .icon-play:before {
-  content: "\F110"; }
+  content: "\f110"; }
 
 .icon-stop:before {
-  content: "\F111"; }
+  content: "\f111"; }
 
 .icon-save:before {
-  content: "\F112"; }
+  content: "\f112"; }
 
 .icon-undo:before {
-  content: "\F114"; }
+  content: "\f114"; }
 
 .icon-redo:before {
-  content: "\F115"; }
+  content: "\f115"; }
 
 .icon-zoom-in:before {
-  content: "\F116"; }
+  content: "\f116"; }
 
 .icon-zoom-out:before {
-  content: "\F117"; }
+  content: "\f117"; }
 
 .icon-send:before {
-  content: "\F118"; }
+  content: "\f118"; }
 
 .icon-add:before {
-  content: "\F119"; }
+  content: "\f119"; }
 
 .icon-duplicate:before {
-  content: "\F11B"; }
+  content: "\f11B"; }
 
 .icon-duplicate:before {
-  content: "\F11B"; }
+  content: "\f11B"; }
 
 .icon-delete:before {
-  content: "\F11C"; }
+  content: "\f11C"; }
 
 .icon-new-stack:before {
-  content: "\F11A"; }
+  content: "\f11A"; }
 
 .icon-btn-details:before {
-  content: "\F11F"; }
+  content: "\f11F"; }
 
 .icon-btn-back:before {
-  content: "\F120"; }
+  content: "\f120"; }
 
 .icon-export-png:before {
-  content: "\F11D"; }
+  content: "\f11D"; }
 
 .icon-export-json:before {
-  content: "\F11E"; }
+  content: "\f11E"; }
 
 .icon-caret-down:before {
-  content: "\F121"; }
+  content: "\f121"; }
 
 .icon-close:before {
-  content: "\F122"; }
+  content: "\f122"; }
 
 .icon-terminate:before {
-  content: "\F154"; }
+  content: "\f154"; }
 
 .icon-forget-app:before {
-  content: "\F11C"; }
+  content: "\f11C"; }
 
 .icon-caret-right:before {
-  content: "\F124"; }
+  content: "\f124"; }
 
 .icon-caret-left:before {
-  content: "\F125"; }
+  content: "\f125"; }
 
 .icon-close-circle:before {
-  content: "\F126"; }
+  content: "\f126"; }
 
 .icon-info:before {
-  content: "\F127"; }
+  content: "\f127"; }
 
 .icon-password:before {
-  content: "\F128"; }
+  content: "\f128"; }
 
 .icon-user:before {
-  content: "\F129"; }
+  content: "\f129"; }
 
 .icon-notification:before {
-  content: "\F12A"; }
+  content: "\f12A"; }
 
 .icon-message:before {
-  content: "\F12B"; }
+  content: "\f12B"; }
 
 .icon-remove:before {
-  content: "\F12C"; }
+  content: "\f12C"; }
 
 .icon-allow:before {
-  content: "\F12D"; }
+  content: "\f12D"; }
 
 .icon-deny:before {
-  content: "\F12E"; }
+  content: "\f12E"; }
 
 .icon-outbound:before {
-  content: "\F12F"; }
+  content: "\f12F"; }
 
 .icon-inbound:before {
-  content: "\F130"; }
+  content: "\f130"; }
 
 .icon-refresh:before {
-  content: "\F131"; }
+  content: "\f131"; }
 
 .icon-edit:before {
-  content: "\F132"; }
+  content: "\f132"; }
 
 .icon-resize-right:before {
-  content: "\F133"; }
+  content: "\f133"; }
 
 .icon-resize-left:before {
-  content: "\F134"; }
+  content: "\f134"; }
 
 .icon-resize-down:before {
-  content: "\F135"; }
+  content: "\f135"; }
 
 .icon-resize-up:before {
-  content: "\F136"; }
+  content: "\f136"; }
 
 .icon-pending:before {
-  content: "\F137"; }
+  content: "\f137"; }
 
 .icon-warning:before {
-  content: "\F138"; }
+  content: "\f138"; }
 
 .icon-error:before {
-  content: "\F139"; }
+  content: "\f139"; }
 
 .icon-success:before, .icon-apply-app:before {
-  content: "\F13A"; }
+  content: "\f13A"; }
 
 .icon-time:before {
-  content: "\F13B"; }
+  content: "\f13B"; }
 
 .icon-sort:before {
-  content: "\F13C"; }
+  content: "\f13C"; }
 
 .ipt-controls > .icon-add:before {
-  content: "\F13D"; }
+  content: "\f13D"; }
 
 .icon-del:before, .icon-cancel-update-app:before {
-  content: "\F13E"; }
+  content: "\f13E"; }
 
 .icon-detail:before {
-  content: "\F140"; }
+  content: "\f140"; }
 
 .icon-line-shape:before {
-  content: "\F141"; }
+  content: "\f141"; }
 
 .icon-copy:before {
-  content: "\F142"; }
+  content: "\f142"; }
 
 .icon-straight:before {
-  content: "\F143"; }
+  content: "\f143"; }
 
 .icon-elbow:before {
-  content: "\F144"; }
+  content: "\f144"; }
 
 .icon-bezier-qt:before {
-  content: "\F145"; }
+  content: "\f145"; }
 
 .icon-bezier-q:before {
-  content: "\F146"; }
+  content: "\f146"; }
 
 .icon-toolbar-cloudformation:before {
-  content: "\F147"; }
+  content: "\f147"; }
 
 .icon-update-app:before {
-  content: "\F148"; }
+  content: "\f148"; }
 
 .icon-visualize:before {
-  content: "\F149"; }
+  content: "\f149"; }
 
 .icon-log:before {
-  content: "\F14A"; }
+  content: "\f14A"; }
 
 .icon-desc:before {
-  content: "\F14B"; }
+  content: "\f14B"; }
 
 .icon-syslog:before {
-  content: "\F14C"; }
+  content: "\f14C"; }
 
 .icon-toolbar-diff:before {
-  content: "\F14D"; }
+  content: "\f14D"; }
 
 .icon-import:before {
-  content: "\F14E"; }
+  content: "\f14E"; }
 
 .icon-drag-copy:before {
-  content: "\F14F"; }
+  content: "\f14F"; }
 
 .icon-gear:before {
-  content: "\F150"; }
+  content: "\f150"; }
 
 .icon-menu:before {
-  content: "\F151"; }
+  content: "\f151"; }
 
 .icon-expand:before {
-  content: "\F152"; }
+  content: "\f152"; }
 
 .icon-save-app:before {
-  content: "\F153"; }
+  content: "\f153"; }
 
 .icon-support:before {
-  content: "\F155"; }
+  content: "\f155"; }
 
 .icon-reload:before {
-  content: "\F156"; }
+  content: "\f156"; }
 
 .icon-resources:before {
-  content: "\F157"; }
+  content: "\f157"; }
 
 .icon-hide-sg:before {
-  content: "\F160"; }
+  content: "\f160"; }
 
 .icon-kp:before {
-  content: "\F161"; }
+  content: "\f161"; }
 
 .icon-ebs-snap:before {
-  content: "\F162"; }
+  content: "\f162"; }
 
 .icon-sns:before {
-  content: "\F163"; }
+  content: "\f163"; }
 
 .icon-cert:before {
-  content: "\F164"; }
+  content: "\f164"; }
 
 .icon-dhcp:before {
-  content: "\F165"; }
+  content: "\f165"; }
 
 .icon-pg:before {
-  content: "\F166"; }
+  content: "\f166"; }
 
 .icon-rds-snap:before {
-  content: "\F167"; }
+  content: "\f167"; }
 
 .icon-rds-restore:before {
-  content: "\F168"; }
+  content: "\f168"; }
 
 .icon-resource:before {
-  content: "\F170"; }
+  content: "\f170"; }
 
 .icon-config:before {
-  content: "\F171"; }
+  content: "\f171"; }
 
 .icon-property:before {
-  content: "\F172"; }
+  content: "\f172"; }

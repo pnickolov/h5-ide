@@ -1,0 +1,47 @@
+<!-- {{keys}} -->
+{{#each keys}}
+    <tr class="item" data-id="">
+        <td>
+            <div class="checkbox">
+                <input id="kp-select-{{keyName}}" type="checkbox" value="None" data-name="{{keyName}}" class="one-cb">
+                <label for="kp-select-{{keyName}}"></label>
+            </div>
+        </td>
+        <td>{{keyName}}</td>
+        <td>{{keyFingerprint}}</td>
+    </tr>
+{{/each}}
+
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="before-create">
+        <label for="create-kp-name">{{i18n "PROP.KP_NAME"}}</label>
+        <input class="input" type="text" id="create-kp-name" data-ignore="true" data-ignore-regexp="^[a-zA-Z0-9,_-]*$" data-required="true" maxlength="255" placeholder="allow alphanumber, _ or - up to 255 characters" autofocus>
+    </div>
+    <div class="after-create hide">{{{i18n "PROP.KP_CREATED_NEED_TO_DOWNLOAD"}}}</div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create">{{i18n "PROP.LBL_CREATE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>{{i18n "PROP.LBL_CREATING"}}</button>
+    </div>
+    <div class="download action" style="display:none;">
+        <a class="btn btn-blue do-action pulse" data-action="download" id="download-kp">{{i18n "PROP.LBL_DOWNLOAD"}}</a>
+        <button class="btn btn-silver cancel" disabled>{{i18n "PROP.LBL_CLOSE"}}</button>
+    </div>
+</div>
+
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">{{i18n "PROP.KP_CONFIRM_DELETE_1"}} {{#if selecteKeyName }}{{i18n "PROP.KP_CONFIRM_DELETE_3" selecteKeyName}}{{else}}{{i18n "PROP.KP_CONFIRM_DELETE_2" selectedCount}}{{/if}}</div>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>{{i18n "PROP.LBL_DELETING"}}</button>
+    </div>
+</div>

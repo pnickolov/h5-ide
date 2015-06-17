@@ -159,6 +159,10 @@ module.exports =
       en: "DB Snapshot"
       zh: "数据库快照"
 
+    CLOUD_RESOURCE_EIP:
+      en: "Elastic IP"
+      zh: "弹性 IP"
+
     CLOUD_RESOURCE_SORT_BY_DATE:
       en: "By Date"
       zh: "按日期"

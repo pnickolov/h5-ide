@@ -144,10 +144,13 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
           @get("ips").length = ipCount
       null
 
-    setPrimaryEip : ( toggle )->
+    setPrimaryEip : ( toggle, eipData )->
       if not @attachedInstance() then return
 
       @get("ips")[0].hasEip = toggle
+      if eipData and  eipData.get("publicIp")
+        @get("ips")[0].eipData.publicIp = eipData.get("publicIp")
+        @get("ips")[0].eipData.allocationId = eipData.get("allocationId")
       null
 
     hasPrimaryEip : ()-> @get("ips")[0].hasEip

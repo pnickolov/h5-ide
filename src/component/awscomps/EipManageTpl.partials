@@ -44,14 +44,18 @@
 
 <!--{{selector}}-->
 <div class="eip-selector-wrapper">
-    <div id="eip-selector"></div>
+    <div class="modal-control-group clearfix">
+        <label for="">Select Elastic IP</label>
+        <div id="eip-selector" style="display:inline-block;"></div>
+        <div class="runtime-error hide" id="need-select-eip">You need specify a Elastic IP to assign.</div>
+    </div>
 </div>
 
 
 <!--{{dropdown}}-->
-{{#unless hideNewEip}}<li class="item {{#ifCond selected "new"}}selected{{/ifCond}}" data-id="{{id}}" tabindex="-1">
-    <div class="manager-content-main" data-id="{{id}}">{{id}}</div>
-    <div class="manager-content-sub">Assign a new Eip</div>
+{{#unless hideNewEip}}<li class="item {{#ifCond selected "new"}}selected{{/ifCond}}" data-id="new" tabindex="-1">
+    <div class="manager-content-main" data-id="new">Assign new Elastic IP<i class="icon-info tooltip" data-tooltip="Assign a new Elastic IP"></i></div>
+    <div class="manager-content-sub">A new Elastic IP will assign automatically.</div>
 </li>{{/unless}}
 {{#each data}}
     <li class="item {{#ifCond selected id}}selected{{/ifCond}}" data-id="{{id}}" tabindex="-1">

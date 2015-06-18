@@ -248,10 +248,10 @@ define [
         eni = @getEmbedEni()
         if eni then eni.set("assoPublicIp", false)
 
-    setPrimaryEip : ( toggle )->
+    setPrimaryEip : ( toggle, eipData )->
       eni = @getEmbedEni()
       if eni
-        eni.setPrimaryEip( toggle )
+        eni.setPrimaryEip( toggle, eipData )
       else
         @set("hasEip", toggle)
         if toggle

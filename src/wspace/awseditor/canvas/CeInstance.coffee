@@ -99,9 +99,16 @@ define [
       false
 
     selectEip: ()->
+      self = @
       if not @canvas.design.modeIsAppEdit or @model.hasPrimaryEip()
         return false
-      new EipSelector(@model)
+      selector = new EipSelector(self.model)
+      selector.on "assign", ()->
+        Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+        CanvasManager.updateEip self.$el.children(".eip-status"), self.model
+        ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
+        selector.off "assign"
+        false
 
     select : ( selectedDomElement )->
       type = @type

@@ -5,9 +5,10 @@ define [
   'constant'
   'backbone'
   'CloudResources'
+  'eip_manager'
   'i18n!/nls/lang.js'
   'UI.notification'
-], (comboDropdown, Modal, template, constant, Backbone, CloudResources, lang) ->
+], (comboDropdown, Modal, template, constant, Backbone, CloudResources, EipManager, lang) ->
   Backbone.View.extend {
     initialize: (@model)->
       @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.EIP, Design.instance().get("region")
@@ -22,6 +23,14 @@ define [
       @modal.on "shown", ()->
         dropdown = self.renderDropdown()
         self.modal.tpl.find("#eip-selector").html dropdown.$el
+
+      @modal.on "confirm", ()->
+        if self.selected
+          self.model.setPrimaryEip(true, self.selectedEip)
+          self.trigger "assign"
+          self.modal.close()
+        else
+          self.modal.find("#need-select-eip").removeClass("hide")
 
     renderDropdown: ()->
       option =
@@ -43,7 +52,13 @@ define [
         currentRegion = Design.instance().region()
         if keySet
           data = keySet
+        enisWithEip = _.filter Design.instance().componentsOfType(constant.RESTYPE.ENI), (eni)->
+          eni.hasPrimaryEip()
+        usedEips = _.map enisWithEip, (eni)->
+          return eni.get("ips")[0].eipData.publicIp
         data = _.filter data, (eip)->
+          if eip.publicIp in usedEips
+            return false
           eip.category is currentRegion and eip.canRelease
         dataSet =
           data: data
@@ -57,9 +72,16 @@ define [
 
     manageEip: ()->
       console.log("Show Eip Manager")
+      new EipManager( workspace: @workspace ).render()
 
-    assignEip: ()->
+    assignEip: (id)->
+      eip = @collection.find {id: id}
+      @selected = true
+      @selectedEip = eip
+      @modal.find("#need-select-eip").addClass("hide")
       console.log "Assign Elastic Ip to Model"
+      console.log eip
+#      @model.setPrimaryEip(true, eip)
 
     filter: (keyword)->
       console.log("Filter Elastic Ip")

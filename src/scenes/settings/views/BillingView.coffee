@@ -76,6 +76,7 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
           $tempTpl = $("<div>").html paymentObj.html
           paymentObj.status = $tempTpl.find("#billing_statement_summary_balance_paid_stamp").text()
           paymentObj.status ||= $tempTpl.find("#billing_statement_summary_balance_paid_date").find(".billing_statement_summary_value").text()
+          $tempTpl.remove()
           if paymentObj.success
             paymentObj.status ||= "Not yet due"
           else

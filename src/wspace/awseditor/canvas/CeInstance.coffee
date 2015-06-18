@@ -7,9 +7,10 @@ define [
   "./CpInstance"
   "i18n!/nls/lang.js"
   "CloudResources"
+  "eip_selector"
   "event"
   "UI.notification"
-], ( CanvasElement, constant, CanvasManager, VolumePopup, InstancePopup, lang, CloudResources, ide_event )->
+], ( CanvasElement, constant, CanvasManager, VolumePopup, InstancePopup, lang, CloudResources, EipSelector, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -80,9 +81,13 @@ define [
       return
 
     toggleEip : ()->
+      console.log "ABC"
       if @canvas.design.modeIsApp() then return false
 
       toggle = !@model.hasPrimaryEip()
+      if @canvas.design.modeIsAppEdit() and toggle
+        @selectEip()
+        return false
       @model.setPrimaryEip( toggle )
 
       if toggle
@@ -92,6 +97,11 @@ define [
 
       ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
+
+    selectEip: ()->
+      if not @canvas.design.modeIsAppEdit or @model.hasPrimaryEip()
+        return false
+      new EipSelector(@model)
 
     select : ( selectedDomElement )->
       type = @type

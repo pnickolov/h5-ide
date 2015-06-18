@@ -460,8 +460,7 @@ pre {
 .combo-dd.selectbox {
   position: relative; }
   .combo-dd.selectbox .dropdown {
-    position: absolute;
-    top: 29px; }
+    position: absolute; }
   .combo-dd.selectbox .scroll-wrap {
     width: 258px;
     top: 0;

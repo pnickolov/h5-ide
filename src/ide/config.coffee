@@ -199,6 +199,7 @@ require.config {
     'rds_pg'           : 'component/awscomps/RdsPg'
     'rds_snapshot'     : 'component/awscomps/RdsSnapshot'
     'eip_manager'      : 'component/awscomps/EipManage'
+    'eip_selector'     : 'component/awscomps/EipSelector'
     'sslcert_manage'   : 'component/awscomps/SslCertManage'
     'sslcert_dropdown' : 'component/awscomps/SslCertDropdown'
     'og_manage'        : 'component/awscomps/OgManage'

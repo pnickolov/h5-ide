@@ -76,9 +76,9 @@ define [ 'CloudResources', 'constant', 'i18n!/nls/lang.js' ], ( CloudResources, 
         else
           $( node ).show()
 
-      toggle = targetModel.hasPrimaryEip()
+      detach = targetModel.hasPrimaryEip()
 
-      if toggle
+      if detach
         tootipStr = lang.CANVAS.DETACH_ELASTIC_IP_FROM_PRIMARY_IP
         imgUrl    = 'ide/icon/icn-eipon.png'
       else

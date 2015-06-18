@@ -203,6 +203,22 @@ module.exports =
       en: "Are you sure you want to allocate a new IP address?"
       zh: "确定要分配新的弹性 IP 吗？"
 
+    EIP_DROPDOWN_MANAGE:
+      en: "Manage Elastic IPs"
+      zh: "管理弹性 IP"
+
+    EIP_DROPDOWN_FILTER:
+      en: "Filter Elastic IPs"
+      zh: "过滤弹性 IP"
+
+    EIP_RESOURCE_NAME:
+      en: "Elastic IPs"
+      zh: "弹性 IP"
+
+    SELECT_EIP_SELECTION:
+      en: "Select Elastic IP"
+      zh: "选择弹性 IP"
+
     OG_NO_OPTION_GROUP:
       en: "No Option Group"
       zh: "无选项组"

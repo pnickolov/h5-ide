@@ -72,7 +72,16 @@ define ['backbone', "../template/TplBilling", 'i18n!/nls/lang.js', "ApiRequest",
           e.start_balance = e.starting_balance_in_cents / 100
           tempArray.push e
         tempArray.reverse()
-        paymentHistory = tempArray
+        paymentHistory = _.map tempArray, (paymentObj)->
+          $tempTpl = $("<div>").html paymentObj.html
+          paymentObj.status = $tempTpl.find("#billing_statement_summary_balance_paid_stamp").text()
+          paymentObj.status ||= $tempTpl.find("#billing_statement_summary_balance_paid_date").find(".billing_statement_summary_value").text()
+          if paymentObj.success
+            paymentObj.status ||= "Not yet due"
+          else
+            paymentObj.status ||= "Unpaid"
+          paymentObj
+
         that.model.set("paymentHistory", paymentHistory)
         historyDefer.resolve(paymentHistory)
       , (err)->

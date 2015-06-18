@@ -81,7 +81,6 @@ define [
       return
 
     toggleEip : ()->
-      console.log "ABC"
       if @canvas.design.modeIsApp() then return false
 
       toggle = !@model.hasPrimaryEip()

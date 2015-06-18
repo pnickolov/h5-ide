@@ -219,6 +219,22 @@ module.exports =
       en: "Select Elastic IP"
       zh: "选择弹性 IP"
 
+    EIP_NEED_SELECT:
+      en: "You need specify a Elastic IP to assign."
+      zh: "您需要指定一个弹性 IP 用来分配。"
+
+    EIP_SELECT_IP_LABEL:
+      en: "Select Elastic IP"
+      zh: "选择弹性 IP"
+
+    ASSIGN_NEW_ELASTIC_IP:
+      en: "Assign new Elastic IP"
+      zh: "分配新的弹性 IP"
+
+    ASSIGN_NEW_ELASTIC_IP_DESC:
+      en: "A new Elastic IP will assign automatically."
+      zh: "将自动分配一个新的弹性 IP"
+
     OG_NO_OPTION_GROUP:
       en: "No Option Group"
       zh: "无选项组"

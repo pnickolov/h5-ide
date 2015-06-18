@@ -79,7 +79,7 @@
                                     <tr class="item" data-id="{{@index}}">
                                         <td>{{formatTime updated_at "yyyy-MM-d"}}</td>
                                         <td>$ {{or ending_balance total_balance}}</td>
-                                        <td>{{#if success}}{{i18n "PAYMENT_PAID"}}{{else}}<span class="link-red">{{i18n "PAYMENT_FAILED"}}</span>{{/if}}</td>
+                                        <td>{{#if success}}{{status}}{{else}}<span class="link-red">{{status}}</span>{{/if}}</td>
                                         <td>
                                             <a class="payment-receipt" href="#">{{i18n "PAYMENT_VIEW_RECEIPT"}}</a></td>
                                     </tr>

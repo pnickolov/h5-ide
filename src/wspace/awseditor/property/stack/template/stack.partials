@@ -1,157 +1,202 @@
 <!--{{main}}-->
 <article>
 
-  {{#unless isStack}}
-    {{#if isAppEdit}}
-    <section class="property-control-group" data-bind="true">
-        <label class="left" for="property-app-name">{{ i18n "PROP.APP_LBL_NAME" }}</label>
-        <input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}" id="property-app-name">
-    </section>
-    {{/if}}
-    <dl class="dl-horizontal dl-region-type property-control-group">
-      <dt>{{ i18n "PROP.STACK_LBL_REGION" }}</dt>
-      <dd>{{region}}</dd>
-      <dt>{{ i18n "PROP.STACK_LBL_TYPE" }}</dt>
-      <dd>{{type}}</dd>
-      <dt>{{ i18n "PROP.APP_LBL_ID" }}</dt>
-      <dd>{{id}}</dd>
-      {{#if usage}}
-          {{#if isAppEdit}}
-              <dt>{{ i18n "PROP.STACK_LBL_USAGE"}}</dt>
-              <dd><input class="input" maxlength="32" data-required-rollback="true" value="{{usage}}" type="text" id="property-app-usage"/></dd>
-          {{else}}
-              <dt>{{ i18n "PROP.STACK_LBL_USAGE" }}</dt>
-              <dd>{{usage}}</dd>
-          {{/if}}
-      {{/if}}
-      <dt>{{ i18n "PROP.DESCRIPTION"}}</dt>
-      <dd>{{description}}</dd>
-    </dl>
+    {{#unless isStack}}
+        {{#if isAppEdit}}
+            <section class="property-control-group" data-bind="true">
+                <label class="left" for="property-app-name">{{ i18n "PROP.APP_LBL_NAME" }}</label>
+                <input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}"
+                       id="property-app-name">
+            </section>
+        {{/if}}
+        <dl class="dl-horizontal dl-region-type property-control-group">
+            <dt>{{ i18n "PROP.STACK_LBL_REGION" }}</dt>
+            <dd>{{region}}</dd>
+            <dt>{{ i18n "PROP.STACK_LBL_TYPE" }}</dt>
+            <dd>{{type}}</dd>
+            <dt>{{ i18n "PROP.APP_LBL_ID" }}</dt>
+            <dd>{{id}}</dd>
+            {{#if isApp}}
+                {{#if usage}}
+                    <dt>{{ i18n "PROP.STACK_LBL_USAGE" }}</dt>
+                    <dd>{{usage}}</dd>
+                {{/if}}
+                <dt>{{ i18n "PROP.DESCRIPTION"}}</dt>
+                <dd>{{description}}</dd>
+            {{/if}}
+        </dl>
 
-    {{#if isApp}}
-    <dl class="dl-vertical">
-      <dt><label>{{ i18n "PROP.APP_LBL_INSTANCE_STATE"}}</label></dt>
-      {{#if opsEnable}}
-      <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>
-      {{else}}
-      <dd>{{i18n "PROP.LBL_DISABLED"}}</dd>
-      {{/if}}
-      <dt><label>{{ i18n "PROP.APP_LBL_RESDIFF_VIEW"}}</label></dt>
-      {{#if isResDiff}}
-      <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>
-      {{else}}
-      <dd>{{i18n "PROP.LBL_DISABLED"}}</dd>
-      {{/if}}
-    </dl>
+        {{#if isApp}}
+            <dl class="dl-vertical">
+                <dt><label>{{ i18n "PROP.APP_LBL_INSTANCE_STATE"}}</label></dt>
+                {{#if opsEnable}}
+                    <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>
+                {{else}}
+                    <dd>{{i18n "PROP.LBL_DISABLED"}}</dd>
+                {{/if}}
+                <dt><label>{{ i18n "PROP.APP_LBL_RESDIFF_VIEW"}}</label></dt>
+                {{#if isResDiff}}
+                    <dd>{{i18n "PROP.LBL_ENABLED"}}</dd>
+                {{else}}
+                    <dd>{{i18n "PROP.LBL_DISABLED"}}</dd>
+                {{/if}}
+            </dl>
 
-    {{/if}}
+        {{/if}}
 
-    {{#if isAppEdit}}
-    <section class="property-control-group resdiff-switch">
-      <div class="checkbox">
-        <input id="property-app-resdiff" type="checkbox" name="resdiff" {{#if isResDiff}}checked{{/if}} >
-        <label for="property-app-resdiff"></label>
-      </div>
-      <label for="property-app-resdiff">{{ i18n "PROP.APP_LBL_RESDIFF"}}</label><i class="icon-info tooltip" data-tooltip="{{ i18n 'PROP.APP_TIP_RESDIFF'}}"></i>
-    </section>
-    {{/if}}
+        {{#if isAppEdit}}
+            {{#if usage}}
+                <section class="property-control-group" data-bind="true">
+                    <label for="property-app-usage">{{i18n "PROP.STACK_LBL_USAGE"}}</label>
+                    <div class="clear">
+                        <div id="property-app-usage" class="selectbox">
+                            <div class="selection"><i class="icon-app-type-testing"></i>Testing</div>
+                            <ul class="dropdown" tabindex="-1">
+                                <li class="selected item" data-value="testing"><i class="icon-app-type-testing"></i>Testing</li>
+                                <li class="item" data-value="development"><i class="icon-app-type-development"></i>Development</li>
+                                <li class="item" data-value="production"><i class="icon-app-type-production"></i>Production</li>
+                                <li class="item" data-value="others"><i class="icon-app-type-others" data-value="testing"></i>Others</li>
+                                <li class="item" data-value="custom"><i class="icon-app-type-custom" data-value="custom"></i>Custom</li>
+                            </ul>
+                        </div>
+                        <input type="text" class="input custom-app-usage" placeholder="custom" maxlength="32" data-required-rollback="true" />
+                    </div>
+                </section>
+            {{/if}}
+            <section class="property-control-group" data-bind="true">
+                <label for="property-stack-description">{{ i18n "PROP.DESCRIPTION"}}</label>
+                <textarea name="" id="property-stack-description" cols="30" rows="7">{{description}}</textarea>
+            </section>
+            <section class="property-control-group resdiff-switch">
+                <div class="checkbox">
+                    <input id="property-app-resdiff" type="checkbox" name="resdiff" {{#if isResDiff}}checked{{/if}} >
+                    <label for="property-app-resdiff"></label>
+                </div>
+                <label for="property-app-resdiff">{{ i18n "PROP.APP_LBL_RESDIFF"}}</label>
+                <i class="icon-info tooltip" data-tooltip="{{ i18n 'PROP.APP_TIP_RESDIFF'}}"></i>
+            </section>
+        {{/if}}
 
-    {{#if isMesos}}
-    <div class="option-group-head expand">Mesos Settings</div>
-    <div class="option-group">
-<!--       {{#if isAppEdit}}
-      <section class="property-control-group" data-bind="true">
-        <div class="mesos-marathon-switch">
-          <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
-          <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
-            <span class="switch-handle"></span>
-          </label>
+        {{#if isMesos}}
+            <div class="option-group-head expand">Mesos Settings</div>
+            <div class="option-group">
+                <!--{{#if isAppEdit}}
+                    <section class="property-control-group" data-bind="true">
+                        <div class="mesos-marathon-switch">
+                            <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt="">
+                            <span>Marathon</span>
+                            <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </section>
+                {{/if}}-->
+                <section id="mesos-data-area">
+                </section>
+            </div>
+        {{/if}}
+
+
+    {{else}}
+        <section class="property-control-group" data-bind="true">
+            <label class="left" for="property-stack-name">{{ i18n "PROP.STACK_LBL_NAME" }}</label>
+            <input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}"
+                   id="property-stack-name">
+        </section>
+        <section class="property-control-group" data-bind="true">
+            <label for="property-stack-description">{{ i18n "PROP.STACK_LBL_DESCRIPTION"}}</label>
+            <textarea name="" id="property-stack-description" cols="30" rows="7">{{description}}</textarea>
+        </section>
+        <dl class="dl-horizontal dl-region-type property-control-group">
+            <dt><label>{{ i18n "PROP.STACK_LBL_REGION" }}</label></dt>
+            <dd>{{region}}</dd>
+            <dt><label>{{ i18n "PROP.STACK_LBL_TYPE" }}</label></dt>
+            <dd>{{type}}</dd>
+            <dt><label>{{ i18n "PROP.STACK_LBL_ID" }}</label></dt>
+            <dd>{{id}}</dd>
+        </dl>
+
+        <!-- Mesos Settings -->
+        {{#if isMesos}}
+            <section class="property-control-group" data-bind="true">
+                <div class="mesos-marathon-switch">
+                    <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
+                    <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </section>
+        {{/if}}
+
+    {{/unless}}
+
+
+
+
+    <!-- SG, ACL, COST -->
+    <div class="option-group-head">{{ i18n "PROP.STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span
+            id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group sg-group"></div>
+
+
+    {{#if networkAcls}}
+        <div class="option-group-head pos-r">{{ i18n "PROP.STACK_TIT_ACL" }}<span
+                class="acl-info-list-num property-head-num-wrap">({{networkAcls.length}})</span>
         </div>
-      </section>
-      {{/if}}
- -->      <section id="mesos-data-area">
-      </section>
-    </div>
+        <div class="option-group">
+            <ul class="acl-sg-info-list acl-info-list mega-list-wraper" id="stack-property-acl-list"></ul>
+            {{#unless isApp}}<a href="#" class="add-to-list"
+                                id="stack-property-new-acl">{{ i18n "PROP.STACK_BTN_CREATE_NEW_ACL" }}</a>{{/unless}}
+        </div>
     {{/if}}
 
 
-  {{else}}
-	<section class="property-control-group" data-bind="true">
-		<label class="left" for="property-stack-name">{{ i18n "PROP.STACK_LBL_NAME" }}</label>
-		<input class="input" type="text" data-ignore="true" data-required-rollback="true" value="{{name}}" id="property-stack-name">
-	</section>
-    <section class="property-control-group" data-bind="true">
-        <label for="property-stack-description">{{ i18n "PROP.STACK_LBL_DESCRIPTION"}}</label>
-        <textarea name="" id="property-stack-description" cols="30" rows="7">{{description}}</textarea>
-    </section>
-	<dl class="dl-horizontal dl-region-type property-control-group">
-		<dt><label>{{ i18n "PROP.STACK_LBL_REGION" }}</label></dt><dd>{{region}}</dd>
-		<dt><label>{{ i18n "PROP.STACK_LBL_TYPE" }}</label></dt><dd>{{type}}</dd>
-    <dt><label>{{ i18n "PROP.STACK_LBL_ID" }}</label></dt><dd>{{id}}</dd>
-	</dl>
-
-  <!-- Mesos Settings -->
-  {{#if isMesos}}
-  <section class="property-control-group" data-bind="true">
-    <div class="mesos-marathon-switch">
-      <img class="marathon-mark-img" src="/assets/images/ide/marathon.png" alt=""> <span>Marathon</span>
-      <label class="switch toolbar-visual-ops-switch marathon-switch narrow {{#if marathonOn}}on{{/if}}">
-        <span class="switch-handle"></span>
-      </label>
+    <div class="option-group-head">
+        {{ i18n "PROP.STACK_TIT_COST_ESTIMATION" }}
+        <span class="cost-counter right">{{#if totalFee}}{{currency}}{{totalFee}}
+            /{{{ i18n "PROP.STACK_LBL_COST_CYCLE" }}} {{/if}}</span>
     </div>
-  </section>
-  {{/if}}
+    <div class="option-group">
+        <table class="table cost-estimation-table">
+            <thead>
+            <tr>
+                <th>{{ i18n "PROP.STACK_COST_COL_RESOURCE" }}</th>
+                <th style="min-width:70px;">{{ i18n "PROP.STACK_COST_COL_SIZE_TYPE" }}</th>
+                <th style="min-width:60px;">{{ i18n "PROP.STACK_COST_COL_FEE" }}</th>
+            </tr>
+            </thead>
+            <tbody> {{#each costList}}
+                <tr>
+                    <td>{{resource}}</td>
+                    <td>{{type}}</td>
+                    <td>{{formatedFee}}</td>
+                </tr>
+            {{/each}} </tbody>
 
-  {{/unless}}
-
-
-
-
-	<!-- SG, ACL, COST -->
-	<div class="option-group-head">{{ i18n "PROP.STACK_TIT_SG" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group"></div>
-
-
-	{{#if networkAcls}}
-	<div class="option-group-head pos-r">{{ i18n "PROP.STACK_TIT_ACL" }}<span class="acl-info-list-num property-head-num-wrap">({{networkAcls.length}})</span>
-	</div>
-	<div class="option-group">
-    <ul class="acl-sg-info-list acl-info-list mega-list-wraper" id="stack-property-acl-list"></ul>
-    {{#unless isApp}}<a href="#" class="add-to-list" id="stack-property-new-acl">{{ i18n "PROP.STACK_BTN_CREATE_NEW_ACL" }}</a>{{/unless}}
-  </div>
-	{{/if}}
-
-
-	<div class="option-group-head">
-		{{ i18n "PROP.STACK_TIT_COST_ESTIMATION" }}
-		<span class="cost-counter right">{{#if totalFee}}{{currency}}{{totalFee}}/{{{ i18n "PROP.STACK_LBL_COST_CYCLE" }}} {{/if}}</span>
-	</div>
-	<div class="option-group">
-		<table class="table cost-estimation-table">
-			<thead> <tr>
-					<th>{{ i18n "PROP.STACK_COST_COL_RESOURCE" }}</th>
-          <th style="min-width:70px;">{{ i18n "PROP.STACK_COST_COL_SIZE_TYPE" }}</th>
-          <th style="min-width:60px;">{{ i18n "PROP.STACK_COST_COL_FEE" }}</th>
-			</tr> </thead>
-			<tbody> {{#each costList}}
-        <tr> <td>{{resource}}</td> <td>{{type}}</td> <td>{{formatedFee}}</td> </tr>
-      {{/each}} </tbody>
-
-		</table>
-		<div class="property-control-group tac">
-			<a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac" target="_blank">{{i18n "PROP.STACK_LBL_AWS_EC2_PRICING"}}</a>
-		</div>
-	</div>
+        </table>
+        <div class="property-control-group tac">
+            <a target="_blank" href="http://aws.amazon.com/ec2/pricing/" class="goto-outsite tac"
+               target="_blank">{{i18n "PROP.STACK_LBL_AWS_EC2_PRICING"}}</a>
+        </div>
+    </div>
 
 </article>
 
 <!--{{mesosData}}-->
 {{#if this.leaderIp}}
-<dl class="dl-vertical">
-  <dt>Framework</dt><dd>{{emptyStr framework}}</dd>
-  <dt>Mesos Leader UI</dt><dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{leaderIp}}:{{leaderPort}}</a></dd>
-  {{#if framework}}<dt>Marathon Leader UI</dt><dd><a target="_blank" href="http://{{marathonIp}}:{{marathonPort}}">{{marathonIp}}:{{marathonPort}}</a></dd>{{/if}}
-</dl>
+    <dl class="dl-vertical">
+        <dt>Framework</dt>
+        <dd>{{emptyStr framework}}</dd>
+        <dt>Mesos Leader UI</dt>
+        <dd><a target="_blank" href="http://{{leaderIp}}:{{leaderPort}}">{{leaderIp}}:{{leaderPort}}</a></dd>
+        {{#if framework}}
+            <dt>Marathon Leader UI</dt>
+            <dd><a target="_blank" href="http://{{marathonIp}}:{{marathonPort}}">{{marathonIp}}:{{marathonPort}}</a>
+            </dd>
+        {{/if}}
+    </dl>
 {{else}}
-<dl class="dl-vertical"><dt>Mesos Data is not ready yet...</dt></dl>
+    <dl class="dl-vertical">
+        <dt>Mesos Data is not ready yet...</dt>
+    </dl>
 {{/if}}

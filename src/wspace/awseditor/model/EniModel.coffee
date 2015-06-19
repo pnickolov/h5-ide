@@ -162,7 +162,7 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
         @get("ips")[0].eipData = {
           id: MC.guid()
           publicIp: eipData.get("publicIp")
-          allocationId: eipData.get("alocationID")
+          allocationId: eipData.get("allocationId")
         }
       else if eipData is "old"
         eip = self.getCurrentEip()

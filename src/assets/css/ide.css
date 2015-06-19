@@ -6760,6 +6760,9 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .property-content .mesos-marathon-switch .marathon-mark-img {
   height: 30px; }
 
+#mesos-attribute {
+  margin-top: 10px; }
+
 .ops-process {
   width: 100%;
   padding-top: 50px;

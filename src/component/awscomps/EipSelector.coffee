@@ -12,6 +12,10 @@ define [
   Backbone.View.extend {
     initialize: (@model)->
       @collection = CloudResources Design.instance().credentialId(), constant.RESTYPE.EIP, Design.instance().get("region")
+      @listenTo @collection, 'change', @renderDropdown
+      @listenTo @collection, 'update', @renderDropdown
+      @listenTo Design.instance().credential(), "update", @credChanged
+      @listenTo Design.instance().credential(), "change", @credChanged
       @renderModal()
 
     renderModal: ()->
@@ -19,10 +23,10 @@ define [
       @modal = new Modal {
         title: "Please Select a eip to assign"
         template: template.selector
+        confirm: lang.PROP.EIP_SELECTOR_CONFIRM_LABEL
       }
       @modal.on "shown", ()->
-        dropdown = self.renderDropdown()
-        self.modal.tpl.find("#eip-selector").html dropdown.$el
+        self.renderDropdown()
 
       @modal.on "confirm", ()->
         if self.selected
@@ -31,6 +35,11 @@ define [
           self.modal.close()
         else
           self.modal.find("#need-select-eip").removeClass("hide")
+
+    credChanged: ()->
+      @dropdown?.render("loading")
+      @collection.fetchForce().then =>
+        @renderDropdown()
 
     renderDropdown: ()->
       option =
@@ -44,6 +53,9 @@ define [
       @dropdown.on 'manage', @manageEip, @
       @dropdown.on 'change', @assignEip, @
       @dropdown.on 'filter', @filter, @
+      if not Design.instance().credential() or Design.instance().credential().isDemo()
+        @dropdown.render('nocredential').toggleControls false
+      @modal.tpl.find("#eip-selector").html @dropdown.$el
 
     renderEip: (keySet)->
       self = @

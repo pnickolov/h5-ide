@@ -235,6 +235,14 @@ module.exports =
       en: "A new Elastic IP will assign automatically."
       zh: "将自动分配一个新的弹性 IP"
 
+    ASSIGN_OLD_ELASTIC_IP:
+      en: "Current Elastic IP"
+      zh: "使用当前的弹性 IP"
+
+    ASSIGN_OLD_ELASTIC_IP_DESC:
+      en: "Continue use current EIP instead of assign a new EIP."
+      zh: "不分配新的EIP， 继续使用原来的 EIP."
+
     OG_NO_OPTION_GROUP:
       en: "No Option Group"
       zh: "无选项组"

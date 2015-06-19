@@ -53,6 +53,12 @@
 
 
 <!--{{dropdown}}-->
+{{#if currentEip}}
+    <li class="item {{#ifCond selected "old"}}selected{{/ifCond}}" data-id="old" tabindex="-1">
+        <div class="manager-content-main" data-id="old">{{i18n "PROP.ASSIGN_OLD_ELASTIC_IP"}}<i class="icon-info tooltip" data-tooltip="Keep use current Elastic IP."></i></div>
+        <div class="manager-content-sub">{{i18n "PROP.ASSIGN_OLD_ELASTIC_IP_DESC"}}</div>
+    </li>
+{{/if}}
 {{#unless hideNewEip}}<li class="item {{#ifCond selected "new"}}selected{{/ifCond}}" data-id="new" tabindex="-1">
     <div class="manager-content-main" data-id="new">{{i18n "PROP.ASSIGN_NEW_ELASTIC_IP"}}<i class="icon-info tooltip" data-tooltip="Assign a new Elastic IP"></i></div>
     <div class="manager-content-sub">{{i18n "PROP.ASSIGN_NEW_ELASTIC_IP_DESC"}}</div>

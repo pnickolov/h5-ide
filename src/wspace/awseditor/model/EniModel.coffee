@@ -144,14 +144,43 @@ define [ "ComplexResModel", "Design", "./connection/SgAsso", "./connection/EniAt
           @get("ips").length = ipCount
       null
 
+    getCurrentEip: ( )->
+      unless Design.instance().modeIsAppEdit()
+        return false
+      self = @
+      _.find Design.instance().opsModel().getJsonData().component, (comp)->
+        if comp.type is "AWS.EC2.EIP"
+          eniUid = comp.resource.NetworkInterfaceId.match(/^@{([^\.]+)\..*/)[1]
+          return eniUid is self.id
+        false
+
     setPrimaryEip : ( toggle, eipData )->
       if not @attachedInstance() then return
-
+      self = @
       @get("ips")[0].hasEip = toggle
-      if eipData and  eipData.get("publicIp")
-        @get("ips")[0].eipData.publicIp = eipData.get("publicIp")
-        @get("ips")[0].eipData.allocationId = eipData.get("allocationId")
+      if eipData and typeof eipData isnt "string" and  eipData.get("publicIp")
+        @get("ips")[0].eipData = {
+          id: MC.guid()
+          publicIp: eipData.get("publicIp")
+          allocationId: eipData.get("alocationID")
+        }
+      else if eipData is "old"
+        eip = self.getCurrentEip()
+        @attributes.ips[0].eipData = {
+          id: eip.uid
+          publicIp : eip.resource.PublicIp
+          allocationId: eip.resource.AllocationId
+        }
+        return null
+      else if eipData is "new"
+        eip = self.getCurrentEip()
+        # if has old EIP, assign a new one.
+        if eip
+          @get("ips")[0].eipData = {id: MC.guid()}
       null
+
+    getPrimaryEip : ()->
+      @get("ips")?[0]?.eipData
 
     hasPrimaryEip : ()-> @get("ips")[0].hasEip
 

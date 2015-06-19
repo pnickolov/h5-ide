@@ -64,6 +64,23 @@ define [
           data: data
         if keySet
           dataSet.hideNewEip = true
+
+        if self.selected
+          selected = null
+          if self.selectedEip and self.selectedEip.id
+            selected = self.selectedEip.id
+          else
+            selected = self.selectedEip
+          dataSet.selected = selected
+
+        currentEip = null
+        if self.model.getEmbedEni
+          currentEip = self.model.getEmbedEni().getCurrentEip()
+        else
+          currentEip = self.model.getCurrentEip()
+        if currentEip
+          dataSet.currentEip = {id: currentEip.resource.PublicIp}
+          # dataSet.hideNewEip = true
         content = template.dropdown dataSet
         self.dropdown.toggleControls true, "manage"
         self.dropdown.toggleControls true, "filter"
@@ -76,6 +93,7 @@ define [
 
     assignEip: (id)->
       eip = @collection.find {id: id}
+      eip ||= id
       @selected = true
       @selectedEip = eip
       @modal.find("#need-select-eip").addClass("hide")

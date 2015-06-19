@@ -301,6 +301,8 @@ require.config {
       'snapshotManager'
       'rds_pg'
       'rds_snapshot'
+      'eip_manager'
+      'eip_selector'
       'sslcert_manage'
       'sslcert_dropdown'
       'og_manage'

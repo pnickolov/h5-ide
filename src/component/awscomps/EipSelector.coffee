@@ -111,7 +111,6 @@ define [
       @modal.find("#need-select-eip").addClass("hide")
       console.log "Assign Elastic Ip to Model"
       console.log eip
-#      @model.setPrimaryEip(true, eip)
 
     filter: (keyword)->
       console.log("Filter Elastic Ip")

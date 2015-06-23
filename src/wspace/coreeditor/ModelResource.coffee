@@ -246,6 +246,11 @@ define [ "Design", 'CloudResources', "constant", "backbone" ], ( Design, CloudRe
       else
         true
 
+    getTagModel: -> Design.modelClassForType(constant.RESTYPE.TAG).first()
+    addTag: (tagKey, tagValue) -> @getTagModel().addTag(tagKey, tagValue, @)
+    removeTag: (tagItem) -> @getTagModel().removeTag(tagItem, @)
+    tags: -> @connectionTargets('TagUsage')
+
 
     isDesignAwake : ()-> Design.instance() is @__design
     design : ()-> @__design

@@ -221,11 +221,19 @@ body {
   font-size: 28px;
 }
 
-#app-usage-selectbox + .custom-app-usage{
+#app-usage-selectbox + .custom-app-usage, #property-app-usage + .custom-app-usage{
   display: none;
   width: 145px;
   &.show{
 	display: inline-block;
+  }
+}
+#property-app-usage{
+  &.custom{
+	width: auto;
+  }
+  + .custom-app-usage{
+  width: 165px;
   }
 }
 #ImportSaveAppName{
@@ -558,7 +566,7 @@ div.modal-text-highlight{
 	padding-right: 25px;
 }
 
-#app-usage-selectbox [class^="icon-app-type-"] {
+#app-usage-selectbox [class^="icon-app-type-"], #property-app-usage [class^="icon-app-type-"] {
 	margin-right: 4px;
 }
 

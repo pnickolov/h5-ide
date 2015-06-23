@@ -127,7 +127,7 @@ define [
       if modfied then @design.reload()
       true
 
-    applyAppEdit : ( newJson, fastUpdate )->
+    applyAppEdit : ( newJson, fastUpdate, attributes )->
       console.assert( @isAppEditMode(), "Cannot apply app update while it's not in app edit mode." )
 
       if not newJson
@@ -139,7 +139,7 @@ define [
 
       self = @
       #@view.listenTo @opsModel, "change:progress", @view.updateProgress
-      @opsModel.update( newJson, fastUpdate ).then ()->
+      @opsModel.update( newJson, fastUpdate, attributes).then ()->
         if fastUpdate
           self.__onAppEditDidDone()
         else

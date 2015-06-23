@@ -65,7 +65,7 @@ define ["../CrCollection", "../CrModel", "constant"], ( CrCollection, CrModel, c
       self = @
 
       @sendRequest( "aws_resource", {
-        region_name : null
+        region_name : self.region || null
         resources   : param
         addition    : "all"
         retry_times : 1

@@ -1,0 +1,72 @@
+<!-- {{keys}} -->
+{{#each keys}}
+    <tr class="item" data-id="">
+        <td style="width: 5%;">
+            <div class="checkbox">
+                <input id="eip-select-{{publicIp}}" type="checkbox" value="None" data-name="{{publicIp}}" class="one-cb" {{#unless canRelease}}disabled{{/unless}}>
+                <label for="eip-select-{{publicIp}}"></label>
+            </div>
+        </td>
+        <td style="width: 35px;">{{publicIp}}</td>
+        <td>{{instanceId}}</td>
+        <td>{{privateIpAddress}}</td>
+        <td>{{domain}}</td>
+        <td>{{networkInterfaceId}}</td>
+    </tr>
+{{/each}}
+
+
+<!-- {{slide_create}} -->
+<div class="slide-create" data-bind="true">
+    <div class="before-create">
+        <p class="modal-text-major">{{i18n "PROP.EIP_CONFIRM_TO_CREATE"}}</p>
+    </div>
+    <div class="init action">
+        <button class="btn btn-blue do-action" data-action="create">{{i18n "PROP.LBL_CREATE"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>{{i18n "PROP.LBL_CREATING"}}</button>
+    </div>
+</div>
+
+<!-- {{slide_delete}} -->
+<div class="slide-delete">
+    <div class="modal-text-major">{{i18n "PROP.EIP_CONFIRM_RELEASE_1"}} {{#if selecteEip }}{{i18n "PROP.EIP_CONFIRM_RELEASE_3" selecteEip}}{{else}}{{i18n "PROP.EIP_CONFIRM_RELEASE_2" selectedCount}}{{/if}}</div>
+    <p>{{i18n "TOOLBAR.POP_RELEASE_EIP_NOTE"}}</p>
+    <div class="init action">
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.EIP_CONFIRM_RELEASE_BTN"}}</button>
+        <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
+    </div>
+    <div class="processing action" style="display:none;">
+        <button class="btn" disabled>{{i18n "PROP.LBL_DELETING"}}</button>
+    </div>
+</div>
+
+<!--{{selector}}-->
+<div class="eip-selector-wrapper">
+    <div class="modal-control-group clearfix">
+        <label for="">{{i18n "PROP.EIP_SELECT_IP_LABEL"}}</label>
+        <div id="eip-selector" style="display:inline-block;"></div>
+        <div class="runtime-error hide" id="need-select-eip">{{i18n "PROP.EIP_NEED_SELECT"}}</div>
+    </div>
+</div>
+
+
+<!--{{dropdown}}-->
+{{#if currentEip}}
+    <li class="item {{#ifCond selected "old"}}selected{{/ifCond}}" data-id="old" tabindex="-1">
+        <div class="manager-content-main" data-id="old">{{i18n "PROP.ASSIGN_OLD_ELASTIC_IP"}}<i class="icon-info tooltip" data-tooltip="Keep use current Elastic IP."></i></div>
+        <div class="manager-content-sub">{{i18n "PROP.ASSIGN_OLD_ELASTIC_IP_DESC"}}</div>
+    </li>
+{{/if}}
+{{#unless hideNewEip}}<li class="item {{#ifCond selected "new"}}selected{{/ifCond}}" data-id="new" tabindex="-1">
+    <div class="manager-content-main" data-id="new">{{i18n "PROP.ASSIGN_NEW_ELASTIC_IP"}}<i class="icon-info tooltip" data-tooltip="Assign a new Elastic IP"></i></div>
+    <div class="manager-content-sub">{{i18n "PROP.ASSIGN_NEW_ELASTIC_IP_DESC"}}</div>
+</li>{{/unless}}
+{{#each data}}
+    <li class="item {{#ifCond selected id}}selected{{/ifCond}}" data-id="{{id}}" tabindex="-1">
+        <div class="manager-content-main" data-id="{{id}}">{{id}}</div>
+        <div class="manager-content-sub">{{allocationId}}</div>
+    </li>
+{{/each}}

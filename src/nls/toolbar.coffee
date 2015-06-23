@@ -159,6 +159,10 @@ module.exports =
       en: "DB Snapshot"
       zh: "数据库快照"
 
+    CLOUD_RESOURCE_EIP:
+      en: "Elastic IP"
+      zh: "弹性 IP"
+
     CLOUD_RESOURCE_SORT_BY_DATE:
       en: "By Date"
       zh: "按日期"
@@ -466,6 +470,14 @@ module.exports =
     POP_CANT_TAKE_SNAPSHOT_2:
       en: "cannot take final snapshot."
       zh: "无法创建最终快照"
+
+    POP_RELEASE_EIP_LABEL:
+      en: "Release Elastic IPs "
+      zh: "释放弹性 IP "
+
+    POP_RELEASE_EIP_NOTE:
+      en: "Note: These Elastic IPs will no longer be associated with your account."
+      zh: "注意：这些弹性 IP 将不再与您的账户关联。"
 
     POP_FORCE_TERMINATE:
       en: "Force to delete app"

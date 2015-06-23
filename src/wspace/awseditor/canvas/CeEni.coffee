@@ -1,5 +1,5 @@
 
-define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "CloudResources", "./CpEni", "event" ], ( CanvasElement, constant, CanvasManager, lang, CloudResources, EniPopup, ide_event )->
+define [ "CanvasElement", "constant", "CanvasManager", "eip_selector", "i18n!/nls/lang.js", "CloudResources", "./CpEni", "event" ],( CanvasElement, constant, CanvasManager, EipSelector, lang, CloudResources, EniPopup, ide_event )->
 
   CanvasElement.extend {
     ### env:dev ###
@@ -45,6 +45,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Clo
       if @canvas.design.modeIsApp() then return false
 
       toggle = !@model.hasPrimaryEip()
+      if @canvas.design.modeIsAppEdit() and toggle
+        @selectEip()
+        return false
+
       @model.setPrimaryEip( toggle )
 
       if toggle
@@ -54,6 +58,18 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "Clo
 
       ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
       false
+
+    selectEip: ()->
+      self = @
+      if not @canvas.design.modeIsAppEdit or @model.hasPrimaryEip()
+        return false
+      selector = new EipSelector(self.model)
+      selector.on "assign", ()->
+        Design.modelClassForType( constant.RESTYPE.IGW ).tryCreateIgw()
+        CanvasManager.updateEip self.$el.children(".eip-status"), self.model
+        ide_event.trigger ide_event.PROPERTY_REFRESH_ENI_IP_LIST
+        selector.off "assign"
+        false
 
     # Creates a svg element
     create : ()->

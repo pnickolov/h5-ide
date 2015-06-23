@@ -519,7 +519,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         throw err
 
     # Update the app, returns a promise
-    update : ( newJson, fastUpdate )->
+    update : ( newJson, fastUpdate, attr )->
       if not @isApp() then return @__returnErrorPromise()
 
       if @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
@@ -541,13 +541,15 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       self = @
 
       # Send Request
-      ApiRequest("app_update", {
+      updateOption = $.extend({
         region_name : @get("region")
         spec        : newJson
         app_id      : @get("id")
         fast_update : fastUpdate
         key_id      : @credentialId()
-      }).fail ( error )->
+      }, attr || {})
+
+      ApiRequest("app_update", updateOption ).fail ( error )->
         self.__userTriggerAppProgress = false
         self.__updateAppDefer.reject( error )
 

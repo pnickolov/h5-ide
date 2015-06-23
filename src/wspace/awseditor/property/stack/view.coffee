@@ -17,7 +17,7 @@ define [ '../base/view',
             'change #property-stack-name'               : 'stackNameChanged'
             'change #property-stack-description'        : 'stackDescriptionChanged'
             'change #property-app-name'                 : 'changeAppName'
-            'change #property-app-usage'                : 'changeUsage'
+            'change .custom-app-usage'                  : 'changeUsage'
             'click #stack-property-new-acl'             : 'createAcl'
             'click #stack-property-acl-list .edit'      : 'openAcl'
             'click .acl-info-list .sg-list-delete-btn'  : 'deleteAcl'
@@ -36,6 +36,7 @@ define [ '../base/view',
                 @setTitle( title )
 
             @refreshACLList()
+            @bindAppUsage()
 
             if @model.isAppEdit
                 @$( '#property-app-name' ).parsley 'custom', @checkAppName
@@ -46,6 +47,23 @@ define [ '../base/view',
 
         renderMesosData: ( dataModel = Design.instance().opsModel().getMesosData() ) ->
             @$( '#mesos-data-area' ).html template.mesosData _.extend { isAppEdit: @model.isAppEdit }, dataModel.toJSON()
+
+        bindAppUsage: ()->
+          $selectbox = @$el.find("#property-app-usage.selectbox")
+          if $selectbox.size() < 1
+            return false
+          $selectbox.on "OPTION_CHANGE", (evt, _, result)->
+            $selectbox.toggleClass("custom",
+              result.value is "custom").parent().find("input.custom-app-usage").toggleClass("show",
+              result.value is "custom")
+            if result.value isnt "custom"
+              Design.instance().set("usage", result.value)
+          usage = Design.instance().get("usage")
+          if usage in ["testing", "development", "production", "others"]
+            $selectbox.find(".dropdown li.item[data-value='" + usage + "']").click()
+          else
+            $selectbox.find(".dropdown li.item[data-value='custom']").click()
+            $selectbox.parent().find("input.custom-app-usage").val(usage)
 
         toggleMarathon: ( e ) ->
             $switch = $ e.currentTarget

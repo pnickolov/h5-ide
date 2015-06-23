@@ -1549,6 +1549,12 @@ select.select3.disabled {
 	box-sizing : border-box;
 }
 
+.multi-ipt-row .ipt-wrapper input.ipt-half {
+	display: inline-block;
+	width: 45% !important;
+	margin-right: 10px;
+}
+
 .multi-ipt-row:first-child:last-child .icon-del {
 	display : none;
 }

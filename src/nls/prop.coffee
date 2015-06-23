@@ -183,6 +183,77 @@ module.exports =
       en: "AZ & subnet"
       zh: "可用区和子网"
 
+    EIP_DOMAIN:
+      en: "Elastic IP Domain"
+      zh: "弹性IP 域"
+
+    EIP_CONFIRM_RELEASE_1:
+      en: "Confirm to release "
+      zh: "确定释放"
+
+    EIP_CONFIRM_RELEASE_2:
+      en: "selected %s Elastic IPs?"
+      zh: "已选择的 %s 个弹性IP 吗？"
+
+    EIP_CONFIRM_RELEASE_3:
+      en: "Elastic IP %s?"
+      zh: "弹性 IP (%s) 吗？"
+
+    EIP_CONFIRM_RELEASE_BTN:
+      en: "Release"
+      zh: "释放"
+
+    EIP_CONFIRM_TO_CREATE:
+      en: "Are you sure you want to allocate a new IP address?"
+      zh: "确定要分配新的弹性 IP 吗？"
+
+    EIP_DROPDOWN_MANAGE:
+      en: "Manage Elastic IPs"
+      zh: "管理弹性 IP"
+
+    EIP_DROPDOWN_FILTER:
+      en: "Filter Elastic IPs"
+      zh: "过滤弹性 IP"
+
+    EIP_RESOURCE_NAME:
+      en: "Elastic IPs"
+      zh: "弹性 IP"
+
+    SELECT_EIP_SELECTION:
+      en: "Select Elastic IP"
+      zh: "选择弹性 IP"
+
+    EIP_NEED_SELECT:
+      en: "You need specify a Elastic IP to assign."
+      zh: "您需要指定一个弹性 IP 用来分配。"
+
+    EIP_SELECT_IP_LABEL:
+      en: "Select Elastic IP"
+      zh: "选择弹性 IP"
+
+    ASSIGN_NEW_ELASTIC_IP:
+      en: "Assign new Elastic IP"
+      zh: "分配新的弹性 IP"
+
+    EIP_SELECTOR_CONFIRM_LABEL:
+      en: "Assign"
+      zh: "分配"
+
+    EIP_SELECTOR_CONFIRM_TITLE:
+      en: "Please select a unallocated EIP to assign"
+      zh: "请选择要分配的弹性 IP"
+
+    ASSIGN_NEW_ELASTIC_IP_DESC:
+      en: "A new Elastic IP will assign automatically."
+      zh: "将自动分配一个新的弹性 IP"
+
+    ASSIGN_OLD_ELASTIC_IP:
+      en: "Current Elastic IP"
+      zh: "使用当前的弹性 IP"
+
+    ASSIGN_OLD_ELASTIC_IP_DESC:
+      en: "Continue use current EIP instead of assign a new EIP."
+      zh: "不分配新的EIP， 继续使用原来的 EIP."
 
     OG_NO_OPTION_GROUP:
       en: "No Option Group"
@@ -3437,6 +3508,10 @@ module.exports =
     RESOURCE_NAME_KEYPAIR:
       en: "keypair"
       zh: "密钥对"
+
+    RESOURCE_NAME_EIP:
+      en: "Elastic IP"
+      zh: "弹性 IP"
 
     RESOURCE_NAME_PARAMETER_GROUP:
       en: "RDS Parameter Group"

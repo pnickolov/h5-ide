@@ -23,16 +23,16 @@
                 <div class="multi-ipt-row template">
                     <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                     <span class="ipt-wrapper">
-                        <label>key</label><input class="input mesos-attr" type="text" data-name="key" required/>
-                        <label>value</label><input class="input mesos-attr" type="text" data-name="value" required/>
+                        <input class="input mesos-attr ipt-half" type="text" data-name="key" placeholder="key" required/>
+                        <input class="input mesos-attr ipt-half" type="text" data-name="value" placeholder="value" required/>
                     </span>
                 </div>
                 {{#each mesosAttr}}
                 <div class="multi-ipt-row">
                     <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
                     <span class="ipt-wrapper">
-                        <label>key</label><input class="input mesos-attr" type="text" data-name="key" value="{{@key}}" {{#if readonly}}disabled{{/if}} required/>
-                        <label>value</label><input class="input mesos-attr" type="text" data-name="value" value="{{this}}" {{#if readonly}}disabled{{/if}} required/>
+                        <input class="input mesos-attr ipt-half" type="text" data-name="key" value="{{@key}}" {{#if readonly}}disabled{{/if}} placeholder="key" required/>
+                        <input class="input mesos-attr ipt-half" type="text" data-name="value" value="{{this}}" {{#if readonly}}disabled{{/if}} placeholder="value" required/>
                     </span>
                 </div>
                 {{/each}}

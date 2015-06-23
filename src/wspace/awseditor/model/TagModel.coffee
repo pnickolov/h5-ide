@@ -5,12 +5,16 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
   TagItem = ComplexResModel.extend {
     type : "TagItem"
 
+    initialize: ( attributes ) ->
+      if attributes and attributes.inherit is undefined
+        @unset 'inherit'
+
     serialize: ->
-      {
+      _.extend {
         Key   : @get 'key'
         Value : @get 'value'
         ResourceIds: @genResourceIds()
-      }
+      }, if @has('inherit') then { PropagateAtLaunch: @get('inherit') } else null
 
     genResourceIds: ->
       _.map @connectionTargets(), (resource) ->
@@ -20,7 +24,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
   }, {
     deserialize: ( data, layout_data, resolve ) ->
-      tagItem = new TagItem( key: data.Key, value: data.Value )
+      tagItem = new TagItem( key: data.Key, value: data.Value, inherit: data.PropagateAtLaunch )
 
       for id in data.ResourceIds
         resource = resolve MC.extractID id
@@ -31,7 +35,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       tagItem
   }
 
-
+  # AsgTagModel will inherit TagModel, so method in TagModel must consider situation of AsgTagModel
   TagModel = GroupModel.extend {
     type: constant.RESTYPE.TAG
 
@@ -40,16 +44,35 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         name : @get("name")
         type : @type
         uid  : @id
-        resource : _.invoke @children(), 'serialize'
-                   # _.map @children(), ( tagItem ) -> tagItem.serialize()
+        resource : _.invoke (_.filter @children(), (item) -> !!item.connections().length), 'serialize'
 
-    addTag: (tagKey, tagValue, resource) ->
-      tagItem = _.findWhere @children(), { key: tagKey, value: tagValue }
-      tagItem = new TagItem( { key: tagKey, value: tagValue, __parent: @ } ) unless tagItem
+
+
+    addTag: (resource, tagKey, tagValue, inherit) ->
+      tagItem = @find tagKey, tagValue, inherit
+
+      inherit = true if @type is constant.RESTYPE.ASGTAG and inherit is undefined
+      inherit = undefined if @type is constant.RESTYPE.TAG
+
+      tagItem = new TagItem( { key: tagKey, value: tagValue, inherit: inherit, __parent: @ } ) unless tagItem
+
+      # inherit is not a key attribute,
+      # a resource can't have two tags with same key and value but different with inherit.
+      if inherit isnt undefined
+        dupTag = @find( tagKey, tagValue, !inherit )
+        @removeTag resource, dupTag if dupTag
 
       new TagUsage resource, tagItem
 
-    removeTag: ( tagItem, resource ) ->
+    find: ( key, value, inherit ) ->
+      prop = key: key
+      prop.value = value if arguments.length > 1
+      prop.inherit = inherit if arguments.length > 2
+
+      _.find @children(), (item) -> _.isEqual( item.pick( _.keys(prop) ), prop )
+
+
+    removeTag: ( resource, tagItem ) ->
       (new TagUsage resource, tagItem).remove()
 
   }, {

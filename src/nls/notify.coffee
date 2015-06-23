@@ -171,6 +171,10 @@ module.exports =
       en: "Elastic IP %s is created successfully!"
       zh: "弹性 IP %s 创建成功！"
 
+    EIP_XXX_IS_RELEASED:
+      en: "Elastic IP %s is successfully released!"
+      zh: "弹性 IP %s 释放成功。"
+
     XXX_IS_IMPORTED:
       en: "%s is imported."
       zh: "%s 导入成功。"

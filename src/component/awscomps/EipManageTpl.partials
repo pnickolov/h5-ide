@@ -33,8 +33,9 @@
 <!-- {{slide_delete}} -->
 <div class="slide-delete">
     <div class="modal-text-major">{{i18n "PROP.EIP_CONFIRM_RELEASE_1"}} {{#if selecteEip }}{{i18n "PROP.EIP_CONFIRM_RELEASE_3" selecteEip}}{{else}}{{i18n "PROP.EIP_CONFIRM_RELEASE_2" selectedCount}}{{/if}}</div>
+    <p>{{i18n "TOOLBAR.POP_RELEASE_EIP_NOTE"}}</p>
     <div class="init action">
-        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.LBL_DELETE"}}</button>
+        <button class="btn btn-red do-action" data-action="delete">{{i18n "PROP.EIP_CONFIRM_RELEASE_BTN"}}</button>
         <button class="btn btn-silver cancel">{{i18n "PROP.LBL_CANCEL"}}</button>
     </div>
     <div class="processing action" style="display:none;">

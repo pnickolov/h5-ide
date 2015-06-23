@@ -77,7 +77,7 @@ define [
         that.cancel()
         if success.length is 1
           console.debug success
-          notification 'info', sprintf lang.NOTIFY.XXX_IS_DELETED, success[0].attributes.id
+          notification 'info', sprintf lang.NOTIFY.EIP_XXX_IS_RELEASED, success[0].attributes.id
           return
         else if success.length > 1
           notification 'info', sprintf lang.NOTIFY.SELECTED_EIP_ARE_DELETED, success.length

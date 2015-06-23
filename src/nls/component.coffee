@@ -32,8 +32,8 @@ module.exports =
       zh: "创建弹性 IP"
 
     COMPONENT_DELETE_EIP:
-      en: "Delete"
-      zh: "删除"
+      en: "Release"
+      zh: "释放"
 
     COMPONENT_RDS_PG_MANAGER_TITLE:
       en: "Manage DB Parameter Group in %s"

@@ -199,6 +199,10 @@ module.exports =
       en: "Elastic IP %s?"
       zh: "弹性 IP (%s) 吗？"
 
+    EIP_CONFIRM_RELEASE_BTN:
+      en: "Release"
+      zh: "释放"
+
     EIP_CONFIRM_TO_CREATE:
       en: "Are you sure you want to allocate a new IP address?"
       zh: "确定要分配新的弹性 IP 吗？"

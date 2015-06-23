@@ -2779,11 +2779,11 @@ into live resources, or import existing infrastructures."
 
     SETTINGS_CREATE_PROJECT_FIRST_NAME:
       en: "First Name"
-      zh: "姓"
+      zh: "名"
 
     SETTINGS_CREATE_PROJECT_LAST_NAME:
       en: "Last Name"
-      zh: "名"
+      zh: "姓"
 
     SETTINGS_CREATE_PROJECT_PL_EMAIL:
       en: "example@email.com"

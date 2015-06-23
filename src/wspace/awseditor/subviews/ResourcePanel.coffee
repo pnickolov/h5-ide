@@ -13,13 +13,14 @@ define [
   'kp_manage'
   'rds_pg'
   'rds_snapshot'
+  'eip_manager'
   './AmiBrowser'
   'i18n!/nls/lang.js'
   'ApiRequest'
   'OpsModel'
   "backbone"
   "UI.dnd"
-], ( CloudResources, Design, Modal, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, AmiBrowser, lang, ApiRequest, OpsModel )->
+], ( CloudResources, Design, Modal, LeftPanelTpl, constant, dhcpManager, EbsSnapshotManager, RdsSnapshotManager, sslCertManager, snsManager, keypairManager,rdsPgManager, rdsSnapshot, eipManager, AmiBrowser, lang, ApiRequest, OpsModel )->
 
   # Update Left Panel when window size changes
   __resizeAccdTO = null
@@ -575,6 +576,8 @@ define [
           manager = rdsPgManager
         when 'rdssnapshot'
           manager = rdsSnapshot
+        when 'eip'
+          manager = eipManager
 
       new manager( workspace: @workspace ).render()
 

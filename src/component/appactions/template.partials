@@ -86,13 +86,23 @@
     {{else}}
         <div class="modal-center-align-helper"><div class="modal-text-major">{{i18n "TOOLBAR.POP_BODY_TERMINATE_APP_LEFT"}}{{i18n "TOOLBAR.POP_BODY_TERMINATE_APP_RIGHT"}}</div></div>
     {{/if}}
+    {{#if eipsToRelease.length}}
+        <section class="release-eip checkbox-wrap">
+            <div class="checkbox">
+                <input type="checkbox" id="release-eip-checkbox" />
+                <label for="release-eip-checkbox"></label>
+            </div>
+            <label class="modal-text-minor" for="release-eip-checkbox">{{i18n "TOOLBAR.POP_RELEASE_EIP_LABEL"}}({{#each eipsToRelease}}{{#if @index}}, {{/if}}{{resource.PublicIp}}{{/each}})</label>
+            <p>{{i18n "TOOLBAR.POP_RELEASE_EIP_NOTE"}}</p>
+        </section>
+    {{/if}}
     {{#if hasDBInstance.length}}
         <section class="check-final-snapshot checkbox-wrap">
             <div class="checkbox">
                 <input id="take-rds-snapshot" type="checkbox" checked="checked" name="dns-resolution">
                 <label for="take-rds-snapshot"></label>
             </div>
-            <label for="take-rds-snapshot">{{i18n "TOOLBAR.POP_TAKE_DB_SNAPSHOT"}}</label>
+            <label class="modal-text-minor" for="take-rds-snapshot">{{i18n "TOOLBAR.POP_TAKE_DB_SNAPSHOT"}}</label>
         </section>
         {{#if notReadyDB.length}}
             <p class="cant-snapshot">{{i18n "TOOLBAR.POP_CANT_TAKE_SNAPSHOT_1"}}

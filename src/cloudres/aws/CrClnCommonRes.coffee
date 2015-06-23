@@ -4,9 +4,10 @@ define [
   "../CrCollection"
   "../CrModel"
   "./CrModelElb"
+  "./CrModelEip"
   "constant"
   "CloudResources"
-], ( CrCommonCollection, CrCollection, CrModel, CrElbModel, constant, CloudResources )->
+], ( CrCommonCollection, CrCollection, CrModel, CrElbModel, CrEipModel, constant, CloudResources )->
 
 
 
@@ -94,16 +95,19 @@ define [
     ### env:dev:end ###
 
     type  : constant.RESTYPE.EIP
+    model : CrEipModel
+
     #modelIdAttribute : "allocationId"
     trAwsXml : ( data )-> data.DescribeAddressesResponse.addressesSet?.item
     parseFetchData : ( eips )->
       for eip in eips
-        eip.id = eip.allocationId
+        eip.id = eip.publicIp
+        eip.canRelease = not eip.associationId
       eips
     parseExternalData: ( data ) ->
       @unifyApi data, @type
       for eip in data
-        eip.id = eip.allocationId
+        eip.id = eip.publicIp
       data
 
   }

@@ -1046,7 +1046,7 @@ function program13(depth0,data) {
     + "</label>\n                    <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                        <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                        <ul class=\"dropdown\" tabindex=\"-1\">\n                            <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                            <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                            <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                            <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                            <li class=\"item\" data-value=\"custom\"><i class=\"icon-app-type-custom\" data-value=\"custom\"></i>Custom</li>\n                        </ul>\n                    </div>\n                    <input type=\"text\" class=\"input custom-app-usage\" placeholder=\"custom\" maxlength=\"32\" />\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.isRunning), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n                    <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                    <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n                    </div>\n                </div>\n                ";
+  buffer += "\n                <div id=\"release-eips-placeholder\"></div>\n                <div class=\"scroll-wrap\" style=\"max-height:256px;\">\n                    <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n                    <div class=\"scroll-content res_diff_tree\" id=\"app-update-summary-table\">\n                    </div>\n                </div>\n                ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.notification), {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n                ";
@@ -1066,7 +1066,7 @@ function program13(depth0,data) {
     + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </div>\n\n</div>";
+  buffer += "\n    </div>\n</div>";
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);
@@ -1729,6 +1729,45 @@ function program2(depth0,data) {
   return buffer;
   };
 TEMPLATE.createStack=Handlebars.template(__TEMPLATE__);
+
+
+__TEMPLATE__ =function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
+  var stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <section class=\"release-eip checkbox-wrap\">\n        <div class=\"checkbox\">\n            <input type=\"checkbox\" id=\"release-eip-checkbox\" />\n            <label for=\"release-eip-checkbox\"></label>\n        </div>\n        <label class=\"modal-text-minor\" for=\"release-eip-checkbox\">"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_RELEASE_EIP_LABEL", {hash:{},data:data}))
+    + "(";
+  stack1 = helpers.each.call(depth0, (depth0 && depth0.eipsToRelease), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ")</label>\n        <p>"
+    + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.POP_RELEASE_EIP_NOTE", {hash:{},data:data}))
+    + "</p>\n    </section>\n";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  stack1 = helpers['if'].call(depth0, (data == null || data === false ? data : data.index), {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.resource)),stack1 == null || stack1 === false ? stack1 : stack1.PublicIp)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  return buffer;
+  }
+function program3(depth0,data) {
+  
+  
+  return ", ";
+  }
+
+  stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.eipsToRelease)),stack1 == null || stack1 === false ? stack1 : stack1.length), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { return stack1; }
+  else { return ''; }
+  };
+TEMPLATE.releaseEipCheck=Handlebars.template(__TEMPLATE__);
 
 
 return TEMPLATE; });

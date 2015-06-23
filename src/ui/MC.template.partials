@@ -650,6 +650,7 @@ Additional Notes and Questions
                     <h3 class="modal-text-major">{{ i18n 'POP_CONFIRM_UPDATE_MAJOR_TEXT_STOPPED'}}</h3>
                     <p class="modal-text-minor" style="margin-top:10px;">{{ i18n 'POP_CONFIRM_UPDATE_MINOR_TEXT_STOPPED'}}</p>
                 {{/if}}
+                <div id="release-eips-placeholder"></div>
                 <div class="scroll-wrap" style="max-height:256px;">
                     <div class="scrollbar-veritical-wrap"><div class="scrollbar-veritical-thumb"></div></div>
                     <div class="scroll-content res_diff_tree" id="app-update-summary-table">
@@ -701,7 +702,6 @@ Additional Notes and Questions
             </div>
         {{/ifCond}}
     </div>
-
 </div>
 
 
@@ -1006,3 +1006,15 @@ Additional Notes and Questions
         </div>
     </div>
 </div>
+
+<!--{{releaseEipCheck}}-->
+{{#if eipsToRelease.length}}
+    <section class="release-eip checkbox-wrap">
+        <div class="checkbox">
+            <input type="checkbox" id="release-eip-checkbox" />
+            <label for="release-eip-checkbox"></label>
+        </div>
+        <label class="modal-text-minor" for="release-eip-checkbox">{{i18n "TOOLBAR.POP_RELEASE_EIP_LABEL"}}({{#each eipsToRelease}}{{#if @index}}, {{/if}}{{resource.PublicIp}}{{/each}})</label>
+        <p>{{i18n "TOOLBAR.POP_RELEASE_EIP_NOTE"}}</p>
+    </section>
+{{/if}}

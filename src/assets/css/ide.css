@@ -441,11 +441,16 @@ body {
   color: #aeb3f2;
   font-size: 28px; }
 
-#app-usage-selectbox + .custom-app-usage {
+#app-usage-selectbox + .custom-app-usage, #property-app-usage + .custom-app-usage {
   display: none;
   width: 145px; }
-  #app-usage-selectbox + .custom-app-usage.show {
+  #app-usage-selectbox + .custom-app-usage.show, #property-app-usage + .custom-app-usage.show {
     display: inline-block; }
+
+#property-app-usage.custom {
+  width: auto; }
+#property-app-usage + .custom-app-usage {
+  width: 165px; }
 
 #ImportSaveAppName {
   width: 265px; }
@@ -710,7 +715,7 @@ div.modal-text-highlight {
 #app-usage-selectbox .selection {
   padding-right: 25px; }
 
-#app-usage-selectbox [class^="icon-app-type-"] {
+#app-usage-selectbox [class^="icon-app-type-"], #property-app-usage [class^="icon-app-type-"] {
   margin-right: 4px; }
 
 /* App Type Icon */
@@ -1494,8 +1499,6 @@ dl.settings-item {
   width: 100%; }
   .fullpage-settings a {
     cursor: pointer; }
-  .fullpage-settings a.active:not(.btn), .fullpage-settings a:hover:not(.btn) {
-    color: #5da4e5; }
   @media (min-width: 1280px) {
     .fullpage-settings {
       max-width: 1280px;
@@ -6774,6 +6777,9 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   width: 260px; }
 .property-content .mesos-marathon-switch .marathon-mark-img {
   height: 30px; }
+
+#mesos-attribute {
+  margin-top: 10px; }
 
 .ops-process {
   width: 100%;

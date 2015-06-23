@@ -27,6 +27,14 @@ module.exports =
       en: "FingerPrint"
       zh: "指纹"
 
+    COMPONENT_CREATE_EIP:
+      en: "Create EIP"
+      zh: "创建弹性 IP"
+
+    COMPONENT_DELETE_EIP:
+      en: "Release"
+      zh: "释放"
+
     COMPONENT_RDS_PG_MANAGER_TITLE:
       en: "Manage DB Parameter Group in %s"
       zh: "管理%s区的数据库参数组"

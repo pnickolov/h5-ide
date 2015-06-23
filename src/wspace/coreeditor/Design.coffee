@@ -345,7 +345,8 @@ define [
 
       if _.isEqual( backing.component, newData.component )
         if _.isEqual( backing.layout, newData.layout )
-          return false
+          if _.isEqual(backing.usage, newData.usage) and _.isEqual(backing.description, newData.description)
+            return false
       true
 
     serialize : ( options )->

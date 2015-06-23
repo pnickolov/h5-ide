@@ -426,6 +426,9 @@ define [
         else
           return app.fetchJsonData()
 
+      hasDBInstance = null
+      notReadyDB = []
+      eipsToRelease = []
       fetchJsonData().then ->
         if cloudType is OpsModel.Type.OpenStack
           hasDBInstance = null
@@ -434,13 +437,15 @@ define [
           comp = app.getJsonData().component
           hasDBInstance = _.filter comp, (e)->
             e.type == constant.RESTYPE.DBINSTANCE
+          eipsToRelease = _.filter comp, (e)->
+            e.type == constant.RESTYPE.EIP
           dbInstanceName = _.map hasDBInstance, (e)->
             return e.resource.DBInstanceIdentifier
           notReadyDB = resourceList.filter (e)->
             (e.get('DBInstanceIdentifier') in dbInstanceName) and e.get('DBInstanceStatus') isnt 'available'
 
         # Render Terminate Confirm
-        terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB}
+        terminateConfirm.tpl.find('.modal-body').html AppTpl.terminateAppConfirm {production, name, hasDBInstance, notReadyDB, eipsToRelease}
         terminateConfirm.tpl.find('.modal-footer').show()
         terminateConfirm.resize()
 
@@ -457,8 +462,9 @@ define [
 
         terminateConfirm.on "confirm", ()->
           terminateConfirm.close()
-          takeSnapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
-          app.terminate(null, {create_snapshot:takeSnapshot}).fail ( err )->
+          create_snapshot = terminateConfirm.tpl.find("#take-rds-snapshot").is(':checked')
+          release_eip = terminateConfirm.tpl.find("#release-eip-checkbox").is(":checked")
+          app.terminate(null, {create_snapshot, release_eip}).fail ( err )->
             error = if err.awsError then err.error + "." + err.awsError else err.error
             notification sprintf(lang.NOTIFY.ERROR_FAILED_TERMINATE , name, error)
           return

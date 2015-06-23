@@ -1,7 +1,6 @@
 
 define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/TagUsage"  ], ( constant, ComplexResModel, GroupModel, Design, TagUsage )->
 
-
   TagItem = ComplexResModel.extend {
     type : "TagItem"
 

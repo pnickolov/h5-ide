@@ -235,6 +235,10 @@ module.exports =
       en: "Assign"
       zh: "分配"
 
+    EIP_SELECTOR_CONFIRM_TITLE:
+      en: "Please Select a EIP to assign"
+      zh: "请选择要分配的弹性 IP"
+
     ASSIGN_NEW_ELASTIC_IP_DESC:
       en: "A new Elastic IP will assign automatically."
       zh: "将自动分配一个新的弹性 IP"

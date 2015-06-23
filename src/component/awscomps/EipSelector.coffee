@@ -21,7 +21,7 @@ define [
     renderModal: ()->
       self = @
       @modal = new Modal {
-        title: "Please Select a eip to assign"
+        title: lang.PROP.EIP_SELECTOR_CONFIRM_TITLE
         template: template.selector
         confirm: lang.PROP.EIP_SELECTOR_CONFIRM_LABEL
       }

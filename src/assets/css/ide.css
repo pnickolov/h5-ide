@@ -3564,6 +3564,8 @@ aside.dashboard-sidebar {
   -moz-transition-property: line-height, padding-left, width, height, color;
   transition-property: line-height, padding-left, width, height, color;
   background-size: 80px; }
+  #DndItem.resource-item {
+    background-size: auto; }
   #DndItem.oslistener {
     background-image: url('/assets/images/ide/icon-os/res-dg-listener.png'); }
   #DndItem.ospool {

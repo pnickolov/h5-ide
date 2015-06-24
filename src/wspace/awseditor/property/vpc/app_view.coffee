@@ -2,9 +2,11 @@
 #  View(UI logic) for design/property/vpc(app)
 #############################
 
-define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
+define [ '../base/view', './template/app', "tag_manager" ], ( PropertyView, template, TagManager ) ->
 
     VPCAppView = PropertyView.extend {
+        events:
+            "click .open-tag-manager"    : "openTagManager"
 
         render : () ->
             data = @model.attributes
@@ -19,6 +21,9 @@ define [ '../base/view', './template/app' ], ( PropertyView, template ) ->
                 data.defaultDhcp = false
             @$el.html template data
             @model.attributes.name
+
+        openTagManager: ()->
+            new TagManager(@model)
     }
 
     new VPCAppView()

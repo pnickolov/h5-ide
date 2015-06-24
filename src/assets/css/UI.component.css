@@ -432,7 +432,6 @@ pre {
 
 .tag-resource-list {
   width: 200px;
-  border-bottom: 1px solid #3C3C3C;
   position: absolute;
   height: 100%;
   top: 0;
@@ -443,10 +442,14 @@ pre {
   .tag-resource-list .resource-list {
     margin-top: 10px;
     border: 1px solid #000;
-    padding: 10px;
+    padding: 0px;
     height: 261px;
     box-sizing: border-box;
     overflow: auto; }
+  .tag-resource-list .tag-resource-table.table-head-fix .table-head thead th, .tag-resource-list .tag-resource-table.table-head-fix .table tr td {
+    padding: 5px; }
+  .tag-resource-list .tag-resource-table tr th:first-child, .tag-resource-list .tag-resource-table tr td:first-child {
+    width: 10px; }
 
 .tag-resource-detail {
   height: 300px;

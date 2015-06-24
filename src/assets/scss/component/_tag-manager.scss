@@ -5,7 +5,6 @@
 }
 .tag-resource-list{
   width: 200px;
-  border-bottom: 1px solid #3C3C3C;
   position: absolute;
   height: 100%;
   top: 0;
@@ -17,10 +16,18 @@
   .resource-list{
     margin-top: 10px;
     border: 1px solid #000;
-    padding: 10px;
+    padding: 0px;
     height: 261px;
     box-sizing: border-box;
     overflow: auto;
+  }
+  .tag-resource-table{
+    &.table-head-fix .table-head thead th, &.table-head-fix .table tr td {
+      padding: 5px;
+    }
+    tr th:first-child, tr td:first-child{
+      width: 10px;
+    }
   }
 }
 

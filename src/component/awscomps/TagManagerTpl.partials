@@ -3,16 +3,125 @@
     <div class="tag-resource-list">
         <input type="text" class="input filter-bar" placeholder="Filter Bar"/>
         <div class="resource-list">
-            <ul>
-                <li> <p>wwwwwwwwww</p> </li>
-                <li> <p>wwwwwwwwww</p> </li>
-                <li> <p>wwwwwwwwww</p> </li>
-                <li> <p>wwwwwwwwww</p> </li>
-                <li> <p>wwwwwwwwww</p> </li>
-                <li> <p>wwwwwwwwww</p> </li>
-                <li> <p>wwwwwwwwww</p> </li>
-                <li> <p>wwwwwwwwww</p> </li>
-            </ul>
+            <div class="table-head-fix tag-resource-table">
+                <table class="table-head">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox">
+                                <input id="t-m-select-all" type="checkbox" value="None">
+                                <label for="t-m-select-all"></label>
+                            </div>
+                        </th>
+                        <th class="sortable active" data-row-type="string">Name</th>
+                        <th class="" data-row-type="string">Type</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th><div class="th-inner"></div></th>
+                            <th><div class="th-inner"></div></th>
+                            <th><div class="th-inner"></div></th>
+                        </tr>
+                        </thead>
+                        <tbody class="t-m-content">
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                            <tr class="item">
+                                <td>
+                                    <div class="checkbox">
+                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                                        <label for="dopt-4f392d2d"></label>
+                                    </div>
+                                </td>
+                                <td>i-4f392d2d</td>
+                                <td>(Instance)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div class="tag-resource-detail">

@@ -51,4 +51,27 @@
   background-color: #242424;
   box-sizing: border-box;
   border: 1px solid #000000;
+  .tabs-navs{
+    width: 100%;
+    height: 35px;
+    padding: 5px;
+    ul{
+      li{
+        display: inline-block;
+        padding: 5px 20px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        &.active{
+          border-bottom: 1px solid #148BE6;
+        }
+      }
+    }
+  }
+  .tabs-content{
+    overflow: auto;
+    height: 253px;
+    .tab-content{
+      padding: 10px;
+    }
+  }
 }

@@ -466,6 +466,22 @@ pre {
   background-color: #242424;
   box-sizing: border-box;
   border: 1px solid #000000; }
+  .tag-resource-detail .tabs-navs {
+    width: 100%;
+    height: 35px;
+    padding: 5px; }
+    .tag-resource-detail .tabs-navs ul li {
+      display: inline-block;
+      padding: 5px 20px 10px;
+      font-size: 16px;
+      cursor: pointer; }
+      .tag-resource-detail .tabs-navs ul li.active {
+        border-bottom: 1px solid #148BE6; }
+  .tag-resource-detail .tabs-content {
+    overflow: auto;
+    height: 253px; }
+    .tag-resource-detail .tabs-content .tab-content {
+      padding: 10px; }
 
 .combo-dd .combo-dd-manage i {
   margin-right: 13px;

@@ -2287,6 +2287,129 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .xdsoft_scroller_box {
   position: relative; }
 
+.user-guide {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 999; }
+  .user-guide .guide-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.9;
+    z-index: -1; }
+  .user-guide .guide-video {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    display: none; }
+  .user-guide .guide-video-tip {
+    font-size: 24px;
+    z-index: 5;
+    color: white;
+    position: absolute;
+    right: 50px;
+    top: 25px;
+    border: 4px solid #FF8800;
+    border-radius: 0px;
+    padding: 10px 25px;
+    background-color: #E4650A; }
+  .user-guide .guide-cards {
+    margin: 0 auto;
+    overflow: auto;
+    width: 1650px;
+    margin-top: 70px; }
+    .user-guide .guide-cards .guide-card {
+      margin: 55px 140px;
+      width: 260px;
+      float: left;
+      position: relative;
+      cursor: pointer; }
+      .user-guide .guide-cards .guide-card:hover {
+        opacity: 0.95; }
+      .user-guide .guide-cards .guide-card .head {
+        height: 90px;
+        width: 100%;
+        background: url("/assets/images/ide/guide/guide_bg.png") no-repeat;
+        border-radius: 5px 5px 0 0;
+        background-size: 500px; }
+      .user-guide .guide-cards .guide-card .info {
+        width: 40px;
+        height: 40px;
+        border-radius: 40px;
+        position: absolute;
+        right: -15px;
+        top: -15px;
+        color: white;
+        text-align: center;
+        font-size: 19px;
+        line-height: 37px;
+        font-style: italic; }
+        .user-guide .guide-cards .guide-card .info span {
+          font-size: 14px; }
+      .user-guide .guide-cards .guide-card .intro {
+        width: 100%;
+        background-color: white;
+        height: 75px;
+        border-radius: 0 0 5px 5px;
+        text-align: center;
+        line-height: 72px;
+        font-size: 16px;
+        color: #818181; }
+      .user-guide .guide-cards .guide-card.color1 .head {
+        background-color: #0094ff; }
+      .user-guide .guide-cards .guide-card.color1 .info {
+        background-color: #0076cc;
+        border: 4px solid #0094ff; }
+      .user-guide .guide-cards .guide-card.color2 .head {
+        background-color: #c87600; }
+      .user-guide .guide-cards .guide-card.color2 .info {
+        background-color: #955800;
+        border: 4px solid #c87600; }
+      .user-guide .guide-cards .guide-card.color3 .head {
+        background-color: #00987d; }
+      .user-guide .guide-cards .guide-card.color3 .info {
+        background-color: #006553;
+        border: 4px solid #00987d; }
+      .user-guide .guide-cards .guide-card.color4 .head {
+        background-color: #576a8e; }
+      .user-guide .guide-cards .guide-card.color4 .info {
+        background-color: #44526e;
+        border: 4px solid #576a8e; }
+      .user-guide .guide-cards .guide-card.color5 .head {
+        background-color: #7800dd; }
+      .user-guide .guide-cards .guide-card.color5 .info {
+        background-color: #5c00aa;
+        border: 4px solid #7800dd; }
+      .user-guide .guide-cards .guide-card.color6 .head {
+        background-color: #354ead; }
+      .user-guide .guide-cards .guide-card.color6 .info {
+        background-color: #293c86;
+        border: 4px solid #354ead; }
+      .user-guide .guide-cards .guide-card.color7 .head {
+        background-color: #a800ee; }
+      .user-guide .guide-cards .guide-card.color7 .info {
+        background-color: #8400bb;
+        border: 4px solid #a800ee; }
+      .user-guide .guide-cards .guide-card.color8 .head {
+        background-color: #d00045; }
+      .user-guide .guide-cards .guide-card.color8 .info {
+        background-color: #9d0034;
+        border: 4px solid #d00045; }
+      .user-guide .guide-cards .guide-card.color9 .head {
+        background-color: #3ea500; }
+      .user-guide .guide-cards .guide-card.color9 .info {
+        background-color: #2b7200;
+        border: 4px solid #3ea500; }
+
 /* Table */
 .table {
   max-width: 100%;

@@ -1,0 +1,180 @@
+.user-guide {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 999;
+	$color1: #0094ff;
+	$color2: #c87600;
+	$color3: #00987d;
+	$color4: #576a8e;
+	$color5: #7800dd;
+	$color6: #354ead;
+	$color7: #a800ee;
+	$color8: #d00045;
+	$color9: #3ea500;
+	.guide-overlay {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background-color: black;
+		opacity: 0.9;
+		z-index: -1;
+	}
+	.guide-video {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 1;
+		display: none;
+	}
+	.guide-video-tip {
+		font-size: 24px;
+		z-index: 5;
+		color: rgb(255, 255, 255);
+		position: absolute;
+		right: 50px;
+		top: 25px;
+		border: 4px solid #FF8800;
+		border-radius: 0px;
+		padding: 10px 25px;
+		background-color: #E4650A;
+	}
+	.guide-cards {
+		margin: 0 auto;
+		overflow: auto;
+		width: 1650px;
+		margin-top: 70px;
+		.guide-card {
+			margin: 55px 140px;
+			width: 260px;
+			// background-color: white;
+			// border-radius: 5px;
+			float: left;
+			position: relative;
+			cursor: pointer;
+			&:hover {
+				opacity: 0.95;
+			}
+			.head {
+				height: 90px;
+				width: 100%;
+				background: url('/assets/images/ide/guide/guide_bg.png') no-repeat;
+				border-radius: 5px 5px 0 0;
+				background-size: 500px;
+			}
+			.info {
+				width: 40px;
+				height: 40px;
+				border-radius: 40px;
+				position: absolute;
+				right: -15px;
+				top: -15px;
+				color: white;
+				text-align: center;
+				font-size: 19px;
+				line-height: 37px;
+				font-style: italic;
+				span {
+					font-size: 14px;
+				}
+			}
+			.intro {
+				width: 100%;
+				background-color: white;
+				height: 75px;
+				border-radius: 0 0 5px 5px;
+				text-align: center;
+				line-height: 72px;
+				font-size: 16px;
+				color: #818181;
+			}
+			&.color1 {
+				.head {
+					background-color: $color1;
+				}
+				.info {
+					background-color: darken($color1, 10%);
+					border: 4px solid $color1;
+				}
+			}
+			&.color2 {
+				.head {
+					background-color: $color2;
+				}
+				.info {
+					background-color: darken($color2, 10%);
+					border: 4px solid $color2;
+				}
+			}
+			&.color3 {
+				.head {
+					background-color: $color3;
+				}
+				.info {
+					background-color: darken($color3, 10%);
+					border: 4px solid $color3;
+				}
+			}
+			&.color4 {
+				.head {
+					background-color: $color4;
+				}
+				.info {
+					background-color: darken($color4, 10%);
+					border: 4px solid $color4;
+				}
+			}
+			&.color5 {
+				.head {
+					background-color: $color5;
+				}
+				.info {
+					background-color: darken($color5, 10%);
+					border: 4px solid $color5;
+				}
+			}
+			&.color6 {
+				.head {
+					background-color: $color6;
+				}
+				.info {
+					background-color: darken($color6, 10%);
+					border: 4px solid $color6;
+				}
+			}
+			&.color7 {
+				.head {
+					background-color: $color7;
+				}
+				.info {
+					background-color: darken($color7, 10%);
+					border: 4px solid $color7;
+				}
+			}
+			&.color8 {
+				.head {
+					background-color: $color8;
+				}
+				.info {
+					background-color: darken($color8, 10%);
+					border: 4px solid $color8;
+				}
+			}
+			&.color9 {
+				.head {
+					background-color: $color9;
+				}
+				.info {
+					background-color: darken($color9, 10%);
+					border: 4px solid $color9;
+				}
+			}
+		}
+	}
+}

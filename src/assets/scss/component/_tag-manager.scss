@@ -28,6 +28,19 @@
     tr th:first-child, tr td:first-child{
       width: 10px;
     }
+    tbody tr{
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      &.selected{
+        td{
+          background-color: #1F1F1F;
+          border-color: #373737;
+        }
+      }
+    }
   }
 }
 

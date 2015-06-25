@@ -35,5 +35,5 @@ define [
 
             @$el.find('.guide-video').fadeOut()
             video = @$el.find('.guide-video video')[0]
-            video.video.pause()
+            video.pause()
             video.currentTime = 0

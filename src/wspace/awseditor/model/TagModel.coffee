@@ -43,9 +43,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         name : @get("name")
         type : @type
         uid  : @id
-        resource : _.invoke (_.filter @children(), (item) -> !!item.connections().length), 'serialize'
-
-
+        resource : _.invoke (_.filter @all(), (item) -> !!item.connections().length), 'serialize'
 
     addTag: (resource, tagKey, tagValue, inherit) ->
       tagItem = @find tagKey, tagValue, inherit
@@ -68,11 +66,13 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       prop.value = value if arguments.length > 1
       prop.inherit = inherit if arguments.length > 2
 
-      _.find @children(), (item) -> _.isEqual( item.pick( _.keys(prop) ), prop )
-
+      _.find @all(), (item) -> _.isEqual( item.pick( _.keys(prop) ), prop )
 
     removeTag: ( resource, tagItem ) ->
       (new TagUsage resource, tagItem).remove()
+
+    all: -> @children()
+
 
   }, {
 

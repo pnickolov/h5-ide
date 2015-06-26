@@ -2294,6 +2294,49 @@ li.ui-timepicker-selected .ui-timepicker-duration,
   top: 0;
   bottom: 0;
   z-index: 999; }
+  .user-guide .guideicon {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-image: url(/assets/images/ide/guide/guide_icon.svg);
+    -ms-transform: scale(1.6, 1.6);
+    -webkit-transform: scale(1.6, 1.6);
+    transform: scale(1.6, 1.6); }
+  .user-guide .guideicon-cloud-download {
+    width: 32px;
+    height: 32px;
+    background-position: 0 0; }
+  .user-guide .guideicon-code {
+    width: 32px;
+    height: 32px;
+    background-position: -32px 0; }
+  .user-guide .guideicon-columns {
+    width: 32px;
+    height: 32px;
+    background-position: -64px 0; }
+  .user-guide .guideicon-config {
+    width: 32px;
+    height: 32px;
+    background-position: -96px 0; }
+  .user-guide .guideicon-drag {
+    width: 32px;
+    height: 32px;
+    background-position: -128px 0; }
+  .user-guide .guideicon-eye {
+    width: 32px;
+    height: 32px;
+    background-position: -160px 0; }
+  .user-guide .guideicon-picture-o {
+    width: 32px;
+    height: 32px;
+    background-position: -192px 0; }
+  .user-guide .guideicon-run {
+    width: 32px;
+    height: 32px;
+    background-position: -224px 0; }
+  .user-guide .guideicon-users {
+    width: 32px;
+    height: 32px;
+    background-position: -256px 0; }
   .user-guide .guide-overlay {
     position: absolute;
     left: 0;
@@ -2321,25 +2364,39 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     opacity: 0.05;
     left: 0;
     margin-top: 80px; }
-  .user-guide .guide-cards {
-    margin: 0 auto;
+  .user-guide .guide-list {
+    position: absolute;
     overflow: auto;
-    width: 1650px;
-    margin-top: 70px; }
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0; }
+  .user-guide .guide-cards {
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    margin-top: -100px;
+    left: 50%;
+    margin-right: 500px;
+    margin-left: -300px; }
     .user-guide .guide-cards .guide-card {
-      margin: 55px 140px;
-      width: 260px;
-      float: left;
+      margin: 0 100px;
+      width: 340px;
+      display: inline-block;
       position: relative;
       cursor: pointer; }
       .user-guide .guide-cards .guide-card:hover {
         opacity: 0.95; }
+      .user-guide .guide-cards .guide-card:last-child {
+        margin-right: 500px; }
       .user-guide .guide-cards .guide-card .head {
-        height: 90px;
+        height: 110px;
         width: 100%;
         background: url("/assets/images/ide/guide/guide_bg.png") no-repeat;
         border-radius: 5px 5px 0 0;
-        background-size: 500px; }
+        background-size: 500px;
+        text-align: center;
+        line-height: 133px; }
       .user-guide .guide-cards .guide-card .info {
         width: 40px;
         height: 40px;
@@ -2357,11 +2414,11 @@ li.ui-timepicker-selected .ui-timepicker-duration,
       .user-guide .guide-cards .guide-card .intro {
         width: 100%;
         background-color: white;
-        height: 75px;
+        height: 95px;
         border-radius: 0 0 5px 5px;
         text-align: center;
-        line-height: 72px;
-        font-size: 16px;
+        line-height: 90px;
+        font-size: 18px;
         color: #818181; }
       .user-guide .guide-cards .guide-card.color1 .head {
         background-color: #0094ff; }
@@ -4099,6 +4156,19 @@ input.parsley-error {
       color: #fff; }
 
 /* custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; }
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: none; }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.3);
+  border-radius: 8px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 100, 100, 0.5); }
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: none; }
+
 .dropdown-menu {
   display: none; }
 

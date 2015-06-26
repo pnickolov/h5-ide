@@ -474,7 +474,11 @@ pre {
       display: inline-block;
       padding: 5px 20px 10px;
       font-size: 16px;
-      cursor: pointer; }
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; }
       .tag-resource-detail .tabs-navs ul li.active {
         border-bottom: 1px solid #148BE6; }
   .tag-resource-detail .tabs-content {

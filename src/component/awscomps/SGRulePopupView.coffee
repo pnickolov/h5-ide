@@ -130,12 +130,16 @@ define [ './SGRulePppTpl', 'i18n!/nls/lang.js', "Design", "event", "UI.modalplus
 
           if ruleCount is 0
             if isShown
-              $sidebar.removeClass( "shown" ).animate({ left : "0" })
-              $modal.animate({left:'-=100px'}, 300)
+              _.delay ()->
+                $sidebar.removeClass( "shown" ).animate({ left : "0" })
+                $modal.animate({left:'-=100px'}, 300)
+              , 300
           else
             if not isShown
-              $sidebar.addClass( "shown" ).animate({ left : "-200px" })
-              $modal.animate({left:'+=100px'}, 300)
+              _.delay ()->
+                $sidebar.addClass( "shown" ).animate({ left : "-200px" })
+                $modal.animate({left:'+=100px'}, 300)
+              , 300
 
         onModalClose : ()->
           @modal.close()

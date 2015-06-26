@@ -2365,6 +2365,121 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .xdsoft_scroller_box {
   position: relative; }
 
+.filter-input {
+  min-width: 260px;
+  display: inline-block;
+  position: relative;
+  margin-right: 5px; }
+
+.fake-input {
+  border: 1px solid #000;
+  border-radius: 2px;
+  height: 34px;
+  padding: 0 3px;
+  display: flex;
+  overflow: hidden;
+  background: #2b2b35; }
+
+.fake-input.focus {
+  overflow: visible;
+  height: auto;
+  min-height: 34px; }
+
+.fake-input input {
+  color: white;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  flex-grow: 1; }
+
+.fake-input ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  max-width: 78%; }
+
+.fake-input ul li {
+  list-style: none;
+  display: inline-block;
+  background: #F1F1F1;
+  background: -webkit-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
+  background: -moz-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
+  background: -ms-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
+  border: 1px solid #d2d2d2;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 5px;
+  font-size: 16px;
+  color: #333;
+  margin-top: 7px;
+  margin-left: 5px;
+  margin-right: 5px;
+  transition: opacity .25s linear; }
+
+.fake-input ul li:last-child {
+  margin-bottom: 7px; }
+
+.fake-input ul li::after {
+  content: "×";
+  color: #999;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  display: none; }
+
+.fake-input ul li:hover::after {
+  display: inline; }
+
+.dropdown {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-height: 210px;
+  overflow-y: auto;
+  list-style: none;
+  border: 1px solid #0f0f0f;
+  box-sizing: border-box;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  background: #353535;
+  color: #D0D0D0; }
+
+.dropdown:empty {
+  border: 0; }
+
+.drop .dropdown {
+  display: block; }
+
+.dropdown li {
+  padding: 6px; }
+  .dropdown li.label {
+    font-weight: bold;
+    color: white; }
+  .dropdown li.option {
+    padding-left: 18px; }
+  .dropdown li.match {
+    text-decoration: underline;
+    font-weight: bold; }
+  .dropdown li.option.selected {
+    background: #4a90e2;
+    color: #F5F5F5; }
+
+.line-tip {
+  position: absolute;
+  top: 10px;
+  right: 15px; }
+
+.fake-input.focus .line-tip {
+  display: none; }
+
+.OEPanelTop .filter-input {
+  width: 1000px; }
+  .OEPanelTop .filter-input .fake-input {
+    margin-top: 2px; }
+
 /* Table */
 .table {
   max-width: 100%;

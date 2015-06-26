@@ -4,6 +4,8 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
   TagItem = ComplexResModel.extend {
     type : "TagItem"
 
+    isVisual: -> false
+
     initialize: ( attributes ) ->
       if attributes and attributes.inherit is undefined
         @unset 'inherit'
@@ -37,6 +39,8 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
   # AsgTagModel will inherit TagModel, so method in TagModel must consider situation of AsgTagModel
   TagModel = GroupModel.extend {
     type: constant.RESTYPE.TAG
+
+    isVisual: -> false
 
     serialize : ->
       component :

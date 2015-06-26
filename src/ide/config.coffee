@@ -206,6 +206,7 @@ require.config {
     'og_dropdown'      : 'component/awscomps/OgDropDown'
     'SGRulePopup'      : "component/awscomps/SGRulePopup"
     'DbSubnetGPopup'   : "component/awscomps/DbSubnetGPopup"
+    'FilterInput'      : "component/awscomps/FilterInput"
 
     'OsKp'             : 'component/oscomps/KpDropdown'
     'OsSnapshot'       : 'component/oscomps/Snapshot'
@@ -308,6 +309,7 @@ require.config {
       'og_dropdown'
       'SGRulePopup'
       'DbSubnetGPopup'
+      'FilterInput'
     ]
 
     "component/OsComps" : [

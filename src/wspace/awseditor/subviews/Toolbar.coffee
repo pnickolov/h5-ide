@@ -14,9 +14,12 @@ define [
   'TaGui'
   "CloudResources"
   "AppAction"
+  "FilterInput"
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction )->
+
+
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction, FilterInput )->
 
   Backbone.View.extend {
 
@@ -78,9 +81,17 @@ define [
 
       @updateZoomButtons()
       @updateTbBtns()
+      @renderFilter()
 
       @listenTo @workspace.opsModel, "change:state", @updateTbBtns
       return
+
+    renderFilter: ->
+      # Need remove before deploy
+      window.filter = new FilterInput()
+      #
+
+      this.$('.btn-toolbar').last().after(filter.render().el)
 
     updateTbBtns : ()->
       if @workspace.isRemoved() then return

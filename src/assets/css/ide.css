@@ -3072,6 +3072,7 @@ aside.dashboard-sidebar {
   min-width: 610px;
   background: #2b2b35;
   position: absolute;
+  display: flex;
   z-index: 3; }
   .OEPanelTop + .OEPanelRight {
     top: 40px; }
@@ -6210,7 +6211,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 */
 /* Toolbar */
 .btn-toolbar {
-  width: 34px;
+  min-width: 34px;
   height: 32px;
   line-height: 32px;
   position: relative;
@@ -6231,7 +6232,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     background: none;
     cursor: default; }
   .btn-toolbar.selectbox {
-    width: 52px;
+    min-width: 52px;
     padding: 0;
     height: 40px; }
     .btn-toolbar.selectbox .selection {
@@ -6270,7 +6271,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       border-bottom: 1px solid #dd4c4c; }
 
 .toolbar-btn-primary {
-  width: 112px;
+  min-width: 112px;
   color: #f3f3f3;
   background: #11c568;
   border-bottom: 1px solid #059e4f; }
@@ -6295,7 +6296,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .reload-states {
   margin: 6px 8px 0 0;
   float: right;
-  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
   height: 27px;
   font-size: 12px;
   border-radius: 18px;

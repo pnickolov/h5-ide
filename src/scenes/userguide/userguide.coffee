@@ -1,7 +1,7 @@
 define [
     'constant'
     'i18n!/nls/lang.js'
-    'component/userguide/userguideTpl'
+    './userguideTpl'
 ], (constant, lang, template) ->
 
     return Backbone.View.extend
@@ -25,7 +25,6 @@ define [
 
             that = @
             @$el.html(template())
-            $('.user-guide').remove()
             $('body').append(@$el)
             video = @$el.find('.guide-video video')[0]
             video.addEventListener 'ended', () ->

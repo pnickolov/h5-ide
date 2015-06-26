@@ -45,7 +45,10 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         uid  : @id
         resource : _.invoke (_.filter @all(), (item) -> !!item.connections().length), 'serialize'
 
-    addTag: (resource, tagKey, tagValue, inherit) ->
+    addTag: (resource, tagKey, tagValue = "", inherit) ->
+      if @tagKeyExist(resource, tagKey)
+        return error: "A tag with key '#{tagKey}' already exists"
+
       tagItem = @find tagKey, tagValue, inherit
 
       inherit = true if @type is constant.RESTYPE.ASGTAG and inherit is undefined
@@ -53,13 +56,12 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
       tagItem = new TagItem( { key: tagKey, value: tagValue, inherit: inherit, __parent: @ } ) unless tagItem
 
-      # inherit is not a key attribute,
-      # a resource can't have two tags with same key and value but different with inherit.
-      if inherit isnt undefined
-        dupTag = @find( tagKey, tagValue, !inherit )
-        @removeTag resource, dupTag if dupTag
-
       new TagUsage resource, tagItem
+
+      null
+
+    tagKeyExist: ( resource, tagKey ) ->
+      _.some resource.connectionTargets('TagUsage'), (tag) -> tag.get( 'key' ) is tagKey
 
     find: ( key, value, inherit ) ->
       prop = key: key
@@ -75,6 +77,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
 
   }, {
+    all: -> TagModel.first().all().concat( Design.modelClassForType(constant.RESTYPE.ASGTAG).first().all() )
 
     handleTypes : [ constant.RESTYPE.TAG ]
     deserialize : ( data, layout_data, resolve )->

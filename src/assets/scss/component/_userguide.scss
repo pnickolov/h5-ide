@@ -5,6 +5,7 @@
 	top: 0;
 	bottom: 0;
 	z-index: 999;
+	display: none;
 	$color1: #0094ff;
 	$color2: #c87600;
 	$color3: #00987d;
@@ -77,6 +78,25 @@
 		opacity: 0.9;
 		z-index: -1;
 	}
+	.guide-logo {
+		width: 200px;
+		margin: 20px 0 0 60px;
+	}
+	.guide-close {
+		right: 0;
+		top: 0;
+		margin: 50px;
+		color: white;
+		cursor: pointer;
+		position: absolute;
+		z-index: 1;
+		&:hover {
+			opacity: 0.9;
+		}
+		&:before {
+			font-size: 38px !important;
+		}
+	}
 	.guide-video {
 		position: absolute;
 		left: 0;
@@ -85,6 +105,14 @@
 		bottom: 0;
 		z-index: 1;
 		display: none;
+		.box-loading {
+			display: none;
+			position: absolute;
+			z-index: 2;
+			width: 100%;
+			top: 50%;
+			margin-top: -110px;
+		}
 	}
 	.guide-video-tip {
 		font-size: 180px;
@@ -105,6 +133,15 @@
 		top: 0;
 		bottom: 0;
 	}
+	// .guide-title {
+	// 	position: absolute;
+	// 	top: 50%;
+	// 	margin-left: 270px;
+	// 	font-size: 32px;
+	// 	font-weight: bold;
+	// 	color: white;
+	// 	margin-top: -18px;
+	// }
 	.guide-cards {
 		white-space: nowrap;
 		position: absolute;
@@ -113,17 +150,47 @@
 		left: 50%;
 		margin-right: 500px;
 		margin-left: -300px;
+		.guide-head {
+			position: absolute;
+			margin-left: -442px;
+			margin-top: -100px;
+			font-size: 26px;
+			color: white;
+			font-weight: bold;
+		}
 		.guide-card {
 			margin: 0 100px;
 			width: 340px;
 			display: inline-block;
 			position: relative;
 			cursor: pointer;
+			border: 2px dashed transparent;
+			&.active {
+				border: 2px dashed white;
+				border-radius: 5px;
+			}
 			&:hover {
 				opacity: 0.95;
 			}
 			&:last-child {
 				margin-right: 500px;
+			}
+			&:before {
+				content: "\f11F";
+				font: 16px/1em "MCIcon";
+				font-weight: normal;
+				-webkit-font-smoothing: antialiased;
+				position: absolute;
+				left: -108px;
+				top: 50%;
+				margin-top: -11px;
+				font-size: 24px;
+				color: rgb(181, 181, 181);
+			}
+			&:first-child {
+				&:before {
+					content: "";
+				}
 			}
 			.head {
 				height: 110px;

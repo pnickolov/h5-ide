@@ -2293,7 +2293,8 @@ li.ui-timepicker-selected .ui-timepicker-duration,
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 999; }
+  z-index: 999;
+  display: none; }
   .user-guide .guideicon {
     display: inline-block;
     background-repeat: no-repeat;
@@ -2346,6 +2347,21 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     background-color: black;
     opacity: 0.9;
     z-index: -1; }
+  .user-guide .guide-logo {
+    width: 200px;
+    margin: 20px 0 0 60px; }
+  .user-guide .guide-close {
+    right: 0;
+    top: 0;
+    margin: 50px;
+    color: white;
+    cursor: pointer;
+    position: absolute;
+    z-index: 1; }
+    .user-guide .guide-close:hover {
+      opacity: 0.9; }
+    .user-guide .guide-close:before {
+      font-size: 38px !important; }
   .user-guide .guide-video {
     position: absolute;
     left: 0;
@@ -2354,6 +2370,13 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     bottom: 0;
     z-index: 1;
     display: none; }
+    .user-guide .guide-video .box-loading {
+      display: none;
+      position: absolute;
+      z-index: 2;
+      width: 100%;
+      top: 50%;
+      margin-top: -110px; }
   .user-guide .guide-video-tip {
     font-size: 180px;
     text-align: center;
@@ -2379,16 +2402,40 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     left: 50%;
     margin-right: 500px;
     margin-left: -300px; }
+    .user-guide .guide-cards .guide-head {
+      position: absolute;
+      margin-left: -442px;
+      margin-top: -100px;
+      font-size: 26px;
+      color: white;
+      font-weight: bold; }
     .user-guide .guide-cards .guide-card {
       margin: 0 100px;
       width: 340px;
       display: inline-block;
       position: relative;
-      cursor: pointer; }
+      cursor: pointer;
+      border: 2px dashed transparent; }
+      .user-guide .guide-cards .guide-card.active {
+        border: 2px dashed white;
+        border-radius: 5px; }
       .user-guide .guide-cards .guide-card:hover {
         opacity: 0.95; }
       .user-guide .guide-cards .guide-card:last-child {
         margin-right: 500px; }
+      .user-guide .guide-cards .guide-card:before {
+        content: "\f11F";
+        font: 16px/1em "MCIcon";
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        position: absolute;
+        left: -108px;
+        top: 50%;
+        margin-top: -11px;
+        font-size: 24px;
+        color: #b5b5b5; }
+      .user-guide .guide-cards .guide-card:first-child:before {
+        content: ""; }
       .user-guide .guide-cards .guide-card .head {
         height: 110px;
         width: 100%;

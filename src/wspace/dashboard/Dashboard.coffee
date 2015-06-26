@@ -1,5 +1,5 @@
 
-define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", "constant", "ApiRequest", "Credential", "component/userguide/userguide" ], ( Workspace, DashboardView, lang, CloudResources, constant, ApiRequest, Credential, UserGuide )->
+define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", "constant", "ApiRequest", "Credential" ], ( Workspace, DashboardView, lang, CloudResources, constant, ApiRequest, Credential )->
 
   Workspace.extend {
 
@@ -13,8 +13,6 @@ define [ "Workspace", "./DashboardView", 'i18n!/nls/lang.js', "CloudResources", 
     initialize : ()->
       @view = new DashboardView({model:@})
       @listenTo @scene.project, "change:myRole", ()-> @view.render()
-      @userGuide = new UserGuide()
-      @userGuide.render()
       return
 
     isReadOnly : ()-> @scene.project.amIObserver()

@@ -1,7 +1,7 @@
 define [
     'constant'
     'i18n!/nls/lang.js'
-    './userguideTpl'
+    'component/userguide/userguideTpl'
 ], (constant, lang, template) ->
 
     return Backbone.View.extend

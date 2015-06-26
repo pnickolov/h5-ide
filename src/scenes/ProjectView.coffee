@@ -4,7 +4,7 @@ define [ "ApiRequest",
     "./ProjectTpl",
     "OpsModel"
     "UI.modalplus",
-    "component/userguide/userguide",
+    "UserGuide",
     "i18n!/nls/lang.js",
     "constant",
     "backbone",

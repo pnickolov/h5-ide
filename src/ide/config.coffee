@@ -211,6 +211,8 @@ require.config {
     'OsKp'             : 'component/oscomps/KpDropdown'
     'OsSnapshot'       : 'component/oscomps/Snapshot'
 
+    'UserGuide'        : 'component/userguide/userguide'
+
   ### env:dev:end ###
   shim :
     'underscore'   :

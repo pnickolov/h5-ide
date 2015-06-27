@@ -1,5 +1,5 @@
-define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagManagerTpl", "backbone", 'i18n!/nls/lang.js' ]
-, ( constant, CloudResources, Modal, template, Backbone, lang) ->
+define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagManagerTpl", "FilterInput", "backbone", 'i18n!/nls/lang.js' ]
+, ( constant, CloudResources, Modal, template, FilterInput, Backbone, lang) ->
 
   Backbone.View.extend {
     events:
@@ -17,8 +17,12 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
         height: 300
         template: template.modalTemplate
       })
+      @renderFilter()
       @modal
 
+    renderFilter: ->
+      filter = new FilterInput()
+      @modal.tpl.find(".filter-bar").replaceWith(filter.render().el)
     selectTableRow: (evt)->
       $row = $(evt.currentTarget)
       @$el.find("tr.item").removeClass("selected")

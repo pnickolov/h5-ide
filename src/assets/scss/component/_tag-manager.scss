@@ -76,6 +76,41 @@
     height: 253px;
     .tab-content{
       padding: 10px;
+      .tags-list{
+        li{
+          margin: 10px 0;
+          &:first-child{
+            margin-top: 0;
+          }
+        }
+        .tag-key{
+          margin-right: 7px;
+        }
+        .checkbox{
+          margin: 0 40px 0 50px;
+        }
+        .delete-tag {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          vertical-align: top;
+          color: #FFF;
+          border-radius: 50%;
+          background-color: #1D1C1C;
+          cursor: pointer;
+          &:hover{
+            background: #DADADA;
+            color: #545454;
+          }
+          &:after{
+            display: block;
+            content: "⨉";
+            text-align: center;
+            line-height: 22px;
+            font-size: 16px;
+          }
+        }
+      }
     }
   }
 }

@@ -133,7 +133,35 @@
         </div>
         <div class="tabs-content">
             <div class="tab-content" data-id="checked">
-                blahblahblahblah........
+                <ul class="tags-list">
+                    <li>
+                        <input class="tag-key input" type="text"/>
+                        <input class="tag-value input" type="text"/>
+                        <div class="checkbox">
+                            <input id="1" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                            <label for="1"></label>
+                        </div>
+                        <div class="delete-tag"></div>
+                    </li>
+                    <li>
+                        <input class="tag-key input" type="text"/>
+                        <input class="tag-value input" type="text"/>
+                        <div class="checkbox">
+                            <input id="2" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                            <label for="2"></label>
+                        </div>
+                        <div class="delete-tag"></div>
+                    </li>
+                    <li>
+                        <input class="tag-key input" type="text"/>
+                        <input class="tag-value input" type="text"/>
+                        <div class="checkbox">
+                            <input id="3" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                            <label for="3"></label>
+                        </div>
+                        <div class="delete-tag"></div>
+                    </li>
+                </ul>
             </div>
             <div class="tab-content" data-id="selected" style="display: none">
                 Watwatwatwatwatwatwattwat........

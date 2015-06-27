@@ -486,6 +486,32 @@ pre {
     height: 253px; }
     .tag-resource-detail .tabs-content .tab-content {
       padding: 10px; }
+      .tag-resource-detail .tabs-content .tab-content .tags-list li {
+        margin: 10px 0; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list li:first-child {
+          margin-top: 0; }
+      .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key {
+        margin-right: 7px; }
+      .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox {
+        margin: 0 40px 0 50px; }
+      .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        vertical-align: top;
+        color: #FFF;
+        border-radius: 50%;
+        background-color: #1D1C1C;
+        cursor: pointer; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag:hover {
+          background: #DADADA;
+          color: #545454; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag:after {
+          display: block;
+          content: "⨉";
+          text-align: center;
+          line-height: 22px;
+          font-size: 16px; }
 
 .combo-dd .combo-dd-manage i {
   margin-right: 13px;
@@ -3562,8 +3588,6 @@ select.select3.disabled {
   padding: 6px;
   color: #d0d0d0;
   background: #2b2b35;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
   -webkit-transition: background 0.2s ease-in-out;
   -o-transition: background 0.2s ease-in-out;
   transition: background 0.2s ease-in-out; }

@@ -60,12 +60,12 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
       component =
         TAG:
           type: "AWS.EC2.Tag"
-          name: ""
+          name: "EC2CustomTags"
           resource: []
 
         ASGTAG:
           type: "AWS.AutoScaling.Tag"
-          name: ""
+          name: "EC2CustomTags"
           resource: []
 
         KP :

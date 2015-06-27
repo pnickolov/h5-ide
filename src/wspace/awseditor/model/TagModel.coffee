@@ -81,7 +81,16 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
 
   }, {
-    all: -> TagModel.first().all().concat( Design.modelClassForType(constant.RESTYPE.ASGTAG).first().all() )
+    all: ->
+      allTags = []
+      AsgTagModel = Design.modelClassForType(constant.RESTYPE.ASGTAG)
+
+      AsgTagModel.each ( model ) -> allTags = allTags.concat model.all()
+      TagModel.each ( model ) -> allTags = allTags.concat model.all()
+
+      allTags
+
+    getCustom: -> TagModel.find (tag) -> tag.get('name') is 'EC2CustomTags'
 
     handleTypes : [ constant.RESTYPE.TAG ]
     deserialize : ( data, layout_data, resolve )->

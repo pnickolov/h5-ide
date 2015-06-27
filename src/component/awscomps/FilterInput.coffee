@@ -1,6 +1,7 @@
 define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant, Design, template) ->
 
     ResNameToType = _.invert constant.RESNAME
+    ResTypeToShort = _.invert constant.RESTYPE
 
     DefaultValues = {
       Empty         : '(empty)'
@@ -8,6 +9,11 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       AllValues     : 'All values'
       AllAttributes : 'All Attributes'
     }
+
+    getResNameByType = ( type ) -> constant.RESNAME[ type ]
+    getResShortNameByType = ( type ) -> ResTypeToShort[ type ]?.toLowerCase()
+    getResTypeByShortName = (short) -> constant.RESTYPE[ short.toUpperCase() ]
+
 
     filterInput = Backbone.View.extend
       className: "filter-input"
@@ -48,7 +54,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         equalSplit = @seperate text, '='
 
-        key = equalSplit?.before or text
+        key = (equalSplit?.before or text).trim()
         value = equalSplit?.after or ''
 
         tagSplit = @seperate key, 'tag:'
@@ -70,15 +76,17 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         if equalSplit and cursorPos > equalSplit.pos
           state = 'value'
+          effect = value
         else
           state = mode
+          effect = if mode is 'resource.attribute' then subKey else key
 
         mode: mode
         state: state
         key: key
         subKey: subKey
         value: value
-        effect: if state is 'value' then value else key
+        effect: effect
 
       getTags: ->
         @selection
@@ -90,7 +98,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       render: ->
         tpl = template.frame
         @$el.html tpl
-        @renderTag()
+        @renderSelection()
         @
 
       renderDropdown: ->
@@ -105,7 +113,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       removeDropdown: ->
         @$(".dropdown").html ""
 
-      renderTag: ->
+      renderSelection: ->
         @$(".tags").html @tplTag @selection
         @
 
@@ -125,49 +133,47 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         else
           @$(".line-tip").text "(+" + hideLine + ")"
 
-      addTag: (key, value) ->
-        switch arguments.length
-          when 0
-            key = @$("input").val()
-          when 1
-            split = undefined
-            tmp = undefined
-            if key.indexOf("=") > -1
-              split = "="
-            else if key.indexOf(":") > -1
-              split = ":"
-            else
-              return @
-            tmp = key.split(split)
+      addSelection: (key, value, type) ->
+
+        if arguments.length is 1
+            tmp = key.split('=')
+            if tmp.length isnt 2 then return
             key = tmp[0].trim()
             value = tmp[1].trim()
-        tag =
+
+        unless type
+          state = @getState()
+          type = state.mode
+
+        sel =
           key: key
           value: value
+          type: type
 
-        return @ unless value
+        if not value and type not in [ 'resource', 'resource.attribute' ] then return
+
         @clearInput()
         return @ if _.some(@selection, (t) ->
-          _.isEqual t, tag
+          _.isEqual t, sel
         )
-        @selection.push tag
-        @renderTag()
+        @selection.push sel
+        @renderSelection()
         @
 
-      removeTag: ($tag) ->
-        return  unless $tag.size()
-        tag =
-          key: $tag.data("key")
-          value: $tag.data("value").toString()
+      removeSelection: ($sel) ->
+        return  unless $sel.size()
+        selection =
+          key: $sel.data("key")
+          value: $sel.data("value").toString()
 
-        @selection = _.filter(@selection, (t) ->
-          t.key isnt tag.key or t.value isnt tag.value
+        @selection = _.filter(@selection, (s) ->
+          s.key isnt selection.key or s.value isnt selection.value
         )
-        $tag.remove()
+        $sel.remove()
 
-      removeLastTag: ->
+      removeLastSelection: ->
         $last = @$(".tags li").last()
-        @removeTag $last
+        @removeSelection $last
 
       getDropdownData: (state, key, subKey) ->
         if state is 'value'
@@ -176,7 +182,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           else
             @getTagValueDd(key)
         else
-          if subKey
+          if state is 'resource.attribute'
             @getAttributeDd(key)
           else
             @getTagKeyDd().concat(@getResourceDd())
@@ -184,20 +190,29 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       uniqSortDd: (dd) -> _.sortBy (_.uniq dd, (d) -> d.value), 'value'
 
-      getAttributeDd: ( resName ) ->
-        type = ResNameToType[ resName ]
+      getAttributeDd: ( resShortName ) ->
+        type = getResTypeByShortName resShortName
         unless type then return
 
         attrs = []
-        _.each Design.modelClassForType(type).first().serialize().resource, ( v, k ) ->
-          unless _.isObject(v) then attrs.push(k)
+        resource = Design.modelClassForType(type).first()
+        unless type then return
+
+        serialized = resource.serialize()
+
+        unless _.isArray(serialized) then serialized = [ serialized ]
+
+        _.each serialized, (serializedItem) ->
+          if serializedItem?.component?.resource
+            _.each serialized.component.resource, ( v, k ) ->
+              unless _.isObject(v) then attrs.push(k)
 
         dd = _.map attrs, (a) ->
           { type: 'attribute', value: a }
 
         dd = @uniqSortDd dd
 
-        dd.unshift { type: 'default', value: DefaultValues.AllAttributes }
+        dd.unshift { type: 'attribute', value: DefaultValues.AllAttributes, default: true }
         dd.unshift { type: 'label', value: 'Attributes', for: 'attribute' }
 
         dd
@@ -209,7 +224,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             resources.push component
 
         dd = _.map resources, (r) ->
-          { id: r.id, type: 'resource', value: constant.RESNAME[r.type] }
+          { id: r.id, type: 'resource', value: getResShortNameByType(r.type), text: getResNameByType(r.type) }
 
         dd = @uniqSortDd dd
         dd.unshift { type: 'label', value: 'Resources', for: 'resource' }
@@ -232,10 +247,30 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         dd = _.map matchTags, (tag) ->
           { id: tag.id, type: 'tag.value', value: tag.get('value') }
 
-        for defaultTag in [ DefaultValues.AllValues, DefaultValues.NotTagged, DefaultValues.Empty ]
-          dd.unshift { type: 'default', value: defaultTag }
+        dd = @uniqSortDd dd
 
-      getAttributeValueDd: ( resource, attr ) ->
+        for defaultTag in [ DefaultValues.AllValues, DefaultValues.NotTagged, DefaultValues.Empty ]
+          dd.unshift { type: 'tag.value', value: defaultTag, default: true }
+
+        dd
+
+      getAttributeValueDd: ( resShortName, attr ) ->
+        type = getResTypeByShortName resShortName
+        unless type then return
+
+        resources = Design.modelClassForType(type).allObjects()
+        dd = []
+
+        for r in resources
+          v = r.serialize().component.resource[ attr ]
+          if v
+            dd.push { id: r.id, type: 'attribute.value', value: v }
+
+
+        dd = @uniqSortDd dd
+        dd.unshift { type: 'attribute.value', value: DefaultValues.AllValues, default: true }
+
+        dd
 
       focusInput: ($input) ->
         ($input or @$("input")).focus()
@@ -255,10 +290,9 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         filtered = []
 
         _.each data, (d) ->
-          d.text = d.value
+          d.text = d.value unless d.text
           if d.type is 'label'
-            hasLabelType = _.some data, (dd) -> dd.type is d.for
-            if hasLabelType then filtered.push d
+            filtered.push d
           else if not filter or (matchIdx = d.value.toLowerCase().indexOf(filter)) > -1
             unless setSelected then d.selected = setSelected = true
 
@@ -267,6 +301,12 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
               d.text = d.text.replace(match, "<span class=\"match\">" + match + "</span>")
 
             filtered.push d
+
+        # Remove label if it's list empty
+        _.filter filtered, (f) ->
+          if f.type is 'label'
+            return _.some filtered, (ff) -> ff.type is f.for
+          true
 
         filtered
 
@@ -294,7 +334,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       clickTagHandler: (e) ->
         $tgt = $(e.currentTarget)
-        @removeTag $tgt
+        @removeSelection $tgt
 
       keyupHandler: (e) ->
         code = e.which
@@ -308,7 +348,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         switch code
           when 8 # Delete
             if $input[0].selectionStart is 0
-              @removeLastTag()
+              @removeLastSelection()
               @focusInput()
 
           when 13 # Enter
@@ -316,12 +356,12 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             if dropdown.children().size()
               @selectHandler currentTarget: dropdown.find(".selected")
             else
-              @addTag $input.val()
+              @addSelection $input.val()
           when 27 # Esc
             @fold()
           when 38 # Up
             $selected = @$(".dropdown .selected")
-            $prev = $selected.prev('.option')
+            $prev = $selected.prevAll('.option').first()
             if $prev.size()
               dropdown = @$(".dropdown")
               $dropdown[0].scrollTop -= $prev.outerHeight()  if $prev.position().top < 0
@@ -330,10 +370,11 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             false
           when 40 # Down
             $selected = @$(".dropdown .selected")
-            $next = $selected.next('.option')
+            $next = $selected.nextAll('.option').first()
             if $next.size()
               $dropdown = @$(".dropdown")
-              $dropdown[0].scrollTop += $next.outerHeight()  if $next.position().top >= $dropdown.outerHeight()
+              if $next.position().top >= $dropdown.outerHeight()
+                $dropdown[0].scrollTop += $next.outerHeight()
               $selected.removeClass "selected"
               $next.addClass "selected"
             false
@@ -373,14 +414,16 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         if state.state is 'value'
           key = state.key + if state.subKey then ".#{state.subKey}" else ''
-          @addTag key + " = " + $tgt.data('value')
+          @addSelection key, $tgt.data('value'), state.mode
         else
           key = $tgt.data('value')
           if type is 'attribute'
-            subKey = key
-            key = state.key
+            if key is DefaultValues.AllAttributes
+              return @addSelection(state.key, null, state.mode)
+            else
+              key = "#{state.key}.#{key} = "
           else if type is 'resource'
-            key = key + '.'
+            key = "#{key}."
           else
             key = "tag:#{key} = "
 

@@ -36,6 +36,10 @@ define [
 
         playVideo: (event) ->
 
+            $target = $(event.currentTarget)
+            videoSrc = $target.data('src')
+            @$el.find('.guide-video source').attr('src', videoSrc)
+
             @$el.find('.guide-video').fadeIn()
             video = @$el.find('.guide-video video')[0]
             video.width = $(document).width()
@@ -43,7 +47,7 @@ define [
             video.load()
             video.play()
             @$el.find('.guide-card').removeClass('active')
-            $(event.currentTarget).addClass('active')
+            $target.addClass('active')
 
         closeVideo: () ->
 

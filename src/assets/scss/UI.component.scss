@@ -1304,6 +1304,8 @@ select.select3.disabled {
 
 	padding: 6px;
 	color  : #d0d0d0;
+	overflow-x: hidden;
+  	text-overflow: ellipsis;
 
 	background : lighten($bg-p,5%);
 

@@ -387,21 +387,32 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         null
 
       overDropItem: (e) ->
+        if @__keydowning then return
         $tgt = $(e.currentTarget)
         @$(".dropdown li").removeClass "selected"
-        $tgt.addClass "selected"
+        if $tgt.hasClass('option')
+          $tgt.addClass "selected"
+        else
+          $tgt.next('.option').addClass('selected')
 
       clickTagHandler: (e) ->
         $tgt = $(e.currentTarget)
         @removeSelection $tgt
 
       keyupHandler: (e) ->
+        that = @
+        @__timeoutResetKeydowning = setTimeout ->
+          that.__keydowning = false
+        , 300
+
         code = e.which
         $input = $(e.currentTarget)
         unless ( _.contains([27, 38, 40], code) )
           @renderDropdown()
 
       keydownHandler: (e) ->
+        clearTimeout @__timeoutResetKeydowning
+        @__keydowning = true
         code = e.which
         $input = $(e.currentTarget)
         switch code
@@ -422,8 +433,14 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             $selected = @$(".dropdown .selected")
             $prev = $selected.prevAll('.option').first()
             if $prev.size()
-              $dropdown = @$(".dropdown")
-              $dropdown[0].scrollTop -= $prev.outerHeight()  if $prev.position().top < 0
+              $dropdown   = @$(".dropdown")
+              prevHeight  = $prev.outerHeight()
+              prevTop     = $prev.position().top
+              ddHeight    = $dropdown.outerHeight()
+
+              if prevTop < 0
+                $dropdown[0].scrollTop += prevTop
+
               $selected.removeClass "selected"
               $prev.addClass "selected"
             false
@@ -431,21 +448,26 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             $selected = @$(".dropdown .selected")
             $next = $selected.nextAll('.option').first()
             if $next.size()
-              $dropdown = @$(".dropdown")
-              if $next.position().top >= $dropdown.outerHeight()
-                $dropdown[0].scrollTop += $next.outerHeight()
+              $dropdown   = @$(".dropdown")
+              nextHeight  = $next.outerHeight()
+              nextTop     = $next.position().top
+              ddHeight    = $dropdown.outerHeight()
+
+              if nextTop + nextHeight > ddHeight
+                $dropdown[0].scrollTop += nextTop + nextHeight - ddHeight
+
               $selected.removeClass "selected"
               $next.addClass "selected"
             false
 
       focusInputHandler: ->
-        clearTimeout @timeoutRemoveFocus
-        @renderDropdown()
+        clearTimeout @__timeoutRemoveFocus
+        #@renderDropdown()
         @$(".fake-input").addClass "focus"
 
       blurInputHandler: ->
         that = @
-        @timeoutRemoveFocus = setTimeout ->
+        @__timeoutRemoveFocus = setTimeout ->
           that.fold()
           that.removeDropdown()
           $fakeInput = that.$(".fake-input")

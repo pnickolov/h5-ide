@@ -342,11 +342,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       clearInput: ($input) ->
         ($input or @$("input")).val ""
 
-      getMatchItemIndex: () ->
-
-
-      wrapDropdown: ->
-
       filterByInput: (data, filter) ->
         filter = filter and filter.trim().toLowerCase()
 

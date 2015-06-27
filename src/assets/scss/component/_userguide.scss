@@ -97,6 +97,21 @@
 			font-size: 38px !important;
 		}
 	}
+	.guide-view {
+		right: 70px;
+		top: 10px;
+		margin: 50px;
+		color: rgb(209, 209, 209);
+		cursor: pointer;
+		position: absolute;
+		z-index: 1;
+		&:before {
+			font-size: 20px !important;
+		}
+		&:hover {
+			opacity: 0.9;
+		}
+	}
 	.guide-video {
 		position: absolute;
 		left: 0;
@@ -150,6 +165,26 @@
 		left: 50%;
 		margin-right: 500px;
 		margin-left: -300px;
+		&.cube {
+			white-space: normal;
+			position: relative;
+			margin: 100px;
+			margin-top: 200px;
+			left: 0;
+			top: 0;
+			.guide-card {
+				margin-bottom: 80px;
+				&:before {
+					content: "";
+				}
+				&:last-child {
+					margin-right: 0;
+				}
+			}
+			.guide-head {
+				display: none;
+			}
+		}
 		.guide-head {
 			position: absolute;
 			margin-left: -442px;

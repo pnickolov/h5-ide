@@ -2362,6 +2362,18 @@ li.ui-timepicker-selected .ui-timepicker-duration,
       opacity: 0.9; }
     .user-guide .guide-close:before {
       font-size: 38px !important; }
+  .user-guide .guide-view {
+    right: 70px;
+    top: 10px;
+    margin: 50px;
+    color: #d1d1d1;
+    cursor: pointer;
+    position: absolute;
+    z-index: 1; }
+    .user-guide .guide-view:before {
+      font-size: 20px !important; }
+    .user-guide .guide-view:hover {
+      opacity: 0.9; }
   .user-guide .guide-video {
     position: absolute;
     left: 0;
@@ -2402,6 +2414,21 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     left: 50%;
     margin-right: 500px;
     margin-left: -300px; }
+    .user-guide .guide-cards.cube {
+      white-space: normal;
+      position: relative;
+      margin: 100px;
+      margin-top: 200px;
+      left: 0;
+      top: 0; }
+      .user-guide .guide-cards.cube .guide-card {
+        margin-bottom: 80px; }
+        .user-guide .guide-cards.cube .guide-card:before {
+          content: ""; }
+        .user-guide .guide-cards.cube .guide-card:last-child {
+          margin-right: 0; }
+      .user-guide .guide-cards.cube .guide-head {
+        display: none; }
     .user-guide .guide-cards .guide-head {
       position: absolute;
       margin-left: -442px;

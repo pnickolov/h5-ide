@@ -19,6 +19,7 @@ define [
             'click .guide-card': 'playVideo'
             'click .guide-video': 'closeVideo'
             'click .guide-close': 'closeGuide'
+            'click .guide-view': 'switchView'
             'mousewheel .guide-list': 'scrollHorizontally'
 
         render: () ->
@@ -57,8 +58,18 @@ define [
             @$el.fadeOut 'normal', () ->
                 that.remove()
 
+        switchView: (event) ->
+
+            $target = $(event.currentTarget)
+            if $target.hasClass('icon-menu')
+                $target.removeClass('icon-menu').addClass('icon-resources')
+                @$el.find('.guide-cards').addClass('cube')
+            else
+                $target.removeClass('icon-resources').addClass('icon-menu')
+                @$el.find('.guide-cards').removeClass('cube')
+
         scrollHorizontally: (event) ->
 
             delta = Math.max(-1, Math.min(1, (event.originalEvent.wheelDelta || - event.originalEvent.detail)))
             event.currentTarget.scrollLeft -= (delta * 150)
-            event.preventDefault()
+            # event.preventDefault()

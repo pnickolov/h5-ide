@@ -90,7 +90,10 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
       allTags
 
-    getCustom: -> TagModel.find (tag) -> tag.get('name') is 'EC2CustomTags'
+    getCustom: ->
+      customTag = TagModel.find (tag) -> tag.get('name') is 'EC2CustomTags'
+      customTag or new @ name: 'EC2CustomTags'
+
 
     handleTypes : [ constant.RESTYPE.TAG ]
     deserialize : ( data, layout_data, resolve )->

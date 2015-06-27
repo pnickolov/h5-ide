@@ -14,12 +14,62 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
     getResShortNameByType = ( type ) -> ResTypeToShort[ type ]?.toLowerCase()
     getResTypeByShortName = (short) -> constant.RESTYPE[ short.toUpperCase() ]
 
+    seperate = (str, sep) ->
+      pos = str.indexOf(sep)
+
+      if pos is -1 then return false
+
+      tmp = str.split(sep)
+      before = tmp[0]
+      after = tmp[1]
+
+      { before: before, after: after, pos: pos }
+
+    isResAttributeMatch = ( resources, attr, value ) ->
+      for r in resources
+        serialized = resource.serialize()
+        unless _.isArray(serialized) then serialized = [ serialized ]
+
+        _.some serialized, (serializedItem) ->
+          v = serializedItem?.component?.resource?[attr]
+          v is value
+
+    hasTag = ( tags, key, value ) ->
+      _.some tags, (tag) ->
+        tag.get('key') is key and ( arguments.length is 3 and tag.get('value') is value )
+
+    isResMatchTag = ( resource, selTags ) ->
+      unless _.size(selTags) then return true
+
+      tags = resource.tags()
+      _.every selTags, ( tagValues, tagKey ) ->
+        _.some tagValues, (tagValue) ->
+          switch tagValue
+            when DefaultValues.AllValues then return hasTag tags, tagKey
+            when DefaultValues.NotTagged then return !hasTag(tags, tagKey)
+            when DefaultValues.Empty     then return hasTag(tags, tagKey, '')
+            else                              return hasTag(tags, tagKey, tagValue)
+
+    isResMatchResource = ( res, selectResources ) ->
+      unless _.size(selectResources) then return true
+
+      _.some selectResources, ( selRes ) ->
+        splitDot      = seperate(selRes.key, '.')
+
+        resShortName  = splitDot?.before or selRes.key
+        attr          = splitDot.after or ''
+        value         = selRes.value
+        type          = getResTypeByShortName( resShortName )
+
+        res.type is type and isResAttributeMatch( res, attr, value )
+
 
     filterInput = Backbone.View.extend
       className: "filter-input"
       tplDropdown: template.dropdown
       tplTag: template.tag
       selection: []
+
       events:
         "click .tags li"            : "clickTagHandler"
         "blur input"                : "blurInputHandler"
@@ -33,18 +83,27 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         "mouseleave .dropdown"      : "leaveDrop"
         "mouseover .dropdown li"    : "overDropItem"
 
-      valueModeRegex: /^[a-zA-Z0-9]+\s*[=:]\s*$/
+      getMatchedResource: ->
+        selection = @classifySelection(@selection)
+        matched = []
 
-      seperate: (str, sep) ->
-        pos = str.indexOf(sep)
+        Design.instance().eachComponent (resource) ->
+          if isResMatchTag(resource, selection.tags) and isResMatchResource( resource, selection.resources )
+            matched.push resource
 
-        if pos is -1 then return false
+        matched
 
-        tmp = str.split(sep)
-        before = tmp[0]
-        after = tmp[1]
+      classifySelection: ->
+        classified = tags: {}, resources: []
 
-        { before: before, after: after, pos: pos }
+        for sel in @selection
+          if sel.type is 'tag'
+            classified.tags[ sel.key ] or ( classified.tags[ sel.key ] = [] )
+            classified.tags[ sel.key ].push sel.value
+          else
+            classified.resources.push sel
+
+        classified
 
       getState: (value) ->
         input = @$("input").get(0)
@@ -52,13 +111,13 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         subKey = null
         state = 'value'
 
-        equalSplit = @seperate text, '='
+        equalSplit = seperate text, '='
 
         key = (equalSplit?.before or text).trim()
         value = equalSplit?.after or ''
 
-        tagSplit = @seperate key, 'tag:'
-        dotSplit = @seperate key, '.'
+        tagSplit = seperate key, 'tag:'
+        dotSplit = seperate key, '.'
 
 
         if tagSplit
@@ -87,9 +146,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         subKey: subKey
         value: value
         effect: effect
-
-      getTags: ->
-        @selection
 
       initialize: (options) ->
         @selection = options.selection  if options and options.selection
@@ -157,18 +213,22 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           _.isEqual t, sel
         )
         @selection.push sel
+        @trigger 'change:filter'
         @renderSelection()
         @
 
       removeSelection: ($sel) ->
-        return  unless $sel.size()
+        unless $sel.size() then return
+
         selection =
           key: $sel.data("key")
           value: $sel.data("value").toString()
 
         @selection = _.filter(@selection, (s) ->
-          s.key isnt selection.key or s.value isnt selection.value
+          s.key isnt selection.key or s.value isnt selection.value and !(!s.value and !selection.value)
         )
+
+        @trigger 'change:filter'
         $sel.remove()
 
       removeLastSelection: ->
@@ -204,7 +264,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         _.each serialized, (serializedItem) ->
           if serializedItem?.component?.resource
-            _.each serialized.component.resource, ( v, k ) ->
+            _.each serializedItem.component.resource, ( v, k ) ->
               unless _.isObject(v) then attrs.push(k)
 
         dd = _.map attrs, (a) ->
@@ -262,9 +322,13 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         dd = []
 
         for r in resources
-          v = r.serialize().component.resource[ attr ]
-          if v
-            dd.push { id: r.id, type: 'attribute.value', value: v }
+          serialized = r.serialize()
+          unless _.isArray(serialized) then serialized = [ serialized ]
+
+          _.each serialized, (serializedItem) ->
+            v = serializedItem?.component?.resource?[attr]
+            if v
+              dd.push { id: r.id, type: 'attribute.value', value: v }
 
 
         dd = @uniqSortDd dd
@@ -363,7 +427,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             $selected = @$(".dropdown .selected")
             $prev = $selected.prevAll('.option').first()
             if $prev.size()
-              dropdown = @$(".dropdown")
+              $dropdown = @$(".dropdown")
               $dropdown[0].scrollTop -= $prev.outerHeight()  if $prev.position().top < 0
               $selected.removeClass "selected"
               $prev.addClass "selected"
@@ -419,7 +483,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           key = $tgt.data('value')
           if type is 'attribute'
             if key is DefaultValues.AllAttributes
-              return @addSelection(state.key, null, state.mode)
+              @addSelection(state.key, null, state.mode)
+              return @renderDropdown()
             else
               key = "#{state.key}.#{key} = "
           else if type is 'resource'

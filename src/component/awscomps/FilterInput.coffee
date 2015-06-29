@@ -187,7 +187,9 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         $fakeInput = $fakeInput or @$(".fake-input")
         $li = @$(".tags li").first()
 
-        unless $li.size() then return
+        unless $li.size()
+          @$(".line-tip").text ""
+          return
 
         computedStyle = window.getComputedStyle($li[0])
         liHeight = $li.outerHeight() + parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom)
@@ -235,7 +237,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           value: $sel.data("value").toString()
 
         @selection = _.filter(@selection, (s) ->
-          s.key isnt selection.key or s.value isnt selection.value and !(!s.value and !selection.value)
+          s.key isnt selection.key or s.value?.toString() isnt selection.value and !(!s.value and !selection.value)
         )
 
         @triggerChange()

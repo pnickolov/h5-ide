@@ -234,6 +234,10 @@ define [
     rects.concat cleanRects
 
   isIncest = ( m, models ) ->
+    if m.type is constant.RESTYPE.LC
+      return _.some m.getAsgs(), ( asg ) ->
+        isIncest( asg, models )
+
     parent = m.parent()
 
     return false if !parent

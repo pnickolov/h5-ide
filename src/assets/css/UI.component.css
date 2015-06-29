@@ -484,15 +484,18 @@ pre {
     overflow: auto;
     height: 253px; }
     .tag-resource-detail .tabs-content .tab-content {
-      padding: 10px; }
+      padding: 10px 0; }
       .tag-resource-detail .tabs-content .tab-content .tags-list li {
-        margin: 10px 0; }
+        margin: 4px 0; }
         .tag-resource-detail .tabs-content .tab-content .tags-list li:first-child {
-          margin-top: 0; }
+          margin-top: 4px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key {
-        margin-right: 7px; }
+        margin-right: 0;
+        margin-left: 5px; }
+      .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list .tag-value {
+        width: 145px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox {
-        margin: 0 40px 0 50px; }
+        margin: 0 60px 0 65px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag {
         display: inline-block;
         width: 24px;
@@ -501,7 +504,8 @@ pre {
         color: #FFF;
         border-radius: 50%;
         background-color: #1D1C1C;
-        cursor: pointer; }
+        cursor: pointer;
+        margin-left: 25px; }
         .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag:hover {
           background: #DADADA;
           color: #545454; }

@@ -133,6 +133,18 @@
         </div>
         <div class="tabs-content">
             <div class="tab-content" data-id="checked">
+                <div class="table-head-fix tag-resource-table">
+                    <table class="table-head">
+                        <thead>
+                        <tr>
+                            <th class="" width="30%" data-row-type="string">Key</th>
+                            <th class="" width="30%" data-row-type="string">Value</th>
+                            <th class="" width="25%" data-row-type="string">Tag New Instance</th>
+                            <th class="" width="15%" data-row-type="string">Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
                 <ul class="tags-list">
                     <li>
                         <input class="tag-key input" type="text"/>

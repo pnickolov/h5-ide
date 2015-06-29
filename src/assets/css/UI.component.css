@@ -482,7 +482,7 @@ pre {
         border-bottom: 1px solid #148BE6; }
   .tag-resource-detail .tabs-content {
     overflow: auto;
-    height: 253px; }
+    height: 353px; }
     .tag-resource-detail .tabs-content .tab-content {
       padding: 10px 0; }
       .tag-resource-detail .tabs-content .tab-content .tags-list li {
@@ -515,6 +515,9 @@ pre {
           text-align: center;
           line-height: 22px;
           font-size: 16px; }
+      .tag-resource-detail .tabs-content .tab-content .pull-right {
+        text-align: right;
+        margin: 10px 20px; }
 
 .combo-dd .combo-dd-manage i {
   margin-right: 13px;

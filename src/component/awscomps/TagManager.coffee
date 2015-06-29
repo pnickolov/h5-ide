@@ -5,6 +5,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
     events:
       "click tbody tr.item" : "selectTableRow"
       "click .tag-resource-detail .tabs-navs li" : "switchTab"
+      "click .create-tag" : "addTag"
     initialize: (model)->
       @model = model
       @setElement @renderModal().tpl
@@ -21,12 +22,32 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       @modal
 
     renderFilter: ->
-      filter = new FilterInput()
+      @filter = new FilterInput()
+      @listenTo @filter, 'change:filter', @filterResourceList
       @modal.tpl.find(".filter-bar").replaceWith(filter.render().el)
     selectTableRow: (evt)->
       $row = $(evt.currentTarget)
       @$el.find("tr.item").removeClass("selected")
       $row.addClass("selected")
+
+    filterResourceList: ()->
+      console.log arguments
+
+    addTag: (e)->
+      console.log("Add Tag")
+      tagId = $(".tags-list li").size() + 1
+      tagTemplate = """
+        <li>
+            <input class="tag-key input" type="text"/>
+            <input class="tag-value input" type="text"/>
+            <div class="checkbox">
+                <input id="tag-#{tagId}" type="checkbox" class="one-cb">
+                <label for="tag-#{tagId}"></label>
+            </div>
+            <div class="delete-tag"></div>
+        </li>
+      """
+      $(e.currentTarget).parents(".tab-content").find("ul.tags-list").append(tagTemplate)
 
     switchTab: (evt)->
       $li = $(evt.currentTarget)

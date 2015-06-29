@@ -174,9 +174,55 @@
                         <div class="delete-tag"></div>
                     </li>
                 </ul>
+                <div class="pull-right">
+                    <div class="btn btn-silver create-tag">Add Tag</div>
+                </div>
             </div>
             <div class="tab-content" data-id="selected" style="display: none">
-                Watwatwatwatwatwatwattwat........
+                <div class="table-head-fix tag-resource-table">
+                    <table class="table-head">
+                        <thead>
+                        <tr>
+                            <th class="" width="30%" data-row-type="string">Key</th>
+                            <th class="" width="30%" data-row-type="string">Value</th>
+                            <th class="" width="25%" data-row-type="string">Tag New Instance</th>
+                            <th class="" width="15%" data-row-type="string">Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <ul class="tags-list">
+                    <li>
+                        <input class="tag-key input" type="text"/>
+                        <input class="tag-value input" type="text"/>
+                        <div class="checkbox">
+                            <input id="1" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                            <label for="1"></label>
+                        </div>
+                        <div class="delete-tag"></div>
+                    </li>
+                    <li>
+                        <input class="tag-key input" type="text"/>
+                        <input class="tag-value input" type="text"/>
+                        <div class="checkbox">
+                            <input id="2" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                            <label for="2"></label>
+                        </div>
+                        <div class="delete-tag"></div>
+                    </li>
+                    <li>
+                        <input class="tag-key input" type="text"/>
+                        <input class="tag-value input" type="text"/>
+                        <div class="checkbox">
+                            <input id="3" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
+                            <label for="3"></label>
+                        </div>
+                        <div class="delete-tag"></div>
+                    </li>
+                </ul>
+                <div class="pull-right">
+                    <div class="btn btn-blue create-tag">Add Tag</div>
+                </div>
             </div>
         </div>
     </div>

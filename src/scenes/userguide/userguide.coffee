@@ -36,13 +36,15 @@ define [
 
         playVideo: (event) ->
 
+            @$el.find('.guide-list').hide()
             $target = $(event.currentTarget)
             videoSrc = $target.data('src')
             @$el.find('.guide-video source').attr('src', videoSrc)
 
+            @$el.find('.guide-video .guide-video-title').text($target.find('.intro').text())
             @$el.find('.guide-video').fadeIn()
             video = @$el.find('.guide-video video')[0]
-            video.width = $(document).width()
+            video.height = $(document).height()
             @$el.find('.box-loading').show()
             video.load()
             video.play()
@@ -51,6 +53,7 @@ define [
 
         closeVideo: () ->
 
+            @$el.find('.guide-list').show()
             @$el.find('.guide-video').fadeOut()
             video = @$el.find('.guide-video video')[0]
             video.pause()
@@ -61,6 +64,7 @@ define [
             that = @
             @$el.fadeOut 'normal', () ->
                 that.remove()
+            return
 
         switchView: (event) ->
 

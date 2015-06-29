@@ -135,10 +135,21 @@
 		z-index: 5;
 		color: black;
 		position: absolute;
-		right: 50px;
+		right: 0;
 		opacity: 0.05;
 		left: 0;
 		margin-top: 80px;
+	}
+	.guide-video-title {
+		font-size: 24px;
+		text-align: center;
+		z-index: 5;
+		color: white;
+		position: absolute;
+		right: 0;
+		left: 0;
+		margin-top: 7px;
+		font-weight: bold;
 	}
 	.guide-list {
 		position: absolute;

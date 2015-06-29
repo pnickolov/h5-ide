@@ -2395,10 +2395,20 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     z-index: 5;
     color: black;
     position: absolute;
-    right: 50px;
+    right: 0;
     opacity: 0.05;
     left: 0;
     margin-top: 80px; }
+  .user-guide .guide-video-title {
+    font-size: 24px;
+    text-align: center;
+    z-index: 5;
+    color: white;
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin-top: 7px;
+    font-weight: bold; }
   .user-guide .guide-list {
     position: absolute;
     overflow: auto;

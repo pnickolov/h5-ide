@@ -8,6 +8,7 @@
 @import "component/select2";
 @import "component/image";
 @import "component/timepicker";
+@import "component/userguide";
 
 
 /* Table */
@@ -1976,26 +1977,26 @@ input.parsley-error {
 
 /* custom scrollbar */
 
-// * {
-// 	&::-webkit-scrollbar {
-// 		width    : 8px;
-// 		height   : 8px;
-// 	}
-// 	&::-webkit-scrollbar-track {
-// 		background: none;
-// 	}
-// 	&::-webkit-scrollbar-thumb {
-// 		background: rgba(100,100,100,.3);
-// 		border-radius: 8px;
+.custom-scrollbar {
+	&::-webkit-scrollbar {
+		width    : 8px;
+		height   : 8px;
+	}
+	&::-webkit-scrollbar-track {
+		background: none;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: rgba(100,100,100,.3);
+		border-radius: 8px;
 
-// 		&:hover {
-// 			background: rgba(100,100,100,.5);
-// 		}
-// 	}
-//   	&::-webkit-scrollbar-corner {
-// 		background: none;
-//   	}
-// }
+		&:hover {
+			background: rgba(100,100,100,.5);
+		}
+	}
+  	&::-webkit-scrollbar-corner {
+		background: none;
+  	}
+}
 
 
 .dropdown-menu { display: none; }

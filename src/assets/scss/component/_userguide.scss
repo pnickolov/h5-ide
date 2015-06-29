@@ -1,0 +1,350 @@
+.user-guide {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 999;
+	display: none;
+	$color1: #0094ff;
+	$color2: #c87600;
+	$color3: #00987d;
+	$color4: #576a8e;
+	$color5: #7800dd;
+	$color6: #354ead;
+	$color7: #a800ee;
+	$color8: #d00045;
+	$color9: #3ea500;
+	.guideicon {
+		display: inline-block;
+		background-repeat: no-repeat;
+		background-image: url(/assets/images/ide/guide/guide_icon.svg);
+		-ms-transform: scale(1.6, 1.6);
+		-webkit-transform: scale(1.6, 1.6);
+		transform: scale(1.6, 1.6);
+	}
+	.guideicon-cloud-download {
+		width: 32px;
+		height: 32px;
+		background-position: 0 0;
+	}
+	.guideicon-code {
+		width: 32px;
+		height: 32px;
+		background-position: -32px 0;
+	}
+	.guideicon-columns {
+		width: 32px;
+		height: 32px;
+		background-position: -64px 0;
+	}
+	.guideicon-config {
+		width: 32px;
+		height: 32px;
+		background-position: -96px 0;
+	}
+	.guideicon-drag {
+		width: 32px;
+		height: 32px;
+		background-position: -128px 0;
+	}
+	.guideicon-eye {
+		width: 32px;
+		height: 32px;
+		background-position: -160px 0;
+	}
+	.guideicon-picture-o {
+		width: 32px;
+		height: 32px;
+		background-position: -192px 0;
+	}
+	.guideicon-run {
+		width: 32px;
+		height: 32px;
+		background-position: -224px 0;
+	}
+	.guideicon-users {
+		width: 32px;
+		height: 32px;
+		background-position: -256px 0;
+	}
+	.guide-overlay {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background-color: black;
+		opacity: 0.9;
+		z-index: -1;
+	}
+	.guide-logo {
+		width: 200px;
+		margin: 20px 0 0 60px;
+	}
+	.guide-close {
+		right: 0;
+		top: 0;
+		margin: 50px;
+		color: white;
+		cursor: pointer;
+		position: absolute;
+		z-index: 1;
+		&:hover {
+			opacity: 0.9;
+		}
+		&:before {
+			font-size: 38px !important;
+		}
+	}
+	.guide-view {
+		right: 70px;
+		top: 10px;
+		margin: 50px;
+		color: rgb(209, 209, 209);
+		cursor: pointer;
+		position: absolute;
+		z-index: 1;
+		&:before {
+			font-size: 20px !important;
+		}
+		&:hover {
+			opacity: 0.9;
+		}
+	}
+	.guide-video {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 1;
+		display: none;
+		.box-loading {
+			display: none;
+			position: absolute;
+			z-index: 2;
+			width: 100%;
+			top: 50%;
+			margin-top: -110px;
+		}
+	}
+	.guide-video-tip {
+		font-size: 180px;
+		text-align: center;
+		z-index: 5;
+		color: black;
+		position: absolute;
+		right: 0;
+		opacity: 0.05;
+		left: 0;
+		margin-top: 80px;
+	}
+	.guide-video-title {
+		font-size: 24px;
+		text-align: center;
+		z-index: 5;
+		color: white;
+		position: absolute;
+		right: 0;
+		left: 0;
+		margin-top: 7px;
+		font-weight: bold;
+	}
+	.guide-list {
+		position: absolute;
+		overflow: auto;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+	}
+	.guide-cards {
+		white-space: nowrap;
+		position: absolute;
+		top: 50%;
+		margin-top: -100px;
+		left: 50%;
+		margin-right: 500px;
+		margin-left: -300px;
+		&.cube {
+			white-space: normal;
+			position: relative;
+			margin: 100px;
+			margin-top: 200px;
+			left: 0;
+			top: 0;
+			.guide-card {
+				margin-bottom: 80px;
+				&:before {
+					content: "";
+				}
+				&:last-child {
+					margin-right: 0;
+				}
+			}
+			.guide-head {
+				display: none;
+			}
+		}
+		.guide-head {
+			position: absolute;
+			margin-left: -442px;
+			margin-top: -100px;
+			font-size: 26px;
+			color: white;
+			font-weight: bold;
+		}
+		.guide-card {
+			margin: 0 100px;
+			width: 340px;
+			display: inline-block;
+			position: relative;
+			cursor: pointer;
+			border: 2px dashed transparent;
+			&.active {
+				border: 2px dashed white;
+				border-radius: 5px;
+			}
+			&:hover {
+				opacity: 0.95;
+			}
+			&:last-child {
+				margin-right: 500px;
+			}
+			&:before {
+				content: "\f11F";
+				font: 16px/1em "MCIcon";
+				font-weight: normal;
+				-webkit-font-smoothing: antialiased;
+				position: absolute;
+				left: -108px;
+				top: 50%;
+				margin-top: -11px;
+				font-size: 24px;
+				color: rgb(181, 181, 181);
+			}
+			&:first-child {
+				&:before {
+					content: "";
+				}
+			}
+			.head {
+				height: 110px;
+				width: 100%;
+				background: url('/assets/images/ide/guide/guide_bg.png') no-repeat;
+				border-radius: 5px 5px 0 0;
+				background-size: 500px;
+				text-align: center;
+				line-height: 133px;
+			}
+			.info {
+				width: 40px;
+				height: 40px;
+				border-radius: 40px;
+				position: absolute;
+				right: -15px;
+				top: -15px;
+				color: white;
+				text-align: center;
+				font-size: 19px;
+				line-height: 37px;
+				font-style: italic;
+				span {
+					font-size: 14px;
+				}
+			}
+			.intro {
+				width: 100%;
+				background-color: white;
+				height: 95px;
+				border-radius: 0 0 5px 5px;
+				text-align: center;
+				line-height: 90px;
+				font-size: 18px;
+				color: #818181;
+			}
+			&.color1 {
+				.head {
+					background-color: $color1;
+				}
+				.info {
+					background-color: darken($color1, 10%);
+					border: 4px solid $color1;
+				}
+			}
+			&.color2 {
+				.head {
+					background-color: $color2;
+				}
+				.info {
+					background-color: darken($color2, 10%);
+					border: 4px solid $color2;
+				}
+			}
+			&.color3 {
+				.head {
+					background-color: $color3;
+				}
+				.info {
+					background-color: darken($color3, 10%);
+					border: 4px solid $color3;
+				}
+			}
+			&.color4 {
+				.head {
+					background-color: $color4;
+				}
+				.info {
+					background-color: darken($color4, 10%);
+					border: 4px solid $color4;
+				}
+			}
+			&.color5 {
+				.head {
+					background-color: $color5;
+				}
+				.info {
+					background-color: darken($color5, 10%);
+					border: 4px solid $color5;
+				}
+			}
+			&.color6 {
+				.head {
+					background-color: $color6;
+				}
+				.info {
+					background-color: darken($color6, 10%);
+					border: 4px solid $color6;
+				}
+			}
+			&.color7 {
+				.head {
+					background-color: $color7;
+				}
+				.info {
+					background-color: darken($color7, 10%);
+					border: 4px solid $color7;
+				}
+			}
+			&.color8 {
+				.head {
+					background-color: $color8;
+				}
+				.info {
+					background-color: darken($color8, 10%);
+					border: 4px solid $color8;
+				}
+			}
+			&.color9 {
+				.head {
+					background-color: $color9;
+				}
+				.info {
+					background-color: darken($color9, 10%);
+					border: 4px solid $color9;
+				}
+			}
+		}
+	}
+}

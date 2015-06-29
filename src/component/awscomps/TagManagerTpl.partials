@@ -27,98 +27,7 @@
                             <th><div class="th-inner"></div></th>
                         </tr>
                         </thead>
-                        <tbody class="t-m-content">
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                            <tr class="item">
-                                <td>
-                                    <div class="checkbox">
-                                        <input id="dopt-4f392d2d" type="checkbox" value="None" data-id="dopt-4f392d2d" class="one-cb">
-                                        <label for="dopt-4f392d2d"></label>
-                                    </div>
-                                </td>
-                                <td>i-4f392d2d</td>
-                                <td>(Instance)</td>
-                            </tr>
-                        </tbody>
+                        <tbody class="t-m-content"></tbody>
                     </table>
                 </div>
             </div>
@@ -227,3 +136,18 @@
         </div>
     </div>
 </div>
+
+
+<!--{{filterResource}}-->
+{{#each models}}
+<tr class="item">
+    <td>
+        <div class="checkbox">
+            <input id="{{appId}}" type="checkbox" value="None" data-id="{{appId}}" class="one-cb">
+            <label for="{{appId}}"></label>
+        </div>
+    </td>
+    <td>{{name}}</td>
+    <td>({{type}})</td>
+</tr>
+{{/each}}

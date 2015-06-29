@@ -6,6 +6,8 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       "click tbody tr.item" : "selectTableRow"
       "click .tag-resource-detail .tabs-navs li" : "switchTab"
       "click .create-tag" : "addTag"
+      "change #t-m-select-all" : "selectAllInput"
+
     initialize: (model)->
       @model = model
       @setElement @renderModal().tpl
@@ -25,13 +27,25 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       @filter = new FilterInput()
       @listenTo @filter, 'change:filter', @filterResourceList
       @modal.tpl.find(".filter-bar").replaceWith(@filter.render().el)
+      @filterResourceList @filter.getFilterableResource()
+
     selectTableRow: (evt)->
       $row = $(evt.currentTarget)
       @$el.find("tr.item").removeClass("selected")
       $row.addClass("selected")
 
-    filterResourceList: ()->
-      console.log arguments
+    filterResourceList: (resModels)->
+      models = _.map resModels, (model)->
+        return {
+          name: model.get("name")
+          appId : model.get("appId")
+          type : model.type
+        }
+      @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
+
+    selectAllInput: (e)->
+      isChecked = $(e.currentTarget).is(":checked")
+      @$el.find(".table-head-fix .item .checkbox input").prop("checked", isChecked)
 
     addTag: (e)->
       tagId = $(".tags-list li").size() + 1

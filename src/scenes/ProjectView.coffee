@@ -4,6 +4,7 @@ define [ "ApiRequest",
     "./ProjectTpl",
     "OpsModel"
     "UI.modalplus",
+    "./userguide/userguide",
     "i18n!/nls/lang.js",
     "constant",
     "backbone",
@@ -11,7 +12,7 @@ define [ "ApiRequest",
     "UI.parsley",
     "UI.errortip",
     "MC.validate"
-], ( ApiRequest, ProjectTpl, OpsModel, Modal, lang, constant )->
+], ( ApiRequest, ProjectTpl, OpsModel, Modal, UserGuide, lang, constant )->
 
   ProjectCreation = Backbone.View.extend {
 
@@ -348,6 +349,7 @@ define [ "ApiRequest",
     popupAsset   : ()-> new AssetListPopup({project:@scene.project})
     popupUser    : ()-> new UserPopup()
     popupNotify  : ()-> new NotificationPopup()
+    popupGuide   : () -> new UserGuide()
 
     updateNotify : ()->
       unread = App.model.notifications().where {isNew:true}

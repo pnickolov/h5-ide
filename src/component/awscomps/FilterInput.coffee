@@ -376,8 +376,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             return _.some filtered, (ff) -> ff.type is f.for
           true
 
-        filtered
-
       fold: (force) ->
         that = @
         unless @hoverDrop

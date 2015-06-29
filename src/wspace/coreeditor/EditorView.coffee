@@ -231,7 +231,7 @@ define [
 
       return null
 
-    highLightModels : ( models )->
+    highLightModels : ( models, hold = false )->
       self = @
 
       oneTimeClicked = ( evt )->
@@ -240,7 +240,9 @@ define [
         self.resourcePanel.removeHighlight()
         $("body")[0].removeEventListener("click", oneTimeClicked, true)
 
-      $("body")[0].addEventListener("click", oneTimeClicked, true)
+      unless hold
+        $("body")[0].addEventListener("click", oneTimeClicked, true)
+
       @canvas.highLightModels(models)
       return
 

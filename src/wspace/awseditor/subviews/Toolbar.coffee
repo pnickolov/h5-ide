@@ -81,17 +81,34 @@ define [
 
       @updateZoomButtons()
       @updateTbBtns()
-      @renderFilter()
+      @initFilter()
 
       @listenTo @workspace.opsModel, "change:state", @updateTbBtns
       return
 
-    renderFilter: ->
+    initFilter: ->
+      ### env:dev ###
       # Need remove before deploy
-      window.filter = new FilterInput()
+      @filter = window.filter = new FilterInput()
       #
+      ### env:dev:end ###
 
-      this.$('.btn-toolbar').last().after(filter.render().el)
+      @listenTo @filter, 'change:filter', @highlightCanvas
+      @$('.btn-toolbar').last().after @filter.render().el
+
+    highlightCanvas: ( resModels ) ->
+      unless resModels.length
+        @workspace.view.removeHighlight()
+        return
+
+      visualResCount = @workspace.design.getVisualComponents().length
+
+      if resModels.length < visualResCount
+        @workspace.view.highLightModels(resModels, true)
+      else
+        @workspace.view.removeHighlight()
+
+
 
     updateTbBtns : ()->
       if @workspace.isRemoved() then return

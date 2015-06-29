@@ -13,8 +13,8 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
     renderModal: ()->
       @modal = new Modal({
         title: "Tag Management"
-        width: 800
-        height: 300
+        width: 900
+        height: 400
         template: template.modalTemplate
       })
       @renderFilter()

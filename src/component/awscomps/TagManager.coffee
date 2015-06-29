@@ -24,7 +24,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
     renderFilter: ->
       @filter = new FilterInput()
       @listenTo @filter, 'change:filter', @filterResourceList
-      @modal.tpl.find(".filter-bar").replaceWith(filter.render().el)
+      @modal.tpl.find(".filter-bar").replaceWith(@filter.render().el)
     selectTableRow: (evt)->
       $row = $(evt.currentTarget)
       @$el.find("tr.item").removeClass("selected")
@@ -34,17 +34,16 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       console.log arguments
 
     addTag: (e)->
-      console.log("Add Tag")
       tagId = $(".tags-list li").size() + 1
       tagTemplate = """
         <li>
-            <input class="tag-key input" type="text"/>
-            <input class="tag-value input" type="text"/>
-            <div class="checkbox">
-                <input id="tag-#{tagId}" type="checkbox" class="one-cb">
-                <label for="tag-#{tagId}"></label>
-            </div>
-            <div class="delete-tag"></div>
+          <input class="tag-key input" type="text"/>
+          <input class="tag-value input" type="text"/>
+          <div class="checkbox">
+            <input id="tag-#{tagId}" type="checkbox" class="one-cb">
+            <label for="tag-#{tagId}"></label>
+          </div>
+          <div class="delete-tag"></div>
         </li>
       """
       $(e.currentTarget).parents(".tab-content").find("ul.tags-list").append(tagTemplate)

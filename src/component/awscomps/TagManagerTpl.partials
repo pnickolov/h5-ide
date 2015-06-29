@@ -221,7 +221,7 @@
                     </li>
                 </ul>
                 <div class="pull-right">
-                    <div class="btn btn-blue create-tag">Add Tag</div>
+                    <div class="btn btn-silver create-tag">Add Tag</div>
                 </div>
             </div>
         </div>

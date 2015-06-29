@@ -2441,20 +2441,23 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     font-size: 16px;
     color: #333;
     margin-top: 7px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
     transition: opacity .25s linear; }
-  .filter-input .fake-input ul li:last-child {
-    margin-bottom: 7px; }
-  .filter-input .fake-input ul li::after {
-    content: "×";
-    color: #999;
-    cursor: pointer;
-    font-weight: bold;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    display: none; }
-  .filter-input .fake-input ul li:hover::after {
-    display: inline; }
+    .filter-input .fake-input ul li:last-child {
+      margin-bottom: 7px; }
+    .filter-input .fake-input ul li::after {
+      content: "×";
+      color: #999;
+      cursor: pointer;
+      font-weight: bold;
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; }
+    .filter-input .fake-input ul li:hover::after {
+      color: #4a90e2; }
+    .filter-input .fake-input ul li.resource_attribute, .filter-input .fake-input ul li.resource {
+      color: #CF7C00; }
+    .filter-input .fake-input ul li .key {
+      font-weight: bold; }
   .filter-input .dropdown {
     margin: 0;
     padding: 0;

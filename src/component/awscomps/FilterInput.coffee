@@ -133,7 +133,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           mode = 'tag'
           key = tagSplit.after
         else if dotSplit
-          mode = 'resource.attribute'
+          mode = 'resource_attribute'
           key = dotSplit.before
           subKey = dotSplit.after
         else
@@ -147,7 +147,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           effect = value
         else
           state = mode
-          effect = if mode is 'resource.attribute' then subKey else key
+          effect = if mode is 'resource_attribute' then subKey else key
 
         mode: mode
         state: state
@@ -218,7 +218,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           value: value
           type: type
 
-        if not value and type not in [ 'resource', 'resource.attribute' ] then return
+        if not value and type not in [ 'resource', 'resource_attribute' ] then return
 
         @clearInput()
         return @ if _.some(@selection, (t) ->
@@ -254,7 +254,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           else
             @getTagValueDd(key)
         else
-          if state is 'resource.attribute'
+          if state is 'resource_attribute'
             @getAttributeDd(key)
           else
             @getTagKeyDd().concat(@getResourceDd())
@@ -337,11 +337,11 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           _.each serialized, (serializedItem) ->
             v = serializedItem?.component?.resource?[attr]
             if v
-              dd.push { id: r.id, type: 'attribute.value', value: v }
+              dd.push { id: r.id, type: 'attribute_value', value: v }
 
 
         dd = @uniqSortDd dd
-        dd.unshift { type: 'attribute.value', value: DefaultValues.AllValues, default: true }
+        dd.unshift { type: 'attribute_value', value: DefaultValues.AllValues, default: true }
 
         dd
 
@@ -384,6 +384,15 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           @hoverDrop = false
           @fold()
 
+      setKeydowning: ->
+        clearTimeout @__timeoutResetKeydowning
+        @__keydowning = true
+
+      unsetKeydowning: ->
+        @__timeoutResetKeydowning = setTimeout =>
+          @__keydowning = false
+        , 300
+
       # ## Event Handler
       overDrop: ->
         @hoverDrop = true
@@ -407,10 +416,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         @removeSelection $tgt
 
       keyupHandler: (e) ->
-        that = @
-        @__timeoutResetKeydowning = setTimeout ->
-          that.__keydowning = false
-        , 300
+        @unsetKeydowning()
 
         code = e.which
         $input = $(e.currentTarget)
@@ -418,8 +424,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           @renderDropdown()
 
       keydownHandler: (e) ->
-        clearTimeout @__timeoutResetKeydowning
-        @__keydowning = true
         code = e.which
         $input = $(e.currentTarget)
         switch code
@@ -437,6 +441,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           when 27 # Esc
             @fold()
           when 38 # Up
+            @setKeydowning()
             $selected = @$(".dropdown .selected")
             $prev = $selected.prevAll('.option').first()
             if $prev.size()
@@ -452,6 +457,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
               $prev.addClass "selected"
             false
           when 40 # Down
+            @setKeydowning()
             $selected = @$(".dropdown .selected")
             $next = $selected.nextAll('.option').first()
             if $next.size()

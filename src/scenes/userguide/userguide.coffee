@@ -36,7 +36,7 @@ define [
 
         playVideo: (event) ->
 
-            @$el.find('.guide-list').hide()
+            @$el.find('.guide-ui').hide()
             $target = $(event.currentTarget)
             videoSrc = $target.data('src')
             @$el.find('.guide-video source').attr('src', videoSrc)
@@ -53,7 +53,7 @@ define [
 
         closeVideo: () ->
 
-            @$el.find('.guide-list').show()
+            @$el.find('.guide-ui').show()
             @$el.find('.guide-video').fadeOut()
             video = @$el.find('.guide-video video')[0]
             video.pause()
@@ -79,5 +79,5 @@ define [
         scrollHorizontally: (event) ->
 
             delta = Math.max(-1, Math.min(1, (event.originalEvent.wheelDelta || - event.originalEvent.detail)))
-            event.currentTarget.scrollLeft -= (delta * 150)
+            event.currentTarget.scrollLeft -= (delta * 100)
             # event.preventDefault()

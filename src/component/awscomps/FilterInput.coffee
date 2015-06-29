@@ -36,7 +36,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
     hasTag = ( tags, key, value ) ->
       _.some tags, (tag) ->
-        tag.get('key') is key and ( arguments.length is 3 and tag.get('value') is value )
+        tag.get('key') is key and ( arguments.length is 3 and tag.get('value') is value or true )
 
     isResMatchTag = ( resource, selTags ) ->
       unless _.size(selTags) then return true
@@ -88,6 +88,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         matched = []
 
         Design.instance().eachComponent (resource) ->
+          unless resource.isVisual() then return
           if isResMatchTag(resource, selection.tags) and isResMatchResource( resource, selection.resources )
             matched.push resource
 
@@ -213,7 +214,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           _.isEqual t, sel
         )
         @selection.push sel
-        @trigger 'change:filter'
+        @trigger 'change:filter', @getMatchedResource()
         @renderSelection()
         @
 
@@ -228,7 +229,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           s.key isnt selection.key or s.value isnt selection.value and !(!s.value and !selection.value)
         )
 
-        @trigger 'change:filter'
+        @trigger 'change:filter', @getMatchedResource()
         $sel.remove()
 
       removeLastSelection: ->

@@ -69,6 +69,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       tplDropdown: template.dropdown
       tplTag: template.tag
       selection: []
+      unFilterType: [ constant.RESTYPE.SG ]
 
       events:
         "click .tags li"            : "clickTagHandler"
@@ -83,16 +84,24 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         "mouseleave .dropdown"      : "leaveDrop"
         "mouseover .dropdown li"    : "overDropItem"
 
-      getMatchedResource: ->
+      getFilterableResource: ->
+        allComp = Design.instance().getAllComponents()
+        _.filter allComp, ( comp ) ->
+          comp.isVisual() and !comp.port and !_.contains(@unFilterType, comp.type)
+
+      getMatchedResource: () ->
         selection = @classifySelection(@selection)
-        matched = []
+        filterable = @getFilterableResource()
 
-        Design.instance().eachComponent (resource) ->
-          unless resource.isVisual() then return
+        matched = _.filter filterable, (resource) ->
           if isResMatchTag(resource, selection.tags) and isResMatchResource( resource, selection.resources )
-            matched.push resource
+            true
 
-        matched
+        { matched: matched, effect: 0 < matched.length < filterable.length }
+
+      triggerChange: ->
+        matched = @getMatchedResource()
+        @trigger 'change:filter', matched.matched, matched.effect
 
       classifySelection: ->
         classified = tags: {}, resources: []
@@ -214,7 +223,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           _.isEqual t, sel
         )
         @selection.push sel
-        @trigger 'change:filter', @getMatchedResource()
+        @triggerChange()
         @renderSelection()
         @
 
@@ -229,7 +238,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           s.key isnt selection.key or s.value isnt selection.value and !(!s.value and !selection.value)
         )
 
-        @trigger 'change:filter', @getMatchedResource()
+        @triggerChange()
         $sel.remove()
 
       removeLastSelection: ->
@@ -279,10 +288,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         dd
 
       getResourceDd: ->
-        resources = []
-        Design.instance().eachComponent (component) ->
-          if component.isVisual() and !component.port
-            resources.push component
+        resources = @getFilterableResource()
 
         dd = _.map resources, (r) ->
           { id: r.id, type: 'resource', value: getResShortNameByType(r.type), text: getResNameByType(r.type) }

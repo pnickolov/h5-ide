@@ -96,19 +96,11 @@ define [
       @listenTo @filter, 'change:filter', @highlightCanvas
       @$('.btn-toolbar').last().after @filter.render().el
 
-    highlightCanvas: ( resModels ) ->
-      unless resModels.length
-        @workspace.view.removeHighlight()
-        return
-
-      visualResCount = @workspace.design.getVisualComponents().length
-
-      if resModels.length < visualResCount
-        @workspace.view.highLightModels(resModels, true)
+    highlightCanvas: ( models, effect ) ->
+      if effect
+        @workspace.view.highLightModels(models, true)
       else
         @workspace.view.removeHighlight()
-
-
 
     updateTbBtns : ()->
       if @workspace.isRemoved() then return

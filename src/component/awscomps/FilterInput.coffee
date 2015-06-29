@@ -68,7 +68,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       className: "filter-input"
       tplDropdown: template.dropdown
       tplTag: template.tag
-      selection: []
       unFilterType: [ constant.RESTYPE.SG ]
 
       events:
@@ -159,6 +158,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       initialize: (options) ->
         @selection = options.selection  if options and options.selection
+        @selection or ( @selection = [] )
         null
 
       render: ->

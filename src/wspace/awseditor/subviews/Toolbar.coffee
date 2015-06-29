@@ -90,6 +90,7 @@ define [
       ### env:dev ###
       # Need remove before deploy
       @filter = window.filter = new FilterInput()
+      window.FilterInput = FilterInput
       #
       ### env:dev:end ###
 

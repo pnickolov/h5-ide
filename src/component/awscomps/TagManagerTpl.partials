@@ -140,7 +140,7 @@
 
 <!--{{filterResource}}-->
 {{#each models}}
-<tr class="item">
+<tr class="item" data-id="{{id}}">
     <td>
         <div class="checkbox">
             <input id="{{appId}}" type="checkbox" value="None" data-id="{{appId}}" class="one-cb">
@@ -150,4 +150,17 @@
     <td>{{name}}</td>
     <td>({{type}})</td>
 </tr>
+{{/each}}
+
+<!--{{tagResource}}-->
+{{#each this}}
+<li data-id="{{id}}">
+    <input class="tag-key input" type="text" value="{{key}}"/>
+    <input class="tag-value input" type="text" value="{{value}}"/>
+    <div class="checkbox">
+        <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}}>
+        <label for="{{id}}"></label>
+    </div>
+    <div class="delete-tag"></div>
+</li>
 {{/each}}

@@ -496,6 +496,8 @@ pre {
         width: 145px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox {
         margin: 0 60px 0 65px; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled='disabled'] + label, .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled] + label {
+          opacity: 0.3; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag {
         display: inline-block;
         width: 24px;

@@ -33,6 +33,47 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       $row = $(evt.currentTarget)
       @$el.find("tr.item").removeClass("selected")
       $row.addClass("selected")
+      @$el.find(".tabs-navs ul li[data-id='selected']").click()
+      # reder selected element
+      @renderTagsContent($row.data("id"))
+
+    renderTagsContent: (uid)->
+      # selected tags
+      selectedIsAsg = false
+      checkedAllAsg = true
+      selectedComp = Design.instance().component(uid)
+      selectedIsAsg = selectedComp.type is "AWS.AutoScaling.Group"
+      tags = selectedComp.tags()
+      tagsData = _.map tags, (tag)->
+        return {
+          key: tag.get("key")
+          value: tag.get("value")
+          id: tag.id
+          allowCheck: selectedIsAsg
+        }
+      @$el.find(".tab-content[data-id='selected']").find("ul.tags-list").html template.tagResource tagsData
+
+      # checked Tags
+      checkedData  = []
+      checkedArray = []
+      @$el.find(".t-m-content .one-cb").each (key, value)->
+        checkedComp = Design.instance().component($(value).parents("tr").data("id"))
+
+        if checkedComp.type isnt "AWS.AutoScaling.Group"
+          checkedAllAsg = false
+
+        if $(value).is(":checked")
+          checkedArray.push checkedComp.tags()
+
+      checkedData = _.map _.intersection.apply(_, checkedArray), (tag)->
+        return {
+          key: tag.get("key")
+          value: tag.get("value")
+          id: tag.id
+          allowCheck: checkedAllAsg
+        }
+
+      @$el.find(".tab-content[data-id='checked']").find("ul.tags-list").html template.tagResource checkedData
 
     filterResourceList: (resModels)->
       models = _.map resModels, (model)->
@@ -40,6 +81,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           name: model.get("name")
           appId : model.get("appId")
           type : model.type
+          id : model.id
         }
       @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
 
@@ -48,7 +90,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       @$el.find(".table-head-fix .item .checkbox input").prop("checked", isChecked)
 
     addTag: (e)->
-      tagId = $(".tags-list li").size() + 1
+      tagId = @$el.find(".tags-list li").size() + 1
       tagTemplate = """
         <li>
           <input class="tag-key input" type="text"/>

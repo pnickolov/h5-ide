@@ -91,6 +91,9 @@
         }
         .checkbox{
           margin: 0 60px 0 65px;
+          input[disabled='disabled'] + label, input[disabled] + label{
+            opacity: 0.3;
+          }
         }
         .delete-tag {
           display: inline-block;

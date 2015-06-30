@@ -8,6 +8,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       "click .create-tag" : "addTag"
       "change #t-m-select-all" : "selectAllInput"
       "change .tags-list input[type='text']": "changeTags"
+      "click .delete-tag" : "removeTagUsage"
 
     initialize: (model)->
       @instance = _.clone Design.instance()
@@ -49,8 +50,25 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
         if $tagKey.val().indexOf("aws:") == 0 then return false
         tagComp.set({key: $tagKey.val(), value: $tagValue.val()})
 
+    removeTagUsage: (e)->
+      $tagLi = $(e.currentTarget).parent()
+      instance = Design.instance()
+      tagComp = instance.component($tagLi.data("id"))
+      isSelected = "selected" is $tagLi.parents(".tab-content").data("id")
+      resources = []
+      if isSelected
+        resources.push instance.component @$el.find(".t-m-content .item.selected").data("id")
+      else
+        @$el.find(".t-m-content .one-cb").each (key, value)->
+          if $(value).is(":checked")
+            resources.push self.instance.component($(value).parents("tr").data("id"))
+      _.each resources, (res)->
+        res.removeTag(tagComp)
+      @renderTagsContent()
+
     renderTagsContent: (uid)->
       self = @
+      if not uid then uid = @$el.find(".t-m-content .item.selected").data("id")
       # selected tags
       selectedIsAsg = false
       checkedAllAsg = true

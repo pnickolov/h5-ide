@@ -484,7 +484,7 @@ pre {
     overflow: auto;
     height: 353px; }
     .tag-resource-detail .tabs-content .tab-content {
-      padding: 10px 0; }
+      padding: 0; }
       .tag-resource-detail .tabs-content .tab-content .tags-list li {
         margin: 4px 0; }
         .tag-resource-detail .tabs-content .tab-content .tags-list li:first-child {

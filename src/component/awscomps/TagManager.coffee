@@ -71,6 +71,9 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
     removeTagUsage: (e)->
       $tagLi = $(e.currentTarget).parent()
       tagComp = @instance.component($tagLi.data("id"))
+      if not tagComp
+        $tagLi.remove()
+        return
       resources = @getAffectedResources()
       _.each resources, (res)->
         res.removeTag(tagComp)
@@ -117,7 +120,6 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           id: tag.id
           allowCheck: selectedIsAsg
         }
-      console.log checkedData
 
       @$el.find(".tab-content[data-id='checked']").find("ul.tags-list").html template.tagResource checkedData
       @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedData.length or 0)
@@ -130,7 +132,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           type : model.type
           id : model.id
         }
-      @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
+      @modal.tpl.find(".t-m-content").html(template.filterResource {models: models}).find("tr.item").eq(0).click()
 
     selectAllInput: (e)->
       isChecked = $(e.currentTarget).is(":checked")

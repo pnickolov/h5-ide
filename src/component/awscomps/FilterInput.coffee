@@ -28,6 +28,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
     isResAttributeMatch = ( resource, attr, value ) ->
       unless attr then return true
 
+      if attr is 'name' then return resource.get( 'name' ) is value
+
       serialized = resource.serialize()
       unless _.isArray(serialized) then serialized = [ serialized ]
 
@@ -281,6 +283,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             _.each serializedItem.component.resource, ( v, k ) ->
               unless _.isObject(v) then attrs.push(k)
 
+        attrs.push('name')
+
         dd = _.map attrs, (a) ->
           { type: 'attribute', value: a }
 
@@ -333,14 +337,17 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         dd = []
 
         for r in resources
+          if attr is 'name'
+            dd.push { type: 'attribute_value', value: r.get( 'name' ) }
+            break
+
           serialized = r.serialize()
           unless _.isArray(serialized) then serialized = [ serialized ]
 
           _.each serialized, (serializedItem) ->
             v = serializedItem?.component?.resource?[attr]
             if v
-              dd.push { id: r.id, type: 'attribute_value', value: v }
-
+              dd.push { type: 'attribute_value', value: v }
 
         dd = @uniqSortDd dd
         dd.unshift { type: 'attribute_value', value: DefaultValues.AllValues, default: true }
@@ -390,11 +397,15 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           @hoverDrop = false
           @fold()
 
+      # @__keydoing mark mouseover caused by up/down(when scroll occured) key
+      # not mouse. so that dropdown selected will be right.
       setKeydowning: ->
         clearTimeout @__timeoutResetKeydowning
         @__keydowning = true
 
       unsetKeydowning: ->
+        # Sometimes mouseover caused by up/down triggerd before keyup
+        # We delay the flag reset to tell mouseover eventhandler the right situation
         @__timeoutResetKeydowning = setTimeout =>
           @__keydowning = false
         , 300
@@ -488,6 +499,9 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       blurInputHandler: ->
         that = @
+        # Because blur event triggerd before click
+        # if remove dropdown in blur handler then click event will not be trigger
+        # so we delay the removing operation
         @__timeoutRemoveFocus = setTimeout ->
           that.fold()
           that.removeDropdown()

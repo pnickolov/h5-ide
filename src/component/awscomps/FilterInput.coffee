@@ -175,6 +175,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         data = @getDropdownData(state.state, state.key, state.subKey)
         data = @filterByInput(data, filter)
         @$(".dropdown").html @tplDropdown data
+        @$(".dropdown").scrollTop 0
         @
 
       removeDropdown: ->

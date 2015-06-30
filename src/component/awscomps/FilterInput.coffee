@@ -25,14 +25,15 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       { before: before, after: after, pos: pos }
 
-    isResAttributeMatch = ( resources, attr, value ) ->
-      for r in resources
-        serialized = resource.serialize()
-        unless _.isArray(serialized) then serialized = [ serialized ]
+    isResAttributeMatch = ( resource, attr, value ) ->
+      unless attr then return true
 
-        _.some serialized, (serializedItem) ->
-          v = serializedItem?.component?.resource?[attr]
-          v is value
+      serialized = resource.serialize()
+      unless _.isArray(serialized) then serialized = [ serialized ]
+
+      _.some serialized, (serializedItem) ->
+        v = serializedItem?.component?.resource?[attr]
+        v is value
 
     hasTag = ( tags, key, value ) ->
       _.some tags, (tag) ->

@@ -1,6 +1,8 @@
 
 define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/TagUsage"  ], ( constant, ComplexResModel, GroupModel, Design, TagUsage )->
 
+  RetainTagKeys = [ 'visualops', 'Name' ]
+
   TagItem = ComplexResModel.extend {
     type : "TagItem"
 
@@ -20,8 +22,6 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
     genResourceIds: ->
       _.map @connectionTargets(), (resource) ->
         resource.createRef constant.AWS_RESOURCE_KEY[ resource.type ]
-
-
 
   }, {
     deserialize: ( data, layout_data, resolve ) ->
@@ -43,11 +43,15 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
     isVisual: -> false
 
     serialize : ->
+      resource = _.invoke (_.filter @all(), (item) -> !!item.connections().length), 'serialize'
+
+      unless resource.length then return
+
       component :
-        name : @get("name")
-        type : @type
-        uid  : @id
-        resource : _.invoke (_.filter @all(), (item) -> !!item.connections().length), 'serialize'
+        name    : @get("name")
+        type    : @type
+        uid     : @id
+        resource: resource
 
     addTag: (resource, tagKey, tagValue = "", inherit) ->
       if @tagKeyExist(resource, tagKey)
@@ -65,6 +69,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       null
 
     tagKeyExist: ( resource, tagKey ) ->
+      if tagKey in RetainTagKeys then return true
       _.some resource.connectionTargets('TagUsage'), (tag) -> tag.get( 'key' ) is tagKey
 
     find: ( key, value, inherit ) ->
@@ -93,7 +98,6 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
     getCustom: ->
       customTag = TagModel.find (tag) -> tag.get('name') is 'EC2CustomTags'
       customTag or new @ name: 'EC2CustomTags'
-
 
     handleTypes : [ constant.RESTYPE.TAG ]
     deserialize : ( data, layout_data, resolve )->

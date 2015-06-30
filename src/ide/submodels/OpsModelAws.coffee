@@ -58,16 +58,6 @@ define ["OpsModel", "ApiRequest", "constant" ], ( OpsModel, ApiRequest, constant
           groupUId   : vpcId
 
       component =
-        TAG:
-          type: "AWS.EC2.Tag"
-          name: "EC2CustomTags"
-          resource: []
-
-        ASGTAG:
-          type: "AWS.AutoScaling.Tag"
-          name: "EC2CustomTags"
-          resource: []
-
         KP :
           type : "AWS.EC2.KeyPair"
           name : "DefaultKP"

@@ -11,7 +11,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       "click .delete-tag" : "removeTagUsage"
 
     initialize: (model)->
-      @instance = _.clone Design.instance()
+      @instance = Design.instance()
       @model = model
       @setElement @renderModal().tpl
       @
@@ -44,24 +44,34 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       $tagLi = $(e.currentTarget).parent()
       $tagKey = $tagLi.find(".tag-key")
       $tagValue = $tagLi.find(".tag-value")
-      tagComp = Design.instance().component $tagLi.data("id")
+      tagComp = @instance.component $tagLi.data("id")
       if $tagKey.val() and $tagValue.val()
+        key = $tagKey.val()
+        value = $tagValue.val()
         # Can't start with "aws:"
-        if $tagKey.val().indexOf("aws:") == 0 then return false
-        tagComp.set({key: $tagKey.val(), value: $tagValue.val()})
+        if key.indexOf("aws:") == 0 then return false
+        if tagComp
+          tagComp.set({key,value})
+        else
+          _.each @getAffectedResources(), (res)->
+            res.addTag(key, value)
+          @renderTagsContent()
 
-    removeTagUsage: (e)->
-      $tagLi = $(e.currentTarget).parent()
-      instance = Design.instance()
-      tagComp = instance.component($tagLi.data("id"))
-      isSelected = "selected" is $tagLi.parents(".tab-content").data("id")
+    getAffectedResources :()->
+      isSelected = "selected" is @$el.find(".tabs-navs li.active").data("id")
       resources = []
       if isSelected
-        resources.push instance.component @$el.find(".t-m-content .item.selected").data("id")
+        resources.push @instance.component @$el.find(".t-m-content .item.selected").data("id")
       else
         @$el.find(".t-m-content .one-cb").each (key, value)->
           if $(value).is(":checked")
             resources.push self.instance.component($(value).parents("tr").data("id"))
+      resources
+
+    removeTagUsage: (e)->
+      $tagLi = $(e.currentTarget).parent()
+      tagComp = @instance.component($tagLi.data("id"))
+      resources = @getAffectedResources()
       _.each resources, (res)->
         res.removeTag(tagComp)
       @renderTagsContent()

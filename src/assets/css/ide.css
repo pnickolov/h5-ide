@@ -2517,23 +2517,16 @@ aside.dashboard-sidebar {
       .region-app-stack-wrap .region-resource-list .thumbnail img {
         vertical-align: top; }
     .region-app-stack-wrap .region-resource-list .region-resource-info {
-      display: inline-block;
       font-size: 16px;
       position: relative;
-      padding-right: 80px;
-      margin-left: 60px;
-      width: 100%;
-      box-sizing: border-box; }
+      margin-left: 60px; }
       .region-app-stack-wrap .region-resource-list .region-resource-info span {
         width: 20vw;
         color: #4D4E8C; }
       .region-app-stack-wrap .region-resource-list .region-resource-info i {
-        position: absolute;
-        color: #cacce1; }
-        .region-app-stack-wrap .region-resource-list .region-resource-info i:first-of-type {
-          right: 90px; }
-        .region-app-stack-wrap .region-resource-list .region-resource-info i:last-of-type {
-          right: 60px; }
+        color: #cacce1;
+        float: right;
+        margin-left: 10px; }
         .region-app-stack-wrap .region-resource-list .region-resource-info i:hover {
           color: #4A90E2; }
         .region-app-stack-wrap .region-resource-list .region-resource-info i.icon-terminate:hover, .region-app-stack-wrap .region-resource-list .region-resource-info i.icon-forget-app:hover, .region-app-stack-wrap .region-resource-list .region-resource-info i.icon-delete:hover {

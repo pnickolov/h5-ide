@@ -7,8 +7,10 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       "click .tag-resource-detail .tabs-navs li" : "switchTab"
       "click .create-tag" : "addTag"
       "change #t-m-select-all" : "selectAllInput"
+      "change .tags-list input[type='text']": "changeTags"
 
     initialize: (model)->
+      @instance = _.clone Design.instance()
       @model = model
       @setElement @renderModal().tpl
       @
@@ -37,12 +39,22 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       # reder selected element
       @renderTagsContent($row.data("id"))
 
+    changeTags: (e)->
+      $tagLi = $(e.currentTarget).parent()
+      $tagKey = $tagLi.find(".tag-key")
+      $tagValue = $tagLi.find(".tag-value")
+      tagComp = Design.instance().component $tagLi.data("id")
+      if $tagKey.val() and $tagValue.val()
+        # Can't start with "aws:"
+        if $tagKey.val().indexOf("aws:") == 0 then return false
+        tagComp.set({key: $tagKey.val(), value: $tagValue.val()})
+
     renderTagsContent: (uid)->
+      self = @
       # selected tags
-      instance = Design.instance()
       selectedIsAsg = false
       checkedAllAsg = true
-      selectedComp = instance.component(uid)
+      selectedComp = @instance.component(uid)
       selectedIsAsg = selectedComp.type is "AWS.AutoScaling.Group"
       tags = selectedComp.tags()
       tagsData = _.map tags, (tag)->
@@ -58,7 +70,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       checkedData  = []
       checkedArray = []
       @$el.find(".t-m-content .one-cb").each (key, value)->
-        checkedComp = instance.component($(value).parents("tr").data("id"))
+        checkedComp = self.instance.component($(value).parents("tr").data("id"))
 
         if checkedComp.type isnt "AWS.AutoScaling.Group"
           checkedAllAsg = false
@@ -70,7 +82,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
         _.map tagArray, (tag)->
           tag.id
       checkedData = _.map _.intersection.apply(_, checkedTagArray), (tagId)->
-        tag = instance.component(tagId)
+        tag = self.instance.component(tagId)
         return {
           key: tag.get("key")
           value: tag.get("value")

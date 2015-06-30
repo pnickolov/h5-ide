@@ -99,8 +99,8 @@
 <!--{{tagResource}}-->
 {{#each this}}
 <li data-id="{{id}}">
-    <input class="tag-key input" type="text" value="{{key}}"/>
-    <input class="tag-value input" type="text" value="{{value}}"/>
+    <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true"/>
+    <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true"/>
     <div class="checkbox">
         <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}}>
         <label for="{{id}}"></label>

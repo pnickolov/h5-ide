@@ -235,6 +235,8 @@ define [
       self = @
 
       oneTimeClicked = ( evt )->
+        if evt.target and $(evt.target).closest('.filter-input').size()
+          return
         console.log "hide highlight."
         self.canvas.removeHighLight()
         self.resourcePanel.removeHighlight()

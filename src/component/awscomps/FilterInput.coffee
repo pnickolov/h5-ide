@@ -419,6 +419,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       clickTagHandler: (e) ->
         $tgt = $(e.currentTarget)
         @removeSelection $tgt
+        false
 
       keyupHandler: (e) ->
         @unsetKeydowning()
@@ -482,6 +483,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         clearTimeout @__timeoutRemoveFocus
         #@renderDropdown()
         @$(".fake-input").addClass "focus"
+        @trigger 'focus'
 
       blurInputHandler: ->
         that = @
@@ -496,12 +498,14 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         null
 
       clickInputHandler: (e) ->
+        e.stopPropagation()
         @renderDropdown()
         false
 
       clickFakeInputHandler: (e) ->
         $(e.currentTarget).addClass "focus"
         @$("input").focus()
+        false
 
       selectHandler: (e) ->
         @focusInput()

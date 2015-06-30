@@ -95,11 +95,17 @@ define [
       ### env:dev:end ###
 
       @listenTo @filter, 'change:filter', @highlightCanvas
+      @listenTo @filter, 'focus', @highlightCanvas
       @$('.btn-toolbar').last().after @filter.render().el
 
     highlightCanvas: ( models, effect ) ->
+      if !arguments.length
+        matched = @filter.getMatchedResource()
+        models  = matched.matched
+        effect  = matched.effect
+
       if effect
-        @workspace.view.highLightModels(models, true)
+        @workspace.view.highLightModels(models)
       else
         @workspace.view.removeHighlight()
 

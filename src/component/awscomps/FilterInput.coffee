@@ -352,22 +352,26 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       clearInput: ($input) ->
         ($input or @$("input")).val ""
 
+      getMatchText: ( data, filter ) ->
+        # Value Match
+        if (matchIdx = data.value.toLowerCase().indexOf(filter)) isnt -1
+          return data.value.slice(matchIdx, matchIdx + filter.length)
+        else if (matchIdx = data.text.toLowerCase().indexOf(filter)) isnt -1
+          return data.text.slice(matchIdx, matchIdx + filter.length)
+
       filterByInput: (data, filter) ->
         filter = filter and filter.trim().toLowerCase()
 
         setSelected = false
         filtered = []
 
-        _.each data, (d) ->
+        _.each data, (d) =>
           d.text = d.value unless d.text
           if d.type is 'label'
             filtered.push d
-          else if not filter or (matchIdx = d.value.toLowerCase().indexOf(filter)) > -1
+          else if not filter or match = @getMatchText(d, filter)
             unless setSelected then d.selected = setSelected = true
-
-            if matchIdx > -1
-              match = d.value.slice(matchIdx, matchIdx + filter.length)
-              d.text = d.text.replace(match, "<span class=\"match\">" + match + "</span>")
+            d.text = d.text.replace(match, "<span class=\"match\">" + match + "</span>")
 
             filtered.push d
 

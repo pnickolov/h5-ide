@@ -2486,7 +2486,7 @@ li.ui-timepicker-selected .ui-timepicker-duration,
       color: white; }
     .filter-input .dropdown li.option {
       padding-left: 18px; }
-    .filter-input .dropdown li.match {
+    .filter-input .dropdown li .match {
       text-decoration: underline;
       font-weight: bold; }
     .filter-input .dropdown li.option.selected {

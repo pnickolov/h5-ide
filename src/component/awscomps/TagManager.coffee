@@ -39,9 +39,10 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
 
     renderTagsContent: (uid)->
       # selected tags
+      instance = Design.instance()
       selectedIsAsg = false
       checkedAllAsg = true
-      selectedComp = Design.instance().component(uid)
+      selectedComp = instance.component(uid)
       selectedIsAsg = selectedComp.type is "AWS.AutoScaling.Group"
       tags = selectedComp.tags()
       tagsData = _.map tags, (tag)->
@@ -57,7 +58,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       checkedData  = []
       checkedArray = []
       @$el.find(".t-m-content .one-cb").each (key, value)->
-        checkedComp = Design.instance().component($(value).parents("tr").data("id"))
+        checkedComp = instance.component($(value).parents("tr").data("id"))
 
         if checkedComp.type isnt "AWS.AutoScaling.Group"
           checkedAllAsg = false
@@ -65,15 +66,21 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
         if $(value).is(":checked")
           checkedArray.push checkedComp.tags()
 
-      checkedData = _.map _.intersection.apply(_, checkedArray), (tag)->
+      checkedTagArray = _.map (checkedArray), (tagArray)->
+        _.map tagArray, (tag)->
+          tag.id
+      checkedData = _.map _.intersection.apply(_, checkedTagArray), (tagId)->
+        tag = instance.component(tagId)
         return {
           key: tag.get("key")
           value: tag.get("value")
           id: tag.id
-          allowCheck: checkedAllAsg
+          allowCheck: selectedIsAsg
         }
+      console.log checkedData
 
       @$el.find(".tab-content[data-id='checked']").find("ul.tags-list").html template.tagResource checkedData
+      @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedData.length or 0)
 
     filterResourceList: (resModels)->
       models = _.map resModels, (model)->

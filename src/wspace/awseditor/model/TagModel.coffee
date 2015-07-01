@@ -83,7 +83,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       for resource in resources
         new TagUsage resource, tagItem
 
-      tagItem
+      null
 
     tagKeyExist: ( resources, tagKey ) ->
       if tagKey in RetainTagKeys then return true

@@ -67,7 +67,9 @@
 {{/each}}
 
 <!--{{tagResource}}-->
-{{#if this.length}}
+{{#if empty}}
+    <div class="tag-empty">Please select or check resource in left sidebar for tag details.</div>
+{{else}}
     <div class="table-head-fix tag-resource-table">
         <table class="table-head">
             <thead>
@@ -81,7 +83,7 @@
         </table>
     </div>
     <ul class="tags-list">
-        {{#each this}}
+        {{#each data}}
             <li data-id="{{id}}">
                 <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
                 <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
@@ -96,6 +98,4 @@
     <div class="pull-right">
         <div class="btn btn-silver create-tag">Add Tag</div>
     </div>
-{{else}}
-    <div class="tag-empty">Please select or check resource in left sidebar for tag details.</div>
 {{/if}}

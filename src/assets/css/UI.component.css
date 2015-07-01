@@ -442,7 +442,7 @@ pre {
     margin-top: 10px;
     border: 1px solid #000;
     padding: 0px;
-    height: 354px;
+    height: 341px;
     box-sizing: border-box;
     overflow: auto; }
   .tag-resource-list .tag-resource-table.table-head-fix .table-head thead th, .tag-resource-list .tag-resource-table.table-head-fix .table tr td {
@@ -460,8 +460,8 @@ pre {
       border-color: #373737; }
 
 .tag-resource-detail {
-  height: 400px;
   margin-left: 275px;
+  margin-top: 5px;
   background-color: #242424;
   box-sizing: border-box;
   border: 1px solid #000000;
@@ -483,7 +483,7 @@ pre {
         border-bottom: 1px solid #148BE6; }
   .tag-resource-detail .tabs-content {
     overflow: auto;
-    height: 353px; }
+    height: 340px; }
     .tag-resource-detail .tabs-content .tab-content {
       padding: 0; }
       .tag-resource-detail .tabs-content .tab-content .tags-list li {

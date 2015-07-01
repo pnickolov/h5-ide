@@ -29,46 +29,10 @@ define [
         width: 900
         height: 400
         template: template.modalTemplate
+        disableFooter: true
       })
       @renderFilter()
       @modal
-
-    compSnapshot: ()->
-      instance = Design.instance()
-      @snapshot = []
-      self = @
-      _.each instance.componentsOfType("AWS.EC2.Tag"), (tag)->
-        self.snapshot.push _.clone tag, {}
-      _.each instance.componentsOfType("AWS.AutoScaling.Tag"), (tag)->
-        self.snapshot.push _.clone tag, {}
-      console.log(@snapshot)
-
-    recoverSnapshot: ()->
-      # discard all change of tags components.
-      self = @
-      instance = Design.instance()
-      currentTags = []
-      _.each instance.componentsOfType("AWS.EC2.Tag"), (tag)->
-        currentTags.push tag
-      _.each instance.componentsOfType("AWS.AutoScaling.Tag"), (tag)->
-        currentTags.push tag
-      console.log currentTags
-
-      oldTagIds = _.pluck @snapshot, "id"
-      newTagIds = _.pluck currentTags, "id"
-
-      removedTagIds = _.difference(oldTagIds, newTagIds)
-      addedTagIds = _.difference(newTagIds, oldTagIds)
-      changedTags = _.intersection(newTagIds, oldTagIds)
-
-      _.each removedTagIds, (id)->
-        # recover oldTags
-        removedTag = _.findWhere self.snapshot, {id}
-      _.each addedTagIds, (id)->
-        addedTag = _.findWhere self.snapshot , {id}
-        addedTag.remove()
-      _.each changedTags, (id)->
-        changedTag =  _.findWhere self.snapshot, {id}
 
     renderFilter: ->
       @filter = new FilterInput()
@@ -146,18 +110,18 @@ define [
           disableEdit: tag.get("retain")
           allowCheck: selectedIsAsg
         }
-      @$el.find(".tab-content[data-id='selected']").html template.tagResource tagsData
+      @$el.find(".tab-content[data-id='selected']").html template.tagResource {data: tagsData, empty : not selectedComp}
 
       # checked Tags
-      checkedData  = []
+      checkedComps = []
       checkedArray = []
       @$el.find(".t-m-content .one-cb").each (key, value)->
         checkedComp = self.instance.component($(value).parents("tr").data("id"))
-
         if checkedComp.type isnt "AWS.AutoScaling.Group"
           checkedAllAsg = false
 
         if $(value).is(":checked")
+          checkedComps.push checkedComp
           checkedArray.push checkedComp.tags()
 
       checkedTagArray = _.map (checkedArray), (tagArray)->
@@ -173,7 +137,7 @@ define [
           allowCheck: selectedIsAsg
         }
 
-      @$el.find(".tab-content[data-id='checked']").html template.tagResource checkedData
+      @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: checkedData, empty: not checkedComps.length}
       @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedData.length or 0)
 
     filterResourceList: (resModels)->

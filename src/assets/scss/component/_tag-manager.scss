@@ -16,7 +16,7 @@
     margin-top: 10px;
     border: 1px solid #000;
     padding: 0px;
-    height: 354px;
+    height: 341px;
     box-sizing: border-box;
     overflow: auto;
   }
@@ -45,8 +45,8 @@
 
 
 .tag-resource-detail{
-  height: 400px;
   margin-left: 275px;
+  margin-top: 5px;
   background-color: #242424;
   box-sizing: border-box;
   border: 1px solid #000000;
@@ -73,7 +73,7 @@
   }
   .tabs-content{
     overflow: auto;
-    height: 353px;
+    height: 340px;
     .tab-content{
       padding: 0;
       .tags-list{

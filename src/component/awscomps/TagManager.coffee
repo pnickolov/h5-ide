@@ -1,4 +1,11 @@
-define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagManagerTpl", "FilterInput", "backbone", 'i18n!/nls/lang.js' ]
+define [
+    'constant',
+    'CloudResources',
+    "UI.modalplus",
+    "component/awscomps/TagManagerTpl",
+    "FilterInput",
+    "backbone",
+    'i18n!/nls/lang.js' ]
 , ( constant, CloudResources, Modal, template, FilterInput, Backbone, lang) ->
 
   Backbone.View.extend {
@@ -25,6 +32,43 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       })
       @renderFilter()
       @modal
+
+    compSnapshot: ()->
+      instance = Design.instance()
+      @snapshot = []
+      self = @
+      _.each instance.componentsOfType("AWS.EC2.Tag"), (tag)->
+        self.snapshot.push _.clone tag, {}
+      _.each instance.componentsOfType("AWS.AutoScaling.Tag"), (tag)->
+        self.snapshot.push _.clone tag, {}
+      console.log(@snapshot)
+
+    recoverSnapshot: ()->
+      # discard all change of tags components.
+      self = @
+      instance = Design.instance()
+      currentTags = []
+      _.each instance.componentsOfType("AWS.EC2.Tag"), (tag)->
+        currentTags.push tag
+      _.each instance.componentsOfType("AWS.AutoScaling.Tag"), (tag)->
+        currentTags.push tag
+      console.log currentTags
+
+      oldTagIds = _.pluck @snapshot, "id"
+      newTagIds = _.pluck currentTags, "id"
+
+      removedTagIds = _.difference(oldTagIds, newTagIds)
+      addedTagIds = _.difference(newTagIds, oldTagIds)
+      changedTags = _.intersection(newTagIds, oldTagIds)
+
+      _.each removedTagIds, (id)->
+        # recover oldTags
+        removedTag = _.findWhere self.snapshot, {id}
+      _.each addedTagIds, (id)->
+        addedTag = _.findWhere self.snapshot , {id}
+        addedTag.remove()
+      _.each changedTags, (id)->
+        changedTag =  _.findWhere self.snapshot, {id}
 
     renderFilter: ->
       @filter = new FilterInput()
@@ -53,9 +97,15 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
         if tagComp
           tagComp.set({key,value})
         else
+          error = null
           _.each @getAffectedResources(), (res)->
-            res.addTag(key, value)
-          @renderTagsContent()
+            err = res.addTag(key, value)
+            if err
+              error = true
+          if error
+            notification "error", "Sorry, but this key name is system retained."
+          else
+            @renderTagsContent()
 
     getAffectedResources :()->
       isSelected = "selected" is @$el.find(".tabs-navs li.active").data("id")
@@ -93,7 +143,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           key: tag.get("key")
           value: tag.get("value")
           id: tag.id
-          disableEdit: tag.isRetainTag()
+          disableEdit: tag.get("retain")
           allowCheck: selectedIsAsg
         }
       @$el.find(".tab-content[data-id='selected']").html template.tagResource tagsData
@@ -119,7 +169,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           key: tag.get("key")
           value: tag.get("value")
           id: tag.id
-          disableEdit: tag.isRetainTag()
+          disableEdit: tag.get("retain")
           allowCheck: selectedIsAsg
         }
 

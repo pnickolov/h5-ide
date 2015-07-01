@@ -60,10 +60,13 @@ define [
         # Can't start with "aws:"
         if key.indexOf("aws:") == 0 then return false
         if tagComp
-          tagComp.set({key,value})
+          tagComp.update(@getAffectedResources(), key, value, inherit)
         else
           error = null
-          error = tagComp.update(@getAffectedResources(), key, value, inherit)
+          _.each @getAffectedResources(), (res)->
+            err = res.addTag(key, value)
+            if err
+              error = true
           if error
             notification "error", "Sorry, but this key name is system retained."
           else

@@ -490,34 +490,48 @@ pre {
         margin: 4px 0; }
         .tag-resource-detail .tabs-content .tab-content .tags-list li:first-child {
           margin-top: 4px; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list li:hover {
+          background-color: #2a2a2a; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list li .edit {
+          display: none; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list li.edit .edit {
+          display: block; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list li.edit .show {
+          display: none; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key {
         margin-right: 0;
         margin-left: 5px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list .tag-value {
         width: 145px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox {
-        margin: 0 60px 0 65px; }
+        margin: 0 30px 0 30px; }
         .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled='disabled'] + label, .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled] + label {
           opacity: 0.3; }
-      .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag {
+      .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-value, .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-inherit {
         display: inline-block;
-        width: 24px;
-        height: 24px;
-        vertical-align: top;
-        color: #FFF;
-        border-radius: 50%;
-        background-color: #1D1C1C;
-        cursor: pointer;
-        margin-left: 25px; }
-        .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag:hover {
-          background: #DADADA;
-          color: #545454; }
-        .tag-resource-detail .tabs-content .tab-content .tags-list .delete-tag:after {
-          display: block;
-          content: "⨉";
-          text-align: center;
-          line-height: 22px;
-          font-size: 16px; }
+        width: 145px;
+        padding: 5px 20px 5px 6px;
+        margin-left: 5px;
+        height: 19px;
+        line-height: 19px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+      .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-inherit {
+        width: 45px; }
+      .tag-resource-detail .tabs-content .tab-content .tags-list .action {
+        display: inline-block;
+        width: 155px;
+        text-align: center;
+        vertical-align: top; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list .action .btn {
+          min-width: 50px;
+          padding: 5px 10px;
+          margin: 0 5px; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-cancel {
+          background: none;
+          color: #666;
+          box-shadow: none; }
       .tag-resource-detail .tabs-content .tab-content .pull-right {
         text-align: right;
         margin: 10px 20px; }

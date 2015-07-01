@@ -82,6 +82,20 @@
           &:first-child{
             margin-top: 4px;
           }
+          &:hover{
+            background-color: #2a2a2a;
+          }
+          .edit{
+            display: none;
+          }
+          &.edit{
+            .edit{
+              display: block;
+            }
+            .show{
+              display: none;
+            }
+          }
         }
         .tag-key{
           margin-right: 0;
@@ -91,31 +105,39 @@
           width: 145px;
         }
         .checkbox{
-          margin: 0 60px 0 65px;
+          margin: 0 30px 0 30px;
           input[disabled='disabled'] + label, input[disabled] + label{
             opacity: 0.3;
           }
         }
-        .delete-tag {
+        span.tag-key, span.tag-value, span.tag-inherit{
           display: inline-block;
-          width: 24px;
-          height: 24px;
+          width: 145px;
+          padding: 5px 20px 5px 6px;
+          margin-left: 5px;
+          height: 19px;
+          line-height: 19px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        span.tag-inherit{
+          width: 45px;
+        }
+        .action{
+          display: inline-block;
+          width: 155px;
+          text-align: center;
           vertical-align: top;
-          color: #FFF;
-          border-radius: 50%;
-          background-color: #1D1C1C;
-          cursor: pointer;
-          margin-left: 25px;
-          &:hover{
-            background: #DADADA;
-            color: #545454;
+          .btn{
+            min-width: 50px;
+            padding: 5px 10px;
+            margin: 0 5px;
           }
-          &:after{
-            display: block;
-            content: "⨉";
-            text-align: center;
-            line-height: 22px;
-            font-size: 16px;
+          .edit-cancel{
+            background: none;
+            color: #666;
+            box-shadow: none;
           }
         }
       }

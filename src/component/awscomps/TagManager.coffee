@@ -14,8 +14,10 @@ define [
       "click .tag-resource-detail .tabs-navs li" : "switchTab"
       "click .create-tag" : "addTag"
       "change #t-m-select-all" : "selectAllInput"
-      "change .tags-list input[type='text']": "changeTags"
-      "click .delete-tag" : "removeTagUsage"
+      "click .edit-delete" : "removeTagUsage"
+      "click .edit-edit": "toggleEdit"
+      "click .edit-cancel": "toggleEdit"
+      "click .edit-done": "changeTags"
 
     initialize: (model)->
       @instance = Design.instance()
@@ -48,8 +50,11 @@ define [
       # reder selected element
       @renderTagsContent($row.data("id"))
 
+    toggleEdit: (e)->
+      $(e.currentTarget).parents("li").toggleClass("edit")
+
     changeTags: (e)->
-      $tagLi = $(e.currentTarget).parent()
+      $tagLi = $(e.currentTarget).parents("li")
       $tagKey = $tagLi.find(".tag-key")
       $tagValue = $tagLi.find(".tag-value")
       tagComp = @instance.component $tagLi.data("id")
@@ -61,6 +66,7 @@ define [
         if key.indexOf("aws:") == 0 then return false
         if tagComp
           tagComp.update(@getAffectedResources(), key, value, inherit)
+          @renderTagsContent()
         else
           error = null
           _.each @getAffectedResources(), (res)->
@@ -68,9 +74,13 @@ define [
             if err
               error = true
           if error
+            # todo
             notification "error", "Sorry, but this key name is system retained."
           else
             @renderTagsContent()
+      else
+        # todo:
+        notification "error", "Sorry, both key and value are required."
 
     getAffectedResources :()->
       isSelected = "selected" is @$el.find(".tabs-navs li.active").data("id")
@@ -84,7 +94,7 @@ define [
       resources
 
     removeTagUsage: (e)->
-      $tagLi = $(e.currentTarget).parent()
+      $tagLi = $(e.currentTarget).parents("li")
       tagComp = @instance.component($tagLi.data("id"))
       if not tagComp
         $tagLi.remove()
@@ -159,17 +169,25 @@ define [
     addTag: (e)->
       tagId = @$el.find(".tags-list li").size() + 1
       tagTemplate = """
-        <li>
-          <input class="tag-key input" type="text"/>
-          <input class="tag-value input" type="text"/>
-          <div class="checkbox">
-            <input id="tag-#{tagId}" type="checkbox" class="one-cb">
-            <label for="tag-#{tagId}"></label>
-          </div>
-          <div class="delete-tag"></div>
-        </li>
+          <li class="edit">
+              <div class="edit">
+                  <input class="tag-key input" type="text" value="" maxlength="127" data-ignore="true" data-required-rollback="true"/>
+                  <input class="tag-value input" type="text" value="" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+                  <div class="checkbox">
+                      <input id='#{tagId}' type="checkbox" value="None" class="one-cb">
+                      <label for="#{tagId}"></label>
+                  </div>
+                  <div class="action">
+                      <button class="btn btn-primary edit-done">Add Tag</button>
+                  </div>
+              </div>
+          </li>
       """
-      $(e.currentTarget).parents(".tab-content").find("ul.tags-list").append(tagTemplate)
+      $tagLi = $(tagTemplate)
+      $tagLi.appendTo $(e.currentTarget).parents(".tab-content").find("ul.tags-list")
+      hasNoneAsg = _.filter @getAffectedResources(), (res)->
+        res.type isnt "AWS.AutoScaling.Group"
+      if hasNoneAsg then $tagLi.find(".checkbox input").prop("disabled", hasNoneAsg)
 
     switchTab: (evt)->
       $li = $(evt.currentTarget)

@@ -66,6 +66,8 @@
 </tr>
 {{/each}}
 
+
+
 <!--{{tagResource}}-->
 {{#if empty}}
     <div class="tag-empty">Please select or check resource in left sidebar for tag details.</div>
@@ -76,8 +78,8 @@
             <tr>
                 <th class="" width="30%" data-row-type="string">Key</th>
                 <th class="" width="30%" data-row-type="string">Value</th>
-                <th class="" width="25%" data-row-type="string">Tag New Instance</th>
-                <th class="" width="15%" data-row-type="string">Actions</th>
+                <th class="" width="13%" data-row-type="string">Inherit</th>
+                <th class="" width="27%" data-row-type="string">Actions</th>
             </tr>
             </thead>
         </table>
@@ -85,13 +87,27 @@
     <ul class="tags-list">
         {{#each data}}
             <li data-id="{{id}}">
-                <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
-                <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
-                <div class="checkbox">
-                    <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}}>
-                    <label for="{{id}}"></label>
+                <div class="edit">
+                    <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
+                    <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
+                    <div class="checkbox">
+                        <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}}>
+                        <label for="{{id}}"></label>
+                    </div>
+                    <div class="action">
+                        <button class="btn btn-primary edit-done">Done</button>
+                        <button class="btn btn-silver edit-cancel">Cancel</button>
+                    </div>
                 </div>
-                <div class="delete-tag"></div>
+                <div class="show">
+                    <span class="tag-key">{{key}}</span>
+                    <span class="tag-value">{{value}}</span>
+                    <span class="tag-inherit">{{inherit}}</span>
+                    <span class="action">
+                        <button class="btn btn-primary edit-edit" {{#if disableEdit}}disabled{{/if}}>Edit</button>
+                        <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}>Delete</button>
+                    </span>
+                </div>
             </li>
         {{/each}}
     </ul>

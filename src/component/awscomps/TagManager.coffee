@@ -93,6 +93,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           key: tag.get("key")
           value: tag.get("value")
           id: tag.id
+          disableEdit: tag.isRetainTag()
           allowCheck: selectedIsAsg
         }
       @$el.find(".tab-content[data-id='selected']").html template.tagResource tagsData
@@ -118,6 +119,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           key: tag.get("key")
           value: tag.get("value")
           id: tag.id
+          disableEdit: tag.isRetainTag()
           allowCheck: selectedIsAsg
         }
 
@@ -132,7 +134,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           type : model.type
           id : model.id
         }
-      @modal.tpl.find(".t-m-content").html(template.filterResource {models: models}).find("tr.item").eq(0).click()
+      @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
       _.delay ()=> @renderTagsContent()
 
     selectAllInput: (e)->

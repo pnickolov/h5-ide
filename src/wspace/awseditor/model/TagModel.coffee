@@ -25,6 +25,10 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       _.map @connectionTargets(), (resource) ->
         resource.createRef constant.AWS_RESOURCE_KEY[ resource.type ]
 
+    update: ( resources, key, value, inherit ) ->
+      result = @parent().addTag resources, key, value, inherit
+      result or @parent().removeTag resources, @
+
   }, {
     deserialize: ( data, parent, resolve ) ->
       attr = key: data.Key, value: data.Value, inherit: data.PropagateAtLaunch
@@ -43,6 +47,9 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       tagItem
   }
 
+
+
+
   # AsgTagModel will inherit TagModel, so method in TagModel must consider situation of AsgTagModel
   TagModel = GroupModel.extend {
     type: constant.RESTYPE.TAG
@@ -60,8 +67,10 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         uid     : @id
         resource: resource
 
-    addTag: (resource, tagKey, tagValue = "", inherit) ->
-      if @tagKeyExist(resource, tagKey)
+    addTag: (resources, tagKey, tagValue = "", inherit) ->
+      resources = [ resources ] unless _.isArray resources
+
+      if @tagKeyExist(resources, tagKey)
         return error: "A tag with key '#{tagKey}' already exists"
 
       tagItem = @find tagKey, tagValue, inherit
@@ -71,13 +80,15 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
       tagItem = new TagItem( { key: tagKey, value: tagValue, inherit: inherit, __parent: @ } ) unless tagItem
 
-      new TagUsage resource, tagItem
+      for resource in resources
+        new TagUsage resource, tagItem
 
-      null
+      tagItem
 
-    tagKeyExist: ( resource, tagKey ) ->
+    tagKeyExist: ( resources, tagKey ) ->
       if tagKey in RetainTagKeys then return true
-      _.some resource.connectionTargets('TagUsage'), (tag) -> tag.get( 'key' ) is tagKey
+      _.some resources, (resource) ->
+        _.some resource.connectionTargets('TagUsage'), (tag) -> tag.get( 'key' ) is tagKey
 
     find: ( key, value, inherit ) ->
       prop = key: key
@@ -86,8 +97,11 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
       _.find @all(), (item) -> _.isEqual( item.pick( _.keys(prop) ), prop )
 
-    removeTag: ( resource, tagItem ) ->
-      (new TagUsage resource, tagItem).remove()
+    removeTag: ( resources, tagItem ) ->
+      resources = [ resources ] unless _.isArray resources
+
+      for resource in resources
+        (new TagUsage resource, tagItem).remove()
 
     all: -> @children()
 

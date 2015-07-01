@@ -39,7 +39,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
     hasTag = ( tags, key, value ) ->
       _.some tags, (tag) ->
-        tag.get('key') is key and ( arguments.length is 3 and tag.get('value') is value or true )
+        tag.get('key') is key and ( arguments.length isnt 3 or tag.get('value') is value )
 
     isResMatchTag = ( resource, selTags ) ->
       unless _.size(selTags) then return true
@@ -379,7 +379,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             filtered.push d
           else if not filter or match = @getMatchText(d, filter)
             unless setSelected then d.selected = setSelected = true
-            d.text = d.text.replace(match, "<span class=\"match\">" + match + "</span>")
+            d.text = d.text.toString().replace(match, "<span class=\"match\">" + match + "</span>")
 
             filtered.push d
 

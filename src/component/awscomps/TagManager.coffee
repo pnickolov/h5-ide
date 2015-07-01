@@ -86,8 +86,8 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
       selectedIsAsg = false
       checkedAllAsg = true
       selectedComp = @instance.component(uid)
-      selectedIsAsg = selectedComp.type is "AWS.AutoScaling.Group"
-      tags = selectedComp.tags()
+      selectedIsAsg = selectedComp?.type is "AWS.AutoScaling.Group"
+      tags = if selectedComp then selectedComp.tags() else []
       tagsData = _.map tags, (tag)->
         return {
           key: tag.get("key")
@@ -95,7 +95,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           id: tag.id
           allowCheck: selectedIsAsg
         }
-      @$el.find(".tab-content[data-id='selected']").find("ul.tags-list").html template.tagResource tagsData
+      @$el.find(".tab-content[data-id='selected']").html template.tagResource tagsData
 
       # checked Tags
       checkedData  = []
@@ -121,7 +121,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           allowCheck: selectedIsAsg
         }
 
-      @$el.find(".tab-content[data-id='checked']").find("ul.tags-list").html template.tagResource checkedData
+      @$el.find(".tab-content[data-id='checked']").html template.tagResource checkedData
       @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedData.length or 0)
 
     filterResourceList: (resModels)->
@@ -133,6 +133,7 @@ define [ 'constant', 'CloudResources', "UI.modalplus", "component/awscomps/TagMa
           id : model.id
         }
       @modal.tpl.find(".t-m-content").html(template.filterResource {models: models}).find("tr.item").eq(0).click()
+      _.delay ()=> @renderTagsContent()
 
     selectAllInput: (e)->
       isChecked = $(e.currentTarget).is(":checked")

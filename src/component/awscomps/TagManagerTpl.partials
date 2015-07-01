@@ -42,40 +42,10 @@
         </div>
         <div class="tabs-content">
             <div class="tab-content" data-id="checked">
-                <div class="table-head-fix tag-resource-table">
-                    <table class="table-head">
-                        <thead>
-                        <tr>
-                            <th class="" width="30%" data-row-type="string">Key</th>
-                            <th class="" width="30%" data-row-type="string">Value</th>
-                            <th class="" width="25%" data-row-type="string">Tag New Instance</th>
-                            <th class="" width="15%" data-row-type="string">Actions</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <ul class="tags-list"></ul>
-                <div class="pull-right">
-                    <div class="btn btn-silver create-tag">Add Tag</div>
-                </div>
+
             </div>
             <div class="tab-content" data-id="selected" style="display: none">
-                <div class="table-head-fix tag-resource-table">
-                    <table class="table-head">
-                        <thead>
-                        <tr>
-                            <th class="" width="30%" data-row-type="string">Key</th>
-                            <th class="" width="30%" data-row-type="string">Value</th>
-                            <th class="" width="25%" data-row-type="string">Tag New Instance</th>
-                            <th class="" width="15%" data-row-type="string">Actions</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-                <ul class="tags-list"></ul>
-                <div class="pull-right">
-                    <div class="btn btn-silver create-tag">Add Tag</div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -97,14 +67,35 @@
 {{/each}}
 
 <!--{{tagResource}}-->
-{{#each this}}
-<li data-id="{{id}}">
-    <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true"/>
-    <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true"/>
-    <div class="checkbox">
-        <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}}>
-        <label for="{{id}}"></label>
+{{#if this.length}}
+    <div class="table-head-fix tag-resource-table">
+        <table class="table-head">
+            <thead>
+            <tr>
+                <th class="" width="30%" data-row-type="string">Key</th>
+                <th class="" width="30%" data-row-type="string">Value</th>
+                <th class="" width="25%" data-row-type="string">Tag New Instance</th>
+                <th class="" width="15%" data-row-type="string">Actions</th>
+            </tr>
+            </thead>
+        </table>
     </div>
-    <div class="delete-tag"></div>
-</li>
-{{/each}}
+    <ul class="tags-list">
+        {{#each this}}
+            <li data-id="{{id}}">
+                <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true"/>
+                <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true"/>
+                <div class="checkbox">
+                    <input id="{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}}>
+                    <label for="{{id}}"></label>
+                </div>
+                <div class="delete-tag"></div>
+            </li>
+        {{/each}}
+    </ul>
+    <div class="pull-right">
+        <div class="btn btn-silver create-tag">Add Tag</div>
+    </div>
+{{else}}
+    <div class="tag-empty">Please select or check resource in left sidebar for tag details.</div>
+{{/if}}

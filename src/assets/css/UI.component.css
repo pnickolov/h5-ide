@@ -464,7 +464,8 @@ pre {
   margin-left: 275px;
   background-color: #242424;
   box-sizing: border-box;
-  border: 1px solid #000000; }
+  border: 1px solid #000000;
+  position: relative; }
   .tag-resource-detail .tabs-navs {
     width: 100%;
     height: 35px;
@@ -520,6 +521,13 @@ pre {
       .tag-resource-detail .tabs-content .tab-content .pull-right {
         text-align: right;
         margin: 10px 20px; }
+    .tag-resource-detail .tabs-content .tag-empty {
+      position: absolute;
+      top: 45%;
+      text-align: center;
+      width: 50%;
+      font-size: 15px;
+      left: 25%; }
 
 .combo-dd .combo-dd-manage i {
   margin-right: 13px;

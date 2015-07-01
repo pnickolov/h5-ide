@@ -3,7 +3,6 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
   RetainTagKeys   = [ 'visualops', 'Name' ]
   CustomTagName   = 'EC2CustomTags'
-  InternalTagName = 'EC2InternalTags'
 
   TagItem = ComplexResModel.extend {
     type : "TagItem"
@@ -33,7 +32,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
     deserialize: ( data, parent, resolve ) ->
       attr = key: data.Key, value: data.Value, inherit: data.PropagateAtLaunch
 
-      if parent.get( 'name' ) is InternalTagName then attr.retain = true
+      if parent.get( 'name' ) isnt CustomTagName then attr.retain = true
       tagItem = new TagItem attr
 
       parent.addChild tagItem

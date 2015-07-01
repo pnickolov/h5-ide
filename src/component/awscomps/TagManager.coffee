@@ -56,16 +56,14 @@ define [
       if $tagKey.val() and $tagValue.val()
         key = $tagKey.val()
         value = $tagValue.val()
+        inherit = $tagLi.find(".checkbox input").is("checked")
         # Can't start with "aws:"
         if key.indexOf("aws:") == 0 then return false
         if tagComp
           tagComp.set({key,value})
         else
           error = null
-          _.each @getAffectedResources(), (res)->
-            err = res.addTag(key, value)
-            if err
-              error = true
+          error = tagComp.update(@getAffectedResources(), key, value, inherit)
           if error
             notification "error", "Sorry, but this key name is system retained."
           else

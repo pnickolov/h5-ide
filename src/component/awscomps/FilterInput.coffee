@@ -71,7 +71,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       className: "filter-input"
       tplDropdown: template.dropdown
       tplTag: template.tag
-      unFilterType: [ constant.RESTYPE.SG ]
+      unFilterTypeInVisualMode: [ constant.RESTYPE.SG ]
+      unFilterType: [ constant.RESTYPE.TAG, constant.RESTYPE.ASGTAG ]
 
       events:
         "click .tags li"            : "clickTagHandler"
@@ -88,8 +89,11 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       getFilterableResource: ->
         allComp = Design.instance().getAllComponents()
-        _.filter allComp, ( comp ) ->
-          comp.isVisual() and !comp.port and !_.contains(@unFilterType, comp.type)
+        _.filter allComp, ( comp ) =>
+          if @isVisual
+            comp.isVisual() and !comp.port and !_.contains(@unFilterTypeInVisualMode, comp.type)
+          else
+            !comp.port and !_.contains(@unFilterType, comp.type)
 
       getMatchedResource: () ->
         selection = @classifySelection(@selection)
@@ -160,8 +164,13 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         effect: effect
 
       initialize: (options) ->
-        @selection = options.selection  if options and options.selection
+        if options
+          @selection = options.selection if options.selection
+          @isVisual = options.isVisual
+
         @selection or ( @selection = [] )
+
+
         null
 
       render: ->
@@ -375,6 +384,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         _.each data, (d) =>
           d.text = d.value unless d.text
+          unless d.text then return
+
           if d.type is 'label'
             filtered.push d
           else if not filter or match = @getMatchText(d, filter)

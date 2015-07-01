@@ -1,6 +1,9 @@
 
 define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/TagUsage"  ], ( constant, ComplexResModel, GroupModel, Design, TagUsage )->
 
+  RetainTagKeys   = [ 'visualops', 'Name' ]
+  CustomTagName   = 'EC2CustomTags'
+  InternalTagName = 'EC2InternalTags'
 
   TagItem = ComplexResModel.extend {
     type : "TagItem"
@@ -23,8 +26,13 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         resource.createRef constant.AWS_RESOURCE_KEY[ resource.type ]
 
   }, {
-    deserialize: ( data, layout_data, resolve ) ->
-      tagItem = new TagItem( key: data.Key, value: data.Value, inherit: data.PropagateAtLaunch )
+    deserialize: ( data, parent, resolve ) ->
+      attr = key: data.Key, value: data.Value, inherit: data.PropagateAtLaunch
+
+      if parent.get( 'name' ) is InternalTagName then attr.retain = true
+      tagItem = new TagItem attr
+
+      parent.addChild tagItem
 
       for id in data.ResourceIds
         resource = resolve MC.extractID id
@@ -37,7 +45,6 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
   # AsgTagModel will inherit TagModel, so method in TagModel must consider situation of AsgTagModel
   TagModel = GroupModel.extend {
-    __retainTagKeys: [ 'visualops', 'Name' ]
     type: constant.RESTYPE.TAG
 
     isVisual: -> false
@@ -52,8 +59,6 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         type    : @type
         uid     : @id
         resource: resource
-
-    isRetainKey: ( key ) -> key in @__retainTagKeys
 
     addTag: (resource, tagKey, tagValue = "", inherit) ->
       if @tagKeyExist(resource, tagKey)
@@ -71,7 +76,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       null
 
     tagKeyExist: ( resource, tagKey ) ->
-      if tagKey in @__retainTagKeys then return true
+      if tagKey in RetainTagKeys then return true
       _.some resource.connectionTargets('TagUsage'), (tag) -> tag.get( 'key' ) is tagKey
 
     find: ( key, value, inherit ) ->
@@ -98,8 +103,8 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       allTags
 
     getCustom: ->
-      customTag = TagModel.find (tag) -> tag.get('name') is 'EC2CustomTags'
-      customTag or new @ name: 'EC2CustomTags'
+      customTag = TagModel.find (tag) -> tag.get('name') is CustomTagName
+      customTag or new @ name: CustomTagName
 
     handleTypes : [ constant.RESTYPE.TAG ]
     deserialize : ( data, layout_data, resolve )->
@@ -111,8 +116,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       tagModel = new @( attr )
 
       for r in data.resource
-        item = TagItem.deserialize r, null, resolve
-        tagModel.addChild item
+        item = TagItem.deserialize r, tagModel, resolve
 
       null
   }

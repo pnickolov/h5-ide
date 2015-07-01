@@ -10,6 +10,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       AllAttributes : 'All Attributes'
     }
 
+    RefRegx = /@\{.+\}/
+
     getResNameByType = ( type ) -> constant.RESNAME[ type ]
     getResShortNameByType = ( type ) -> ResTypeToShort[ type ]?.toLowerCase()
     getResTypeByShortName = (short) -> constant.RESTYPE[ short.toUpperCase() ]
@@ -214,7 +216,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         else
           @$(".line-tip").text "(+" + hideLine + ")"
 
-      addSelection: (key, value, type) ->
+      addSelection: (key, value, type, vtext) ->
 
         if arguments.length is 1
             tmp = key.split('=')
@@ -229,6 +231,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         sel =
           key: key
           value: value
+          vtext: vtext or value
           type: type
 
         if not value and type not in [ 'resource', 'resource_attribute' ] then return
@@ -353,15 +356,24 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           serialized = r.serialize()
           unless _.isArray(serialized) then serialized = [ serialized ]
 
-          _.each serialized, (serializedItem) ->
+          _.each serialized, (serializedItem) =>
             v = serializedItem?.component?.resource?[attr]
             if v
-              dd.push { type: 'attribute_value', value: v }
+              dd.push { type: 'attribute_value', value: v, text: @getReadableText(v), vtext: @getReadableText(v) }
 
         dd = @uniqSortDd dd
         dd.unshift { type: 'attribute_value', value: DefaultValues.AllValues, default: true }
 
         dd
+
+      getReadableText: (value) ->
+        if RefRegx.test value
+          id = MC.extractID value
+          res = Design.instance().component( id )
+          if res then return res.get( 'appId' ) or res.get('name')
+
+        value
+
 
       focusInput: ($input) ->
         ($input or @$("input")).focus()
@@ -543,7 +555,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         if state.state is 'value'
           key = state.key + if state.subKey then ".#{state.subKey}" else ''
-          @addSelection key, $tgt.data('value'), state.mode
+          @addSelection key, $tgt.data('value'), state.mode, $tgt.data('vtext')
         else
           key = $tgt.data('value')
           if type is 'attribute'

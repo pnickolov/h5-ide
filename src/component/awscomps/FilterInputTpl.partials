@@ -8,7 +8,7 @@
 
 <!-- {{dropdown}} -->
 {{#each this}}
-<li data-type="{{type}}" data-value="{{value}}" class="{{#ifCond type 'label'}}label{{else}}option{{/ifCond}} {{#if selected}}selected{{/if}}">
+<li data-type="{{type}}" data-value="{{value}}" data-vtext="{{vtext}}" class="{{#ifCond type 'label'}}label{{else}}option{{/ifCond}} {{#if selected}}selected{{/if}}">
 {{{text}}}
 </li>
 {{/each}}
@@ -16,5 +16,5 @@
 <!-- {{tag}} -->
 {{#each this}}
 <li data-key="{{key}}" data-value="{{value}}" class="{{type}}">
-    <span class="key">{{key}}</span>{{#if value}}=<span class="value">{{value}}</span>{{/if}}
+    <span class="key">{{key}}</span>{{#if vtext}}=<span class="value">{{vtext}}</span>{{/if}}
 </li>{{/each}}

@@ -25,8 +25,12 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         resource.createRef constant.AWS_RESOURCE_KEY[ resource.type ]
 
     update: ( resources, key, value, inherit ) ->
-      result = @parent().addTag resources, key, value, inherit
-      result or @parent().removeTag resources, @
+      if key is @get 'key'
+        @parent().removeTag resources, @
+        @parent().addTag resources, key, value, inherit
+      else
+        result = @parent().addTag resources, key, value, inherit
+        result or @parent().removeTag resources, @
 
   }, {
     deserialize: ( data, parent, resolve ) ->

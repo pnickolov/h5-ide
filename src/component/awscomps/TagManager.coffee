@@ -83,6 +83,7 @@ define [
         notification "error", "Sorry, both key and value are required."
 
     getAffectedResources :()->
+      self = @
       isSelected = "selected" is @$el.find(".tabs-navs li.active").data("id")
       resources = []
       if isSelected

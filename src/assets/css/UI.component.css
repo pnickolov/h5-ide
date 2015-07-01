@@ -457,7 +457,7 @@ pre {
     user-select: none; }
     .tag-resource-list .tag-resource-table tbody tr.selected td {
       background-color: #1F1F1F;
-      border-color: #373737; }
+      border-color: #1F1F1F; }
 
 .tag-resource-detail {
   margin-left: 275px;

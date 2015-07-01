@@ -1,7 +1,6 @@
 
 define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/TagUsage"  ], ( constant, ComplexResModel, GroupModel, Design, TagUsage )->
 
-  RetainTagKeys = [ 'visualops', 'Name' ]
 
   TagItem = ComplexResModel.extend {
     type : "TagItem"
@@ -38,6 +37,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
   # AsgTagModel will inherit TagModel, so method in TagModel must consider situation of AsgTagModel
   TagModel = GroupModel.extend {
+    __retainTagKeys: [ 'visualops', 'Name' ]
     type: constant.RESTYPE.TAG
 
     isVisual: -> false
@@ -52,6 +52,8 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
         type    : @type
         uid     : @id
         resource: resource
+
+    isRetainKey: ( key ) -> key in @__retainTagKeys
 
     addTag: (resource, tagKey, tagValue = "", inherit) ->
       if @tagKeyExist(resource, tagKey)
@@ -69,7 +71,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       null
 
     tagKeyExist: ( resource, tagKey ) ->
-      if tagKey in RetainTagKeys then return true
+      if tagKey in @__retainTagKeys then return true
       _.some resource.connectionTargets('TagUsage'), (tag) -> tag.get( 'key' ) is tagKey
 
     find: ( key, value, inherit ) ->

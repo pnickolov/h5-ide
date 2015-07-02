@@ -389,11 +389,14 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         ($input or @$("input")).val ""
 
       getMatchText: ( data, filter ) ->
+        value = data.value.toString()
+        text  = data.text.toString()
+
         # Value Match
-        if (matchIdx = data.value.toLowerCase().indexOf(filter)) isnt -1
-          return data.value.slice(matchIdx, matchIdx + filter.length)
-        else if (matchIdx = data.text.toLowerCase().indexOf(filter)) isnt -1
-          return data.text.slice(matchIdx, matchIdx + filter.length)
+        if (matchIdx = value.toLowerCase().indexOf(filter)) isnt -1
+          return value.slice(matchIdx, matchIdx + filter.length)
+        else if (matchIdx = text.toLowerCase().indexOf(filter)) isnt -1
+          return text.slice(matchIdx, matchIdx + filter.length)
 
       filterByInput: (data, filter) ->
         filter = filter and filter.trim().toLowerCase()
@@ -402,7 +405,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         filtered = []
 
         _.each data, (d) =>
-          d.text = d.value unless d.text
+          d.text = d.value.toString() unless d.text
           unless d.text then return
 
           if d.type is 'label'

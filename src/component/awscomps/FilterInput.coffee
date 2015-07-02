@@ -381,9 +381,9 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         value
 
-
       focusInput: ($input) ->
         ($input or @$("input")).focus()
+        @renderDropdown()
 
       clearInput: ($input) ->
         ($input or @$("input")).val ""
@@ -492,8 +492,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             @setKeydowning()
             $selected = @$(".dropdown .selected")
             $prev = $selected.prevAll('.option').first()
+            $dropdown   = @$(".dropdown")
             if $prev.size()
-              $dropdown   = @$(".dropdown")
               prevHeight  = $prev.outerHeight()
               prevTop     = $prev.position().top
               ddHeight    = $dropdown.outerHeight()
@@ -503,13 +503,16 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
               $selected.removeClass "selected"
               $prev.addClass "selected"
+            else
+              @gotoLastDdItem($dropdown, $selected)
+
             false
           when 40 # Down
             @setKeydowning()
             $selected = @$(".dropdown .selected")
             $next = $selected.nextAll('.option').first()
+            $dropdown   = @$(".dropdown")
             if $next.size()
-              $dropdown   = @$(".dropdown")
               nextHeight  = $next.outerHeight()
               nextTop     = $next.position().top
               ddHeight    = $dropdown.outerHeight()
@@ -519,7 +522,25 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
               $selected.removeClass "selected"
               $next.addClass "selected"
+            else
+              @gotoFirstDdItem($dropdown, $selected)
+
             false
+
+      gotoFirstDdItem: ($dropdown, $selected) ->
+        $target = $dropdown.find('li.option').first()
+        if $target and $target isnt $selected
+          $selected.removeClass 'selected'
+          $target.addClass 'selected'
+          $dropdown[0].scrollTop = 0
+
+      gotoLastDdItem: ($dropdown, $selected) ->
+        $target = $dropdown.find('li.option').last()
+        if $target and $target isnt $selected
+          $selected.removeClass 'selected'
+          $target.addClass 'selected'
+          $dropdown[0].scrollTop = $dropdown.height()
+
 
       focusInputHandler: ->
         clearTimeout @__timeoutRemoveFocus
@@ -549,7 +570,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       clickFakeInputHandler: (e) ->
         $(e.currentTarget).addClass "focus"
-        @$("input").focus()
+        @focusInput()
         false
 
       selectHandler: (e) ->

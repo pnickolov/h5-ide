@@ -6,7 +6,8 @@
     <button class="ph-nav-btn icon-menu asset-list popuptrigger" data-popup="popupAsset"></button>
     <div class="ws-tabbar"><ul class="ws-fixed-tabs"></ul><ul class="ws-tabs"></ul></div>
     <nav>
-      <button class="ph-nav-btn user-guide-btn popuptrigger truncate" data-popup="popupGuide">Guide<span>NEW</span></button>
+      <a class="ph-nav-btn cloudfielder-btn" href="http://cloudfielder.com/" target="_blank"><img src="http://cloudfielder.com/favicon.ico" /> CloudFielder<span>NEW</span></a>
+      <button class="ph-nav-btn user-guide-btn popuptrigger truncate" data-popup="popupGuide">Guide</button>
       <a class="ph-nav-btn icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">{{i18n "IDE.DASH_LBL_SUPPORT"}}</a>
       <button class="ph-nav-btn icon-notification popuptrigger" data-popup="popupNotify"></button>
       <button class="ph-nav-btn user-menu popuptrigger truncate" data-popup="popupUser"></button>

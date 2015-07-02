@@ -1,9 +1,14 @@
 define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     wrap = ( dict ) ->
-        wrappedDict = {}
+        wrapArray = _.isArray(dict)
+        if wrapArray then wrappedDict = [] else wrappedDict = {}
+
         _.each dict, ( name, key ) ->
-            wrappedDict[ RESTYPE[ key ] ] = name
+            if wrapArray
+                wrappedDict.push RESTYPE[ name ]
+            else
+                wrappedDict[ RESTYPE[ key ] ] = name
             null
 
         wrappedDict
@@ -163,6 +168,31 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSKP         : "Key Pair"
         OSIMAGE      : "Image"
         OSSNAP       : "Snapshot"
+
+
+    HASTAG = [
+        'CGW'
+        'DHCP'
+        'AMI'
+        'INSTANCE'
+        'IGW'
+        'ACL'
+        'ENI'
+        'RT'
+        'SG'
+        'SNAP'
+        'SUBNET'
+        'VOL'
+        'VPC'
+        'VPN'
+        'ASG'
+        'DBINSTANCE'
+        'DBSNAP'
+        'DBOG'
+        'DBPG'
+        'DBSBG'
+    ]
+
 
 
     #private
@@ -476,6 +506,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     RESTYPE                 : RESTYPE
     STATE_REF_DICT          : STATE_REF_DICT
     RESNAME                 : wrap RESNAME
+    HASTAG                  : wrap HASTAG
     WRAP                    : wrap
 
     DB_INSTANCECLASS        : DB_INSTANCECLASS

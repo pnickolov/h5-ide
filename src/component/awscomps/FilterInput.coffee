@@ -74,7 +74,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       tplDropdown: template.dropdown
       tplTag: template.tag
       unFilterTypeInVisualMode: [ constant.RESTYPE.SG ]
-      unFilterType: [ constant.RESTYPE.TAG, constant.RESTYPE.ASGTAG, 'TagItem' ]
 
       events:
         "click .tags li"            : "clickTagHandler"
@@ -95,7 +94,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           if @isVisual
             comp.isVisual() and !comp.port and !_.contains(@unFilterTypeInVisualMode, comp.type)
           else
-            !comp.port and !_.contains(@unFilterType, comp.type)
+            !comp.port and _.contains(constant.HASTAG, comp.type)
 
       getMatchedResource: () ->
         selection = @classifySelection(@selection)
@@ -200,21 +199,29 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       renderLineTip: ($fakeInput) ->
         $fakeInput = $fakeInput or @$(".fake-input")
-        $li = @$(".tags li").first()
+        $ul = @$('.tags')
+        $lis = $ul.find('li')
 
-        unless $li.size()
+        unless $lis.size()
           @$(".line-tip").text ""
           return
 
-        computedStyle = window.getComputedStyle($li[0])
-        liHeight = $li.outerHeight() + parseInt(computedStyle.marginTop) + parseInt(computedStyle.marginBottom)
-        line = Math.floor($fakeInput[0].scrollHeight / liHeight)
-        hideLine = line - 1
+        ulWidth = $ul.width()
+        lineWidth = 0
+        hideLineNum = 0
 
-        if not hideLine or hideLine < 1
+        for li, idx in $lis
+          $li = $ li
+          cs = window.getComputedStyle(li)
+          lineWidth += parseInt(cs.width) + parseInt(cs.paddingLeft) + parseInt(cs.paddingRight) + parseInt(cs.marginLeft) + parseInt(cs.marginRight)
+          if lineWidth > ulWidth
+            hideLineNum = $lis.size() - idx
+            break
+
+        if hideLineNum < 1
           @$(".line-tip").text ""
         else
-          @$(".line-tip").text "(+" + hideLine + ")"
+          @$(".line-tip").text "(+" + hideLineNum + ")"
 
       addSelection: (key, value, type, vtext) ->
 

@@ -2450,6 +2450,7 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     flex-shrink: 0;
     max-width: 78%; }
   .filter-input .fake-input ul li {
+    word-break: break-all;
     list-style: none;
     display: inline-block;
     background: #F1F1F1;

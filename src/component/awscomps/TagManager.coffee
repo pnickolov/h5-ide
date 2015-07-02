@@ -53,7 +53,7 @@ define [
     selectAllInput: (e)->
       isChecked = $(e.currentTarget).is(":checked")
       @$el.find(".table-head-fix .item .checkbox input").prop("checked", isChecked)
-
+      @renderTagsContent()
 
     changeTags: (elem)->
       console.log(elem)
@@ -73,7 +73,7 @@ define [
         else
           error = null
           _.each @getAffectedResources(), (res)->
-            err = res.addTag(key, value)
+            err = res.addTag(key, value, inherit)
             if err
               error = true
           if error
@@ -133,31 +133,53 @@ define [
 
       # checked Tags
       checkedComps = []
-      checkedArray = []
+      checkedTagArray = []
+      checkedAsgComps = []
+      checkedAsgTagArray = []
       @$el.find(".t-m-content .one-cb").each (key, value)->
         checkedComp = self.instance.component($(value).parents("tr").data("id"))
         if checkedComp.type isnt "AWS.AutoScaling.Group"
           checkedAllAsg = false
+          if $(value).is(":checked")
+            checkedComps.push checkedComp
+            checkedTagArray.push checkedComp.tags()
+        else
+          if $(value).is(":checked")
+            checkedAsgComps.push checkedComp
+            checkedAsgTagArray.push checkedComp.tags()
 
-        if $(value).is(":checked")
-          checkedComps.push checkedComp
-          checkedArray.push checkedComp.tags()
-
-      checkedTagArray = _.map (checkedArray), (tagArray)->
+      checkedTagIdsArray = _.map (checkedTagArray), (tagArray)->
         _.map tagArray, (tag)->
           tag.id
-      checkedData = _.map _.intersection.apply(_, checkedTagArray), (tagId)->
+      checkedData = _.map _.intersection.apply(_, checkedTagIdsArray), (tagId)->
         tag = self.instance.component(tagId)
         return {
           key: tag.get("key")
           value: tag.get("value")
           id: tag.id
           disableEdit: tag.get("retain")
-          allowCheck: selectedIsAsg
+          allowCheck: checkedAllAsg
         }
 
-      @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: checkedData, empty: not checkedComps.length}
-      @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedComps.length or 0)
+      checkedAsgTagIdsArray = _.map checkedAsgTagArray, (tagArray)->
+        _.map tagArray, (tag)->
+          tag.id
+      checkedAsgData = _.map _.intersection.apply(_, checkedAsgTagIdsArray), (tagId)->
+        tag = self.instance.component(tagId)
+        return {
+          key: tag.get("key")
+          value: tag.get("value")
+          id: tag.id
+          disableEdit: tag.get("retain")
+          allowCheck: checkedAllAsg
+        }
+
+      unitedData = _.compact _.map checkedData, (data)->
+        _.findWhere checkedAsgData, {key:data.key, value:data.value}
+
+
+      @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not checkedComps.length}
+      @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedComps.length + checkedAsgComps.length)
 
     filterResourceList: (resModels)->
       models = _.map resModels, (model)->

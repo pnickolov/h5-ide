@@ -236,7 +236,7 @@ define [
   isIncest = ( m, models ) ->
     if m.type is constant.RESTYPE.LC
       return _.some m.getAsgs(), ( asg ) ->
-        isIncest( asg, models )
+        isIncest( asg, models ) or asg in models
 
     parent = m.parent()
 

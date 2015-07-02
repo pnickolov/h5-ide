@@ -61,21 +61,26 @@ define [
       $tagKey = $tagLi.find(".tag-key")
       $tagValue = $tagLi.find(".tag-value")
       tagComp = @instance.component $tagLi.data("id")
+      tagAsgComp = @instance.component $tagLi.data("asg")
+
       if $tagKey.val() and $tagValue.val()
         key = $tagKey.val()
         value = $tagValue.val()
         inherit = $tagLi.find(".checkbox input").is("checked")
         # Can't start with "aws:"
         if key.indexOf("aws:") == 0 then return false
+        resource = @getAffectedResources()
         if tagComp
-          tagComp.update(@getAffectedResources(), key, value, inherit)
-          @renderTagsContent()
-        else
+          tagComp.update(resource.common, key, value)
+        if tagAsgComp
+          tagAsgComp.update(resource.asg, key, value, inherit)
+
+        if not tagAsgComp and not tagAsgComp
           error = null
-          _.each @getAffectedResources(), (res)->
+          _.each _.union(resource.common, resource.asg), (res)->
             err = res.addTag(key, value, inherit)
             if err
-              error = true
+              error = err
           if error
             # todo
             notification "error", error.error
@@ -92,24 +97,38 @@ define [
     getAffectedResources :()->
       self = @
       isSelected = "selected" is @$el.find(".tabs-navs li.active").data("id")
-      resources = []
+      resources = {common: [], asg: []}
       if isSelected
-        resources.push @instance.component @$el.find(".t-m-content .item.selected").data("id")
+        comp = @instance.component @$el.find(".t-m-content .item.selected").data("id")
+        if comp.type is "AWS.AutoScaling.Group"
+          resources.asg.push comp
+        else
+          resources.common.push comp
       else
         @$el.find(".t-m-content .one-cb").each (key, value)->
           if $(value).is(":checked")
-            resources.push self.instance.component($(value).parents("tr").data("id"))
+            comp =  self.instance.component($(value).parents("tr").data("id"))
+            if comp.type is "AWS.AutoScaling.Group"
+              resources.asg.push comp
+            else
+              resources.common.push comp
       resources
 
     removeTagUsage: (e)->
       $tagLi = $(e.currentTarget).parents("li")
       tagComp = @instance.component($tagLi.data("id"))
-      if not tagComp
+      asgTagComp = @instance.component($tagLi.data("asg"))
+      resources = @getAffectedResources()
+      if not tagComp and not asgTagComp
         $tagLi.remove()
         return
-      resources = @getAffectedResources()
-      _.each resources, (res)->
-        res.removeTag(tagComp)
+
+      if tagComp
+        _.each resources.common, (res)->
+          res.removeTag(tagComp)
+      if asgTagComp
+        _.each resources.asg, (asg)->
+          asg.removeTag(asgTagComp)
       @renderTagsContent()
 
     renderTagsContent: (uid)->
@@ -164,19 +183,31 @@ define [
       checkedAsgTagIdsArray = _.map checkedAsgTagArray, (tagArray)->
         _.map tagArray, (tag)->
           tag.id
+
+      # asg tags in common data
       checkedAsgData = _.map _.intersection.apply(_, checkedAsgTagIdsArray), (tagId)->
         tag = self.instance.component(tagId)
         return {
           key: tag.get("key")
           value: tag.get("value")
-          id: tag.id
+          asg: tag.id
           disableEdit: tag.get("retain")
           allowCheck: checkedAllAsg
         }
 
-      unitedData = _.compact _.map checkedData, (data)->
-        _.findWhere checkedAsgData, {key:data.key, value:data.value}
-
+      # both in common comps and asg comps
+      unitedData = []
+      if checkedAsgComps.length
+        if checkedComps.length
+          unitedData = _.compact _.map checkedData, (data)->
+            commonData = _.findWhere checkedAsgData, {key:data.key, value:data.value}
+            if commonData
+              commonData.id = data.id
+            commonData
+        else
+          unitedData = checkedAsgData
+      else
+        unitedData = checkedData
 
       @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not checkedComps.length}
       @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedComps.length + checkedAsgComps.length)
@@ -211,8 +242,7 @@ define [
       """
       $tagLi = $(tagTemplate)
       $tagLi.appendTo $(e.currentTarget).parents(".tab-content").find("ul.tags-list")
-      hasNoneAsg = _.filter @getAffectedResources(), (res)->
-        res.type isnt "AWS.AutoScaling.Group"
+      hasNoneAsg = @getAffectedResources().common.length > 0
       if hasNoneAsg then $tagLi.find(".checkbox input").prop("disabled", hasNoneAsg)
 
     removeRow: (e)->

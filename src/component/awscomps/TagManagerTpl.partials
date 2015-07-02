@@ -89,7 +89,7 @@
     </div>
     <ul class="tags-list">
         {{#each data}}
-            <li data-id="{{id}}">
+            <li data-id="{{id}}" data-asg="{{asg}}">
                 <div class="edit">
                     <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
                     <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>

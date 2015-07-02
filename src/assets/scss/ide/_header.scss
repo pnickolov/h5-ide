@@ -24,7 +24,7 @@
     position   : absolute;
     top        : 0;
     right      : 0;
-    width      : 410px;
+    width      : 570px;
     height     : 100%;
     background : #36343c;
     text-align : right;
@@ -72,7 +72,11 @@
 
   .icon-support:before { margin-right : 5px; }
 
-  .user-guide-btn {
+  .cloudfielder-btn {
+    img {
+        margin-top: -4px;
+        margin-right: 4px;
+    }
     span {
         border-radius: 2px;
         background-color: #009EFF;

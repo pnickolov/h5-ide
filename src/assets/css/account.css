@@ -17,19 +17,16 @@
   font-style: normal;
   font-weight: 400;
   src: local("Lato Regular"), local("Lato-Regular"), url("../fonts/LatoRegular.woff") format("woff"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
   src: local("Lato Bold"), local("Lato-Bold"), url("../fonts/LatoBold.woff") format("woff"); }
-
 @font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 300;
   src: local("Lato Light"), local("Lato-Light"), url("../fonts/LatoLight.woff") format("woff"); }
-
 /* Hack custom fonts loading */
 @media (min-width: 1px) {
   body {
@@ -53,7 +50,7 @@ body {
   font-size: 14px; }
 
 a {
-  color: #4a90e2;
+  color: #4A90E2;
   text-decoration: none;
   cursor: pointer; }
   a:hover {
@@ -324,7 +321,7 @@ body {
 
 #body {
   color: #222;
-  background: black url("../images/login/bg.jpeg");
+  background: #000 url("../images/login/bg.jpeg");
   background-size: cover; }
 
 a {
@@ -603,12 +600,12 @@ footer {
   padding: 200px 0; }
 
 #body-500 h1 {
-  background: #363b76;
+  background: #363B76;
   position: absolute;
   z-index: 100;
   width: 100%;
   top: 0;
-  border-top: 4px solid #25254c;
+  border-top: 4px solid #25254C;
   border-bottom: 1px solid #181818;
   padding: 5px 0 9px 0; }
 

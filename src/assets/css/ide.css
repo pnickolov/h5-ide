@@ -6782,6 +6782,11 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   .tags-action .btn-blue {
     float: right; }
 
+.property-content .empty-tag {
+  padding: 10px;
+  font-size: 13px;
+  color: #AEAEAE; }
+
 .tag-large.icon-info {
   display: inline-block;
   height: 34px;

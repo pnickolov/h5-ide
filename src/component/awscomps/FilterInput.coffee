@@ -165,12 +165,22 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         effect: effect
 
       initialize: (options) ->
+        @selection = []
+
         if options
-          @selection = options.selection if options.selection
           @isVisual = options.isVisual
+          if options.selection
+            for s in options.selection
+              @addSelection s
 
-        @selection or ( @selection = [] )
-
+          if options.uid
+            comp = Design.instance().component options.uid
+            if comp
+              @addSelection {
+                key   : "#{getResShortNameByType(comp.type)}.name"
+                value : comp.get('name')
+                type  : 'resource_attribute'
+              }
 
         null
 
@@ -224,8 +234,13 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           @$(".line-tip").text "(+" + hideLineNum + ")"
 
       addSelection: (key, value, type, vtext) ->
+        if _.isObject key
+          value = key.value
+          type = key.type
+          vtext = key.vtext
+          key = key.key
 
-        if arguments.length is 1
+        else if arguments.length is 1
             tmp = key.split('=')
             if tmp.length isnt 2 then return
             key = tmp[0].trim()

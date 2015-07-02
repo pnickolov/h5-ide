@@ -96,7 +96,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
     find: ( key, value, inherit ) ->
       prop = key: key
       prop.value = value if arguments.length > 1
-      prop.inherit = inherit if arguments.length > 2
+      prop.inherit = inherit if arguments.length > 2 and inherit isnt undefined
 
       _.find @all(), (item) -> _.isEqual( item.pick( _.keys(prop) ), prop )
 

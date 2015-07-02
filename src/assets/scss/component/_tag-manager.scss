@@ -1,5 +1,5 @@
 .tag-manager-wrap{
-  height: 400px;
+  height: 450px;
   position: relative;
   margin-bottom: -10px;
 }
@@ -16,7 +16,7 @@
     margin-top: 10px;
     border: 1px solid #000;
     padding: 0px;
-    height: 341px;
+    height: 391px;
     box-sizing: border-box;
     overflow: auto;
   }
@@ -86,15 +86,7 @@
             background-color: #2a2a2a;
           }
           .edit{
-            display: none;
-          }
-          &.edit{
-            .edit{
-              display: block;
-            }
-            .show{
-              display: none;
-            }
+            display: block;
           }
         }
         .tag-key{
@@ -133,17 +125,14 @@
             min-width: 50px;
             padding: 5px 10px;
             margin: 0 5px;
+
           }
-          .edit-cancel{
+          .edit-cancel, .edit-remove-row{
             background: none;
             color: #666;
             box-shadow: none;
           }
         }
-      }
-      .pull-right{
-        text-align: right;
-        margin: 10px 20px;
       }
     }
     .tag-empty{
@@ -154,5 +143,12 @@
       font-size: 15px;
       left: 25%;
     }
+  }
+  .pull-right{
+    text-align: right;
+    padding: 10px 20px;
+  }
+  .tabs-footer{
+    border-top: 1px solid #000000;
   }
 }

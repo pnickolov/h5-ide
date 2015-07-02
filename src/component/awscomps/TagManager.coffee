@@ -10,14 +10,14 @@ define [
 
   Backbone.View.extend {
     events:
-      "click tbody tr.item" : "selectTableRow"
-      "click .tag-resource-detail .tabs-navs li" : "switchTab"
-      "click .create-tag" : "addTag"
-      "change #t-m-select-all" : "selectAllInput"
-      "click .edit-delete" : "removeTagUsage"
-      "click .edit-edit": "toggleEdit"
-      "click .edit-cancel": "toggleEdit"
+      "click tbody tr.item": "selectTableRow"
+      "click .tag-resource-detail .tabs-navs li": "switchTab"
+      "click .create-tag": "addTag"
+      "change #t-m-select-all": "selectAllInput"
+      "click .edit-delete": "removeTagUsage"
       "click .edit-done": "changeTags"
+      "click .save-tags": "saveAllTags"
+      "click .edit-remove-row": "removeRow"
 
     initialize: (model)->
       @instance = Design.instance()
@@ -50,11 +50,14 @@ define [
       # reder selected element
       @renderTagsContent($row.data("id"))
 
-    toggleEdit: (e)->
-      $(e.currentTarget).parents("li").toggleClass("edit")
+    selectAllInput: (e)->
+      isChecked = $(e.currentTarget).is(":checked")
+      @$el.find(".table-head-fix .item .checkbox input").prop("checked", isChecked)
 
-    changeTags: (e)->
-      $tagLi = $(e.currentTarget).parents("li")
+
+    changeTags: (elem)->
+      console.log(elem)
+      $tagLi = $(elem).parents("li")
       $tagKey = $tagLi.find(".tag-key")
       $tagValue = $tagLi.find(".tag-value")
       tagComp = @instance.component $tagLi.data("id")
@@ -75,12 +78,16 @@ define [
               error = true
           if error
             # todo
-            notification "error", "Sorry, but this key name is system retained."
-          else
-            @renderTagsContent()
+            notification "error", error.error
       else
         # todo:
         notification "error", "Sorry, both key and value are required."
+
+    saveAllTags: ()->
+      that = @
+      @$el.find(".tab-content:visible").find("input.tag-key").not(":disabled").each (index, value)->
+        if value.value then that.changeTags(value)
+      @renderTagsContent()
 
     getAffectedResources :()->
       self = @
@@ -150,7 +157,7 @@ define [
         }
 
       @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: checkedData, empty: not checkedComps.length}
-      @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedData.length or 0)
+      @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedComps.length or 0)
 
     filterResourceList: (resModels)->
       models = _.map resModels, (model)->
@@ -162,10 +169,6 @@ define [
         }
       @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
       _.delay ()=> @renderTagsContent()
-
-    selectAllInput: (e)->
-      isChecked = $(e.currentTarget).is(":checked")
-      @$el.find(".table-head-fix .item .checkbox input").prop("checked", isChecked)
 
     addTag: (e)->
       tagId = @$el.find(".tags-list li").size() + 1
@@ -179,7 +182,7 @@ define [
                       <label for="#{tagId}"></label>
                   </div>
                   <div class="action">
-                      <button class="btn btn-primary edit-done">Add Tag</button>
+                    <button class="btn btn-red edit-remove-row">Cancel</button>
                   </div>
               </div>
           </li>
@@ -189,6 +192,9 @@ define [
       hasNoneAsg = _.filter @getAffectedResources(), (res)->
         res.type isnt "AWS.AutoScaling.Group"
       if hasNoneAsg then $tagLi.find(".checkbox input").prop("disabled", hasNoneAsg)
+
+    removeRow: (e)->
+      $(e.currentTarget).parents("li").remove()
 
     switchTab: (evt)->
       $li = $(evt.currentTarget)

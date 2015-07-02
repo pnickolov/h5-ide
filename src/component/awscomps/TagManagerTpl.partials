@@ -48,6 +48,9 @@
 
             </div>
         </div>
+        <div class="tabs-footer pull-right">
+           <button class="btn save-tags btn-primary">Save Tags</button>
+        </div>
     </div>
 </div>
 
@@ -95,18 +98,8 @@
                         <label for="{{id}}"></label>
                     </div>
                     <div class="action">
-                        <button class="btn btn-primary edit-done">Done</button>
-                        <button class="btn btn-silver edit-cancel">Cancel</button>
-                    </div>
-                </div>
-                <div class="show">
-                    <span class="tag-key">{{key}}</span>
-                    <span class="tag-value">{{value}}</span>
-                    <span class="tag-inherit">{{inherit}}</span>
-                    <span class="action">
-                        <button class="btn btn-primary edit-edit" {{#if disableEdit}}disabled{{/if}}>Edit</button>
                         <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}>Delete</button>
-                    </span>
+                    </div>
                 </div>
             </li>
         {{/each}}

@@ -74,7 +74,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       tplDropdown: template.dropdown
       tplTag: template.tag
       unFilterTypeInVisualMode: [ constant.RESTYPE.SG ]
-      unFilterType: [ constant.RESTYPE.TAG, constant.RESTYPE.ASGTAG ]
+      unFilterType: [ constant.RESTYPE.TAG, constant.RESTYPE.ASGTAG, 'TagItem' ]
 
       events:
         "click .tags li"            : "clickTagHandler"

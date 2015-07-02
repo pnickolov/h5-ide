@@ -7,6 +7,17 @@
     </li>
 {{/each}}
 
+<!-- {{forgetApp}} -->
+<div class="confirm-padding">
+{{#if production}}
+    <p><b style="color:#ec3c38;">{{name}} {{ i18n 'POP_CONFIRM_PROD_APP_WARNING_MSG' }}</b>{{i18n "TOOLBAR.FORGET_CONFIRM_INSTRUCTION"}}</p>
+    <p>{{ i18n 'POP_CONFIRM_FORGET_PROD_APP_INPUT_LBL' }}</p>
+    <div><input class="input" style="width:390px;" id="appNameConfirmIpt"/></div>
+{{else}}
+    <div class="modal-center-align-helper"> <div class="modal-text-major">{{i18n "TOOLBAR.FORGET_APP_CONFIRM"}}</div></div>
+{{/if}}
+</div>
+
 <!-- {{recent}} -->
 <section {{#if isStack}}class="hide"{{/if}}>
     {{#if apps.length}}
@@ -118,10 +129,11 @@
                 {{/unless}}
                 <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
                 <div class="region-resource-info">
-                    <i class="icon-terminate terminate-app tooltip" data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_TERMINATE_APP"}}"></i>
                     {{#if stoppable}}
                         {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app tooltip"  data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_STOP_APP"}}"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
                     {{/if}}
+                    <i class="icon-terminate terminate-app tooltip" data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_TERMINATE_APP"}}"></i>
+                    <i class="icon-forget-app forget-app tooltip" data-tooltip="{{{i18n 'TOOLBAR.TIP_FORGET_APP'}}}"></i>
                     <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate" title="{{name}}">{{name}}</span>
                 </div>
                 {{/if}}

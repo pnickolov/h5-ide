@@ -46,6 +46,7 @@ define [ "./DashboardTpl",
       "click .region-resource-list .start-app"       : "startApp"
       'click .region-resource-list .stop-app'        : 'stopApp'
       'click .region-resource-list .terminate-app'   : 'terminateApp'
+      'click .region-resource-list .forget-app'      : 'forgetApp'
 
       "click .show-credential" : "showCredential"
       "click .icon-detail"     : "showResourceDetail"
@@ -388,6 +389,45 @@ define [ "./DashboardTpl",
       event.preventDefault()
       id = $( event.currentTarget ).closest("li").attr("data-id")
       (new AppAction({model: @model.scene.project.getOpsModel(id)})).terminateApp()
+      false
+
+    forgetApp   : (event)->
+      event.preventDefault()
+      id = $( event.currentTarget ).closest("li").attr("data-id")
+      model = @model.scene.project.getOpsModel(id)
+      production = model.get("usage") is 'production'
+      name = model.get("name")
+
+      m = new Modal(
+        title    : lang.IDE.TITLE_CONFIRM_TO_FORGET
+        template : dataTemplate.forgetApp({
+          production : production
+          name : name
+        })
+        confirm  :
+          text  : lang.TOOLBAR.BTN_FORGET_CONFIRM
+          color : "red"
+        disableClose: true
+      )
+
+      m.tpl.find("#appNameConfirmIpt").on "keyup change", ()->
+        if m.tpl.find("#appNameConfirmIpt").val() is name
+          m.tpl.find('.modal-confirm').removeAttr "disabled"
+        else
+          m.tpl.find('.modal-confirm').attr "disabled", "disabled"
+        return
+
+      if production
+        m.tpl.find('.modal-confirm').attr "disabled", "disabled"
+
+      m.on "confirm", ()->
+        m.close()
+        model.terminate(true, false).then ()->
+          notification "info", "Your app \"#{name}\" has been removed from our database."
+        , ( err )->
+          notification "error", "Failed to remove your app \"#{name}\" from our database. (ErrorCode: #{err.error})"
+
+        return
       false
 
     reloadResource : ()->

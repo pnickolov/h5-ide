@@ -96,6 +96,7 @@ define [ '../base/model', "Design", 'constant', 'CloudResources', 'i18n!/nls/lan
                 rules        : null
                 isApp        : @isApp
                 associations : _.sortBy assos, name
+                tags         : aclObj.tags()
             }
             app_data = $.extend true, datas, acl_data
             @set app_data

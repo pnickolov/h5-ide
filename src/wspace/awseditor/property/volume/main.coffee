@@ -39,11 +39,13 @@ define [ "../base/main",
         initApp : ()->
             @model = app_model
             @view  = app_view
+            @model.isAppEdit = false
             null
 
         initAppEdit : ()->
             @model = app_model
             @view  = app_view
+            @model.isAppEdit = true
             null
     }
     null

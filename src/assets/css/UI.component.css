@@ -538,6 +538,11 @@ pre {
   .tag-resource-detail .pull-right {
     text-align: right;
     padding: 10px 20px; }
+    .tag-resource-detail .pull-right a.create-tag.icon-add {
+      text-align: center;
+      display: inline-block;
+      padding: 5px 5px;
+      margin-right: 5px; }
   .tag-resource-detail .tabs-footer {
     border-top: 1px solid #000000; }
 

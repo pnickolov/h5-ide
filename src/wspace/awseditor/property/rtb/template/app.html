@@ -1,69 +1,78 @@
 <article class="property-app">
 
-  {{#if association}}
-  <div class="property-control-group">{{i18n "PROP.RT_ASSOCIATION"}} {{association.subnet}} {{i18n "PROP.RT_ASSOCIATION_TO"}} {{association.rtb}}</div>
-  {{else}}
+    {{#if association}}
+    <div class="property-control-group">{{i18n "PROP.RT_ASSOCIATION"}} {{association.subnet}} {{i18n
+        "PROP.RT_ASSOCIATION_TO"}} {{association.rtb}}
+    </div>
+    {{else}}
 
-  <dl class="dl-vertical">
-    <dt>{{i18n "PROP.RT_ID"}}</dt>
-    <dd>{{id}}</dd>
+    <dl class="dl-vertical">
+        <dt>{{i18n "PROP.RT_ID"}}</dt>
+        <dd>{{id}}</dd>
 
-    <dt>{{ i18n "PROP.NAME" }}</dt>
-    <dd>{{emptyStr name}}</dd>
+        <dt>{{ i18n "PROP.NAME" }}</dt>
+        <dd>{{emptyStr name}}</dd>
 
-    <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
-    <dd>{{emptyStr description}}</dd>
+        <dt>{{ i18n "PROP.DESCRIPTION" }}</dt>
+        <dd>{{emptyStr description}}</dd>
 
-    <dt>{{i18n "PROP.RT_LBL_MAIN_RT"}}</dt>
-    <dd>{{main}}</dd>
+        <dt>{{i18n "PROP.RT_LBL_MAIN_RT"}}</dt>
+        <dd>{{main}}</dd>
 
-    <dt>{{i18n "PROP.RT_VPC_ID"}}</dt>
-    <dd>{{vpcId}}</dd>
-  </dl>
-  {{#if tagSet}}
-  <div class="option-group-head">
-      {{i18n "PROP.RESOURCE_TAGS"}}
-  </div>
-  <div class="option-group">
-      <table class="table cost-estimation-table">
-          <tbody>
-          {{#each tagSet}}
-          <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
-          {{else}}
-          <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
-          {{/each}}
-          </tbody>
-      </table>
-  </div>
-  {{/if}}
-  <div class="option-group-head expand">{{i18n "PROP.RT_LBL_ROUTE"}}</div>
-  <div class="option-group">
-    <table class="table table-small">
-      <thead>
-        <tr>
-          <th></th>
-          <th>{{i18n "PROP.RT_DESTINATION"}}</th>
-          <th>{{i18n "PROP.RT_TARGET"}}</th>
-          <th></th>
-        </tr>
-      </thead>
-      {{#each routeSet}}
-      <tr>
-        {{#if active}}
-        <td><i class="status status-green tooltip" data-tooltip="{{i18n 'PROP.RT_TIP_ACTIVE'}}"></i></td>
-        {{else}}
-        <td><i class="status status-red tooltip" data-tooltip="{{i18n 'PROP.RT_TIP_BLACKHOLE'}}"></i></td>
-        {{/if}}
-        <td>{{destinationCidrBlock}}</td>
-        <td>{{target}}</td>
-        {{#if propagate}}
-        <td><i class="icon-info tooltip" data-tooltip="{{i18n 'PROP.RT_TIP_PROPAGATED'}}"></i></td>
-        {{else}}
-        <td></td>
-        {{/if}}
-      </tr>
-      {{/each}}
-    </table>
-  </div>
-  {{/if}}
+        <dt>{{i18n "PROP.RT_VPC_ID"}}</dt>
+        <dd>{{vpcId}}</dd>
+    </dl>
+    {{#if tagSet}}
+    <div class="option-group-head">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        <table class="table cost-estimation-table">
+            <tbody>
+            {{#each tagSet}}
+            <tr>
+                <td style="min-width:70px;">{{@key}}</td>
+                <td>{{this}}</td>
+            </tr>
+            {{else}}
+            <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <div class="tags-action">
+            <button class="tag-large icon-info"></button>
+        </div>
+
+    </div>
+    {{/if}}
+    <div class="option-group-head expand">{{i18n "PROP.RT_LBL_ROUTE"}}</div>
+    <div class="option-group">
+        <table class="table table-small">
+            <thead>
+            <tr>
+                <th></th>
+                <th>{{i18n "PROP.RT_DESTINATION"}}</th>
+                <th>{{i18n "PROP.RT_TARGET"}}</th>
+                <th></th>
+            </tr>
+            </thead>
+            {{#each routeSet}}
+            <tr>
+                {{#if active}}
+                <td><i class="status status-green tooltip" data-tooltip="{{i18n 'PROP.RT_TIP_ACTIVE'}}"></i></td>
+                {{else}}
+                <td><i class="status status-red tooltip" data-tooltip="{{i18n 'PROP.RT_TIP_BLACKHOLE'}}"></i></td>
+                {{/if}}
+                <td>{{destinationCidrBlock}}</td>
+                <td>{{target}}</td>
+                {{#if propagate}}
+                <td><i class="icon-info tooltip" data-tooltip="{{i18n 'PROP.RT_TIP_PROPAGATED'}}"></i></td>
+                {{else}}
+                <td></td>
+                {{/if}}
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+    {{/if}}
 </article>

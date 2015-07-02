@@ -26,6 +26,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
 
       component = design.component( uid )
       res_type  = constant.RESTYPE
+      @set "tags", component.tags()
 
       # uid might be a line connecting RTB and other resource
       if component.node_line

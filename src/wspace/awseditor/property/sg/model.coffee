@@ -28,6 +28,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources"  ], ( PropertyM
                 color        : component.color
                 ruleEditable : !@readonly()
                 readonly     : @readonly()
+                tags         : component.tags()
             }
 
             @sortSGRule()

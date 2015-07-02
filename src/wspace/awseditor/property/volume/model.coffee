@@ -43,6 +43,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 support_encrypted : supportEncrypted
                 encrypted   : isEncrypted
                 owner       : res.owner
+                tags        : component.tags()
 
             # Snapshot
             if volume_detail.snapshot_id

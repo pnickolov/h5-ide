@@ -1,107 +1,145 @@
 <article>
-{{#if association}}
-	<div class="property-control-group">{{i18n "PROP.RT_ASSOCIATION"}} {{association.subnet}} {{i18n "PROP.RT_ASSOCIATION_TO"}} {{association.rtb}}</div>
-{{else}}
-	<div class="property-control-group" data-bind="true">
-		<label class="left" for="rt-name">{{i18n "PROP.RT_NAME"}}</label>
-		<input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true"  value="{{title}}" id="rt-name">
-	</div>
+    {{#if association}}
+    <div class="property-control-group">{{i18n "PROP.RT_ASSOCIATION"}} {{association.subnet}} {{i18n
+        "PROP.RT_ASSOCIATION_TO"}} {{association.rtb}}
+    </div>
+    {{else}}
+    <div class="property-control-group" data-bind="true">
+        <label class="left" for="rt-name">{{i18n "PROP.RT_NAME"}}</label>
+        <input class="input" type="text" data-required="true" data-ignore="true" data-required-rollback="true"
+               value="{{title}}" id="rt-name">
+    </div>
 
-	<section class="property-control-group" data-bind="true">
+    <section class="property-control-group" data-bind="true">
         <label class="left" for="property-res-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
         <textarea id="property-res-desc" data-type="ascii" data-ignore="true" class="input">{{description}}</textarea>
-	</section>
+    </section>
 
-	{{#if isAppEdit}}
-	  <dl class="dl-vertical">
-	    <dt>{{i18n "PROP.RT_ID"}}</dt>
-	    <dd>{{routeTableId}}</dd>
+    {{#if isAppEdit}}
+    <dl class="dl-vertical">
+        <dt>{{i18n "PROP.RT_ID"}}</dt>
+        <dd>{{routeTableId}}</dd>
 
-	    <dt>{{i18n "PROP.RT_LBL_MAIN_RT"}}</dt>
-	    <dd>{{main}}</dd>
+        <dt>{{i18n "PROP.RT_LBL_MAIN_RT"}}</dt>
+        <dd>{{main}}</dd>
 
-	    <dt>{{i18n "PROP.RT_VPC_ID"}}</dt>
-	    <dd>{{vpcId}}</dd>
-	  </dl>
-	  	{{#if canSetMain}}
-	  	<div class="tac property-control-group">
-			<button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
-		</div>
-		{{/if}}
+        <dt>{{i18n "PROP.RT_VPC_ID"}}</dt>
+        <dd>{{vpcId}}</dd>
+    </dl>
+    {{#if canSetMain}}
+    <div class="tac property-control-group">
+        <button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
+    </div>
+    {{/if}}
 
-	{{else}}
-		<div class="tac property-control-group">
-			{{#if isMain}}
-			    <p>{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
-            {{/if}}
-			{{#if canSetMain}}
-            <button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
-            {{/if}}
+    {{else}}
+    <div class="tac property-control-group">
+        {{#if isMain}}
+        <p>{{i18n "PROP.RT_LBL_MAIN_RT"}}</p>
+        {{/if}}
+        {{#if canSetMain}}
+        <button class="btn btn-primary" id="set-main-rt" style="width: 200px;">{{i18n "PROP.RT_SET_MAIN"}}</button>
+        {{/if}}
 
-		</div>
-	{{/if}}
+    </div>
+    {{/if}}
 
 
+    <div class="option-group-head expand">{{i18n "PROP.RT_LBL_ROUTE"}}</div>
+    <div class="option-group" data-bind="true">
+        <ul class="mega-list-wrapper route-list">
+            <li>
+                <table class="table-no-style">
+                    <tr class="route-target">
+                        <td class="route-label">{{i18n "PROP.RT_TARGET"}}</td>
+                        <td class="route-target-resource">{{i18n "PROP.RT_LOCAL"}}</td>
+                    </tr>
+                    <tr>
+                        <td class="route-label">{{i18n "PROP.RT_DESTINATION"}}</td>
+                        <td class="route-destination-input">
+                            <div class="route-readonly">{{local_route}}</div>
+                        </td>
+                    </tr>
+                </table>
+            </li>
 
-	<div class="option-group-head expand">{{i18n "PROP.RT_LBL_ROUTE"}}</div>
-	<div class="option-group" data-bind="true">
-		<ul class="mega-list-wrapper route-list">
-			<li><table class="table-no-style">
-			  <tr class="route-target">
-			    <td class="route-label">{{i18n "PROP.RT_TARGET"}}</td>
-			    <td class="route-target-resource">{{i18n "PROP.RT_LOCAL"}}</td>
-			  </tr>
-			  <tr>
-			    <td class="route-label">{{i18n "PROP.RT_DESTINATION"}}</td>
-			    <td class="route-destination-input"> <div class="route-readonly">{{local_route}}</div> </td>
-			  </tr>
-			</table></li>
+            {{#each routes}}
+            <li class="{{#if ../isStack}}{{#ifCond type " ExternalVpcRouteTarget
+            "}}have-vpc-peer-route{{/ifCond}}{{/if}}">
+            {{#if ../isStack}}{{#ifCond type "ExternalVpcRouteTarget"}}
+            <div class="remove-vpc-peer-route">{{i18n "PROP.RTB_REMOVE_VPC_PEER_ROUTE"}}</div>
+            {{/ifCond}}{{/if}}
+            <table class="table-no-style">
+                <tr class="route-target">
+                    <td class="route-label">{{i18n "PROP.RT_TARGET"}}</td>
+                    <td class="route-target-resource">{{name}}</td>
+                </tr>
 
-			{{#each routes}}
-			<li class="{{#if ../isStack}}{{#ifCond type "ExternalVpcRouteTarget"}}have-vpc-peer-route{{/ifCond}}{{/if}}">
-			  {{#if ../isStack}}{{#ifCond type "ExternalVpcRouteTarget"}}<div class="remove-vpc-peer-route">{{i18n "PROP.RTB_REMOVE_VPC_PEER_ROUTE"}}</div>{{/ifCond}}{{/if}}
-			  <table class="table-no-style">
-			  <tr class="route-target">
-			    <td class="route-label">{{i18n "PROP.RT_TARGET"}}</td>
-			    <td class="route-target-resource">{{name}}</td>
-			  </tr>
+                <tr>
+                    <td class="route-label">{{i18n "PROP.RT_DESTINATION"}}</td>
+                    <td class="route-destination-input">
+                        {{#if readonly}}
+                        {{#each cidr_set}}
+                        <div class="route-readonly" data-ref="{{../ref}}">{{this}}</div>
+                        {{/each}}
+                        {{else}}
+                        <div class="multi-input" data-ref="{{ref}}">
+                            {{#each cidr_set}}
+                            <div class="multi-ipt-row">
+                                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#"
+                                                                                               class="icon-add"></a></span>
+                                <span class="ipt-wrapper"><input class="ip-main-input input" data-ignore="true"
+                                                                 data-ignore-regexp="^[0-9./]*$" data-type="cidr"
+                                                                 data-trigger="change" placeholder="eg. 0.0.0.0/0"
+                                                                 value="{{this}}" type="text"></span>
+                            </div>
+                            {{else}}
+                            <div class="multi-ipt-row">
+                                <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#"
+                                                                                               class="icon-add"></a></span>
+                                <span class="ipt-wrapper"><input class="input tooltip" data-ignore="true"
+                                                                 data-ignore-regexp="^[0-9./]*$"
+                                                                 placeholder="eg. 0.0.0.0/0" data-empty-remove="true"
+                                                                 type="text"></span>
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
 
-			  <tr>
-			    <td class="route-label">{{i18n "PROP.RT_DESTINATION"}}</td>
-			    <td class="route-destination-input">
-			    	{{#if readonly}}
-							{{#each cidr_set}} <div class="route-readonly" data-ref="{{../ref}}">{{this}}</div> {{/each}}
-						{{else}}
-			    	<div class="multi-input" data-ref="{{ref}}">
-							{{#each cidr_set}}
-							<div class="multi-ipt-row">
-			          <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-			          <span class="ipt-wrapper"><input class="ip-main-input input" data-ignore="true" data-ignore-regexp="^[0-9./]*$" data-type="cidr" data-trigger="change" placeholder="eg. 0.0.0.0/0" value="{{this}}" type="text"></span>
-			        </div>
-							{{else}}
-							<div class="multi-ipt-row">
-			          <span class="ipt-controls"><a href="#" class="icon-del"></a><a href="#" class="icon-add"></a></span>
-			          <span class="ipt-wrapper"><input class="input tooltip" data-ignore="true" data-ignore-regexp="^[0-9./]*$" placeholder="eg. 0.0.0.0/0" data-empty-remove="true" type="text"></span>
-			        </div>
-				      {{/each}}
-				    </div>
-				    {{/if}}
-
-				    {{#if isVgw}}
-				    <div class="property-control-group">
-							<div class="checkbox">
-								<input id="propagate_{{@index}}" type="checkbox" class="propagation" {{#if isProp}}checked="true"{{/if}}>
-								<label for="propagate_{{@index}}"></label>
-							</div>
-							<label for="propagate_{{@index}}">{{i18n "PROP.RTB_ALLOW_PROPAGATION"}}</label>
-						</div>
-						{{/if}}
-			    </td>
-			  </tr>
-			</table>
-			</li>
-			{{/each}}
-		</ul>
-	</div>
-{{/if}}
+                        {{#if isVgw}}
+                        <div class="property-control-group">
+                            <div class="checkbox">
+                                <input id="propagate_{{@index}}" type="checkbox" class="propagation" {{#if
+                                       isProp}}checked="true" {{/if}}>
+                                <label for="propagate_{{@index}}"></label>
+                            </div>
+                            <label for="propagate_{{@index}}">{{i18n "PROP.RTB_ALLOW_PROPAGATION"}}</label>
+                        </div>
+                        {{/if}}
+                    </td>
+                </tr>
+            </table>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/if}}
+    <div class="option-group-head expand">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        <table class="table cost-estimation-table">
+            <tbody>
+            {{#each tags}}
+            <tr> <td style="min-width:10px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+            {{else}}
+            <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <div class="tags-action">
+            <button class="tag-large icon-info"></button>
+            <button class="btn open-tag-manager modal-confirm btn-blue">Edit Tags</button>
+        </div>
+    </div>
 </article>

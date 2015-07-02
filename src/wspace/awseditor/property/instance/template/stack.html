@@ -199,5 +199,23 @@
 	{{/if}}
 
 	<div class="option-group-head" id="sg-head">{{ i18n "PROP.INSTANCE_SG_DETAIL" }}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group"></div>
+  	<div class="option-group sg-group"></div>
+	<div class="option-group-head expand">
+		{{i18n "PROP.RESOURCE_TAGS"}}
+	</div>
+	<div class="option-group">
+		<table class="table cost-estimation-table">
+			<tbody>
+			{{#each tags}}
+			<tr> <td style="min-width:10px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+			{{else}}
+			<tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
+			{{/each}}
+			</tbody>
+		</table>
+		<div class="tags-action">
+			<button class="tag-large icon-info"></button>
+			<button class="btn open-tag-manager modal-confirm btn-blue">Edit Tags</button>
+		</div>
+	</div>
 </article>

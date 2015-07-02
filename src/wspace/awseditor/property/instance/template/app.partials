@@ -104,6 +104,9 @@
             {{/each}}
             </tbody>
         </table>
+        <div class="tags-action">
+            <button class="tag-large icon-info"></button>
+        </div>
     </div>
     {{/if}}
   {{#if rootDevice}}

@@ -37,10 +37,12 @@ define [
       @modal
 
     renderFilter: ->
-      @filter = new FilterInput()
+      data = if @model then {uid: @model.id} else null
+      @filter = new FilterInput(data)
       @listenTo @filter, 'change:filter', @filterResourceList
       @modal.tpl.find(".filter-bar").replaceWith(@filter.render().el)
-      @filterResourceList @filter.getFilterableResource()
+      if not data
+        @filterResourceList @filter.getFilterableResource()
 
     selectTableRow: (evt)->
       $row = $(evt.currentTarget)

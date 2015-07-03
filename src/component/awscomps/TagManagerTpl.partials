@@ -60,8 +60,8 @@
 <tr class="item" data-id="{{id}}">
     <td>
         <div class="checkbox">
-            <input id="{{appId}}" type="checkbox" value="None" data-id="{{appId}}" class="one-cb">
-            <label for="{{appId}}"></label>
+            <input id="check-{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb">
+            <label for="check-{{id}}"></label>
         </div>
     </td>
     <td>{{name}}</td>

@@ -61,7 +61,6 @@ define [
       @renderTagsContent()
 
     changeTags: (elem)->
-      console.log(elem)
       $tagLi = $(elem).parents("li")
       $tagKey = $tagLi.find(".tag-key")
       $tagValue = $tagLi.find(".tag-value")
@@ -76,7 +75,6 @@ define [
         if key.indexOf("aws:") == 0 then return false
         resource = @getAffectedResources()
         if tagComp
-          console.log tagComp, resource.common, key, value
           tagComp.update(resource.common, key, value)
         if tagAsgComp
           tagAsgComp.update(resource.asg, key, value, inherit)

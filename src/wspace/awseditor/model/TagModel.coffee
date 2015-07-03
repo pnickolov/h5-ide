@@ -22,7 +22,12 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
     genResourceIds: ->
       _.map @connectionTargets(), (resource) ->
-        resource.createRef constant.AWS_RESOURCE_KEY[ resource.type ]
+        if resource.type is constant.RESTYPE.ASG
+          refName = 'AutoScalingGroupName'
+        else
+          refName = constant.AWS_RESOURCE_KEY[ resource.type ]
+
+        resource.createRef refName
 
     update: ( resources, key, value, inherit ) ->
       if key is @get 'key'

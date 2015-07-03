@@ -6222,6 +6222,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   padding: 4px 4px 3px;
   cursor: pointer;
   box-sizing: content-box; }
+  .btn-toolbar .icon-bezier-q {
+    display: inline-block; }
   .btn-toolbar.seperator {
     border-right: 1px solid #000; }
   .btn-toolbar:hover, .icon-hide-sg.selected, .btn-toolbar.open .selection {

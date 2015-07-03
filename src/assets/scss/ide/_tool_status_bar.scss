@@ -24,6 +24,9 @@
   cursor     : pointer;
   box-sizing : content-box;
 
+  .icon-bezier-q {
+    display: inline-block;
+  }
   &.seperator {
     border-right : 1px solid #000;
   }
@@ -41,7 +44,7 @@
   }
 
   &.selectbox {
-    min-width  : 52px;
+    min-width: 52px;
     padding: 0;
     height : 40px;
 

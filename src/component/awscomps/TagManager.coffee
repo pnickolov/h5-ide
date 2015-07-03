@@ -42,7 +42,7 @@ define [
       @listenTo @filter, 'change:filter', @filterResourceList
       @modal.tpl.find(".filter-bar").replaceWith(@filter.render().el)
       if data
-        @filterResourceList @filter.getMatchedResource().matched
+        @filterResourceList @filter.getMatchedResource()
         @$el.find(".t-m-content tr.item").eq(0).click()
       else
         @filterResourceList @filter.getFilterableResource()
@@ -76,11 +76,12 @@ define [
         if key.indexOf("aws:") == 0 then return false
         resource = @getAffectedResources()
         if tagComp
+          console.log tagComp, resource.common, key, value
           tagComp.update(resource.common, key, value)
         if tagAsgComp
           tagAsgComp.update(resource.asg, key, value, inherit)
 
-        if not tagAsgComp and not tagAsgComp
+        if not tagComp and not tagAsgComp
           error = null
           _.each _.union(resource.common, resource.asg), (res)->
             err = res.addTag(key, value, inherit)

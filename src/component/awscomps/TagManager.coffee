@@ -23,6 +23,7 @@ define [
       @instance = Design.instance()
       @model = model
       @setElement @renderModal().tpl
+      @renderFilter()
       @
 
     renderModal: ()->
@@ -33,7 +34,6 @@ define [
         template: template.modalTemplate
         disableFooter: true
       })
-      @renderFilter()
       @modal
 
     renderFilter: ->
@@ -41,7 +41,10 @@ define [
       @filter = new FilterInput(data)
       @listenTo @filter, 'change:filter', @filterResourceList
       @modal.tpl.find(".filter-bar").replaceWith(@filter.render().el)
-      if not data
+      if data
+        @filterResourceList @filter.getMatchedResource().matched
+        @$el.find(".t-m-content tr.item").eq(0).click()
+      else
         @filterResourceList @filter.getFilterableResource()
 
     selectTableRow: (evt)->

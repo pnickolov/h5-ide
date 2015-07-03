@@ -40,8 +40,9 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         v is value
 
     hasTag = ( tags, key, value ) ->
+      args = arguments
       _.some tags, (tag) ->
-        tag.get('key') is key and ( arguments.length isnt 3 or tag.get('value') is value )
+        tag.get('key') is key and ( args.length isnt 3 or tag.get('value') is value )
 
     isResMatchTag = ( resource, selTags ) ->
       unless _.size(selTags) then return true
@@ -137,7 +138,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         tagSplit = seperate key, 'tag:'
         dotSplit = seperate key, '.'
-
 
         if tagSplit
           mode = 'tag'
@@ -236,17 +236,26 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         else
           @$(".line-tip").text "(+" + hideLineNum + ")"
 
+      stringKeyValue: (sel) ->
+        key   = sel.key
+        value = sel.value
+
+        sel.key   = key.toString() if _.isNumber(key)
+        sel.value = value.toString() if _.isNumber(value)
+
       addSelection: (sel, silent) ->
-        if _.isString sel
-            tmp = sel.split('=')
-            if tmp.length isnt 2 then return
+        unless sel
+            state = @getState()
+            unless state.value then return
             sel = {
-              key   : tmp[0].trim()
-              value : tmp[1].trim()
+              key: state.key + if state.subKey then ".#{state.subKey}" else ''
+              value: state.value
+              type: state.mode
             }
 
         sel.type  = @getState().type unless sel.type
         sel.vtext = sel.value unless sel.vtext
+        @stringKeyValue(sel)
 
         if not sel.value and sel.type not in [ 'resource', 'resource_attribute' ] then return
 
@@ -265,11 +274,11 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         unless $sel.size() then return
 
         selection =
-          key: $sel.data("key")
+          key: $sel.data("key").toString()
           value: $sel.data("value").toString()
 
         @selection = _.filter(@selection, (s) ->
-          s.key isnt selection.key or s.value?.toString() isnt selection.value and !(!s.value and !selection.value)
+          s.key isnt selection.key or s.value isnt selection.value and !(!s.value and !selection.value)
         )
 
         @triggerChange()
@@ -497,7 +506,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
             if dropdown.children().size()
               @selectHandler currentTarget: dropdown.find(".selected")
             else
-              @addSelection $input.val()
+              @addSelection()
           when 27 # Esc
             @fold()
           when 38 # Up

@@ -89,7 +89,7 @@ define [
     initFilter: ->
       ### env:dev ###
       # Need remove before deploy
-      @filter = window.filter = new FilterInput(isVisual: true)
+      @filter = window.filter = new FilterInput( isVisual: true )
       window.FilterInput = FilterInput
       #
       ### env:dev:end ###
@@ -100,7 +100,7 @@ define [
 
     highlightCanvas: ( models, effect ) ->
       if !arguments.length
-        matched = @filter.getMatchedResource()
+        matched = @filter.getMatchedResource true
         models  = matched.matched
         effect  = matched.effect
 

@@ -96,18 +96,20 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           else
             !comp.port and _.contains(constant.HASTAG, comp.type)
 
-      getMatchedResource: () ->
+      getMatchedResource: (hightlight) ->
         selection = @classifySelection(@selection)
         filterable = @getFilterableResource()
 
         matched = _.filter filterable, (resource) ->
           if isResMatchTag(resource, selection.tags) and isResMatchResource( resource, selection.resources )
             true
-
-        { matched: matched, effect: 0 < matched.length < filterable.length }
+        if hightlight
+          { matched: matched, effect: 0 < matched.length < filterable.length }
+        else
+          matched
 
       triggerChange: ->
-        matched = @getMatchedResource()
+        matched = @getMatchedResource(true)
         @trigger 'change:filter', matched.matched, matched.effect
 
       classifySelection: ->
@@ -171,16 +173,17 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           @isVisual = options.isVisual
           if options.selection
             for s in options.selection
-              @addSelection s
+              @addSelection s, true
 
           if options.uid
             comp = Design.instance().component options.uid
-            if comp
+            name = comp?.get('name')
+            if name
               @addSelection {
                 key   : "#{getResShortNameByType(comp.type)}.name"
-                value : comp.get('name')
+                value : name
                 type  : 'resource_attribute'
-              }
+              }, true
 
         null
 
@@ -233,37 +236,28 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         else
           @$(".line-tip").text "(+" + hideLineNum + ")"
 
-      addSelection: (key, value, type, vtext) ->
-        if _.isObject key
-          value = key.value
-          type = key.type
-          vtext = key.vtext
-          key = key.key
-
-        else if arguments.length is 1
-            tmp = key.split('=')
+      addSelection: (sel, silent) ->
+        if _.isString sel
+            tmp = sel.split('=')
             if tmp.length isnt 2 then return
-            key = tmp[0].trim()
-            value = tmp[1].trim()
+            sel = {
+              key   : tmp[0].trim()
+              value : tmp[1].trim()
+            }
 
-        unless type
-          state = @getState()
-          type = state.mode
+        sel.type  = @getState().type unless sel.type
+        sel.vtext = sel.value unless sel.vtext
 
-        sel =
-          key: key
-          value: value
-          vtext: vtext or value
-          type: type
-
-        if not value and type not in [ 'resource', 'resource_attribute' ] then return
+        if not sel.value and sel.type not in [ 'resource', 'resource_attribute' ] then return
 
         @clearInput()
         return @ if _.some(@selection, (t) ->
           _.isEqual t, sel
         )
         @selection.push sel
-        @triggerChange()
+
+        unless silent then @triggerChange()
+
         @renderSelection()
         @
 
@@ -601,12 +595,17 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         if state.state is 'value'
           key = state.key + if state.subKey then ".#{state.subKey}" else ''
-          @addSelection key, $tgt.data('value'), state.mode, $tgt.data('vtext')
+          @addSelection {
+            key: key
+            value: $tgt.data('value')
+            type: state.mode
+            vtext: $tgt.data('vtext')
+          }
         else
           key = $tgt.data('value')
           if type is 'attribute'
             if key is DefaultValues.AllAttributes
-              @addSelection(state.key, null, state.mode)
+              @addSelection( key: state.key, type: state.mode )
               return @renderDropdown()
             else
               key = "#{state.key}.#{key} = "

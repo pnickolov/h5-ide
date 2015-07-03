@@ -76,11 +76,10 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       if @tagKeyExist(resources, tagKey)
         return error: "A tag with key '#{tagKey}' already exists"
 
-      tagItem = @find tagKey, tagValue, inherit
-
       inherit = true if @type is constant.RESTYPE.ASGTAG and inherit is undefined
       inherit = undefined if @type is constant.RESTYPE.TAG
 
+      tagItem = @find tagKey, tagValue, inherit
       tagItem = new TagItem( { key: tagKey, value: tagValue, inherit: inherit, __parent: @ } ) unless tagItem
 
       for resource in resources

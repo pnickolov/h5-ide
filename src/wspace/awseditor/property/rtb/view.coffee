@@ -161,11 +161,15 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
                 $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.REMOVE_ROUTE}</a>""")
                 .appendTo(modal.find(".modal-footer"))
 
-                modal.on "confirm", ()-> modal.close()
+                modal.on "confirm", ()->
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
                 modal.on "close", () ->
                     that.disabledAllOperabilityArea(false)
                     inputElem.focus()
-                modal.on "closed", () -> inputElem.focus()
+                modal.on "closed", () ->
+                    that.disabledAllOperabilityArea(false)
+                    inputElem.focus()
                 modal.find("#cidr-removed").on "click", () ->
                     Design.instance().component(dataRef)?.remove()
                     that.disabledAllOperabilityArea(false)

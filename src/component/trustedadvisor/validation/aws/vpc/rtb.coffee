@@ -39,7 +39,7 @@ define [ 'constant', 'MC', 'TaHelper', 'Design' ], ( CONST, MC, Helper, Design )
 
 				SubnetModel = Design.modelClassForType( CONST.RESTYPE.SUBNET )
 
-				if (currentRouteDes is routeDes) or (idx is 0 and SubnetModel.isCidrConflict(currentRouteDes, routeDes))
+				if (currentRouteDes is routeDes) or SubnetModel.isCidrConflict(currentRouteDes, routeDes)
 
 					tipInfo = sprintf i18n.ERROR_RT_HAVE_CONFLICT_DESTINATION, rtbName
 					notices.push({

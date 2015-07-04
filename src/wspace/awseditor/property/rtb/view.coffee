@@ -125,13 +125,9 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
             # Right now we do not check if "0.0.0.0/0" conflicts with other cidr
             else
                 for cidr, idx in allCidrAry
-                    if inputValue is cidr
+                    if inputValue is cidr or (cidr isnt "0.0.0.0/0" and @model.isCidrConflict( inputValue, cidr ))
                         mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_CONFLICTS, inputValue
                         descContent = lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_DESC
-                        break
-                    if idx is 0 and cidr isnt "0.0.0.0/0" and @model.isCidrConflict( inputValue, cidr )
-                        mainContent = sprintf lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_LOCAL, inputValue
-                        descContent = lang.PROP.RTB_CIDR_BLOCK_CONFLICTS_LOCAL_DESC
                         break
 
             if not mainContent
@@ -165,13 +161,20 @@ define [ '../base/view', './template/stack', 'i18n!/nls/lang.js', "UI.modalplus"
                 $("""<a id="cidr-removed" class="link-red left link-modal-danger">#{lang.PROP.REMOVE_ROUTE}</a>""")
                 .appendTo(modal.find(".modal-footer"))
 
-                modal.on "confirm", ()-> modal.close()
-                modal.on "close", () -> inputElem.focus()
-                modal.on "closed", () -> inputElem.focus()
+                modal.on "confirm", ()->
+                    that.disabledAllOperabilityArea(false)
+                    modal.close()
+                modal.on "close", () ->
+                    that.disabledAllOperabilityArea(false)
+                    inputElem.focus()
+                modal.on "closed", () ->
+                    that.disabledAllOperabilityArea(false)
+                    inputElem.focus()
                 modal.find("#cidr-removed").on "click", () ->
                     Design.instance().component(dataRef)?.remove()
                     that.disabledAllOperabilityArea(false)
                     modal.close()
+                    that.render()
 
         onRemoveVPCPeerRoute : (event) ->
             $li = $(event.currentTarget).parents('li')

@@ -718,6 +718,7 @@ define [
 
     isDefaultKey: ->
       kp = @connectionTargets( "KeypairUsage" )[0]
+      if not kp then return true
       kp and kp.isDefault()
 
     isNoKey: ->
@@ -956,7 +957,10 @@ define [
       if KP
         KP.assignTo( model )
       else
-        model.set 'keyName', data.resource.KeyName
+        if data.resource.KeyName
+          model.set 'keyName', data.resource.KeyName
+        else
+          _.defer ()-> Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( model )
 
       null
   }

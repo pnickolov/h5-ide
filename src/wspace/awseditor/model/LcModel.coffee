@@ -294,7 +294,10 @@ define [
       if KP
         KP.assignTo( model )
       else
-        model.set 'keyName', data.resource.KeyName
+        if data.resource.KeyName
+          model.set 'keyName', data.resource.KeyName
+        else
+          _.defer ()-> Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( model )
 
 
       null

@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="tabs-footer pull-right">
-           <button class="btn save-tags btn-primary">Save Tags</button>
+           <button class="btn save-tags btn-primary">Save</button>
         </div>
     </div>
 </div>
@@ -98,13 +98,13 @@
                         <label for="{{id}}"></label>
                     </div>
                     <div class="action">
-                        <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}>Delete</button>
+                        <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>
                     </div>
                 </div>
             </li>
         {{/each}}
     </ul>
     <div class="pull-right">
-        <a class="btn btn-blue create-tag icon-add"> Add Tag</a>
+        <a class="btn btn-blue create-tag"><i class="icon-add"></i> Add</a>
     </div>
 {{/if}}

@@ -29,8 +29,8 @@ define [
     renderModal: ()->
       @modal = new Modal({
         title: "Tag Management"
-        width: 900
-        height: 400
+        width: 1000
+        height: 450
         template: template.modalTemplate
         disableFooter: true
       })
@@ -239,7 +239,7 @@ define [
                       <label for="#{tagId}"></label>
                   </div>
                   <div class="action">
-                    <button class="btn btn-red edit-remove-row">Cancel</button>
+                    <button class="btn btn-red edit-remove-row"><i class="icon-del"></i></button>
                   </div>
               </div>
           </li>
@@ -260,4 +260,3 @@ define [
       @$el.find(".tabs-content .tab-content").hide()
       @$el.find(".tabs-content .tab-content[data-id='#{target}']").show()
   }
-

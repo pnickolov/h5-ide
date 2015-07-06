@@ -19,6 +19,9 @@
     height: 391px;
     box-sizing: border-box;
     overflow: auto;
+    .table {
+      border-collapse: initial;
+    }
   }
   .tag-resource-table{
     &.table-head-fix .table-head thead th, &.table-head-fix .table tr td {

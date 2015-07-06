@@ -8,10 +8,31 @@
         border: 1px solid #000;
         border-radius: 2px;
         height: 34px;
-        padding: 0 3px;
+        padding: 0 5px;
         display: flex;
         overflow: hidden;
         background: #2b2b35;
+        .tags {
+            li {
+                color: #DADADA !important;
+                font-weight: normal;
+                font-size: 12px;
+                padding: 1px 5px;
+                border: 1px solid #59595C;
+                margin-top: 8px;
+                border-radius: 3px;
+                background: #2C2C2C;
+                span.key {
+                    font-weight: normal;
+                    margin-right: 2px;
+                }
+            }
+        }
+        input {
+            margin-left: 4px;
+            margin-top: 2px;
+            font-size: 12px;
+        }
     }
 
     .fake-input.focus {
@@ -141,7 +162,10 @@
     width: 1000px;
 
     .fake-input {
-        margin-top: 2px;
+        padding-top: 3px;
+        border-top: 0;
+        border-bottom: 0;
+        border-radius: 0;
     }
 
 }

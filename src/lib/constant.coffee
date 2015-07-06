@@ -193,6 +193,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'VOL'
         'VPC'
         'VPN'
+        'VGW'
         'ASG'
         'DBINSTANCE'
         'DBSNAP'

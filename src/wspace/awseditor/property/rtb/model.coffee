@@ -55,6 +55,7 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
         routes      : routes
         isAppEdit   : @isAppEdit
         isStack     : (Design.instance().mode() is 'stack')
+        isRTB       : component.type is res_type.RT
 
       for cn in component.connections()
         if cn.type isnt "RTB_Route"

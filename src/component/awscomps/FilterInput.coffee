@@ -37,7 +37,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       _.some serialized, (serializedItem) ->
         v = serializedItem?.component?.resource?[attr]
-        v is value
+        if value is DefaultValues.AllValues then v isnt undefined else v is value
 
     hasTag = ( tags, key, value ) ->
       args = arguments

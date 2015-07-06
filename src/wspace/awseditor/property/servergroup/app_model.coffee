@@ -20,6 +20,7 @@ define [ '../base/model',
 			@set 'isMesosMaster', @resModel.isMesosMaster()
 			@set 'isMesosSlave', @resModel.isMesosSlave()
 
+			@set 'tags', Design.instance().component(uid).tags()
 			# Find out AMI
 			ami_id = @resModel.get("imageId")
 			ami    = @resModel.getAmi() or @resModel.get("cachedAmi")

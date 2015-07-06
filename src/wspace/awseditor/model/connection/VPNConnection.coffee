@@ -1,5 +1,13 @@
 
-define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
+define [ "constant", "ConnectionModel", "ComplexResModel" ], ( constant, ConnectionModel, ComplexResModel )->
+
+  VpnModel = ComplexResModel.extend {
+    type: 'VpnResource'
+    isVisual: -> false
+    createRef: -> ComplexResModel.prototype.createRef.call @getRealBody(), 'VpnGatewayId'
+    setRealBody: (realbody) -> @__realbody = realbody
+    getRealBody: -> @__realbody
+  }
 
   C = ConnectionModel.extend {
 
@@ -15,6 +23,14 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
       port2 :
         name : "cgw-vpn"
         type : constant.RESTYPE.CGW
+
+    initialize: ->
+      @__resource = new VpnModel()
+      @__resource.setRealBody @
+
+    getResourceModel: -> @__resource
+    connectionTargets: -> @__resource.connectionTargets.apply @__resource, arguments
+    tags: -> @__resource.tags.apply @__resource, arguments
 
     serialize : ( component_data )->
       vgw = @getTarget( constant.RESTYPE.VGW )

@@ -62,15 +62,19 @@
     </table>
   </div>
 
-  <div class="option-group-head">
+  <div class="option-group-head">{{i18n "PROP.ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
+  <div class="option-group sg-group"></div>
+
+  {{#if tagSet}}
+  <div class="option-group-head expand">
     {{i18n "PROP.RESOURCE_TAGS"}}
   </div>
   <div class="option-group">
-    {{#if tags.length}}
+    {{#if tagSet}}
     <table class="table cost-estimation-table">
       <tbody>
-      {{#each tags}}
-      <tr> <td style="min-width:70px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+      {{#each tagSet}}
+      <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
       {{/each}}
       </tbody>
     </table>
@@ -81,9 +85,6 @@
       <button class="tag-large icon-info"></button>
     </div>
   </div>
-
-  <div class="option-group-head">{{i18n "PROP.ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group"></div>
-
+  {{/if}}
   {{/unless}}
 </article>

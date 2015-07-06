@@ -121,7 +121,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         MESOSLC    : "MESOS.LC"
 
     RESNAME =
-
         AZ           : "Availability Zone"
         INSTANCE     : "Instance"
         KP           : "Key Pair"
@@ -150,6 +149,15 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         CW           : 'Cloud Watch'
         SUBSCRIPTION : 'Subscription'
         TOPIC        : 'Topic'
+
+        DBSBG        : 'DB Subnet Group'
+        DBINSTANCE   : 'DB Instance'
+        DBPARAM      : 'Parameter'
+        DBPG         : 'ParameterGroup'
+        DBSNAP       : 'DB Snapshot'
+        DBES         : 'Event Subscription'
+        DBOG         : 'OptionGroup'
+        DBENGINE     : 'DB Engine Version'
 
         OSSERVER     : "Server"
         OSNETWORK    : "Network"

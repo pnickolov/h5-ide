@@ -84,10 +84,10 @@
         {{i18n "PROP.RESOURCE_TAGS"}}
     </div>
     <div class="option-group">
-        {{#if tags.length}}
+        {{#if volume_detail.tags.length}}
         <table class="table cost-estimation-table">
             <tbody>
-            {{#each tags}}
+            {{#each volume_detail.tags}}
             <tr> <td style="min-width:70px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
             {{/each}}
             </tbody>

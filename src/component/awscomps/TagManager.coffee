@@ -72,7 +72,7 @@ define [
       tagComp = @instance.component $tagLi.data("id")
       tagAsgComp = @instance.component $tagLi.data("asg")
 
-      if $tagKey.val() and $tagValue.val()
+      if $tagKey.val()
         key = $tagKey.val()
         value = $tagValue.val()
         inherit = $tagLi.find(".checkbox input").is("checked")

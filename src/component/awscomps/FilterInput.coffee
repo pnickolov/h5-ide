@@ -284,7 +284,11 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         )
 
         @triggerChange()
-        $sel.remove()
+
+        if @selection.length
+          $sel.remove()
+        else # CSS need :empty
+          @$(".tags").empty()
 
       removeLastSelection: ->
         $last = @$(".tags li").last()

@@ -1,6 +1,7 @@
 <!-- {{frame}} -->
 <div class="fake-input">
     <ul class="tags"></ul>
+    <i class="icon-search placeholder">Filter</i>
     <input type="text"/>
     <span class="line-tip"></span>
 </div>
@@ -17,4 +18,5 @@
 {{#each this}}
 <li data-key="{{key}}" data-value="{{value}}" class="{{type}}">
     <span class="key">{{key}}</span>{{#if vtext}}=<span class="value">{{vtext}}</span>{{/if}}
-</li>{{/each}}
+</li>
+{{/each}}

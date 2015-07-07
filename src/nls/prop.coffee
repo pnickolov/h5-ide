@@ -265,7 +265,7 @@ module.exports =
       zh: "该资源没有标签"
 
     RESOURCE_EDIT_TAG:
-      en: "{{i18n "PROP.RESOURCE_EDIT_TAG"}}"
+      en: "Edit Tags..."
       zh: "编辑标签..."
 
     INSTANCE_USER_DATA_DETAIL:

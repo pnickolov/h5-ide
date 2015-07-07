@@ -10,6 +10,7 @@
 		url('../fonts/icon.ttf') format('truetype');
 }
 
+.icon-search,
 .icon-play,
 .icon-stop,
 .icon-save,
@@ -111,6 +112,7 @@
 // 	}
 // }
 
+.icon-search:before  { content : "\F109"; }
 .icon-play:before  { content : "\F110"; }
 .icon-stop:before  { content : "\F111"; }
 .icon-save:before  { content : "\F112"; }

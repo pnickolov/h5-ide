@@ -34,7 +34,7 @@ define [
       @modal = new Modal({
         title: "Tag Management"
         width: 900
-        height: 400
+        height: 500
         template: template.modalTemplate
         disableFooter: true
       })

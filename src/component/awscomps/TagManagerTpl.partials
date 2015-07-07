@@ -82,7 +82,7 @@
                 <th class="" width="35%" data-row-type="string">Key</th>
                 <th class="" width="35%" data-row-type="string">Value</th>
                 <th class="" width="15%" data-row-type="string">Inherit</th>
-                <th class="" width="15%" data-row-type="string">Actions</th>
+                <th class="" width="15%" data-row-type="string"></th>
             </tr>
             </thead>
         </table>

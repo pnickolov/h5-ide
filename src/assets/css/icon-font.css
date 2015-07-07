@@ -4,7 +4,7 @@
   font-style: normal;
   src: url('/assets/fonts/icon.eot');
   src: url('/assets/fonts/../fonts/icon.eot?#iefix') format("embedded-opentype"), url("../fonts/icon.woff") format("woff"), url("../fonts/icon.ttf") format("truetype"); }
-
+.icon-search:before,
 .icon-play:before,
 .icon-stop:before,
 .icon-save:before,
@@ -91,6 +91,9 @@
   font: 16px/1em "MCIcon";
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
+
+.icon-search:before {
+  content: "\F109"; }
 
 .icon-play:before {
   content: "\F110"; }

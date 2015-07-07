@@ -39,10 +39,13 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      td {
+        border: 0;
+        border-right: 1px solid #222;
+      }
       &.selected{
         td{
-          background-color: #1F1F1F;
-          border-color: #1F1F1F;
+          background-color: #00599D;
         }
       }
     }
@@ -60,19 +63,19 @@
   .tabs-navs{
     width: 100%;
     height: 35px;
-    padding: 5px;
+    // padding: 5px;
     ul{
       li{
         display: inline-block;
-        padding: 5px 20px 10px;
-        font-size: 16px;
+        padding: 7px 20px 10px;
+        font-size: 14px;
         cursor: pointer;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
         &.active{
-          border-bottom: 1px solid #148BE6;
+          border-bottom: 2px solid #148BE6;
         }
       }
     }

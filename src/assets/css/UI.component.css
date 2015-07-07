@@ -474,6 +474,8 @@ pre {
     height: 340px; }
     .tag-resource-detail .tabs-content .tab-content {
       padding: 0; }
+      .tag-resource-detail .tabs-content .tab-content .table-head th {
+        text-align: center; }
       .tag-resource-detail .tabs-content .tab-content .tags-list li {
         margin: 4px 0; }
         .tag-resource-detail .tabs-content .tab-content .tags-list li:first-child {
@@ -486,7 +488,7 @@ pre {
         margin-right: 0;
         margin-left: 5px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list .tag-value {
-        width: 145px; }
+        width: 177px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox {
         margin: 0 30px 0 30px; }
         .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled='disabled'] + label, .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled] + label {
@@ -505,17 +507,21 @@ pre {
         width: 45px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .action {
         display: inline-block;
-        width: 155px;
+        width: 95px;
         text-align: center;
         vertical-align: top; }
         .tag-resource-detail .tabs-content .tab-content .tags-list .action .btn {
           min-width: 50px;
           padding: 5px 10px;
           margin: 0 5px; }
-        .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-cancel, .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-remove-row {
+        .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-cancel, .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-remove-row, .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-delete {
           background: none;
           color: #666;
           box-shadow: none; }
+          .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-cancel:hover, .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-remove-row:hover, .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-delete:hover {
+            color: #777; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list .action .edit-remove-row {
+          display: none; }
     .tag-resource-detail .tabs-content .tag-empty {
       position: absolute;
       top: 45%;

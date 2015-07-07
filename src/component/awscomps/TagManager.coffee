@@ -31,8 +31,8 @@ define [
     renderModal: ()->
       @modal = new Modal({
         title: "Tag Management"
-        width: 1000
-        height: 450
+        width: 900
+        height: 400
         template: template.modalTemplate
         disableFooter: true
       })
@@ -236,6 +236,8 @@ define [
         @$el.find(".tags-list li").each (idx, elem) ->
             if not $(elem).find('.input.tag-key').val() and not $(elem).find('.input.tag-value').val()
                 $(@).remove()
+            else
+                $(elem).find('.edit-remove-row').show()
         @addTag()
 
     addTag: (e)->

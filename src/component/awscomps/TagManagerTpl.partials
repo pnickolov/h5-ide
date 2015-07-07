@@ -79,10 +79,10 @@
         <table class="table-head">
             <thead>
             <tr>
-                <th class="" width="30%" data-row-type="string">Key</th>
-                <th class="" width="30%" data-row-type="string">Value</th>
-                <th class="" width="13%" data-row-type="string">Inherit</th>
-                <th class="" width="27%" data-row-type="string">Actions</th>
+                <th class="" width="35%" data-row-type="string">Key</th>
+                <th class="" width="35%" data-row-type="string">Value</th>
+                <th class="" width="15%" data-row-type="string">Inherit</th>
+                <th class="" width="15%" data-row-type="string">Actions</th>
             </tr>
             </thead>
         </table>

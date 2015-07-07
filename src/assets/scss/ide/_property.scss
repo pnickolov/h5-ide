@@ -113,6 +113,7 @@
 
 .tags-action{
   padding: 5px;
+  overflow: auto;
   .btn-blue{
     float: right;
   }
@@ -123,13 +124,14 @@
     padding: 10px;
     font-size: 13px;
     color: #AEAEAE;
+	text-align: center;
   }
 }
 
 .tag-large.icon-info{
   display: inline-block;
-  height: 34px;
-  width: 34px;
+  height: 16px;
+  width: 16px;
   text-align: center;
   line-height: 34px;
   vertical-align: top;
@@ -137,22 +139,11 @@
   cursor: pointer;
   position: relative;
   &:before{
-    font-size: 32px;
+    font-size: 16px;
     line-height: 38px;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1;
-  }
-  &:after{
-    display: inline-block;
-    content: "";
-    width: 15px;
-    height: 17px;
-    background-color: #fff;
-    position: absolute;
-    top: 7px;
-    z-index: 0;
-    left: 9px;
   }
 }

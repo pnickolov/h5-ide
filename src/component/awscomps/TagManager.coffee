@@ -18,6 +18,8 @@ define [
       "click .edit-done": "changeTags"
       "click .save-tags": "saveAllTags"
       "click .edit-remove-row": "removeRow"
+      "keyup .tag-key.input": "changeTagInput"
+      "keyup .tag-value.input": "changeTagInput"
 
     initialize: (model)->
       @instance = Design.instance()
@@ -54,6 +56,7 @@ define [
       @$el.find(".tabs-navs ul li[data-id='selected']").click()
       # reder selected element
       @renderTagsContent($row.data("id"))
+      evt.stopPropagation()
 
     selectAllInput: (e)->
       isChecked = $(e.currentTarget).is(":checked")
@@ -215,6 +218,7 @@ define [
 
       @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not checkedComps.length}
       @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedComps.length + checkedAsgComps.length)
+      @changeTagInput()
 
     filterResourceList: (resModels)->
       models = _.map resModels, (model)->
@@ -226,6 +230,13 @@ define [
         }
       @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
       _.delay ()=> @renderTagsContent()
+
+    changeTagInput: () ->
+
+        @$el.find(".tags-list li").each (idx, elem) ->
+            if not $(elem).find('.input.tag-key').val() and not $(elem).find('.input.tag-value').val()
+                $(@).remove()
+        @addTag()
 
     addTag: (e)->
       tagId = @$el.find(".tags-list li").size() + 1
@@ -245,7 +256,7 @@ define [
           </li>
       """
       $tagLi = $(tagTemplate)
-      $tagLi.appendTo $(e.currentTarget).parents(".tab-content").find("ul.tags-list")
+      $tagLi.appendTo @$el.find("ul.tags-list")
       hasNoneAsg = @getAffectedResources().common.length > 0
       if hasNoneAsg then $tagLi.find(".checkbox input").prop("disabled", hasNoneAsg)
 

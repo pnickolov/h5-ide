@@ -413,7 +413,8 @@ pre {
 .tag-manager-wrap {
   height: 450px;
   position: relative;
-  margin-bottom: -10px; }
+  margin-bottom: -10px;
+  font-size: 12px; }
 
 .tag-resource-list {
   width: 260px;
@@ -525,13 +526,6 @@ pre {
   .tag-resource-detail .pull-right {
     text-align: right;
     padding: 10px 20px; }
-    .tag-resource-detail .pull-right a.create-tag.icon-add {
-      text-align: center;
-      display: inline-block;
-      padding: 5px 5px;
-      margin-right: 5px; }
-  .tag-resource-detail .tabs-footer {
-    border-top: 1px solid #000000; }
 
 .combo-dd .combo-dd-manage i {
   margin-right: 13px;
@@ -2503,7 +2497,8 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     left: 0;
     background: #353535;
     color: #D0D0D0;
-    z-index: 1; }
+    z-index: 1;
+    font-size: 12px; }
   .filter-input .dropdown:empty {
     border: 0; }
   .filter-input .drop .dropdown {

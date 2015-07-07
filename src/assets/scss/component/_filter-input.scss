@@ -3,7 +3,6 @@
     display: inline-block;
     position: relative;
     margin-right: 5px;
-
     .fake-input {
         border: 1px solid #000;
         border-radius: 2px;
@@ -112,6 +111,7 @@
         background: #353535;
         color: #D0D0D0;
         z-index: 1;
+        font-size: 12px;
     }
 
     .dropdown:empty {

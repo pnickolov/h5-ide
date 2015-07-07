@@ -104,7 +104,4 @@
             </li>
         {{/each}}
     </ul>
-    <div class="pull-right">
-        <a class="btn btn-blue create-tag"><i class="icon-add"></i> Add</a>
-    </div>
 {{/if}}

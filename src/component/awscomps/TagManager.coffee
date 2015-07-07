@@ -5,8 +5,10 @@ define [
     "component/awscomps/TagManagerTpl",
     "FilterInput",
     "backbone",
-    'i18n!/nls/lang.js' ]
-, ( constant, CloudResources, Modal, template, FilterInput, Backbone, lang) ->
+    'i18n!/nls/lang.js'
+    'event'
+    ]
+, ( constant, CloudResources, Modal, template, FilterInput, Backbone, lang, ide_event) ->
 
   Backbone.View.extend {
     events:
@@ -100,6 +102,7 @@ define [
       @$el.find(".tab-content:visible").find("input.tag-key").not(":disabled").each (index, value)->
         if value.value then that.changeTags(value)
       @renderTagsContent()
+      ide_event.trigger ide_event.REFRESH_PROPERTY
 
     getAffectedResources :()->
       self = @

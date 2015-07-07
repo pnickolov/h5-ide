@@ -274,8 +274,10 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         unless $sel.size() then return
 
         selection =
-          key: $sel.data("key").toString()
-          value: $sel.data("value").toString()
+          key: $sel.data("key")
+          value: $sel.data("value")
+
+        @stringKeyValue(selection)
 
         @selection = _.filter(@selection, (s) ->
           s.key isnt selection.key or s.value isnt selection.value and !(!s.value and !selection.value)

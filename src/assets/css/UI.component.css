@@ -487,7 +487,7 @@ pre {
   top: 0px; }
   .tag-resource-detail.show {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
-    max-height: 400px;
+    max-height: 437px;
     overflow: auto; }
   .tag-resource-detail.show + .will-be-covered {
     opacity: .4;
@@ -521,7 +521,7 @@ pre {
         border-bottom: 2px solid #148BE6; }
   .tag-resource-detail .tabs-content {
     overflow: auto;
-    height: 313px; }
+    height: 349px; }
     .tag-resource-detail .tabs-content .tab-content {
       padding: 0; }
       .tag-resource-detail .tabs-content .tab-content .table-head th {
@@ -2529,9 +2529,9 @@ li.ui-timepicker-selected .ui-timepicker-duration,
         list-style: none;
         display: inline-block;
         background: #F1F1F1;
-        background: -webkit-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
-        background: -moz-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
-        background: -ms-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
+        background: -webkit-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
+        background: -moz-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
+        background: -ms-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
         border: 1px solid #d2d2d2;
         border-radius: 5px;
         cursor: pointer;

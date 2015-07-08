@@ -84,6 +84,7 @@ define [ '../base/model', "Design", "constant", 'CloudResources' ], ( PropertyMo
                 name    : "vpn:#{cgw.get('name')}"
                 ips     : vpn.get("routes")
                 dynamic : cgw.isDynamic()
+                tags    : vpn.tags()
             }
             null
 

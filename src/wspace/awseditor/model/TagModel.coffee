@@ -124,7 +124,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       allTags
 
     getCustom: ->
-      customTag = TagModel.find (tag) -> tag.get('name') is CustomTagName
+      customTag = @find (tag) -> tag.get('name') is CustomTagName
       customTag or new @ name: CustomTagName
 
     handleTypes : [ constant.RESTYPE.TAG ]

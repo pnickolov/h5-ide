@@ -438,13 +438,17 @@ pre {
   top: 0;
   left: 0; }
   .tag-resource-list .filter-input {
+    position: absolute;
     width: 767px;
     z-index: 1;
     margin-right: 0; }
   .tag-resource-list .edit-tags {
-    margin-top: -4px; }
+    margin-top: -4px;
+    position: absolute;
+    top: 5px;
+    right: 1px; }
   .tag-resource-list .resource-list {
-    margin-top: 10px;
+    margin-top: 46px;
     border: 1px solid #000;
     padding: 0px;
     height: 391px;
@@ -480,7 +484,7 @@ pre {
   position: absolute;
   width: 100%;
   z-index: 71;
-  top: 37px; }
+  top: 0px; }
   .tag-resource-detail.show {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
     max-height: 400px;

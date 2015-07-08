@@ -91,11 +91,13 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       getFilterableResource: ->
         allComp = Design.instance().getAllComponents()
+
         _.filter allComp, ( comp ) =>
+          basic = !comp.port and _.contains(constant.HASTAG, comp.type)
           if @isVisual
-            comp.isVisual() and !comp.port and !_.contains(@unFilterTypeInVisualMode, comp.type)
+            basic and comp.isVisual() and !_.contains(@unFilterTypeInVisualMode, comp.type)
           else
-            !comp.port and _.contains(constant.HASTAG, comp.type)
+            basic
 
       getMatchedResource: (hightlight) ->
         selection = @classifySelection(@selection)
@@ -482,8 +484,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         @$(".dropdown li").removeClass "selected"
         if $tgt.hasClass('option')
           $tgt.addClass "selected"
-        else
-          $tgt.next('.option').addClass('selected')
 
       clickTagHandler: (e) ->
         $tgt = $(e.currentTarget)
@@ -603,6 +603,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       selectHandler: (e) ->
         @focusInput()
         $tgt = $(e.currentTarget)
+
         $input = @$("input")
         type = $tgt.data('type')
 

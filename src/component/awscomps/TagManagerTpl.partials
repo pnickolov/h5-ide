@@ -38,7 +38,7 @@
         <div class="tabs-navs">
             <ul>
                 <li data-id="checked" class="active">Checked (<span>0</span>)</li>
-                <li data-id="selected">Selected</li>
+                <li data-id="selected">Selected <span></span></li>
             </ul>
         </div>
         <div class="tabs-content">
@@ -75,7 +75,7 @@
 
 <!--{{tagResource}}-->
 {{#if empty}}
-    <div class="tag-empty">Please select or check resource in left sidebar for tag details.</div>
+    <div class="tag-empty">Please select or check resource in resource list for tag details.</div>
 {{else}}
     <div class="table-head-fix tag-resource-table">
         <table class="table-head">

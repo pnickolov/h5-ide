@@ -60,7 +60,7 @@ define [
       @$el.find(".tabs-navs ul li[data-id='selected']").click()
       # reder selected element
       @renderTagsContent($row.data("id"))
-      evt.stopPropagation()
+      evt.stopPropagation() if evt.stopPropagation
 
     selectAllInput: (e)->
       isChecked = $(e.currentTarget).is(":checked")
@@ -227,6 +227,8 @@ define [
 
       @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not checkedComps.length}
       @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedComps.length + checkedAsgComps.length)
+      if selectedComp and selectedComp.get('name')
+        @$el.find(".tabs-navs li[data-id='selected'] span").text("#{selectedComp.get('name')}")
       @changeTagInput()
 
     filterResourceList: (resModels)->
@@ -238,6 +240,11 @@ define [
           id : model.id
         }
       @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
+      firstItem = @$el.find('tbody tr.item')[0]
+      if firstItem
+        @selectTableRow({
+        currentTarget: firstItem
+        })
       _.delay ()=> @renderTagsContent()
 
     changeTagInput: () ->

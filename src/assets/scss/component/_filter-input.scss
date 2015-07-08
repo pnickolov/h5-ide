@@ -11,7 +11,10 @@
         display: flex;
         flex-wrap: wrap;
         overflow: hidden;
-        background: #2b2b35;
+        background: #25252b;
+        &:hover {
+            background: #2d2d38;
+        }
         .tags {
             &:empty + .placeholder { display: inline; }
 
@@ -28,16 +31,22 @@
                     font-weight: normal;
                     margin-right: 2px;
                 }
+                span.value {
+                    font-weight: bold;
+                    color: #ECECEC;
+                }
             }
         }
         input {
-            margin-left: 4px;
+            color: rgb(179, 179, 179);
+            background: transparent;
+            border: 0;
+            outline: 0;
+            flex-grow: 1;
+            margin-left: 5px;
             margin-top: 2px;
             font-size: 12px;
         }
-    }
-
-    .fake-input {
         &.focus {
             overflow: visible;
             height: auto;
@@ -53,12 +62,7 @@
         }
 
         input {
-            color: white;
-            background: transparent;
-            border: 0;
-            outline: 0;
-            font-size: 100%;
-            flex-grow: 1;
+
         }
 
         ul {
@@ -99,7 +103,7 @@
                     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 
                 }
-                &:hover::after { color: $base-b; }
+                &:hover::after { color: #aaa; }
                 &.resource_attribute, &.resource { color: #CF7C00; }
 
                 .key { font-weight: bold; }
@@ -173,10 +177,18 @@
     width: 1000px;
 
     .fake-input {
-        padding-top: 3px;
+        padding-top: 2px;
+        padding-left: 10px;
+        height: 38px;
         border-top: 0;
         border-bottom: 0;
         border-radius: 0;
+        &:hover {
+            background: #36343C;
+        }
+        input {
+            margin-top: -4px;
+        }
     }
 
 }

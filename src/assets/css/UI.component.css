@@ -2474,7 +2474,9 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     display: flex;
     flex-wrap: wrap;
     overflow: hidden;
-    background: #2b2b35; }
+    background: #25252b; }
+    .filter-input .fake-input:hover {
+      background: #2d2d38; }
     .filter-input .fake-input .tags:empty + .placeholder {
       display: inline; }
     .filter-input .fake-input .tags li {
@@ -2489,66 +2491,67 @@ li.ui-timepicker-selected .ui-timepicker-duration,
       .filter-input .fake-input .tags li span.key {
         font-weight: normal;
         margin-right: 2px; }
+      .filter-input .fake-input .tags li span.value {
+        font-weight: bold;
+        color: #ECECEC; }
     .filter-input .fake-input input {
-      margin-left: 4px;
+      color: #b3b3b3;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      flex-grow: 1;
+      margin-left: 5px;
       margin-top: 2px;
       font-size: 12px; }
-  .filter-input .fake-input.focus {
-    overflow: visible;
-    height: auto;
-    min-height: 34px; }
-    .filter-input .fake-input.focus .placeholder {
-      display: none !important; }
-  .filter-input .fake-input .placeholder {
-    display: none;
-    margin-top: 8px; }
-    .filter-input .fake-input .placeholder::before {
-      padding-right: 5px; }
-  .filter-input .fake-input input {
-    color: white;
-    background: transparent;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    flex-grow: 1; }
-  .filter-input .fake-input ul {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    flex-shrink: 0;
-    max-width: 78%; }
-    .filter-input .fake-input ul li {
-      word-break: break-all;
-      list-style: none;
+    .filter-input .fake-input.focus {
+      overflow: visible;
+      height: auto;
+      min-height: 34px; }
+      .filter-input .fake-input.focus .placeholder {
+        display: none !important; }
+    .filter-input .fake-input .placeholder {
+      display: none;
+      margin-top: 8px; }
+      .filter-input .fake-input .placeholder::before {
+        padding-right: 5px; }
+    .filter-input .fake-input ul {
       display: inline-block;
-      background: #F1F1F1;
-      background: -webkit-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
-      background: -moz-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
-      background: -ms-linear-gradient(top, #fdfdfd 0%, #e3e3e3);
-      border: 1px solid #d2d2d2;
-      border-radius: 5px;
-      cursor: pointer;
-      padding: 0 5px;
-      font-size: 16px;
-      color: #333;
-      margin-top: 7px;
-      margin-left: 1px;
-      margin-right: 1px;
-      transition: opacity .25s linear; }
-      .filter-input .fake-input ul li:last-child {
-        margin-bottom: 7px; }
-      .filter-input .fake-input ul li::after {
-        content: "×";
-        color: #999;
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+      max-width: 78%; }
+      .filter-input .fake-input ul li {
+        word-break: break-all;
+        list-style: none;
+        display: inline-block;
+        background: #F1F1F1;
+        background: -webkit-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
+        background: -moz-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
+        background: -ms-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
+        border: 1px solid #d2d2d2;
+        border-radius: 5px;
         cursor: pointer;
-        font-weight: bold;
-        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; }
-      .filter-input .fake-input ul li:hover::after {
-        color: #4a90e2; }
-      .filter-input .fake-input ul li.resource_attribute, .filter-input .fake-input ul li.resource {
-        color: #CF7C00; }
-      .filter-input .fake-input ul li .key {
-        font-weight: bold; }
+        padding: 0 5px;
+        font-size: 16px;
+        color: #333;
+        margin-top: 7px;
+        margin-left: 1px;
+        margin-right: 1px;
+        transition: opacity .25s linear; }
+        .filter-input .fake-input ul li:last-child {
+          margin-bottom: 7px; }
+        .filter-input .fake-input ul li::after {
+          content: "×";
+          color: #999;
+          cursor: pointer;
+          font-weight: bold;
+          font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; }
+        .filter-input .fake-input ul li:hover::after {
+          color: #aaa; }
+        .filter-input .fake-input ul li.resource_attribute, .filter-input .fake-input ul li.resource {
+          color: #CF7C00; }
+        .filter-input .fake-input ul li .key {
+          font-weight: bold; }
   .filter-input .dropdown {
     margin: 0;
     padding: 0;
@@ -2592,10 +2595,16 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .OEPanelTop .filter-input {
   width: 1000px; }
   .OEPanelTop .filter-input .fake-input {
-    padding-top: 3px;
+    padding-top: 2px;
+    padding-left: 10px;
+    height: 38px;
     border-top: 0;
     border-bottom: 0;
     border-radius: 0; }
+    .OEPanelTop .filter-input .fake-input:hover {
+      background: #36343C; }
+    .OEPanelTop .filter-input .fake-input input {
+      margin-top: -4px; }
 
 /* Table */
 .table {

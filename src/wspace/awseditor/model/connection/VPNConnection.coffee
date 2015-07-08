@@ -4,7 +4,7 @@ define [ "constant", "ConnectionModel", "ComplexResModel" ], ( constant, Connect
   VpnModel = ComplexResModel.extend {
     type: 'VpnResource'
     isVisual: -> false
-    createRef: -> ComplexResModel.prototype.createRef.call @getRealBody(), 'VpnGatewayId'
+    createRef: -> ComplexResModel.prototype.createRef.call @getRealBody(), 'VpnConnectionId'
     setRealBody: (realbody) -> @__realbody = realbody
     getRealBody: -> @__realbody
   }
@@ -54,6 +54,10 @@ define [ "constant", "ConnectionModel", "ComplexResModel" ], ( constant, Connect
           VpnGatewayId      : vgw.createRef( "VpnGatewayId" )
 
       null
+
+    remove: ->
+      @getResourceModel().remove()
+      ConnectionModel.prototype.remove.apply @, arguments
 
   }, {
 

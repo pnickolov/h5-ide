@@ -6768,7 +6768,9 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   padding: 5px;
   overflow: auto; }
   .tags-action .btn-blue {
-    float: right; }
+    margin: 0 auto;
+    display: inherit;
+    margin-bottom: 10px; }
 
 .property-content .empty-tag {
   padding: 10px;

@@ -80,7 +80,7 @@ define [
       if $tagKey.val()
         key = $tagKey.val()
         value = $tagValue.val()
-        inherit = $tagLi.find(".checkbox input").is("checked")
+        inherit = $tagLi.find(".checkbox input").is(":checked")
         # Can't start with "aws:"
         if key.indexOf("aws:") == 0 then return false
         resource = @getAffectedResources()

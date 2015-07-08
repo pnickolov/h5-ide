@@ -96,7 +96,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           if @isVisual
             !comp.port and comp.isVisual() and !_.contains(@unFilterTypeInVisualMode, comp.type)
           else
-            !comp.port and _.contains(constant.HASTAG, comp.type)
+            _.contains(constant.HASTAG, comp.type)
 
       getMatchedResource: (hightlight) ->
         selection = @classifySelection(@selection)
@@ -185,6 +185,12 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
                 value : name
                 type  : 'resource_attribute'
               }, true
+            else if comp.type is constant.RESTYPE.VPN
+              @addSelection {
+                key   : getResShortNameByType( comp.type )
+                type  : 'resource'
+              }, true
+
 
         null
 

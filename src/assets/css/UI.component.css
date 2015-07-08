@@ -446,6 +446,7 @@ pre {
   .tag-resource-list .tag-resource-table tr th:first-child, .tag-resource-list .tag-resource-table tr td:first-child {
     width: 10px; }
   .tag-resource-list .tag-resource-table tbody tr {
+    cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

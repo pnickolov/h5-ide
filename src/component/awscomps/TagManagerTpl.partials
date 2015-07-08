@@ -49,8 +49,8 @@
             </div>
         </div>
         <div class="tabs-footer pull-right">
-           <button class="btn btn-silver cancel">Select Resource</button>
            <button class="btn save-tags btn-primary">Save</button>
+           <button class="btn btn-silver cancel">Cancel</button>
         </div>
     </div>
 </div>

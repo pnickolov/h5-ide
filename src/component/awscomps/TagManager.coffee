@@ -24,6 +24,7 @@ define [
       "keyup .tag-key.input"    : "changeTagInput"
       "keyup .tag-value.input"  : "changeTagInput"
       "change #t-m-select-all"  : "selectAllInput"
+      "change .checkbox input"  : "selectInput"
 
     initialize: (model)->
       @instance = Design.instance()
@@ -39,6 +40,7 @@ define [
         height: 500
         template: template.modalTemplate
         disableFooter: true
+        disableClose: true
       })
       @modal
 
@@ -49,7 +51,7 @@ define [
       @modal.tpl.find(".filter-bar").replaceWith(@filter.render().el)
       if data
         @filterResourceList @filter.getMatchedResource()
-        @$el.find(".t-m-content tr.item:first-child").find('input').click()
+        @$el.find(".t-m-content tr.item:first-child").find('input').prop('checked', true)
       else
         @filterResourceList @filter.getFilterableResource()
 
@@ -65,6 +67,9 @@ define [
     selectAllInput: (e)->
       isChecked = $(e.currentTarget).is(":checked")
       @$el.find(".table-head-fix .item .checkbox input").prop("checked", isChecked)
+      @renderTagsContent()
+
+    selectInput: () ->
       @renderTagsContent()
 
     editTags  : (e) -> @$('.tag-resource-detail').addClass 'show'
@@ -242,6 +247,8 @@ define [
           id : model.id
         }
       @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
+      if models.length is 1
+        @$el.find(".t-m-content tr.item:first-child").find('input').prop('checked', true)
       _.delay ()=> @renderTagsContent()
 
     changeTagInput: () ->

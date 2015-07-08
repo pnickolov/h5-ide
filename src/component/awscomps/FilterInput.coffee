@@ -74,7 +74,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       className: "filter-input"
       tplDropdown: template.dropdown
       tplTag: template.tag
-      unFilterTypeInVisualMode: [ constant.RESTYPE.SG ]
+      unFilterTypeInVisualMode: [ constant.RESTYPE.SG, 'ExpandedAsg' ]
 
       events:
         "click .tags li"            : "clickTagHandler"
@@ -93,11 +93,10 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         allComp = Design.instance().getAllComponents()
 
         _.filter allComp, ( comp ) =>
-          basic = !comp.port and _.contains(constant.HASTAG, comp.type)
           if @isVisual
-            basic and comp.isVisual() and !_.contains(@unFilterTypeInVisualMode, comp.type)
+            !comp.port and comp.isVisual() and !_.contains(@unFilterTypeInVisualMode, comp.type)
           else
-            basic
+            !comp.port and _.contains(constant.HASTAG, comp.type)
 
       getMatchedResource: (hightlight) ->
         selection = @classifySelection(@selection)

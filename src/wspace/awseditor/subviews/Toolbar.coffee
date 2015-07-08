@@ -87,10 +87,10 @@ define [
       return
 
     initFilter: ->
+      @filter = new FilterInput( isVisual: true )
       ### env:dev ###
       # Need remove before deploy
-      @filter = window.filter = new FilterInput( isVisual: true )
-      window.FilterInput = FilterInput
+      window.filter = @filter
       #
       ### env:dev:end ###
 

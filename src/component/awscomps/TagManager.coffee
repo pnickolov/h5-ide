@@ -253,12 +253,16 @@ define [
 
     changeTagInput: () ->
 
+        focusToLast = false
         @$el.find(".tags-list li").each (idx, elem) ->
             if not $(elem).find('.input.tag-key').val() and not $(elem).find('.input.tag-value').val()
+                focusToLast = true if $(@).next('li').length
                 $(@).remove()
             else
                 $(elem).find('.edit-remove-row').show()
         @addTag()
+        if focusToLast
+          @$el.find(".tags-list li:last-child .input.tag-key").focus()
 
     addTag: (e)->
       tagId = @$el.find(".tags-list li").size() + 1

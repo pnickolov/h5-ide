@@ -12,16 +12,18 @@ define [
 
   Backbone.View.extend {
     events:
-      "click tbody tr.item": "selectTableRow"
-      "click .tag-resource-detail .tabs-navs li": "switchTab"
-      "click .create-tag": "addTag"
-      "change #t-m-select-all": "selectAllInput"
-      "click .edit-delete": "removeTagUsage"
-      "click .edit-done": "changeTags"
-      "click .save-tags": "saveAllTags"
-      "click .edit-remove-row": "removeRow"
-      "keyup .tag-key.input": "changeTagInput"
-      "keyup .tag-value.input": "changeTagInput"
+      "click tbody tr.item"     : "selectTableRow"
+      "click .create-tag"       : "addTag"
+      "click .edit-delete"      : "removeTagUsage"
+      "click .edit-done"        : "changeTags"
+      "click .save-tags"        : "saveAllTags"
+      "click .edit-remove-row"  : "removeRow"
+      "click .edit-tags"        : "editTags"
+      "click .cancel"           : "cancelEdit"
+      "click .tabs-navs li"     : "switchTab"
+      "keyup .tag-key.input"    : "changeTagInput"
+      "keyup .tag-value.input"  : "changeTagInput"
+      "change #t-m-select-all"  : "selectAllInput"
 
     initialize: (model)->
       @instance = Design.instance()
@@ -65,6 +67,9 @@ define [
       @$el.find(".table-head-fix .item .checkbox input").prop("checked", isChecked)
       @renderTagsContent()
 
+    editTags  : (e) -> @$('.tag-resource-detail').addClass 'show'
+    cancelEdit: (e) -> @$('.tag-resource-detail').removeClass 'show'
+
     changeTags: (elem)->
       $tagLi = $(elem).parents("li")
       $tagKey = $tagLi.find(".tag-key")
@@ -102,6 +107,7 @@ define [
       @$el.find(".tab-content:visible").find("input.tag-key").not(":disabled").each (index, value)->
         if value.value then that.changeTags(value)
       @renderTagsContent()
+      @cancelEdit()
       ide_event.trigger ide_event.REFRESH_PROPERTY
 
     getAffectedResources :()->

@@ -2,7 +2,7 @@
 <div class="tag-manager-wrap">
     <div class="tag-resource-list">
         <input type="text" class="input filter-bar" placeholder="Filter Bar"/>
-        <button class="btn edit-tags btn-blue">Edit</button>
+        <button class="btn edit-tags btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
         <div class="resource-list">
             <div class="table-head-fix tag-resource-table">
                 <table class="table-head">

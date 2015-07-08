@@ -12,7 +12,7 @@
   left: 0;
   .filter-input{
     position: absolute;
-    width: 767px;
+    width: 757px;
     z-index: 1;
     margin-right: 0;
   }
@@ -52,7 +52,7 @@
       }
       &.selected{
         td{
-          background-color: #00599D;
+          background-color: #31619E;
         }
       }
     }
@@ -139,10 +139,10 @@
           margin-left: 5px;
         }
         .tag-key,.tag-value{
-          width: 271px;
+          width: 269px;
         }
         .checkbox{
-          margin: 0 78px 0 79px;
+          margin: 0 78px 0 65px;
           input[disabled='disabled'] + label, input[disabled] + label{
             opacity: 0.3;
           }

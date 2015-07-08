@@ -24,7 +24,7 @@ define [
       "keyup .tag-key.input"    : "changeTagInput"
       "keyup .tag-value.input"  : "changeTagInput"
       "change #t-m-select-all"  : "selectAllInput"
-      "change .checkbox input"  : "selectInput"
+      "change .tag-resource-list .checkbox input"  : "selectInput"
 
     initialize: (model)->
       @instance = Design.instance()
@@ -211,6 +211,7 @@ define [
         return {
           key: tag.get("key")
           value: tag.get("value")
+          inherit: tag.get("inherit")
           asg: tag.id
           disableEdit: tag.get("retain")
           allowCheck: checkedAllAsg
@@ -230,8 +231,8 @@ define [
       else
         unitedData = checkedData
 
-      @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not checkedComps.length}
       allComps = checkedComps.concat(checkedAsgComps)
+      @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not allComps.length}
       info = allComps.length
       if allComps.length == 1
         info = allComps[0].get('name')

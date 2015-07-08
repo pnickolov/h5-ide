@@ -12,7 +12,7 @@ define [
 
   Backbone.View.extend {
     events:
-      "click tbody tr.item"     : "selectTableRow"
+    #   "click tbody tr.item"     : "selectTableRow"
       "click .create-tag"       : "addTag"
       "click .edit-delete"      : "removeTagUsage"
       "click .edit-done"        : "changeTags"
@@ -49,7 +49,7 @@ define [
       @modal.tpl.find(".filter-bar").replaceWith(@filter.render().el)
       if data
         @filterResourceList @filter.getMatchedResource()
-        @$el.find(".t-m-content tr.item").eq(0).click()
+        @$el.find(".t-m-content tr.item:first-child").find('input').click()
       else
         @filterResourceList @filter.getFilterableResource()
 
@@ -226,9 +226,11 @@ define [
         unitedData = checkedData
 
       @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not checkedComps.length}
-      @$el.find(".tabs-navs li[data-id='checked'] span").text(checkedComps.length + checkedAsgComps.length)
-      if selectedComp and selectedComp.get('name')
-        @$el.find(".tabs-navs li[data-id='selected'] span").text("#{selectedComp.get('name')}")
+      allComps = checkedComps.concat(checkedAsgComps)
+      info = allComps.length
+      if allComps.length == 1
+        info = allComps[0].get('name')
+      @$el.find(".tabs-navs li[data-id='checked'] span").text("(#{info})")
       @changeTagInput()
 
     filterResourceList: (resModels)->
@@ -240,11 +242,6 @@ define [
           id : model.id
         }
       @modal.tpl.find(".t-m-content").html(template.filterResource {models: models})
-      firstItem = @$el.find('tbody tr.item')[0]
-      if firstItem
-        @selectTableRow({
-        currentTarget: firstItem
-        })
       _.delay ()=> @renderTagsContent()
 
     changeTagInput: () ->

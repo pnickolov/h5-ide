@@ -446,7 +446,6 @@ pre {
   .tag-resource-list .tag-resource-table tr th:first-child, .tag-resource-list .tag-resource-table tr td:first-child {
     width: 10px; }
   .tag-resource-list .tag-resource-table tbody tr {
-    cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -2465,7 +2464,7 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     overflow: hidden;
     background: #25252b; }
     .filter-input .fake-input:hover {
-      background: #2d2d38; }
+      background: #2c2c33; }
     .filter-input .fake-input .tags:empty + .placeholder {
       display: inline; }
     .filter-input .fake-input .tags li {
@@ -2550,10 +2549,10 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     list-style: none;
     border: 1px solid #0f0f0f;
     box-sizing: border-box;
-    border-radius: 4px;
+    border-radius: 0 0 4px 4px;
     position: absolute;
     left: 0;
-    background: #353535;
+    background: #25252b;
     color: #D0D0D0;
     z-index: 1;
     font-size: 12px; }
@@ -2590,8 +2589,6 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     border-top: 0;
     border-bottom: 0;
     border-radius: 0; }
-    .OEPanelTop .filter-input .fake-input:hover {
-      background: #36343C; }
     .OEPanelTop .filter-input .fake-input input {
       margin-top: -4px; }
 

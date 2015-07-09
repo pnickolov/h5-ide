@@ -20,7 +20,6 @@ define [
       "click .edit-remove-row"  : "removeRow"
       "click .edit-tags"        : "editTags"
       "click .cancel"           : "cancelEdit"
-      "click .tabs-navs li"     : "switchTab"
       "keyup .tag-key.input"    : "changeTagInput"
       "keyup .tag-value.input"  : "changeTagInput"
       "change #t-m-select-all"  : "selectAllInput"
@@ -160,22 +159,7 @@ define [
     renderTagsContent: (uid)->
       self = @
       if not uid then uid = @$el.find(".t-m-content .item.selected").data("id")
-      # selected tags
-      selectedIsAsg = false
       checkedAllAsg = true
-      selectedComp = @instance.component(uid)
-      selectedIsAsg = selectedComp?.type is "AWS.AutoScaling.Group"
-      tags = if selectedComp then selectedComp.tags() else []
-      tagsData = _.map tags, (tag)->
-        return {
-          key: tag.get("key")
-          value: tag.get("value")
-          id: tag.id
-          disableEdit: tag.get("retain")
-          allowCheck: selectedIsAsg
-        }
-      @$el.find(".tab-content[data-id='selected']").html template.tagResource {data: tagsData, empty : not selectedComp}
-
       # checked Tags
       checkedComps = []
       checkedTagArray = []
@@ -294,12 +278,4 @@ define [
 
     removeRow: (e)->
       $(e.currentTarget).parents("li").remove()
-
-    switchTab: (evt)->
-      $li = $(evt.currentTarget)
-      if $li.hasClass("active") then return false
-      @$el.find(".tabs-navs li").removeClass("active")
-      target = $li.addClass("active").data("id")
-      @$el.find(".tabs-content .tab-content").hide()
-      @$el.find(".tabs-content .tab-content[data-id='#{target}']").show()
   }

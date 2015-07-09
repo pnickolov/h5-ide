@@ -29,8 +29,14 @@
     height: 391px;
     box-sizing: border-box;
     overflow: auto;
+    .table-head thead tr th:last-child{
+      width: 50%;
+    }
     .table {
       border-collapse: initial;
+      tbody tr td:last-child{
+          width: 50%;
+      }
     }
   }
   .tag-resource-table{

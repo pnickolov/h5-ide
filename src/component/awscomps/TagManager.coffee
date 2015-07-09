@@ -74,7 +74,8 @@ define [
       @renderTagsContent()
 
     clickItem: (e) ->
-      $(e.currentTarget).find('.checkbox input').click()
+      unless $(e.target).parents(".checkbox").size() > 0
+        $(e.currentTarget).find('.checkbox input').click()
 
     editTags  : (e) -> @$('.tag-resource-detail').addClass 'show'
     cancelEdit: (e) -> @$('.tag-resource-detail').removeClass 'show'

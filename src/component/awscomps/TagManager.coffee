@@ -25,6 +25,7 @@ define [
       "keyup .tag-value.input"  : "changeTagInput"
       "change #t-m-select-all"  : "selectAllInput"
       "change .tag-resource-list .checkbox input"  : "selectInput"
+      "click .t-m-content tr.item" : "clickItem"
 
     initialize: (model)->
       @instance = Design.instance()
@@ -71,6 +72,9 @@ define [
 
     selectInput: () ->
       @renderTagsContent()
+
+    clickItem: (e) ->
+      $(e.currentTarget).find('.checkbox input').click()
 
     editTags  : (e) -> @$('.tag-resource-detail').addClass 'show'
     cancelEdit: (e) -> @$('.tag-resource-detail').removeClass 'show'

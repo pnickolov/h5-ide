@@ -446,7 +446,6 @@ pre {
   .tag-resource-list .tag-resource-table tr th:first-child, .tag-resource-list .tag-resource-table tr td:first-child {
     width: 10px; }
   .tag-resource-list .tag-resource-table tbody tr {
-    cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -529,7 +528,7 @@ pre {
       .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list .tag-value {
         width: 269px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox {
-        margin: 0 78px 0 65px; }
+        margin-left: 84px; }
         .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled='disabled'] + label, .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled] + label {
           opacity: 0.3; }
       .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-value, .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-inherit {

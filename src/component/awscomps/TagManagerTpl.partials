@@ -37,7 +37,7 @@
     <div class="tag-resource-detail">
         <div class="tabs-navs">
             <ul>
-                <li data-id="checked" class="active">Checked <span>()</span></li>
+                <li data-id="checked" class="active">Selected <span>()</span></li>
             </ul>
         </div>
         <div class="tabs-content">
@@ -82,7 +82,7 @@
             <tr>
                 <th class="" width="35%" data-row-type="string">Key</th>
                 <th class="" width="35%" data-row-type="string">Value</th>
-                <th class="" width="20%" data-row-type="string">Inherit</th>
+                <th class="" width="20%" data-row-type="string">Tag New Instances</th>
                 <th class="" width="10%" data-row-type="string"></th>
             </tr>
             </thead>

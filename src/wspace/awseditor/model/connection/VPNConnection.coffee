@@ -41,19 +41,19 @@ define [ "constant", "ConnectionModel", "ComplexResModel" ], ( constant, Connect
       else
         routes = _.map @get("routes"), ( r )-> { DestinationCidrBlock : r }
 
-      component_data[ @id ] =
-        name : "vpn:" + cgw.get("name")
-        type : @type
-        uid  : @id
-        resource :
-          CustomerGatewayId : cgw.createRef( "CustomerGatewayId" )
-          Options           : { StaticRoutesOnly : not cgw.isDynamic() }
-          Type              : "ipsec.1"
-          Routes            : routes
-          VpnConnectionId   : @get("appId")
-          VpnGatewayId      : vgw.createRef( "VpnGatewayId" )
+        component =
+          name : "vpn:" + cgw.get("name")
+          type : @type
+          uid  : @id
+          resource :
+            CustomerGatewayId : cgw.createRef( "CustomerGatewayId" )
+            Options           : { StaticRoutesOnly : not cgw.isDynamic() }
+            Type              : "ipsec.1"
+            Routes            : routes
+            VpnConnectionId   : @get("appId")
+            VpnGatewayId      : vgw.createRef( "VpnGatewayId" )
 
-      null
+      component_data and (component_data[ @id ] = component) or component
 
     remove: ->
       @getResourceModel().remove()

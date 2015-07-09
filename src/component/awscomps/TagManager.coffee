@@ -122,7 +122,10 @@ define [
         resources
 
     removeTagUsage: (e)->
-      $tagLi = $(e.currentTarget).parents("li")
+      if e.currentTarget
+        $tagLi = $(e.currentTarget).parents("li")
+      else
+        $tagLi = $(e)
       tagComp = @instance.component($tagLi.data("id"))
       asgTagComp = @instance.component($tagLi.data("asg"))
       resources = @getAffectedResources()
@@ -136,7 +139,8 @@ define [
       if asgTagComp
         _.each resources.asg, (asg)->
           asg.removeTag(asgTagComp)
-      @renderTagsContent()
+      if e.currentTarget
+        @renderTagsContent()
 
     renderTagsContent: (uid)->
       self = @
@@ -223,11 +227,13 @@ define [
 
     changeTagInput: () ->
 
+        that = @
         focusToLast = false
         @$el.find(".tags-list li").each (idx, elem) ->
             if not $(elem).find('.input.tag-key').val() and not $(elem).find('.input.tag-value').val()
-                focusToLast = true if $(@).next('li').length
-                $(@).remove()
+                focusToLast = true if $(elem).next('li').length
+                that.removeTagUsage(elem)
+                $(elem).remove()
             else
                 $(elem).find('.edit-remove-row').show()
         @addTag()

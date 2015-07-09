@@ -195,11 +195,11 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'VPN'
         'VGW'
         'ASG'
-        'DBINSTANCE'
-        'DBSNAP'
-        'DBOG'
-        'DBPG'
-        'DBSBG'
+        # 'DBINSTANCE'
+        # 'DBSNAP'
+        # 'DBOG'
+        # 'DBPG'
+        # 'DBSBG'
     ]
 
 

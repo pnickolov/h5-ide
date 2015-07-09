@@ -571,7 +571,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         if $target and $target isnt $selected
           $selected.removeClass 'selected'
           $target.addClass 'selected'
-          $dropdown[0].scrollTop = $dropdown.height()
+          $dropdown[0].scrollTop = $dropdown[0].scrollHeight
 
 
       focusInputHandler: ->

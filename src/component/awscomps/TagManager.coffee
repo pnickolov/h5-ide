@@ -99,7 +99,7 @@ define [
             notification "error", error.error
       else
         # todo:
-        notification "error", "Sorry, both key and value are required."
+        notification "error", "Sorry, but tag should have a key name."
 
     saveAllTags: ()->
       that = @

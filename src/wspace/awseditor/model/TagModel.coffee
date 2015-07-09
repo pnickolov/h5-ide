@@ -2,7 +2,6 @@
 define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/TagUsage"  ], ( constant, ComplexResModel, GroupModel, Design, TagUsage )->
 
   RetainTagKeys   = [ 'visualops', 'Name' ]
-  CustomTagName   = 'EC2CustomTags'
 
   TagItem = ComplexResModel.extend {
     type : "TagItem"
@@ -41,7 +40,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
     deserialize: ( data, parent, resolve ) ->
       attr = key: data.Key, value: data.Value, inherit: data.PropagateAtLaunch
 
-      if parent.get( 'name' ) isnt CustomTagName then attr.retain = true
+      if parent.get( 'name' ) isnt parent.constructor.customTagName then attr.retain = true
       tagItem = new TagItem attr
 
       parent.addChild tagItem
@@ -114,6 +113,8 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
 
 
   }, {
+    handleTypes : [ constant.RESTYPE.TAG ]
+    customTagName: 'EC2CustomTags'
     all: ->
       allTags = []
       AsgTagModel = Design.modelClassForType(constant.RESTYPE.ASGTAG)
@@ -124,10 +125,9 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       allTags
 
     getCustom: ->
-      customTag = @find (tag) -> tag.get('name') is CustomTagName
-      customTag or new @ name: CustomTagName
+      customTag = @find (tag) => tag.get('name') is @customTagName
+      customTag or new @ name: @customTagName
 
-    handleTypes : [ constant.RESTYPE.TAG ]
     deserialize : ( data, layout_data, resolve )->
       attr = {
         id    : data.uid

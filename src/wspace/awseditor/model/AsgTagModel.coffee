@@ -3,9 +3,9 @@ define [ "constant", "./TagModel", "Design", "./connection/TagUsage"  ], ( const
 
   AsgTagModel = TagModel.extend {
     type: constant.RESTYPE.ASGTAG
-
   }, {
     handleTypes : [ constant.RESTYPE.ASGTAG ]
+    customTagName: 'AutoScalingCustomTags'
   }
 
   AsgTagModel

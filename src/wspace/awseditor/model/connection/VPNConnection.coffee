@@ -32,6 +32,12 @@ define [ "constant", "ConnectionModel", "ComplexResModel" ], ( constant, Connect
     connectionTargets: -> @__resource.connectionTargets.apply @__resource, arguments
     tags: -> @__resource.tags.apply @__resource, arguments
 
+    get: ( attr ) ->
+      if attr is 'name'
+        "vpn:" + @getTarget( constant.RESTYPE.CGW ).get("name")
+      else
+        ConnectionModel.prototype.get.call @, attr
+
     serialize : ( component_data )->
       vgw = @getTarget( constant.RESTYPE.VGW )
       cgw = @getTarget( constant.RESTYPE.CGW )
@@ -42,7 +48,7 @@ define [ "constant", "ConnectionModel", "ComplexResModel" ], ( constant, Connect
         routes = _.map @get("routes"), ( r )-> { DestinationCidrBlock : r }
 
         component =
-          name : "vpn:" + cgw.get("name")
+          name : @get( 'name' )
           type : @type
           uid  : @id
           resource :

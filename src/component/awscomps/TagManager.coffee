@@ -63,7 +63,7 @@ define [
       @renderTagsContent()
 
     clickItem: (e) ->
-      unless $(e.target).parents(".checkbox").size() > 0
+      if $(e.target).parents(".checkbox").size() <= 0
         $(e.currentTarget).find('.checkbox input').click()
 
     editTags  : (e) -> @$('.tag-resource-detail').addClass 'show'
@@ -147,17 +147,15 @@ define [
       checkedTagArray = []
       checkedAsgComps = []
       checkedAsgTagArray = []
-      @$el.find(".t-m-content .one-cb").each (key, value)->
+      @$el.find(".t-m-content .one-cb:checked").each (key, value)->
         checkedComp = self.instance.component($(value).parents("tr").data("id"))
         if checkedComp.type isnt "AWS.AutoScaling.Group"
           checkedAllAsg = false
-          if $(value).is(":checked")
-            checkedComps.push checkedComp
-            checkedTagArray.push checkedComp.tags()
+          checkedComps.push checkedComp
+          checkedTagArray.push checkedComp.tags()
         else
-          if $(value).is(":checked")
-            checkedAsgComps.push checkedComp
-            checkedAsgTagArray.push checkedComp.tags()
+          checkedAsgComps.push checkedComp
+          checkedAsgTagArray.push checkedComp.tags()
 
       checkedTagIdsArray = _.map (checkedTagArray), (tagArray)->
         _.map tagArray, (tag)->

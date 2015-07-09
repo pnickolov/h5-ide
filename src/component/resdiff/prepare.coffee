@@ -126,6 +126,9 @@ define [ 'constant' ], ( constant ) ->
                 when 'Options'
                     data.key = 'Option'
 
+                when 'ResourceIds'
+                    data.key = 'Id'
+
             # Convert need convert pluralKey
             if parentKey in pluralKeys
                 data.key = @pluralToSingular parentKey

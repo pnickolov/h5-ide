@@ -12,7 +12,6 @@ define [
 
   Backbone.View.extend {
     events:
-    #   "click tbody tr.item"     : "selectTableRow"
       "click .create-tag"       : "addTag"
       "click .edit-delete"      : "removeTagUsage"
       "click .edit-done"        : "changeTags"
@@ -54,15 +53,6 @@ define [
         @$el.find(".t-m-content tr.item:first-child").find('input').prop('checked', true)
       else
         @filterResourceList @filter.getFilterableResource()
-
-    selectTableRow: (evt)->
-      $row = $(evt.currentTarget)
-      @$el.find("tr.item").removeClass("selected")
-      $row.addClass("selected")
-      @$el.find(".tabs-navs ul li[data-id='selected']").click()
-      # reder selected element
-      @renderTagsContent($row.data("id"))
-      evt.stopPropagation() if evt.stopPropagation
 
     selectAllInput: (e)->
       isChecked = $(e.currentTarget).is(":checked")
@@ -120,16 +110,8 @@ define [
       ide_event.trigger ide_event.REFRESH_PROPERTY
 
     getAffectedResources :()->
-      self = @
-      isSelected = "selected" is @$el.find(".tabs-navs li.active").data("id")
-      resources = {common: [], asg: []}
-      if isSelected
-        comp = @instance.component @$el.find(".t-m-content .item.selected").data("id")
-        if comp.type is "AWS.AutoScaling.Group"
-          resources.asg.push comp
-        else
-          resources.common.push comp
-      else
+        self = @
+        resources = {common: [], asg: []}
         @$el.find(".t-m-content .one-cb").each (key, value)->
           if $(value).is(":checked")
             comp =  self.instance.component($(value).parents("tr").data("id"))
@@ -137,7 +119,7 @@ define [
               resources.asg.push comp
             else
               resources.common.push comp
-      resources
+        resources
 
     removeTagUsage: (e)->
       $tagLi = $(e.currentTarget).parents("li")
@@ -225,7 +207,7 @@ define [
       info = allComps.length
       if allComps.length == 1
         info = allComps[0].get('name')
-      @$el.find(".tabs-navs li[data-id='checked'] span").text("(#{info})")
+      @$el.find(".tabs-navs span").text("(#{info})")
       @changeTagInput()
 
     filterResourceList: (resModels)->

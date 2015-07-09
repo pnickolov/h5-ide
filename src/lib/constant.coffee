@@ -180,7 +180,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     HASTAG = [
         'CGW'
-        'DHCP'
+        # 'DHCP'
         'AMI'
         'INSTANCE'
         'IGW'
@@ -188,7 +188,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         'ENI'
         'RT'
         'SG'
-        'SNAP'
+        # 'SNAP'
         'SUBNET'
         'VOL'
         'VPC'

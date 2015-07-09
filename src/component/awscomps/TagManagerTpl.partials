@@ -35,11 +35,7 @@
         </div>
     </div>
     <div class="tag-resource-detail">
-        <div class="tabs-navs">
-            <ul>
-                <li data-id="checked" class="active">Selected <span>()</span></li>
-            </ul>
-        </div>
+        <div class="tabs-navs" data-id="checked">Selected <span>()</span></div>
         <div class="tabs-content">
             <div class="tab-content" data-id="checked">
 

@@ -203,7 +203,7 @@ define [
         unitedData = checkedData
 
       allComps = checkedComps.concat(checkedAsgComps)
-      @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not allComps.length}
+      @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not allComps.length, allAsg: checkedAllAsg}
       info = allComps.length
       if allComps.length == 1
         info = allComps[0].get('name')
@@ -256,7 +256,8 @@ define [
       $tagLi = $(tagTemplate)
       $tagLi.appendTo @$el.find("ul.tags-list")
       hasNoneAsg = @getAffectedResources().common.length > 0
-      if hasNoneAsg then $tagLi.find(".checkbox input").prop("disabled", hasNoneAsg)
+      if hasNoneAsg
+        $tagLi.find(".checkbox").remove().end().find(".action").addClass("wide")
 
     removeRow: (e)->
       $(e.currentTarget).parents("li").remove()

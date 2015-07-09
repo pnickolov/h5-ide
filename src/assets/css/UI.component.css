@@ -534,9 +534,10 @@ pre {
         margin-right: 0;
         margin-left: 5px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list .tag-value {
-        width: 269px; }
+        width: 272px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox {
-        margin-left: 84px; }
+        margin-left: 84px;
+        margin-right: 72px; }
         .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled='disabled'] + label, .tag-resource-detail .tabs-content .tab-content .tags-list .checkbox input[disabled] + label {
           opacity: 0.3; }
       .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-key, .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-value, .tag-resource-detail .tabs-content .tab-content .tags-list span.tag-inherit {
@@ -553,9 +554,11 @@ pre {
         width: 45px; }
       .tag-resource-detail .tabs-content .tab-content .tags-list .action {
         display: inline-block;
-        width: 87px;
+        width: 80px;
         text-align: center;
         vertical-align: top; }
+        .tag-resource-detail .tabs-content .tab-content .tags-list .action.wide {
+          width: 180px; }
         .tag-resource-detail .tabs-content .tab-content .tags-list .action .btn {
           min-width: 50px;
           padding: 5px 10px;

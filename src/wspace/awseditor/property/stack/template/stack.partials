@@ -143,6 +143,7 @@
 		</div>
 	</div>
 
+    {{#unless isApp}}
     <div class="option-group-head expand">
         {{i18n "PROP.RESOURCE_TAGS"}}
     </div>
@@ -151,6 +152,7 @@
             <button class="btn open-tag-manager modal-confirm btn-blue tag-manager-global">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
         </div>
     </div>
+    {{/unless}}
 
 </article>
 

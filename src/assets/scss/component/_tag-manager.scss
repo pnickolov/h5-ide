@@ -128,10 +128,11 @@
           margin-left: 5px;
         }
         .tag-key,.tag-value{
-          width: 269px;
+          width: 272px;
         }
         .checkbox{
           margin-left: 84px;
+          margin-right: 72px;
           input[disabled='disabled'] + label, input[disabled] + label{
             opacity: 0.3;
           }
@@ -152,9 +153,12 @@
         }
         .action{
           display: inline-block;
-          width: 87px;
+          width: 80px;
           text-align: center;
           vertical-align: top;
+          &.wide{
+            width: 180px;
+          }
           .btn{
             min-width: 50px;
             padding: 5px 10px;

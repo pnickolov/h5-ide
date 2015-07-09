@@ -78,25 +78,36 @@
             <tr>
                 <th class="" width="35%" data-row-type="string">Key</th>
                 <th class="" width="35%" data-row-type="string">Value</th>
-                <th class="" width="20%" data-row-type="string">Tag New Instances</th>
-                <th class="" width="10%" data-row-type="string"></th>
+                {{#if allAsg}}
+                    <th class="" width="20%" data-row-type="string">Tag New Instances</th>
+                    <th class="" width="10%" data-row-type="string"></th>
+                {{else}}
+                    <th class="" width="30%" data-row-type="string"></th>
+                {{/if}}
             </tr>
             </thead>
         </table>
     </div>
-    <ul class="tags-list">
+    <ul class="tags-list {{#unless allAsg}}no-inherit{{/unless}}">
         {{#each data}}
             <li data-id="{{id}}" data-asg="{{asg}}">
                 <div class="edit">
                     <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
                     <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
-                    <div class="checkbox">
-                        <input id="cb{{or id asg}}" type="checkbox" value="None" data-id="{{or id asg}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}} {{#if inherit}}checked{{/if}}>
-                        <label for="cb{{or id asg}}"></label>
-                    </div>
-                    <div class="action">
-                        <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>
-                    </div>
+                    {{#if allowCheck}}
+                        <div class="checkbox">
+                            <input id="cb{{or id asg}}" type="checkbox" value="None" data-id="{{or id asg}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}} {{#if inherit}}checked{{/if}}>
+                            <label for="cb{{or id asg}}"></label>
+                        </div>
+                        <div class="action">
+                            <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>
+                        </div>
+                    {{else}}
+                        <div class="action wide">
+                            <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>
+                        </div>
+                    {{/if}}
+
                 </div>
             </li>
         {{/each}}

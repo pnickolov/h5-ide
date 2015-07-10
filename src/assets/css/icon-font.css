@@ -4,7 +4,7 @@
   font-style: normal;
   src: url('/assets/fonts/icon.eot');
   src: url('/assets/fonts/../fonts/icon.eot?#iefix') format("embedded-opentype"), url("../fonts/icon.woff") format("woff"), url("../fonts/icon.ttf") format("truetype"); }
-.icon-eip:before,
+
 .icon-play:before,
 .icon-stop:before,
 .icon-save:before,
@@ -92,8 +92,6 @@
   font-weight: normal;
   -webkit-font-smoothing: antialiased; }
 
-.icon-eip:before {
-  content: "\f109"; }
 
 .icon-play:before {
   content: "\f110"; }

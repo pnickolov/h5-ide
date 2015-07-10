@@ -330,6 +330,8 @@ define [
           break
       null
 
+    getAllComponents: () -> _.values @__componentMap
+
     isModified : ()->
       # This api only compares name / component / layout
       if @modeIsApp()

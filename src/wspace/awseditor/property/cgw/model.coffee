@@ -15,6 +15,7 @@ define [ '../base/model', "Design", 'constant' ], ( PropertyModel, Design, const
                 description  : cgw.get("description")
                 BGP          : cgw.get("bgpAsn")
                 ip           : cgw.get("ip")
+                tags         : cgw.tags()
             }
             null
 

@@ -1,6 +1,7 @@
 @charset "UTF-8";
 @import "utility";
 @import "component/toolbar-modal";
+@import "component/tag-manager";
 @import "component/combo-dropdown";
 @import "component/drop-zone";
 @import "component/modal";
@@ -9,6 +10,7 @@
 @import "component/image";
 @import "component/timepicker";
 @import "component/userguide";
+@import "component/filter-input";
 
 
 /* Table */
@@ -1303,6 +1305,8 @@ select.select3.disabled {
 
 	padding: 6px;
 	color  : #d0d0d0;
+	overflow-x: hidden;
+  	text-overflow: ellipsis;
 
 	background : lighten($bg-p,5%);
 

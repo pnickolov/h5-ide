@@ -1,9 +1,14 @@
 define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
 
     wrap = ( dict ) ->
-        wrappedDict = {}
+        wrapArray = _.isArray(dict)
+        if wrapArray then wrappedDict = [] else wrappedDict = {}
+
         _.each dict, ( name, key ) ->
-            wrappedDict[ RESTYPE[ key ] ] = name
+            if wrapArray
+                wrappedDict.push RESTYPE[ name ]
+            else
+                wrappedDict[ RESTYPE[ key ] ] = name
             null
 
         wrappedDict
@@ -116,7 +121,6 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         MESOSLC    : "MESOS.LC"
 
     RESNAME =
-
         AZ           : "Availability Zone"
         INSTANCE     : "Instance"
         KP           : "Key Pair"
@@ -146,6 +150,15 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         SUBSCRIPTION : 'Subscription'
         TOPIC        : 'Topic'
 
+        DBSBG        : 'DB Subnet Group'
+        DBINSTANCE   : 'DB Instance'
+        DBPARAM      : 'Parameter'
+        DBPG         : 'ParameterGroup'
+        DBSNAP       : 'DB Snapshot'
+        DBES         : 'Event Subscription'
+        DBOG         : 'OptionGroup'
+        DBENGINE     : 'DB Engine Version'
+
         OSSERVER     : "Server"
         OSNETWORK    : "Network"
         OSSUBNET     : "Subnet"
@@ -163,6 +176,32 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
         OSKP         : "Key Pair"
         OSIMAGE      : "Image"
         OSSNAP       : "Snapshot"
+
+
+    HASTAG = [
+        'CGW'
+        # 'DHCP'
+        'AMI'
+        'INSTANCE'
+        'IGW'
+        'ACL'
+        'ENI'
+        'RT'
+        'SG'
+        # 'SNAP'
+        'SUBNET'
+        'VOL'
+        'VPC'
+        'VPN'
+        'VGW'
+        'ASG'
+        # 'DBINSTANCE'
+        # 'DBSNAP'
+        # 'DBOG'
+        # 'DBPG'
+        # 'DBSBG'
+    ]
+
 
 
     #private
@@ -476,6 +515,7 @@ define ['MC', 'i18n!/nls/lang.js'], ( MC, lang ) ->
     RESTYPE                 : RESTYPE
     STATE_REF_DICT          : STATE_REF_DICT
     RESNAME                 : wrap RESNAME
+    HASTAG                  : wrap HASTAG
     WRAP                    : wrap
 
     DB_INSTANCECLASS        : DB_INSTANCECLASS

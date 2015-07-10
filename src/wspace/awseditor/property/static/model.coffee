@@ -9,6 +9,7 @@ define [ "../base/model", "Design", "constant", 'CloudResources' ], ( PropertyMo
       init : ( id ) ->
 
         component = Design.instance().component( id )
+        @set "tags", component.tags()
 
         isIGW = component.type is constant.RESTYPE.IGW
         @set "isIGW", isIGW
@@ -20,6 +21,8 @@ define [ "../base/model", "Design", "constant", 'CloudResources' ], ( PropertyMo
           appId   = component.get("appId")
 
           data = CloudResources(Design.instance().credentialId(), component.type, Design.instance().region()).get(appId)?.toJSON()
+          if @isAppEdit
+            @set "isAppEdit", true
 
         if data
           if data.attachments and data.attachments.length

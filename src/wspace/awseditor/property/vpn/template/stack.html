@@ -68,21 +68,25 @@
     </div>
   {{/if}} {{/if}}
 
-  {{#if tagSet}}
-  <div class="option-group-head">
-      {{i18n "PROP.RESOURCE_TAGS"}}
-  </div>
-  <div class="option-group">
-      <table class="table cost-estimation-table">
-          <tbody>
-          {{#each tagSet}}
-          <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
-          {{else}}
-          <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
-          {{/each}}
-          </tbody>
-      </table>
-  </div>
+  {{#if isApp}}
+    {{#if tagSet}}
+    <div class="option-group-head">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        {{#if tagSet}}
+        <table class="table cost-estimation-table">
+            <tbody>
+            {{#each tagSet}}
+            <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+        {{/if}}
+    </div>
+    {{/if}}
   {{/if}}
 {{else}}
   {{#if dynamic}}
@@ -116,5 +120,28 @@
   </section>
 {{#if vpnConnectionId}} </div> {{/if}}
 {{/unless}} {{/unless}}
+
+{{#unless isApp}}
+  <div class="option-group-head expand">
+    {{i18n "PROP.RESOURCE_TAGS"}}
+  </div>
+  <div class="option-group">
+    {{#if tags.length}}
+    <table class="table cost-estimation-table">
+      <tbody>
+      {{#each tags}}
+      <tr> <td style="min-width:70px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+      {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+    <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+    {{/if}}
+    <div class="tags-action">
+
+      <button class="btn open-tag-manager modal-confirm btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
+    </div>
+  </div>
+{{/unless}}
 
 </article>

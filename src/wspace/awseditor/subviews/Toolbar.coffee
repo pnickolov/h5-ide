@@ -14,9 +14,12 @@ define [
   'TaGui'
   "CloudResources"
   "AppAction"
+  "FilterInput"
   "UI.notification"
   "backbone"
-], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction )->
+
+
+], ( OpsModel, OpsEditorTpl, Thumbnail, JsonExporter, ApiRequest, lang, Modal, kpDropdown, ResDiff, constant, ide_event, TA, CloudResources, AppAction, FilterInput )->
 
   Backbone.View.extend {
 
@@ -78,9 +81,33 @@ define [
 
       @updateZoomButtons()
       @updateTbBtns()
+      @initFilter()
 
       @listenTo @workspace.opsModel, "change:state", @updateTbBtns
       return
+
+    initFilter: ->
+      @filter = new FilterInput( isVisual: true )
+      ### env:dev ###
+      # Need remove before deploy
+      window.filter = @filter
+      #
+      ### env:dev:end ###
+
+      @listenTo @filter, 'change:filter', @highlightCanvas
+      @listenTo @filter, 'focus', @highlightCanvas
+      @$('.btn-toolbar').last().after @filter.render().el
+
+    highlightCanvas: ( models, effect ) ->
+      if !arguments.length
+        matched = @filter.getMatchedResource true
+        models  = matched.matched
+        effect  = matched.effect
+
+      if effect
+        @workspace.view.highLightModels(models)
+      else
+        @workspace.view.removeHighlight()
 
     updateTbBtns : ()->
       if @workspace.isRemoved() then return

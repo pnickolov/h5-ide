@@ -80,5 +80,24 @@
         </div>
     </section>
     {{/if}}
-
+    <div class="option-group-head expand">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        {{#if volume_detail.tags.length}}
+        <table class="table cost-estimation-table">
+            <tbody>
+            {{#each volume_detail.tags}}
+            <tr> <td style="min-width:70px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+        {{/if}}
+        <div class="tags-action">
+            
+            <button class="btn open-tag-manager modal-confirm btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
+        </div>
+    </div>
 </article>

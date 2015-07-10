@@ -22,7 +22,7 @@ define [ '../base/model', 'constant', 'Design' ], ( PropertyModel, constant, Des
       if not lc
         @set "emptyAsg", true
         return
-
+      @set "tags", component.tags()
       @set "has_elb", !!lc.connections("ElbAmiAsso").length
       @set "isEC2HealthCheck", component.isEC2HealthCheckType()
 

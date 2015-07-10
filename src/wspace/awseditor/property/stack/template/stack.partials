@@ -180,6 +180,17 @@
         </div>
     </div>
 
+    {{#unless isApp}}
+    <div class="option-group-head expand">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        <div class="tags-action">
+            <button class="btn open-tag-manager modal-confirm btn-blue tag-manager-global">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
+        </div>
+    </div>
+    {{/unless}}
+
 </article>
 
 <!--{{mesosData}}-->

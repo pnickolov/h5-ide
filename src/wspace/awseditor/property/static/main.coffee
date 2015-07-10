@@ -24,6 +24,7 @@ define [ '../base/main', './model', './view', 'constant' ], ( PropertyModule, mo
             @model = model
             @view  = view
             @model.isApp = true
+            @model.isAppEdit = true
             null
     }
 

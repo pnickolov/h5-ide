@@ -1,5 +1,13 @@
 
-define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
+define [ "constant", "ConnectionModel", "ComplexResModel" ], ( constant, ConnectionModel, ComplexResModel )->
+
+  VpnModel = ComplexResModel.extend {
+    type: 'VpnResource'
+    isVisual: -> false
+    createRef: -> ComplexResModel.prototype.createRef.call @getRealBody(), 'VpnConnectionId'
+    setRealBody: (realbody) -> @__realbody = realbody
+    getRealBody: -> @__realbody
+  }
 
   C = ConnectionModel.extend {
 
@@ -16,6 +24,20 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
         name : "cgw-vpn"
         type : constant.RESTYPE.CGW
 
+    initialize: ->
+      @__resource = new VpnModel()
+      @__resource.setRealBody @
+
+    getResourceModel: -> @__resource
+    connectionTargets: -> @__resource.connectionTargets.apply @__resource, arguments
+    tags: -> @__resource.tags.apply @__resource, arguments
+
+    get: ( attr ) ->
+      if attr is 'name'
+        "vpn:" + @getTarget( constant.RESTYPE.CGW ).get("name")
+      else
+        ConnectionModel.prototype.get.call @, attr
+
     serialize : ( component_data )->
       vgw = @getTarget( constant.RESTYPE.VGW )
       cgw = @getTarget( constant.RESTYPE.CGW )
@@ -25,19 +47,23 @@ define [ "constant", "ConnectionModel" ], ( constant, ConnectionModel )->
       else
         routes = _.map @get("routes"), ( r )-> { DestinationCidrBlock : r }
 
-      component_data[ @id ] =
-        name : "vpn:" + cgw.get("name")
-        type : @type
-        uid  : @id
-        resource :
-          CustomerGatewayId : cgw.createRef( "CustomerGatewayId" )
-          Options           : { StaticRoutesOnly : not cgw.isDynamic() }
-          Type              : "ipsec.1"
-          Routes            : routes
-          VpnConnectionId   : @get("appId")
-          VpnGatewayId      : vgw.createRef( "VpnGatewayId" )
+        component =
+          name : @get( 'name' )
+          type : @type
+          uid  : @id
+          resource :
+            CustomerGatewayId : cgw.createRef( "CustomerGatewayId" )
+            Options           : { StaticRoutesOnly : not cgw.isDynamic() }
+            Type              : "ipsec.1"
+            Routes            : routes
+            VpnConnectionId   : @get("appId")
+            VpnGatewayId      : vgw.createRef( "VpnGatewayId" )
 
-      null
+      component_data and (component_data[ @id ] = component) or component
+
+    remove: ->
+      @getResourceModel().remove()
+      ConnectionModel.prototype.remove.apply @, arguments
 
   }, {
 

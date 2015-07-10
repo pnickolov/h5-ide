@@ -200,6 +200,7 @@ require.config {
     'rds_snapshot'     : 'component/awscomps/RdsSnapshot'
     'eip_manager'      : 'component/awscomps/EipManage'
     'eip_selector'     : 'component/awscomps/EipSelector'
+    'tag_manager'     : 'component/awscomps/TagManager'
     'sslcert_manage'   : 'component/awscomps/SslCertManage'
     'sslcert_dropdown' : 'component/awscomps/SslCertDropdown'
     'og_manage'        : 'component/awscomps/OgManage'
@@ -207,6 +208,7 @@ require.config {
     'og_dropdown'      : 'component/awscomps/OgDropDown'
     'SGRulePopup'      : "component/awscomps/SGRulePopup"
     'DbSubnetGPopup'   : "component/awscomps/DbSubnetGPopup"
+    'FilterInput'      : "component/awscomps/FilterInput"
 
     'OsKp'             : 'component/oscomps/KpDropdown'
     'OsSnapshot'       : 'component/oscomps/Snapshot'
@@ -303,6 +305,7 @@ require.config {
       'rds_snapshot'
       'eip_manager'
       'eip_selector'
+      'tag_manager'
       'sslcert_manage'
       'sslcert_dropdown'
       'og_manage'
@@ -310,6 +313,7 @@ require.config {
       'og_dropdown'
       'SGRulePopup'
       'DbSubnetGPopup'
+      'FilterInput'
     ]
 
     "component/OsComps" : [

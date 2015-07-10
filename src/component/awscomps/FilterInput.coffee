@@ -389,7 +389,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         for r in resources
           if attr is 'name'
             dd.push { type: 'attribute_value', value: r.get( 'name' ) }
-            break
+            continue
 
           serialized = r.serialize()
           unless _.isArray(serialized) then serialized = [ serialized ]

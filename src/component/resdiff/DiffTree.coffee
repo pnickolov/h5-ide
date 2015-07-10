@@ -42,10 +42,13 @@ define ['constant'], (constant) ->
 
                 '*.resource.Tags': true #SG,ACL,RT
 
-                # for openstack
+                # For openstack
                 '*.resource.adminPass': true
                 '*.resource.key_name': true
                 '*.resource.bootable': true
+
+                # For asg tag
+                "TAG.resource.n.PropagateAtLaunch": true
             }
 
         if not option.noDiffArrayAttrMap

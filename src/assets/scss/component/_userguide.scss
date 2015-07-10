@@ -1,4 +1,5 @@
 .user-guide {
+	@include custom-scrollbar;
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -152,6 +153,7 @@
 		font-weight: bold;
 	}
 	.guide-list {
+		@include custom-scrollbar;
 		position: absolute;
 		overflow: auto;
 		left: 0;

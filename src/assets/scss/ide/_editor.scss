@@ -219,6 +219,7 @@ $BottomPanelHeight    : 24px;
   background : lighten($bg-p, 5%);
 
   position: absolute;
+  display: flex;
   z-index: 3;
 
   + .OEPanelRight {

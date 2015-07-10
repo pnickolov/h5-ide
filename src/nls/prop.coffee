@@ -335,6 +335,10 @@ module.exports =
       en: "This resource has no tags"
       zh: "该资源没有标签"
 
+    RESOURCE_EDIT_TAG:
+      en: "Edit Tags..."
+      zh: "编辑标签..."
+
     INSTANCE_USER_DATA_DETAIL:
       en: "View User Data Detail"
       zh: "查看详细用户数据"

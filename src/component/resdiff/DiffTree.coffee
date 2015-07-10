@@ -74,12 +74,12 @@ define ['constant'], (constant) ->
 
             for v, i in ([0...a.length])
                 for v, j in ([0...b.length])
-                    if not _compare.call(this, a[i], b[j], '', null, [])
+                    if not _compare.call(this, a, b, a[i], b[j], '', null, [])
                         tmp = b[i]
                         b[i] = b[j]
                         b[j] = tmp
 
-        _compare = (a, b, key, path, resultJSON) ->
+        _compare = (pA, pB, a, b, key, path, resultJSON) ->
 
             # hack for ASG key VPCZoneIdentifier
             if key is 'VPCZoneIdentifier'
@@ -120,6 +120,13 @@ define ['constant'], (constant) ->
                     attrPath2 = '*.' + attrPathStr
 
                     return if (option.filterAttrMap[attrPath1] or option.filterAttrMap[attrPath2])
+
+                    # ignore for visualops tag
+                    if attrPath1 is "TAG.resource.n.Value" or
+                        attrPath1 is "ASGTAG.resource.n.Value" or
+                        attrPath2 is "TAG.resource.n.Value" or
+                        attrPath2 is "ASGTAG.resource.n.Value"
+                            return if (pA and pA.Key is 'visualops') and (pB and pB.Key is 'visualops')
 
             if not a and not b
                 return
@@ -184,7 +191,7 @@ define ['constant'], (constant) ->
                     if (keys[i] is keys[i - 1])
                         continue
 
-                    hasDiff = _compare.call(this, a and a[keys[i]], b and b[keys[i]], keys[i], path, resultJSON[key])
+                    hasDiff = _compare.call(this, a, b, a and a[keys[i]], b and b[keys[i]], keys[i], path, resultJSON[key])
 
                     if hasDiff
                         isEqual = false
@@ -226,7 +233,7 @@ define ['constant'], (constant) ->
         this.compare = (json1, json2) ->
 
             resultJSON = {}
-            _compare.call(this, json1, json2, 'result', [], resultJSON)
+            _compare.call(this, json1, json2, json1, json2, 'result', [], resultJSON)
             return resultJSON.result
 
         null

@@ -56,9 +56,11 @@ define [ "../DesignAws" ], (Design)->
 #                when "AWS.VPC.DhcpOptions"
 #                    compo.resource.DhcpOptionsId = ""
                 when 'AWS.EC2.Tag'
-                    delete components[comp]
+                    if compo.name is "EC2InternalTags"
+                        delete components[comp]
                 when 'AWS.AutoScaling.Tag'
-                    delete components[comp]
+                    if compo.name is "AutoScalingInternalTags"
+                        delete components[comp]
                 when 'AWS.ELB'
                     compo.resource.DNSName = ""
                     compo.resource.LoadBalancerName = compo.name

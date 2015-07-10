@@ -1,7 +1,7 @@
 
-define [ "constant", "ResourceModel", "Design"  ], ( constant, ResourceModel, Design )->
+define [ "constant", "ComplexResModel", "Design"  ], ( constant, ComplexResModel, Design )->
 
-  Model = ResourceModel.extend {
+  Model = ComplexResModel.extend {
     type       : constant.RESTYPE.DHCP
 
     defaults   : ()->

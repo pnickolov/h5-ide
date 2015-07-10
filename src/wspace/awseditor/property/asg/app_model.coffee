@@ -19,6 +19,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
           minSize    : asg_comp.get 'minSize'
           maxSize    : asg_comp.get 'maxSize'
           capacity   : asg_comp.get 'capacity'
+          tags       : asg_comp.tags()
           isEditable : @isAppEdit
 
         @set data

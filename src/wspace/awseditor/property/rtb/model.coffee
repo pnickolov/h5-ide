@@ -26,9 +26,11 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
 
       component = design.component( uid )
       res_type  = constant.RESTYPE
+      @set "tags", component.tags()
 
       # uid might be a line connecting RTB and other resource
       if component.node_line
+        @set "isRTB", false # It should be a connection, and should not show TAG Edit option in property panel.
         subnet    = component.getTarget( res_type.SUBNET )
         component = component.getTarget( res_type.RT )
 
@@ -40,6 +42,9 @@ define [ '../base/model', "Design", 'constant', "CloudResources",'i18n!/nls/lang
               rtb    : component.get("name")
           }
           return
+      else
+        @set "isRTB",  true
+
 
       VPCModel = Design.modelClassForType( res_type.VPC )
 

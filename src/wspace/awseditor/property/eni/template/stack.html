@@ -3,42 +3,70 @@
 {{else}}
 
 <article>
-  <div id="prop-appedit-eni-list" class="expand"></div>
+    <div id="prop-appedit-eni-list" class="expand"></div>
+    <div class="option-group-head expand">{{ i18n "PROP.ENI_LBL_DETAIL" }}</div>
+    <div class="option-group">
+        <!-- {{#unless isAppEdit}}
+            <section class="property-control-group" data-bind="true">
+              <label class="left" for="property-eni-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+              <textarea id="property-eni-desc" data-type="ascii" data-ignore="true" class="input">{{desc}}</textarea>
+            </section>
+        {{/unless}} -->
+        <section class="property-control-group" data-bind="true">
+            <label class="left" for="property-eni-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
+            <input id="property-eni-desc" data-type="ascii" data-ignore="true" data-required-rollback="true"
+                   data-ignore-regexp="^[a-zA-Z0-9\.\ \_\-\:\/\(\)\#\,\@\[\]\+\=\&\;\{\}\!\$\*]*$" maxlength="255"
+                   class="input" value="{{description}}"/>
+        </section>
+        <section class="property-control-group">
+            <div class="checkbox">
+                <input id="property-eni-source-check" type="checkbox" {{#if sourceDestCheck}}checked="checked" {{/if}}
+                />
+                <label for="property-eni-source-check"></label>
+            </div>
+            <label for="property-eni-source-check">{{ i18n "PROP.ENI_SOURCE_DEST_CHECK"}}</label>
+        </section>
 
-  <div class="option-group-head expand">{{ i18n "PROP.ENI_LBL_DETAIL" }}</div>
-  <div class="option-group">
-<!-- {{#unless isAppEdit}}
-    <section class="property-control-group" data-bind="true">
-      <label class="left" for="property-eni-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
-      <textarea id="property-eni-desc" data-type="ascii" data-ignore="true" class="input">{{desc}}</textarea>
-    </section>
-{{/unless}} -->
-    <section class="property-control-group" data-bind="true">
-      <label class="left" for="property-eni-desc">{{ i18n "PROP.DESCRIPTION" }}</label>
-      <input id="property-eni-desc" data-type="ascii" data-ignore="true" data-required-rollback="true" data-ignore-regexp="^[a-zA-Z0-9\.\ \_\-\:\/\(\)\#\,\@\[\]\+\=\&\;\{\}\!\$\*]*$" maxlength="255" class="input" value="{{description}}" />
-    </section>
-    <section class="property-control-group">
-      <div class="checkbox">
-        <input id="property-eni-source-check" type="checkbox" {{#if sourceDestCheck}}checked="checked"{{/if}} />
-        <label for="property-eni-source-check"></label>
-      </div>
-      <label for="property-eni-source-check">{{ i18n "PROP.ENI_SOURCE_DEST_CHECK"}}</label>
-    </section>
+        <section class="property-control-group">
+            <div class="network-list-wrap">
+                <div class="network-list-header">
+                    {{ i18n "PROP.ENI_IP_ADDRESS"}}
+                    {{#unless isMesos}}
+                    <button id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip"
+                            data-tooltip="{{i18n 'PROP.ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP.ENI_ADD_IP"}}
+                    </button>
+                    {{/unless}}
+                </div>
+                <ul class="network-list" id="property-eni-list" data-bind="true">
+                </ul>
+            </div>
+        </section>
+    </div>
 
-    <section class="property-control-group">
-      <div class="network-list-wrap">
-        <div class="network-list-header">
-          {{ i18n "PROP.ENI_IP_ADDRESS"}}
-          {{#unless isMesos}}<button id="property-eni-ip-add" class="right btn btn-blue btn-small tooltip" data-tooltip="{{i18n 'PROP.ENI_TIP_ADD_IP_ADDRESS'}}">{{ i18n "PROP.ENI_ADD_IP"}}</button>{{/unless}}
+    <div class="option-group-head expand">{{ i18n "PROP.ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span
+            id="property-head-sg-num"></span>)</span></div>
+    <div class="option-group sg-group"></div>
+
+    <div class="option-group-head expand">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        {{#if tags.length}}
+        <table class="table cost-estimation-table">
+            <tbody>
+            {{#each tags}}
+            <tr> <td style="min-width:70px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+        {{/if}}
+        <div class="tags-action">
+            
+            <button class="btn open-tag-manager modal-confirm btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
         </div>
-        <ul class="network-list" id="property-eni-list" data-bind="true">
-        </ul>
-      </div>
-    </section>
-  </div>
-
-  <div class="option-group-head expand">{{ i18n "PROP.ENI_SG_DETAIL"}}<span class="property-head-num-wrap">(<span id="property-head-sg-num"></span>)</span></div>
-  <div class="option-group sg-group"></div>
+    </div>
 </article>
 
 {{/unless}}

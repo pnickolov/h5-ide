@@ -31,6 +31,8 @@ define [
   './model/MesosMasterModel'
   './model/MesosSlaveModel'
   './model/MesosLcModel'
+  './model/TagModel'
+  './model/AsgTagModel'
 
 
   "./model/deserializeVisitor/JsonFixer"

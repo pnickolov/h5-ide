@@ -8,6 +8,7 @@ define [
   "OpsModel"
   "event"
   'CloudResources'
+  "tag_manager"
   "backbone"
 
   '../property/stack/main'
@@ -35,7 +36,7 @@ define [
   '../property/dbinstance/main'
   '../property/subnetgroup/main'
 
-], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources )->
+], ( RightPanelTpl, PropertyBaseModule, stateeditor, CONST, Design, OpsModel, ide_event, CloudResources, TagManager )->
 
   ide_event.onLongListen ide_event.REFRESH_PROPERTY, ()->
     $("#OEPanelRight").trigger "REFRESH"; return
@@ -76,6 +77,7 @@ define [
       "SHOW_PROPERTY"              : "switchToProperty"
       "click #btn-switch-property" : "switchToProperty"
       "click #btn-switch-state"    : "showStateEditor"
+      "click .open-tag-manager"    : "openTagManager"
 
     initialize : ( options )->
       _.extend this, options
@@ -326,4 +328,9 @@ define [
 
       @forceShow()
       return
+
+    openTagManager: ()->
+      uid = PropertyBaseModule.activeModule().uid
+      comp = @workspace.design.component( uid )
+      new TagManager(comp)
   }

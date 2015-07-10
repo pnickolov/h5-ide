@@ -1,0 +1,196 @@
+.tag-manager-wrap{
+  height: 450px;
+  position: relative;
+  margin-bottom: -10px;
+  font-size: 12px;
+}
+.tag-resource-list{
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  .filter-input{
+    position: absolute;
+    width: 757px;
+    z-index: 1;
+    margin-right: 0;
+  }
+  .edit-tags {
+    margin-top: -4px;
+    position: absolute;
+    top: 5px;
+    right: 1px;
+  }
+  .resource-list{
+    @include custom-scrollbar;
+    margin-top: 46px;
+    border: 1px solid #000;
+    padding: 0px;
+    height: 391px;
+    box-sizing: border-box;
+    overflow: auto;
+    .table-head thead tr th:last-child{
+      width: 50%;
+    }
+    .table {
+      border-collapse: initial;
+      tbody tr td:last-child{
+          width: 50%;
+      }
+    }
+  }
+  .tag-resource-table{
+    &.table-head-fix .table-head thead th, &.table-head-fix .table tr td {
+      padding: 5px;
+    }
+    tr th:first-child, tr td:first-child{
+      width: 10px;
+    }
+    tbody tr{
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      td {
+        border: 0;
+        border-right: 1px solid #222;
+      }
+      &.selected{
+        td{
+          background-color: #31619E;
+        }
+      }
+    }
+  }
+}
+
+
+.tag-resource-detail{
+  @include slide;
+  @include custom-scrollbar;
+  background:                 #252A2E;
+  max-height:                 0;
+  overflow:                   auto !important;
+  position:                   absolute;
+  width:                      100%;
+  z-index:                    71;
+  top:                        0px;
+
+  &.show {
+    box-shadow: 0 4px 10px rgba(0,0,0,.6);
+    max-height: 437px;
+    overflow: auto;
+  }
+
+  &.show + .will-be-covered {
+    opacity:        .4;
+    pointer-events: none;
+    @include op-transition;
+  }
+
+  .cancel {
+    min-width: 80px;
+    background: none;
+    color: #666;
+    box-shadow: none;
+    &:hover { color: #148BE6; background: none; }
+  }
+
+  .tabs-navs{
+    padding: 10px;
+    font-size: 14px;
+  }
+  .tabs-content{
+    overflow: auto;
+    height: 345px;
+    .tab-content{
+      padding: 0;
+      .table-head {
+          th { text-align: center; }
+          th:first-child { border-left: 0; }
+          th:last-child { border-right: 0; }
+      }
+      .tags-list{
+        li{
+          margin: 4px 0;
+          &:first-child{
+            margin-top: 4px;
+          }
+          &:hover{
+            background-color: #2a2a2a;
+          }
+          .edit{
+            display: block;
+          }
+        }
+        .tag-key{
+          margin-right: 0;
+          margin-left: 5px;
+        }
+        .tag-key,.tag-value{
+          width: 272px;
+        }
+        .checkbox{
+          margin-left: 84px;
+          margin-right: 72px;
+          input[disabled='disabled'] + label, input[disabled] + label{
+            opacity: 0.3;
+          }
+        }
+        span.tag-key, span.tag-value, span.tag-inherit{
+          display: inline-block;
+          width: 145px;
+          padding: 5px 20px 5px 6px;
+          margin-left: 5px;
+          height: 19px;
+          line-height: 19px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        span.tag-inherit{
+          width: 45px;
+        }
+        .action{
+          display: inline-block;
+          width: 60px;
+          text-align: center;
+          vertical-align: top;
+          &.wide{
+            width: 180px;
+          }
+          .btn{
+            min-width: 50px;
+            padding: 5px 10px;
+            margin: 0 5px;
+
+          }
+          .edit-cancel, .edit-remove-row, .edit-delete {
+            background: none;
+            color: #666;
+            box-shadow: none;
+            &:hover {
+                color: #777;
+            }
+          }
+          .edit-remove-row {
+              display: none;
+          }
+        }
+      }
+    }
+    .tag-empty{
+      position: absolute;
+      top: 45%;
+      text-align: center;
+      width: 50%;
+      font-size: 15px;
+      left: 25%;
+    }
+  }
+  .pull-right{
+    text-align: right;
+    padding: 10px 20px;
+  }
+}

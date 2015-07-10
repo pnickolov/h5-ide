@@ -1,0 +1,192 @@
+.filter-input {
+    min-width: 260px;
+    display: inline-block;
+    position: relative;
+    margin-right: 5px;
+    .fake-input {
+        border: 1px solid #000;
+        border-radius: 2px;
+        height: 34px;
+        padding: 0 5px;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+        background: #25252b;
+        &:hover {
+            background: #2c2c33;
+        }
+        .tags {
+            &:empty + .placeholder { display: inline; }
+
+            li {
+                color: #DADADA !important;
+                font-weight: normal;
+                font-size: 12px;
+                padding: 1px 5px;
+                border: 1px solid #59595C;
+                margin-top: 8px;
+                border-radius: 3px;
+                background: #2C2C2C;
+                span.key {
+                    font-weight: normal;
+                    margin-right: 2px;
+                }
+                span.value {
+                    font-weight: bold;
+                    color: #ECECEC;
+                }
+            }
+        }
+        input {
+            color: rgb(179, 179, 179);
+            background: transparent;
+            border: 0;
+            outline: 0;
+            flex-grow: 1;
+            margin-left: 5px;
+            margin-top: 2px;
+            font-size: 12px;
+        }
+        &.focus {
+            overflow: visible;
+            height: auto;
+            min-height: 34px;
+
+            .placeholder { display: none !important; }
+        }
+
+        .placeholder {
+            display: none;
+            margin-top: 8px;
+            &::before { padding-right: 5px; }
+        }
+
+        input {
+
+        }
+
+        ul {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            flex-shrink: 0;
+            max-width: 78%;
+
+            li {
+                word-break: break-all;
+                list-style: none;
+                display: inline-block;
+                background: #F1F1F1;
+                background: -webkit-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
+                background: -moz-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
+                background: -ms-linear-gradient(top, #FDFDFD 0%, #E3E3E3);
+
+                border: 1px solid #d2d2d2;
+                border-radius: 5px;
+                cursor: pointer;
+                padding: 0 5px;
+                font-size: 16px;
+                color: #333;
+                margin-top: 7px;
+                margin-left: 1px;
+                margin-right: 1px;
+                transition: opacity .25s linear;
+
+                &:last-child {
+                    margin-bottom: 7px;
+                }
+                &::after {
+                    content: "×";
+                    color: #999;
+                    cursor: pointer;
+                    font-weight: bold;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+                }
+                &:hover::after { color: #aaa; }
+                &.resource_attribute, &.resource { color: #CF7C00; }
+
+                .key { font-weight: bold; }
+            }
+        }
+    }
+
+    .dropdown {
+        @include custom-scrollbar;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-height: 210px;
+        overflow-y: auto;
+        list-style: none;
+        border: 1px solid #0f0f0f;
+        box-sizing: border-box;
+        border-radius: 0 0 4px 4px;
+        position: absolute;
+        left: 0;
+        background: #25252b;
+        color: #D0D0D0;
+        z-index: 1;
+        font-size: 12px;
+    }
+
+    .dropdown:empty {
+        border: 0;
+    }
+
+    .drop .dropdown {
+        display: block;
+    }
+
+    .dropdown li {
+        padding: 6px;
+
+        &.label {
+            font-weight: bold;
+            color: white;
+        }
+
+        &.option {
+            padding-left: 18px;
+        }
+
+        .match {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        &.option.selected {
+            background: #4a90e2;
+            color: #F5F5F5;
+        }
+    }
+
+    .line-tip {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+    }
+
+    .fake-input.focus .line-tip {
+        display: none;
+    }
+}
+
+
+
+.OEPanelTop .filter-input {
+    width: 1000px;
+
+    .fake-input {
+        padding-top: 2px;
+        padding-left: 10px;
+        height: 38px;
+        border-top: 0;
+        border-bottom: 0;
+        border-radius: 0;
+        input {
+            margin-top: -4px;
+        }
+    }
+
+}

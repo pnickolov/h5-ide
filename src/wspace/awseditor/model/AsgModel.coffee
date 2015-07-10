@@ -249,6 +249,8 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
       lcPrice.formatedFee = lcPrice.fee + "/mo"
       return lcPrice
 
+    getTagModel: -> Design.modelClassForType(constant.RESTYPE.ASGTAG).getCustom()
+
     getNotification : ()-> @get("notification")?.toJSON() or {}
 
     getNotiObject: () ->

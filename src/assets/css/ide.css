@@ -168,6 +168,7 @@ pre {
 .empty-hide:empty {
   display: none; }
 
+/* custom scrollbar */
 /* CSS reset */
 article,
 footer,
@@ -2635,7 +2636,7 @@ aside.dashboard-sidebar {
   border-radius: 2px;
   box-sizing: border-box;
   box-shadow: 0 2px 0 #eeeef0;
-  width: 77.2vw;
+  width: 77.7vw;
   margin-left: 1vw; }
   .dash-resource-wrap .dash-region-header {
     padding: 10px 5px; }
@@ -3065,6 +3066,7 @@ aside.dashboard-sidebar {
   min-width: 610px;
   background: #2b2b35;
   position: absolute;
+  display: flex;
   z-index: 3; }
   .OEPanelTop + .OEPanelRight {
     top: 40px; }
@@ -6195,7 +6197,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 */
 /* Toolbar */
 .btn-toolbar {
-  width: 34px;
+  min-width: 34px;
   height: 32px;
   line-height: 32px;
   position: relative;
@@ -6206,6 +6208,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   padding: 4px 4px 3px;
   cursor: pointer;
   box-sizing: content-box; }
+  .btn-toolbar .icon-bezier-q {
+    display: inline-block; }
   .btn-toolbar.seperator {
     border-right: 1px solid #000; }
   .btn-toolbar:hover, .icon-hide-sg.selected, .btn-toolbar.open .selection {
@@ -6216,7 +6220,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
     background: none;
     cursor: default; }
   .btn-toolbar.selectbox {
-    width: 52px;
+    min-width: 52px;
     padding: 0;
     height: 40px; }
     .btn-toolbar.selectbox .selection {
@@ -6255,7 +6259,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
       border-bottom: 1px solid #DD4C4C; }
 
 .toolbar-btn-primary {
-  width: 112px;
+  min-width: 112px;
   color: #f3f3f3;
   background: #11C568;
   border-bottom: 1px solid #059e4f; }
@@ -6280,7 +6284,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 .reload-states {
   margin: 6px 8px 0 0;
   float: right;
-  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
   height: 27px;
   font-size: 12px;
   border-radius: 18px;
@@ -6772,6 +6777,40 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 #mesos-attribute {
   margin-top: 10px; }
+
+.tags-action {
+  padding: 5px;
+  overflow: auto; }
+  .tags-action .btn-blue {
+    margin: 0 auto;
+    display: inherit;
+    margin-bottom: 10px; }
+    .tags-action .btn-blue.tag-manager-global {
+      margin-top: 10px; }
+
+.property-content .empty-tag {
+  padding: 10px;
+  font-size: 13px;
+  color: #AEAEAE;
+  text-align: center; }
+
+.tag-large.icon-info {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  text-align: center;
+  line-height: 34px;
+  vertical-align: top;
+  color: #148BE6;
+  cursor: pointer;
+  position: relative; }
+  .tag-large.icon-info:before {
+    font-size: 16px;
+    line-height: 38px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; }
 
 .ops-process {
   width: 100%;

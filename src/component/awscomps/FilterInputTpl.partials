@@ -1,0 +1,22 @@
+<!-- {{frame}} -->
+<div class="fake-input">
+    <ul class="tags"></ul>
+    <i class="icon-search placeholder">Filter</i>
+    <input type="text"/>
+    <span class="line-tip"></span>
+</div>
+<ul class="dropdown"></ul>
+
+<!-- {{dropdown}} -->
+{{#each this}}
+<li data-type="{{type}}" data-value="{{value}}" data-vtext="{{vtext}}" class="{{#ifCond type 'label'}}label{{else}}option{{/ifCond}} {{#if selected}}selected{{/if}}">
+{{{text}}}
+</li>
+{{/each}}
+
+<!-- {{tag}} -->
+{{#each this}}
+<li data-key="{{key}}" data-value="{{value}}" class="{{type}}">
+    <span class="key">{{key}}</span>{{#if vtext}}=<span class="value">{{vtext}}</span>{{/if}}
+</li>
+{{/each}}

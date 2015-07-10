@@ -31,19 +31,31 @@
     <dd>{{bgpAsn}}</dd>
   </dl>
     {{#if tagSet}}
-    <div class="option-group-head">
+    <div class="option-group-head expand">
         {{i18n "PROP.RESOURCE_TAGS"}}
     </div>
     <div class="option-group">
+        {{#if tagSet}}
         <table class="table cost-estimation-table">
             <tbody>
             {{#each tagSet}}
             <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
-            {{else}}
-            <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
             {{/each}}
             </tbody>
         </table>
+        {{else}}
+        <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+        {{/if}}
+        {{#if isEditable}}
+        <div class="tags-action">
+            
+            <button class="btn open-tag-manager modal-confirm btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
+        </div>
+        {{else}}
+        <div class="tags-action">
+            
+        </div>
+        {{/if}}
     </div>
     {{/if}}
 </article>

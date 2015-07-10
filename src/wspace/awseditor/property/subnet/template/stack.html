@@ -60,4 +60,24 @@
     <ul id="networkacl-list" class="acl-sg-info-list acl-info-list mega-list-wraper"></ul>
     <a href="#" class="add-to-list" id="networkacl-create">{{ i18n "PROP.SUBNET_BTN_CREATE_NEW_ACL" }}</a>
   </div>
+  <div class="option-group-head expand">
+    {{i18n "PROP.RESOURCE_TAGS"}}
+  </div>
+  <div class="option-group">
+    {{#if tags.length}}
+    <table class="table cost-estimation-table">
+      <tbody>
+      {{#each tags}}
+      <tr> <td style="min-width:70px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+      {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+    <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+    {{/if}}
+    <div class="tags-action">
+      
+      <button class="btn open-tag-manager modal-confirm btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
+    </div>
+  </div>
 </article>

@@ -1,0 +1,115 @@
+<!--{{modalTemplate}}-->
+<div class="tag-manager-wrap">
+    <div class="tag-resource-list">
+        <input type="text" class="input filter-bar" placeholder="Filter Bar"/>
+        <button class="btn edit-tags btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
+        <div class="resource-list">
+            <div class="table-head-fix tag-resource-table">
+                <table class="table-head">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox">
+                                <input id="t-m-select-all" type="checkbox" value="None">
+                                <label for="t-m-select-all"></label>
+                            </div>
+                        </th>
+                        <th class="sortable active" data-row-type="string">Name</th>
+                        <th class="" data-row-type="string">Type</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th><div class="th-inner"></div></th>
+                            <th><div class="th-inner"></div></th>
+                            <th><div class="th-inner"></div></th>
+                        </tr>
+                        </thead>
+                        <tbody class="t-m-content"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tag-resource-detail">
+        <div class="tabs-navs" data-id="checked">Selected <span>()</span></div>
+        <div class="tabs-content">
+            <div class="tab-content" data-id="checked">
+
+            </div>
+            <div class="tab-content" data-id="selected" style="display: none">
+
+            </div>
+        </div>
+        <div class="tabs-footer pull-right">
+           <button class="btn save-tags btn-primary">Save</button>
+           <button class="btn btn-silver cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+<!--{{filterResource}}-->
+{{#each models}}
+<tr class="item" data-id="{{id}}">
+    <td>
+        <div class="checkbox">
+            <input id="check-{{id}}" type="checkbox" value="None" data-id="{{id}}" class="one-cb">
+            <label for="check-{{id}}"></label>
+        </div>
+    </td>
+    <td>{{name}}</td>
+    <td>({{type}})</td>
+</tr>
+{{/each}}
+
+
+
+<!--{{tagResource}}-->
+{{#if empty}}
+    <div class="tag-empty">Please select resources in resource list for tag details.</div>
+{{else}}
+    <div class="table-head-fix tag-resource-table">
+        <table class="table-head">
+            <thead>
+            <tr>
+                <th class="" width="35%" data-row-type="string">Key</th>
+                <th class="" width="35%" data-row-type="string">Value</th>
+                {{#if allAsg}}
+                    <th class="" width="20%" data-row-type="string">Tag New Instances</th>
+                    <th class="" width="10%" data-row-type="string"></th>
+                {{else}}
+                    <th class="" width="30%" data-row-type="string"></th>
+                {{/if}}
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <ul class="tags-list {{#unless allAsg}}no-inherit{{/unless}}">
+        {{#each data}}
+            <li data-id="{{id}}" data-asg="{{asg}}">
+                <div class="edit">
+                    <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
+                    <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
+                    {{#if allowCheck}}
+                        <div class="checkbox">
+                            <input id="cb{{or id asg}}" type="checkbox" value="None" data-id="{{or id asg}}" class="one-cb" {{#if disableEdit}}disabled{{/if}} {{#if inherit}}checked{{/if}}>
+                            <label for="cb{{or id asg}}"></label>
+                        </div>
+                        <div class="action">
+                            {{#unless disableEdit}}<button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>{{/unless}}
+                        </div>
+                    {{else}}
+                        <div class="action wide">
+                            {{#unless disableEdit}}<button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>{{/unless}}
+                        </div>
+                    {{/if}}
+
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+{{/if}}

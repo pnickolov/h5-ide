@@ -233,8 +233,23 @@ define [
 
     rects.concat cleanRects
 
+  isIncest = ( m, models ) ->
+    if m.type is constant.RESTYPE.LC
+      return _.some m.getAsgs(), ( asg ) ->
+        isIncest( asg, models ) or asg in models
+
+    parent = m.parent()
+
+    return false if !parent
+    return true if parent in models
+    return isIncest(parent, models)
+
+  getIndividualModel = ( models ) -> _.filter models, ( m ) -> !isIncest( m, models )
+
   CanvasViewProto.highLightModels = ( models )->
     @removeHighLight()
+    models = getIndividualModel models
+
     if not _.isArray( models ) then models = [models]
     self = @
     items = _.map models, (m)-> self.getItem( m.id )

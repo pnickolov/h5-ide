@@ -100,10 +100,7 @@ define [
             unionOldComps = {}
             unionNewComps = {}
 
-            ignoreDiffMap = {
-                'AWS.EC2.Tag': true
-                'AWS.AutoScaling.Tag': true
-            }
+            ignoreDiffMap = {}
 
             _.each oldComps, (comp, uid) ->
 

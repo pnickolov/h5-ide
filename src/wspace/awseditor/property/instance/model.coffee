@@ -18,6 +18,7 @@ define [ '../base/model', 'constant', 'event', 'i18n!/nls/lang.js' ], ( Property
             attr.tenancy        = component.isDefaultTenancy()
             attr.displayCount   = attr.count - 1
             attr.description    = component.get("description")
+            attr.tags           = component.tags()
 
             if component.isMesos()
                 mesosData = {

@@ -114,3 +114,44 @@
 #mesos-attribute {
 	margin-top: 10px;
 }
+.tags-action{
+  padding: 5px;
+  overflow: auto;
+  .btn-blue{
+	margin: 0 auto;
+	display: inherit;
+	margin-bottom: 10px;
+    &.tag-manager-global{
+      margin-top: 10px;
+    }
+  }
+}
+
+.property-content{
+  .empty-tag {
+    padding: 10px;
+    font-size: 13px;
+    color: #AEAEAE;
+	text-align: center;
+  }
+}
+
+.tag-large.icon-info{
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  text-align: center;
+  line-height: 34px;
+  vertical-align: top;
+  color: #148BE6;
+  cursor: pointer;
+  position: relative;
+  &:before{
+    font-size: 16px;
+    line-height: 38px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+}

@@ -23,6 +23,7 @@ define [ '../base/model', 'constant', "Design", 'i18n!/nls/lang.js', 'CloudResou
 				isGroupMode     : @isGroupMode
 				attached        : component.connections("EniAttachment").length > 0
 				description     : component.get("description")
+				tags						: component.tags()
 			}
 
 			@set data

@@ -1,48 +1,75 @@
 {{#if readOnly}}
-  <article class="property-app">
-  <dl class="dl-vertical">
-    <dt>{{#if isIGW}}Internet Gateway{{else}}VPN Gateway{{/if}} ID</dt>
-    <dd>{{emptyStr appId}}</dd>
-    {{#if isIGW}}
-      <dt>{{i18n "PROP.VPC_APP_STATE"}}</dt>
-      <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
-    {{else}}
-      <dt>{{i18n "PROP.VPC_APP_STATE"}}</dt>
-      <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
-      <dt>{{i18n "PROP.VOLUME_ATTACHMENT_STATE"}}</dt>
-      <dd><i class="status status-xgw-{{attachment_state}}"></i>{{attachment_state}}</dd>
+<article class="property-app">
+    <dl class="dl-vertical">
+        <dt>{{#if isIGW}}Internet Gateway{{else}}VPN Gateway{{/if}} ID</dt>
+        <dd>{{emptyStr appId}}</dd>
+        {{#if isIGW}}
+        <dt>{{i18n "PROP.VPC_APP_STATE"}}</dt>
+        <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+        {{else}}
+        <dt>{{i18n "PROP.VPC_APP_STATE"}}</dt>
+        <dd><i class="status status-xgw-{{state}}"></i>{{state}}</dd>
+        <dt>{{i18n "PROP.VOLUME_ATTACHMENT_STATE"}}</dt>
+        <dd><i class="status status-xgw-{{attachment_state}}"></i>{{attachment_state}}</dd>
+        {{/if}}
+        {{#if type}}
+        <dt>type</dt>
+        <dd>{{type}}</dd>
+        {{/if}}
+        <dt>VPC</dt>
+        <dd>{{emptyStr vpcId}}</dd>
+    </dl>
+    </article>
+    {{#if tagSet}}
+        <div class="option-group-head expand">
+            {{i18n "PROP.RESOURCE_TAGS"}}
+        </div>
+        <div class="option-group">
+            {{#if tagSet}}
+            <table class="table cost-estimation-table">
+                <tbody>
+                {{#each tagSet}}
+                <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
+                {{/each}}
+                </tbody>
+            </table>
+            {{else}}
+            <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+            {{/if}}
+            <div class="tags-action">
+                
+                {{#if isAppEdit}}<button class="btn open-tag-manager modal-confirm btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>{{/if}}
+            </div>
+        </div>
     {{/if}}
-    {{#if type}}
-    <dt>type</dt>
-    <dd>{{type}}</dd>
-    {{/if}}
-    <dt>VPC</dt>
-    <dd>{{emptyStr vpcId}}</dd>
-  </dl>
 {{else}}
-  <article>
-  <div  class="property-control-group">
-  {{#if isIGW}}
-    {{ i18n "PROP.IGW_TXT_DESCRIPTION" }}
-  {{else}}
-    {{ i18n "PROP.VGW_TXT_DESCRIPTION" }}
-  {{/if}}
-  </div>
-{{/if}}
-</article>
-{{#if tagSet}}
-<div class="option-group-head">
-  {{i18n "PROP.RESOURCE_TAGS"}}
-</div>
-<div class="option-group">
-  <table class="table cost-estimation-table">
-      <tbody>
-      {{#each tagSet}}
-      <tr> <td style="min-width:70px;">{{@key}}</td><td>{{this}}</td> </tr>
-      {{else}}
-      <tr>{{i18n "PROP.RESOURCE_NO_TAGS"}}</tr>
-      {{/each}}
-      </tbody>
-  </table>
-</div>
+    <article>
+        <div class="property-control-group">
+            {{#if isIGW}}
+            {{ i18n "PROP.IGW_TXT_DESCRIPTION" }}
+            {{else}}
+            {{ i18n "PROP.VGW_TXT_DESCRIPTION" }}
+            {{/if}}
+        </div>
+    </article>
+    <div class="option-group-head expand">
+        {{i18n "PROP.RESOURCE_TAGS"}}
+    </div>
+    <div class="option-group">
+        {{#if tags.length}}
+        <table class="table cost-estimation-table">
+            <tbody>
+            {{#each tags}}
+            <tr> <td style="min-width:70px;">{{attributes.key}}</td><td>{{attributes.value}}</td> </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <div class="empty-tag">{{i18n "PROP.RESOURCE_NO_TAGS"}}</div>
+        {{/if}}
+        <div class="tags-action">
+            
+            <button class="btn open-tag-manager modal-confirm btn-blue">{{i18n "PROP.RESOURCE_EDIT_TAG"}}</button>
+        </div>
+    </div>
 {{/if}}

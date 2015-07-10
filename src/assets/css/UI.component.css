@@ -169,6 +169,7 @@ pre {
 .empty-hide:empty {
   display: none; }
 
+/* custom scrollbar */
 /* Common Style for Modal with Toolbar */
 .modal-toolbar {
   width: 855px; }
@@ -439,6 +440,18 @@ pre {
     height: 391px;
     box-sizing: border-box;
     overflow: auto; }
+    .tag-resource-list .resource-list::-webkit-scrollbar {
+      width: 8px;
+      height: 8px; }
+    .tag-resource-list .resource-list::-webkit-scrollbar-track {
+      background: none; }
+    .tag-resource-list .resource-list::-webkit-scrollbar-thumb {
+      background: rgba(100, 100, 100, 0.3);
+      border-radius: 8px; }
+      .tag-resource-list .resource-list::-webkit-scrollbar-thumb:hover {
+        background: rgba(100, 100, 100, 0.5); }
+    .tag-resource-list .resource-list::-webkit-scrollbar-corner {
+      background: none; }
     .tag-resource-list .resource-list .table-head thead tr th:last-child {
       width: 50%; }
     .tag-resource-list .resource-list .table {
@@ -473,6 +486,18 @@ pre {
   width: 100%;
   z-index: 71;
   top: 0px; }
+  .tag-resource-detail::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; }
+  .tag-resource-detail::-webkit-scrollbar-track {
+    background: none; }
+  .tag-resource-detail::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.3);
+    border-radius: 8px; }
+    .tag-resource-detail::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 100, 100, 0.5); }
+  .tag-resource-detail::-webkit-scrollbar-corner {
+    background: none; }
   .tag-resource-detail.show {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
     max-height: 437px;
@@ -2444,7 +2469,6 @@ li.ui-timepicker-selected .ui-timepicker-duration,
 .xdsoft_scroller_box {
   position: relative; }
 
-<<<<<<< HEAD
 .user-guide {
   position: absolute;
   left: 0;
@@ -2453,6 +2477,18 @@ li.ui-timepicker-selected .ui-timepicker-duration,
   bottom: 0;
   z-index: 999;
   display: none; }
+  .user-guide::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; }
+  .user-guide::-webkit-scrollbar-track {
+    background: none; }
+  .user-guide::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.3);
+    border-radius: 8px; }
+    .user-guide::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 100, 100, 0.5); }
+  .user-guide::-webkit-scrollbar-corner {
+    background: none; }
   .user-guide .guideicon {
     display: inline-block;
     background-repeat: no-repeat;
@@ -2574,6 +2610,18 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     right: 0;
     top: 0;
     bottom: 0; }
+    .user-guide .guide-list::-webkit-scrollbar {
+      width: 8px;
+      height: 8px; }
+    .user-guide .guide-list::-webkit-scrollbar-track {
+      background: none; }
+    .user-guide .guide-list::-webkit-scrollbar-thumb {
+      background: rgba(100, 100, 100, 0.3);
+      border-radius: 8px; }
+      .user-guide .guide-list::-webkit-scrollbar-thumb:hover {
+        background: rgba(100, 100, 100, 0.5); }
+    .user-guide .guide-list::-webkit-scrollbar-corner {
+      background: none; }
   .user-guide .guide-cards {
     white-space: nowrap;
     position: absolute;
@@ -2815,6 +2863,18 @@ li.ui-timepicker-selected .ui-timepicker-duration,
     color: #D0D0D0;
     z-index: 1;
     font-size: 12px; }
+    .filter-input .dropdown::-webkit-scrollbar {
+      width: 8px;
+      height: 8px; }
+    .filter-input .dropdown::-webkit-scrollbar-track {
+      background: none; }
+    .filter-input .dropdown::-webkit-scrollbar-thumb {
+      background: rgba(100, 100, 100, 0.3);
+      border-radius: 8px; }
+      .filter-input .dropdown::-webkit-scrollbar-thumb:hover {
+        background: rgba(100, 100, 100, 0.5); }
+    .filter-input .dropdown::-webkit-scrollbar-corner {
+      background: none; }
   .filter-input .dropdown:empty {
     border: 0; }
   .filter-input .drop .dropdown {
@@ -4541,20 +4601,6 @@ input.parsley-error {
     color: #7eace1; }
     .warning-red a:hover {
       color: #fff; }
-
-/* custom scrollbar */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  height: 8px; }
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: none; }
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(100, 100, 100, 0.3);
-  border-radius: 8px; }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(100, 100, 100, 0.5); }
-.custom-scrollbar::-webkit-scrollbar-corner {
-  background: none; }
 
 .dropdown-menu {
   display: none; }

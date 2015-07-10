@@ -109,7 +109,7 @@ define [ "constant", "ComplexResModel", "GroupModel", "Design", "./connection/Ta
       for resource in resources
         (new TagUsage resource, tagItem).remove()
 
-    all: -> @children()
+    all: -> _.filter @children(), ( tag ) -> !!tag.connections().length
 
 
   }, {

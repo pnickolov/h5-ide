@@ -96,15 +96,15 @@
                     <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
                     {{#if allowCheck}}
                         <div class="checkbox">
-                            <input id="cb{{or id asg}}" type="checkbox" value="None" data-id="{{or id asg}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}} {{#if disableEdit}}disabled{{/if}} {{#if inherit}}checked{{/if}}>
+                            <input id="cb{{or id asg}}" type="checkbox" value="None" data-id="{{or id asg}}" class="one-cb" {{#if disableEdit}}disabled{{/if}} {{#if inherit}}checked{{/if}}>
                             <label for="cb{{or id asg}}"></label>
                         </div>
                         <div class="action">
-                            <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>
+                            {{#unless disableEdit}}<button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>{{/unless}}
                         </div>
                     {{else}}
                         <div class="action wide">
-                            <button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>
+                            {{#unless disableEdit}}<button class="btn btn-red edit-delete" {{#if disableEdit}}disabled{{/if}}><i class="icon-delete"></i></button>{{/unless}}
                         </div>
                     {{/if}}
 

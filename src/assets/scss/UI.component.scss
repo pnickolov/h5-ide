@@ -12,7 +12,6 @@
 @import "component/userguide";
 @import "component/filter-input";
 
-
 /* Table */
 .table {
 	max-width: 100%;
@@ -1977,31 +1976,6 @@ input.parsley-error {
 	  }
 	}
 }
-
-
-/* custom scrollbar */
-
-.custom-scrollbar {
-	&::-webkit-scrollbar {
-		width    : 8px;
-		height   : 8px;
-	}
-	&::-webkit-scrollbar-track {
-		background: none;
-	}
-	&::-webkit-scrollbar-thumb {
-		background: rgba(100,100,100,.3);
-		border-radius: 8px;
-
-		&:hover {
-			background: rgba(100,100,100,.5);
-		}
-	}
-  	&::-webkit-scrollbar-corner {
-		background: none;
-  	}
-}
-
 
 .dropdown-menu { display: none; }
 .open .dropdown-menu { display: block; }

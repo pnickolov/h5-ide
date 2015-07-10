@@ -23,6 +23,7 @@
     right: 1px;
   }
   .resource-list{
+    @include custom-scrollbar;
     margin-top: 46px;
     border: 1px solid #000;
     padding: 0px;
@@ -67,7 +68,7 @@
 
 .tag-resource-detail{
   @include slide;
-
+  @include custom-scrollbar;
   background:                 #252A2E;
   max-height:                 0;
   overflow:                   auto !important;

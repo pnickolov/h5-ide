@@ -206,10 +206,11 @@ define [
 
       allComps = checkedComps.concat(checkedAsgComps)
       @$el.find(".tab-content[data-id='checked']").html template.tagResource {data: unitedData, empty: not allComps.length, allAsg: checkedAllAsg}
-      info = allComps.length
       if allComps.length == 1
         info = allComps[0].get('name')
-      @$el.find(".tabs-navs span").text("(#{info})")
+        @$el.find(".tabs-navs").text("Selected Resource (#{info})")
+      else
+        @$el.find(".tabs-navs").text("Intersectional Tags - Selected Resources (#{allComps.length})")
       @changeTagInput()
 
     filterResourceList: (resModels)->

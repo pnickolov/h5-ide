@@ -240,10 +240,10 @@ define [
         console.log "hide highlight."
         self.canvas.removeHighLight()
         self.resourcePanel.removeHighlight()
-        $(".canvas-view")[0].removeEventListener("mousedown", oneTimeClicked, true)
+        $("#OpsEditor .canvas-view")[0].removeEventListener("mousedown", oneTimeClicked, true)
 
       unless hold
-        $(".canvas-view")[0].addEventListener("mousedown", oneTimeClicked, true)
+        $("#OpsEditor .canvas-view")[0].addEventListener("mousedown", oneTimeClicked, true)
 
       @canvas.highLightModels(models)
       return

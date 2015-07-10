@@ -30,7 +30,9 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
     isResAttributeMatch = ( resource, attr, value ) ->
       unless attr then return true
 
-      if attr is 'name' then return resource.get( 'name' ) is value
+      if attr is 'name'
+        if value is DefaultValues.AllValues then return true
+        return resource.get( 'name' ) is value
 
       serialized = resource.serialize()
       unless _.isArray(serialized) then serialized = [ serialized ]

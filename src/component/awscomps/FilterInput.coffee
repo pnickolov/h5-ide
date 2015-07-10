@@ -573,7 +573,6 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           $target.addClass 'selected'
           $dropdown[0].scrollTop = $dropdown[0].scrollHeight
 
-
       focusInputHandler: ->
         clearTimeout @__timeoutRemoveFocus
         #@renderDropdown()

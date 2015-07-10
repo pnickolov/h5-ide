@@ -173,7 +173,11 @@ define [
           disableEdit: tag.get("retain")
           allowCheck: checkedAllAsg
         }
-
+      checkedData = _.sortBy checkedData, (data)->
+        if data.disableEdit
+          return -1
+        else
+          return data.key.toString().charCodeAt(0)
       checkedAsgTagIdsArray = _.map checkedAsgTagArray, (tagArray)->
         _.map tagArray, (tag)->
           tag.id

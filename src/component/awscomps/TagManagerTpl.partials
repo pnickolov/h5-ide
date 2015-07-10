@@ -92,8 +92,8 @@
         {{#each data}}
             <li data-id="{{id}}" data-asg="{{asg}}">
                 <div class="edit">
-                    <input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
-                    <input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true" {{#if disableEdit}}disabled{{/if}}/>
+                    {{#unless disableEdit}}<input class="tag-key input" type="text" value="{{key}}" maxlength="127" data-ignore="true" data-required-rollback="true" /> {{/unless}}
+                    {{#unless disableEdit}}<input class="tag-value input" type="text" value="{{value}}" maxlength="255" data-ignore="true" data-required-rollback="true"/> {{/unless}}
                     {{#if allowCheck}}
                         <div class="checkbox">
                             <input id="cb{{or id asg}}" type="checkbox" value="None" data-id="{{or id asg}}" class="one-cb" {{#unless allowCheck}}disabled="disabled"{{/unless}} {{#if disableEdit}}disabled{{/if}} {{#if inherit}}checked{{/if}}>

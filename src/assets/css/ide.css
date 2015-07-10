@@ -168,6 +168,7 @@ pre {
 .empty-hide:empty {
   display: none; }
 
+/* custom scrollbar */
 /* CSS reset */
 article,
 footer,
@@ -3863,7 +3864,7 @@ aside.dashboard-sidebar {
 
 /*
     IDE Property Panel
-
+	
 	- Title Show/Hide State Panel
 	- Property General Layout
 	  - Second Level Panel
@@ -4084,7 +4085,7 @@ aside.dashboard-sidebar {
 
 /*
     Instance & ENI Property - IDE Property Panel
-
+	
 	- Instance/Server Group Name Wrap
 	- AMI Property Block
 	- ENI IP List
@@ -4247,7 +4248,7 @@ aside.dashboard-sidebar {
 
 /*
     SG & ACL Property - IDE Property Panel
-
+	
 	- SG/ACL General Style
 	  - Icons
 	  - Rule List
@@ -4415,7 +4416,7 @@ aside.dashboard-sidebar {
     - Normal Add SG Rule Modal
     - Delete SG Line from Canvas Modal
     - ACL Rule Modal
-
+    
 */
 /* Create SG Rule by Connecting Ports Modal */
 #sg-rule-create-modal {
@@ -4900,10 +4901,10 @@ aside.dashboard-sidebar {
 
 /*
     Subnet & RT Property - IDE Property Panel
-
+	
 	- Subnet Property
 	- RT Property
-
+	
 */
 /* Subnet Property */
 .subnet-cidr-wrapper {
@@ -4955,7 +4956,7 @@ aside.dashboard-sidebar {
 
 /*
     DB Instance Property - IDE Property Panel
-
+	
 	- DB Instance Property
 */
 /* DB Instance Property */
@@ -6776,6 +6777,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
 
 #mesos-attribute {
   margin-top: 10px; }
+
 .tags-action {
   padding: 5px;
   overflow: auto; }
@@ -8538,7 +8540,7 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   background-size: 60px auto; }
 
 /*
-    Provide/Update Billing Info
+    Provide/Update Billing Info 
 
     - New Project & Update Billing Common Style
     - Update Billing Specific Style

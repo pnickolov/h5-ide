@@ -90,6 +90,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         "mouseover .dropdown"       : "overDrop"
         "mouseleave .dropdown"      : "leaveDrop"
         "mouseover .dropdown li"    : "overDropItem"
+        "mouseover .tags li"        : "overSelectionHandler"
+        "mouseleave .tags li"       : "leaveSelectionHandler"
 
       getFilterableResource: ->
         allComp = Design.instance().getAllComponents()
@@ -100,8 +102,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           else
             _.contains(constant.HASTAG, comp.type)
 
-      getMatchedResource: (hightlight) ->
-        selection = @classifySelection(@selection)
+      getMatchedResource: (hightlight, sel) ->
+        selection = @classifySelection(sel or @selection)
         filterable = @getFilterableResource()
 
         matched = _.filter filterable, (resource) ->
@@ -116,10 +118,10 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         matched = @getMatchedResource(true)
         @trigger 'change:filter', matched.matched, matched.effect
 
-      classifySelection: ->
+      classifySelection: (sels) ->
         classified = tags: {}, resources: []
 
-        for sel in @selection
+        for sel in sels
           if sel.type is 'tag'
             classified.tags[ sel.key ] or ( classified.tags[ sel.key ] = [] )
             classified.tags[ sel.key ].push sel.value
@@ -251,6 +253,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         sel.key   = key.toString() if _.isNumber(key)
         sel.value = value.toString() if _.isNumber(value)
+
+        sel
 
       addSelection: (sel, silent) ->
         unless sel
@@ -639,6 +643,27 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
           $input.val(key)
 
         @renderDropdown()
+
+      triggerHover: ($sel) ->
+        if $sel and @__justHovered is $sel.get(0) then return
+        @__justHovered = $sel and $sel.get(0) or null
+
+        if $sel
+          selData = $sel.data()
+          sel = [@stringKeyValue({ key: selData.key, value: selData.value, type: selData.type })]
+        else
+          sel = null
+
+        matched = @getMatchedResource true, sel
+        @trigger 'hover', matched.matched, matched.effect
+
+      overSelectionHandler: (e) ->
+        console.log 'over selection'
+        @triggerHover($(e.currentTarget))
+
+      leaveSelectionHandler: (e) ->
+        console.log 'leave selection'
+        @triggerHover()
 
 
     filterInput

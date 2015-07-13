@@ -643,6 +643,9 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         @renderDropdown()
 
       triggerHover: ($sel) ->
+        if $sel and @__justHovered is $sel.get(0) then return
+        @__justHovered = $sel and $sel.get(0) or null
+
         if $sel
           selData = $sel.data()
           sel = [{ key: selData.key, value: selData.value, type: selData.type }]

@@ -254,6 +254,8 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
         sel.key   = key.toString() if _.isNumber(key)
         sel.value = value.toString() if _.isNumber(value)
 
+        sel
+
       addSelection: (sel, silent) ->
         unless sel
             state = @getState()
@@ -648,7 +650,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
         if $sel
           selData = $sel.data()
-          sel = [{ key: selData.key, value: selData.value, type: selData.type }]
+          sel = [@stringKeyValue({ key: selData.key, value: selData.value, type: selData.type })]
         else
           sel = null
 

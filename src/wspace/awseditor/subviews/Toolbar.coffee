@@ -96,6 +96,7 @@ define [
 
       @listenTo @filter, 'change:filter', @highlightCanvas
       @listenTo @filter, 'focus', @highlightCanvas
+      @listenTo @filter, 'hover', @highlightCanvas
       @$('.btn-toolbar').last().after @filter.render().el
 
     highlightCanvas: ( models, effect ) ->

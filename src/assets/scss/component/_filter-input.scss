@@ -35,6 +35,9 @@
                     font-weight: bold;
                     color: #ECECEC;
                 }
+                &:hover {
+                    border: 1px solid #adadad;
+                }
             }
         }
         input {

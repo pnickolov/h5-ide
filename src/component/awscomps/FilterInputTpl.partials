@@ -16,7 +16,7 @@
 
 <!-- {{tag}} -->
 {{#each this}}
-<li data-key="{{key}}" data-value="{{value}}" class="{{type}}">
+<li data-key="{{key}}" data-value="{{value}}" data-type="{{type}}" class="{{type}}">
     <span class="key">{{key}}</span>{{#if vtext}}=<span class="value">{{vtext}}</span>{{/if}}
 </li>
 {{/each}}

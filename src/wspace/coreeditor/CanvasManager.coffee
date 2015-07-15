@@ -199,7 +199,7 @@ define [ 'CloudResources', 'constant', 'i18n!/nls/lang.js' ], ( CloudResources, 
               #process line 1
               el = labelElement[0]
               x = parseInt($(el).attr("x"))
-              y = parseInt($(el).attr("y")) + $(el)[0].clientHeight
+              y = parseInt($(el).attr("y")) + ($(el)[0].clientHeight || $(el)[0].getBBox().height)
               ellipsis = ""
               if text.substr(length).length > 0
                 #more than 2 lines

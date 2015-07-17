@@ -424,7 +424,7 @@ define [
     __checkTerminateProtection: ->
       hasInstance = false
       @workspace.design.eachComponent (comp) ->
-        if comp.type is constant.RESTYPE.INSTANCE
+        if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.ASG ]
           hasInstance = true
           false
       unless hasInstance then return Promise.resolve({})

@@ -1,5 +1,5 @@
 
-define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", "./connection/LcUsage", "CanvasElement" ], ( ResourceModel, ComplexResModel, Design, constant, lang, LcUsage, CanvasElement )->
+define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/lang.js", "./connection/LcUsage", "CanvasElement", "CloudResources" ], ( ResourceModel, ComplexResModel, Design, constant, lang, LcUsage, CanvasElement, CloudResources )->
 
   NotificationModel = ComplexResModel.extend {
     type : constant.RESTYPE.NC
@@ -161,6 +161,7 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
         y           : layout_data.coordinate[1]
       })
       null
+
   }
 
 
@@ -394,6 +395,22 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
           elb = resolve MC.extractID elbName
           new ElbAsso( lc, elb )
       null
+
+    members: ( appId ) ->
+      resource_list = CloudResources( Design.instance().credentialId(), constant.RESTYPE.ASG, Design.instance().region())
+      if not resource_list then return []
+
+      resource = resource_list.get(appId)?.toJSON()
+      if resource and resource.Instances and resource.Instances.length
+        amis = []
+        for i in resource.Instances
+          amis.push {
+            id    : i.InstanceId
+            appId : i.InstanceId
+            state : i.HealthStatus
+          }
+
+      amis || []
 
   }
 

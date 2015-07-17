@@ -248,6 +248,11 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'CloudRes
             if comp.type is constant.RESTYPE.INSTANCE
                 removedInstanceIds.push comp.resource.InstanceId
 
+            if comp.type is constant.RESTYPE.ASG
+                AsgModel = Design.modelClassForType constant.RESTYPE.ASG
+                asgMembers = AsgModel.members(comp.resource.AutoScalingGroupARN)
+                removedInstanceIds = removedInstanceIds.concat _.pluck asgMembers, 'appId'
+
         if !removedInstanceIds.length
             callback(null)
             return

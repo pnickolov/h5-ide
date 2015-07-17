@@ -488,6 +488,20 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         self.set "state", OpsModelState.Stopped
         throw err
 
+    checkTerminateProtection: ( instanceIds = [] ) ->
+      if not @isApp() then return @__returnErrorPromise()
+
+      if @get("state") isnt OpsModelState.Stopped and @get("state") isnt OpsModelState.Running then return @__returnErrorPromise()
+
+      options = {
+        app_id: @get("id")
+        key_id: @credentialId()
+        filter: instanceIds
+      }
+
+      ApiRequest("app_check_disableApiTermination", options)
+
+
     # Terminate the app, returns a promise
     terminate : ( force = false , extraOption )->
       if not @isApp() then return @__returnErrorPromise()

@@ -579,7 +579,7 @@ define [
           $('#app-update-summary-table').html $diffTree
 
         that.appAction.renderKpDropdown(that.updateModal)
-        TA.loadModule('stack').then ->
+        TA.loadModule('stack', null, differ).then ->
           taPassed = true
         .catch (err)->
           console.log err

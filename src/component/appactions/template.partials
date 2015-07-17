@@ -133,3 +133,6 @@
     <div>{{i18n "TOOLBAR.CHANGES_MAY_NOT_BE_SAVED"}}</div>
 </section>
 
+<!-- {{hasTerminationProtection}} -->
+<div class="modal-text-major">{{i18n "TOOLBAR.TERMINATE_PROTECTION_CANNOT_TERMINITE"}}</div>
+<div class="modal-text-minor">{{instanceList}}</div>

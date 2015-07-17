@@ -14,7 +14,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'app_resource'            : { type:'forge', url:'/app/',	method:'resource',	params:['username', 'session_id', 'key_id', 'region_name', 'app_id']   },
 		'app_get_info'            : { type:'forge', url:'/app/',	method:'get_info',	params:['username', 'session_id', 'key_id', 'vpc_ids']   },
 		'app_save_info'           : { type:'forge', url:'/app/',	method:'save_info',	params:['username', 'session_id', 'key_id', 'spec']   },
-		'app_check_disableApiTermination' : { type:'forge', url:'/app/',	method:'check_disableApiTermination',	params:['username', 'session_id', 'key_id', 'app_id']   },
+		'app_check_disableApiTermination' : { type:'forge', url:'/app/',	method:'check_disableApiTermination',	params:['username', 'session_id', 'key_id', 'app_id', 'filter']   },
 		'favorite_add'            : { type:'forge', url:'/favorite/',	method:'add',	params:['username', 'session_id', 'region_name', 'resource']   },
 		'favorite_remove'         : { type:'forge', url:'/favorite/',	method:'remove',	params:['username', 'session_id', 'region_name', 'resource_ids']   },
 		'favorite_info'           : { type:'forge', url:'/favorite/',	method:'info',	params:['username', 'session_id', 'region_name', 'provider', 'service', 'resource']   },

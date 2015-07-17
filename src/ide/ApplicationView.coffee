@@ -25,6 +25,9 @@ define [
       $(window).on "beforeunload", @checkUnload
       $(window).on 'keydown', @globalKeyEvent
 
+      window.onerror = @onWindowError
+      return
+
     init: ()->
       if App.user.fullnameNotSet() then new FullnameSetup()
       return
@@ -93,4 +96,9 @@ define [
     notifyUnpay : ()->
       notification "error", "Failed to charge your account. Please update your billing info."
       return
+
+    onWindowError : (error, url, line, column)->
+      App.reportError("Message: #{error}\n Url: #{url}\n Line: #{line}\n column: #{column}")
+      return false
+
   }

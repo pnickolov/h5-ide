@@ -115,4 +115,7 @@ define [
   # without a link, use this method with a corresponding url.
   VisualOps.prototype.loadUrl = ( url )-> window.Router.navigate url, {replace:true,trigger:true}
 
+  VisualOps.prototype.reportError = ( error )->
+    console.info( error );
+
   VisualOps

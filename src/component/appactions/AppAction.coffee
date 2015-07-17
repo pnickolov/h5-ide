@@ -399,7 +399,20 @@ define [
       # get Resource list
       resourceList = CloudResources self.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
       resourceList.fetchForce().then ()->
-        self.__terminateApp(id, resourceList, terminateConfirm, hasJson)
+        self.__checkTerminateProtection().then (res) ->
+          # Has Termination Protection enabled
+          if _.size(res)
+            instanceList = []
+            for id, name of res
+              instanceList.push "#{name}(#{id})"
+
+            instanceListStr = instanceList.join(', ')
+            terminateConfirm.tpl.find('.modal-body').html AppTpl.hasTerminationProtection instanceList: instanceListStr
+            terminateConfirm.tpl.find('.modal-confirm').remove()
+            terminateConfirm.tpl.find('.modal-footer .modal-close').text lang.IDE.PROC_CLOSE_TAB
+            terminateConfirm.tpl.find('.modal-footer').show()
+          else
+            self.__terminateApp(id, resourceList, terminateConfirm, hasJson)
       , (error)->
         if error.awsError is 403
           self.__terminateApp(id, resourceList, terminateConfirm, hasJson)
@@ -407,6 +420,17 @@ define [
           terminateConfirm.close()
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
+
+    __checkTerminateProtection: ->
+      hasInstance = false
+      @workspace.design.eachComponent (comp) ->
+        if comp.type is constant.RESTYPE.INSTANCE
+          hasInstance = true
+          false
+      unless hasInstance then return Promise.resolve({})
+      @workspace.opsModel.checkTerminateProtection().fail (err) ->
+        console.error(err)
+        Promise.resolve({})
 
     __terminateApp: (id, resourceList, terminateConfirm, hasJsonData)->
       app  = @model || @workspace.opsModel.project().apps().get( id )

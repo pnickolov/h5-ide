@@ -94,7 +94,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
 
         null
 
-    _validAsync = ->
+    _validAsync = (differ) ->
         asyncList = config.get( 'asyncList' )
 
         if not asyncList or not _.size( asyncList )
@@ -111,7 +111,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
         _.each asyncList, ( methods, filename ) ->
             _.each methods, ( method ) ->
                 try
-                    result = TaBundle[ filename ][ method ]( _asyncCallback(method, filename, syncFinish) )
+                    result = TaBundle[ filename ][ method ]( _asyncCallback(method, filename, syncFinish), differ )
                     _pushResult result, method, filename
                 catch err
                     _handleException( err )
@@ -145,7 +145,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
             _handleException( err )
         null
 
-    validRun = ->
+    validRun = (differ) ->
 
         _init()
 
@@ -153,7 +153,7 @@ define [ 'constant', 'event', 'component/trustedadvisor/lib/TA.Config', 'compone
 
         _validGlobal 'run'
 
-        _validAsync()
+        _validAsync(differ)
 
         TaCore.result()
 

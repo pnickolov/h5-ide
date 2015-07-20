@@ -412,20 +412,6 @@ define [
           notification 'error', lang.NOTIFY.ERROR_FAILED_LOAD_AWS_DATA
           return false
 
-    __checkTerminateProtection: ->
-      hasInstance = false
-      design = @workspace?.design or Design.instance()
-      opsModel = @workspace?.opsModel or Design.instance().opsModel()
-
-      design.eachComponent (comp) ->
-        if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.ASG ]
-          hasInstance = true
-          false
-      unless hasInstance then return Promise.resolve({})
-      opsModel.checkTerminateProtection().fail (err) ->
-        console.error(err)
-        Promise.resolve({})
-=======
     __checkTerminateProtection: ( modal ) ->
       needCheckProtection = false
       opsModel = @workspace?.opsModel or @model
@@ -464,7 +450,6 @@ define [
       , ( err ) ->
         console.error(err)
         Promise.resolve()
->>>>>>> release/2015-07-20
 
     __terminateApp: (id, resourceList, terminateConfirm, hasJsonData)->
       app  = @model || @workspace.opsModel.project().apps().get( id )

@@ -6318,7 +6318,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   border: 1px solid #ccc;
   position: relative; }
   .toolbar-visual-ops-switch.switch.create-mesos-use-marathon, .toolbar-visual-ops-switch.switch.marathon-switch {
-    margin-top: 0; }
+    margin-top: 0;
+    min-width: 50px; }
   .toolbar-visual-ops-switch.switch.on {
     border-color: #0E8F38;
     background: #11C568; }

@@ -262,9 +262,9 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'CloudRes
                 tipvarArray = []
                 for id, name of res
                     if _.isString(name)
-                        iname = "#{name}(#{id})"
+                        iname = "<span class='validation-tag tag-instance'>#{name}(#{id})</span>"
                     else
-                        iname = id
+                        iname = "<span class='validation-tag tag-instance'>#{id}</span>"
                     tipvarArray.push iname
 
                 tipvarStr = tipvarArray.join(', ')

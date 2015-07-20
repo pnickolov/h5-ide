@@ -261,7 +261,12 @@ define [ 'constant', 'jquery', 'MC','i18n!/nls/lang.js', 'ApiRequest', 'CloudRes
             if _.size(res)
                 tipvarArray = []
                 for id, name of res
-                    tipvarArray.push "#{name}(#{id})"
+                    if _.isString(name)
+                        iname = "#{name}(#{id})"
+                    else
+                        iname = id
+                    tipvarArray.push iname
+
                 tipvarStr = tipvarArray.join(', ')
 
                 callback Helper.message.error null, i18n.TERMINATED_PROTECTION_CANNOT_TERMINATE, tipvarStr

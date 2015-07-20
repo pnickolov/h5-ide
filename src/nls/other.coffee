@@ -613,7 +613,7 @@ VisualOps API. You cannot UNDO this action.'
 
     SETTINGS_CRED_UPDATE_CONFIRM_TEXT:
       en : "If you continue to use the new credential, existing apps might become unmanageable by VisualOps. If the new AWS credential does not have sufficient privileges to manage the existing apps, we strongly recommend to FORGET or TERMINATE existing apps first."
-      zh : "如果继续操作，可能将导致已经存在的 App 无法被 VisualOps 管理。如果这个新 AWS 证书没有足够的权限管理现存的 App，我们强烈建议您先移除或终结掉这些存在的 App。"
+      zh : "如果继续操作，可能将导致已经存在的 App 无法被 VisualOps 管理。如果这个新 AWS 证书没有足够的权限管理现存的 App，我们强烈建议您先移除或终止掉这些存在的 App。"
 
     SETTINGS_LABEL_UPDATE_CONFIRM:
       en: "Confirm to update"
@@ -2396,7 +2396,7 @@ VisualOps API. You cannot UNDO this action.'
 
     TERMINATING_YOUR_APP:
       en: "Terminating your app..."
-      zh: "正在终结 App ..."
+      zh: "正在终止 App ..."
 
     STOPPING_YOUR_APP :
       en: "Stopping your app..."
@@ -2916,7 +2916,7 @@ into live resources, or import existing infrastructures."
 
     DASHBOARD_LOGS_APP_TERMINATE:
       en: "%s terminated app %s"
-      zh: "%s 终结 App %s"
+      zh: "%s 终止 App %s"
 
     DASHBOARD_LOGS_APP_SAVEIMPORT:
       en: "%s imported VPC as app %s"

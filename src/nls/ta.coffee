@@ -415,6 +415,6 @@ module.exports =
       zh: "%s 必须连接到一个能够路由到互联网网关的路由表，才能使这些 Subnet 中的弹性 IP 和 公网 IP 正常工作。"
 
     TERMINATED_PROTECTION_CANNOT_TERMINATE:
-      en: "Instance %s can't be terminated, please disable termination protection in AWS console for these instances."
-      zh: "实例 %s 无法终结，请先到 AWS Console上面关闭这些实例的终结保护。"
+      en: "Instance %s can't be terminated, please disable <a target='_blank' href='http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html#Using_ChangingDisableAPITermination'>Termination Protection</a> in AWS console for these instances."
+      zh: "实例 %s 无法终止，请先到 AWS Console上面关闭这些实例的<a target='_blank' href='http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/terminating-instances.html#Using_ChangingDisableAPITermination'>终止保护</a>。"
 

@@ -105,21 +105,13 @@ define [
     isDefaultTenancy : ()-> true
 
     # Use by CanvasElement(change members to groupMembers)
-    groupMembers : ()->
-      resource_list = CloudResources( @design().credentialId(), constant.RESTYPE.ASG, @design().region())
-      if not resource_list then return []
+    groupMembers : ( asg )->
+      if asg
+        asgAppId = asg.get('appId')
+      else
+        asgAppId = @connectionTargets("LcUsage")[0].get("appId")
 
-      resource = resource_list.get(@connectionTargets("LcUsage")[0].get("appId"))?.toJSON()
-      if resource and resource.Instances and resource.Instances.length
-        amis = []
-        for i in resource.Instances
-          amis.push {
-            id    : i.InstanceId
-            appId : i.InstanceId
-            state : i.HealthStatus
-          }
-
-      amis || []
+      Design.modelClassForType(constant.RESTYPE.ASG).members( asgAppId )
 
     getAsgs: -> @connectionTargets( "LcUsage" )
 

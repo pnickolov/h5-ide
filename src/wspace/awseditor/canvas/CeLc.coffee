@@ -244,7 +244,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
       name = @model.get("name")
       gm   = []
       icon = @iconUrl()
-      for m, idx in @model.groupMembers()
+
+      el = evt.currentTarget.parentNode.parentNode
+      asg = @canvas.getItem( el.getAttribute("data-id") ).model
+      for m, idx in @model.groupMembers( asg )
         ins = insCln.get( m.appId )
         if not ins
           console.warn "Cannot find instance of `#{m.appId}`"

@@ -428,12 +428,15 @@ define [
 
     __checkTerminateProtection: ->
       hasInstance = false
-      @workspace.design.eachComponent (comp) ->
+      design = @workspace?.design or Design.instance()
+      opsModel = @workspace?.opsModel or Design.instance().opsModel()
+
+      design.eachComponent (comp) ->
         if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.ASG ]
           hasInstance = true
           false
       unless hasInstance then return Promise.resolve({})
-      @workspace.opsModel.checkTerminateProtection().fail (err) ->
+      opsModel.checkTerminateProtection().fail (err) ->
         console.error(err)
         Promise.resolve({})
 

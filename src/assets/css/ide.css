@@ -6051,6 +6051,20 @@ marker.server, marker.elb {
   animation: borderEffect .5s ease-in;
   opacity: 1; }
 
+#hlTips {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 0; }
+  #hlTips .hlTip {
+    position: absolute;
+    margin-top: -22px;
+    font-size: 12px;
+    background: #222;
+    border-radius: 2PX;
+    padding: 1px 5px 2px;
+    color: #ccc; }
+
 @-webkit-keyframes borderEffect {
   0% {
     stroke-width: 100px;
@@ -6304,7 +6318,8 @@ marker.app-dep-in, marker.app-dep-out, marker.group-dep-in, marker.group-dep-out
   border: 1px solid #ccc;
   position: relative; }
   .toolbar-visual-ops-switch.switch.create-mesos-use-marathon, .toolbar-visual-ops-switch.switch.marathon-switch {
-    margin-top: 0; }
+    margin-top: 0;
+    min-width: 50px; }
   .toolbar-visual-ops-switch.switch.on {
     border-color: #0E8F38;
     background: #11C568; }

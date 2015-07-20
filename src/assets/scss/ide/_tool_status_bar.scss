@@ -157,6 +157,7 @@
   position : relative;
   &.create-mesos-use-marathon, &.marathon-switch{
     margin-top: 0;
+    min-width: 50px;
   }
   &.on {
     border-color : #0E8F38;

@@ -76,6 +76,7 @@ define(['ApiRequestDefs'], function( ApiRequestDefs ){
 		'account_apply_trial'     : { type:'forge', url:'/account/',	method:'apply_trial',	params:['username', 'session_id', 'message']   },
 		'account_get_userinfo'    : { type:'forge', url:'/account/',	method:'get_userinfo',	params:['username', 'session_id', 'user_email']   },
 		'account_list_user'       : { type:'forge', url:'/account/',	method:'list_user',	params:['username', 'session_id', 'user_list']   },
+		'account_save_errlog'     : { type:'forge', url:'/account/',	method:'save_errlog',	params:['username', 'session_id', 'error_log']   },
 	}
 
 	for ( var i in Apis ) {

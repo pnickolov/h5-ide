@@ -987,6 +987,13 @@ function displayUnhandledReasons() {
         window.console
     ) {
         console.error("Unhandled rejection reasons:", unhandledReasons.slice(0));
+        var msg = "[";
+        for (var i = 0; i < unhandledReasons.length; ++i ) {
+            if (i != 0) { msg += ","; }
+            var r = unhandledReasons[i];
+            msg += "{ 'msg' : '" + r.message + "', 'stack' : '" + r.stack + "' } \n\n"
+        }
+        App.reportError( msg + "]" );
     }
 
     // unhandledReasonsDisplayed = true;

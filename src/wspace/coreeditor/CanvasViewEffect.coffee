@@ -246,18 +246,18 @@ define [
 
   getIndividualModel = ( models ) -> _.filter models, ( m ) -> !isIncest( m, models )
 
-  CanvasViewProto.highLightModels = ( models )->
+  CanvasViewProto.highLightModels = ( models, tips )->
     @removeHighLight()
     models = getIndividualModel models
 
     if not _.isArray( models ) then models = [models]
     self = @
     items = _.map models, (m)-> self.getItem( m.id )
-    @highLightItems(items)
+    @highLightItems(items, tips)
     return
 
   # Add item by dnd
-  CanvasViewProto.highLightItems  = ( items )->
+  CanvasViewProto.highLightItems  = ( items, tips )->
     rects    = getNonOverlapRects( _.uniq(items) )
     polygons = getPolygonsFromRect( rects )
     path     = getPathFromPolygons( polygons )
@@ -273,13 +273,32 @@ define [
       @svg.path(path).attr({id:"hlAreaBorder"})
     ]).clipWith( @__highLightCliper )
 
+    if tips
+      @__highLightTips = $("<div id='hlTips'></div>").appendTo( @__getCanvasView() )
+
+      for item, idx in items
+        tip = tips[idx]
+        if not tip then continue
+        if item.isGroup()
+          rect = item.effectiveRect()
+          rect.x1 *= 10
+          rect.y1 *= 10
+          @__highLightTips.append("<div class='hlTip' style='left:#{rect.x1}px;top:#{rect.y1}px;'>#{tip}</div>")
+        else
+          for el in it.$el
+            rect = item.rect(el)
+            rect.x1 *= 10
+            rect.y1 *= 10
+            @__highLightTips.append("<div class='hlTip' style='left:#{rect.x1}px;top:#{rect.y1}px;'>#{tip}</div>")
+
     # $("#hlAreaBorder").append('<animate attributeName="stroke-width" attributeType="XML" values="0px;16px;16px;16px;0px" dur="0.5s" repeatCount="1"></animate>')
     return
 
   CanvasViewProto.removeHighLight = ( items )->
     if @__highLightRect then @__highLightRect.remove()
     if @__highLightCliper then @__highLightCliper.remove()
-    @__highLightRect = @__highLightCliper = null
+    if @__highLightTips then @__highLightTips.remove()
+    @__highLightRect = @__highLightCliper = @__highLightTips = null
     return
 
   trackMMoveForHint = ( evt )->

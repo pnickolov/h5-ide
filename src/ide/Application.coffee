@@ -115,4 +115,14 @@ define [
   # without a link, use this method with a corresponding url.
   VisualOps.prototype.loadUrl = ( url )-> window.Router.navigate url, {replace:true,trigger:true}
 
+  VisualOps.prototype.reportError = ( error )->
+    ApiRequest("account_save_errlog", {
+      error_log : {
+        usercode   : App.user.get("usercode")
+        userAgent  : window.navigator.userAgent
+        ideVersion : window.version
+        errors     : error
+      }
+    })
+
   VisualOps

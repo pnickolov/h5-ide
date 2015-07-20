@@ -907,6 +907,22 @@ marker {
   animation         : borderEffect .5s ease-in;
   opacity           : 1;
 }
+#hlTips {
+  position       : absolute;
+  pointer-events : none;
+  top            : 0;
+  left           : 0;
+
+  .hlTip {
+    position: absolute;
+    margin-top: -22px;
+    font-size: 12px;
+    background: #222;
+    border-radius: 2PX;
+    padding: 1px 5px 2px;
+    color: #ccc;
+  }
+}
 
 // @-webkit-keyframes fillEffect {
 //   0%   { fill-opacity:0;}

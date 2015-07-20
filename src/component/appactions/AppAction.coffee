@@ -399,25 +399,11 @@ define [
       # get Resource list
       resourceList = CloudResources self.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
       resourceList.fetchForce().then ()->
-        self.__checkTerminateProtection().then (res) ->
-          # Has Termination Protection enabled
-          if _.size(res)
-            instanceList = []
-            for id, name of res
-              if _.isString(name)
-                  iname = "#{name}(#{id})"
-              else
-                  iname = id
 
-              instanceList.push iname
-
-            instanceListStr = instanceList.join(', ')
-            terminateConfirm.tpl.find('.modal-body').html AppTpl.hasTerminationProtection instanceList: instanceListStr
-            terminateConfirm.tpl.find('.modal-confirm').remove()
-            terminateConfirm.tpl.find('.modal-footer .modal-close').text lang.IDE.PROC_CLOSE_TAB
-            terminateConfirm.tpl.find('.modal-footer').show()
-          else
+        # Has Termination Protection enabled
+        self.__checkTerminateProtection(terminateConfirm).then () ->
             self.__terminateApp(id, resourceList, terminateConfirm, hasJson)
+
       , (error)->
         if error.awsError is 403
           self.__terminateApp(id, resourceList, terminateConfirm, hasJson)
@@ -439,6 +425,46 @@ define [
       opsModel.checkTerminateProtection().fail (err) ->
         console.error(err)
         Promise.resolve({})
+=======
+    __checkTerminateProtection: ( modal ) ->
+      needCheckProtection = false
+      opsModel = @workspace?.opsModel or @model
+      design = @workspace?.design
+
+      if design
+        design.eachComponent (comp) ->
+          if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.ASG ]
+            needCheckProtection = true
+            false
+      else
+        needCheckProtection = true
+
+      unless needCheckProtection then return Promise.resolve({})
+
+      opsModel.checkTerminateProtection().then (res) ->
+        if _.size(res)
+          instanceList = []
+          for id, name of res
+            if _.isString(name)
+                iname = "#{name}(#{id})"
+            else
+                iname = id
+
+            instanceList.push iname
+
+          instanceListStr = instanceList.join(', ')
+          modal.tpl.find('.modal-body').html AppTpl.hasTerminationProtection instanceList: instanceListStr
+          modal.tpl.find('.modal-confirm').remove()
+          modal.tpl.find('.modal-footer .modal-close').text lang.IDE.PROC_CLOSE_TAB
+          modal.tpl.find('.modal-footer').show()
+          Promise.reject({})
+        else
+          Promise.resolve({})
+
+      , ( err ) ->
+        console.error(err)
+        Promise.resolve()
+>>>>>>> release/2015-07-20
 
     __terminateApp: (id, resourceList, terminateConfirm, hasJsonData)->
       app  = @model || @workspace.opsModel.project().apps().get( id )

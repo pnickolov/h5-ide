@@ -513,15 +513,15 @@ module.exports =
 
     TIP_TERMINATE_APP:
       en: "Permanently Terminate This App's Resources"
-      zh: "终结App，将删除所有属于此App的AWS资源"
+      zh: "终止App，将删除所有属于此App的AWS资源"
 
     POP_TIT_TERMINATE_APP:
       en: "Confirm to Terminate App"
-      zh: "确认终结"
+      zh: "确认终止"
 
     POP_BODY_TERMINATE_APP_LEFT:
       en: "Warning: all resources in the app will be permanantly deleted. <br/>Do you confirm to terminate app"
-      zh: "本操作将终结 App 中的相关资源，您确认终结当前 App"
+      zh: "本操作将终止 App 中的相关资源，您确认终止当前 App"
 
     POP_BODY_TERMINATE_APP_RIGHT:
       en: "?"
@@ -529,11 +529,11 @@ module.exports =
 
     POP_BTN_TERMINATE_APP:
       en: "Terminate"
-      zh: "终结"
+      zh: "终止"
 
     POP_TIT_TERMINATE_PRD_APP:
       en: "Confirm to Terminate App for Production"
-      zh: "确认终结生产环境 App"
+      zh: "确认终止生产环境 App"
 
     TOOLBAR_HANDLE_SAVE_STACK:
       en: "Save stack"
@@ -565,7 +565,7 @@ module.exports =
 
     TOOLBAR_HANDLE_TERMINATE_APP:
       en: "Terminate app"
-      zh: "终结 App"
+      zh: "终止 App"
 
     TOOLBAR_HANDLE_EXPORT_CLOUDFORMATION:
       en: "Convert to CloudFormation template"
@@ -749,7 +749,7 @@ module.exports =
 
     TERMINATE:
       en: "terminate"
-      zh: "终结"
+      zh: "终止"
 
     TOOK_XXX_SEC:
       en: "Took %s sec."
@@ -768,8 +768,8 @@ module.exports =
       zh: "Update 之前请先修复所有错误"
 
     TERMINATE_PROTECTION_CANNOT_TERMINITE:
-      en: "Warnning: This app can't be terminated, because some instance in the app has enabled Termination Protection:"
-      zh: "警告：App 中的某些实例开启了终结保护功能，此 App 无法终结。"
+      en: "Warnning: This app can't be terminated, because some instance in the app has enabled <a target='_blank' href='http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/terminating-instances.html#Using_ChangingDisableAPITermination'>Termination Protection</a>:"
+      zh: "警告：App 中的某些实例开启了<a target='_blank' href='http://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/terminating-instances.html#Using_ChangingDisableAPITermination'>终止保护</a>功能，此 App 无法终止。"
 
 
 

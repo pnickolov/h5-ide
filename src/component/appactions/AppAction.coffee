@@ -399,6 +399,7 @@ define [
       # get Resource list
       resourceList = CloudResources self.credentialId(), constant.RESTYPE.DBINSTANCE, app.get("region")
       resourceList.fetchForce().then ()->
+
         # Has Termination Protection enabled
         self.__checkTerminateProtection(terminateConfirm).then () ->
             self.__terminateApp(id, resourceList, terminateConfirm, hasJson)

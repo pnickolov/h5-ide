@@ -404,7 +404,12 @@ define [
           if _.size(res)
             instanceList = []
             for id, name of res
-              instanceList.push "#{name}(#{id})"
+              if _.isString(name)
+                  iname = "#{name}(#{id})"
+              else
+                  iname = id
+
+              instanceList.push iname
 
             instanceListStr = instanceList.join(', ')
             terminateConfirm.tpl.find('.modal-body').html AppTpl.hasTerminationProtection instanceList: instanceListStr

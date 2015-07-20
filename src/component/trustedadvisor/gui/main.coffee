@@ -5,7 +5,7 @@
 define [ 'jquery', 'event', 'component/trustedadvisor/gui/view', 'component/trustedadvisor/gui/model' ], ( $, ide_event, View, Model ) ->
 
     #private
-    loadModule = ( type, status ) ->
+    loadModule = ( type, status, differ ) ->
 
         #
         view  = new View()
@@ -23,7 +23,7 @@ define [ 'jquery', 'event', 'component/trustedadvisor/gui/view', 'component/trus
             model.createList()
             view.render type, status
 
-        processRun = ->
+        processRun = (differ) ->
             deferred = Q.defer()
             ide_event.onListen ide_event.TA_SYNC_FINISH, () ->
                 console.log 'TA_SYNC_FINISH'
@@ -34,7 +34,7 @@ define [ 'jquery', 'event', 'component/trustedadvisor/gui/view', 'component/trus
                 else
                     deferred.reject(model)
 
-            MC.ta.validRun()
+            MC.ta.validRun( differ )
 
             deferred.promise
 
@@ -44,7 +44,7 @@ define [ 'jquery', 'event', 'component/trustedadvisor/gui/view', 'component/trus
 
         if type is 'stack'
             view.closedPopup()
-            return processRun()
+            return processRun( differ )
         else
             processBar()
 

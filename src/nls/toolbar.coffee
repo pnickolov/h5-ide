@@ -767,6 +767,9 @@ module.exports =
       en: "Fix the error to update"
       zh: "Update 之前请先修复所有错误"
 
+    TERMINATE_PROTECTION_CANNOT_TERMINITE:
+      en: "Warnning: This app can't be terminated, because some instance in the app has enabled Termination Protection:"
+      zh: "警告：App 中的某些实例开启了终结保护功能，此 App 无法终结。"
 
 
 

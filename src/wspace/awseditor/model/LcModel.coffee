@@ -7,9 +7,11 @@ define [
   "./VolumeModel"
   "i18n!/nls/lang.js"
   "CloudResources"
-], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+  "DiffTree"
+], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources, DiffTree )->
 
   emptyArray = []
+  changeDetectExcepts = [ 'name', 'description', 'state' ]
 
   Model = ComplexResModel.extend {
 
@@ -29,6 +31,15 @@ define [
 
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
+
+    getId: ->
+      unless @changedInAppEdit() then return @id
+      unless @__newId then @__newId = @design().guid()
+      @__newId
+
+    createRef: ( refName = 'LaunchConfigurationName', isResourceNS, id ) ->
+      id = @getId()
+      ComplexResModel.prototype.createRef.call @, refName, isResourceNS, id
 
     constructor: ( attributes, options ) ->
       if !options or !options.createBySubClass
@@ -54,7 +65,19 @@ define [
         #append root device
         @set("rdSize",@getAmiRootDeviceVolumeSize())
 
+      if @get( 'appId' )
+        @on 'change', @watchChanged, @
+
       null
+
+    watchChanged: () ->
+
+    changedInAppEdit: ->
+      if !@design().modeIsAppEdit() or !@get( 'appId' )
+        return false
+
+      diffTree = new DiffTree();
+      _.size diffTree.compare(@genResource(), @design().opsModel().getJsonData().component[ @id ].resource)
 
     getNewName : ( base )->
       if not @newNameTmpl
@@ -77,8 +100,6 @@ define [
           if rl.LaunchConfigurationName
             nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true
 
-
-
       while true
         newName = @newNameTmpl + base
         if nameMap[ newName ]
@@ -100,7 +121,6 @@ define [
       true
 
     isPublic: -> @get 'publicIp'
-
 
     isDefaultTenancy : ()-> true
 
@@ -164,6 +184,20 @@ define [
         layout.architecture   = ami.architecture
         layout.rootDeviceType = ami.rootDeviceType
 
+      if InstanceModel.isMesosMaster(@attributes) or InstanceModel.isMesosSlave(@attributes)
+        @setMesosState()
+
+      component =
+        type : @type
+        uid  : @getId()
+        name : @get("name")
+        description : @get("description") or ""
+        state : @get("state")
+        resource : @genResource()
+
+      { component : component, layout : layout }
+
+    genResource: ->
       # Generate an array containing the root device and then append all other volumes
       # to the array to form the LC's volume list
       blockDevice = @getBlockDeviceMapping()
@@ -184,30 +218,17 @@ define [
 
         blockDevice.push vd
 
-      if InstanceModel.isMesosMaster(@attributes) or InstanceModel.isMesosSlave(@attributes)
-        @setMesosState()
-
-      component =
-        type : @type
-        uid  : @id
-        name : @get("name")
-        description : @get("description") or ""
-        state : @get("state")
-        resource :
-          UserData                 : @get("userData")
-          LaunchConfigurationARN   : @get("appId")
-          InstanceMonitoring       : @get("monitoring")
-          ImageId                  : @get("imageId")
-          KeyName                  : @get("keyName")
-          EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
-          BlockDeviceMapping       : blockDevice
-          SecurityGroups           : _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
-          LaunchConfigurationName  : @get("configName") or @get("name")
-          InstanceType             : @get("instanceType")
-          AssociatePublicIpAddress : @get("publicIp")
-
-
-      { component : component, layout : layout }
+      UserData                 : @get("userData")
+      LaunchConfigurationARN   : @get("appId")
+      InstanceMonitoring       : @get("monitoring")
+      ImageId                  : @get("imageId")
+      KeyName                  : @get("keyName")
+      EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
+      BlockDeviceMapping       : blockDevice
+      SecurityGroups           : _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
+      LaunchConfigurationName  : @get("configName") or @get("name")
+      InstanceType             : @get("instanceType")
+      AssociatePublicIpAddress : @get("publicIp")
 
   }, {
 

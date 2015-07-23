@@ -171,6 +171,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
         owner.set 'volumeList', [ this ]
 
       owner.trigger "change:volumeList"
+      owner.trigger "change"
       true
 
     isSupportEncrypted : () ->

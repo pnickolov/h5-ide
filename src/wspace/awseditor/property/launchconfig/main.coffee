@@ -47,11 +47,12 @@ define [ "../base/main",
             @view  = app_view
             null
 
-        initAppEdit : () ->
+        initAppEdit : ( uid ) ->
             @model = model
             @model.isApp = true
             @model.isAppEdit = true
-            @view  = app_view
+            @view  = view
+            @view.resModel = Design.instance().component uid
             null
 
         afterLoadApp : () ->

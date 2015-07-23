@@ -180,11 +180,6 @@ define [
           @selectItem( data.hoverItem.el )
         return
 
-      # Avoid adding volume for existing LC.
-      if owner.type is constant.RESTYPE.LC and owner.get("appId")
-        notification "error", lang.NOTIFY.WARN_OPERATE_NOT_SUPPORT_YET
-        return
-
       attr.owner = owner
       if _.isString( attr.encrypted )
         attr.encrypted = attr.encrypted is 'true'

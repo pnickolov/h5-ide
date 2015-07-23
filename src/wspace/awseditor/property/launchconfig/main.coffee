@@ -53,6 +53,10 @@ define [ "../base/main",
             @model.isAppEdit = true
             @view  = view
             @view.resModel = Design.instance().component uid
+
+            if @view.resModel.get('appId')
+                @view.listenTo @view.resModel, 'change', view.watchChangedInAppEdit
+
             null
 
         afterLoadApp : () ->

@@ -70,8 +70,6 @@ define [
 
       null
 
-    watchChanged: () ->
-
     changedInAppEdit: ->
       if !@design().modeIsAppEdit() or !@get( 'appId' )
         return false

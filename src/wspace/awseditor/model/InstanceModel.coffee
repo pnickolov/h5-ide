@@ -718,7 +718,6 @@ define [
 
     isDefaultKey: ->
       kp = @connectionTargets( "KeypairUsage" )[0]
-      if not kp then return true
       kp and kp.isDefault()
 
     isNoKey: ->

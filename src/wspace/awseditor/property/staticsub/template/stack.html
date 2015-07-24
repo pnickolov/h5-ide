@@ -1,39 +1,39 @@
 <article class="property-app">
 {{#if ami}}
 
-{{#if isApp}}
-    {{#if ami.unavailable}}
-    <div class="property-control-group property-ami-info">
-        <p>{{ i18n "PROP.AMI_APP_NOT_AVAILABLE" }}</p>
-    </div>
-    {{/if}}
-{{else}}
-    {{#if ami.unavailable}}
-    <div class="property-control-group property-ami-info">
-        {{ i18n "PROP.AMI_STACK_NOT_AVAILABLE"}}
-    </div>
-    {{/if}}
-    <div class="property-control-group property-ami-info">
-        <div class="property-control-group tac">
-            <button id="changeAmi" class="btn btn-blue"><i class="icon-edit icon-label"></i>{{i18n "PROP.STATIC_SUB_CHANGE_AMI"}}</button>
+    {{#unless amiChangeable}}
+        {{#if ami.unavailable}}
+        <div class="property-control-group property-ami-info">
+            <p>{{ i18n "PROP.AMI_APP_NOT_AVAILABLE" }}</p>
         </div>
-    </div>
-    <div class="property-control-group hide" id="changeAmiPanel">
-        <p>{{i18n "PROP.DRAG_IMAGE_DROP_TO_CHANGE"}}</p>
-        <div id="changeAmiDropZone">
-            <p>{{i18n "PROP.DRAG_IMAGE_DROP_HERE"}}</p>
-            <div class="resource-icon resource-icon-instance">
-                <img src="/assets/images/ide/ami/amazon.i386.ebs.png" width="39" height="27">
-                <div class="resource-label"></div>
+        {{/if}}
+    {{else}}
+        {{#if ami.unavailable}}
+        <div class="property-control-group property-ami-info">
+            {{ i18n "PROP.AMI_STACK_NOT_AVAILABLE"}}
+        </div>
+        {{/if}}
+        <div class="property-control-group property-ami-info">
+            <div class="property-control-group tac">
+                <button id="changeAmi" class="btn btn-blue"><i class="icon-edit icon-label"></i>{{i18n "PROP.STATIC_SUB_CHANGE_AMI"}}</button>
             </div>
         </div>
-        <div class="hide" id="confirmChangeAmiWrap">
-            <p id="changeAmiWarning"></p>
-            <button id="confirmChangeAmi" class="btn btn-blue">{{i18n "PROP.CONFIRM_CHANGE_AMI"}}</button>
+        <div class="property-control-group hide" id="changeAmiPanel">
+            <p>{{i18n "PROP.DRAG_IMAGE_DROP_TO_CHANGE"}}</p>
+            <div id="changeAmiDropZone">
+                <p>{{i18n "PROP.DRAG_IMAGE_DROP_HERE"}}</p>
+                <div class="resource-icon resource-icon-instance">
+                    <img src="/assets/images/ide/ami/amazon.i386.ebs.png" width="39" height="27">
+                    <div class="resource-label"></div>
+                </div>
+            </div>
+            <div class="hide" id="confirmChangeAmiWrap">
+                <p id="changeAmiWarning"></p>
+                <button id="confirmChangeAmi" class="btn btn-blue">{{i18n "PROP.CONFIRM_CHANGE_AMI"}}</button>
+            </div>
+            <button id="cancelChangeAmi" class="btn-link">{{i18n "PROP.LBL_CANCEL"}}</button>
         </div>
-        <button id="cancelChangeAmi" class="btn-link">{{i18n "PROP.LBL_CANCEL"}}</button>
-    </div>
-{{/if}}
+    {{/unless}}
 
     {{#unless ami.unavailable}}
     <dl class="dl-vertical property-ami-info">

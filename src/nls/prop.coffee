@@ -3546,8 +3546,8 @@ module.exports =
       zh: " RDS 选项组"
 
     LC_WILL_BE_REPLECED:
-      en: "Launch Configuration will be replace for all associated AutoScaling Group when modify configuration."
-      zh: "一旦修改启动配置，此启动配置相关的 AutoScaling 组都将被更新。"
+      en: "Launch Configuration will be replaced for all associated AutoScaling Group, and AutoScaling Group will scale base on the policy."
+      zh: "关联的AutoScaling组的启动配置都将被替换，并且AutoScaling组会根据设置的策略自动扩展。"
 
 
 

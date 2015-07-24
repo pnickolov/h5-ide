@@ -38,8 +38,8 @@ define [
       unless @__newId then @__newId = @design().guid()
       @__newId
 
-    createRef: ( refName = 'LaunchConfigurationName', isResourceNS, id ) ->
-      id = @getId()
+    createRef: ( refName = 'LaunchConfigurationName', isResourceNS, id, options ) ->
+      id = @getId(options)
       ComplexResModel.prototype.createRef.call @, refName, isResourceNS, id
 
     constructor: ( attributes, options ) ->
@@ -65,9 +65,6 @@ define [
       if not @get("rdSize")
         #append root device
         @set("rdSize",@getAmiRootDeviceVolumeSize())
-
-      if @get( 'appId' )
-        @on 'change', @watchChanged, @
 
       null
 

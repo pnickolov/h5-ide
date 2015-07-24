@@ -300,15 +300,21 @@ define [
         new SgAsso( model, resolve( MC.extractID(sg) ) )
 
       # Add Keypair
-      KP = resolve( MC.extractID( data.resource.KeyName ) )
+      if model.get 'appId'
+        appData = CloudResources(model.design().credentialId(), constant.RESTYPE.LC, model.design().region()).get(model.get('appId'))?.toJSON()
 
-      if KP
-        KP.assignTo( model )
-      else
-        if data.resource.KeyName || data.resource.KeyName is ""
-          model.set 'keyName', data.resource.KeyName
+      unless appData
+        KP = resolve( MC.extractID( data.resource.KeyName ) )
+
+        if KP
+          KP.assignTo( model )
         else
-          _.defer ()-> Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( model )
+          if data.resource.KeyName || data.resource.KeyName is ""
+            model.set 'keyName', data.resource.KeyName
+          else
+            _.defer ()-> Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( model )
+      else
+        model.set 'keyName', appData.KeyName
 
 
       null

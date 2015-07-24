@@ -32,9 +32,8 @@ define [
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
-    getId: ( options ) ->
-      if !options or options.usage isnt 'updateApp' then return @id
-      unless @changedInAppEdit() then return @id
+    getId: ( options, changed ) ->
+      if !changed and !@changedInAppEdit(options) then return @id
       unless @__newId then @__newId = @design().guid()
       @__newId
 
@@ -68,12 +67,13 @@ define [
 
       null
 
-    changedInAppEdit: ->
+    changedInAppEdit: (options) ->
+      if !options or options.usage isnt 'updateApp' then return false
       if !@design().modeIsAppEdit() or !@get( 'appId' )
         return false
 
       diffTree = new DiffTree();
-      _.size diffTree.compare(@genResource(), @design().opsModel().getJsonData().component[ @id ].resource)
+      !_.isEmpty diffTree.compare(@genResource(), @design().opsModel().getJsonData().component[ @id ].resource)
 
     getNewName : ( base )->
       if not @newNameTmpl
@@ -173,6 +173,8 @@ define [
     isMesosSlave                : InstanceModel.prototype.isMesosSlave
 
     serialize : ( options )->
+      changed = @changedInAppEdit options
+
       ami = @getAmi() || @get("cachedAmi")
       layout = @generateLayout()
       if ami
@@ -185,15 +187,15 @@ define [
 
       component =
         type : @type
-        uid  : @getId(options)
-        name : @get("name")
+        uid  : @getId(options, changed)
+        name : if changed then @getNewName() else @get("name")
         description : @get("description") or ""
         state : @get("state")
-        resource : @genResource()
+        resource : @genResource(changed)
 
       { component : component, layout : layout }
 
-    genResource: ->
+    genResource: (changed) ->
       # Generate an array containing the root device and then append all other volumes
       # to the array to form the LC's volume list
       blockDevice = @getBlockDeviceMapping()
@@ -215,7 +217,7 @@ define [
         blockDevice.push vd
 
       UserData                 : @get("userData")
-      LaunchConfigurationARN   : @get("appId")
+      LaunchConfigurationARN   : if changed then '' else @get("appId")
       InstanceMonitoring       : @get("monitoring")
       ImageId                  : @get("imageId")
       KeyName                  : @get("keyName")

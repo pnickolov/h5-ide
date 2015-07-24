@@ -32,7 +32,8 @@ define [
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
-    getId: ->
+    getId: ( options ) ->
+      if !options or options.usage isnt 'updateApp' then return @id
       unless @changedInAppEdit() then return @id
       unless @__newId then @__newId = @design().guid()
       @__newId
@@ -174,7 +175,7 @@ define [
     isMesosMaster               : InstanceModel.prototype.isMesosMaster
     isMesosSlave                : InstanceModel.prototype.isMesosSlave
 
-    serialize : ()->
+    serialize : ( options )->
       ami = @getAmi() || @get("cachedAmi")
       layout = @generateLayout()
       if ami
@@ -187,7 +188,7 @@ define [
 
       component =
         type : @type
-        uid  : @getId()
+        uid  : @getId(options)
         name : @get("name")
         description : @get("description") or ""
         state : @get("state")

@@ -336,8 +336,8 @@ define [
       # if not support then @initInstanceType()
       null
 
-    getAmi : ()->
-      ami = CloudResources( @design().credentialId(), constant.RESTYPE.AMI, @design().region() ).get( @get("imageId") )
+    getAmi : ( imageId = @get("imageId") )->
+      ami = CloudResources( @design().credentialId(), constant.RESTYPE.AMI, @design().region() ).get( imageId )
       if ami
         ami.toJSON()
       else

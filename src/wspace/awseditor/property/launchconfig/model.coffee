@@ -189,9 +189,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
       design.component( kp_uid ).assignTo( instance )
       null
 
-    isSGListReadOnly : ()->
-      if @get 'appId'
-        true
+    isSGListReadOnly : ()-> false
 
     getAppLaunch : ( uid ) ->
       lc_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId'))?.toJSON()

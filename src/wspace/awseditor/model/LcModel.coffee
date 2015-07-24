@@ -32,15 +32,6 @@ define [
     type : constant.RESTYPE.LC
     newNameTmpl : "launch-config-"
 
-    getId: ( options, changed ) ->
-      if !changed and !@changedInAppEdit(options) then return @id
-      unless @__newId then @__newId = @design().guid()
-      @__newId
-
-    createRef: ( refName = 'LaunchConfigurationName', isResourceNS, id, options ) ->
-      id = @getId(options)
-      ComplexResModel.prototype.createRef.call @, refName, isResourceNS, id
-
     constructor: ( attributes, options ) ->
       if !options or !options.createBySubClass
         if Model.isMesosSlave attributes
@@ -66,14 +57,6 @@ define [
         @set("rdSize",@getAmiRootDeviceVolumeSize())
 
       null
-
-    changedInAppEdit: (options) ->
-      if !options or options.usage isnt 'updateApp' then return false
-      if !@design().modeIsAppEdit() or !@get( 'appId' )
-        return false
-
-      diffTree = new DiffTree();
-      !_.isEmpty diffTree.compare(@genResource(), @design().opsModel().getJsonData().component[ @id ].resource)
 
     getNewName : ( base )->
       if not @newNameTmpl
@@ -168,8 +151,25 @@ define [
     isMesosMaster               : InstanceModel.prototype.isMesosMaster
     isMesosSlave                : InstanceModel.prototype.isMesosSlave
 
+    getId: ( options, changed ) ->
+      if !options or options.usage isnt 'updateApp' then return @id
+      if !changed and !@changedInAppEdit() then return @id
+      unless @__newId then @__newId = @design().guid()
+      @__newId
+
+    changedInAppEdit: () ->
+      if !@design().modeIsAppEdit() or !@get( 'appId' )
+        return false
+
+      diffTree = new DiffTree();
+      !_.isEmpty diffTree.compare(@genResource(), @design().opsModel().getJsonData().component[ @id ].resource)
+
+    createRef: ( refName = 'LaunchConfigurationName', isResourceNS, id, options ) ->
+      id = @getId(options)
+      ComplexResModel.prototype.createRef.call @, refName, isResourceNS, id
+
     serialize : ( options )->
-      changed = @changedInAppEdit options
+      changed = options and options.usage is 'updateApp' and @changedInAppEdit()
 
       ami = @getAmi() || @get("cachedAmi")
       layout = @generateLayout()

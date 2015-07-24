@@ -61,7 +61,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
 
 
-      if @isApp
+      if @isApp and !@isAppEdit
         @getAppLaunch( uid )
         kp = @lc.connectionTargets( 'KeypairUsage' )[ 0 ]
         @set 'keyName', kp and kp.get("appId") or @lc.get 'keyName'

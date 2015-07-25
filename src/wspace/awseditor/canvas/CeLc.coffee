@@ -200,9 +200,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
           asg = asgCln.get (asg.get("originalAsg") || asg).get("appId")
           if not asg then continue
           asg = asg.attributes
-          if asg.Instances?.length
-            numberGroup = $( el ).children(".server-number-group").show()
-            CanvasManager.update numberGroup.children("text"), asg.Instances.length
+          numberGroup = $( el ).children(".server-number-group").show()
+          CanvasManager.update numberGroup.children("text"), asg.Instances?.length or 0
       return
 
 

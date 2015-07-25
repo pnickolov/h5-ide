@@ -61,16 +61,19 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
 
 
-      if @isApp and !@isAppEdit
+      if @isApp
         @getAppLaunch( uid )
-        kp = @lc.connectionTargets( 'KeypairUsage' )[ 0 ]
-        @set 'keyName', kp and kp.get("appId") or @lc.get 'keyName'
 
-        #RootDevice Data
-        rootDevice = @lc.getBlockDeviceMapping()
-        if rootDevice.length is 1
-          @set "rootDevice", rootDevice[0]
-        return
+        # In edit mode keypair and rootDevice need display content in stack json.
+        if !@isAppEdit
+          kp = @lc.connectionTargets( 'KeypairUsage' )[ 0 ]
+          @set 'keyName', kp and kp.get("appId") or @lc.get 'keyName'
+
+          #RootDevice Data
+          rootDevice = @lc.getBlockDeviceMapping()
+          if rootDevice.length is 1
+            @set "rootDevice", rootDevice[0]
+          return
 
 
 

@@ -2,6 +2,12 @@
     {{i18n "PROP.LC_WILL_BE_REPLECED"}}
 </div>
 <article>
+    {{#if isEditable}}
+    <dl class="dl-vertical">
+        <dt>{{i18n "PROP.LC_CREATE_TIME"}}</dt>
+        <dd>{{timeStr lc.CreatedTime}}</dd>
+    </dl>
+    {{/if}}
 	<div class="option-group-head expand">{{i18n "PROP.LC_TITLE"}}</div>
 	<div class="option-group">
 		<section class="property-control-group" data-bind="true">

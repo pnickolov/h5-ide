@@ -135,11 +135,12 @@ define [
         return
 
       @__applyingUpdate = true
+      @__dryRunUpdate   = !!attributes.dry_run
       fastUpdate = fastUpdate and not @opsModel.testState( OpsModel.State.Stopped )
 
       self = @
       #@view.listenTo @opsModel, "change:progress", @view.updateProgress
-      @opsModel.update( newJson, fastUpdate, attributes).then ()->
+      @opsModel.update( newJson, fastUpdate, attributes ).then ()->
         if fastUpdate
           self.__onAppEditDidDone()
         else

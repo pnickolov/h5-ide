@@ -398,7 +398,7 @@ function program1(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</section>\n<section class=\"members-only hide\">\n    "
     + escapeExpression(helpers.i18n.call(depth0, "WAIT_FOR_ADMIN_FINISH_CREDENTIAL", {hash:{},data:data}))
-    + "\n</section>";
+    + "\n</section>\n<section style=\"position: absolute; bottom: 21px; left: 17px;\" class=\"property-content \">\n  <div class=\"dryrun checkbox left\" style=\"margin-top: 0px;\"> <input id=\"ipt-dryrun\" type=\"checkbox\"> <label for=\"ipt-dryrun\"></label> </div>\n  <label for=\"ipt-dryrun\" class=\"left\">Dry Run Mode</label>\n  <i class=\"icon-info tooltip left\" style=\"margin-top:2px;\" data-tooltip=\"Checks whether have the required permissions for every action, without actually operate AWS resources and only check for EC2 resources.\"></i>\n</section>";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
@@ -1066,7 +1066,7 @@ function program13(depth0,data) {
     + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </div>\n</div>";
+  buffer += "\n    </div>\n    <section style=\"position: absolute; bottom: -43px; left: 17px;\" class=\"property-content\">\n      <div class=\"dryrun checkbox left\" style=\"margin-top: 0px;\"> <input id=\"ipt-dryrun\" type=\"checkbox\"> <label for=\"ipt-dryrun\"></label> </div>\n      <label for=\"ipt-dryrun\" class=\"left\">Dry Run Mode</label>\n      <i class=\"icon-info tooltip left\" style=\"margin-top:2px;\" data-tooltip=\"Checks whether have the required permissions for every action, without actually operate AWS resources and only check for EC2 resources.\"></i>\n    </section>\n</div>";
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);

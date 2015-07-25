@@ -16,11 +16,11 @@ module.exports =
       zh: "刷新数据中..."
 
     APP_UPDATE_SUCCESSFULLY_TITLE:
-      en: "App has updated successfully."
+      en: "App has updated successfully"
       zh: "App 已成功更新。"
 
     APP_UPDATE_FAILED_TITLE:
-      en: "The app failed to update."
+      en: "The app failed to update"
       zh: "App 更新失败。"
 
     APP_ROllBACK_DESC:

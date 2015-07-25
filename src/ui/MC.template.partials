@@ -306,6 +306,11 @@ Additional Notes and Questions
 <section class="members-only hide">
     {{i18n "WAIT_FOR_ADMIN_FINISH_CREDENTIAL"}}
 </section>
+<section style="position: absolute; bottom: 21px; left: 17px;" class="property-content ">
+  <div class="dryrun checkbox left" style="margin-top: 0px;"> <input id="ipt-dryrun" type="checkbox"> <label for="ipt-dryrun"></label> </div>
+  <label for="ipt-dryrun" class="left">Dry Run Mode</label>
+  <i class="icon-info tooltip left" style="margin-top:2px;" data-tooltip="Checks whether have the required permissions for every action, without actually operate AWS resources and only check for EC2 resources."></i>
+</section>
 
 
 <!-- {{sgRuleList}} -->
@@ -702,6 +707,11 @@ Additional Notes and Questions
             </div>
         {{/ifCond}}
     </div>
+    <section style="position: absolute; bottom: -43px; left: 17px;" class="property-content">
+      <div class="dryrun checkbox left" style="margin-top: 0px;"> <input id="ipt-dryrun" type="checkbox"> <label for="ipt-dryrun"></label> </div>
+      <label for="ipt-dryrun" class="left">Dry Run Mode</label>
+      <i class="icon-info tooltip left" style="margin-top:2px;" data-tooltip="Checks whether have the required permissions for every action, without actually operate AWS resources and only check for EC2 resources."></i>
+    </section>
 </div>
 
 

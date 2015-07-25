@@ -570,8 +570,10 @@ define [
             usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
           newJson.usage = usage
 
-          release_eip = that.updateModal.tpl.find("#release-eip-checkbox").is(":checked")
-          that.workspace.applyAppEdit( newJson, not result.compChange, {release_eip} )
+          that.workspace.applyAppEdit( newJson, not result.compChange, {
+            release_eip : that.updateModal.tpl.find("#release-eip-checkbox").is(":checked")
+            dry_run     : that.updateModal.tpl.find("#ipt-dryrun").is(":checked")
+          } )
           that.updateModal?.close()
 
         if result.compChange

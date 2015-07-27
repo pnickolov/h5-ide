@@ -8,8 +8,8 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
 
     init : ( uid ) ->
       instance = @getInstance()
+      @set( "amiChangeable", !@isApp or @isAppEdit and instance?.type is constant.RESTYPE.LC
 
-      @set( "amiChangeable", !@isApp or instance.type is constant.RESTYPE.LC ) if @isAppEdit or !@isApp
       InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
 
       # If this uid is ami uid

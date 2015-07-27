@@ -36,6 +36,8 @@ define [
       return
 
     switchToDone : ()->
+      @__switchToDone = true
+
       @$el.find(".success").show()
       @$el.find(".process-detail").hide()
       self = @
@@ -62,10 +64,8 @@ define [
 
         when OpsModel.State.Destroyed
           # If the app runs successfully and get destroyed, we just close the tab
-          if @done
-            if @model.get("dryrun")
-              @switchToDone()
-            else
+          if @done or @__switchToDone
+            if !@model.get("dryrun")
               @close()
             return
 

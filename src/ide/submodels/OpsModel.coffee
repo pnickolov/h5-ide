@@ -744,7 +744,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
 
       # 6. Another ridiculous feature, yay
       if @get("dryrun") and wsRequest.code is constant.OPS_CODE_NAME.LAUNCH and toState isnt OMS.Initializing
-        @__destroy()
+        self = @
+        setTimeout (()-> self.__destroy()), 0
       return
 
     ###

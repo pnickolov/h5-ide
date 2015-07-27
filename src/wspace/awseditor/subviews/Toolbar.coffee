@@ -522,6 +522,7 @@ define [
           isRunning : that.workspace.opsModel.testState(OpsModel.State.Running)
           notReadyDB: removeListNotReady
           removeList: removeList
+          fastUpdate: not result.compChange
         })
 
         ## Release EIP Confirm

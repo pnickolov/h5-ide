@@ -106,6 +106,12 @@
 {{/if}}
 </div>
 
+<!-- {{dryRunDone}} -->
+<div class="ops-process">
+  <header class="processing">App has updated successfully in Dry Run mode.</header>
+  <button class="btn btn-silver" id="processDoneBtn">{{i18n "TOOLBAR.LBL_DONE"}}</button>
+</div>
+
 <!--{{detailFrame}}-->
 <section class="process-detail">
   <header><div class="pdr-3">STATUS</div><div class="pdr-1">#</div><div class="pdr-2">TASK</div></header>

@@ -143,6 +143,10 @@ define [
       @opsModel.update( newJson, fastUpdate, attributes ).then ()->
         if fastUpdate
           self.__onAppEditDidDone()
+        else if self.__dryRunUpdate
+          self.__dryRunUpdate   = false
+          self.__applyingUpdate = false
+          self.view.showDryRunDone()
         else
           self.__onAppEditDone()
       , ( err )->

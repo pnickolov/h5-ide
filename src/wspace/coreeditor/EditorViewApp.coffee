@@ -227,6 +227,16 @@ define [
         .click ()-> self.$el.find(".ops-process").remove()
       return
 
+    showDryRunDone : ()->
+      @$el.find(".ops-process").remove()
+
+      self = @
+      $(OpsEditorTpl.dryRunDone())
+        .appendTo(@$el)
+        .find("#processDoneBtn")
+        .click ()-> self.$el.find(".ops-process").remove()
+      return
+
     showUnpayUI : ()->
       @statusbar.remove()
       @propertyPanel.remove()

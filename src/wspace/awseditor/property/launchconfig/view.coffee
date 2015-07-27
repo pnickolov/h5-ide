@@ -31,6 +31,12 @@ define [ '../base/view', './template/stack', './template/stack_mesos', 'event', 
             'REMOVE_ROW .multi-input'         : 'setMesosAttribute'
             'click #add-ma-item-outside'      : 'addMesosAttrItem'
 
+        watchChangedInAppEdit: ->
+            if @resModel.changedInAppEdit()
+                @$('.property-warning-block').show()
+            else
+                @$('.property-warning-block').hide()
+
         render : () ->
             tpl = if @resModel.isMesos() then TplMesos else TplLc
             @$el.html tpl @model.toJSON()
@@ -54,6 +60,8 @@ define [ '../base/view', './template/stack', './template/stack_mesos', 'event', 
                     return lang.PARSLEY.IOPS_MUST_BETWEEN_100_4000
                 else if( val > 10 * volume_size)
                     return lang.PARSLEY.IOPS_MUST_BE_LESS_THAN_10_TIMES_OF_VOLUME_SIZE
+
+            @watchChangedInAppEdit()
 
             @model.attributes.name
 

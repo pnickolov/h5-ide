@@ -75,10 +75,10 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
         , 0
       return
 
-    iconUrl : ()->
+    iconUrl : ( imageId )->
       if @model.isMesos() then return 'ide/ami/mesos-slave.png'
 
-      ami = @model.getAmi() || @model.get("cachedAmi")
+      ami = @model.getAmi(imageId) || @model.get("cachedAmi")
 
       if not ami
         "ide/ami/ami-not-available.png"
@@ -200,9 +200,8 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
           asg = asgCln.get (asg.get("originalAsg") || asg).get("appId")
           if not asg then continue
           asg = asg.attributes
-          if asg.Instances?.length
-            numberGroup = $( el ).children(".server-number-group").show()
-            CanvasManager.update numberGroup.children("text"), asg.Instances.length
+          numberGroup = $( el ).children(".server-number-group").show()
+          CanvasManager.update numberGroup.children("text"), asg.Instances?.length or 0
       return
 
 
@@ -243,12 +242,12 @@ define [ "CanvasElement", "constant", "CanvasManager", "i18n!/nls/lang.js", "./C
 
       name = @model.get("name")
       gm   = []
-      icon = @iconUrl()
 
       el = evt.currentTarget.parentNode.parentNode
       asg = @canvas.getItem( el.getAttribute("data-id") ).model
       for m, idx in @model.groupMembers( asg )
         ins = insCln.get( m.appId )
+        icon = @iconUrl ins?.get('imageId')
         if not ins
           console.warn "Cannot find instance of `#{m.appId}`"
           continue

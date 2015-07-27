@@ -50,9 +50,9 @@ define [ '../base/model', 'Design', 'CloudResources', 'constant' ], ( PropertyMo
             volume = getVolRes myVolumeComponent
           else
             volume = CloudResources( Design.instance().credentialId(), constant.RESTYPE.VOL, Design.instance().region()).get(appId)
-            volume = volume.attributes
+            volume = volume.toJSON()
 
-          volume.tags = myVolumeComponent.tags()
+          volume.tags = myVolumeComponent?.tags()
           volume.isAppEdit = @isAppEdit
           if volume
             if volume.attachmentSet

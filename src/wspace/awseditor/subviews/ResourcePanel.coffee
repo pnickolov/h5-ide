@@ -323,7 +323,7 @@ define [
 
     renderReuse: ->
       for lc in @workspace.design.componentsOfType( constant.RESTYPE.LC )
-        new LcItemView({model:lc, parent:@}) if not lc.get( 'appId' )
+        new LcItemView({model:lc, parent:@})
       @
 
     updateLc : ( resModel ) ->

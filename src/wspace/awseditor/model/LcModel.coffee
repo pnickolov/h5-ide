@@ -7,9 +7,11 @@ define [
   "./VolumeModel"
   "i18n!/nls/lang.js"
   "CloudResources"
-], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources )->
+  "DiffTree"
+], ( ComplexResModel, InstanceModel, Design, constant, VolumeModel, lang, CloudResources, DiffTree )->
 
   emptyArray = []
+  changeDetectExcepts = [ 'name', 'description', 'state' ]
 
   Model = ComplexResModel.extend {
 
@@ -77,8 +79,6 @@ define [
           if rl.LaunchConfigurationName
             nameMap[ _.first rl.LaunchConfigurationName.split( '---' ) ] = true
 
-
-
       while true
         newName = @newNameTmpl + base
         if nameMap[ newName ]
@@ -89,10 +89,6 @@ define [
       newName
 
     isRemovable : () ->
-
-      if @design().modeIsAppEdit() and @get("appId")
-        return error : lang.CANVAS.ERR_DEL_LC
-
       state = @get("state")
       if state and state.length > 0
         return MC.template.NodeStateRemoveConfirmation(name: @get("name"))
@@ -100,7 +96,6 @@ define [
       true
 
     isPublic: -> @get 'publicIp'
-
 
     isDefaultTenancy : ()-> true
 
@@ -156,7 +151,26 @@ define [
     isMesosMaster               : InstanceModel.prototype.isMesosMaster
     isMesosSlave                : InstanceModel.prototype.isMesosSlave
 
-    serialize : ()->
+    getId: ( options, changed ) ->
+      if !options or options.usage isnt 'updateApp' then return @id
+      if !changed and !@changedInAppEdit() then return @id
+      unless @__newId then @__newId = @design().guid()
+      @__newId
+
+    changedInAppEdit: () ->
+      if !@design().modeIsAppEdit() or !@get( 'appId' )
+        return false
+
+      diffTree = new DiffTree();
+      !_.isEmpty diffTree.compare(@genResource(), @design().opsModel().getJsonData().component[ @id ].resource)
+
+    createRef: ( refName = 'LaunchConfigurationName', isResourceNS, id, options ) ->
+      id = @getId(options)
+      ComplexResModel.prototype.createRef.call @, refName, isResourceNS, id
+
+    serialize : ( options )->
+      changed = options and options.usage is 'updateApp' and @changedInAppEdit()
+
       ami = @getAmi() || @get("cachedAmi")
       layout = @generateLayout()
       if ami
@@ -164,6 +178,20 @@ define [
         layout.architecture   = ami.architecture
         layout.rootDeviceType = ami.rootDeviceType
 
+      if InstanceModel.isMesosMaster(@attributes) or InstanceModel.isMesosSlave(@attributes)
+        @setMesosState()
+
+      component =
+        type : @type
+        uid  : @getId(options, changed)
+        name : if changed then @getNewName() else @get("name")
+        description : @get("description") or ""
+        state : @get("state")
+        resource : @genResource(changed)
+
+      { component : component, layout : layout }
+
+    genResource: (changed) ->
       # Generate an array containing the root device and then append all other volumes
       # to the array to form the LC's volume list
       blockDevice = @getBlockDeviceMapping()
@@ -184,30 +212,17 @@ define [
 
         blockDevice.push vd
 
-      if InstanceModel.isMesosMaster(@attributes) or InstanceModel.isMesosSlave(@attributes)
-        @setMesosState()
-
-      component =
-        type : @type
-        uid  : @id
-        name : @get("name")
-        description : @get("description") or ""
-        state : @get("state")
-        resource :
-          UserData                 : @get("userData")
-          LaunchConfigurationARN   : @get("appId")
-          InstanceMonitoring       : @get("monitoring")
-          ImageId                  : @get("imageId")
-          KeyName                  : @get("keyName")
-          EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
-          BlockDeviceMapping       : blockDevice
-          SecurityGroups           : _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
-          LaunchConfigurationName  : @get("configName") or @get("name")
-          InstanceType             : @get("instanceType")
-          AssociatePublicIpAddress : @get("publicIp")
-
-
-      { component : component, layout : layout }
+      UserData                 : @get("userData")
+      LaunchConfigurationARN   : if changed then '' else @get("appId")
+      InstanceMonitoring       : @get("monitoring")
+      ImageId                  : @get("imageId")
+      KeyName                  : @get("keyName")
+      EbsOptimized             : if @isEbsOptimizedEnabled() then @get("ebsOptimized") else false
+      BlockDeviceMapping       : blockDevice
+      SecurityGroups           : _.map @connectionTargets("SgAsso"), ( sg )-> sg.createRef( "GroupId" )
+      LaunchConfigurationName  : @get("configName") or @get("name")
+      InstanceType             : @get("instanceType")
+      AssociatePublicIpAddress : @get("publicIp")
 
   }, {
 
@@ -281,15 +296,21 @@ define [
         new SgAsso( model, resolve( MC.extractID(sg) ) )
 
       # Add Keypair
-      KP = resolve( MC.extractID( data.resource.KeyName ) )
+      if model.get 'appId'
+        appData = CloudResources(model.design().credentialId(), constant.RESTYPE.LC, model.design().region()).get(model.get('appId'))?.toJSON()
 
-      if KP
-        KP.assignTo( model )
-      else
-        if data.resource.KeyName || data.resource.KeyName is ""
-          model.set 'keyName', data.resource.KeyName
+      unless appData
+        KP = resolve( MC.extractID( data.resource.KeyName ) )
+
+        if KP
+          KP.assignTo( model )
         else
-          _.defer ()-> Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( model )
+          if data.resource.KeyName || data.resource.KeyName is ""
+            model.set 'keyName', data.resource.KeyName
+          else
+            _.defer ()-> Design.modelClassForType( constant.RESTYPE.KP ).getDefaultKP().assignTo( model )
+      else
+        model.set 'keyName', appData.KeyName
 
 
       null

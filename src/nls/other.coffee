@@ -2403,8 +2403,8 @@ VisualOps API. You cannot UNDO this action.'
       zh: "正在停止 App ..."
 
     APPLYING_CHANGES_TO_YOUR_APP :
-      en: "Applying changes to your app..."
-      zh: "正在应用 App 的修改..."
+      en: "Applying changes to your app"
+      zh: "正在应用 App 的修改"
 
     REMOVING_YOUR_APP :
       en: "Removing your app from our server..."

@@ -418,7 +418,7 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
         collection.add self
 
     # Runs a stack into app, returns a promise that will fullfiled with a new OpsModel.
-    run : ( toRunJson, appName )->
+    run : ( toRunJson, config )->
       # Ensure the json has correct id.
       toRunJson.id = ""
       toRunJson.stack_id = @get("id")
@@ -427,11 +427,12 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
       ApiRequest("stack_run",{
         region_name : toRunJson.region
         stack       : toRunJson
-        app_name    : appName
+        app_name    : config.name
         key_id      : @credentialId()
+        dry_run     : config.dryrun
       }).then ( res )->
         project.apps().add new OpsModel({
-          name       : appName
+          name       : config.name
           requestId  : res[0]
           state      : OpsModelState.Initializing
           region     : toRunJson.region
@@ -439,6 +440,8 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           usage      : toRunJson.usage
           updateTime : +(new Date())
           type       : toRunJson.type
+
+          dryrun     : config.dryrun
         })
 
     # Duplicate the stack
@@ -738,6 +741,11 @@ define ["ApiRequest", "constant", "CloudResources", "ThumbnailUtil", "backbone"]
           state    : toState
           progress : 0
         }
+
+      # 6. Another ridiculous feature, yay
+      if @get("dryrun") and wsRequest.code is constant.OPS_CODE_NAME.LAUNCH and toState isnt OMS.Initializing
+        self = @
+        setTimeout (()-> self.__destroy()), 0
       return
 
     ###

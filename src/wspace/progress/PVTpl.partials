@@ -12,7 +12,7 @@
 
   <section class="success hide">
     <p class="title">{{ i18n "PROC_RLT_DONE_TITLE" }}</p>
-    <p class="sub-title">{{ i18n "PROC_RLT_DONE_SUB_TITLE" }}</p>
+    <p class="sub-title">{{#if dryrun}}The app will automatically close because of Dry Run mode.{{else}}{{ i18n "PROC_RLT_DONE_SUB_TITLE" }}{{/if}}</p>
   </section>
 
   <section class="fail hide error-info-block">

@@ -398,7 +398,7 @@ function program1(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    </div>\n</section>\n<section class=\"members-only hide\">\n    "
     + escapeExpression(helpers.i18n.call(depth0, "WAIT_FOR_ADMIN_FINISH_CREDENTIAL", {hash:{},data:data}))
-    + "\n</section>";
+    + "\n</section>\n<section style=\"position: absolute; bottom: 21px; left: 17px;\" class=\"property-content \">\n  <div class=\"dryrun checkbox left\" style=\"margin-top: 0px;\"> <input id=\"ipt-dryrun\" type=\"checkbox\"> <label for=\"ipt-dryrun\"></label> </div>\n  <label for=\"ipt-dryrun\" class=\"left\">Dry Run Mode</label>\n  <i class=\"icon-info tooltip left\" style=\"margin-top:2px;\" data-tooltip=\"Checks whether have the required permissions for every action, without actually operate AWS resources and only check for EC2 resources.\"></i>\n</section>";
   return buffer;
   };
 TEMPLATE.modalRunStack=Handlebars.template(__TEMPLATE__);
@@ -1041,6 +1041,12 @@ function program13(depth0,data) {
   return buffer;
   }
 
+function program15(depth0,data) {
+  
+  
+  return "\n    <section style=\"position: absolute; bottom: -43px; left: 17px;\" class=\"property-content\">\n      <div class=\"dryrun checkbox left\" style=\"margin-top: 0px;\"> <input id=\"ipt-dryrun\" type=\"checkbox\"> <label for=\"ipt-dryrun\"></label> </div>\n      <label for=\"ipt-dryrun\" class=\"left\">Dry Run Mode</label>\n      <i class=\"icon-info tooltip left\" style=\"margin-top:2px;\" data-tooltip=\"Checks whether have the required permissions for every action, without actually operate AWS resources and only check for EC2 resources.\"></i>\n    </section>\n    ";
+  }
+
   buffer += "<div id=\"app-apply-update\">\n    <div class=\"payment-wrapper\">\n        <div class=\"scroll-wrap\" style=\"max-height:455px;min-height:210px;\">\n            <div class=\"scrollbar-veritical-wrap\"><div class=\"scrollbar-veritical-thumb\"></div></div>\n            <div class=\"scroll-content\">\n                <div class=\"modal-control-group default-kp-group clearfix\" style=\"display:none;\">\n                    <label for=\"kp-runtime-placeholder\">$DefaultKeyPair</label>\n                    <div id=\"kp-runtime-placeholder\"></div>\n                    <div class=\"runtime-error\" id=\"runtime-error-kp\"></div>\n                </div>\n                <div class=\"modal-control-group app-usage-group clearfix update-app\">\n                    <label for=\"\">"
     + escapeExpression(helpers.i18n.call(depth0, "TOOLBAR.APP_USAGE", {hash:{},data:data}))
     + "</label>\n                    <div id=\"app-usage-selectbox\" class=\"selectbox\">\n                        <div class=\"selection\"><i class=\"icon-app-type-testing\"></i>Testing</div>\n                        <ul class=\"dropdown\" tabindex=\"-1\">\n                            <li class=\"selected item\" data-value=\"testing\"><i class=\"icon-app-type-testing\"></i>Testing</li>\n                            <li class=\"item\" data-value=\"development\"><i class=\"icon-app-type-development\"></i>Development</li>\n                            <li class=\"item\" data-value=\"production\"><i class=\"icon-app-type-production\"></i>Production</li>\n                            <li class=\"item\" data-value=\"others\"><i class=\"icon-app-type-others\" data-value=\"testing\"></i>Others</li>\n                            <li class=\"item\" data-value=\"custom\"><i class=\"icon-app-type-custom\" data-value=\"custom\"></i>Custom</li>\n                        </ul>\n                    </div>\n                    <input type=\"text\" class=\"input custom-app-usage\" placeholder=\"custom\" maxlength=\"32\" />\n                </div>\n                ";
@@ -1066,7 +1072,10 @@ function program13(depth0,data) {
     + "</div>\n        </div>\n        ";
   stack1 = helpers.ifCond.call(depth0, (depth0 && depth0.paymentState), "past_due", {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </div>\n</div>";
+  buffer += "\n    </div>\n    ";
+  stack1 = helpers.unless.call(depth0, (depth0 && depth0.fastUpdate), {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</div>";
   return buffer;
   };
 TEMPLATE.updateApp=Handlebars.template(__TEMPLATE__);

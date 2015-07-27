@@ -84,13 +84,6 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
       if not @__groupMembers then @__groupMembers = []
       return @__groupMembers
 
-    isRemovable : ()->
-      if @design().modeIsAppEdit()
-        if (@get("owner") || {}).type is constant.RESTYPE.LC
-          return lang.NOTIFY.WARN_OPERATE_NOT_SUPPORT_YET
-
-      true
-
     remove : ()->
       # Remove reference in owner
       vl = @attributes.owner.get("volumeList")
@@ -171,6 +164,7 @@ define [ "i18n!/nls/lang.js", "ComplexResModel", "constant", "CloudResources" ],
         owner.set 'volumeList', [ this ]
 
       owner.trigger "change:volumeList"
+      owner.trigger "change"
       true
 
     isSupportEncrypted : () ->

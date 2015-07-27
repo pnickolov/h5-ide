@@ -21,15 +21,23 @@ define [
 
       data = {
         progress : @model.get("progress")
+        dryrun   : @model.get("dryrun")
       }
 
       if not @model.testState( OpsModel.State.Initializing )
-        data.title = @model.getStateDesc() + " your app..."
+        data.title = @model.getStateDesc() + " your app"
+      else
+        data.title = "Launching your app"
+
+      if @model.get("dryrun")
+        data.title += " in Dry Run mode"
 
       @setElement $(ProgressTpl.frame( data )).appendTo( attr.workspace.scene.spaceParentElement() )
       return
 
     switchToDone : ()->
+      @__switchToDone = true
+
       @$el.find(".success").show()
       @$el.find(".process-detail").hide()
       self = @
@@ -56,8 +64,9 @@ define [
 
         when OpsModel.State.Destroyed
           # If the app runs successfully and get destroyed, we just close the tab
-          if @done
-            @close()
+          if @done or @__switchToDone
+            if !@model.get("dryrun")
+              @close()
             return
 
           @$el.children().hide()
@@ -163,7 +172,8 @@ define [
       @view.on "close", ()-> self.remove()
       @view.on "done", ()->
         self.remove()
-        App.loadUrl( self.opsModel().url() )
+        if not self.opsModel().get("dryrun")
+          App.loadUrl( self.opsModel().url() )
         return
 
       return

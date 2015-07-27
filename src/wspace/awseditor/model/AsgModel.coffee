@@ -320,7 +320,7 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
 
       _.uniq az
 
-    serialize : ()->
+    serialize : ( options )->
       subnets = @getExpandSubnets()
 
       azs     = _.uniq( _.map subnets, (sb)-> sb.parent().createRef() )
@@ -352,7 +352,7 @@ define [ "ResourceModel", "ComplexResModel", "Design", "constant", "i18n!/nls/la
           TerminationPolicies     : @get("terminationPolicies")
           AutoScalingGroupName    : @get("groupName") or @get("name")
           DesiredCapacity         : @get("capacity")
-          LaunchConfigurationName : lc?.createRef( "LaunchConfigurationName" ) || ""
+          LaunchConfigurationName : lc?.createRef(null, null, null, options) || ""
 
       { component : component, layout : @generateLayout() }
 

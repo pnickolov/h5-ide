@@ -7,8 +7,8 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
   StaticSubModel = PropertyModel.extend {
 
     init : ( uid ) ->
-
-      @set "isApp", @isApp
+      instance = @getInstance()
+      @set( "amiChangeable", !@isApp or @isAppEdit and instance?.type is constant.RESTYPE.LC )
 
       InstanceModel = Design.modelClassForType( constant.RESTYPE.INSTANCE )
 
@@ -72,7 +72,10 @@ define [ '../base/model', 'constant', "../base/main", "CloudResources", "Design"
       null
 
     getInstanceName : ()->
-      Design.instance().component( PropertyModule.activeModule().uid ).get("name")
+      @getInstance().get("name")
+
+    getInstance: -> Design.instance().component PropertyModule.activeModule().uid
+
   }
 
   new StaticSubModel()

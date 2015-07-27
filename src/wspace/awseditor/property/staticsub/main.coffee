@@ -35,6 +35,7 @@ define [ '../base/main',
             @model = model
             @view  = view
             @model.isApp = true
+            @model.isAppEdit = true
             null
     }
     null

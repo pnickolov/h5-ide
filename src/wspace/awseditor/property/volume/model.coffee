@@ -16,6 +16,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 return false
 
             supportEncrypted = component.isSupportEncrypted()
+            supportTags = true
 
             displayEncrypted = true
             if not supportEncrypted
@@ -26,6 +27,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
             if component.get('owner').type is constant.RESTYPE.LC
                 displayEncrypted = false
+                supportTags = false
 
             isEncrypted = false
             isEncrypted = (res.encrypted in ['true', true]) if supportEncrypted
@@ -43,6 +45,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
                 support_encrypted : supportEncrypted
                 encrypted   : isEncrypted
                 owner       : res.owner
+                supportTags : supportTags
                 tags        : component.tags()
 
             # Snapshot

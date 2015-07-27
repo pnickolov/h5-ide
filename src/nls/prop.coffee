@@ -3544,3 +3544,11 @@ module.exports =
     RESOURCE_NAME_OPTION_GROUP:
       en: "RDS Option Group"
       zh: " RDS 选项组"
+
+    LC_WILL_BE_REPLECED:
+      en: "Launch Configuration will be replaced for all associated AutoScaling Group, and AutoScaling Group will scale base on the policy."
+      zh: "关联的AutoScaling组的启动配置都将被替换，并且AutoScaling组会根据设置的策略自动扩展。"
+
+
+
+

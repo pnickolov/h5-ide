@@ -63,14 +63,17 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
 
       if @isApp
         @getAppLaunch( uid )
-        kp = @lc.connectionTargets( 'KeypairUsage' )[ 0 ]
-        @set 'keyName', kp and kp.get("appId") or @lc.get 'keyName'
 
-        #RootDevice Data
-        rootDevice = @lc.getBlockDeviceMapping()
-        if rootDevice.length is 1
-          @set "rootDevice", rootDevice[0]
-        return
+        # In edit mode keypair and rootDevice need display content in stack json.
+        if !@isAppEdit
+          kp = @lc.connectionTargets( 'KeypairUsage' )[ 0 ]
+          @set 'keyName', kp and kp.get("appId") or @lc.get 'keyName'
+
+          #RootDevice Data
+          rootDevice = @lc.getBlockDeviceMapping()
+          if rootDevice.length is 1
+            @set "rootDevice", rootDevice[0]
+          return
 
 
 
@@ -189,9 +192,7 @@ define [ '../base/model', 'constant', 'Design', "CloudResources" ], ( PropertyMo
       design.component( kp_uid ).assignTo( instance )
       null
 
-    isSGListReadOnly : ()->
-      if @get 'appId'
-        true
+    isSGListReadOnly : ()-> false
 
     getAppLaunch : ( uid ) ->
       lc_data = CloudResources(Design.instance().credentialId(), constant.RESTYPE.LC, Design.instance().region()).get(@lc.get('appId'))?.toJSON()

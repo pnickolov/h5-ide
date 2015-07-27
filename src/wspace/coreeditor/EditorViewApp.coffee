@@ -141,6 +141,8 @@ define [
           text = lang.IDE.TERMINATING_YOUR_APP
         when OpsModel.State.Updating
           text = lang.IDE.APPLYING_CHANGES_TO_YOUR_APP
+          if @workspace.__dryRunUpdate
+            text += " in Dry Run mode"
         when OpsModel.State.Removing
           text = lang.IDE.REMOVING_YOUR_APP
         else
@@ -219,7 +221,17 @@ define [
       @$el.find(".ops-process").remove()
 
       self = @
-      $(OpsEditorTpl.appUpdateStatus({ error : error, loading : loading }))
+      $(OpsEditorTpl.appUpdateStatus({ error : error, loading : loading, dry_run : @workspace.__dryRunUpdate }))
+        .appendTo(@$el)
+        .find("#processDoneBtn")
+        .click ()-> self.$el.find(".ops-process").remove()
+      return
+
+    showDryRunDone : ()->
+      @$el.find(".ops-process").remove()
+
+      self = @
+      $(OpsEditorTpl.dryRunDone())
         .appendTo(@$el)
         .find("#processDoneBtn")
         .click ()-> self.$el.find(".ops-process").remove()

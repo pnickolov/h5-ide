@@ -108,7 +108,10 @@ define [
           usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
         @json.usage = usage
         @json.name = appNameDom.val()
-        @workspace.opsModel.run(@json, appNameDom.val()).then ( ops )->
+        @workspace.opsModel.run(@json, {
+            name: appNameDom.val()
+            dryrun: @modal.tpl.find("#ipt-dryrun").is(":checked")
+        }).then ( ops )->
           self.modal.close()
           App.loadUrl ops.url()
         , (err)->

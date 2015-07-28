@@ -58,6 +58,12 @@ define [ "../DesignAws" ], (Design)->
                 when 'AWS.EC2.Tag'
                     if compo.name is "EC2InternalTags"
                         delete components[comp]
+                    else
+                        _.each (compo.resource), (item, index)->
+                            # remove tag whose key start with `aws:`
+                            if item.Key.indexOf("aws:") == 0
+                                compo.resource.splice(index, 1)
+
                 when 'AWS.AutoScaling.Tag'
                     if compo.name is "AutoScalingInternalTags"
                         delete components[comp]

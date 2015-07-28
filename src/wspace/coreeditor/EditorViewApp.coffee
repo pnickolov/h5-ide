@@ -97,6 +97,12 @@ define [
         json.usage = usage
         json.resource_diff = $("#MonitorImportApp").is(":checked")
 
+        _.each json.component, (comp)->
+          if comp.type is constant.RESTYPE.TAG or comp.type is constant.RESTYPE.ASGTAG
+            _.each (comp.resource), (item, index)->
+              if item.Key.indexOf("aws:") == 0
+                comp.resource.splice(index, 1)
+
         self.workspace.opsModel.importApp(json).then ()->
           design = self.workspace.design
 

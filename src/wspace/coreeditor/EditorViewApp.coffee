@@ -101,7 +101,8 @@ define [
           if comp.type is constant.RESTYPE.TAG or comp.type is constant.RESTYPE.ASGTAG
             _.each (comp.resource), (item, index)->
               if item.Key.indexOf("aws:") == 0
-                comp.resource.splice(index, 1)
+                delete comp.resource[index]
+            comp.resource = _.compact(comp.resource)
 
         self.workspace.opsModel.importApp(json).then ()->
           design = self.workspace.design

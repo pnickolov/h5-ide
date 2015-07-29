@@ -62,7 +62,8 @@ define [ "../DesignAws" ], (Design)->
                         _.each (compo.resource), (item, index)->
                             # remove tag whose key start with `aws:`
                             if item.Key.indexOf("aws:") == 0
-                                compo.resource.splice(index, 1)
+                                delete compo.resource[index]
+                        compo.resource = _.compact compo.resource
 
                 when 'AWS.AutoScaling.Tag'
                     if compo.name is "AutoScalingInternalTags"

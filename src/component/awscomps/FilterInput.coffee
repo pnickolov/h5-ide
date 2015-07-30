@@ -39,6 +39,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
 
       _.some serialized, (serializedItem) ->
         v = serializedItem?.component?.resource?[attr]
+        v = String(v) if v is +v
         if value is DefaultValues.AllValues then v isnt undefined else v is value
 
     hasTag = ( tags, key, value ) ->
@@ -76,7 +77,7 @@ define [ 'constant', 'Design', 'component/awscomps/FilterInputTpl' ], ( constant
       className: "filter-input"
       tplDropdown: template.dropdown
       tplTag: template.tag
-      unFilterTypeInVisualMode: [ constant.RESTYPE.SG, 'ExpandedAsg', constant.RESTYPE.DHCP ]
+      unFilterTypeInVisualMode: [ constant.RESTYPE.SG, 'ExpandedAsg', constant.RESTYPE.DHCP, 'ExternalVpcRouteTarget' ]
 
       events:
         "click .tags li"            : "clickTagHandler"

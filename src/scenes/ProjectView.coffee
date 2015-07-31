@@ -326,7 +326,10 @@ define [ "ApiRequest",
 
     render : ()->
       @$el.find(".project-list").text( @scene.project.get("name") )
-      @$el.find(".user-menu").text( App.user.get("username") )
+      usernameText = App.user.get("username")
+      emailText = App.user.get("email")
+      tooltipHtml = "<span class='tip-for-username'>#{usernameText}</span> <br/> <span class='tip-for-email'>#{emailText}<span/>"
+      @$el.find(".user-menu").text( App.user.get("username") ).attr("data-tooltip", tooltipHtml)
       return
 
     ### -----------------

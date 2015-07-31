@@ -10,7 +10,7 @@
       <button class="ph-nav-btn user-guide-btn popuptrigger truncate" data-popup="popupGuide">Guide</button>
       <a class="ph-nav-btn icon-support" href="mailto:3rp02j1w@incoming.intercom.io" target="_blank">{{i18n "IDE.DASH_LBL_SUPPORT"}}</a>
       <button class="ph-nav-btn icon-notification popuptrigger" data-popup="popupNotify"></button>
-      <button class="ph-nav-btn user-menu popuptrigger truncate" data-popup="popupUser"></button>
+      <button class="ph-nav-btn user-menu popuptrigger truncate tooltip" data-tooltip-type="html" data-tooltip="" data-popup="popupUser"></button>
     </nav>
   </header>
 

@@ -147,7 +147,7 @@ define [ 'Design', 'kp_manage', 'combo_dropdown', 'component/awscomps/KpTpl', 'b
             has = false
             Design.instance().eachComponent ( comp ) ->
                 if comp.type in [ constant.RESTYPE.INSTANCE, constant.RESTYPE.LC ]
-                    if comp.isDefaultKey() and not comp.get( 'appId' )
+                    if comp.isDefaultKey() and (!comp.get( 'appId' ) or comp.type is constant.RESTYPE.LC )
                         has = true
                         false
 

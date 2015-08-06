@@ -56,6 +56,7 @@ define [ "../base/main",
 
             if @view.resModel.get('appId')
                 @view.listenTo @view.resModel, 'change', view.watchChangedInAppEdit
+                @view.listenTo @view.resModel, 'change:connections', view.watchChangedInAppEdit
 
             null
 

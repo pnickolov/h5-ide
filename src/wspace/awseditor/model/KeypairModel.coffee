@@ -6,12 +6,13 @@ define [ "constant", "ComplexResModel", "ConnectionModel", "Design"  ], ( consta
     oneToMany : constant.RESTYPE.KP
 
 
-    serialize : ( components )->
+    serialize : ( components, layout_data, options )->
       kp = @getTarget( constant.RESTYPE.KP )
 
       if kp
         otherTarget = @getOtherTarget( kp )
-        otherTargetComp = components[ otherTarget.id ]
+        otherId = if otherTarget.type is constant.RESTYPE.LC then otherTarget.getId(options) else otherTarget.id
+        otherTargetComp = components[ otherId ]
 
         if not otherTargetComp then return
 

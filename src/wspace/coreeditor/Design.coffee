@@ -410,7 +410,7 @@ define [
         p2 = c.port2Comp()
         if p1 and p2 and not p1.isRemoved() and not p2.isRemoved()
           try
-            c.serialize( component_data, layout_data )
+            c.serialize( component_data, layout_data, options )
             ### env:prod ###
           catch error
             console.error "Error occur while serializing", error

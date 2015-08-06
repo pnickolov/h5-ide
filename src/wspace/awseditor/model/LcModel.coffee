@@ -161,8 +161,13 @@ define [
       if !@design().modeIsAppEdit() or !@get( 'appId' )
         return false
 
+      oldResource = @design().opsModel().getJsonData().component[ @id ].resource
+      appData = CloudResources(@design().credentialId(), constant.RESTYPE.LC, @design().region()).get(@get('appId'))?.toJSON()
+      if appData
+        oldResource = _.extend { KeyName: appData.KeyName }, oldResource
+
       diffTree = new DiffTree();
-      !_.isEmpty diffTree.compare(@genResource(), @design().opsModel().getJsonData().component[ @id ].resource)
+      !_.isEmpty(diffTree.compare(@genResource(), oldResource)) or @isDefaultKey()
 
     createRef: ( refName = 'LaunchConfigurationName', isResourceNS, id, options ) ->
       id = @getId(options)

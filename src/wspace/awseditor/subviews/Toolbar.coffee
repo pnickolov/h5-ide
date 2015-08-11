@@ -582,13 +582,19 @@ define [
           $('#app-update-summary-table').html $diffTree
 
         that.appAction.renderKpDropdown(that.updateModal)
-        TA.loadModule('stack', null, differ).then ->
+
+        if result.compChange or result.stateChange
+          TA.loadModule('stack', null, differ).then ->
+            taPassed = true
+          .catch (err)->
+            that.updateModal?.tpl.find("#take-rds-snapshot").off 'change'
+            that.updateModal?.find('.modal-confirm').addClass('disabled').addClass('tooltip').attr('data-tooltip', lang.TOOLBAR.FIX_THE_ERROR_TO_UPDATE)
+          .fin ->
+            that.updateModal?.resize()
+            that.updateModal?.toggleConfirm false
+        else
           taPassed = true
-        .catch (err)->
-          console.log err
-          that.updateModal?.tpl.find("#take-rds-snapshot").off 'change'
-          that.updateModal?.find('.modal-confirm').addClass('disabled').addClass('tooltip').attr('data-tooltip', lang.TOOLBAR.FIX_THE_ERROR_TO_UPDATE)
-        .fin ->
+          that.updateModal?.find('#app-apply-update').addClass('nota')
           that.updateModal?.resize()
           that.updateModal?.toggleConfirm false
 

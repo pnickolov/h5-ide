@@ -2620,7 +2620,7 @@ VisualOps API. You cannot UNDO this action.'
       zh: "该工作空间已经达到 %s 个成员的标准上限，如果你想要邀请更多协作成员，请联系："
 
     SETTINGS_MEMBER_LABEL_ONLY_ONE_ADMIN:
-      en: "You are the only admin in this workspace. Cannot change your role to member."
+      en: "You are the only admin in this workspace. The role can not be changed."
       zh: "你是该工作空间唯一的管理员，角色不可更改。"
 
     SETTING_MEMBER_LABEL_NO_USER:

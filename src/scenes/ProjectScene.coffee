@@ -80,7 +80,10 @@ define ["Scene", "./ProjectView", "./ProjectTpl", "Workspace", "UI.modalplus", "
           attr.pid = localStorage.getItem( "lastws" )
 
       @project = App.model.projects().get( attr.pid ) || App.model.getPrivateProject()
-      @view    = new ProjectView { scene : @ }
+      @view    = new ProjectView {
+        scene : @
+        observer : @project.amIObserver()
+      }
       @listenTo @view, "wsOrderChanged", ()->   @__updateSpaceOrder()
       @listenTo @view, "wsClicked",      (id)-> @awakeSpace( id )
       @listenTo @view, "wsClosed",       (id)-> @removeSpace( id )

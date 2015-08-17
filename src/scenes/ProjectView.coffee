@@ -290,7 +290,7 @@ define [ "ApiRequest",
 
       @tabsWidth = 0
 
-      @setElement $( ProjectTpl.frame() ).appendTo( "#scenes" )
+      @setElement $( ProjectTpl.frame( attr ) ).appendTo( "#scenes" )
       @render()
 
       @$tabbar   = @$el.find(".ws-tabbar")

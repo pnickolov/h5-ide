@@ -16,18 +16,18 @@
 </div>
 
 <!-- {{toolbar.BtnEditApp}} -->
-<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
-<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
-<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
 
 <!-- {{toolbar.BtnRunStack}} -->
-<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
 
 <!-- {{toolbar.BtnStackOps}} -->
-<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_STACK" }}'></button>
-<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_DELETE_STACK" }}'></button>
-<button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOLBAR.TIP_DUPLICATE_STACK" }}'></button>
-<button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_CREATE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-save role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_DELETE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-duplicate role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_DUPLICATE_STACK" }}'></button>
+<button class="btn-toolbar icon-new-stack tooltip seperator role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_CREATE_STACK" }}'></button>
 
 <!-- {{toolbar.BtnExport}} -->
 <div class="selectbox btn-toolbar seperator">
@@ -39,7 +39,7 @@
 </div>
 
 <!-- {{toolbar.BtnAppOps}} -->
-<button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-terminate seperator role-observer-hidden" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
 
 <!-- {{toolbar.BtnPng}} -->
 <button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}'></button>

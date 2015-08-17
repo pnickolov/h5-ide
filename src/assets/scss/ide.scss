@@ -878,6 +878,15 @@ div.modal-text-highlight{
   }
 }
 
+.role-observer {
+	.role-observer-hidden {
+		display : none !important;
+	}
+	.dashboard-wrapper {
+		top : 0 !important;
+	}
+}
+
 
 @import "sharedres/kp";
 @import "sharedres/optiongroup";

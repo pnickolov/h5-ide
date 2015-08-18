@@ -52,7 +52,7 @@ define [
       return
 
     diff : ()->
-      if not @opsModel.testState( OpsModel.State.Running ) then return
+      if not @opsModel.testState( OpsModel.State.Running ) or @scene.project.amIObserver() then return
 
       newJson = @opsModel.generateJsonFromRes()
 

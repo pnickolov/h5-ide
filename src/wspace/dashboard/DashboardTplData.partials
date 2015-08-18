@@ -130,10 +130,10 @@
                 <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
                 <div class="region-resource-info">
                     {{#if stoppable}}
-                        {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app tooltip"  data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_STOP_APP"}}"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
+                        {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app tooltip role-observer-hidden"  data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_STOP_APP"}}"></i>{{else}}<i class="icon-play start-app role-observer-hidden"></i>{{/ifCond}}
                     {{/if}}
-                    <i class="icon-terminate terminate-app tooltip" data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_TERMINATE_APP"}}"></i>
-                    <i class="icon-forget-app forget-app tooltip" data-tooltip="{{{i18n 'TOOLBAR.TIP_FORGET_APP'}}}"></i>
+                    <i class="icon-terminate terminate-app tooltip role-observer-hidden" data-tooltip="{{i18n "TOOLBAR.TOOLBAR_HANDLE_TERMINATE_APP"}}"></i>
+                    <i class="icon-forget-app forget-app tooltip role-observer-hidden" data-tooltip="{{{i18n 'TOOLBAR.TIP_FORGET_APP'}}}"></i>
                     <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate" title="{{name}}">{{name}}</span>
                 </div>
                 {{/if}}
@@ -168,8 +168,8 @@
                     {{#ifCond type "mesos" }} <i class="icon-stack-type-mesos"></i> {{/ifCond}}
                     <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
                     <div class="region-resource-info">
-                        <i class="icon-delete delete-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
-                        <i class="icon-duplicate duplicate-stack tooltip" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
+                        <i class="icon-delete delete-stack tooltip role-observer-hidden" data-tooltip="{{i18n "DASH_TIP_DEL_STACK"}}"></i>
+                        <i class="icon-duplicate duplicate-stack tooltip role-observer-hidden" data-tooltip="{{i18n "DASH_TIP_DUPLICATE_STACK"}}"></i>
                         <span class="{{#ifCond type "mesos" }}upper-compact {{/ifCond}}truncate">{{name}}</span>
                     </div>
                 </a>

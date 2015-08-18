@@ -38,8 +38,8 @@
   {{#if usage}}<i class="icon-app-type-{{usage}}"></i>{{/if}}
   <div class="thumbnail app-thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
   <div class="region-resource-info">
-    <i class="icon-terminate terminate-app"></i>
-    {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app"></i>{{else}}<i class="icon-play start-app"></i>{{/ifCond}}
+    <i class="icon-terminate terminate-app role-observer-hidden"></i>
+    {{#ifCond stateDesc 'Running'}}<i class="icon-stop stop-app role-observer-hidden"></i>{{else}}<i class="icon-play start-app role-observer-hidden"></i>{{/ifCond}}
     <span class="{{#ifCond stateDesc 'Running'}}running{{else}}stopped{{/ifCond}} truncate">{{name}}</span>
   </div>
 {{/if}}</li>
@@ -51,8 +51,8 @@
 {{#each this}}<li data-id="{{id}}">
     <div class="thumbnail"><img src="{{thumbnail}}" {{#unless thumbnail}}class="hide"{{/unless}}/></div>
     <div class="region-resource-info">
-      <i class="icon-delete delete-stack"></i>
-      <i class="icon-duplicate duplicate-stack"></i>
+      <i class="icon-delete delete-stack role-observer-hidden"></i>
+      <i class="icon-duplicate duplicate-stack role-observer-hidden"></i>
       <span class="truncate">{{name}}</span>
     </div>
   </li>

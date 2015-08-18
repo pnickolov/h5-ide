@@ -17,13 +17,13 @@
 <button class="btn-toolbar icon-hide-sg tooltip" data-tooltip='{{ i18n "TOOLBAR.LBL_LINESTYLE_HIDE_SG" }}'></button>
 
 <!-- {{toolbar.BtnRunStack}} -->
-<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
+<button class="btn-toolbar icon-play tooltip toolbar-btn-primary runApp role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_BTN_RUN_STACK" }}'>{{ i18n "TOOLBAR.BTN_RUN_STACK" }}</button>
 
 <!-- {{toolbar.BtnStackOps}} -->
-<button class="btn-toolbar tooltip icon-save" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_STACK" }}'></button>
-<button class="btn-toolbar icon-delete tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_DELETE_STACK" }}'></button>
-<button class="btn-toolbar tooltip icon-duplicate" data-tooltip='{{ i18n "TOOLBAR.TIP_DUPLICATE_STACK" }}'></button>
-<button class="btn-toolbar icon-new-stack tooltip seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_CREATE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-save role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_STACK" }}'></button>
+<button class="btn-toolbar icon-delete tooltip seperator role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_DELETE_STACK" }}'></button>
+<button class="btn-toolbar tooltip icon-duplicate role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_DUPLICATE_STACK" }}'></button>
+<button class="btn-toolbar icon-new-stack tooltip seperator role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_CREATE_STACK" }}'></button>
 
 <!-- {{toolbar.BtnExport}} -->
 <div class="selectbox btn-toolbar seperator">
@@ -36,16 +36,16 @@
 </div>
 
 <!-- {{toolbar.BtnEditApp}} -->
-<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
-<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
-<button class="tooltip btn-toolbar icon-cancel-update-app seperator" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-update-app toolbar-btn-primary role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_UPDATE_APP' }}">{{ i18n 'TOOLBAR.EDIT_APP' }}</button>
+<button class="tooltip btn-toolbar icon-apply-app toolbar-btn-primary role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_SAVE_UPDATE_APP' }}">{{ i18n 'TOOLBAR.APPLY_EDIT' }}</button>
+<button class="tooltip btn-toolbar icon-cancel-update-app seperator role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_CANCEL_UPDATE_APP' }}"></button>
 
 <!-- {{toolbar.BtnAppOps}} -->
-<button class="tooltip btn-toolbar icon-stop" data-tooltip="{{ i18n 'TOOLBAR.TIP_STOP_APP' }}"></button>
-<button class="tooltip btn-toolbar icon-play startApp" data-tooltip="{{ i18n 'TOOLBAR.TIP_START_APP' }}"><span style="display: none">{{i18n "TOOLBAR.START_APP"}}</span></button>
-<button class="btn-toolbar tooltip icon-terminate seperator" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
-<button class="btn-toolbar tooltip icon-forget-app seperator" data-tooltip="{{{i18n 'TOOLBAR.TIP_FORGET_APP'}}}"></button>
-<button class="btn-toolbar tooltip icon-save-app seperator" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_APP_TO_STACK" }}'></button>
+<button class="tooltip btn-toolbar icon-stop role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_STOP_APP' }}"></button>
+<button class="tooltip btn-toolbar icon-play startApp role-observer-hidden" data-tooltip="{{ i18n 'TOOLBAR.TIP_START_APP' }}"><span style="display: none">{{i18n "TOOLBAR.START_APP"}}</span></button>
+<button class="btn-toolbar tooltip icon-terminate seperator role-observer-hidden" data-tooltip="{{{i18n 'TOOLBAR.TIP_TERMINATE_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-forget-app seperator role-observer-hidden" data-tooltip="{{{i18n 'TOOLBAR.TIP_FORGET_APP'}}}"></button>
+<button class="btn-toolbar tooltip icon-save-app seperator role-observer-hidden" data-tooltip='{{ i18n "TOOLBAR.TIP_SAVE_APP_TO_STACK" }}'></button>
 
 <!-- {{toolbar.BtnPng}} -->
 <button class="btn-toolbar icon-export-png tooltip seperator" data-analytics-plus="export_png" data-tooltip='{{ i18n "TOOLBAR.EXPORT_AS_PNG" }}'></button>
@@ -55,13 +55,13 @@
 
 
 <!-- {{toolbar.BtnSwitchStates}} -->
-<label class="switch toolbar-visual-ops-switch tooltip{{#if stateOn}} on{{/if}}" data-tooltip="{{i18n 'TOOLBAR.TIP_CUSTOM_USER_DATA'}}">
+<label class="switch toolbar-visual-ops-switch tooltip{{#if stateOn}} on{{/if}} role-observer-hidden" data-tooltip="{{i18n 'TOOLBAR.TIP_CUSTOM_USER_DATA'}}">
     <span class="switch-label" data-on="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_ON'}}" data-off="{{i18n 'TOOLBAR.TOGGLE_VISUALOPS_OFF'}}"></span>
     <span class="switch-handle"></span>
 </label>
 
 <!-- {{toolbar.BtnReloadStates}} -->
-<button class="icon-reload tooltip btn btn-blue reload-states" data-original="{{i18n "TOOLBAR.RELOAD_STATES"}}" data-disabled="{{i18n "TOOLBAR.INITIATING"}}…"  data-tooltip="{{i18n 'TOOLBAR.INSTANTLY_RERUN_ALL_STATES_IN_THIS_APP'}}">{{i18n "TOOLBAR.RELOAD_STATES"}}</button>
+<button class="icon-reload tooltip btn btn-blue reload-states role-observer-hidden" data-original="{{i18n "TOOLBAR.RELOAD_STATES"}}" data-disabled="{{i18n "TOOLBAR.INITIATING"}}…"  data-tooltip="{{i18n 'TOOLBAR.INSTANTLY_RERUN_ALL_STATES_IN_THIS_APP'}}">{{i18n "TOOLBAR.RELOAD_STATES"}}</button>
 
 <!-- {{confirm.enableState}} -->
 <div class="modal-text-wraper">

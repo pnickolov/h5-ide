@@ -19,6 +19,8 @@ define [ "jquery" ], ()->
     version        : true
     timezone       : true
     lastlogin      : true
+    drs            : true
+    dru            : true
 
   IntercomAnalytics = {
     increase : ( key )->

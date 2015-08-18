@@ -261,7 +261,7 @@ define ['backbone',
                 # if current user is only admin in workspace, failed to change role
                 if memberModel is currentMember and
                     currentMember.isAdmin() and
-                    newRole is 'collaborator' and
+                    newRole isnt 'admin' and
                     currentMember.isOnlyAdmin()
 
                         notification 'error', lang.IDE.SETTINGS_MEMBER_LABEL_ONLY_ONE_ADMIN

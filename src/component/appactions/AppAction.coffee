@@ -108,6 +108,9 @@ define [
           usage = $.trim($selectbox.parent().find("input.custom-app-usage").val()) || "custom"
         @json.usage = usage
         @json.name = appNameDom.val()
+
+        if @modal.tpl.find("#ipt-dryrun").is(":checked") then MC.Analytics.increase("drs")
+
         @workspace.opsModel.run(@json, {
             name: appNameDom.val()
             dryrun: @modal.tpl.find("#ipt-dryrun").is(":checked")

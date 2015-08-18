@@ -2,7 +2,7 @@
 
 <div>
 
-  <header class="dashboard-header">
+  <header class="dashboard-header role-observer-hidden">
     <button class="icon-refresh refreshResource">{{i18n "DASH_TPL_JUST_NOW"}}</button>
 
       <button class="btn btn-primary icon-new-stack">{{i18n "DASH_CREATE_NEW_STACK"}}</button>

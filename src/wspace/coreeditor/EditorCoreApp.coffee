@@ -138,6 +138,8 @@ define [
       @__dryRunUpdate   = !!attributes.dry_run
       fastUpdate = fastUpdate and not @opsModel.testState( OpsModel.State.Stopped )
 
+      if attributes.dry_run then MC.Analytics.increase("dru")
+
       self = @
       #@view.listenTo @opsModel, "change:progress", @view.updateProgress
       @opsModel.update( newJson, fastUpdate, attributes ).then ()->

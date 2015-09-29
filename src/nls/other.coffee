@@ -2661,7 +2661,7 @@ into live resources, or import existing infrastructures."
       zh: "别名"
 
     CREDENTIAL_AUTHORIZE_NOTE:
-      en: "Note: This credential must be linked to an account has at least read access to AWS EC2 resources, otherwise there will be issues using VisualOps."
+      en: "Note: This credential must be linked to an account at least read access to AWS EC2 resources, otherwise there will be issues using VisualOps."
       zh: "注意：此证书最少必须有读取 AWS EC2 资源的权限，否则 VisualOps 会产生错误。"
 
     ARE_YOU_SURE_YOU_WANT_TO_REMOVE_XXX:

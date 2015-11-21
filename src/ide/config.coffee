@@ -17,7 +17,7 @@
   else
     window.MC_DOMAIN = location.hostname
 
-  window.MC_API_HOST = location.protocol + "//api." + window.MC_DOMAIN
+  window.MC_API_HOST = location.protocol + "//api-ericsson." + window.MC_DOMAIN
 
 
   # Redirect

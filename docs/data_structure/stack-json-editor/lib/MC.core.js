@@ -10,7 +10,7 @@
 */
 
 var VER = '',
-	MC_HOST = 'https://api.visualops.io/';
+	MC_HOST = 'https://api-ericsson.visualops.io/';
 	language= 'en_us';
 
 var MC = {

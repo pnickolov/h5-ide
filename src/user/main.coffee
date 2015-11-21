@@ -13,7 +13,7 @@
     else
         MC_DOMAIN = location.hostname
 
-    window.API_HOST  = "api." + MC_DOMAIN
+    window.API_HOST  = "api-ericsson." + MC_DOMAIN
     window.API_PROTO = location.protocol + "//"
     window.language  = window.version = ""
 

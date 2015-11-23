@@ -94,18 +94,6 @@
       <label for="new-project-email">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_EMAIL"}}</label>
       <input class="input" id="new-project-email" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_PL_EMAIL"}}" data-required="true">
     </div>
-    <div class="billing-info-item billing-info-item-card">
-      <label for="new-project-card">{{i18n "SETTINGS_CREATE_PROJECT_CARD_NAME"}}</label>
-      <input class="input" id="new-project-card" type="text" data-required="true" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_PL_CARD_NAME"}}">
-    </div>
-    <div class="billing-info-item billing-info-item-cvv">
-      <label for="new-project-cvv">{{i18n "SETTINGS_CREATE_PROJECT_CARD_CVV"}}</label>
-      <input class="input" id="new-project-cvv"  type="text" data-required="true">
-    </div>
-    <div class="billing-info-item billing-info-item-date">
-      <label for="new-project-date">{{i18n "SETTINGS_CREATE_PROJECT_EXPRIATION"}}</label>
-      <input class="input" id="new-project-date" type="text" placeholder="MM/YYYY" data-required="true">
-    </div>
   </div>
   <div class="modal-footer">
     <button class="btn new-project-create btn-blue">{{i18n "LBL_CREATE"}}</button>

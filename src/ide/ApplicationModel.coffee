@@ -101,12 +101,7 @@ define [
         first_name   : attr.firstname
         last_name    : attr.lastname
         email        : attr.email
-        credit_card  : {
-          full_number      : attr.card.number
-          expiration_month : attr.card.expire.split("/")[0] or ""
-          expiration_year  : attr.card.expire.split("/")[1] or ""
-          cvv              : attr.card.cvv
-        }
+        credit_card  : null
       }).then ( projectObj )->
         p = new Project( projectObj )
         self.projects().add(p)

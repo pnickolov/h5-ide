@@ -20,23 +20,6 @@
             </div>
         </dd>
     </dl>
-    <dl class="settings-item credit-card-info">
-        <dt>{{i18n "CREDIT_CARD_INFORMATION"}}</dt>
-        <dd>
-            <div class="payment-credit-middle payment-credit-card">
-
-            </div>
-            <div class="credit-meta">
-                <p class="payment-number">{{#if paymentUpdate.cardNumber}}{{paymentUpdate.cardNumber}}{{else}}{{i18n "NO_CARD"}}{{/if}}</p>
-                {{#if paymentUpdate.firstName}}<p class="payment-username">{{paymentUpdate.firstName}} {{paymentUpdate.lastName}}</p>{{/if}}
-            </div>
-            <div class="credit-update">
-                {{#if noSubscription}}<button class="btn btn-blue update-payment">{{i18n "PROVIDE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
-                {{else}}<button class="btn btn-blue update-payment">{{i18n "UPDATE_BILLING_INFORMATION"}}<i class="icon-right"></i></button>
-                {{/if}}
-            </div>
-        </dd>
-    </dl>
     {{#if noSubscription}}
         <dl class="billing-history settings-item"></dl>
     {{else}}

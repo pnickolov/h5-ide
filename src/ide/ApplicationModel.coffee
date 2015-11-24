@@ -98,9 +98,9 @@ define [
 
       ApiRequest( "project_create", {
         project_name : attr.name
-        first_name   : attr.firstname
-        last_name    : attr.lastname
-        email        : attr.email
+        first_name   : null
+        last_name    : null
+        email        : null
         credit_card  : null
       }).then ( projectObj )->
         p = new Project( projectObj )

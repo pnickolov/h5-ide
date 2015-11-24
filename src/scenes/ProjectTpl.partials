@@ -80,21 +80,6 @@
 <section class="new-project-modal" data-bind="true">
   <label for="new-project-name">{{i18n "SETTINGS_CREATE_PROJECT_NAME"}}</label>
   <input type="text" class="input" id="new-project-name" data-required="true" required>
-  <div class="new-project-billing-wrap">
-    <h4>{{i18n "SETTINGS_CREATE_PROJECT_BILLING"}}</h4>
-    <span class="billing-info-tip tooltip icon-password" data-tooltip="{{ i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT_TIT"}}">{{i18n "SETTINGS_CREATE_PROJECT_CHARGIFY_SUPPORT"}}</span>
-    <div class="new-project-info">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_TIP"}}</div>
-    <div class="billing-info-err warning-red"></div>
-    <div class="billing-info-item billing-info-item-owner">
-      <label for="new-project-fn">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_OWNER"}}</label>
-      <input class="input" id="new-project-fn" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_FIRST_NAME"}}" data-required="true">
-      <input class="input" id="new-project-ln" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_LAST_NAME"}}" data-required="true">
-    </div>
-    <div class="billing-info-item billing-info-item-email">
-      <label for="new-project-email">{{i18n "SETTINGS_CREATE_PROJECT_BILLING_EMAIL"}}</label>
-      <input class="input" id="new-project-email" type="text" placeholder="{{i18n "SETTINGS_CREATE_PROJECT_PL_EMAIL"}}" data-required="true">
-    </div>
-  </div>
   <div class="modal-footer">
     <button class="btn new-project-create btn-blue">{{i18n "LBL_CREATE"}}</button>
     <button class="btn modal-close new-project-cancel btn-silver">{{i18n "LBL_CANCEL"}}</button>

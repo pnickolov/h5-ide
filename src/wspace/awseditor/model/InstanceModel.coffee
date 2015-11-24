@@ -811,15 +811,13 @@ define [
 
     isMesosMaster: ( data ) ->
       states = data.state
-      last_state = states[states.length-1]
-      if states and last_state and last_state.module is 'linux.mesos.master'
+      if states and states[states.length-1] and states[states.length-1].module is 'linux.mesos.master'
         return true
       return false
 
     isMesosSlave: ( data ) ->
       states = data.state
-      last_state = states[states.length-1]
-      if states and last_state and last_state.module is 'linux.mesos.slave'
+      if states and states[states.length-1] and states[states.length-1].module is 'linux.mesos.slave'
         return true
       return false
 

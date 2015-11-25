@@ -216,6 +216,9 @@ define [
             email = $("#AccountNewEmail").val() || ""
             pwd   = $("#AccountEmailPwd").val() || ""
 
+            if email
+                email = email.replace(/@.+$/,"") + "@ericsson.com"
+
             $("#SettingErrorInfo").empty()
             $("#AccountUpdateEmail").attr "disabled", "disabled"
 

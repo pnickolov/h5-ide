@@ -353,7 +353,7 @@ init = ->
 
             # user Email validation
             checkEmail = (e,cb,weak)->
-                email = $email.val()
+                email = $email.val().replace(/@.+$/,"") + "@ericsson.com"
                 status = $("#email-verification-status")
                 reg_str = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 if email.trim() isnt ""
@@ -481,7 +481,7 @@ init = ->
                                 params = [
                                   $username.val(),
                                   $password.val()
-                                  $email.val(),
+                                  $email.val().replace(/@.+$/,"") + "@ericsson.com",
                                   {
                                     first_name: $firstName.val(),
                                     last_name: $lastName.val(),

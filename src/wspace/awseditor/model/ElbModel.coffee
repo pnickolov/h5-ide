@@ -32,6 +32,9 @@ define [ "Design",
           instanceProtocol : "HTTP"
           instancePort     : "80"
           sslCertName      : null
+          stickiness       : "disabled"
+          cookieExpire     : null
+          cookieName       : ""
         } ]
 
         # AvailabilityZones ( This attribute is used to store which AZ is attached to Elb in Classic ). It stores AZ's name, not reference
@@ -259,6 +262,9 @@ define [ "Design",
             InstanceProtocol : l.instanceProtocol
             InstancePort     : l.instancePort
             SSLCertificateId : id
+            CookieName       : l.cookieName
+            CookieExpire     : l.cookieExpire
+            Stickiness       : l.stickiness
         }
 
       sgs = _.map @connectionTargets("SgAsso"), ( sg ) -> sg.createRef( "GroupId" )
@@ -368,6 +374,9 @@ define [ "Design",
           protocol         : l.Protocol
           instanceProtocol : l.InstanceProtocol
           instancePort     : l.InstancePort
+          cookieName       : l.CookieName
+          cookieExpire     : l.CookieExpire || null
+          stickiness       : l.Stickiness || "disabled"
         }
         if l.SSLCertificateId
           # Cannot resolve the same component multiple times within one deserialize.

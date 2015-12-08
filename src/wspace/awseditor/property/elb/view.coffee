@@ -44,6 +44,10 @@ define [ '../base/view',
             'change .elb-property-elb-port'                 : 'portChanged'
             'change .elb-property-instance-port'            : 'portChanged'
 
+            'OPTION_CHANGE .elb-stickiness' : 'cookieChanged'
+            "change .cookie-name-input"     : "cookieChanged"
+            "change .expire-period-input"   : "cookieChanged"
+
             'click #elb-property-listener-content-add' : 'listenerItemAddClicked'
             'click .elb-property-listener-item-remove' : 'listenerItemRemovedClicked'
 
@@ -192,12 +196,19 @@ define [ '../base/view',
             that = this
             $li = $("#elb-property-listener-list").children().eq(0).clone()
             # $li.find(".elb-property-listener-item-remove").show()
-            $selectbox = $li.find("ul")
+            $selectbox = $li.find(".elb-property-elb-protocol ul")
             $portInput = $li.find('input.input')
             $portInput.val('80')
             $selectbox.children(".selected").removeClass("selected")
             $selectbox.children(":first-child").addClass("selected")
             $selectbox.prev(".selection").text("HTTP")
+
+            stickness = $li.children(".elb-property-stickiness")
+            stickness.show().find(".selection").text("Disabled")
+            stickness.find(".selected").removeClass("selected")
+            stickness.find(".dropdown").children().eq(0).addClass("selected")
+            stickness.find(".expire-period").hide().find("input").val("")
+            stickness.find(".cookie-name").hide().find("input").val("")
             $('#elb-property-listener-list').append $li
             @updateListener( $li )
 
@@ -210,16 +221,33 @@ define [ '../base/view',
             return false
 
         updateListener : ( $li )->
+            expire = $li.find(".expire-period input").val()
+
             obj = {
                 port : $li.find(".elb-property-elb-port").val()
                 protocol : $li.find(".elb-property-elb-protocol .selected").text()
                 instancePort : $li.find(".elb-property-instance-port").val()
                 instanceProtocol : $li.find(".elb-property-instance-protocol .selected").text()
+                cookieExpire : if !expire then null else parseInt( expire )
+                cookieName   : $li.find(".cookie-name input").val()
             }
+
+            if obj.protocol is "HTTP" or obj.protocol is "HTTPS"
+                obj.stickiness = $li.find(".elb-stickiness .selected").attr("data-id")
+            else
+                obj.stickiness = "disabled"
 
             @model.setListener $li.index(), obj
             @updateCertView()
             null
+
+        cookieChanged : ( evt )->
+            parent = $(evt.currentTarget).closest(".elb-property-stickiness")
+            selectedCookie = parent.find(".elb-stickiness .selected").attr("data-id")
+            parent.find(".expire-period").toggle( selectedCookie is "lbcookie" )
+            parent.find(".cookie-name").toggle( selectedCookie is "appcookie" )
+            @updateListener( parent.closest("li") )
+            return
 
         protocolChanged : ( event )->
 
@@ -270,6 +298,8 @@ define [ '../base/view',
                         portElem.val('443')
                     else
                         portElem.val('80')
+
+                    parentItemElem.find(".elb-property-stickiness").toggle( value is "HTTP" or value is "HTTPS" )
 
 
             @updateListener( $protocol.closest("li") )

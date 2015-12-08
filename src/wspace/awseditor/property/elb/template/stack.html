@@ -117,6 +117,27 @@
 				</div>
 			</div>
 
+			<div class="property-control-group clearfix elb-property-stickiness {{#ifCond instanceProtocol 'TCP'}}hide{{/ifCond}} {{#ifCond instanceProtocol 'SSL'}}hide{{/ifCond}}">
+				<label class="left">Stickiness</label>
+				<div class="selectbox elb-stickiness">
+					<div class="selection"></div>
+					<ul class="dropdown">
+						<li data-id="disabled" class="item {{#ifCond stickiness 'disabled'}}selected{{/ifCond}}">Disabled</li>
+						<li data-id="lbcookie" class="item {{#ifCond stickiness 'lbcookie'}}selected{{/ifCond}}">Load Balancer Generated Cookie Stickiness</li>
+						<li data-id="appcookie" class="item {{#ifCond stickiness 'appcookie'}}selected{{/ifCond}}">Application Generated Cookie Stickiness</li>
+					</ul>
+				</div>
+
+				<section class="expire-period clearfix mgt5 {{#ifCond stickiness 'disabled'}}hide{{/ifCond}} {{#ifCond stickiness 'appcookie'}}hide{{/ifCond}}">
+					<label style="float:left;margin-top:5px;">Expiration Period:</label> <input class="input expire-period-input" type="text" style="width:80px;margin-left:10px;float:left;" value="{{cookieExpire}}" pattern="[0-9]+"> <label class="left mgl5 mgt5">Seconds</label>
+				</section>
+
+				<section class="cookie-name clearfix mgt5 {{#ifCond stickiness 'disabled'}}hide{{/ifCond}} {{#ifCond stickiness 'lbcookie'}}hide{{/ifCond}}">
+					<label for="property-elb-idle-timeout" style="margin-top:5px;">Cookie Name:</label>
+					<input class="input cookie-name-input" value="{{cookieName}}" type="text" style="margin-left:10px;width:120px;">
+				</section>
+			</div>
+
 			<div class="property-control-group sslcert-select clearfix">
 				<label for="sslcert-placeholder">{{ i18n "PROP.ELB_SERVER_CERTIFICATE"}}</label>
 				<div class="sslcert-placeholder"></div>

@@ -262,8 +262,8 @@ define [ "Design",
             InstanceProtocol : l.instanceProtocol
             InstancePort     : l.instancePort
             SSLCertificateId : id
-            CookieName       : l.cookieName
-            CookieExpire     : l.cookieExpire
+            CookieName       : if l.stickiness is "appcookie" then l.cookieName else ""
+            CookieExpire     : if l.stickiness is "lbcookie" then l.cookieExpire else null
             Stickiness       : l.stickiness
         }
 

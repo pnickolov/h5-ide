@@ -714,10 +714,10 @@ VisualOps API. You cannot UNDO this action.'
     WELCOME_DONE_MSG:
       en: "<li>Play with the 5 sample stacks prebuilt in Virginia region.</li>
 <li>Read <a href='http://docs.visualops.io/' target='_blank'>Documentation</a>.</li>
-<li>Watch short <a href='http://docs.visualops.io/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
+<li>Watch short <a href='http://docs.visualops.io/aws/example/video.html' target='_blank'>Tutorial Videos</a>. </li>"
       zh: "<li>试用弗吉尼亚的5个示例 Stack。</li>
 <li>阅读我们的 <a href='http://docs.visualops.io/' target='_blank'>文档</a>。</li>
-<li>观看 <a href='http://docs.visualops.io/example/video.html' target='_blank'>视频教程</a>。 </li>"
+<li>观看 <a href='http://docs.visualops.io/aws/example/video.html' target='_blank'>视频教程</a>。 </li>"
 
     HEAD_MSG_ERR_UPDATE_EMAIL3:
       en: "Please provide a valid email address."
@@ -3010,5 +3010,3 @@ into live resources, or import existing infrastructures."
     CANT_ATTACH_ENI_TO_MESOS_INSTANCE:
       en: "ENI cannot be attached to a mesos master or slave instance."
       zh: "Eni 不能附加到 Mesos Master 或 Mesos Slave 实例上。"
-
-

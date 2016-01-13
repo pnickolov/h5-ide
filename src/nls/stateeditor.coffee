@@ -144,8 +144,8 @@ module.exports =
     ## State Editor Help
 
     STATE_HELP_INTRO_LBL:
-      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/state_modules/README.html' target='_blank'>documentation</a>.</p>"
-      zh: "<p>展开 State，在这里查看相关帮助文档，详细: <a href='http://docs.visualops.io/state_modules/README.html' target='_blank'>文档</a>。</p>"
+      en: "<p>Select or input a command to see a related help document here. Read detailed <a href='http://docs.visualops.io/state/index.html' target='_blank'>documentation</a>.</p>"
+      zh: "<p>展开 State，在这里查看相关帮助文档，详细: <a href='http://docs.visualops.io/state/index.html' target='_blank'>文档</a>。</p>"
 
     ##### Request Invite to Experimental Feature
 

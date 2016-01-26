@@ -114,7 +114,7 @@ define [ "ComplexResModel", "ConnectionModel", "constant" ], ( ComplexResModel, 
       currentRules = @get("rules")
 
       for r in currentRules
-        if r.number is rule.number
+        if r.number is rule.number and r.egress is rule.egress
           return false
 
       # Add rule Id for the rule

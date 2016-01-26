@@ -208,9 +208,9 @@ define [ '../base/model', "Design", 'constant', 'CloudResources', 'i18n!/nls/lan
             if @get("isDefault") and rulenumber is 100
                 return lang.PARSLEY.RULE_NUMBER_100_HAS_EXISTED
 
-
+            inbound = $('#acl-add-model-direction-inbound').prop('checked')
             rule = _.find Design.instance().component( @get("uid") ).get("rules"), ( r )->
-                r.number is rulenumber
+                r.number is rulenumber and r.egress isnt inbound
 
             if rule then return sprintf lang.PARSLEY.RULENUMBER_ALREADY_EXISTS, rulenumber
             return true
